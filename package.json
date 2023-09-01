@@ -8,7 +8,12 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@material-ui/icons": "^4.11.3",
     "babel-plugin-styled-components": "^2.1.4",
+    "font-awesome": "^4.7.0",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

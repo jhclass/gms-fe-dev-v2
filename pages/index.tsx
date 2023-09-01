@@ -2,9 +2,13 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "@/pages/css/index.module.css";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { faHeadset } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+
 // import Swiper and modules styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -111,12 +115,39 @@ const FInfo = styled.div`
   margin-left: 20px;
 `;
 
+const Aside = styled.div`
+  position: fixed;
+  bottom: 50px;
+  right: 10px;
+  div {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #007aff;
+    color: #fff;
+    border-radius: 30px;
+    margin-top: 10px;
+  }
+  div:first-child {
+    background-color: #333;
+  }
+`;
+const StyledIcon = styled(FontAwesomeIcon)`
+  width: 24px !important;
+  height: 24px !important;
+`;
 export default function Home() {
   return (
     <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+        ></link>
       </Head>
       <header>
         <Wrapper>
@@ -271,7 +302,15 @@ export default function Home() {
         </Wrapper>
       </footer>{" "}
       {/**footer */}
-      <aside>Aside,상담신청</aside> {/**footer */}
+      <Aside>
+        <div>
+          <StyledIcon icon={faHeadset} />
+        </div>
+        <div>
+          <StyledIcon icon={faAngleUp} />
+        </div>
+      </Aside>{" "}
+      {/**footer */}
     </>
   );
 }
