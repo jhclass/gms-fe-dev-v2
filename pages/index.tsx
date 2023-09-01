@@ -98,6 +98,18 @@ const GridContainer = styled.div`
     }
   }
 `;
+const FootContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`;
+const FInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  margin-left: 20px;
+`;
 
 export default function Home() {
   return (
@@ -214,15 +226,51 @@ export default function Home() {
             </GridContainer>
           </MContents>
           <MContents>
-            <h2>현재 모집중인 강의!</h2>
-          </MContents>
-          <MContents>
-            <h2>현재 모집중인 강의!</h2>
+            <MContentsTitle>생생 리뷰 TALK!</MContentsTitle>
+            <McontentsSubText>지금 결제하면 20만원 추가 할인!</McontentsSubText>
           </MContents>
         </Wrapper>
       </div>{" "}
       {/**content */}
-      <footer> 푸터 </footer> {/**footer */}
+      <footer>
+        <Wrapper>
+          <FootContainer>
+            <h1>JHCLASS</h1>
+            <FInfo>
+              <span>
+                <b>운영/상담 시간</b> : 오전 10시 - 오후 7시
+              </span>
+              <span>
+                <b>E-mail</b> : admin@jhclass.com
+              </span>
+              <span>
+                <b>주소</b> : 서울 강남구 역삼동 1807 센트럴벤치빌딩 15층
+              </span>
+              <span>
+                <b>Tel</b> : 1544-1234
+              </span>
+              <span>
+                <b>E-mail</b> : admin@jhclass.com
+              </span>
+            </FInfo>
+            <FInfo>
+              <span>
+                <b>회사명</b> : JHCLASS 아카데미
+              </span>
+              <span>
+                <b>대표</b> : 이진형
+              </span>
+              <span>
+                <b>사업자등록번호</b> : 109-09-75359
+              </span>
+              <span>
+                <b>통신판매업신고</b> : 서울강남-01-123456
+              </span>
+            </FInfo>
+          </FootContainer>
+        </Wrapper>
+      </footer>{" "}
+      {/**footer */}
       <aside>Aside,상담신청</aside> {/**footer */}
     </>
   );
