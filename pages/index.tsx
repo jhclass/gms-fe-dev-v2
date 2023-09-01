@@ -182,22 +182,40 @@ export default function Home() {
               className="mySwiper1"
             >
               <SwiperSlide>
-                <img src="https://placehold.it/1440x600" />
+                <img
+                  src="https://placehold.it/1440x600"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img src="https://placehold.it/1440x600" />
+                <img
+                  src="https://placehold.it/1440x600"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img src="https://placehold.it/1440x600" />
+                <img
+                  src="https://placehold.it/1440x600"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img src="https://placehold.it/1440x600" />
+                <img
+                  src="https://placehold.it/1440x600"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img src="https://placehold.it/1440x600" />
+                <img
+                  src="https://placehold.it/1440x600"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img src="https://placehold.it/1440x600" />
+                <img
+                  src="https://placehold.it/1440x600"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
               </SwiperSlide>
               <SwiperSlide>
                 <img src="https://placehold.it/1440x600" />
@@ -215,42 +233,66 @@ export default function Home() {
             <McontentsSubText>지금 결제하면 20만원 추가 할인!</McontentsSubText>
             <GridContainer>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
               <div>
-                <img src="https://placehold.it/500x500" />
+                <img
+                  src="https://placehold.it/500x500"
+                  style={{ borderRadius: 10, overflow: "hidden" }}
+                />
                 <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
                 <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
               </div>
