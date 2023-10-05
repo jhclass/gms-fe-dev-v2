@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cd academy && next dev --port 8000",
+    "dev-admin": "cd admin && next dev --port 8001",
     "build": "next build",
     "start": "next start",
     "test": "jest --watch",
