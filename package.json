@@ -5,5 +5,30 @@
     "dev:admin": "cd admin && npm run dev",
     "test:academy": "cd academy && npm test",
     "test:admin": "cd admin && npm test"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@material-ui/icons": "^4.11.3",
+    "babel-plugin-styled-components": "^2.1.4",
+    "font-awesome": "^4.7.0",
+    "next": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^6.0.7",
+    "swiper": "^10.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.16.4",
+    "@testing-library/react": "14.0.0",
+    "@testing-library/user-event": "14.4.3",
+    "@types/react": "18.0.28",
+    "@types/styled-components": "^5.1.26",
+    "@types/swiper": "^6.0.0",
+    "@types/testing-library__jest-dom": "5.14.5",
+    "jest": "29.5.0",
+    "jest-environment-jsdom": "29.5.0",
+    "typescript": "4.9.5"
   }
 }
