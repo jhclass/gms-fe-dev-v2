@@ -32,7 +32,7 @@ export default function Home() {
     <>
       <WideSlider/>
       <div>
-        <div className={'wrapper'}>
+        <div className="wrap">
           <h2>현재 모집중이예요</h2>
           <p>지금 결제하면 20만원 추가 할인!</p>
           <div className="w-full grid grid-cols-4 gap-16">
