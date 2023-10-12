@@ -1,37 +1,81 @@
-import Link from "next/link";
+import {Navbar, NavbarBrand, NavbarContent, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import TopBnr from "@/components/TopBnr";
 
 export default function Header() {
     return (
       <>
         <TopBnr/>
-        <header className="bg-white">
-          <div className="wrap">
-            <div className="flex items-center justify-between p-6 mx-auto" aria-label="Global">
-              <div className="flex lg:flex-1">
-                <Link href="#" className="-m-1.5 p-1.5">
-                  <h1>LOGO | HighClass</h1>
-                </Link>
-              </div>
-              <div className="flex">
-                {/* <button
-                  type="button"
-                  className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                  onClick={() => setMobileMenuOpen(true)}
-                >
-                  <span className="sr-only">Open main menu</span>
-                  <Bars3Icon className="w-6 h-6" aria-hidden="true" />
-                </button> */}
-                <a href="#" className="px-2 py-1 mr-1.5 text-sm font-semibold leading-6 text-gray-900">
-                  Log in
-                </a>
-                <a href="#" className="px-2 py-1 text-sm font-semibold leading-6 text-white bg-indigo-600 rounded hover:bg-black">
-                  Sign up
-                </a>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Navbar isBordered classNames={{
+        base: "max-w-[1440px] m-auto",
+        wrapper:"max-w-[1440px]"
+        }}>
+      <NavbarContent justify="start">
+        <NavbarBrand className="mr-4">
+          <p className="hidden font-bold sm:block text-inherit">
+            LOGO | HighClass
+          </p>
+        </NavbarBrand>
+       </NavbarContent>
+
+      <NavbarContent as="div" className="items-center">
+        <Input
+          classNames={{
+            base: "max-w-full sm:max-w-[10rem] h-10",
+            mainWrapper: "h-full",
+            input: "text-small",
+            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+          }}
+          placeholder="Type to search..."
+          size="sm"
+          startContent={<i className="xi-search"/>}
+          type="search"
+        />
+        </NavbarContent>
+        <NavbarContent justify="end">
+            <Link href="#" size="sm" className="mr-1.5">
+                Log In
+            </Link>
+            <Button
+                isExternal
+                href="https://github.com/nextui-org/nextui"
+                as={Link}
+                color="primary"
+                variant="solid"
+            >
+            Sign up
+            </Button>
+
+        {/* <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              color="secondary"
+              name="Jason Hughes"
+              size="sm"
+              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="profile" className="gap-2 h-14">
+              <p className="font-semibold">Signed in as</p>
+              <p className="font-semibold">zoey@example.com</p>
+            </DropdownItem>
+            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="team_settings">Team Settings</DropdownItem>
+            <DropdownItem key="analytics">Analytics</DropdownItem>
+            <DropdownItem key="system">System</DropdownItem>
+            <DropdownItem key="configurations">Configurations</DropdownItem>
+            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem key="logout" color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown> */}
+      </NavbarContent>
+    </Navbar>
       </>
     );
   }
