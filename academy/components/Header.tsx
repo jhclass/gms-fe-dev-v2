@@ -7,7 +7,7 @@ export default function Header() {
       <>
         <TopBnr/>
         <Navbar isBordered classNames={{
-        base: "max-w-[1440px] m-auto",
+        base: "max-w-full m-auto",
         wrapper:"max-w-[1440px]"
         }}>
       <NavbarContent justify="start">

@@ -35,11 +35,7 @@ export default function Home() {
         <div className="wrap">
           <h2>현재 모집중이예요</h2>
           <p>지금 결제하면 20만원 추가 할인!</p>
-          <div className="grid w-full grid-cols-4 gap-16">
-            {mainList.map((item, index) => {
-              return <SquareCard key={index}/>;
-            })}
-          </div>
+          <SquareCard />
         </div>
       </div>
     </>

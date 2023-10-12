@@ -1,13 +1,69 @@
-export default function Header() {
+import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
+
+export default function SquareCard() {
+  const list = [
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월) 2",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+    {
+      title: "JAVASCRIPT 마스터 과정 (6개월)",
+      img: "https://placehold.it/500x500",
+      subs: "최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.",
+    },
+  ];
     return (
       <>
-        <div className="squareCard">
-            <img 
-                src="https://placehold.it/500x500"
-                style={{ borderRadius: 10, overflow: "hidden" }}
-            />
-            <h3>JAVASCRIPT 마스터 과정 (6개월)</h3>
-            <p>최신 자바스크립트 es6를 활용하여 풀스택개발에 도전하세요.</p>
+        <div className="grid grid-cols-4 gap-16">
+          {list.map((item, index) => (
+            <Card  shadow="none" key={index} isPressable onPress={() => console.log("item pressed")}>
+              <CardBody className="p-0 overflow-visible ">
+                <Image
+                  shadow="none"
+                  radius="lg"
+                  width="100%"
+                  alt={item.title}
+                  className="object-cover w-full "
+                  src={item.img}
+                />
+                <b className="text-xl font-semibold mt-10 px-1.5">{item.title}</b>
+                <p className="leading-relaxed mt-10 px-1.5">{item.subs}</p>
+              </CardBody>
+              <CardFooter className="text-small">
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </>
     );
