@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="//cdn.example.com/path/to/additional-styles.css"
           />
+          <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
         </Head>
         <body>
           <Main />

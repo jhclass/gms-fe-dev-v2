@@ -15,7 +15,7 @@ export default function Header() {
             className="mySwiper1"
           >
             <SwiperSlide style={{background:'tomato'}}>
-              <div className={'wrapper'}>
+              <div className="wrap">
                 <img
                   src="https://placehold.it/1440x600"
                   style={{ overflow: "hidden" }}
@@ -23,7 +23,7 @@ export default function Header() {
               </div>
             </SwiperSlide>
             <SwiperSlide style={{background:'red'}}>
-              <div className={'wrapper'}>
+              <div className="wrap">
                 <img
                   src="https://placehold.it/1440x600"
                   style={{ overflow: "hidden" }}
@@ -31,7 +31,7 @@ export default function Header() {
               </div>
             </SwiperSlide>
             <SwiperSlide style={{background:'blue'}}>
-              <div className={'wrapper'}>
+              <div className="wrap">
                 <img
                   src="https://placehold.it/1440x600"
                   style={{ overflow: "hidden" }}
@@ -39,7 +39,7 @@ export default function Header() {
               </div>
             </SwiperSlide>
             <SwiperSlide style={{background:'yellow'}}>
-              <div className={'wrapper'}>
+              <div className="wrap">
                 <img
                   src="https://placehold.it/1440x600"
                   style={{ overflow: "hidden" }}
@@ -47,7 +47,7 @@ export default function Header() {
               </div>
             </SwiperSlide>
             <SwiperSlide style={{background:'pink'}}>
-              <div className={'wrapper'}>
+              <div className="wrap">
                 <img
                   src="https://placehold.it/1440x600"
                   style={{ overflow: "hidden" }}

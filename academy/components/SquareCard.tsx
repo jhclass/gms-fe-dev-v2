@@ -1,7 +1,7 @@
 export default function Header() {
     return (
       <>
-        <div className="header">
+        <div className="squareCard">
             <img 
                 src="https://placehold.it/500x500"
                 style={{ borderRadius: 10, overflow: "hidden" }}

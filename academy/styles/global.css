@@ -4,15 +4,15 @@
 @tailwind variants;
 
 @layer components {
-    .header {
+    .squareCard {
     }
-    .header img {
+    .squareCard img {
         @apply w-full object-cover align-bottom;
     }
-    .header h3 {
+    .squareCard h3 {
         @apply text-xl font-semibold mt-10 px-1.5;
     }
-    .header img {
+    .squareCards img {
         @apply leading-relaxed mt-10 px-1.5;
     }
 }

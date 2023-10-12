@@ -16,9 +16,9 @@
 export default function Header() {
     return (
       <>
-        <footer>
-          <div className={'wrapper'}>
-            <div>
+        <footer className="background">
+          <div className="wrap">
+            <div className="flex justify-around ">
               <h1>JHCLASS</h1>
               <div>
                 <span>
