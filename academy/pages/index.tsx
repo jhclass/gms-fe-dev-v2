@@ -15,6 +15,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div></div>
       <div>
         <div className="wrap pt-[40px]">
           <CardBnr />
