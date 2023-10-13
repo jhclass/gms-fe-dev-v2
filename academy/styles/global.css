@@ -4,21 +4,20 @@
 @tailwind variants;
 
 @layer components {
-    .squareCard {
+    .menu:hover .menu_drop {
+        @apply block;
     }
-    .squareCard img {
-        @apply w-full object-cover align-bottom;
-    }
-    .squareCard h3 {
-        @apply text-xl font-semibold mt-10 px-1.5;
-    }
-    .squareCards img {
-        @apply leading-relaxed mt-10 px-1.5;
+    .menu .menu_drop{
+        display:none;
     }
 }
 
 @layer utilities {
     .wrap {
-        @apply w-guid mx-auto my-0;
+        @apply w-full px-6 lg:px-0 lg:w-[1440px] lg:m-auto;
     }
+}
+
+body {
+    @apply text-[3.125vw] sm:text-[16px] md:text-[16px] lg:text-[16px];
 }
