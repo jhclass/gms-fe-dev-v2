@@ -10,7 +10,7 @@ export default function TopBnr() {
           </p>
           <a
             href="#"
-            className="flex-none rounded-full bg-white px-3.5 py-1 text-sm font-semibold text-gray-900 hover:text-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+            className="flex-none rounded-full bg-white px-3.5 py-1 text-sm font-semibold text-gray-900 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
           >
             Click me<span aria-hidden="true">&rarr;</span>
           </a>

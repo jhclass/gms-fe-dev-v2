@@ -57,8 +57,8 @@ export default function SquareCard() {
                   className="object-cover w-full "
                   src={item.img}
                 />
-                <b className="text-xl font-semibold mt-5 px-1.5">{item.title}</b>
-                <p className="leading-relaxed mt-5 px-1.5">{item.subs}</p>
+                <b className="text-lg font-semibold mt-5 px-1.5">{item.title}</b>
+                <p className="text-base mt-3 px-1.5">{item.subs}</p>
               </CardBody>
             </Card>
           ))}
