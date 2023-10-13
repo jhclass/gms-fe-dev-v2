@@ -4,11 +4,12 @@
 @tailwind variants;
 
 @layer components {
-    .menu:hover .menu_drop {
-        @apply block;
-    }
-    .menu .menu_drop{
+    .menuList {
         display:none;
+        @apply absolute left-0 py-3 bg-white top-[40px] left-0 w-[260px]
+    }
+    .open {
+        display:block;
     }
 }
 
@@ -20,4 +21,5 @@
 
 body {
     @apply text-[3.125vw] sm:text-[16px] md:text-[16px] lg:text-[16px];
+    line-height:1.5;
 }
