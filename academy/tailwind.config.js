@@ -9,22 +9,62 @@ module.exports = {
   ],
   theme: {
     screens: {
-      'sm': '576px',
-      // => @media (min-width: 576px) { ... }
-
-      'md': '960px',
-      // => @media (min-width: 960px) { ... }
-
-      'lg': '1440px',
-      // => @media (min-width: 1440px) { ... }
+      sm: '480px',
+      md: '768px',
+      // lg: '976px',
+      lg: '1440px'
     },
     extend: {
       width: {
-        'guid': '1440px',
+        'web': '1440px',
       },
+      colors: {
+        'primary': '#4f46e5',
+        'secondary': '#0284c7',
+        // 'success': '#ff7849',
+        // 'warning': '#273444',
+        // 'danger': '#8492a6',
+      },
+      fontSize: {
+        // Title 
+        't1': ['2.4rem;', {
+          letterSpacing: '-0.01em',
+          lineHeight: '1.5',
+        }],
+        't2': ['1.6rem', {
+          letterSpacing: '-0.01em',
+          lineHeight: '1.5',
+        }],
+        't3': ['1.4rem', {
+          letterSpacing: '-0.01em',
+          lineHeight: '20px',
+        }],
+        // subtitle
+        'sub1': ['1.6rem', {
+          letterSpacing: '-0.01em',
+          lineHeight: '1.5',
+        }],
+        'sub2': ['1.2rem', {
+          letterSpacing: '-0.01em',
+          lineHeight: '1.5',
+        }],
+        // paragraph
+        'p1': ['24px', {
+          letterSpacing: '-0.01em',
+          lineHeight: '20px',
+        }],
+        'p2': ['24px', {
+          letterSpacing: '-0.01em',
+          lineHeight: '20px',
+        }],
+      }
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      addCommonColors: true,
+    })
+  ],
 }
 

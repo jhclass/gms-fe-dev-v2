@@ -45,7 +45,7 @@ export default function SquareCard() {
   ];
     return (
       <>
-        <div className="grid grid-cols-4 gap-16">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-16 sm:grid-cols-3 sm:gap-10">
           {list.map((item, index) => (
             <Card  shadow="none" key={index} isPressable onPress={() => console.log("item pressed")}>
               <CardBody className="p-0 overflow-visible ">
@@ -57,11 +57,9 @@ export default function SquareCard() {
                   className="object-cover w-full "
                   src={item.img}
                 />
-                <b className="text-xl font-semibold mt-10 px-1.5">{item.title}</b>
-                <p className="leading-relaxed mt-10 px-1.5">{item.subs}</p>
+                <b className="text-lg font-semibold mt-5 px-1.5">{item.title}</b>
+                <p className="text-base mt-3 px-1.5">{item.subs}</p>
               </CardBody>
-              <CardFooter className="text-small">
-              </CardFooter>
             </Card>
           ))}
         </div>
