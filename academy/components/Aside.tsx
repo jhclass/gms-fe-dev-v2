@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
-import { faHeadset } from "@fortawesome/free-solid-svg-icons";
 
 // const Aside = styled.div`
 //   position: fixed;
@@ -31,12 +28,12 @@ export default function Header() {
     return (
       <>
         <div>
-          <div className="">
+          {/* <div className="">
             <FontAwesomeIcon icon={faHeadset} className="w-6 h-6"/>
           </div>
           <div>
             <FontAwesomeIcon icon={faAngleUp} className="w-6 h-6"/>
-          </div>
+          </div> */}
         </div>
       </>
     );

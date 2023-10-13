@@ -1,15 +1,12 @@
 import {Navbar, NavbarBrand, NavbarContent, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, NavbarItem} from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import TopBnr from "@/components/TopBnr";
-import Gnb from "./Gnb";
+import Gnb from "@/components/Gnb";
 
 export default function Header() {
     return (
       <>
         <TopBnr/>
-        <ul>
-          <li></li>
-        </ul>
         <Navbar 
           isBordered 
           classNames={{
@@ -20,7 +17,7 @@ export default function Header() {
         >
           <div className="w-full bg-[#27272E]">
             <ul className="w-[1440px] m-auto flex items-center">
-              <li className="min-w-[70px] cursor-pointer border-x-1 border-slate-400 bg-indigo-600"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
+              <li className="min-w-[70px] cursor-pointer border-x-1 border-slate-400 bg-primary"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
               <li className="min-w-[70px] cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
             </ul>
           </div>
@@ -49,10 +46,10 @@ export default function Header() {
             </NavbarContent>
             <NavbarContent justify="end">
               <NavbarItem className="hidden lg:flex">
-                <Link href="#" className="text-indigo-600">Login</Link>
+                <Link href="#"  className="text-primary">Login</Link>
               </NavbarItem>
               <NavbarItem>
-                <Button as={Link} href="#" variant="flat" className="text-white bg-indigo-600">
+                <Button as={Link} href="#" variant="flat" className="text-white bg-primary">
                   Sign Up
                 </Button>
               </NavbarItem>
