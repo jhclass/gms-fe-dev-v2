@@ -1,56 +1,69 @@
 // import { styled } from "styled-components";
 
-// const FootContainer = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-around;
-//   align-items: center;
-// `;
-// const FInfo = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   line-height: 1.6;
-//   margin-left: 20px;
-// `;
+import Link from "next/link";
 
-export default function Header() {
+export default function Footer() {
     return (
       <>
-        <footer className="background">
-          <div className="wrap">
-            <div className="flex justify-around ">
-              <h1>JHCLASS</h1>
-              <div>
-                <span>
-                  <b>운영/상담 시간</b> : 오전 10시 - 오후 7시
+        <footer className="mt-20">
+          <div className="py-3 bg-zinc-600">
+            <ul className="flex items-center text-sm wrap">
+              <li className="relative pr-2 mr-2 after:block after:w-[1px] after:h-4 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                <Link href={{}} className="text-white">
+                  <span>회사소개</span>
+                </Link>
+              </li>
+              <li className="relative pr-2 mr-2 after:block after:w-[1px] after:h-4 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                <Link href={{}} className="text-white">
+                  <span>이용약관</span>
+                </Link>
+              </li>
+              <li>
+                <Link href={{}} className="text-white">
+                  <b>개인정보처리방침</b>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="py-10 bg-zinc-800">
+            <div className="flex flex-col justify-center text-white wrap">
+              <h1 className="text-3xl">H-CLASS</h1>
+              <ul className="mt-2 text-sm font-thin text-slate-400">
+                <li>
+                  <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                    H-CLASS
+                  </span>
+                  <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                    대표 : 심혜원
+                  </span>
+                  <span>
+                    사업자등록번호 : 537-42-01115
+                  </span>
+                </li>
+                <li>
+                <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                    통신판매업신고 : 537-42-01115
+                  </span> 
+                  <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                    개인정보보호책임자 : 윤명노
+                  </span>
+                  <span>
+                    E-mail : admin@highclass.com
+                  </span>
+                </li>
+                <li>
+                  <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                    Tel: 02-393-4321
+                  </span>
+                  <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
+                    Fax : 02-365-5880
+                  </span>
+                  <span>
+                  주소 : 서울 서대문구 신촌로 141(대현동,은하빌딩)
                 </span>
-                <span>
-                  <b>E-mail</b> : admin@jhclass.com
-                </span>
-                <span>
-                  <b>주소</b> : 서울 강남구 역삼동 1807 센트럴벤치빌딩 15층
-                </span>
-                <span>
-                  <b>Tel</b> : 1544-1234
-                </span>
-                <span>
-                  <b>E-mail</b> : admin@jhclass.com
-                </span>
-              </div>
-              <div>
-                <span>
-                  <b>회사명</b> : JHCLASS 아카데미
-                </span>
-                <span>
-                  <b>대표</b> : 이진형
-                </span>
-                <span>
-                  <b>사업자등록번호</b> : 109-09-75359
-                </span>
-                <span>
-                  <b>통신판매업신고</b> : 서울강남-01-123456
-                </span>
-              </div>
+                </li>
+              </ul>
+              <p className="mt-2 text-sm font-thin text-slate-200">Copyright by HIGH-CLASS. All rights reserved.</p>
             </div>
           </div>
         </footer>

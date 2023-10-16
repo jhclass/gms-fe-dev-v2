@@ -11,15 +11,22 @@
     .open {
         display:block;
     }
+
+    .info_pager span {
+        @apply mx-1 cursor-pointer;
+    }
+    .info_pager .swiper-pagination-bullet-active {
+        @apply bg-primary;
+    }
 }
 
 @layer utilities {
     .wrap {
-        @apply w-full px-6 lg:px-0 lg:w-[1440px] lg:m-auto;
+        @apply w-full px-6 lg:px-0 lg:w-web lg:m-auto;
     }
 }
 
 body {
-    @apply text-[3.125vw] sm:text-[16px] md:text-[16px] lg:text-[16px];
+    @apply text-[3.125vw] lg:text-[16px] font-sans;
     line-height:1.5;
 }

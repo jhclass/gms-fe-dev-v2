@@ -1,6 +1,6 @@
 import {Navbar, NavbarBrand, NavbarContent, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, NavbarItem} from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import TopBnr from "@/components/TopBnr";
+import TopBnr from "@/components/main/TopBnr";
 import Gnb from "@/components/Gnb";
 
 export default function Header() {
@@ -16,7 +16,7 @@ export default function Header() {
           height="auto"
         >
           <div className="w-full bg-[#27272E]">
-            <ul className="w-[1440px] m-auto flex items-center">
+            <ul className="lg:w-[1440px] m-auto flex items-center">
               <li className="min-w-[70px] cursor-pointer border-x-1 border-slate-400 bg-primary"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
               <li className="min-w-[70px] cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
             </ul>

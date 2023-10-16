@@ -59,6 +59,7 @@ export default function RankingCard() {
           <div key={index}>
             <Link href="/" className="block">
               <div className="relative overflow-hidden rounded-r-xl rounded-tl-xl">
+                <p className="absolute bottom-0 left-0 w-10 h-10 text-center text-white rounded-r-lg rounded-tl-lg text-2xl/10 bg-primary">{index+1}</p>
                 <img alt={item.title} src={item.img} />
               </div>
               <dl className="w-full h-full py-3">

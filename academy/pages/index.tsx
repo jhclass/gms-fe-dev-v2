@@ -1,25 +1,36 @@
-import WideSlider from "@/components/WideSlider";
-import SquareCard from "@/components/SquareCard";
-import CardBnr from "@/components/CardBnr";
+import WideSlider from "@/components/main/WideSlider";
+import Ranking from "@/components/main/Ranking";
+import New from "@/components/main/New";
+import MainBnr from "@/components/main/MainBnr";
+import Bnr from "@/components/main/Bnr";
+import CateList from "@/components/main/CateList";
+import Link from "next/link";
+import Info from "@/components/main/Info";
 
 export default function Home() {
   return (
     <>
       <WideSlider/>
-      <div>
-        <div className="wrap pt-[40px]">
-          <h2 className="text-t1">현재 모집중이예요</h2>
-          <p className="text-sub1">지금 결제하면 20만원 추가 할인!</p>
-          <div className="mt-[40px]">
-            <SquareCard/>
-          </div>
-        </div>
+      <div className="mt-20">
+        <New />
       </div>
-      <div></div>
-      <div>
-        <div className="wrap pt-[40px]">
-          <CardBnr />
-        </div>
+      <div className="mt-20">
+        <Bnr />
+      </div>
+      <div className="mt-20">
+        <Ranking/>
+      </div>
+      <div className="py-20 mt-20 bg-slate-200">
+        <MainBnr />
+      </div>
+      <div className="mt-20">
+        <CateList cate={'근로자'} slideNo={1} />
+      </div>
+      <div className="mt-20">
+        <CateList cate={'실업자'} slideNo={2} />
+      </div>
+      <div className="mt-20">
+        <Info />
       </div>
     </>
   );

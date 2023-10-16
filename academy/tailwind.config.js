@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     screens: {
       sm: '480px',
-      md: '768px',
+      md: '1024px',
       // lg: '976px',
       lg: '1440px'
     },
@@ -19,7 +19,7 @@ module.exports = {
         'web': '1440px',
       },
       colors: {
-        'primary': '#4f46e5',
+        'primary': '#007de9',
         'secondary': '#0284c7',
         // 'success': '#ff7849',
         // 'warning': '#273444',
