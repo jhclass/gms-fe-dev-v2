@@ -1,32 +1,19 @@
 {
-  "private": true,
+  "name": "high-class",
+  "version": "1.0.0",
+  "description": "Monorepo for academy and admin",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev:academy": "cd academy && npm run dev",
-    "dev:admin": "cd admin && npm run dev",
-    "test:academy": "cd academy && npm test",
-    "test:admin": "cd admin && npm test"
-  },
-  "dependencies": {
-    "@nextui-org/react": "^2.1.13",
-    "font-awesome": "^4.7.0",
-    "framer-motion": "^10.16.4",
-    "next": "latest",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "swiper": "^10.2.0"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "5.16.4",
-    "@testing-library/react": "14.0.0",
-    "@testing-library/user-event": "14.4.3",
-    "@types/react": "18.0.28",
-    "@types/swiper": "^6.0.0",
-    "@types/testing-library__jest-dom": "5.14.5",
-    "autoprefixer": "^10.4.16",
-    "jest": "29.5.0",
-    "jest-environment-jsdom": "29.5.0",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.3",
-    "typescript": "4.9.5"
+    "start": "npm run start-academy && npm run start-admin",
+    "dev:academy": "cd packages/academy && npm run dev",
+    "dev:admin": "cd packages/admin && npm run dev",
+    "build:academy": "cd packages/academy && npm run build",
+    "build:admin": "cd packages/admin && npm run build",
+    "start:academy": "cd packages/academy && npm start",
+    "start:admin": "cd packages/admin && npm start",
+    "test:academy": "cd packages/academy && npm test",
+    "test:admin": "cd packages/admin && npm test"
   }
 }
