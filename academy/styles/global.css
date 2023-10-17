@@ -6,7 +6,7 @@
 @layer components {
     .menuList {
         display:none;
-        @apply absolute left-0 py-3 bg-white top-[40px] left-0 w-[260px]
+        @apply absolute left-0 py-3 bg-white top-[40px] w-[260px]
     }
     .open {
         display:block;
@@ -22,7 +22,7 @@
 
 @layer utilities {
     .wrap {
-        @apply w-full px-6 lg:px-0 lg:w-web lg:m-auto;
+        @apply relative w-full px-6 lg:px-0 lg:w-web lg:m-auto;
     }
 }
 

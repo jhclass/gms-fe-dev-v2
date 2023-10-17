@@ -3,20 +3,20 @@ import { Link } from "@nextui-org/react";
 export default function MainBnr() {
   const list = [
     {
-      title: "타이틀111 타이틀111 타이틀111",
-      img: "https://placehold.it/360x400",
+      title: "프론트엔드 로드맵 마스터",
+      img: "/src/images/card01.jpg",
     },
     {
-      title: "타이틀111 타이틀111 타이틀111",
-      img: "https://placehold.it/360x400",
+      title: "딥러닝, 인공지능 시그니처",
+      img: "/src/images/card02.jpg",
     },
     {
-      title: "타이틀111 타이틀111 타이틀111",
-      img: "https://placehold.it/360x400",
+      title: "완성하는 백엔드 웹 개발",
+      img: "/src/images/card03.jpg",
     },
     {
-      title: "타이틀111 타이틀111 타이틀111",
-      img: "https://placehold.it/360x400",
+      title: "우아한형제들 기술이사 김민태의 프론트엔드 아카데미",
+      img: "/src/images/card04.jpg",
     },
   ];
     return (
