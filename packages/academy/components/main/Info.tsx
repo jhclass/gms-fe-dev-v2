@@ -71,32 +71,32 @@ export default function MainBnr() {
                 >
                     <SwiperSlide>
                         <Link href="">
-                            <img alt="instagram 이벤트" src="https://placehold.it/288x185" />
+                            <img alt="instagram 이벤트" src="/src/images/b01.jpg" />
                         </Link>
                     </SwiperSlide>
                     <SwiperSlide>
                         <Link href="">
-                            <img alt="instagram 이벤트" src="https://placehold.it/288x185" />
+                            <img alt="instagram 이벤트" src="/src/images/b02.jpg" />
                         </Link>
                     </SwiperSlide>
                     <SwiperSlide>
                         <Link href="">
-                            <img alt="instagram 이벤트" src="https://placehold.it/288x185" />
+                            <img alt="instagram 이벤트" src="/src/images/b03.jpg" />
                         </Link>
                     </SwiperSlide>
                     <SwiperSlide>
                         <Link href="">
-                            <img alt="instagram 이벤트" src="https://placehold.it/288x185" />
+                            <img alt="instagram 이벤트" src="/src/images/b04.jpg" />
                         </Link>
                     </SwiperSlide>
                     <SwiperSlide>
                         <Link href="">
-                            <img alt="instagram 이벤트" src="https://placehold.it/288x185" />
+                            <img alt="instagram 이벤트" src="/src/images/b05.jpg" />
                         </Link>
                     </SwiperSlide>
                     <SwiperSlide>
                         <Link href="">
-                            <img alt="instagram 이벤트" src="https://placehold.it/288x185" />
+                            <img alt="instagram 이벤트" src="/src/images/b06.jpg" />
                         </Link>
                     </SwiperSlide>
                 </Swiper>
