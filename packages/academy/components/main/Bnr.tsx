@@ -4,11 +4,11 @@ export default function MainBnr() {
   const list = [
     {
       title: "타이틀111 타이틀111 타이틀111",
-      img: "https://placehold.it/720x200",
+      img: "/src/images/long02.jpg",
     },
     {
       title: "타이틀111 타이틀111 타이틀111",
-      img: "https://placehold.it/720x200",
+      img: "/src/images/long01.jpg",
     },
   ];
     return (
