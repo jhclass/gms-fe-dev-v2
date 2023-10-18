@@ -72,11 +72,17 @@ export default function ListSlider({slideNo}) {
                   <div className="relative overflow-hidden rounded-r-xl rounded-tl-xl">
                     <img alt={item.title} src={item.img} />
                   </div>
+                  <div className="absolute top-0 left-0 flex flex-wrap gap-1">
+                    <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-center text-xs/xs bg-primary">HOT</span>
+                    <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-center text-xs/xs bg-flag3">NEW</span>
+                    <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-center text-xs/xs bg-flag1">국비지원</span>
+                    <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-base text-xs/xs bg-flag2">커리어패스</span>
+                  </div>
                   <dl className="w-full h-full py-3">
-                    <dd className="text-2xl">
-                    {item.title}
+                    <dd className="text-xl text-black min-h-[3rem] line-clamp-2">
+                      {item.title}
                     </dd>
-                    <dd className="mt-4 text-base">
+                    <dd className="mt-2 text-base line-clamp-2 text-zinc-600">
                       {item.subs}
                     </dd>
                   </dl>
