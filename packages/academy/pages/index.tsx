@@ -6,11 +6,15 @@ import Bnr from "@/components/main/Bnr";
 import CateList from "@/components/main/CateList";
 import Info from "@/components/main/Info";
 import Form from "@/components/Form";
+import QuickMenu from "@/components/QuickMenu";
 
 export default function Home() {
   return (
     <>
       <WideSlider/>
+      <div className="border-b">
+        <QuickMenu />
+      </div>
       <div className="mt-20">
         <New />
       </div>
