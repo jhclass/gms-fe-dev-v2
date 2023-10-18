@@ -1,13 +1,29 @@
 import { Button, Checkbox, CheckboxGroup, Input, ScrollShadow, Tab, Tabs, Textarea } from "@nextui-org/react";
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
+
+type FormValues = {
+  groupSelected: string[];
+  name: string;
+  phone: string;
+  content: string;
+  privacy: boolean;
+}
 
 export default function Form() {
   const [groupSelected, setGroupSelected] = React.useState([]);
-    return (
+  const { register, handleSubmit, control, setValue, formState: { errors } } = useForm();
+  const onSubmit = (data: FormValues) => console.log(data);
+  const handleCheckboxChange = (value: string[]) => {
+    setValue('groupSelected', value);
+    setGroupSelected(value);
+  };
+  return (
       <>
         <div className="wrap">
           <h2 className="pb-3 mb-5 text-3xl font-bold border-b-2 border-zinc-600">온라인 상담</h2>
-          <form className="flex">
+          
+          <form onSubmit={handleSubmit(onSubmit)} className="flex">
             <div className="w-1/3 mr-10">
               <div className="w-full h-full bg-primary"></div>
             </div>
@@ -20,20 +36,26 @@ export default function Form() {
               >
                 <Tab key="IT" title="IT">
                   <div className="w-full border-2 rounded-lg p-7">
-                    <CheckboxGroup
-                      value={groupSelected}
-                      onChange={setGroupSelected}
-                    >
-                      <h4 className="text-base text-primary">커리어패스</h4>
-                      <Checkbox size="md" value="파이썬" name="ss"><span className="text-lg text-zinc-600">파이썬</span></Checkbox>
-                      <Checkbox size="md" value="React"><span className="text-lg text-zinc-600">React</span></Checkbox>
-                      <Checkbox size="md" value="자바"><span className="text-lg text-zinc-600">자바</span></Checkbox>
-                      <h4 className="text-base mt-7 text-primary">국비지원</h4>
-                      <Checkbox size="md" value="정보처리산업기사"><span className="text-lg text-zinc-600">정보처리산업기사</span></Checkbox>
-                      <Checkbox size="md" value="풀스택 웹개발"><span className="text-lg text-zinc-600">풀스택 웹개발</span></Checkbox>
-                      <Checkbox size="md" value="앱개발"><span className="text-lg text-zinc-600">앱개발</span></Checkbox>
-                      <Checkbox size="md" value="백엔드개발"><span className="text-lg text-zinc-600">백엔드개발</span></Checkbox>
-                    </CheckboxGroup>
+                    <Controller
+                      control={control}
+                      name="groupSelected"
+                      render={({ field }) => (
+                        <CheckboxGroup
+                          value={groupSelected}
+                          onValueChange={handleCheckboxChange}
+                        >
+                          <h4 className="text-base text-primary">커리어패스</h4>
+                          <Checkbox size="md" value="파이썬" name="ss"><span className="text-lg text-zinc-600">파이썬</span></Checkbox>
+                          <Checkbox size="md" value="React"><span className="text-lg text-zinc-600">React</span></Checkbox>
+                          <Checkbox size="md" value="자바"><span className="text-lg text-zinc-600">자바</span></Checkbox>
+                          <h4 className="text-base mt-7 text-primary">국비지원</h4>
+                          <Checkbox size="md" value="정보처리산업기사"><span className="text-lg text-zinc-600">정보처리산업기사</span></Checkbox>
+                          <Checkbox size="md" value="풀스택 웹개발"><span className="text-lg text-zinc-600">풀스택 웹개발</span></Checkbox>
+                          <Checkbox size="md" value="앱개발"><span className="text-lg text-zinc-600">앱개발</span></Checkbox>
+                          <Checkbox size="md" value="백엔드개발"><span className="text-lg text-zinc-600">백엔드개발</span></Checkbox>
+                        </CheckboxGroup>
+                      )}
+                    />
                   </div>
                 </Tab>
                 <Tab key="music" title="Music">
@@ -59,6 +81,7 @@ export default function Form() {
                     type="text"
                     label="이름"
                     className="w-full"
+                    {...register("name", { required: true })}
                     onClear={() => console.log("input cleared")}
                   />
                 </li>
@@ -70,6 +93,7 @@ export default function Form() {
                     type="text"
                     label="휴대폰 번호"
                     className="w-full"
+                    {...register("phone", { required: true })}
                     onClear={() => console.log("input cleared")}
                   />
                 </li>
@@ -78,6 +102,7 @@ export default function Form() {
                   <Textarea
                     variant="bordered"
                     placeholder="상담을 원하시는 과목과 내용을 포함하여 최대한 상세하게 적어주시면 상담에 큰 도움이 됩니다."
+                    {...register("content", { required: true })}
                     className="w-full"
                   />
                 </li>
@@ -111,9 +136,20 @@ export default function Form() {
                     </p>
                   </ScrollShadow>
                 </div>
-                <Checkbox className="mt-2" isRequired size="md">개인정보수집 및 이용에 동의합니다.</Checkbox>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  name="privacy"
+                  render={({ field }) => (
+                    <Checkbox value={field.value} onChange={(e) => field.onChange(e.target.checked)} className="mt-2" size="md">개인정보수집 및 이용에 동의합니다.</Checkbox>
+                  )}
+                />
+                {errors.privacy && <p className="text-sm text-red-600">개인정보수집 및 이용에 동의를 체크해주세요.</p>}
+
               </div>
-              <Button size="lg" className="w-full mt-5 text-xl text-white rounded-lg bg-primary">
+              <Button type="submit"  size="lg" className="w-full mt-5 text-xl text-white rounded-lg bg-primary">
                 온라인 상담 신청하기
               </Button> 
             </div>
@@ -121,4 +157,4 @@ export default function Form() {
         </div>
       </>
     );
-  }
+  };
