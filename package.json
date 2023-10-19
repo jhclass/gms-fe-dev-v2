@@ -6,14 +6,14 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "npm run start-academy && npm run start-admin",
-    "dev:academy": "cd packages/academy && npm run dev",
+    "start": "npm run start-hc-it && npm run start-admin",
+    "dev:hc-it": "cd packages/hc-it && npm run dev",
     "dev:admin": "cd packages/admin && npm run dev",
-    "build:academy": "cd packages/academy && npm run build",
+    "build:hc-it": "cd packages/hc-it && npm run build",
     "build:admin": "cd packages/admin && npm run build",
-    "start:academy": "cd packages/academy && npm start",
+    "start:hc-it": "cd packages/hc-it && npm start",
     "start:admin": "cd packages/admin && npm start",
-    "test:academy": "cd packages/academy && npm test",
+    "test:hc-it": "cd packages/hc-it && npm test",
     "test:admin": "cd packages/admin && npm test"
   }
 }
