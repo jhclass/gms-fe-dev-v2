@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 export default function ListSlider({slideNo}) {
   const list = [
     {
-      title: "웹 프론트엔드를 위한 자바스크립트 첫 걸음",
+      title: "웹 프론트엔드를 위한 자바스크립트 첫 걸음111",
       img: "/src/images/thumb01.jpg",
       subs: "프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트",
     },

@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-export default function Header() {
+export default function MainSilder() {
     return (
       <>
           <Swiper

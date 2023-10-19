@@ -2,7 +2,7 @@ import { Link } from "@nextui-org/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 
-export default function MainBnr() {
+export default function Info() {
   const list = [
     {
       title: "타이틀111 타이틀111 타이틀111",

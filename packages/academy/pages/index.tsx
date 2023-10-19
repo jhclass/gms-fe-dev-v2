@@ -6,7 +6,7 @@ import Bnr from "@/components/main/Bnr";
 import CateList from "@/components/main/CateList";
 import Info from "@/components/main/Info";
 import Form from "@/components/Form";
-import QuickMenu from "@/components/QuickMenu";
+import QuickMenu from "@/components/main/QuickMenu";
 
 export default function Home() {
   return (
