@@ -7,7 +7,7 @@ interface DropdownMenuProps {
 export default function MenuList({isOpen, setIsOpen}) {
   return (
     <div 
-      className={`menuList ${isOpen ? 'open' : ''}`}
+      className={`menuList ${isOpen ? 'open' : ''} hidden md:block lg:block`}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >

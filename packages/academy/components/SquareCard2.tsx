@@ -1,6 +1,6 @@
 import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
 
-export default function SquareCard() {
+export default function SquareCard2() {
   const list = [
     {
       title: "JAVASCRIPT 마스터 과정 (6개월)",

@@ -1,6 +1,6 @@
 import ListSlider from "@/components/ListSlider";
 
-export default function List({cate, slideNo}) {
+export default function CateList({cate, slideNo}) {
     return (
       <>
         <div className="wrap">
