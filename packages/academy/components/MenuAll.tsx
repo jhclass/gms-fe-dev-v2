@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
 import MenuList from "@/components/MenuList";
-import { Link, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from '@nextui-org/react';
 
 interface DropdownMenuProps {
   isOpen: boolean;
