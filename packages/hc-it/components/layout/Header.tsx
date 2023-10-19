@@ -16,7 +16,7 @@ export default function Header() {
           height="auto"
         >
           <div className="w-full bg-[#27272E]">
-            <ul className="lg:w-[1440px] m-auto flex items-center">
+            <ul className="flex items-center m-auto lg:w-full">
               <li className="min-w-[70px] cursor-pointer border-x-1 border-slate-400 bg-primary"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
               <li className="min-w-[70px] cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
             </ul>

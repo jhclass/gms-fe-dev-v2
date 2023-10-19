@@ -7,10 +7,6 @@ export default class MyDocument extends Document {
         <Head>
           <title>H-Class | 하이클래스</title>
           <link rel="icon" href="/favicon.ico" />
-          <link
-            rel="stylesheet"
-            href="//cdn.example.com/path/to/additional-styles.css"
-          />
           <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
         </Head>
         <body>
