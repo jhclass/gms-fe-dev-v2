@@ -4,24 +4,41 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
+import Countdown from "@/components/Countdown";
+import Form from "@/components/Form";
 
 export default function Detail() {
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const scrollToConsult = () => {
+    const consultSection = document.getElementById('consult');
+    if (consultSection) {
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.clientHeight : 0;
+      const consultSectionTop = consultSection.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: consultSectionTop - headerHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <>
       <section className="bg-black">
         <div className="text-center wrap">
-          <p className="text-white max-w-[98rem] text-6xl">
-          <span className="text-black border-2 border-[#61DAFB] bg-[#61DAFB] rounded-lg text-center text-xl font-bold px-2 py-1 mb-2">
-          프로젝트로 배우는
-          </span>
-          <br/>
-          <b className="text-3xl"> 
-            Next.js 완전 정복<br/>
-            확장성 높은 커머스 서비스 구축하기
-          </b>
+          <p className="pt-20 text-center text-white">
+            <span className="inline-block text-black border-2 border-[#61DAFB] bg-[#61DAFB] rounded-lg text-center text-xl font-bold px-2 py-1 mb-2">
+              프로젝트로 배우는
+            </span>
+            <br/>
+            <b className="inline-block mt-5 text-5xl/[4rem]"> 
+              Next.js 완전 정복<br/>
+              확장성 높은 커머스 서비스 구축하기
+            </b>
           </p>
+          <figure className="w-4/5 mx-auto mt-10">
+            <img src="/src/images/detail1.webp" />
+          </figure>
         </div>
       </section>
       <section className="py-10 bg-[#222222]">
@@ -63,18 +80,18 @@ export default function Detail() {
           </div>
         </div>
       </section>
-      <section className="bg-[rgb(9, 2, 4)]">
+      <section className="bg-black">
         <div className="wrap">
           <Link href={""}>
             <img src="" />
           </Link>
         </div>
       </section>
-      <section className="pt-10 bg-black">
+      <section className="pt-20 bg-black">
         <div className="wrap">
           <h4 className="text-center text-white">
-            <span className="text-xl">현재 토스증권 프론트엔드 챕터 리드로 재직 중인</span><br/>
-            <b className="mt-4 text-3xl">최지민 강사님을 만나보세요.</b>
+            <span className="text-2xl">현재 토스증권 프론트엔드 챕터 리드로 재직 중인</span><br/>
+            <b className="mt-5 text-4xl">최지민 강사님을 만나보세요.</b>
           </h4>
           <div className="flex justify-center mt-10">
             <div className="relative w-full pb-[56.25%]">
@@ -90,8 +107,8 @@ export default function Detail() {
       <section className="py-20 bg-black">
         <div className="wrap">
           <h4 className="text-center text-white">
-            <span className="text-xl">Next.js, 시작할지 말지 고민하셨다면?</span><br/>
-            <b className="mt-4 text-3xl">지금 이 강의로 시작해야 하는 6가지 이유</b>
+            <span className="text-2xl">Next.js, 시작할지 말지 고민하셨다면?</span><br/>
+            <b className="mt-4 text-4xl">지금 이 강의로 시작해야 하는 6가지 이유</b>
           </h4>
           <ul className="grid grid-cols-3 gap-8 mt-10">
             <li className="flex items-center px-5 py-10 bg-white rounded-lg">
@@ -151,6 +168,112 @@ export default function Detail() {
       </section>
       <section className="py-20 bg-zinc-200">
         <div className="wrap">
+          <ul className="grid grid-cols-2 gap-8">
+            <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
+              <img src="http://via.placeholder.com/69x69" />
+              <p className="mt-5 font-bold font-lg">SSR/SSG을 활용한 SEO 최적화</p>
+              <p className="mt-4 font-lg">
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
+                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+              </p>
+            </li>
+            <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
+              <img src="http://via.placeholder.com/69x69" />
+              <p className="mt-5 font-bold font-lg">SSR/SSG을 활용한 SEO 최적화</p>
+              <p className="mt-4 font-lg">
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
+                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+              </p>
+            </li>
+            <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
+              <img src="http://via.placeholder.com/69x69" />
+              <p className="mt-5 font-bold font-lg">SSR/SSG을 활용한 SEO 최적화</p>
+              <p className="mt-4 font-lg">
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
+                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+              </p>
+            </li>
+            <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
+              <img src="http://via.placeholder.com/69x69" />
+              <p className="mt-5 font-bold font-lg">SSR/SSG을 활용한 SEO 최적화</p>
+              <p className="mt-4 font-lg">
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
+                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section className="py-20 bg-black">
+        <div className="wrap">
+          <div className="text-center">
+            <p className="inline-block px-4 py-2 mb-5 text-sm font-bold text-center text-black bg-white border-2 border-white rounded-lg">
+              POINT 1
+            </p>
+            <h4 className="text-center text-white">
+              <span className="text-2xl">앞서가는 프론트엔드 개발자를 위한 커리큘럼!</span><br/>
+              <b className="mt-4 text-2xl">Next.js를 활용한 서비스 구축부터 서버리스 배포까지</b>
+            </h4>
+            <ul className="w-4/5 mx-auto mt-10">
+              <li className="relative p-6 mb-20 text-left text-white border-2 border-white rounded-lg">
+                <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]"><i className="xi-angle-down"/></span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">Step 01. Next.js 시작하기 [약 2시간]</h5>
+                <ul className="mt-3">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">Next.js 프레임워크에 대해 이해하고, 학습 전 간단한 환경을 세팅해 봅니다.</li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">프레임워크 구조, Data Fetching(SSR/SSG/CSR/ISR), Layouts / Image, Routing, API Routes 등 Next.js의 기본 기능을 학습합니다.</li>
+                </ul>
+              </li>
+              <li className="relative mb-20 p-6 text-left text-[#D6F9FF] border-2 border-[#D6F9FF] rounded-lg">
+                <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]"><i className="xi-angle-down"/></span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 02. 실습 : 블로그 프로젝트 [약 2시간]
+                </h5>
+                <ul className="mt-3">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    예제를 통해 Next.js의 기본 기능을 복습한 후, 본격적으로 블로그 연습 프로젝트를 시작합니다.
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    커스터마이징을 통해 나만의 블로그를 더욱 깊이 있게 구성하고, vercel로 배포합니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="relative mb-20 p-6 text-left text-[#88EDFF] border-2 border-[#88EDFF] rounded-lg">
+                <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]"><i className="xi-angle-down"/></span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 03. Next.js 심화 완성 [약 4시간]
+                </h5>
+                <ul className="mt-3">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    Next.js의 확장성을 향상하기 위해 SWC, Static Export, Custom App, 성능 측정, API 기능, 서비스 관리 등에 대해 심도깊게 학습합니다.
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    React 18과 함께 Next.js를 살펴봅니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="mt-10 p-6 text-left text-black border-2 border-[#0BD5F9] rounded-lg bg-[#0BD5F9]">
+                <span className="text-[#0BD5F9] border-2 border-black bg-black text-center text-2xl py-1 px-4 inline-block mb-2">Final Project.</span>
+                <h5 className="relative text-2xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 04. 커머스 서비스 프로젝트 [약 6시간]
+                </h5>
+                <ul className="mt-3 text-lg">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    웹 서비스 기능 전반을 다루는 커머스 서비스 프로젝트의 구조를 만들고, API 도구와 스타일링 라이브러리에 대해 알아봅니다.
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    상세페이지 구현과 상품 목록, 카테고리 외 10가지 기능에 대해 학습 및 실습합니다.
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    Vercel로 서버리스하게 배포하고 프로젝트를 마무리하며, 웹 서비스 성능 최적화 접근법을 익힙니다.
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section className="py-20 bg-zinc-200">
+        <div className="wrap">
           <h4 className="text-2xl font-bold text-center">강의 목표</h4>
           <ul className="mx-auto mt-6 text-center w-[80%]">
             <li className="py-5 bg-white rounded-lg">Next.js에 대한 기본, 심화 개념을 배우고, 실습을 통해 체화할 수 있습니다.</li>
@@ -175,63 +298,63 @@ export default function Detail() {
             >
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="px-5">
-                  <figure onClick={onOpen}>
+                  <figure onClick={onOpen} className="cursor-pointer">
                     <img src="http://via.placeholder.com/1280x720" />
                   </figure>
                 </div>
@@ -245,8 +368,8 @@ export default function Detail() {
       <section className="py-20 bg-black">
         <div className="wrap">
           <h4 className="text-center text-white">
-            <span className="text-xl"></span><br/>
-            <b className="mt-4 text-3xl">후기</b>
+            <span className="text-xl">수강생들의 생생한 후기</span><br/>
+            <b className="mt-4 text-3xl">REVIEW</b>
           </h4>
           <div className="">
             <div className="flex py-8">
@@ -430,6 +553,32 @@ export default function Detail() {
               </div>
             </li>
           </ul>
+        </div>
+      </section>
+      <section id="consult" className="py-20">
+        <Form />
+      </section>
+
+      <section className="fixed bottom-0 left-0 z-50 w-full py-5">
+        <div className="flex items-center justify-center">
+          <div className="bg-[#222] text-[#aaaaaf] py-5 px-8 flex relative rounded-2xl items-center">
+            <div className="flex items-center justify-between pr-[5rem]">
+              <p className="flex flex-col justify-center flex-1 w-full pr-20 overflow-hidden">
+                <strong className="text-xl">📣 마지막 10주년 특가를 놓치지 마세요! (~10/27)</strong>
+                <span className="mt-2 line-clamp-1 max-w-[40rem]">상단 배너를 눌러 혜택을 확인해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택을 확인해 보세요!</span>
+              </p>
+              <div className="mt-3">
+                마감까지
+                <Countdown targetDate={new Date('2023-12-25')} />
+                남음
+              </div>
+            </div>
+            <div className="text-[#aaaaaf]">
+              <Button onPress={scrollToConsult} size="lg" variant="flat" className="text-white bg-[#c72835] rounded-lg">
+                수강 신청 버튼
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
       <Modal backdrop={'opaque'} isOpen={isOpen} onClose={onClose}>

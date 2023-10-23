@@ -1,7 +1,12 @@
+@charset "UTF-8";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 
 @layer components {
     .menuList {
@@ -18,9 +23,7 @@
     .info_pager .swiper-pagination-bullet-active {
         @apply bg-primary;
     }
-}
 
-@layer utilities {
     .wrap {
         @apply relative w-full px-6 xl:px-0 xl:w-web xl:m-auto;
     }
@@ -29,4 +32,5 @@
 body {
     @apply text-[3.125vw] sm:text-[80%] lg:text-[16px] xl:text-[16px] font-sans;
     line-height:1.5;
+    font-family: 'Pretendard Variable', 'Roboto', sans-serif;
 }

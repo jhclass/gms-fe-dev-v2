@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Footer() {
     return (
       <>
-        <footer className="mt-20">
+        <footer>
           <div className="py-3 bg-zinc-600">
             <ul className="flex items-center text-sm wrap">
               <li className="relative pr-2 mr-2 after:block after:w-[1px] after:h-4 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
@@ -27,8 +27,10 @@ export default function Footer() {
           </div>
           <div className="py-10 bg-zinc-800">
             <div className="flex flex-col justify-center text-white wrap">
-              <h1 className="text-3xl">H-CLASS</h1>
-              <ul className="mt-2 text-sm font-thin text-slate-400">
+              <h1 className="w-[12rem]">
+                <img src="/src/images/logo_w.png"/>
+              </h1>
+              <ul className="mt-5 text-sm font-thin text-slate-400">
                 <li>
                   <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
                     H-CLASS

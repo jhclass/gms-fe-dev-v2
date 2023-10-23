@@ -7,7 +7,8 @@ export default function Header() {
     return (
       <>
         <TopBnr/>
-        <Navbar 
+        <Navbar
+          id="header"
           isBordered 
           classNames={{
           base: "max-w-full m-auto px-0",
@@ -24,9 +25,10 @@ export default function Header() {
           <div className="max-w-[1440px] flex items-center justify-center w-full">
             <NavbarContent justify="start">
               <NavbarBrand className="mr-4 grow-0">
-                <p className="hidden font-bold sm:block text-inherit">
-                  LOGO | HighClass
-                </p>
+                {/* <p className="hidden font-bold sm:block text-inherit">
+                   <img src="/src/images/logo_w.png"/>
+                </p> */}
+                <p className="w-[10rem]"><img src="/src/images/logo.png"/></p>
               </NavbarBrand>
               <div className="w-[300px]">
                 <Input
