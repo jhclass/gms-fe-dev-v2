@@ -1,13 +1,16 @@
 import Countdown from "@/components/Countdown";
 import { Button } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { detailBottomHiddenState } from '@/lib/recoilAtoms';
 
 export default function DetailFixed() {
-  const [detailBottomHidden, setDetailBottomHidden] = useState(false);
+  const [detailBottomHidden, setDetailBottomHidden] = useRecoilState(detailBottomHiddenState);
+
   useEffect(() => {
     const sectionToHide = document.getElementById('btm_fixed');
-    const windowHeight = window.innerHeight; // 창의 높이
-    const documentHeight = document.documentElement.scrollHeight; // 스크롤 가능한 전체 문서 높이
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
     const totalScrollPosition = documentHeight - windowHeight;
     const footer = document.getElementById('footer');
 
@@ -30,7 +33,7 @@ export default function DetailFixed() {
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, []);
+  }, [setDetailBottomHidden]);
 
   
   const scrollToConsult = () => {

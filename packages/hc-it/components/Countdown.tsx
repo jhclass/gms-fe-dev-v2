@@ -1,32 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { countdownState } from '@/lib/recoilAtoms';
 
 interface CountdownProps {
   targetDate: Date;
 }
 
 export default function Countdown({targetDate}) {
-  const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [countdown, setCountdown] = useRecoilState(countdownState);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
-      if (difference <= 0) {
-        clearInterval(intervalId);
-        setTimeLeft(0);
-      } else {
-        setTimeLeft(difference);
-      }
+    const interval = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const timeDifference = targetDate - currentTime;
+
+      setCountdown(Math.max(Math.floor(timeDifference / 1000), 0));
     }, 1000);
-    return () => {
-        clearInterval(intervalId);
-      };
-    }, [targetDate]);
-  
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  
+
+    return () => clearInterval(interval);
+  }, [targetDate, setCountdown]);
+
+  const days = Math.floor(countdown / 86400);
+  const hours = Math.floor((countdown % 86400) / 3600);
+  const minutes = Math.floor((countdown % 3600) / 60);
 
   return (
     <>

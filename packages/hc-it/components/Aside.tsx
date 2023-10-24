@@ -1,16 +1,18 @@
-import Consult from "@/pages/consult";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { asideHiddenState } from '@/lib/recoilAtoms';
 
 export default function Aside() {
-  const [asideHidden, setAsideHidden] = useState(true);
+  const [asideHidden, setAsideHiddenState] = useRecoilState(asideHiddenState);
+  
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
       if (currentScroll > 0) {
-        setAsideHidden(false);
+        setAsideHiddenState(false);
       } else {
-        setAsideHidden(true);
+        setAsideHiddenState(true);
       }
     };
 
