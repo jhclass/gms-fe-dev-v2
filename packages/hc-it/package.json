@@ -12,7 +12,6 @@
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
     "@nextui-org/react": "^2.1.13",
-    "apollo-boost": "^0.4.9",
     "dotenv": "^16.3.1",
     "font-awesome": "^4.7.0",
     "framer-motion": "^10.16.4",
