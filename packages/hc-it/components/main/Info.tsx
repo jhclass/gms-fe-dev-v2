@@ -114,7 +114,7 @@ export default function Info() {
                         <Link href="tel:02-393-4321" className="px-3 py-2 mr-4 text-sm rounded-lg text-primary border-1 border-primary">
                             전화 상담
                         </Link>
-                        <Link href="tel:02-393-4321" className="px-3 py-2 text-sm rounded-lg text-primary border-1 border-primary">
+                        <Link href="/consult" className="px-3 py-2 text-sm rounded-lg text-primary border-1 border-primary">
                             방문 상담
                         </Link>
                     </li>

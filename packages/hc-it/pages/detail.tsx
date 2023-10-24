@@ -1,26 +1,14 @@
-import { Accordion, AccordionItem, Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import Countdown from "@/components/Countdown";
 import Form from "@/components/Form";
+import DetailFixed from "@/components/DetailFixed";
+import Curriculum from "@/components/Curriculum";
+import DetailInfo from "@/components/DetailInfo";
+import Review from "@/components/Review";
+import Portfolio from "@/components/Portfolio";
 
 export default function Detail() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const scrollToConsult = () => {
-    const consultSection = document.getElementById('consult');
-    if (consultSection) {
-      const header = document.querySelector('header');
-      const headerHeight = header ? header.clientHeight : 0;
-      const consultSectionTop = consultSection.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: consultSectionTop - headerHeight,
-        behavior: 'smooth',
-      });
-    }
-  };
+
 
   return (
     <>
@@ -283,321 +271,21 @@ export default function Detail() {
         </div>
       </section>
       <section className="py-20 bg-black">
-        <div className="wrap">
-          <h4 className="text-center text-white">
-            <span className="text-xl">강의를 잘 따라가면 만나볼 수 있어요.</span><br/>
-            <b className="mt-4 text-3xl">PORTFOLIO</b>
-          </h4>
-
-          <div className="relative mt-10 detail-slide1">
-            <Swiper
-              slidesPerView={3}
-              navigation={{ prevEl:".detail-slide1 .slide_prev", nextEl:".detail-slide1 .slide_next" }} 
-              modules={[Navigation]}
-              className="mySwiper"
-            >
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="px-5">
-                  <figure onClick={onOpen} className="cursor-pointer">
-                    <img src="http://via.placeholder.com/1280x720" />
-                  </figure>
-                </div>
-              </SwiperSlide>
-            </Swiper>
-            <button className="absolute left-[-3rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-white slide_prev"><i className="xi-angle-left-min" /></button>
-            <button className="absolute right-[-3rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-white slide_next"><i className="xi-angle-right-min" /></button>
-          </div>
-        </div>
+        <Portfolio />
       </section>
       <section className="py-20 bg-black">
-        <div className="wrap">
-          <h4 className="text-center text-white">
-            <span className="text-xl">수강생들의 생생한 후기</span><br/>
-            <b className="mt-4 text-3xl">REVIEW</b>
-          </h4>
-          <div className="">
-            <div className="flex py-8">
-              <div className="flex mx-8 w-[23rem] h-[23rem]">
-                <img src="http://via.placeholder.com/230x230" alt="" loading="lazy" />
-              </div>
-              <div className="relative flex-1 p-12 ml-12 bg-white rounded-lg">
-                <h5 className="text-2xl font-bold"><span className="block text-base text-primary">수강생</span>홍길동</h5>
-                <div className="mt-2 font-bold">
-                  <b>[프론트엔드 마스터반]</b>
-                </div>
-                <p className="relative text-lg py-10 px-6 mt-24 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-l-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:left-[-0.1rem]">
-                  구현까지만 할 줄 아는 개발자는 많습니다. 하지만 <b>유저에 대해 치열하게 고민하며 성능을 챙기는 개발자</b>는 드물죠. 이번 프로젝트 구성은 제가 경험해 온 
-                  <b>프로덕트 도메인의 인사이트(금융 - 카드사 &amp; 개인예산관리 프로젝트, 여행 - 여행 프로젝트)를</b> 모두 모았습니다.
-                  이 모든 강의는 프로덕트 도메인의 특성에 따라 <b>유저가 어떠한 것을 기대하고 불편해하는지 파악하며 최적화</b>가 진행됩니다. 
-                  이를 통해 여러분은 유저에 대해 치열한 고민을 하고, 최적화까지 할 줄아는 개발자가 될 수 있습니다.  뿐만 아니라 부분 부분 최적화를 다루는 강의는 있지만, 
-                  실제 실무 베이스로 서비스에 최적화를 적용해나가는 최적화 강의는 많지 않습니다. 이 강의는 <b>실제 실무 베이스로 최적화를 다루며 적용</b>해나갑니다. 
-                  이 강의를 활용하신다면 개발하고 계시는 프로젝트에 강의 내용을 적용하고 <b>프론트엔드 개발자로서 UX를 고려한 최적화까지 이뤄낼 수 있다고 자신있게 말씀드립니다.</b>
-                </p>
-              </div>
-            </div>
-            <div className="flex py-8">
-              <div className="relative flex-1 p-12 ml-12 bg-white rounded-lg">
-                <h5 className="text-2xl font-bold text-right"><span className="block text-base text-primary">수강생</span>홍길동</h5>
-                <div className="mt-2 font-bold text-right">
-                  <b>[프론트엔드 마스터반]</b>
-                </div>
-                <p className="relative text-lg py-10 px-6 mt-24 bg-[#f2f3f5] border-t-2 border-t-white border-r-2 border-r-[#f2f3f5] after:w-12 after:h-12 after:border-r-[3rem] after:border-r-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:right-[-0.1rem]">
-                  구현까지만 할 줄 아는 개발자는 많습니다. 하지만 <b>유저에 대해 치열하게 고민하며 성능을 챙기는 개발자</b>는 드물죠. 이번 프로젝트 구성은 제가 경험해 온 
-                  <b>프로덕트 도메인의 인사이트(금융 - 카드사 &amp; 개인예산관리 프로젝트, 여행 - 여행 프로젝트)를</b> 모두 모았습니다.
-                  이 모든 강의는 프로덕트 도메인의 특성에 따라 <b>유저가 어떠한 것을 기대하고 불편해하는지 파악하며 최적화</b>가 진행됩니다. 
-                  이를 통해 여러분은 유저에 대해 치열한 고민을 하고, 최적화까지 할 줄아는 개발자가 될 수 있습니다.  뿐만 아니라 부분 부분 최적화를 다루는 강의는 있지만, 
-                  실제 실무 베이스로 서비스에 최적화를 적용해나가는 최적화 강의는 많지 않습니다. 이 강의는 <b>실제 실무 베이스로 최적화를 다루며 적용</b>해나갑니다. 
-                  이 강의를 활용하신다면 개발하고 계시는 프로젝트에 강의 내용을 적용하고 <b>프론트엔드 개발자로서 UX를 고려한 최적화까지 이뤄낼 수 있다고 자신있게 말씀드립니다.</b>
-                </p>
-              </div>
-              <div className="flex mx-8 w-[23rem] h-[23rem]">
-                <img src="http://via.placeholder.com/230x230" alt="" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Review />
       </section>
       <section className="py-20">
-        <div className="wrap">
-          <div className="flex justify-between pb-10 border-b-1">
-            <p className="w-1/2 mr-5">
-              <b className="text-3xl">추천 대상.</b>
-            </p>
-            <p className="w-1/2 ">
-            ∙ React.js에 대해 알고 있으나, 정작 웹서비스를 만드려면 어떻게 해야 할지 막막하신 분<br/>
-            ∙ Next.js에 대해 관심이 있으나 혼자 학습하기에는 조금 부담되는 분<br/>
-            ∙ 요즘 각광받는 웹서비스를 만드는 기술에 대해 관심이 있는 분<br/>
-            ∙ 패스트캠퍼스 ‘한 번에 끝내는 프론트엔드 개발 초격차 패키지’, ‘한 번에 끝내는 React의 모든 것 초격차 패키지’ 와 같은 강의를 듣고 조금 더 실무에 가까운 프론트엔드 웹 서비스 개발에 필요성을 느끼는 분
-            </p>
-          </div>
-          <div className="flex justify-between py-10 border-b-1">
-            <p className="w-1/2 mr-5">
-              <b className="text-3xl">수업 환경.</b>
-            </p>
-            <p className="w-1/2 ">
-              <img src="http://via.placeholder.com/1080x274" />
-              Node 16.15.1 (LTS) & ∙ VScode1.68
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-5 mt-10">
-            <Accordion variant="splitted" className="px-0 font-bold">
-              <AccordionItem key="1" aria-label="Accordion 1" title="기본정보">
-                <ul className="py-3 border-t-1">
-                  <li className="mt-2 text-base font-normal">・강의 및 강사 소개</li>
-                </ul>
-              </AccordionItem>
-            </Accordion>
-            <Accordion variant="splitted" className="px-0 font-bold">
-              <AccordionItem key="1" aria-label="Accordion 2" title="강의특징">
-              <ul className="py-3 border-t-1">
-                  <li className="mt-2 text-base font-normal">・Next.js 소개 및 도구 / 환경 설정</li>
-                  <li className="mt-2 text-base font-normal">・Next.js 로 만드는 사례 둘러보기(showcase / examples)</li>
-                </ul>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </div>
+        <DetailInfo />
       </section>
       <section className="py-20 bg-zinc-200">
-        <div className="wrap">
-          <h4 className="text-2xl font-bold">커리큘럼을 확인하세요.</h4>
-          <p className="mt-3 text-base">
-            아래의 모든 챕터 클립들을 강의 하나로 들을 수 있습니다.<br/>
-            지금 한 번만 결제하고 모든 강의를 평생 소장하세요!<br/>
-            <span className="text-primary">강의에서 어떤 실습을 진행하는지 클립명을 통해 확인하세요!</span>
-          </p>
-          <ul className="mt-10">
-            <li>
-              <p className="inline-block text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] text-base rounded-lg px-2 py-1 mb-2">
-                Part1. 오리엔테이션
-              </p>
-              <div className="grid grid-cols-2 gap-5">
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 1" title="Part1. 오리텐테이션">
-                    <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・강의 및 강사 소개</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 2" title="02.NEXT.JS 소개">
-                  <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・Next.js 소개 및 도구 / 환경 설정</li>
-                      <li className="mt-2 text-base font-normal">・Next.js 로 만드는 사례 둘러보기(showcase / examples)</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] text-base rounded-lg px-2 py-1 mb-2">
-                Part2. Next.js 시작하기
-              </p>
-              <div className="grid grid-cols-2 gap-5">
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 3" title="01. Next.js 기본 기능">
-                  <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・Next.js 기본 1(프레임워크 구조)</li>
-                      <li className="mt-2 text-base font-normal">・Next.js 기본 2(Data Fetching)</li>
-                      <li className="mt-2 text-base font-normal">・Next.js 기본 3(Layouts / Image)</li>
-                      <li className="mt-2 text-base font-normal">・정리 1</li>
-                      <li className="mt-2 text-base font-normal">・Next.js 기본 4(Routing)</li>
-                      <li className="mt-2 text-base font-normal">・Next.js 기본 5(Shallow Routing)</li>
-                      <li className="mt-2 text-base font-normal">・Next.js 기본 6(API Routes)</li>
-                      <li className="mt-2 text-base font-normal">・정리 2</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] text-base rounded-lg px-2 py-1 mb-2">
-                Part3. Practice : 블로그 프로젝트
-              </p>
-              <div className="grid grid-cols-2 gap-5">
-              <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 3" title="01. 연습 프로젝트 실습(블로그 만들기)">
-                  <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・프로젝트 시작(Link Component / Client-Side Naivgation)</li>
-                      <li className="mt-2 text-base font-normal">・Layouts / Styling</li>
-                      <li className="mt-2 text-base font-normal">・Pre-rendering / Data Fetching</li>
-                      <li className="mt-2 text-base font-normal">・Dynamic Routes</li>
-                      <li className="mt-2 text-base font-normal">・API Routes / 배포하기(1)</li>
-                      <li className="mt-2 text-base font-normal">・API Routes / 배포하기(2)</li>
-                      <li className="mt-2 text-base font-normal">・정리 1</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 3" title="02. 블로그 커스텀해보기">
-                  <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・나만의 블로그 만들기(UI)(1)</li>
-                      <li className="mt-2 text-base font-normal">・나만의 블로그 만들기(UI)(2)</li>
-                      <li className="mt-2 text-base font-normal">・나만의 블로그 만들기(기능)(1)</li>
-                      <li className="mt-2 text-base font-normal">・나만의 블로그 만들기(기능)(2)</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 3" title="03. 프론트엔드 개발자를 위한 꿀팁">
-                    <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・프론트엔드 개발자가 알아야할 기술</li>
-                      <li className="mt-2 text-base font-normal">・부족한 부분을 채우는 방법</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem key="1" aria-label="Accordion 3" title="04. React 프로젝트 마이그레이션">
-                    <ul className="py-3 border-t-1">
-                      <li className="mt-2 text-base font-normal">・React Project Next.js로 마이그레이션 1 (CRA template)</li>
-                      <li className="mt-2 text-base font-normal">・React Project Next.js로 마이그레이션 2 (React Router Dom)</li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <Curriculum />
       </section>
       <section id="consult" className="py-20">
         <Form />
       </section>
-
-      <section className="fixed bottom-0 left-0 z-50 w-full py-5">
-        <div className="flex items-center justify-center">
-          <div className="bg-[#222] text-[#aaaaaf] py-5 px-8 flex relative rounded-2xl items-center">
-            <div className="flex items-center justify-between pr-[5rem]">
-              <p className="flex flex-col justify-center flex-1 w-full pr-20 overflow-hidden">
-                <strong className="text-xl">📣 마지막 10주년 특가를 놓치지 마세요! (~10/27)</strong>
-                <span className="mt-2 line-clamp-1 max-w-[40rem]">상단 배너를 눌러 혜택을 확인해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러 혜택을 확인해 보세요!</span>
-              </p>
-              <div className="mt-3">
-                마감까지
-                <Countdown targetDate={new Date('2023-12-25')} />
-                남음
-              </div>
-            </div>
-            <div className="text-[#aaaaaf]">
-              <Button onPress={scrollToConsult} size="lg" variant="flat" className="text-white bg-[#c72835] rounded-lg">
-                수강 신청 버튼
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-      <Modal backdrop={'opaque'} isOpen={isOpen} onClose={onClose}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">포트폴리오</ModalHeader>
-              <ModalBody>
-                <img src="http://via.placeholder.com/1280x720" />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <DetailFixed />
     </>
   );
 }

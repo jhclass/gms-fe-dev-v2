@@ -1,6 +1,8 @@
 import { Button, Checkbox, CheckboxGroup, Input, ScrollShadow, Tab, Tabs, Textarea } from "@nextui-org/react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useRecoilState } from 'recoil';
+import { groupSelectedState } from '@/lib/recoilAtoms';
 
 type FormValues = {
   groupSelected: string[];
@@ -11,7 +13,8 @@ type FormValues = {
 }
 
 export default function Form() {
-  const [groupSelected, setGroupSelected] = React.useState([]);
+  const [groupSelected, setGroupSelected] = useRecoilState(groupSelectedState); 
+
   const { register, handleSubmit, control, setValue, formState: { errors } } = useForm();
   const onSubmit = (data: FormValues) => console.log(data);
   const handleCheckboxChange = (value: string[]) => {

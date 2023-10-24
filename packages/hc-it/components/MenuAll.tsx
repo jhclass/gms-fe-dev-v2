@@ -1,5 +1,5 @@
-
-import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { isMenuOpenState } from '@/lib/recoilAtoms';
 import MenuList from "@/components/MenuList";
 
 interface DropdownMenuProps {
@@ -7,7 +7,7 @@ interface DropdownMenuProps {
 }
 
 export default function MenuAll() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useRecoilState(isMenuOpenState);
 
   return (
     <>
