@@ -28,7 +28,7 @@ export default function Header() {
                 {/* <p className="hidden font-bold sm:block text-inherit">
                    <img src="/src/images/logo_w.png"/>
                 </p> */}
-                <p className="w-[10rem]"><img src="/src/images/logo.png"/></p>
+                <p className="w-[10rem]"><img src="/src/images/hc_logo_1.svg"/></p>
               </NavbarBrand>
               <div className="w-[300px]">
                 <Input
