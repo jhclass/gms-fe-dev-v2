@@ -15,7 +15,7 @@ export default function Curriculum() {
             <p className="inline-block text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] text-base rounded-lg px-2 py-1 mb-2">
               Part1. 오리엔테이션
             </p>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
               <Accordion variant="splitted" className="px-0 font-bold">
                 <AccordionItem key="1" aria-label="Accordion 1" title="Part1. 오리텐테이션">
                   <ul className="py-3 border-t-1">
@@ -37,7 +37,7 @@ export default function Curriculum() {
             <p className="inline-block text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] text-base rounded-lg px-2 py-1 mb-2">
               Part2. Next.js 시작하기
             </p>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
               <Accordion variant="splitted" className="px-0 font-bold">
                 <AccordionItem key="1" aria-label="Accordion 3" title="01. Next.js 기본 기능">
                 <ul className="py-3 border-t-1">
@@ -58,7 +58,7 @@ export default function Curriculum() {
             <p className="inline-block text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] text-base rounded-lg px-2 py-1 mb-2">
               Part3. Practice : 블로그 프로젝트
             </p>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
             <Accordion variant="splitted" className="px-0 font-bold">
                 <AccordionItem key="1" aria-label="Accordion 3" title="01. 연습 프로젝트 실습(블로그 만들기)">
                 <ul className="py-3 border-t-1">

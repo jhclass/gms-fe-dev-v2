@@ -26,12 +26,12 @@ export default function Form() {
         <div className="wrap">
           <h2 className="pb-3 mb-5 text-3xl font-bold border-b-2 border-zinc-600">온라인 상담</h2>
           
-          <form onSubmit={handleSubmit(onSubmit)} className="flex">
-            <div className="w-1/3 mr-10">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
+            <div className="hidden lg:w-1/3 lg:mr-10 lg:block">
               <div className="w-full h-full bg-primary"></div>
             </div>
-            <div className="flex flex-col w-1/3 mr-10">
-              <p className="mb-3 text-zinc-600">원하시는 과정을 선택해주세요. 교육과정은 중복 선택이 가능합니다.</p>
+            <div className="flex flex-col w-full lg:w-1/3 lg:mr-10">
+              <p className="mb-3 text-base text-zinc-600">원하시는 과정을 선택해주세요. 교육과정은 중복 선택이 가능합니다.</p>
               <Tabs 
                 aria-label="Options"
                 color="primary" 
@@ -66,7 +66,7 @@ export default function Form() {
                 </Tab>
               </Tabs>
             </div>  
-            <div className="w-1/3">
+            <div className="lg:w-1/3 f-full">
               <ul className="flex flex-wrap mb-2">
                 {groupSelected.map((item, index) => (
                   <li key={index} className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary">
@@ -101,7 +101,7 @@ export default function Form() {
                   />
                 </li>
                 <li className="py-2">
-                  <p>상담 내용</p>
+                  <p className="text-lg font-bold">상담 내용</p>
                   <Textarea
                     variant="bordered"
                     placeholder="상담을 원하시는 과목과 내용을 포함하여 최대한 상세하게 적어주시면 상담에 큰 도움이 됩니다."
@@ -111,7 +111,7 @@ export default function Form() {
                 </li>
               </ul>
               <div>
-                <p>개인정보처리방침</p>
+                <p className="text-lg font-bold">개인정보처리방침</p>
                 <div className="mt-3 border-2 rounded-lg">
                   <ScrollShadow className="w-full h-60">
                     <p className="p-3 text-sm text-zinc-600">
