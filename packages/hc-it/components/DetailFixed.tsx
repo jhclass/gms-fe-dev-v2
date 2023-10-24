@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export default function DetailFixed() {
-  const [isSectionHidden, setIsSectionHidden] = useState(false);
+  const [detailBottomHidden, setDetailBottomHidden] = useState(false);
   useEffect(() => {
     const sectionToHide = document.getElementById('btm_fixed');
     const windowHeight = window.innerHeight; // 창의 높이
@@ -12,20 +12,15 @@ export default function DetailFixed() {
     const footer = document.getElementById('footer');
 
     if (sectionToHide && footer) {
-      const footerTop = footer.getBoundingClientRect().top;
+      const footerTop = totalScrollPosition - footer.clientHeight;
 
       const handleScroll = () => {
         const currentScroll = window.scrollY;
-        console.log(currentScroll);
-        console.log(footerTop);
-        console.log(totalScrollPosition);
 
         if (currentScroll >= footerTop) {
-          // Footer가 시작하는 스크롤 위치에 도달하면 섹션을 숨깁니다.
-          setIsSectionHidden(true);
+          setDetailBottomHidden(true);
         } else {
-          // 그렇지 않으면 섹션을 다시 표시합니다.
-          setIsSectionHidden(false);
+          setDetailBottomHidden(false);
         }
       };
 
@@ -53,7 +48,7 @@ export default function DetailFixed() {
 
   return (
     <>
-      <section id="btm_fixed" className={`fixed bottom-0 left-0 z-50 w-full py-5 ${isSectionHidden ? 'hidden' : 'visible'}`}>
+      <section id="btm_fixed" className={`fixed bottom-0 left-0 z-50 w-full py-5 transition-all ${detailBottomHidden ? 'translate-y-32' : ''}`}>
         <div className="flex items-center justify-center">
           <div className="bg-[#222] text-[#aaaaaf] py-5 px-8 flex relative rounded-2xl items-center">
             <div className="flex items-center justify-between pr-[5rem]">
