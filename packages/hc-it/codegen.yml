@@ -1,0 +1,14 @@
+const schemaUri = process.env.NEXT_PUBLIC_GRAPHQL_URI;
+module.exports = {
+  overwrite: true,
+  schema: schemaUri,
+  generates: {
+    "src/generated/graphql.tsx": {
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo",
+      ],
+    },
+  },
+};
