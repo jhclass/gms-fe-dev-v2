@@ -1,6 +1,27 @@
 import Link from "next/link";
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { asideHiddenState } from '@/lib/recoilAtoms';
 
 export default function Aside() {
+  const [asideHidden, setAsideHiddenState] = useRecoilState(asideHiddenState);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      if (currentScroll > 0) {
+        setAsideHiddenState(false);
+      } else {
+        setAsideHiddenState(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -11,9 +32,9 @@ export default function Aside() {
 
   return (
     <>
-      <div className="fixed z-50 right-20 bottom-20">
+      <aside id="aside" className={`fixed z-50 right-20 bottom-20 transition-all ${asideHidden ? 'opacity-0' : 'opacity-100'}`}>
         <div className="flex items-center justify-center w-12 h-12 text-white rounded-full text-2xl/none bg-primary">
-          <Link href="">
+          <Link href="/consult" as="/consult">
             <i className="xi-call"/>
           </Link>
         </div>
@@ -27,7 +48,7 @@ export default function Aside() {
             <i className="xi-angle-up"/>
           </button>
         </div>
-      </div>
+      </aside>
     </>
   );
 }

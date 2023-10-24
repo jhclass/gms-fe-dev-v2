@@ -2,8 +2,15 @@ import {Navbar, NavbarBrand, NavbarContent, Link, Input, DropdownItem, DropdownT
 import { Button } from "@nextui-org/react";
 import TopBnr from "@/components/main/TopBnr";
 import Gnb from "@/components/Gnb";
+import { useRouter } from "next/router";
 
 export default function Header() {
+    const router = useRouter();
+
+    const consultClick = () => {
+      router.push('/consult');
+    };
+
     return (
       <>
         <TopBnr/>
@@ -17,7 +24,7 @@ export default function Header() {
           height="auto"
         >
           <div className="w-full bg-[#27272E]">
-            <ul className="flex items-center m-auto lg:w-full">
+            <ul className="flex items-center wrap">
               <li className="min-w-[70px] cursor-pointer border-x-1 border-slate-400 bg-primary"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
               <li className="min-w-[70px] cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
             </ul>
@@ -28,9 +35,9 @@ export default function Header() {
                 {/* <p className="hidden font-bold sm:block text-inherit">
                    <img src="/src/images/logo_w.png"/>
                 </p> */}
-                <p className="w-[10rem]"><img src="/src/images/logo.png"/></p>
+                <Link href="/" className="block w-[10rem]"><img src="/src/images/hc_logo_1.svg"/></Link>
               </NavbarBrand>
-              <div className="w-[300px]">
+              <div className="w-2/5">
                 <Input
                   classNames={{
                     base: "max-w-full h-10",
@@ -47,14 +54,19 @@ export default function Header() {
               </div>
             </NavbarContent>
             <NavbarContent justify="end">
-              <NavbarItem className="hidden lg:flex">
+              <NavbarItem>
+                <Button onClick={consultClick} variant="flat" className="text-white bg-primary">
+                  온라인 상담
+                </Button>
+              </NavbarItem> 
+              {/* <NavbarItem className="hidden lg:flex">
                 <Link href="#"  className="text-primary">Login</Link>
               </NavbarItem>
               <NavbarItem>
                 <Button as={Link} href="#" variant="flat" className="text-white bg-primary">
                   Sign Up
                 </Button>
-              </NavbarItem>
+              </NavbarItem> */}
 
               {/* <Dropdown placement="bottom-end">
                 <DropdownTrigger>
