@@ -6,7 +6,9 @@ export default function Gnb() {
   return (
     <>
       <NavbarContent justify="start" className="mr-4 grow-0">
-        <MenuAll />
+        <div className="hidden md:hidden lg:block xl:block ">
+          <MenuAll />
+        </div>
         <div className="flex items-center justify-center">
           <NavbarItem className="mr-4">
             <Link color="foreground" href="#">

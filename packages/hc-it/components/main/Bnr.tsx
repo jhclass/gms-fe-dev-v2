@@ -13,18 +13,16 @@ export default function Bnr() {
   ];
     return (
       <>
-        <div className="bg-[#e7eef4]">
-          <div className="wrap relative z-10 grid grid-cols-1 lg:grid-cols-2 after:absolute after:w-full after:h-full after:top-0 after:z-[-1] after:right-[-50%] after:bg-[#370409]">
-            <div>
-              <Link href="/" className="block">
-                <img alt="배너2" src="/src/images/long02.jpg" className="w-full"/>
-              </Link>
-            </div>
-            <div>
-              <Link href="/" className="block">
-                <img alt="배너1" src="/src/images/long01.jpg" className="w-full"/>
-              </Link>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="relative w-full flex justify-end md:justify-center bg-[#e7eef4]">
+            <Link href="/">
+              <img alt="배너2" src="/src/images/long02.jpg" className="w-full"/>
+            </Link>
+          </div>
+          <div className="relative w-full flex justify-start md:justify-center bg-[#370409]">
+            <Link href="/">
+              <img alt="배너1" src="/src/images/long01.jpg" className="w-full"/>
+            </Link>
           </div>
         </div>
       </>
