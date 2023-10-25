@@ -107,14 +107,14 @@ export default function Header() {
                 <span className="w-full h-full pointer-events-none flex flex-col items-center justify-center text-inherit before:content-[''] before:block before:h-px before:w-6 before:bg-current before:translate-y-px before:rotate-45 after:content-[''] after:block after:h-px after:w-6 after:bg-current after:translate-y-0 after:-rotate-45"></span>
               </button>
             </div>
-            <ul className="items-center text-center justify-between flex h-[2rem] border-b-1 border-t-1">
+            <ul className="items-center text-center justify-between flex h-[3rem] border-b-1 border-t-1">
               <li className="w-1/2 h-full bg-white">
-                <Link href="/consult" className="block w-full h-full text-base/[2rem] font-bold text-primary">
+                <Link href="/consult" className="block w-full h-full text-base/[3rem] font-bold text-primary">
                   상담신청
                 </Link>
               </li>
               <li className="w-1/2 h-full bg-primary">
-                <Link href="/consult" className="block w-full h-full text-base/[2rem] font-bold text-white">
+                <Link href="/consult" className="block w-full h-full text-base/[3rem] font-bold text-white">
                   고객센터
                 </Link>
               </li>

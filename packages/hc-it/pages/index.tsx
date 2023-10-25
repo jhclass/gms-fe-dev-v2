@@ -52,11 +52,8 @@ export default function Home() {
       <div className="mt-20">
         <CateList cate={"실업자"} slideNo={2} />
       </div>
-      <div className="mt-20">
+      <div className="py-20">
         <Info />
-      </div>
-      <div className="mt-20">
-        <Form />
       </div>
     </>
   );
