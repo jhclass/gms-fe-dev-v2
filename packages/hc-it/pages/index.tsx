@@ -7,27 +7,8 @@ import CateList from "@/components/main/CateList";
 import Info from "@/components/main/Info";
 import Form from "@/components/Form";
 import QuickMenu from "@/components/main/QuickMenu";
-import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 
-const MLOGIN_MUTATION = gql`
-  mutation MLogin($mUserId: String!, $mPassword: String!) {
-    mLogin(mUserId: $mUserId, mPassword: $mPassword) {
-      error
-      ok
-      token
-    }
-  }
-`;
 export default function Home() {
-  const [mLoginData] = useMutation(MLOGIN_MUTATION, {
-    variables: {
-      mUserId: "이진형",
-      mPassword: "123123",
-    },
-    onCompleted: (data) => {
-      console.log(data);
-    },
-  });
   return (
     <>
       <WideSlider />
