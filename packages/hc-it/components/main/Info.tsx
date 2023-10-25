@@ -15,8 +15,8 @@ export default function Info() {
   ];
     return (
       <>
-        <div className="flex wrap">
-            <div className="w-2/5 mr-10">
+        <div className="flex flex-col wrap lg:flex-row">
+            <div className="w-full lg:w-2/5 lg:mr-10">
                 <h4 className="relative pb-3 text-xl font-bold border-b-2 border-zinc-600">
                     공지사항
                     <Link href="" className="absolute right-0 text-xs font-semibold bottom-3 text-primary">MORE<i className="xi-angle-right-min" /></Link>
@@ -54,7 +54,7 @@ export default function Info() {
                     </li>
                 </ul>
             </div>
-            <div className="relative w-2/5 mr-10">
+            <div className="relative w-full mt-20 lg:w-2/5 lg:mr-10 lg:mt-0">
                 <h4 className="relative pb-3 text-xl font-bold">
                     SNS 이벤트
                 </h4>
@@ -63,48 +63,59 @@ export default function Info() {
                         delay: 5000,
                       }}
                     slidesPerView={2}
-                    spaceBetween={10}
                     slidesPerGroup={2}
                     pagination={{ clickable: true, el: '.info_pager' }} 
                     modules={[Autoplay, Pagination]}
                     className="mySwiper"
                 >
                     <SwiperSlide>
-                        <Link href="">
-                            <img alt="instagram 이벤트" src="/src/images/b01.jpg" />
-                        </Link>
+                        <div className="px-2">
+                            <Link href="" className="block w-full h-full">
+                                <img alt="instagram 이벤트" src="/src/images/b01.jpg" width="100%" />
+                            </Link>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <Link href="">
-                            <img alt="instagram 이벤트" src="/src/images/b02.jpg" />
-                        </Link>
+                        <div className="px-2">
+                            <Link href="" className="block w-full h-full">
+                                <img alt="instagram 이벤트" src="/src/images/b02.jpg" width="100%" />
+                            </Link>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <Link href="">
-                            <img alt="instagram 이벤트" src="/src/images/b03.jpg" />
-                        </Link>
+                        <div className="px-2">
+                            <Link href="" className="block w-full h-full">
+                                <img alt="instagram 이벤트" src="/src/images/b03.jpg" width="100%" />
+                            </Link>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <Link href="">
-                            <img alt="instagram 이벤트" src="/src/images/b04.jpg" />
-                        </Link>
+                        <div className="px-2">
+                            <Link href="" className="block w-full h-full">
+                                <img alt="instagram 이벤트" src="/src/images/b04.jpg" width="100%" />
+                            </Link>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <Link href="">
-                            <img alt="instagram 이벤트" src="/src/images/b05.jpg" />
-                        </Link>
+                        <div className="px-2">
+                            <Link href="" className="block w-full h-full">
+                                <img alt="instagram 이벤트" src="/src/images/b05.jpg" width="100%" />
+                            </Link>
+                        </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <Link href="">
-                            <img alt="instagram 이벤트" src="/src/images/b06.jpg" />
-                        </Link>
+                        <div className="px-2">
+                            <Link href="" className="block w-full h-full">
+                                <img alt="instagram 이벤트" src="/src/images/b06.jpg" width="100%" />
+                            </Link>
+                        </div>
                     </SwiperSlide>
                 </Swiper>
                 <div className="absolute right-0 top-2">
                     <div className="info_pager"></div>
                 </div>
             </div>
-            <div className="w-1/5">
+            <div className="w-full mt-20 lg:w-1/5 lg:mt-0">
                 <h4 className="relative pb-3 text-xl font-bold border-b-2 border-zinc-600">
                     고객센터
                     <Link href="" className="absolute right-0 text-xs font-semibold bottom-3 text-primary">MORE<i className="xi-angle-right-min" /></Link>

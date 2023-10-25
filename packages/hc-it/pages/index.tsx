@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <WideSlider />
-      <div className="border-b">
+      <div className="hidden border-b lg:block">
         <QuickMenu />
       </div>
       <div className="mt-20">
@@ -33,11 +33,8 @@ export default function Home() {
       <div className="mt-20">
         <CateList cate={"실업자"} slideNo={2} />
       </div>
-      <div className="mt-20">
+      <div className="py-20">
         <Info />
-      </div>
-      <div className="mt-20">
-        <Form />
       </div>
     </>
   );
