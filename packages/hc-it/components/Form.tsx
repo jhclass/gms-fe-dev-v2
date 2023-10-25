@@ -16,16 +16,16 @@ import { gql, useMutation, useQuery } from "@apollo/react-hooks";
 const STUDENT_STATE_MUTATION = gql`
   mutation CreateStudentState(
     $stName: String!
-    $subject: String!
     $campus: String!
     $agreement: String!
+    $subject: [String!]
     $phoneNum1: String!
   ) {
     createStudentState(
       stName: $stName
-      subject: $subject
       campus: $campus
       agreement: $agreement
+      subject: $subject
       phoneNum1: $phoneNum1
     ) {
       error
@@ -46,7 +46,7 @@ export default function Form() {
   const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION, {
     variables: {
       stName: "김상수",
-      subject: "자바스크립트",
+      subject: ["포토샵", "자바", "자바스크립트"],
       campus: "신촌",
       agreement: "동의",
       phoneNum1: "01012341234",
