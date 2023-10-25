@@ -27,7 +27,7 @@ export default function Review() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col-reverse py-6 lg:flex-row-reverse">
+          <div className="flex flex-col py-6 lg:flex-row-reverse">
             <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[23rem] lg:h-[23rem]">
               <img src="http://via.placeholder.com/230x230" alt="" loading="lazy" width="100%"/>
             </div>

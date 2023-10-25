@@ -21,10 +21,10 @@ export default function MainSilder() {
                   style={{ overflow: "hidden" }}
                   className=""
                 />
-                <div className="absolute top-[48%] left-0 translate-y-[-50%]">
+                <div className="absolute top-[48%] left-6 xl:left-0 translate-y-[-50%]">
                   <p className="inline px-3 py-2 text-lg text-center text-white rounded-r-lg rounded-tl-lg bg-primary">신규모집</p>
-                  <h2 className="mt-4 font-bold text-black text-5xl/tight">코딩이 이렇게 쉬워?<br/>코딩 스텝원</h2>
-                  <p className="mt-4 text-black text-2xl/tight">국비 지원으로 듣는 0원 코딩 강의<br/>11월 7일까지 모집!</p>
+                  <h2 className="mt-4 font-bold text-black text-4xl/tight">코딩이 이렇게 쉬워?<br/>코딩 스텝원</h2>
+                  <p className="mt-4 text-black text-xl/tight">국비 지원으로 듣는 0원 코딩 강의<br/>11월 7일까지 모집!</p>
                 </div>
               </div>
             </SwiperSlide>

@@ -3,25 +3,24 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, NavbarMenu
 import MenuAll from "./MenuAll";
 
 export default function Gnb() {
+  
   return (
     <>
-      <NavbarContent justify="start" className="mr-4 grow-0">
-        <div className="hidden md:hidden lg:block xl:block ">
-          <MenuAll />
-        </div>
-        <div className="flex items-center justify-center">
-          <NavbarItem className="mr-4">
-            <Link color="foreground" href="#">
-              근로자
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              실업자
-            </Link>
-          </NavbarItem>
-        </div>
-      </NavbarContent>
+      <div className="hidden mr-3 md:hidden lg:block">
+        <MenuAll />
+      </div>
+      <ul className="flex items-center justify-center">
+        <li className="mr-4">
+          <Link color="foreground" href="#">
+            근로자
+          </Link>
+        </li>
+        <li>
+          <Link color="foreground" href="#">
+            실업자
+          </Link>
+        </li>
+      </ul>
     </>
   );
 }

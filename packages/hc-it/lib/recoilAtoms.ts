@@ -5,6 +5,16 @@ export const countdownState = atom<number>({
     default: 0, // 초 단위
 });
 
+export const headerFixedState = atom<boolean>({
+    key: 'headerFixedState',
+    default: false,
+});
+
+export const moMenuOpenState = atom<boolean>({
+    key: 'moMenuOpenState',
+    default: false,
+});
+
 export const detailBottomHiddenState = atom<boolean>({
     key: 'detailBottomHiddenState',
     default: false,

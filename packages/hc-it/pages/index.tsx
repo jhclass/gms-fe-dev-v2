@@ -30,14 +30,8 @@ export default function Home() {
   });
   return (
     <>
-      <div
-        style={{ width: 100, height: 50, backgroundColor: "red" }}
-        onClick={() => mLoginData()}
-      >
-        버튼
-      </div>
       <WideSlider />
-      <div className="border-b">
+      <div className="hidden border-b lg:block">
         <QuickMenu />
       </div>
       <div className="mt-20">

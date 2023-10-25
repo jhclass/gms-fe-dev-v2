@@ -5,8 +5,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export default function QuickMenu() {
   return (
     <>
-      <div className="flex flex-wrap items-center py-5 wrap">
-        <div className="relative lg:w-full lg:flex-1 xl:w-3/6 xl:mr-10">
+      <div className="flex flex-wrap items-center justify-between py-5 wrap">
+        <div className="relative w-4/6 xl:w-3/6">
           <ul className="flex justify-between">
             <li>
               <Link href="/consult" className="flex flex-col items-center p-3 text-white border-2 rounded-lg bg-primary border-primary">
@@ -46,7 +46,7 @@ export default function QuickMenu() {
             </li>
           </ul>
         </div>
-        <div className="flex lg:w-2/3 lg:flex-1 xl:w-2/6 xl:mr-10" >
+        <div className="flex w-2/6 px-5 lg:flex-col xl:flex-row">
           <h4 className="w-1/5 pr-3 text-xl font-bold text-primary">
             NOTICE
           </h4>
@@ -58,7 +58,7 @@ export default function QuickMenu() {
             slidesPerView={1}
             loop={true}
             modules={[Autoplay]}
-            className="w-4/5 h-6"
+            className="w-full h-6 xl:w-4/5 lg:mx-0"
           >
             <SwiperSlide>
               <Link href={""} className="text-zinc-800">
@@ -90,7 +90,7 @@ export default function QuickMenu() {
             </SwiperSlide>
           </Swiper>
         </div>
-        <div className="lg:hidden xl:w-1/6">
+        <div className="hidden xl:block">
           <p>상담전화</p>
           <h4 className="text-3xl font-bold">
             02)393-4321
