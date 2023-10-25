@@ -19,7 +19,7 @@ export default function Detail() {
               프로젝트로 배우는
             </span>
             <br/>
-            <b className="inline-block mt-5 text-5xl/[4rem]"> 
+            <b className="inline-block mt-5 text-4xl/[3rem]"> 
               Next.js 완전 정복<br/>
               확장성 높은 커머스 서비스 구축하기
             </b>
@@ -79,7 +79,7 @@ export default function Detail() {
         <div className="wrap">
           <h4 className="text-center text-white">
             <span className="text-2xl">현재 토스증권 프론트엔드 챕터 리드로 재직 중인</span><br/>
-            <b className="mt-5 text-4xl">최지민 강사님을 만나보세요.</b>
+            <b className="mt-5 text-3xl">최지민 강사님을 만나보세요.</b>
           </h4>
           <div className="flex justify-center mt-10">
             <div className="relative w-full pb-[56.25%]">
@@ -96,7 +96,7 @@ export default function Detail() {
         <div className="wrap">
           <h4 className="text-center text-white">
             <span className="text-2xl">Next.js, 시작할지 말지 고민하셨다면?</span><br/>
-            <b className="mt-4 text-4xl">지금 이 강의로 시작해야 하는 6가지 이유</b>
+            <b className="mt-4 text-3xl">지금 이 강의로 시작해야 하는 6가지 이유</b>
           </h4>
           <ul className="grid gap-8 mt-10 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
             <li className="flex items-center px-5 py-10 bg-white rounded-lg">

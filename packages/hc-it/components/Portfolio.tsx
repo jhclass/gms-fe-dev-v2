@@ -9,9 +9,9 @@ export default function Portfolio() {
   
   return (
     <>
-      <div className="wrap">
+      <div className="overflow-hidden xl:overflow-visible wrap">
         <h4 className="text-center text-white">
-          <span className="text-xl">강의를 잘 따라가면 만나볼 수 있어요.</span><br/>
+          <span className="text-2xl">강의를 잘 따라가면 만나볼 수 있어요.</span><br/>
           <b className="mt-4 text-3xl">PORTFOLIO</b>
         </h4>
 

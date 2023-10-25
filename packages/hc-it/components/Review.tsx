@@ -4,7 +4,7 @@ export default function Review() {
     <>
       <div className="wrap">
         <h4 className="text-center text-white">
-          <span className="text-xl">수강생들의 생생한 후기</span><br/>
+          <span className="text-2xl">수강생들의 생생한 후기</span><br/>
           <b className="mt-4 text-3xl">REVIEW</b>
         </h4>
         <div className="mt-4">
