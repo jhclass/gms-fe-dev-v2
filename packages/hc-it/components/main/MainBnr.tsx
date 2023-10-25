@@ -1,4 +1,5 @@
 import { Link } from "@nextui-org/react";
+import MainTitle from "@/components/MainTitle";
 
 export default function MainBnr() {
   const list = [
@@ -22,11 +23,12 @@ export default function MainBnr() {
     return (
       <>
         <div className="wrap">
-          <div className="grid grid-cols-2 lg:grid-cols-4 sm:grid-cols-2">
+          <MainTitle title={'EVENT 😍'}/>
+          <div className="grid grid-cols-2 mt-5 lg:grid-cols-4 sm:grid-cols-2">
             {list.map((item, index) => (
               <div key={index}>
                 <Link href="/" className="block">
-                  <img alt={item.title} src={item.img} />
+                  <img alt={item.title} src={item.img} width="100%"/>
                 </Link>
               </div>
             ))}

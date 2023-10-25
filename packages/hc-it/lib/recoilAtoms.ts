@@ -24,6 +24,10 @@ export const asideHiddenState = atom<boolean>({
     key: 'asideHiddenState',
     default: true,
 });
+export const moAsideOpenState = atom<boolean>({
+    key: 'moAsideOpenState',
+    default: false,
+});
 
 export const isMenuOpenState = atom<boolean>({
     key: 'isMenuOpenState',

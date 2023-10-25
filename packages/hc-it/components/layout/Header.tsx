@@ -49,46 +49,42 @@ export default function Header() {
                 <li className="min-w-[4.5rem] cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
               </ul>
             </div>
-            <div className="">
-              <div className="flex wrap items-center justify-between w-full max-w-[1440px] py-3">
-                <div className="flex items-center">
-                  <h1 className="mr-10 grow-0">
-                    <Link href="/" className="block w-[10rem]"><img src="/src/images/hc_logo_1.svg"/></Link>
-                  </h1>
-                  <div className="hidden lg:block lg:w-[20rem]">
-                    <Input
-                      classNames={{
-                        base: "max-w-full h-10",
-                        mainWrapper: "h-full",
-                        input: "text-small",
-                        inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                      }}
-                      fullWidth
-                      placeholder="검색어를 입력해주세요"
-                      size="sm"
-                      startContent={<i className="xi-search"/>}
-                      type="search"
-                    />
-                  </div>
+            <div className="flex wrap items-center justify-between w-full max-w-[1440px] py-3">
+              <div className="flex items-center">
+                <h1 className="mr-10 grow-0">
+                  <Link href="/" className="block w-[10rem]"><img src="/src/images/hc_logo_1.svg"/></Link>
+                </h1>
+                <div className="hidden lg:block lg:w-[20rem]">
+                  <Input
+                    classNames={{
+                      base: "max-w-full h-10",
+                      mainWrapper: "h-full",
+                      input: "text-small",
+                      inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                    }}
+                    fullWidth
+                    placeholder="검색어를 입력해주세요"
+                    size="sm"
+                    startContent={<i className="xi-search"/>}
+                    type="search"
+                  />
                 </div>
-                <div>
-                  <Button onClick={consultClick} variant="flat" className="hidden text-white lg:block bg-primary">
-                    온라인 상담
-                  </Button>
-                  <button
-                    className="flex items-center justify-center w-6 h-full outline-none lg:hidden group rounded-small tap-highlight-transparent"
-                    type="button"
-                    onClick={handleButtonClick} // 클릭 이벤트 핸들러 추가
-                  >
-                    <span className="w-full h-full pointer-events-none flex flex-col items-center justify-center text-inherit before:content-[''] before:block before:h-px before:w-6 before:bg-current before:-translate-y-1 before:rotate-0 after:content-[''] after:block after:h-px after:w-6 after:bg-current after:translate-y-1 after:rotate-0"></span>
-                  </button>
-                </div>
+              </div>
+              <div>
+                <Button onClick={consultClick} variant="flat" className="hidden text-white lg:block bg-primary">
+                  온라인 상담
+                </Button>
+                <button
+                  className="flex items-center justify-center w-6 h-full outline-none lg:hidden group rounded-small tap-highlight-transparent"
+                  type="button"
+                  onClick={handleButtonClick} // 클릭 이벤트 핸들러 추가
+                >
+                  <span className="w-full h-full pointer-events-none flex flex-col items-center justify-center text-inherit before:content-[''] before:block before:h-px before:w-6 before:bg-current before:-translate-y-1 before:rotate-0 after:content-[''] after:block after:h-px after:w-6 after:bg-current after:translate-y-1 after:rotate-0"></span>
+                </button>
               </div>
             </div>
-            <div>
-              <div className="flex items-center pb-3 wrap">
-                <Gnb />
-              </div>
+            <div className="flex items-center lg:pb-3 lg:wrap">
+              <Gnb />
             </div>
           </div>
         </header>

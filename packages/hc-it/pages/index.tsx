@@ -7,6 +7,7 @@ import CateList from "@/components/main/CateList";
 import Info from "@/components/main/Info";
 import Form from "@/components/Form";
 import QuickMenu from "@/components/main/QuickMenu";
+import Coming from "@/components/main/Coming";
 
 export default function Home() {
   return (
@@ -15,25 +16,28 @@ export default function Home() {
       <div className="hidden border-b lg:block">
         <QuickMenu />
       </div>
-      <div className="mt-20">
+      <div className="mt-16">
         <New />
       </div>
-      <div className="mt-20">
+      <div className="mt-16">
         <Bnr />
       </div>
-      <div className="mt-20">
+      <div className="mt-16">
         <Ranking />
       </div>
-      <div className="py-20 mt-20 bg-slate-200">
+      <div className="py-10 mt-10 bg-zinc-200">
         <MainBnr />
       </div>
-      <div className="mt-20">
+      <div className="mt-16">
         <CateList cate={"근로자"} slideNo={1} />
       </div>
-      <div className="mt-20">
+      <div className="mt-16">
         <CateList cate={"실업자"} slideNo={2} />
       </div>
-      <div className="py-20">
+      <div className="py-10 mt-10 bg-zinc-700">
+        <Coming />
+      </div>
+      <div className="py-16">
         <Info />
       </div>
     </>

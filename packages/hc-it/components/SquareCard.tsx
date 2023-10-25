@@ -66,7 +66,7 @@ export default function RankingCard() {
                 <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-base text-xs/xs bg-flag2">커리어패스</span>
               </div>
               <dl className="w-full h-full py-3">
-                <dd className="text-xl text-black min-h-[3rem] line-clamp-2">
+                <dd className="text-xl/snug font-bold text-black min-h-[3rem] line-clamp-2">
                   {item.title}
                 </dd>
                 <dd className="mt-2 text-base line-clamp-2 text-zinc-600">

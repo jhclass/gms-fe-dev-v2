@@ -60,39 +60,42 @@ export default function ListSlider({slideNo}) {
   ]
     return (
       <>
-      <div className={`relative list_slider_${slideNo}`}>
+      <div className={`relative list_slider_${slideNo} max-w-[1440px] mx-auto`}>
           <Swiper
-             slidesPerView={2}
+             slidesPerView={1.5}
+             spaceBetween={20}
              navigation={{ prevEl:`.list_slider_${slideNo} .slide_prev`, nextEl:`.list_slider_${slideNo} .slide_next` }} 
              modules={[Navigation]}
              breakpoints= {{
               640: {
-                slidesPerView: 3
+                slidesPerView: 2.3,
               },
               960: {
-                slidesPerView: 4
+                slidesPerView: 4,
+                spaceBetween: 20,
               },
               1200: {
-                slidesPerView: 5
+                slidesPerView: 5,
+                spaceBetween: 30,
               }
             }}
-             className="mySwiper"
+             className="!px-5 xl:!px-0"
           >
             {list.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <div className="px-5">
+                  <div className="">
                     <Link href={{}}>
                       <div className="relative overflow-hidden rounded-r-xl rounded-tl-xl">
                         <img alt={item.title} src={item.img} />
                       </div>
-                      <div className="absolute top-0 flex flex-wrap gap-1 left-5">
+                      <div className="absolute top-0 flex flex-wrap gap-1 left-[0.5rem]">
                         <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-base text-[0.9rem] bg-primary">HOT</span>
                         <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-base text-[0.9rem] bg-flag3">NEW</span>
                         <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-base text-[0.9rem] bg-flag1">국비지원</span>
                         <span className="px-2 py-1 text-center text-white rounded-r-lg rounded-tl-lg font-base text-[0.9rem] bg-flag2">커리어패스</span>
                       </div>
                       <dl className="w-full h-full py-3">
-                        <dd className="text-xl text-black min-h-[3rem] line-clamp-2">
+                        <dd className="text-xl text-black font-bold min-h-[3rem] line-clamp-2">
                           {item.title}
                         </dd>
                         <dd className="mt-2 text-base line-clamp-2 text-zinc-600">
@@ -104,7 +107,7 @@ export default function ListSlider({slideNo}) {
                 </SwiperSlide>
             ))}
           </Swiper>
-          <div className="absolute top-[-3rem] right-0 flex">
+          <div className="hidden absolute top-[-3rem] right-0 lg:flex">
             <button className="p-1 text-2xl text-primary slide_prev"><i className="xi-angle-left-min" /></button>
             <button className="p-1 text-2xl text-primary slide_next"><i className="xi-angle-right-min" /></button>
           </div>
