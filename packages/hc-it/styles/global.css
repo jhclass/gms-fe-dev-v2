@@ -11,7 +11,7 @@
 @layer components {
     .menuList {
         display:none;
-        @apply absolute left-0 py-3 bg-white top-[40px] w-[260px];
+        @apply absolute left-0 py-3 bg-white top-[40px] w-[260px] z-40;
     }
     .open {
         display:block;

@@ -71,7 +71,7 @@ export default function Header() {
                 </div>
               </div>
               <div>
-                <Button onClick={consultClick} variant="flat" className="hidden text-white lg:block bg-primary">
+                <Button onClick={consultClick} variant="flat" className="hidden text-white lg:block bg-zinc-700">
                   온라인 상담
                 </Button>
                 <button

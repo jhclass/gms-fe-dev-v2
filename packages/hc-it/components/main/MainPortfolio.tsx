@@ -91,11 +91,11 @@ export default function Portfolio() {
       <div className="wrap">
         <MainTitle title={'PORTFOLIO ⭐️'}/>
       </div>
-      <div className={`relative mt-5 max-w-[1440px] mx-auto`}>
+      <div className={`relative mt-5 max-w-[1440px] mx-auto main-portfolio`}>
         <Swiper
           slidesPerView={1.3}
           spaceBetween={20}
-          navigation={{ prevEl:".detail-slide1 .slide_prev", nextEl:".detail-slide1 .slide_next" }} 
+          navigation={{ prevEl:".main-portfolio .slide_prev", nextEl:".main-portfolio .slide_next" }} 
           modules={[Navigation]}
           className="!px-5 xl:!px-0"
           breakpoints= {{

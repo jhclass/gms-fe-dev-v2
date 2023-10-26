@@ -63,7 +63,7 @@ export default function Portfolio() {
       <div className="wrap">
         <MainTitle title={'REVIEW ✌️'} colorWhite={true} />
       </div>
-      <div className={`relative mt-5 max-w-[1440px] mx-auto`}>
+      <div className={`relative mt-5 max-w-[1440px] mx-auto main-review`}>
         <Swiper
           slidesPerView={1.1}
           grid={{
@@ -71,7 +71,7 @@ export default function Portfolio() {
             fill: 'row',
           }}
           spaceBetween={20}
-          navigation={{ prevEl:".detail-slide1 .slide_prev", nextEl:".detail-slide1 .slide_next" }} 
+          navigation={{ prevEl:".main-review .slide_prev", nextEl:".main-review .slide_next" }} 
           modules={[Grid, Navigation]}
           className="!px-5 xl:!px-0"
           breakpoints= {{
