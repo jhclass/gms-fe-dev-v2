@@ -13,11 +13,12 @@ export default function Review() {
               <img src="/src/images/user.webp" alt="" loading="lazy" width="100%"/>
             </div>
             <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12">
-              <h5 className="text-2xl font-bold"><span className="block text-base text-primary">수강생</span>홍길동</h5>
-              <div className="mt-1 text-lg font-bold">
-                <b>[프론트엔드 마스터반]</b>
+              <h5 className="text-2xl font-bold"><span className="block text-base text-primary"><b className="text-zinc-600">[프론트엔드 마스터반]</b> 수강생</span>홍길동</h5>
+              <div className="flex flex-col mt-3 text-3xl font-bold items-left">
+                <p><span className="text-primary">3.7</span> / 5</p>
+                <span className="w-[5.4rem] h-[1.2rem] display star_bg" ></span>
               </div>
-              <p className="relative text-base py-6 px-6 mt-20 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-l-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:left-[-0.1rem]">
+              <p className="relative text-base py-6 px-6 mt-16 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-l-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:left-[-0.1rem]">
                 구현까지만 할 줄 아는 개발자는 많습니다. 하지만 <b>유저에 대해 치열하게 고민하며 성능을 챙기는 개발자</b>는 드물죠. 이번 프로젝트 구성은 제가 경험해 온 
                 <b>프로덕트 도메인의 인사이트(금융 - 카드사 &amp; 개인예산관리 프로젝트, 여행 - 여행 프로젝트)를</b> 모두 모았습니다.
                 이 모든 강의는 프로덕트 도메인의 특성에 따라 <b>유저가 어떠한 것을 기대하고 불편해하는지 파악하며 최적화</b>가 진행됩니다. 
@@ -32,9 +33,10 @@ export default function Review() {
               <img src="/src/images/user.webp" alt="" loading="lazy" width="100%"/>
             </div>
             <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:mr-12">
-              <h5 className="text-2xl font-bold text-right"><span className="block text-base text-primary">수강생</span>홍길동</h5>
-              <div className="mt-1 text-lg font-bold text-right">
-                <b>[프론트엔드 마스터반]</b>
+              <h5 className="text-2xl font-bold text-right"><span className="block text-base text-primary"><b className="text-zinc-600">[프론트엔드 마스터반]</b> 수강생</span>홍길동</h5>
+              <div className="flex flex-col items-end mt-3 text-3xl font-bold">
+                <p><span className="text-primary">3</span> / 5</p>
+                <span className="w-[4.2rem] h-[1.2rem] display star_bg" ></span>
               </div>
               <p className="relative text-base py-6 px-6 mt-20 bg-[#f2f3f5] border-t-2 border-t-white border-r-2 border-r-[#f2f3f5] after:w-12 after:h-12 after:border-r-[3rem] after:border-r-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:right-[-0.1rem]">
                 구현까지만 할 줄 아는 개발자는 많습니다. 하지만 <b>유저에 대해 치열하게 고민하며 성능을 챙기는 개발자</b>는 드물죠. 이번 프로젝트 구성은 제가 경험해 온 

@@ -84,11 +84,15 @@ export default function Portfolio() {
           {list.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="flex flex-row items-center px-4 py-5 overflow-hidden rounded-t-lg rounded-b r-lg bg-zinc-500 rounded-e-lg">
-                <figure className="w-40 mr-7">
+                <div className="w-1/6 mr-7">
                   <img src={item.img} alt={item.name} />
-                </figure>
-                <div>
-                  <h5 className="text-sm font-bold text-zinc-300">{item.class}{index}</h5>
+                  <div className="flex flex-col items-center mt-2 text-xl font-bold text-zinc-300">
+                    <p><span className="text-white">3.7</span> / 5</p>
+                    <span className="w-[4rem] h-[0.9rem] display star_bg_w" ></span>
+                  </div>
+                </div>
+                <div className="w-5/6">
+                  <h5 className="text-sm font-bold text-zinc-300">[{item.class}] {item.name}</h5>
                   <p className="mt-1 text-base text-white">{item.content}</p>
                 </div>
              </div>

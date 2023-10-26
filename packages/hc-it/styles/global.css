@@ -54,6 +54,22 @@
     .main_visual_pager .swiper-pagination-bullet-active {
         @apply w-7 rounded-lg opacity-100 transition-all ease-in-out;
     }
+
+    .star_bg {
+        display:inline-block;
+        vertical-align:center;
+        background-image: url('/src/images/ico_star_full.png');
+        background-repeat: repeat-x;
+        background-size: contain;
+    }
+    
+    .star_bg_w {
+        display:inline-block;
+        vertical-align:center;
+        background-image: url('/src/images/ico_star_full_w.png');
+        background-repeat: repeat-x;
+        background-size: contain;
+    }
 }
 
 html {
