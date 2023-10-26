@@ -60,7 +60,7 @@ export default function ListSlider({slideNo}) {
   ]
     return (
       <>
-      <div className={`relative list_slider_${slideNo} max-w-[1440px] mx-auto`}>
+        <div className={`relative list_slider_${slideNo} max-w-[1440px] mx-auto`}>
           <Swiper
              slidesPerView={1.5}
              spaceBetween={20}

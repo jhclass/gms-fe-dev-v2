@@ -34,7 +34,7 @@ export default function Detail() {
           <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
             <div className="py-10 bg-black rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-2 py-1 mb-2">
+                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-3 py-2 mb-2">
                   01 Next.js로 할 수 있는 모든 것
                 </span>
               </p>
@@ -45,7 +45,7 @@ export default function Detail() {
             </div>
             <div className="py-10 bg-black rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-2 py-1 mb-2">
+                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-3 py-2 mb-2">
                   01 Next.js로 할 수 있는 모든 것
                 </span>
               </p>
@@ -56,7 +56,7 @@ export default function Detail() {
             </div>
             <div className="py-10 bg-black rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-2 py-1 mb-2">
+                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-3 py-2 mb-2">
                   01 Next.js로 할 수 있는 모든 것
                 </span>
               </p>
@@ -79,7 +79,7 @@ export default function Detail() {
         <div className="wrap">
           <h4 className="text-center text-white">
             <span className="text-2xl">현재 토스증권 프론트엔드 챕터 리드로 재직 중인</span><br/>
-            <b className="mt-5 text-3xl">최지민 강사님을 만나보세요.</b>
+            <b className="mt-5 text-3xl">최지민 강사님을 만나보세요. 🍭</b>
           </h4>
           <div className="flex justify-center mt-10">
             <div className="relative w-full pb-[56.25%]">
@@ -158,35 +158,31 @@ export default function Detail() {
         <div className="wrap">
           <ul className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="http://via.placeholder.com/69x69" />
-              <p className="mt-5 text-lg font-bold">SSR/SSG을 활용한 SEO 최적화</p>
+              <img src="/src/images/de_con01.jpg" className="w-24"/>
+              <p className="mt-5 text-base font-bold">SSR/SSG을 활용한 SEO 최적화</p>
               <p className="mt-4 text-lg">
-                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
-                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에, SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
               </p>
             </li>
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="http://via.placeholder.com/69x69" />
+              <img src="/src/images/de_con02.jpg" className="w-24" />
               <p className="mt-5 text-lg font-bold">SSR/SSG을 활용한 SEO 최적화</p>
               <p className="mt-4 text-lg">
-                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
-                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에, SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
               </p>
             </li>
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="http://via.placeholder.com/69x69" />
+              <img src="/src/images/de_con03.jpg" className="w-24" />
               <p className="mt-5 text-lg font-bold">SSR/SSG을 활용한 SEO 최적화</p>
               <p className="mt-4 text-lg">
-                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
-                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에, SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
               </p>
             </li>
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="http://via.placeholder.com/69x69" />
+              <img src="/src/images/de_con04.jpg" className="w-24" />
               <p className="mt-5 text-lg font-bold">SSR/SSG을 활용한 SEO 최적화</p>
               <p className="mt-4 text-lg">
-                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에,<br/>
-                SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
+                Next.js는 SSR(Server Side Rendering)/SSG(Static Site Generation)를 기본으로 제공하기 때문에, SEO(Search Engine Optimization)에 대한 고민을 해결할 수 있습니다.
               </p>
             </li>
           </ul>

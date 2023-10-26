@@ -20,7 +20,9 @@ export default function DetailInfo() {
             <b className="text-3xl">수업 환경.</b>
           </p>
           <p className="w-full text-base lg:w-1/2">
-            <img src="http://via.placeholder.com/1080x274" />
+            <figure className="w-[70%] mx-auto">
+              <img src="/src/images/de_sec7_con01.png" width="100%" />
+            </figure>
             Node 16.15.1 (LTS) & ∙ VScode1.68
           </p>
         </div>

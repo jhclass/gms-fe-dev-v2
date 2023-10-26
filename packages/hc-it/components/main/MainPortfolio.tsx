@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import 'swiper/swiper-bundle.css';
 import { useState } from "react";
+import MainTitle from "@/components/MainTitle";
 
 export default function Portfolio() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,39 +88,37 @@ export default function Portfolio() {
   };
   return (
     <>
-      <div className="overflow-hidden xl:overflow-visible wrap">
-        <h4 className="text-center text-white">
-          <span className="text-2xl">강의를 잘 따라가면 만나볼 수 있어요.</span><br/>
-          <b className="mt-4 text-3xl">PORTFOLIO</b>
-        </h4>
-
-        <div className="relative mt-10 detail-slide1">
-          <Swiper
-            slidesPerView={1}
-            navigation={{ prevEl:".detail-slide1 .slide_prev", nextEl:".detail-slide1 .slide_next" }} 
-            modules={[Navigation]}
-            className="mySwiper"
-            breakpoints= {{
-              640: {
-                slidesPerView: 2
-              },
-              960: {
-                slidesPerView: 3
-              }
-            }}
-          >
-            {list.map((item, index) => (
-               <SwiperSlide key={index}>
-                <div className="px-5">
-                  <p onClick={() => handleSlideClick(item)} className="cursor-pointer">
-                    <img alt={item.title} src={item.thumb} />
-                  </p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <button className="absolute left-[-2rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-white slide_prev"><i className="xi-angle-left-min" /></button>
-          <button className="absolute right-[-2rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-white slide_next"><i className="xi-angle-right-min" /></button>
+      <div className="wrap">
+        <MainTitle title={'PORTFOLIO ⭐️'}/>
+      </div>
+      <div className={`relative mt-5 max-w-[1440px] mx-auto`}>
+        <Swiper
+          slidesPerView={1.3}
+          spaceBetween={20}
+          navigation={{ prevEl:".detail-slide1 .slide_prev", nextEl:".detail-slide1 .slide_next" }} 
+          modules={[Navigation]}
+          className="!px-5 xl:!px-0"
+          breakpoints= {{
+            640: {
+              slidesPerView: 2.3,
+            },
+            960: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }}
+        >
+          {list.map((item, index) => (
+            <SwiperSlide key={index}>
+              <p onClick={() => handleSlideClick(item)} className="overflow-hidden rounded-t-lg rounded-br-lg cursor-pointer">
+                <img alt={item.title} src={item.thumb} />
+              </p>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <div className="hidden absolute top-[-3rem] right-0 lg:flex">
+          <button className="p-1 text-2xl text-black slide_prev"><i className="xi-angle-left-min" /></button>
+          <button className="p-1 text-2xl text-black slide_next"><i className="xi-angle-right-min" /></button>
         </div>
       </div>
       <Modal size={'4xl'} backdrop={'opaque'} placement={'center'} isOpen={isOpen} onClose={onClose}>

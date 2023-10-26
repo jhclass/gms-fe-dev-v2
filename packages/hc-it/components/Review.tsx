@@ -10,7 +10,7 @@ export default function Review() {
         <div className="mt-4">
           <div className="flex flex-col py-6 lg:flex-row">
             <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[23rem] lg:h-[23rem]">
-              <img src="http://via.placeholder.com/230x230" alt="" loading="lazy" width="100%"/>
+              <img src="/src/images/user.webp" alt="" loading="lazy" width="100%"/>
             </div>
             <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12">
               <h5 className="text-2xl font-bold"><span className="block text-base text-primary">수강생</span>홍길동</h5>
@@ -29,9 +29,9 @@ export default function Review() {
           </div>
           <div className="flex flex-col py-6 lg:flex-row-reverse">
             <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[23rem] lg:h-[23rem]">
-              <img src="http://via.placeholder.com/230x230" alt="" loading="lazy" width="100%"/>
+              <img src="/src/images/user.webp" alt="" loading="lazy" width="100%"/>
             </div>
-            <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12">
+            <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:mr-12">
               <h5 className="text-2xl font-bold text-right"><span className="block text-base text-primary">수강생</span>홍길동</h5>
               <div className="mt-1 text-lg font-bold text-right">
                 <b>[프론트엔드 마스터반]</b>
