@@ -45,6 +45,15 @@
     .scroll::-webkit-scrollbar-thumb {
         background: transparent;
     }
+
+    .main_visual_pager .swiper-pagination-bullet {
+        @apply w-[0.7rem] h-[0.67rem] bg-zinc-800 md:bg-zinc-100 opacity-50 transition-all ease-in-out shadow-sm;
+
+    }
+
+    .main_visual_pager .swiper-pagination-bullet-active {
+        @apply w-7 rounded-lg opacity-100 transition-all ease-in-out;
+    }
 }
 
 html {

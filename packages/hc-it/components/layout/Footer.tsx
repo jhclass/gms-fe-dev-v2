@@ -28,7 +28,7 @@ export default function Footer() {
           <div className="py-10 bg-zinc-800">
             <div className="flex flex-col justify-center text-white wrap">
               <h1 className="w-[12rem]">
-                <img src="/src/images/hc_logo_1_w.svg"/>
+                <img src="/src/images/hc_logo_2_w.svg"/>
               </h1>
               <ul className="mt-5 text-sm font-thin text-slate-400">
                 <li>

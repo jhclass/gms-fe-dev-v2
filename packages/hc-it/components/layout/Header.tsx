@@ -52,7 +52,7 @@ export default function Header() {
             <div className="flex wrap items-center justify-between w-full max-w-[1440px] py-3">
               <div className="flex items-center">
                 <h1 className="mr-10 grow-0">
-                  <Link href="/" className="block w-[10rem]"><img src="/src/images/hc_logo_1.svg"/></Link>
+                  <Link href="/" className="block w-[10rem]"><img src="/src/images/hc_logo_2.svg"/></Link>
                 </h1>
                 <div className="hidden lg:block lg:w-[20rem]">
                   <Input

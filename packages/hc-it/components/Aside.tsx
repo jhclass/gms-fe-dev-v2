@@ -36,8 +36,8 @@ export default function Aside() {
   };
   return (
     <>
-      <aside id="aside" className={`${asideHidden ? 'opacity-0' : 'opacity-100'} ${moAsideOpen ? 'translate-x-0':'translate-x-[calc(100%+0.01rem)]'} bg-white border-1 py-3 px-2 bottom-[5%] rounded-s-lg right-0 fixed z-50 lg:py-0 lg:px-0 lg:border-none lg:bg-transparent lg:right-5 xl:right-10 lg:bottom-28 transition-all`}>
-        <span onClick={handleAsideClick} className="cursor-pointer lg:hidden w-[2rem] h-[3rem] text-4xl/none leading-[2.8rem] indent-[-0.05rem] rounded-s-full bg-primary/80 absolute top-[50%] mt-[-1.5rem] left-[-2rem]"><i className="xi-angle-left-min" /></span>
+      <aside id="aside" className={`${asideHidden ? 'opacity-0' : 'opacity-100'} ${moAsideOpen ? 'translate-x-0':'translate-x-[calc(100%+0.01rem)]'} bg-zinc-700/80 py-3 px-2 bottom-[5%] rounded-s-lg right-0 fixed z-50 lg:py-0 lg:px-0 lg:bg-transparent lg:right-16 xl:right-16 lg:bottom-28 transition-all`}>
+        <span onClick={handleAsideClick} className="cursor-pointer lg:hidden w-[2rem] h-[3rem] text-white text-4xl/none leading-[3.5rem] indent-[-0.05rem] rounded-s-lg bg-zinc-700/80 absolute top-[50%] mt-[-1.5rem] left-[-2rem]"><i className="xi-angle-left-min" /></span>
         <div className="flex items-center justify-center w-12 h-12 text-white rounded-full text-2xl/none bg-primary">
           <Link href="/consult" as="/consult">
             <i className="xi-call"/>
