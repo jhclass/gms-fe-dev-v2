@@ -65,7 +65,7 @@ export default function Portfolio() {
       </div>
       <div className={`relative mt-5 max-w-[1440px] mx-auto`}>
         <Swiper
-          slidesPerView={1.3}
+          slidesPerView={1.1}
           grid={{
             rows: 2,
             fill: 'row',
