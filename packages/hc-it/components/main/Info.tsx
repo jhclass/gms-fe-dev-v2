@@ -134,16 +134,16 @@ export default function Info() {
                     고객센터
                     <Link href="" className="absolute right-0 text-sm font-semibold bottom-3 text-primary">MORE<i className="xi-angle-right-min" /></Link>
                 </h4>
-                <ul className="flex flex-col items-center">
-                    <li className="flex items-center mt-6 rounded-lg">
+                <ul className="flex flex-col items-center justify-around pt-0 md:flex-row md:pt-5 lg:flex-col lg:pt-0">
+                    <li className="flex items-center mt-6 rounded-lg md:mt-0 lg:mt-6">
                         <Link href="tel:02-393-4321" className="px-5 py-3 mr-4 text-base rounded-lg lg:px-3 lg:py-2 text-primary border-1 border-primary">
-                            전화 상담
+                            📞 전화 상담
                         </Link>
                         <Link href="/consult" className="px-5 py-3 text-base text-white rounded-lg lg:px-3 lg:py-2 border-1 bg-primary border-primary">
-                            방문 상담
+                            🖌️ 방문 상담
                         </Link>
                     </li>
-                    <li className="flex flex-col items-center w-full pt-5 mt-6 text-base font-normal text-center text-zinc-500 border-t-1">
+                    <li className="flex flex-col items-center w-full pt-5 mt-6 text-base font-normal text-center lg:pt-5 lg:mt-6 lg:w-full md:w-auto md:pt-0 md:mt-0 md:border-t-0 border-t-1 text-zinc-500 lg:border-t-1">
                         오전 9:00 - 오후 18:00<br/>
                         (점심: 12:30 ~ 13:30)<br/>
                         주말 및 공휴일은 휴무입니다.
