@@ -8,6 +8,8 @@ import Info from "@/components/main/Info";
 import Form from "@/components/Form";
 import QuickMenu from "@/components/main/QuickMenu";
 import Coming from "@/components/main/Coming";
+import MainPortfolio from "@/components/main/MainPortfolio";
+import MainReview from "@/components/main/MainReview";
 
 export default function Home() {
   return (
@@ -25,8 +27,11 @@ export default function Home() {
       <div className="mt-16">
         <Ranking />
       </div>
-      <div className="py-10 mt-10 bg-zinc-200">
+      <div className="py-16 mt-10 bg-zinc-200">
         <MainBnr />
+      </div>
+      <div className="py-16 bg-zinc-700">
+        <MainReview />
       </div>
       <div className="mt-16">
         <CateList cate={"근로자"} slideNo={1} />
@@ -36,6 +41,9 @@ export default function Home() {
       </div>
       <div className="py-10 mt-10 bg-zinc-700">
         <Coming />
+      </div>
+      <div className="py-16 bg-zinc-200">
+        <MainPortfolio />
       </div>
       <div className="py-16">
         <Info />

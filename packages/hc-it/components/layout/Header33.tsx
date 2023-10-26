@@ -1,6 +1,6 @@
 import {Navbar, NavbarBrand, NavbarContent, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, NavbarItem} from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import TopBnr from "@/components/main/TopBnr";
+import TopBnr from "@/components/main/MainTopBnr";
 import Gnb from "@/components/Gnb";
 import { useRouter } from "next/router";
 
