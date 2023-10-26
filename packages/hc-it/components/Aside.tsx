@@ -1,10 +1,11 @@
 import Link from "next/link";
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { asideHiddenState } from '@/lib/recoilAtoms';
+import { asideHiddenState, moAsideOpenState } from '@/lib/recoilAtoms';
 
 export default function Aside() {
   const [asideHidden, setAsideHiddenState] = useRecoilState(asideHiddenState);
+  const [moAsideOpen, setMoAsideOpenState] = useRecoilState(moAsideOpenState);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -23,16 +24,20 @@ export default function Aside() {
     };
   }, []);
 
+  const handleAsideClick = () => {
+    setMoAsideOpenState(!moAsideOpen);
+  };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
   };
-
   return (
     <>
-      <aside id="aside" className={`fixed z-50 right-5 xl:right-10 bottom-28 transition-all ${asideHidden ? 'opacity-0' : 'opacity-100'}`}>
+      <aside id="aside" className={`${asideHidden ? 'opacity-0' : 'opacity-100'} ${moAsideOpen ? 'translate-x-0':'translate-x-[calc(100%+0.01rem)]'} bg-white border-1 py-3 px-2 bottom-[5%] rounded-s-lg right-0 fixed z-50 lg:py-0 lg:px-0 lg:border-none lg:bg-transparent lg:right-5 xl:right-10 lg:bottom-28 transition-all`}>
+        <span onClick={handleAsideClick} className="cursor-pointer lg:hidden w-[2rem] h-[3rem] text-4xl/none leading-[2.8rem] indent-[-0.05rem] rounded-s-full bg-primary/80 absolute top-[50%] mt-[-1.5rem] left-[-2rem]"><i className="xi-angle-left-min" /></span>
         <div className="flex items-center justify-center w-12 h-12 text-white rounded-full text-2xl/none bg-primary">
           <Link href="/consult" as="/consult">
             <i className="xi-call"/>
