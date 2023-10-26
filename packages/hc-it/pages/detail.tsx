@@ -260,9 +260,9 @@ export default function Detail() {
         <div className="wrap">
           <h4 className="text-3xl font-bold text-center">강의 목표</h4>
           <ul className="mx-auto mt-6 text-base text-center lg:w-full xl:w-[80%]">
-            <li className="py-5 bg-white rounded-lg">Next.js에 대한 기본, 심화 개념을 배우고, 실습을 통해 체화할 수 있습니다.</li>
-            <li className="py-5 mt-5 bg-white rounded-lg">Next.js 프레임워크를 활용하여 어떤 웹서비스라도 빠르게 만들어낼 수 있다는 자신감을 갖습니다.</li>
-            <li className="py-5 mt-5 bg-white rounded-lg">공식 문서&실습을 통해 이후에 새롭게 등장할 기술에 대해서도 스스로 학습할 수 있는 능력을 기릅니다.</li>
+            <li className="px-5 py-5 bg-white rounded-lg">Next.js에 대한 기본, 심화 개념을 배우고, 실습을 통해 체화할 수 있습니다.</li>
+            <li className="px-5 py-5 mt-5 bg-white rounded-lg">Next.js 프레임워크를 활용하여 어떤 웹서비스라도 빠르게 만들어낼 수 있다는 자신감을 갖습니다.</li>
+            <li className="px-5 py-5 mt-5 bg-white rounded-lg">공식 문서&실습을 통해 이후에 새롭게 등장할 기술에 대해서도 스스로 학습할 수 있는 능력을 기릅니다.</li>
           </ul>
         </div>
       </section>

@@ -16,14 +16,14 @@ export default function Curriculum() {
               Part1. 오리엔테이션
             </p>
             <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
-              <Accordion variant="splitted" className="px-0 font-bold">
+              <Accordion defaultExpandedKeys={["1"]} variant="splitted" className="px-0 font-bold">
                 <AccordionItem key="1" aria-label="Accordion 1" title="01. 오리텐테이션">
                   <ul className="py-3 border-t-1">
                     <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">강의 및 강사 소개</li>
                   </ul>
                 </AccordionItem>
               </Accordion>
-              <Accordion variant="splitted" className="px-0 font-bold">
+              <Accordion defaultExpandedKeys={["1"]} variant="splitted" className="px-0 font-bold">
                 <AccordionItem key="1" aria-label="Accordion 2" title="02. NEXT.JS 소개">
                 <ul className="py-3 border-t-1">
                     <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">Next.js 소개 및 도구 / 환경 설정</li>
