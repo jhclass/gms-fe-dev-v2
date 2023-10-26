@@ -19,12 +19,12 @@ export default function DetailInfo() {
           <p className="w-full mb-5 lg:w-1/2">
             <b className="text-3xl">수업 환경.</b>
           </p>
-          <p className="w-full text-base lg:w-1/2">
+          <div className="w-full text-base lg:w-1/2">
             <figure className="w-[70%] mx-auto">
               <img src="/src/images/de_sec7_con01.png" width="100%" />
             </figure>
             Node 16.15.1 (LTS) & ∙ VScode1.68
-          </p>
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-5 mt-10 lg:grid-cols-2">
           <Accordion variant="splitted" className="px-0 font-bold">

@@ -1,5 +1,5 @@
 import { Button, Input, Link } from "@nextui-org/react";
-import TopBnr from "@/components/main/TopBnr";
+import TopBnr from "@/components/main/MainTopBnr";
 import Gnb from "@/components/Gnb";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
