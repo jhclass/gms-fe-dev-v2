@@ -57,7 +57,7 @@ export default function RankingCard() {
       <>
         {list.map((item, index) => (
           <div key={index}>
-            <Link href="/" className="block">
+            <Link href="/detail" className="block">
               <div className="relative overflow-hidden rounded-r-xl rounded-tl-xl">
                 <img alt={item.title} src={item.img} />
               </div>

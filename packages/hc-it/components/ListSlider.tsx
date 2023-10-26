@@ -84,7 +84,7 @@ export default function ListSlider({slideNo}) {
             {list.map((item, index) => (
                 <SwiperSlide key={index}>
                   <div className="">
-                    <Link href={{}}>
+                    <Link href="/detail">
                       <div className="relative overflow-hidden rounded-r-xl rounded-tl-xl">
                         <img alt={item.title} src={item.img} />
                       </div>
