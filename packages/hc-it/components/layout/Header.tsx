@@ -1,21 +1,29 @@
-import { Button, Input, Link } from "@nextui-org/react";
-import TopBnr from "@/components/main/MainTopBnr";
+import { Button, Link } from "@nextui-org/react";
+import MainTopBnr from "@/components/main/MainTopBnr";
 import Gnb from "@/components/Gnb";
+import SearchBox from "@/components/SearchBox";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { headerFixedState, moMenuOpenState } from "@/lib/recoilAtoms";
 import { useEffect } from "react";
-// import Link from "next/link";
 
 export default function Header() {
     const router = useRouter();
-
+    const [moMenuOpen, setmoMenuOpen] = useRecoilState(moMenuOpenState);
     const [headerFixed, setHeaderFixedState] = useRecoilState(headerFixedState);
-  
+
+    const handleButtonClick = () => {
+      setmoMenuOpen(!moMenuOpen);
+    };
+
+    const consultClick = () => {
+      router.push('/consult');
+    };
+
     useEffect(() => {
       const handleScroll = () => {
         const currentScroll = window.scrollY;
-        const topBnrTop = document.getElementById('topBnr').clientHeight;
+        const topBnrTop = document.getElementById('mainTopBnr').clientHeight;
 
         if (currentScroll > topBnrTop) {
           setHeaderFixedState(true);
@@ -30,45 +38,26 @@ export default function Header() {
         window.removeEventListener('scroll', handleScroll);
       };
     }, []);
-    const [moMenuOpen, setmoMenuOpen] = useRecoilState(moMenuOpenState);
-    const handleButtonClick = () => {
-      setmoMenuOpen(!moMenuOpen);
-    };
-    const consultClick = () => {
-      router.push('/consult');
-    };
+
+
 
     return (
       <>
-        <TopBnr/>
-        <header id="header" className="px-0 m-auto ax-w-full">
+        <MainTopBnr/>
+        <header id="header" className="px-0 m-auto ax-w-full h-[10rem]">
           <div className={`${headerFixed ? 'fixed top-0 left-0 z-50' : 'relative'} flex-col w-full bg-white max-w-full px-0 border-b-1`}>
-            <div className="w-full bg-[#27272E]">
-              <ul className="flex items-center wrap">
-                <li className="min-w-[4.5rem] cursor-pointer border-x-1 border-slate-400 bg-primary"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
-                <li className="min-w-[4.5rem] cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
+            <div className="w-full bg-[#27272E] h-[2.5rem]">
+              <ul className="flex items-center h-full wrap">
+                <li className="min-w-[4.5rem] h-full cursor-pointer border-x-1 border-slate-400 bg-primary"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">IT</Link></li>
+                <li className="min-w-[4.5rem] h-full cursor-pointer border-r-1 border-slate-400"><Link className="block w-full h-full text-center px-2 py-1.5 text-white">그래픽</Link></li>
               </ul>
             </div>
-            <div className="flex wrap items-center justify-between w-full max-w-[1440px] py-3">
+            <div className="flex wrap items-center justify-between w-full max-w-[1440px] h-[4rem] py-3">
               <div className="flex items-center">
                 <h1 className="mr-10 grow-0">
                   <Link href="/" className="block w-[10rem]"><img src="/src/images/hc_logo_2.svg"/></Link>
                 </h1>
-                <div className="hidden lg:block lg:w-[20rem]">
-                  <Input
-                    classNames={{
-                      base: "max-w-full h-10",
-                      mainWrapper: "h-full",
-                      input: "text-small",
-                      inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                    }}
-                    fullWidth
-                    placeholder="검색어를 입력해주세요"
-                    size="sm"
-                    startContent={<i className="xi-search"/>}
-                    type="search"
-                  />
-                </div>
+                <SearchBox />
               </div>
               <div>
                 <Button onClick={consultClick} variant="flat" className="hidden text-white lg:block bg-zinc-700">
@@ -83,13 +72,13 @@ export default function Header() {
                 </button>
               </div>
             </div>
-            <div className="flex items-center lg:pb-3 lg:wrap">
+            <div className="flex items-center lg:pb-3 lg:wrap h-[3.5rem]">
               <Gnb />
             </div>
           </div>
         </header>
         <div className={`${moMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-all duration-150 ease-in-out fixed top-0 left-0 w-full h-[100%] z-50`}>
-          <div className="w-[85%] h-full">
+          <div className="w-[85%] h-full bg-white">
             <div className="px-3 items-center justify-between flex h-[4rem] bg-white">
               <Link href="#" className="flex items-center">
                 <span className="mr-1 text-4xl text-primary"><i className="xi-profile" /></span>

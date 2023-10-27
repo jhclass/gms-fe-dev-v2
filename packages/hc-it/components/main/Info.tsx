@@ -16,7 +16,7 @@ export default function Info() {
     return (
       <>
         <div className="flex flex-col wrap lg:flex-row">
-            <div className="w-full lg:w-2/5 lg:mr-10">
+            <div className="w-full lg:w-2/5 lg:mr-8">
                 <h4 className="relative pb-3 text-2xl font-bold border-b-2 border-zinc-600">
                     공지사항
                     <Link href="" className="absolute right-0 text-sm font-semibold bottom-3 text-primary">MORE<i className="xi-angle-right-min" /></Link>
@@ -54,7 +54,7 @@ export default function Info() {
                     </li>
                 </ul>
             </div>
-            <div className="relative w-full mt-20 lg:w-2/5 lg:mr-10 lg:mt-0">
+            <div className="relative w-full mt-20 lg:w-2/5 lg:mr-8 lg:mt-0">
                 <h4 className="relative pb-3 text-2xl font-bold">
                     SNS 이벤트
                 </h4>

@@ -5,6 +5,11 @@ export const countdownState = atom<number>({
     default: 0, // 초 단위
 });
 
+export const topbnrHiddenState = atom<boolean>({
+    key: 'topbnrHiddenState',
+    default: false,
+});
+
 export const headerFixedState = atom<boolean>({
     key: 'headerFixedState',
     default: false,
@@ -17,6 +22,16 @@ export const moMenuOpenState = atom<boolean>({
 
 export const detailBottomHiddenState = atom<boolean>({
     key: 'detailBottomHiddenState',
+    default: false,
+});
+
+export const detailTopbnrHiddenState = atom<boolean>({
+    key: 'detailTopbnrHiddenState',
+    default: false,
+});
+
+export const detailTopbnrFixedState = atom<boolean>({
+    key: 'detailTopbnrFixedState',
     default: false,
 });
 
@@ -34,7 +49,7 @@ export const isMenuOpenState = atom<boolean>({
     default: false,
 });
 
-export const groupSelectedState = atom<string[]>({
-    key: 'groupSelectedState',
+export const formGroupSelectedState = atom<string[]>({
+    key: 'formGroupSelectedState',
     default: [],
 });

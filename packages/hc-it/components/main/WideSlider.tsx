@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -11,29 +11,29 @@ export default function MainSilder() {
         <div className="relative">
           <Swiper
             autoplay={{
-              delay: 4000,
+              delay: 3000,
             }}
             pagination={{ clickable: true, el: '.main_visual_pager' }} 
             modules={[Autoplay, Pagination]}
             className="mySwiper1"
           >
-            <SwiperSlide style={{background:'#eee'}}>
+            <SwiperSlide style={{background:'#000'}}>
               <Link href="/">
                 <div className="flex justify-end wrap">
                   <img
-                    src="/src/images/main_01.webp"
+                    src="/src/images/main_03.webp"
                     style={{ overflow: "hidden" }}
                     className="hidden lg:block"
                   />
                     <img
-                    src="/src/images/main_01_m.jpg"
+                    src="/src/images/main_03_m.jpg"
                     style={{ overflow: "hidden" }}
                     className="block lg:hidden"
                   />
                   <div className="absolute top-[48%] left-6 xl:left-0 translate-y-[-50%]">
                     <p className="inline px-3 py-2 text-center text-white rounded-r-lg rounded-tl-lg text-sm/none md:text-lg bg-primary">신규모집</p>
-                    <h2 className="mt-4 text-2xl font-bold text-black md:text-4xl/tight">직무 트렌드 추천 강의<br/>5일 한정 BIG SALE</h2>
-                    <p className="mt-4 text-black text-md/tight md:text-xl/tight">마지막 10주년 특가를<br/>지금 바로 잡아보세요!</p>
+                    <h2 className="mt-4 text-2xl font-bold text-white md:text-4xl/tight">새로운 신드롬,<br/>ChatGPT 강의 시리즈</h2>
+                    <p className="mt-4 text-white text-md/tight md:text-xl/tight">지금 내게 필요한<br/>ChatGPT 강의를 살펴 보세요.</p>
                   </div>
                 </div>
               </Link>
@@ -55,27 +55,6 @@ export default function MainSilder() {
                     <p className="inline px-3 py-2 text-center text-white rounded-r-lg rounded-tl-lg text-sm/none md:text-lg bg-primary">신규모집</p>
                     <h2 className="mt-4 text-2xl font-bold text-white md:text-4xl/tight">권오상의 금융아카데미<br/>단 5일간의 특별전</h2>
                     <p className="mt-4 text-white text-md/tight md:text-xl/tight">단과 강의 쿠폰부터<br/>PASS 특별 할인까지 (~10/27)</p>
-                  </div>
-                </div>
-              </Link>
-            </SwiperSlide>
-            <SwiperSlide style={{background:'#000'}}>
-              <Link href="/">
-                <div className="flex justify-end wrap">
-                  <img
-                    src="/src/images/main_03.webp"
-                    style={{ overflow: "hidden" }}
-                    className="hidden lg:block"
-                  />
-                    <img
-                    src="/src/images/main_03_m.jpg"
-                    style={{ overflow: "hidden" }}
-                    className="block lg:hidden"
-                  />
-                  <div className="absolute top-[48%] left-6 xl:left-0 translate-y-[-50%]">
-                    <p className="inline px-3 py-2 text-center text-white rounded-r-lg rounded-tl-lg text-sm/none md:text-lg bg-primary">신규모집</p>
-                    <h2 className="mt-4 text-2xl font-bold text-white md:text-4xl/tight">새로운 신드롬,<br/>ChatGPT 강의 시리즈</h2>
-                    <p className="mt-4 text-white text-md/tight md:text-xl/tight">지금 내게 필요한<br/>ChatGPT 강의를 살펴 보세요.</p>
                   </div>
                 </div>
               </Link>
@@ -120,6 +99,27 @@ export default function MainSilder() {
                     <p className="inline px-3 py-2 text-center text-white rounded-r-lg rounded-tl-lg text-sm/none md:text-lg bg-primary">신규모집</p>
                     <h2 className="mt-4 text-2xl font-bold text-black md:text-4xl/tight">코딩이 이렇게 쉬워?<br/>코딩 스텝원</h2>
                     <p className="mt-4 text-black text-md/tight md:text-xl/tight">국비지원으로 듣는 0원 코딩 강의<br/>11월 7일까지 모집!</p>
+                  </div>
+                </div>
+              </Link>
+            </SwiperSlide>
+            <SwiperSlide style={{background:'#eee'}}>
+              <Link href="/">
+                <div className="flex justify-end wrap">
+                  <img
+                    src="/src/images/main_01.webp"
+                    style={{ overflow: "hidden" }}
+                    className="hidden lg:block"
+                  />
+                    <img
+                    src="/src/images/main_01_m.jpg"
+                    style={{ overflow: "hidden" }}
+                    className="block lg:hidden"
+                  />
+                  <div className="absolute top-[48%] left-6 xl:left-0 translate-y-[-50%]">
+                    <p className="inline px-3 py-2 text-center text-white rounded-r-lg rounded-tl-lg text-sm/none md:text-lg bg-primary">신규모집</p>
+                    <h2 className="mt-4 text-2xl font-bold text-black md:text-4xl/tight">직무 트렌드 추천 강의<br/>5일 한정 BIG SALE</h2>
+                    <p className="mt-4 text-black text-md/tight md:text-xl/tight">마지막 10주년 특가를<br/>지금 바로 잡아보세요!</p>
                   </div>
                 </div>
               </Link>
