@@ -27,14 +27,14 @@ export default function DetailInfo() {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-5 mt-10 lg:grid-cols-2">
-          <Accordion variant="splitted" className="px-0 font-bold">
+          <Accordion defaultExpandedKeys={["1"]} variant="splitted" className="px-0 font-bold">
             <AccordionItem key="1" aria-label="Accordion 1" title="기본정보">
               <ul className="py-3 border-t-1">
               <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">강의 및 강사 소개</li>
               </ul>
             </AccordionItem>
           </Accordion>
-          <Accordion variant="splitted" className="px-0 font-bold">
+          <Accordion defaultExpandedKeys={["1"]} variant="splitted" className="px-0 font-bold">
             <AccordionItem key="1" aria-label="Accordion 2" title="강의특징">
             <ul className="py-3 border-t-1">
                 <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">Next.js 소개 및 도구 / 환경 설정</li>
