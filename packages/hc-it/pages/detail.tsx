@@ -85,10 +85,12 @@ export default function Detail() {
           </h4>
           <div className="flex justify-center mt-10">
             <div className="relative w-full pb-[56.25%]">
-              <iframe 
+              <iframe
                 className="absolute w-full h-full" 
-                src="//www.youtube.com/embed/AwR-hYyUxd8?enablejsapi=1&amp;origin=https%3A%2F%2Ffastcampus.co.kr" 
-                title="비전공자 출신 개발자도 걱정하지 않아도 되는 이유 | 토스증권 프론트엔드 챕터 리드 최지민">
+                src="https://www.youtube.com/embed/AwR-hYyUxd8?si=-kEXN91ZujHz5ZLl" 
+                title="비전공자 출신 개발자도 걱정하지 않아도 되는 이유 | 토스증권 프론트엔드 챕터 리드 최지민" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              >
               </iframe>
             </div>
           </div>

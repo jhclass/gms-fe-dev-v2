@@ -92,7 +92,7 @@ export default function Portfolio() {
           {list.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="flex flex-row items-center px-4 py-5 overflow-hidden rounded-t-lg rounded-b r-lg bg-zinc-500 rounded-e-lg">
-                <div className="w-1/6 mr-7">
+                <div className="w-2/7 mr-7">
                   <img src={item.img} alt={item.name} />
                   <div className="flex flex-col items-center mt-2 text-xl font-bold text-zinc-300">
                     <p><span className="text-white">{item.rating}</span> / 5</p>
@@ -102,7 +102,7 @@ export default function Portfolio() {
                     </span>
                   </div>
                 </div>
-                <div className="w-5/6">
+                <div className="w-5/7">
                   <h5 className="text-sm font-bold text-zinc-300">[{item.class}] {item.name}</h5>
                   <p className="mt-1 text-base text-white">{item.content}</p>
                 </div>
