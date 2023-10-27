@@ -54,7 +54,7 @@ export default function Header() {
     return (
       <>
         <MainTopBnr/>
-        <header id="header" className="px-0 m-auto ax-w-full h-[10rem]">
+        <header id="header" className="px-0 m-auto ax-w-full h-[10rem] relative z-[40]">
           <div className={`${headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'} flex-col w-full bg-white max-w-full px-0 border-b-1`}>
             <div className="w-full bg-[#27272E] h-[2.5rem]">
               <ul className="flex items-center h-full wrap">
@@ -82,7 +82,7 @@ export default function Header() {
                 </button>
               </div>
             </div>
-            <div className="flex items-center lg:pb-3 lg:wrap h-[3.5rem]">
+            <div className="flex items-center lg:pb-2 lg:wrap h-[3.5rem]">
               <Gnb />
             </div>
           </div>

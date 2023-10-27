@@ -33,7 +33,7 @@ export default function TopBnr() {
   return (
     <>
       <div id="topBnr" className={`${detailTopbnrHidden ? 'hidden' : 'block'} h-[9.5rem]`}>
-        <div className={`${detailTopbnrFixed ? 'fixed top-[10rem] left-0 z-40' : 'relative'} flex w-full items-center justify-center overflow-hidden bg-[#eee] isolate gap-x-6 h-[9.5rem]`}>
+        <div className={`${detailTopbnrFixed ? 'fixed top-[10rem] left-0 z-[39]' : 'relative'} flex w-full items-center justify-center overflow-hidden bg-[#eee] isolate gap-x-6 h-[9.5rem]`}>
           <div className="flex flex-wrap items-center justify-center flex-3 gap-x-4 gap-y-2 wrap">
             <Link href="">
               <img src="/src/images/topbnr.jpg" alt="topbnr"/>
