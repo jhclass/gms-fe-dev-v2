@@ -29,7 +29,7 @@ export default function Review() {
               <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
                 <h5 className="text-2xl font-bold text-right"><span className="block text-base text-primary"><b className="text-zinc-600">{item.class}</b> 수강생</span>{item.name}</h5>
                 <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
-                  <p><span className="text-primary">{item.rating}</span> / 5</p>
+                  <p><span className="text-primary">{item.rating.toFixed(1).toString()}</span> / 5</p>
                   <span
                     style={{ width: `${1.45 * item.rating}rem` }}
                     className="h-[1.2rem] display star_bg">

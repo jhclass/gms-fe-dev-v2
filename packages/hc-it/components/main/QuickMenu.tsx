@@ -3,6 +3,10 @@ import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function QuickMenu() {
+  const handleTest = (e) => {
+    e.preventDefault();
+    alert(`준비중입니다. 😊`);
+  };
   return (
     <>
       <div className="flex flex-wrap items-center justify-between py-5 wrap">
@@ -61,28 +65,28 @@ export default function QuickMenu() {
             className="w-full h-6 xl:w-4/5 lg:mx-0"
           >
             <SwiperSlide>
-              <Link href={""} className="text-zinc-800">
+              <Link href="#" onClick={handleTest} className="text-zinc-800">
                 <p className="relative text-sm/sm line-clamp-1">
                   공지사항 공지사항 공지사항 공지사항 공지사항 입니다.1
                 </p>
               </Link>
             </SwiperSlide>
             <SwiperSlide>
-              <Link href={""} className="text-zinc-800">
+              <Link href="#" onClick={handleTest}  className="text-zinc-800">
                 <p className="relative text-sm/sm line-clamp-1">
                   공지사항 공지사항 공지사항 공지사항 공지사항 입니다.2
                 </p>
               </Link>
             </SwiperSlide>
             <SwiperSlide>
-              <Link href={""} className="text-zinc-800">
+              <Link href="#" onClick={handleTest}  className="text-zinc-800">
                 <p className="relative text-sm/sm line-clamp-1">
                   공지사항 공지사항 공지사항 공지사항 공지사항 입니다.3
                 </p>
               </Link>
             </SwiperSlide>
             <SwiperSlide>
-              <Link href={""} className="text-zinc-800">
+              <Link href="#" onClick={handleTest}  className="text-zinc-800">
                 <p className="relative text-sm/sm line-clamp-1">
                   공지사항 공지사항 공지사항 공지사항 공지사항 입니다.4
                 </p>
@@ -93,7 +97,9 @@ export default function QuickMenu() {
         <div className="hidden xl:block">
           <p>상담전화</p>
           <h4 className="text-3xl font-bold">
-            02)393-4321
+            <Link href="tel:02-393-4321" className="text-black">
+             02)393-4321
+            </Link>
           </h4>
         </div>
       </div>
