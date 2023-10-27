@@ -2,6 +2,10 @@ import { Link } from "@nextui-org/react";
 import MainTitle from "@/components/MainTitle";
 
 export default function MainBnr() {
+  const handleTest = (e) => {
+    e.preventDefault();
+    alert(`준비중입니다. 😊`);
+  };
   const list = [
     {
       title: "프론트엔드 로드맵 마스터",
@@ -27,7 +31,7 @@ export default function MainBnr() {
           <div className="grid grid-cols-2 mt-5 lg:grid-cols-4 sm:grid-cols-2">
             {list.map((item, index) => (
               <div key={index}>
-                <Link href="/" className="block">
+                <Link href="#" onClick={handleTest} className="block">
                   <img alt={item.title} src={item.img} width="100%"/>
                 </Link>
               </div>

@@ -52,23 +52,23 @@
     }
 
     .main_visual_pager .swiper-pagination-bullet-active {
-        @apply w-7 rounded-lg opacity-100 transition-all ease-in-out;
+        @apply transition-all ease-in-out rounded-lg opacity-100 w-7;
     }
 
     .star_bg {
         display:inline-block;
         vertical-align:center;
-        background-image: url('/src/images/ico_star_full.png');
+        background-image: url('/src/images/star.svg');
         background-repeat: repeat-x;
-        background-size: contain;
+        background-size:auto;
     }
     
     .star_bg_w {
         display:inline-block;
         vertical-align:center;
-        background-image: url('/src/images/ico_star_full_w.png');
+        background-image: url('/src/images/star_w.svg');
         background-repeat: repeat-x;
-        background-size: contain;
+        background-size:auto;
     }
 }
 

@@ -51,7 +51,7 @@ export default function DetailFixed() {
 
   return (
     <>
-      <section id="btm_fixed" className={`fixed bottom-0 left-0 z-50 w-full py-0 lg:py-3 transition-all ${detailBottomHidden ? 'translate-y-32' : ''}`}>
+      <section id="btm_fixed" className={`fixed bottom-0 left-0 z-40 w-full py-0 lg:py-3 transition-all ${detailBottomHidden ? 'translate-y-32' : ''}`}>
         <div className="flex items-center justify-center mx-auto w-full lg:max-w-[95%] xl:w-[100rem]">
           <div className="bg-[#222] w-full lg:w-[95%] xl:w-[80%] text-[#aaaaaf] py-3 px-6 flex flex-row relative justify-between lg:rounded-2xl items-center">
             <div className="flex flex-1 lg:items-center flex-col lg:flex-row lg:justify-between pr-[5rem]">

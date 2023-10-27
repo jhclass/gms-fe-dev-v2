@@ -6,6 +6,10 @@ import "swiper/css/pagination";
 import Link from "next/link";
 
 export default function MainSilder() {
+  const handleTest = (e) => {
+    e.preventDefault();
+    alert(`준비중입니다. 😊`);
+  };
     return (
       <>
         <div className="relative">
@@ -18,7 +22,7 @@ export default function MainSilder() {
             className="mySwiper1"
           >
             <SwiperSlide style={{background:'#000'}}>
-              <Link href="/">
+              <Link href="#" onClick={handleTest}>
                 <div className="flex justify-end wrap">
                   <img
                     src="/src/images/main_03.webp"
@@ -39,7 +43,7 @@ export default function MainSilder() {
               </Link>
             </SwiperSlide>
             <SwiperSlide style={{background:'#332314'}}>
-              <Link href="/">
+              <Link href="#" onClick={handleTest}>
                 <div className="flex justify-end wrap">
                   <img
                     src="/src/images/main_02.webp"
@@ -60,7 +64,7 @@ export default function MainSilder() {
               </Link>
             </SwiperSlide>
             <SwiperSlide style={{background:'#0c0918'}}>
-              <Link href="/">
+              <Link href="#" onClick={handleTest}>
                 <div className="flex justify-end wrap">
                   <img
                     src="/src/images/main_04.webp"
@@ -81,7 +85,7 @@ export default function MainSilder() {
               </Link>
             </SwiperSlide>
             <SwiperSlide style={{background:'#b1dcff'}}>
-              <Link href="/">
+              <Link href="#" onClick={handleTest}>
                 <div className="flex justify-end wrap">
                   <img
                     src="/src/images/main_05.png"
@@ -104,7 +108,7 @@ export default function MainSilder() {
               </Link>
             </SwiperSlide>
             <SwiperSlide style={{background:'#eee'}}>
-              <Link href="/">
+              <Link href="#" onClick={handleTest}>
                 <div className="flex justify-end wrap">
                   <img
                     src="/src/images/main_01.webp"
@@ -125,7 +129,7 @@ export default function MainSilder() {
               </Link>
             </SwiperSlide>
             <SwiperSlide style={{background:'#150042'}}>
-              <Link href="/">
+              <Link href="#" onClick={handleTest}>
                 <div className="flex justify-end wrap">
                   <img
                     src="/src/images/main_06.png"

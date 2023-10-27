@@ -64,7 +64,13 @@ export default function Form() {
     setValue,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: FormValues) => console.log(data);
+
+  const onSubmit = (data: FormValues) => {
+    console.log(data)
+    alert('상담 신청이 완료되었습니다 😊')
+
+  };
+
   const handleCheckboxChange = (value: string[]) => {
     setValue("groupSelected", value);
     setGroupSelected(value);
