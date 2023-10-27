@@ -11,8 +11,8 @@ import {
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
-import { groupSelectedState } from "@/lib/recoilAtoms";
-import { gql, useMutation, useQuery } from "@apollo/react-hooks";
+import { formGroupSelectedState } from "@/lib/recoilAtoms";
+import { gql, useMutation } from "@apollo/react-hooks";
 const STUDENT_STATE_MUTATION = gql`
   mutation CreateStudentState(
     $stName: String!
@@ -55,7 +55,7 @@ export default function Form() {
       console.log(data);
     },
   });
-  const [groupSelected, setGroupSelected] = useRecoilState(groupSelectedState);
+  const [groupSelected, setGroupSelected] = useRecoilState(formGroupSelectedState);
 
   const {
     register,
@@ -78,7 +78,7 @@ export default function Form() {
         
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
           <div className="hidden lg:w-1/3 lg:mr-10 lg:block">
-            <div className="w-full h-full bg-primary"></div>
+            <img src="/src/images/info.jpg" alt="HighClass" />
           </div>
           <div className="flex flex-col w-full lg:w-1/3 lg:mr-10">
             <p className="mb-3 text-base text-zinc-600">

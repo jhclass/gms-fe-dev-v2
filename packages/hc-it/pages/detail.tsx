@@ -6,12 +6,14 @@ import Curriculum from "@/components/Curriculum";
 import DetailInfo from "@/components/DetailInfo";
 import Review from "@/components/Review";
 import Portfolio from "@/components/Portfolio";
+import TopBnr from "@/components/TopBnr";
 
 export default function Detail() {
 
 
   return (
     <>
+      <TopBnr/>
       <section className="bg-black">
         <div className="text-center wrap">
           <p className="pt-20 text-center text-white">
