@@ -46,13 +46,13 @@ export const moAsideOpenState = atom<boolean>({
 });
 
 export const moMenuTabState = atom<number>({
-    key: 'moAsideOpenState',
+    key: 'moMenuTabState',
     default: 0,
 });
 
 
 export const isMenuOpenState = atom<boolean>({
-    key: 'isMenuOpenState',
+    key: 'isMenuOpenState1',
     default: false,
 });
 
