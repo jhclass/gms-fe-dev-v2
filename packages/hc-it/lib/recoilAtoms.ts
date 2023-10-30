@@ -45,9 +45,9 @@ export const moAsideOpenState = atom<boolean>({
     default: false,
 });
 
-export const moMenuTabState = atom<number>({
-    key: 'moMenuTabState',
-    default: 0,
+export const moCateOpenState = atom({
+    key: 'moCateOpenState',
+    default: [],
 });
 
 

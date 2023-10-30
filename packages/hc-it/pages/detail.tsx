@@ -7,9 +7,22 @@ import DetailInfo from "@/components/DetailInfo";
 import Review from "@/components/Review";
 import Portfolio from "@/components/Portfolio";
 import TopBnr from "@/components/TopBnr";
+import { Button } from "@nextui-org/react";
+import SlideSection from "@/components/SlideSection";
 
 export default function Detail() {
-
+  const scrollTo = (target: string): void => {
+    const consultSection = document.getElementById(target);
+    if (consultSection) {
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.clientHeight : 0;
+      const targetSectionTop = consultSection.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: targetSectionTop - headerHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <>
@@ -68,13 +81,6 @@ export default function Detail() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-      <section className="bg-black">
-        <div className="wrap">
-          <Link href={""}>
-            <img src="" />
-          </Link>
         </div>
       </section>
       <section className="pt-16 bg-black">
@@ -261,6 +267,35 @@ export default function Detail() {
         </div>
       </section>
       <section className="py-16 bg-zinc-200">
+        <SlideSection />
+      </section>
+      <section className="py-16 bg-zinc-700">
+        <div className="text-center wrap">
+          <div className="max-w-[50rem] px-5 py-10 rounded-2xl m-auto text-center border-1 border-violet-200 bg-black">
+            <p className="inline-block px-4 py-2 mb-5 text-2xl font-bold text-center text-black border-2 rounded-lg bg-violet-200 border-violet-200">
+              H-Class ONLY!!
+            </p>
+            <h4 className="text-center text-violet-200">
+              <b className="text-3xl">오직 프론트엔드 개발자를 위한 TIP🍯</b><br/>
+              <span className="inline-block mt-3 text-xl">강사님만의 차별화된 문제 해결 방식과 노화우,<br/>취업&amp;이직꿀팁까지</span>
+            </h4>
+            <p className="mt-5 text-base text-center text-white">
+              ∙ 프론트엔드 개발자의 자기소개서&amp;포트폴리오 제작방법<br/>
+              ∙ 사전과제&amp;기술면접 대비 노하우<br/>
+              ∙ 공식문서 완.벽.정.복<br/>
+              ∙ 빠르게 변하는 기술 환겨에서 트렌디한 기술 학습 방법
+            </p>
+          </div>
+          <p className="mt-5 text-lg text-center text-white">
+            30가지 이상의 기본&심화 기능 학습과 구현 실습을 동시에!<br/>
+            약 15시간 분량의 집중 공략 강의로, Next.js를 마스터 해보세요.
+          </p>
+          <Button size="lg" onPress={() => scrollTo('curriculum')} className="inline-block px-5 mt-10 text-xl font-bold rounded-xl bg-violet-200 border-violet-200">
+            강의 커리큘럼 보러가기
+          </Button>
+        </div>
+      </section>
+      <section className="py-16 bg-zinc-200">
         <div className="wrap">
           <h4 className="text-3xl font-bold text-center">강의 목표</h4>
           <ul className="mx-auto mt-6 text-base text-center lg:w-full xl:w-[80%]">
@@ -279,7 +314,7 @@ export default function Detail() {
       <section className="py-16">
         <DetailInfo />
       </section>
-      <section className="py-16 bg-zinc-200">
+      <section id="curriculum" className="py-16 bg-zinc-200">
         <Curriculum />
       </section>
       <section id="consult" className="py-20">
