@@ -73,7 +73,7 @@
 }
 
 html {
-    @apply relative text-[3.125vw] md:text-[14px] lg:text-[16px] xl:text-[16px] font-sans;
+    @apply relative text-[13px] md:text-[14px] lg:text-[16px] xl:text-[16px] font-sans;
     line-height:1.5;
     font-family: 'Pretendard Variable', 'Roboto', sans-serif;
 }
