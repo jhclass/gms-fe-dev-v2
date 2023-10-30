@@ -20,10 +20,10 @@ module.exports = {
       },
       colors: {
         'primary': '#007de9',
-        'secondary': '#00FFB2',
+        'secondary': '#0D9488',
         'flag1': '#FF5900',
         'flag2': '#FFC600',
-        'flag3': '#1700FF',
+        'flag3': '#4f46e5',
       },
       fontSize: {
         // Title 

@@ -30,7 +30,7 @@ export default function Home() {
       <div className="py-16 mt-10 bg-zinc-200">
         <MainBnr />
       </div>
-      <div className="py-16 bg-zinc-700">
+      <div className="py-16 bg-zinc-800">
         <MainReview />
       </div>
       <div className="mt-16">
