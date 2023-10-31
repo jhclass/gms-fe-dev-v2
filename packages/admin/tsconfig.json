@@ -4,8 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["*"],
-      "@/components/*": ["../academy/components/*"],
-      "@/pages/*": ["../academy/pages/*"],
+      "@/components/*": ["components/*"],
+      "@/pages/*": ["pages/*"],
       "@/styles/*": ["styles/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -27,7 +27,6 @@
     "**/*.ts",
     "**/*.tsx",
     "types.d.ts",
-    "next.config.js",
     "next.config.js"
   ],
   "exclude": ["node_modules"]

@@ -5,14 +5,14 @@ module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
-    '../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+    '../../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     screens: {
-      sm: '480px',
-      md: '1024px',
-      // lg: '976px',
-      lg: '1440px',
+      sm: '360px',
+      md: '640px',
+      lg: '960px',
+      xl: '1440px',
     },
     extend: {
       width: {
@@ -20,10 +20,10 @@ module.exports = {
       },
       colors: {
         primary: '#007de9',
-        secondary: '#0284c7',
-        // 'success': '#ff7849',
-        // 'warning': '#273444',
-        // 'danger': '#8492a6',
+        secondary: '#0D9488',
+        flag1: '#FF5900',
+        flag2: '#FFC600',
+        flag3: '#4f46e5',
       },
       fontSize: {
         // Title
