@@ -7,34 +7,40 @@ export default function Detail() {
         <div className="">
           <div>
             <h5>
-              01<br/>
+              01
+              <br />
               10개 대규모 실전 프로젝트
             </h5>
             <p>
-              설계-최적화-재사용-유지보수 등<br/>
-              FE 개발자라면 반드시 고려해야 할 것들을<br/>
+              설계-최적화-재사용-유지보수 등<br />
+              FE 개발자라면 반드시 고려해야 할 것들을
+              <br />
               프로젝트로 구현하며 익힙니다.
             </p>
           </div>
           <div>
             <h5>
-              01<br/>
+              01
+              <br />
               10개 대규모 실전 프로젝트
             </h5>
             <p>
-              설계-최적화-재사용-유지보수 등<br/>
-              FE 개발자라면 반드시 고려해야 할 것들을<br/>
+              설계-최적화-재사용-유지보수 등<br />
+              FE 개발자라면 반드시 고려해야 할 것들을
+              <br />
               프로젝트로 구현하며 익힙니다.
             </p>
           </div>
           <div>
             <h5>
-              01<br/>
+              01
+              <br />
               10개 대규모 실전 프로젝트
             </h5>
             <p>
-              설계-최적화-재사용-유지보수 등<br/>
-              FE 개발자라면 반드시 고려해야 할 것들을<br/>
+              설계-최적화-재사용-유지보수 등<br />
+              FE 개발자라면 반드시 고려해야 할 것들을
+              <br />
               프로젝트로 구현하며 익힙니다.
             </p>
           </div>
@@ -43,14 +49,17 @@ export default function Detail() {
         <div className="wrap">
           <div>
             <div>
-              <h2>고성능 대규모 프론트엔드 10개 프로젝트 : 최적화부터 유지보수까지 한 번에 끝내는 초격차 패키지 Online.</h2>
+              <h2>
+                고성능 대규모 프론트엔드 10개 프로젝트 : 최적화부터 유지보수까지
+                한 번에 끝내는 초격차 패키지 Online.
+              </h2>
             </div>
             <div>
-             <ul className="vbox">
+              <ul className="vbox">
                 <li className="hbox">
-                  <span className="list-price title">정가</span> 
+                  <span className="list-price title">정가</span>
                   <s className="s">530,000원</s>
-                </li> 
+                </li>
                 <li className="hbox">
                   <span className="price-txt title">할인 금액</span>
                   <span className="price--sale sale">
@@ -61,11 +70,11 @@ export default function Detail() {
               </ul>
               <ul className="vbox">
                 <li className="hbox salePrice">
-                  <span className="title">현재 판매가</span> 
+                  <span className="title">현재 판매가</span>
                   <span className="sale">190,000원</span>
                 </li>
                 <li className="hbox splitPrice">
-                  <p>월 15,833원</p> 
+                  <p>월 15,833원</p>
                   <span>* 12개월 무이자 할부 시</span>
                 </li>
               </ul>
@@ -80,5 +89,5 @@ export default function Detail() {
         </div>
       </div>
     </>
-  );
+  )
 }

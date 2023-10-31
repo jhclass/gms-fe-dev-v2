@@ -7,12 +7,12 @@ import {
   Tab,
   Tabs,
   Textarea,
-} from "@nextui-org/react";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { formGroupSelectedState } from "@/lib/recoilAtoms";
-import { gql, useMutation } from "@apollo/react-hooks";
+} from '@nextui-org/react'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useRecoilState } from 'recoil'
+import { formGroupSelectedState } from '@/lib/recoilAtoms'
+import { gql, useMutation } from '@apollo/react-hooks'
 const STUDENT_STATE_MUTATION = gql`
   mutation CreateStudentState(
     $stName: String!
@@ -33,29 +33,31 @@ const STUDENT_STATE_MUTATION = gql`
       ok
     }
   }
-`;
+`
 type FormValues = {
-  groupSelected: string[];
-  name: string;
-  phone: string;
-  content: string;
-  privacy: boolean;
-};
+  groupSelected: string[]
+  name: string
+  phone: string
+  content: string
+  privacy: boolean
+}
 
 export default function Form() {
   const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION, {
     variables: {
-      stName: "김상수",
-      subject: ["포토샵", "자바", "자바스크립트"],
-      campus: "신촌",
-      agreement: "동의",
-      phoneNum1: "01012341234",
+      stName: '김상수',
+      subject: ['포토샵', '자바', '자바스크립트'],
+      campus: '신촌',
+      agreement: '동의',
+      phoneNum1: '01012341234',
     },
-    onCompleted: (data) => {
-      console.log(data);
+    onCompleted: data => {
+      console.log(data)
     },
-  });
-  const [groupSelected, setGroupSelected] = useRecoilState(formGroupSelectedState);
+  })
+  const [groupSelected, setGroupSelected] = useRecoilState(
+    formGroupSelectedState,
+  )
 
   const {
     register,
@@ -63,26 +65,28 @@ export default function Form() {
     control,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm()
 
   const onSubmit = (data: FormValues) => {
     console.log(data)
     alert('상담 신청이 완료되었습니다 😊')
-
-  };
+  }
 
   const handleCheckboxChange = (value: string[]) => {
-    setValue("groupSelected", value);
-    setGroupSelected(value);
-  };
+    setValue('groupSelected', value)
+    setGroupSelected(value)
+  }
   return (
     <>
       <div className="wrap">
         <h2 className="pb-3 mb-5 text-3xl font-bold border-b-2 border-zinc-600">
           온라인 상담
         </h2>
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col lg:flex-row"
+        >
           <div className="hidden lg:w-1/3 lg:mr-10 lg:block">
             <img src="/src/images/info.jpg" alt="HighClass" />
           </div>
@@ -140,7 +144,7 @@ export default function Form() {
               <Tab key="music" title="Music"></Tab>
             </Tabs>
           </div>
-              <div className="lg:w-1/3 f-full">
+          <div className="lg:w-1/3 f-full">
             <ul className="flex flex-wrap mb-2">
               {groupSelected.map((item, index) => (
                 <li
@@ -163,8 +167,8 @@ export default function Form() {
                   type="text"
                   label="이름"
                   className="w-full"
-                  {...register("name", { required: true })}
-                  onClear={() => console.log("input cleared")}
+                  {...register('name', { required: true })}
+                  onClear={() => console.log('input cleared')}
                 />
               </li>
               <li className="py-2">
@@ -175,8 +179,8 @@ export default function Form() {
                   type="text"
                   label="휴대폰 번호"
                   className="w-full"
-                  {...register("phone", { required: true })}
-                  onClear={() => console.log("input cleared")}
+                  {...register('phone', { required: true })}
+                  onClear={() => console.log('input cleared')}
                 />
               </li>
               <li className="py-2">
@@ -184,7 +188,7 @@ export default function Form() {
                 <Textarea
                   variant="bordered"
                   placeholder="상담을 원하시는 과목과 내용을 포함하여 최대한 상세하게 적어주시면 상담에 큰 도움이 됩니다."
-                  {...register("content", { required: true })}
+                  {...register('content', { required: true })}
                   className="w-full"
                 />
               </li>
@@ -251,7 +255,7 @@ export default function Form() {
                 render={({ field }) => (
                   <Checkbox
                     value={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
+                    onChange={e => field.onChange(e.target.checked)}
                     className="mt-2"
                     size="md"
                   >
@@ -283,5 +287,5 @@ export default function Form() {
         </form>
       </div>
     </>
-  );
+  )
 }

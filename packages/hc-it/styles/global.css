@@ -4,76 +4,74 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
-
 @layer components {
-    .menuList {
-        display:none;
-        @apply absolute left-0 py-3 bg-white top-[2.25rem] w-[260px] z-[40];
-    }
-    .open {
-        display:block;
-    }
+  .menuList {
+    display: none;
+    @apply absolute left-0 py-3 bg-white top-[2.25rem] w-[260px] z-[40];
+  }
+  .open {
+    display: block;
+  }
 
-    .info_pager span {
-        @apply mx-1 cursor-pointer;
-    }
-    .info_pager .swiper-pagination-bullet-active {
-        @apply bg-primary;
-    }
+  .info_pager span {
+    @apply mx-1 cursor-pointer;
+  }
+  .info_pager .swiper-pagination-bullet-active {
+    @apply bg-primary;
+  }
 
-    .wrap {
-        @apply relative w-full px-6 lg:px-6 xl:px-0 xl:w-web xl:m-auto;
-    }
+  .wrap {
+    @apply relative w-full px-6 lg:px-6 xl:px-0 xl:w-web xl:m-auto;
+  }
 
-    .scroll {
-        -ms-overflow-style: none;
-        scrollbar-width: 0;
-        scroll-behavior: smooth;
-        -webkit-font-smoothing: antialiased;
-    }
-    .scroll::-webkit-scrollbar {
-        display: none;
-    }
+  .scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: 0;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  .scroll::-webkit-scrollbar {
+    display: none;
+  }
 
-    .scroll::-webkit-scrollbar-track {
-        background: transparent;
-    }
+  .scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-    .scroll::-webkit-scrollbar-thumb {
-        background: transparent;
-    }
+  .scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
 
-    .main_visual_pager .swiper-pagination-bullet {
-        @apply w-[0.7rem] h-[0.67rem] bg-zinc-800 md:bg-zinc-100 opacity-50 transition-all ease-in-out shadow-sm;
+  .main_visual_pager .swiper-pagination-bullet {
+    @apply w-[0.7rem] h-[0.67rem] bg-zinc-800 md:bg-zinc-100 opacity-50 transition-all ease-in-out shadow-sm;
+  }
 
-    }
+  .main_visual_pager .swiper-pagination-bullet-active {
+    @apply transition-all ease-in-out rounded-lg opacity-100 w-7;
+  }
 
-    .main_visual_pager .swiper-pagination-bullet-active {
-        @apply transition-all ease-in-out rounded-lg opacity-100 w-7;
-    }
+  .star_bg {
+    display: inline-block;
+    vertical-align: center;
+    background-image: url('/src/images/star.svg');
+    background-repeat: repeat-x;
+    background-size: auto;
+  }
 
-    .star_bg {
-        display:inline-block;
-        vertical-align:center;
-        background-image: url('/src/images/star.svg');
-        background-repeat: repeat-x;
-        background-size:auto;
-    }
-    
-    .star_bg_w {
-        display:inline-block;
-        vertical-align:center;
-        background-image: url('/src/images/star_w.svg');
-        background-repeat: repeat-x;
-        background-size:auto;
-    }
+  .star_bg_w {
+    display: inline-block;
+    vertical-align: center;
+    background-image: url('/src/images/star_w.svg');
+    background-repeat: repeat-x;
+    background-size: auto;
+  }
 }
 
 html {
-    @apply relative text-[13px] md:text-[14px] lg:text-[16px] xl:text-[16px] font-sans;
-    line-height:1.5;
-    font-family: 'Pretendard Variable', 'Roboto', sans-serif;
+  @apply relative text-[13px] md:text-[14px] lg:text-[16px] xl:text-[16px] font-sans;
+  line-height: 1.5;
+  font-family: 'Pretendard Variable', 'Roboto', sans-serif;
 }

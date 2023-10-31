@@ -1,4 +1,4 @@
-import Form from "@/components/Form";
+import Form from '@/components/Form'
 
 export default function Consult() {
   return (
@@ -7,5 +7,5 @@ export default function Consult() {
         <Form />
       </section>
     </>
-  );
+  )
 }

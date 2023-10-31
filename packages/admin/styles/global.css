@@ -4,29 +4,29 @@
 @tailwind variants;
 
 @layer components {
-    .menuList {
-        display:none;
-        @apply absolute left-0 py-3 bg-white top-[40px] w-[260px]
-    }
-    .open {
-        display:block;
-    }
+  .menuList {
+    display: none;
+    @apply absolute left-0 py-3 bg-white top-[40px] w-[260px];
+  }
+  .open {
+    display: block;
+  }
 
-    .info_pager span {
-        @apply mx-1 cursor-pointer;
-    }
-    .info_pager .swiper-pagination-bullet-active {
-        @apply bg-primary;
-    }
+  .info_pager span {
+    @apply mx-1 cursor-pointer;
+  }
+  .info_pager .swiper-pagination-bullet-active {
+    @apply bg-primary;
+  }
 }
 
 @layer utilities {
-    .wrap {
-        @apply relative w-full px-6 lg:px-0 lg:w-web lg:m-auto;
-    }
+  .wrap {
+    @apply relative w-full px-6 lg:px-0 lg:w-web lg:m-auto;
+  }
 }
 
 body {
-    @apply text-[3.125vw] lg:text-[16px] font-sans;
-    line-height:1.5;
+  @apply text-[3.125vw] lg:text-[16px] font-sans;
+  line-height: 1.5;
 }

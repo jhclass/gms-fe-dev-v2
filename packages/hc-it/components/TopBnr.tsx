@@ -1,51 +1,75 @@
-import { detailTopbnrFixedState, detailTopbnrHiddenState } from "@/lib/recoilAtoms";
-import Link from "next/link";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import {
+  detailTopbnrFixedState,
+  detailTopbnrHiddenState,
+} from '@/lib/recoilAtoms'
+import Link from 'next/link'
+import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
 
 export default function TopBnr() {
-  const [detailTopbnrFixed, setDetailTopbnrFixed] = useRecoilState(detailTopbnrFixedState);
-  const [detailTopbnrHidden, setDetailTopbnrHidden] = useRecoilState(detailTopbnrHiddenState);
+  const [detailTopbnrFixed, setDetailTopbnrFixed] = useRecoilState(
+    detailTopbnrFixedState,
+  )
+  const [detailTopbnrHidden, setDetailTopbnrHidden] = useRecoilState(
+    detailTopbnrHiddenState,
+  )
 
   const datailTopBnrClick = () => {
-    setDetailTopbnrHidden(!detailTopbnrHidden);
-  };
+    setDetailTopbnrHidden(!detailTopbnrHidden)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const topBnrTop = document.getElementById('mainTopBnr').clientHeight;
+      const currentScroll = window.scrollY
+      const topBnrTop = document.getElementById('mainTopBnr').clientHeight
 
       if (currentScroll > topBnrTop) {
-        setDetailTopbnrFixed(true);
+        setDetailTopbnrFixed(true)
       } else {
-        setDetailTopbnrFixed(false);
+        setDetailTopbnrFixed(false)
       }
-    };
+    }
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <>
-      <div id="topBnr" className={`${detailTopbnrHidden ? 'hidden' : 'block'} h-[9rem]`}>
-        <div className={`${detailTopbnrFixed ? 'fixed top-[10.5rem] left-0 z-[39]' : 'relative'} flex w-full items-center justify-center overflow-hidden bg-[#eee] isolate gap-x-6 h-[9rem]`}>
+      <div
+        id="topBnr"
+        className={`${detailTopbnrHidden ? 'hidden' : 'block'} h-[9rem]`}
+      >
+        <div
+          className={`${
+            detailTopbnrFixed ? 'fixed top-[10.5rem] left-0 z-[39]' : 'relative'
+          } flex w-full items-center justify-center overflow-hidden bg-[#eee] isolate gap-x-6 h-[9rem]`}
+        >
           <div className="flex flex-wrap items-center justify-center pr-12 lg:pr-0 flex-3 gap-x-4 gap-y-2 wrap">
             <Link href="">
-              <img src="/src/images/topbnr.jpg" alt="topbnr" className="h-full" />
+              <img
+                src="/src/images/topbnr.jpg"
+                alt="topbnr"
+                className="h-full"
+              />
             </Link>
           </div>
           <div className="flex justify-end absolute right-2 top-[50%] -mt-[1rem]">
-            <button type="button" onClick={datailTopBnrClick} className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
-              <span className="w-5 h-5 text-5xl text-black"><i className="xi-close-min"/></span>
+            <button
+              type="button"
+              onClick={datailTopBnrClick}
+              className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+            >
+              <span className="w-5 h-5 text-5xl text-black">
+                <i className="xi-close-min" />
+              </span>
             </button>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }

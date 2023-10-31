@@ -35,4 +35,3 @@ npm run dev:admin
 npm run test:academy
 npm run test:admin
 ```
-
