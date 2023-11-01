@@ -59,18 +59,18 @@ export default function Header() {
         >
           <div className="w-full bg-[#27272E] h-[2.5rem]">
             <ul className="flex items-center h-full text-lg wrap">
-              <li className="min-w-[4.5rem] h-full cursor-pointer border-x-1 border-slate-400 bg-primary">
+              <li className="min-w-[4.5rem] h-full cursor-pointer border-x-1 border-slate-400">
                 <Link
                   href="/"
+                  onClick={handleTest}
                   className="block w-full h-full text-lg text-center px-2 py-1.5 text-white"
                 >
                   IT
                 </Link>
               </li>
-              <li className="min-w-[4.5rem] h-full cursor-pointer border-r-1 border-slate-400">
+              <li className="min-w-[4.5rem] h-full cursor-pointer border-r-1 border-slate-400 bg-primary">
                 <Link
                   href="/"
-                  onClick={handleTest}
                   className="block w-full text-lg h-full text-center px-2 py-1.5 text-white"
                 >
                   Design

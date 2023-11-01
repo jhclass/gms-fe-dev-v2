@@ -6,14 +6,18 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "npm run start-hc-it && npm run start-admin",
+    "start": "npm run start-hc-it && npm run start-hc-it && npm run start-admin",
     "dev:hc-it": "cd packages/hc-it && npm run dev",
+    "dev:hc-design": "cd packages/hc-design && npm run dev",
     "dev:admin": "cd packages/admin && npm run dev",
     "build:hc-it": "cd packages/hc-it && npm run build",
+    "build:hc-design": "cd packages/hc-design && npm run build",
     "build:admin": "cd packages/admin && npm run build",
     "start:hc-it": "cd packages/hc-it && npm start",
+    "start:hc-design": "cd packages/hc-design && npm start",
     "start:admin": "cd packages/admin && npm start",
     "test:hc-it": "cd packages/hc-it && npm test",
+    "test:hc-design": "cd packages/hc-design && npm test",
     "test:admin": "cd packages/admin && npm test",
     "format": "prettier --write ."
   },
