@@ -10,10 +10,10 @@
 @layer components {
   .menuList {
     display: none;
-    @apply absolute left-0 py-3 bg-white top-[2.25rem] w-[260px] z-[40];
+    @apply absolute left-0 py-3 border-1 bg-white top-[4.5rem] w-[260px] z-[40];
   }
   .open {
-    display: block;
+    display: flex;
   }
 
   .info_pager span {
@@ -71,7 +71,7 @@
 }
 
 html {
-  @apply relative text-[13px] md:text-[14px] lg:text-[16px] xl:text-[16px] font-sans;
+  @apply relative text-[13px] md:text-[14px] lg:text-[15px] xl:text-[15px] font-sans;
   line-height: 1.5;
   font-family: 'Pretendard Variable', 'Roboto', sans-serif;
 }

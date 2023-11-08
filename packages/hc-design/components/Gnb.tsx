@@ -10,9 +10,9 @@ export default function Gnb() {
 
   return (
     <>
-      <div className="hidden mr-3 md:hidden lg:block">
+      {/* <div className="hidden mr-3 md:hidden lg:block">
         <MenuAll />
-      </div>
+      </div> */}
       <ul className="flex items-center w-full px-3 overflow-x-auto overflow-y-hidden text-lg font-bold lg:px-0 lg:w-auto whitespace-nowrap scroll">
         <li className="mx-2">
           <Link

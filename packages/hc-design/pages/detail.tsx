@@ -1,14 +1,19 @@
 import Link from 'next/link'
 import React from 'react'
 import Form from '@/components/Form'
-import DetailFixed from '@/components/DetailFixed'
-import Curriculum from '@/components/Curriculum'
-import DetailInfo from '@/components/DetailInfo'
-import Review from '@/components/Review'
-import Portfolio from '@/components/Portfolio'
-import TopBnr from '@/components/TopBnr'
+import DetailFixed from '@/components/section/DetailFixed'
+import Curriculum from '@/components/section/Curriculum01'
+import DetailInfo from '@/components/section/DetailInfo'
+import Review from '@/components/section/Review'
+import Portfolio from '@/components/section/Portfolio'
+import TopBnr from '@/components/section/TopBnr'
 import { Button } from '@nextui-org/react'
-import SlideSection from '@/components/SlideSection'
+import SlideSection from '@/components/section/SlideSection'
+import MainSection01 from '@/components/section/MainSection01'
+import Section01_3col from '@/components/section/Section01._3col'
+import Curriculum01 from '@/components/section/Curriculum01'
+import Curriculum02 from '@/components/section/Curriculum02'
+import Section01_img from '@/components/section/Section01_img'
 
 export default function Detail() {
   const scrollTo = (target: string): void => {
@@ -29,61 +34,13 @@ export default function Detail() {
     <>
       <TopBnr />
       <section className="bg-black">
-        <div className="text-center wrap">
-          <p className="pt-20 text-center text-white">
-            <span className="inline-block text-black border-2 border-[#61DAFB] bg-[#61DAFB] rounded-lg text-center text-xl font-bold px-2 py-1 mb-2">
-              프로젝트로 배우는
-            </span>
-            <br />
-            <b className="inline-block mt-5 text-4xl/[3rem]">
-              Next.js 완전 정복
-              <br />
-              확장성 높은 커머스 서비스 구축하기
-            </b>
-          </p>
-          <figure className="w-4/5 mx-auto mt-10">
-            <img src="/src/images/detail1.webp" />
-          </figure>
-        </div>
+        <MainSection01 />
       </section>
       <section className="py-16 bg-[#222222]">
-        <div className="wrap">
-          <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
-            <div className="py-10 bg-black rounded-lg">
-              <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-3 py-2 mb-2">
-                  01 Next.js로 할 수 있는 모든 것
-                </span>
-              </p>
-              <p className="mt-5 text-base text-center text-white">
-                Next.js의 기본/심화 기능을 익히고 <br />
-                완성도 높은 프로젝트를 구축부터 배포까지!
-              </p>
-            </div>
-            <div className="py-10 bg-black rounded-lg">
-              <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-3 py-2 mb-2">
-                  01 Next.js로 할 수 있는 모든 것
-                </span>
-              </p>
-              <p className="mt-5 text-base text-center text-white">
-                Next.js의 기본/심화 기능을 익히고 <br />
-                완성도 높은 프로젝트를 구축부터 배포까지!
-              </p>
-            </div>
-            <div className="py-10 bg-black rounded-lg">
-              <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#61DAFB] font-bold bg-[#61DAFB] rounded-lg px-3 py-2 mb-2">
-                  01 Next.js로 할 수 있는 모든 것
-                </span>
-              </p>
-              <p className="mt-5 text-base text-center text-white">
-                Next.js의 기본/심화 기능을 익히고 <br />
-                완성도 높은 프로젝트를 구축부터 배포까지!
-              </p>
-            </div>
-          </div>
-        </div>
+        <Section01_3col />
+      </section>
+      <section className="py-16 bg-zinc-200">
+        <Section01_img />
       </section>
       <section className="pt-16 bg-black">
         <div className="wrap">
@@ -414,7 +371,10 @@ export default function Detail() {
         <DetailInfo />
       </section>
       <section id="curriculum" className="py-16 bg-zinc-200">
-        <Curriculum />
+        <Curriculum01 />
+      </section>
+      <section id="curriculum" className="py-16">
+        <Curriculum02 />
       </section>
       <section id="consult" className="py-20">
         <Form />
