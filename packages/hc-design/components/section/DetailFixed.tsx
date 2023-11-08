@@ -1,4 +1,4 @@
-import Countdown from '@/components/Countdown'
+import Countdown from '@/components/section/Countdown'
 import { Button } from '@nextui-org/react'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'

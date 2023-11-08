@@ -1,6 +1,7 @@
 import React from 'react'
 import { moCateOpenState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
+import Link from 'next/link'
 
 export default function Accordion({
   item,
@@ -43,7 +44,7 @@ export default function Accordion({
                 moCateOpen[index] ? 'h-full block' : 'h-0 hidden'
               } py-3 text-lg text-black px-7`}
             >
-              <span>{list.title}</span>
+              <Link href={list.link}>{list.title}</Link>
             </li>
           ))}
         </ul>

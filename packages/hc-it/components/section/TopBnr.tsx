@@ -45,7 +45,9 @@ export default function TopBnr() {
       >
         <div
           className={`${
-            detailTopbnrFixed ? 'fixed top-[10.5rem] left-0 z-[39]' : 'relative'
+            detailTopbnrFixed
+              ? 'fixed top-[8rem] lg:top-[4.5rem] left-0 z-[39]'
+              : 'relative'
           } flex w-full items-center justify-center overflow-hidden bg-[#eee] isolate gap-x-6 h-[9rem]`}
         >
           <div className="flex flex-wrap items-center justify-center pr-12 lg:pr-0 flex-3 gap-x-4 gap-y-2 wrap">
@@ -57,15 +59,13 @@ export default function TopBnr() {
               />
             </Link>
           </div>
-          <div className="flex justify-end absolute right-2 top-[50%] -mt-[1rem]">
+          <div className="flex justify-end absolute right-2 top-[50%] -mt-[1.5rem]">
             <button
               type="button"
               onClick={datailTopBnrClick}
               className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
             >
-              <span className="w-5 h-5 text-5xl text-black">
-                <i className="xi-close-min" />
-              </span>
+              <i className="text-5xl text-black xi-close-min" />
             </button>
           </div>
         </div>
