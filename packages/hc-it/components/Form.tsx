@@ -4,6 +4,8 @@ import {
   CheckboxGroup,
   Input,
   ScrollShadow,
+  Select,
+  SelectItem,
   Tab,
   Tabs,
   Textarea,
@@ -36,29 +38,19 @@ const STUDENT_STATE_MUTATION = gql`
 `
 type FormValues = {
   groupSelected: string[]
+  campus: string
+  cate: string
   name: string
   phone: string
-  content: string
+  contents: string
   privacy: boolean
 }
 
 export default function Form() {
-  const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION, {
-    variables: {
-      stName: '김상수',
-      subject: ['포토샵', '자바', '자바스크립트'],
-      campus: '신촌',
-      agreement: '동의',
-      phoneNum1: '01012341234',
-    },
-    onCompleted: data => {
-      console.log(data)
-    },
-  })
+  const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
   const [groupSelected, setGroupSelected] = useRecoilState(
     formGroupSelectedState,
   )
-
   const {
     register,
     handleSubmit,
@@ -67,9 +59,23 @@ export default function Form() {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data)
-    alert('상담 신청이 완료되었습니다 😊')
+  const onSubmit = async (data: FormValues) => {
+    try {
+      await studentStateResult({
+        variables: {
+          stName: data.name,
+          subject: data.groupSelected,
+          campus: data.campus,
+          category: data.cate,
+          agreement: data.privacy ? '동의' : '비동의',
+          phoneNum1: data.phone,
+          detail: data.contents,
+        },
+      })
+      alert('상담 신청이 완료되었습니다 😊')
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleCheckboxChange = (value: string[]) => {
@@ -159,6 +165,37 @@ export default function Form() {
               ))}
             </ul>
             <ul>
+              <li className="hidden py-2">
+                <Select
+                  variant="bordered"
+                  label="분야"
+                  className="w-full"
+                  defaultSelectedKeys={['IT']}
+                  isDisabled={true}
+                  {...register('cate', { required: true })}
+                >
+                  <SelectItem value={'그래픽'} key={'그래픽'}>
+                    그래픽
+                  </SelectItem>
+                  <SelectItem value={'IT'} key={'IT'}>
+                    IT
+                  </SelectItem>
+                </Select>
+              </li>
+              <li className="hidden py-2">
+                <Select
+                  variant="bordered"
+                  label="캠퍼스"
+                  className="w-full"
+                  defaultSelectedKeys={['신촌']}
+                  isDisabled={true}
+                  {...register('campus', { required: true })}
+                >
+                  <SelectItem value={'신촌'} key={'신촌'}>
+                    신촌
+                  </SelectItem>
+                </Select>
+              </li>
               <li className="py-2">
                 <Input
                   isClearable
@@ -188,7 +225,7 @@ export default function Form() {
                 <Textarea
                   variant="bordered"
                   placeholder="상담을 원하시는 과목과 내용을 포함하여 최대한 상세하게 적어주시면 상담에 큰 도움이 됩니다."
-                  {...register('content', { required: true })}
+                  {...register('contents', { required: true })}
                   className="w-full"
                 />
               </li>
@@ -277,9 +314,9 @@ export default function Form() {
               온라인 상담 신청하기
             </Button>
             <Button
+              type="submit"
               size="lg"
               className="w-full mt-5 text-xl text-white rounded-lg bg-primary"
-              onClick={() => studentStateResult()}
             >
               API TEST
             </Button>

@@ -59,77 +59,77 @@ export default function Header() {
           } flex-col w-full bg-white max-w-full px-0 border-b-1`}
         >
           <div className="flex wrap items-center justify-between w-full max-w-[1440px] h-[4.5rem] border-b-1 border-primary lg:border-b-0">
-            <div className="flex items-center py-3">
+            <div className="flex items-center h-full">
               <h1 className="grow-0">
-                <Link href="/" className="block w-[10rem]">
+                <Link href="/" className="block w-[10rem] py-3">
                   <img src="/src/images/hc_logo_2.svg" />
                 </Link>
               </h1>
-            </div>
-            <div className="items-center hidden h-full px-10 max-w-[calc(100%-20rem)] lg:flex">
-              <div className="min-w-[5.5rem] relative hidden h-full mr-3 md:hidden lg:block after:w-[1px]">
-                <MenuAll />
+              <div className="items-center hidden h-full px-10 lg:flex">
+                <div className="min-w-[5.5rem] relative hidden h-full mr-3 md:hidden lg:block after:w-[1px]">
+                  <MenuAll />
+                </div>
+                <ul className="flex items-center px-3 scroll overflow-x-auto overflow-y-hidden text-lg font-base max-w-[87%] w-auto lg:px-0 whitespace-nowrap scroll_sm">
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="#"
+                      onClick={handleTest}
+                      className="py-3 lg:py-0"
+                    >
+                      ⭐BEST 강의 특별전
+                    </Link>
+                  </li>
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="#"
+                      onClick={handleTest}
+                      className="py-3 lg:py-0"
+                    >
+                      😍얼리버드할인
+                    </Link>
+                  </li>
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="#"
+                      onClick={handleTest}
+                      className="py-3 lg:py-0"
+                    >
+                      🔥타임세일
+                    </Link>
+                  </li>
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="#"
+                      onClick={handleTest}
+                      className="py-3 lg:py-0"
+                    >
+                      😍얼리버드할인
+                    </Link>
+                  </li>
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="#"
+                      onClick={handleTest}
+                      className="py-3 lg:py-0"
+                    >
+                      🔥타임세일
+                    </Link>
+                  </li>
+                </ul>
               </div>
-              <ul className="flex items-center px-3 scroll overflow-x-auto overflow-y-hidden text-lg font-base max-w-[87%] w-auto lg:px-0 whitespace-nowrap scroll_sm">
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    ⭐BEST 강의 특별전
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    😍얼리버드할인
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    🔥타임세일
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    😍얼리버드할인
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    🔥타임세일
-                  </Link>
-                </li>
-              </ul>
             </div>
             <div className="flex items-center justify-end py-3">
               <Button
                 onClick={consultClick}
                 variant="flat"
-                className="hidden text-white lg:block bg-zinc-700"
+                className="hidden bg-white text-zinc-700 border-1 lg:block border-zinc-700"
               >
-                온라인 상담
+                지금 바로 문의하기
               </Button>
               <Link
                 href="/consult"
