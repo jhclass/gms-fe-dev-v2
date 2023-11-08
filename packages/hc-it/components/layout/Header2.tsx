@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { headerFixedState, moMenuOpenState } from '@/lib/recoilAtoms'
 import { useEffect } from 'react'
-import MenuAll from '../MenuAll'
 
 export default function Header() {
   const handleTest = e => {
@@ -51,79 +50,44 @@ export default function Header() {
       <MainTopBnr />
       <header
         id="header"
-        className="px-0 m-auto ax-w-full h-[8rem] lg:h-[4.5rem] relative z-[40]"
+        className="px-0 m-auto ax-w-full h-[10rem] relative z-[40]"
       >
         <div
           className={`${
             headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'
           } flex-col w-full bg-white max-w-full px-0 border-b-1`}
         >
-          <div className="flex wrap items-center justify-between w-full max-w-[1440px] h-[4.5rem] border-b-1 border-primary lg:border-b-0">
-            <div className="flex items-center py-3">
-              <h1 className="grow-0">
+          <div className="w-full bg-[#27272E] h-[2.5rem]">
+            <ul className="flex items-center h-full text-lg wrap">
+              <li className="min-w-[4.5rem] h-full cursor-pointer border-x-1 border-slate-400 bg-primary">
+                <Link
+                  href="https://testit.h-class.co.kr"
+                  className="block w-full h-full text-lg text-center px-2 py-1.5 text-white"
+                >
+                  IT
+                </Link>
+              </li>
+              <li className="min-w-[4.5rem] h-full cursor-pointer border-r-1 border-slate-400">
+                <Link
+                  href="https://testdesign.h-class.co.kr"
+                  onClick={handleTest}
+                  className="block w-full text-lg h-full text-center px-2 py-1.5 text-white"
+                >
+                  Design
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="flex wrap items-center justify-between w-full max-w-[1440px] h-[4.5rem] border-b-1 border-primary py-3 lg:border-b-0">
+            <div className="flex items-center">
+              <h1 className="mr-10 grow-0">
                 <Link href="/" className="block w-[10rem]">
                   <img src="/src/images/hc_logo_2.svg" />
                 </Link>
               </h1>
+              <SearchBox />
             </div>
-            <div className="items-center hidden h-full px-10 max-w-[calc(100%-20rem)] lg:flex">
-              <div className="min-w-[5.5rem] relative hidden h-full mr-3 md:hidden lg:block after:w-[1px]">
-                <MenuAll />
-              </div>
-              <ul className="flex items-center px-3 scroll overflow-x-auto overflow-y-hidden text-lg font-base max-w-[87%] w-auto lg:px-0 whitespace-nowrap scroll_sm">
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    ⭐BEST 강의 특별전
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    😍얼리버드할인
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    🔥타임세일
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    😍얼리버드할인
-                  </Link>
-                </li>
-                <li className="mx-2">
-                  <Link
-                    color="foreground"
-                    href="#"
-                    onClick={handleTest}
-                    className="py-3 lg:py-0"
-                  >
-                    🔥타임세일
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="flex items-center justify-end py-3">
+            <div className="flex items-center justify-end">
               <Button
                 onClick={consultClick}
                 variant="flat"
@@ -146,7 +110,7 @@ export default function Header() {
               </button>
             </div>
           </div>
-          <div className="flex items-center lg:pb-2 lg:wrap h-[3.5rem] lg:hidden">
+          <div className="flex items-center lg:pb-2 lg:wrap h-[3.5rem]">
             <Gnb />
           </div>
         </div>

@@ -11,13 +11,20 @@ export default function MenuAll() {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative h-full">
         <div
           onMouseEnter={() => setIsMenuOpen(true)}
           onMouseLeave={() => setIsMenuOpen(false)}
-          className="min-w-[6.4rem] cursor-pointer relative px-4 py-0.5 md:block lg:block hidden hover:opacity-80 subpixel-antialiased font-normal text-white no-underline align-middle transition-opacity bg-primary leading-[2rem] tap-highlight-transparent rounded-medium transition-transform-colors motion-reduce:transition-indigonone"
+          className="relative items-center hidden h-full text-lg font-boldcursor-pointer md:flex lg:flex min-w-[5.5rem]"
         >
-          전체 메뉴
+          <span
+            className={`px-2 rounded-lg bg-primary border-1 border-primary ${
+              isMenuOpen ? 'bg-white text-primary' : 'bg-primary text-white'
+            }`}
+          >
+            Menu
+            <i className="align-middle text-xl/none xi-angle-down-min" />
+          </span>
         </div>
         <MenuList isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
       </div>
