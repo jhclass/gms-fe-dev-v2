@@ -66,18 +66,17 @@ export default function Form() {
           stName: data.name,
           subject: data.groupSelected,
           campus: data.campus,
-          category: data.cate,
           agreement: data.privacy ? '동의' : '비동의',
           phoneNum1: data.phone,
-          detail: data.contents,
+        },
+        onCompleted: data => {
+          console.log(data)
         },
       })
-      alert('상담 신청이 완료되었습니다 😊')
     } catch (error) {
       console.error(error)
     }
   }
-
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
     setGroupSelected(value)
@@ -171,8 +170,7 @@ export default function Form() {
                   label="분야"
                   className="w-full"
                   defaultSelectedKeys={['IT']}
-                  isDisabled={true}
-                  {...register('cate', { required: true })}
+                  // {...register('cate', { required: true })}
                 >
                   <SelectItem value={'그래픽'} key={'그래픽'}>
                     그래픽
@@ -188,7 +186,6 @@ export default function Form() {
                   label="캠퍼스"
                   className="w-full"
                   defaultSelectedKeys={['신촌']}
-                  isDisabled={true}
                   {...register('campus', { required: true })}
                 >
                   <SelectItem value={'신촌'} key={'신촌'}>
@@ -225,7 +222,7 @@ export default function Form() {
                 <Textarea
                   variant="bordered"
                   placeholder="상담을 원하시는 과목과 내용을 포함하여 최대한 상세하게 적어주시면 상담에 큰 도움이 됩니다."
-                  {...register('contents', { required: true })}
+                  // {...register('contents', { required: true })}
                   className="w-full"
                 />
               </li>
@@ -312,13 +309,6 @@ export default function Form() {
               className="w-full mt-5 text-xl text-white rounded-lg bg-primary"
             >
               온라인 상담 신청하기
-            </Button>
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full mt-5 text-xl text-white rounded-lg bg-primary"
-            >
-              API TEST
             </Button>
           </div>
         </form>
