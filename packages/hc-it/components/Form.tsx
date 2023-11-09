@@ -23,7 +23,6 @@ const STUDENT_STATE_MUTATION = gql`
     $subject: [String!]
     $phoneNum1: String!
     $detail: String
-    $category: String
     $subDiv: String
   ) {
     createStudentState(
@@ -33,7 +32,6 @@ const STUDENT_STATE_MUTATION = gql`
       subject: $subject
       phoneNum1: $phoneNum1
       detail: $detail
-      category: $category
       subDiv: $subDiv
     ) {
       error
@@ -45,7 +43,6 @@ const STUDENT_STATE_MUTATION = gql`
 type FormValues = {
   groupSelected: string[]
   campus: string
-  cate: string
   name: string
   phone: string
   contents: string
@@ -77,7 +74,6 @@ export default function Form() {
           agreement: data.privacy ? '동의' : '비동의',
           phoneNum1: data.phone,
           detail: data.contents,
-          category: data.cate,
           subDiv: data.subDiv,
         },
         onCompleted: data => {
@@ -280,22 +276,6 @@ export default function Form() {
                   name="온라인"
                   {...register('subDiv')}
                 />
-              </li>
-              <li className="hidden py-2">
-                <Select
-                  variant="bordered"
-                  label="분야"
-                  className="w-full"
-                  defaultSelectedKeys={['IT']}
-                  {...register('cate')}
-                >
-                  <SelectItem value={'그래픽'} key={'그래픽'}>
-                    그래픽
-                  </SelectItem>
-                  <SelectItem value={'IT'} key={'IT'}>
-                    IT
-                  </SelectItem>
-                </Select>
               </li>
               <li className="hidden py-2">
                 <Select
