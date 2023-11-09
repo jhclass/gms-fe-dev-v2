@@ -10,7 +10,7 @@ import {
   Tabs,
   Textarea,
 } from '@nextui-org/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useRecoilState } from 'recoil'
 import { formGroupSelectedState } from '@/lib/recoilAtoms'
@@ -22,6 +22,9 @@ const STUDENT_STATE_MUTATION = gql`
     $agreement: String!
     $subject: [String!]
     $phoneNum1: String!
+    $detail: String
+    $category: String
+    $subDiv: String
   ) {
     createStudentState(
       stName: $stName
@@ -29,6 +32,9 @@ const STUDENT_STATE_MUTATION = gql`
       agreement: $agreement
       subject: $subject
       phoneNum1: $phoneNum1
+      detail: $detail
+      category: $category
+      subDiv: $subDiv
     ) {
       error
       message
@@ -44,6 +50,7 @@ type FormValues = {
   phone: string
   contents: string
   privacy: boolean
+  subDiv: string
 }
 
 export default function Form() {
@@ -56,6 +63,7 @@ export default function Form() {
     handleSubmit,
     control,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useForm()
 
@@ -68,6 +76,9 @@ export default function Form() {
           campus: data.campus,
           agreement: data.privacy ? '동의' : '비동의',
           phoneNum1: data.phone,
+          detail: data.contents,
+          category: data.cate,
+          subDiv: data.subDiv,
         },
         onCompleted: data => {
           console.log(data)
@@ -77,10 +88,24 @@ export default function Form() {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    if (groupSelected.length !== 0) {
+      clearErrors('groupSelected')
+    }
+  }, [groupSelected])
+
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
     setGroupSelected(value)
   }
+
+  const handleRemoveItem = (index: number) => {
+    const updatedGroupSelected = groupSelected.filter((_, i) => i !== index)
+    setValue('groupSelected', updatedGroupSelected)
+    setGroupSelected(updatedGroupSelected)
+  }
+
   return (
     <>
       <div className="wrap">
@@ -99,19 +124,93 @@ export default function Form() {
             <p className="mb-3 text-base text-zinc-600">
               원하시는 과정을 선택해주세요. 교육과정은 중복 선택이 가능합니다.
             </p>
-            <Tabs aria-label="Options" color="primary" className="w-full">
-              <Tab key="IT" title="IT">
-                <div className="w-full border-2 rounded-lg p-7">
-                  <Controller
-                    control={control}
-                    name="groupSelected"
-                    render={({ field }) => (
+            <Controller
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: '과정을 최소 1개 이상 선택해주세요.',
+                },
+              }}
+              name="groupSelected"
+              render={({ field, fieldState }) => (
+                <Tabs aria-label="Options" color="primary" className="w-full">
+                  <Tab key="Design" title="디자인">
+                    <div className="w-full border-2 rounded-lg p-7">
                       <CheckboxGroup
                         value={groupSelected}
                         onValueChange={handleCheckboxChange}
                       >
                         <h4 className="text-base text-primary">커리어패스</h4>
-                        <Checkbox size="md" value="파이썬" name="ss">
+                        <Checkbox size="md" value="웹툰">
+                          <span className="text-lg text-zinc-600">웹툰</span>
+                        </Checkbox>
+                        <Checkbox size="md" value="이모티콘">
+                          <span className="text-lg text-zinc-600">
+                            이모티콘
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="컴퓨터그래픽스운용기능사">
+                          <span className="text-lg text-zinc-600">
+                            컴퓨터그래픽스운용기능사
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="웹디자인기능사">
+                          <span className="text-lg text-zinc-600">
+                            웹디자인기능사
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="OA">
+                          <span className="text-lg text-zinc-600">OA</span>
+                        </Checkbox>
+                        <Checkbox size="md" value="실내건축">
+                          <span className="text-lg text-zinc-600">
+                            실내건축
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="영상편집">
+                          <span className="text-lg text-zinc-600">
+                            영상편집
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="포토샵(단기)">
+                          <span className="text-lg text-zinc-600">
+                            포토샵(단기)
+                          </span>
+                        </Checkbox>
+                        <h4 className="text-base text-primary">국비지원</h4>
+                        <Checkbox
+                          size="md"
+                          value="[과정평가형] 실내건축산업기사"
+                        >
+                          <span className="text-lg text-zinc-600">
+                            [과정평가형] 실내건축산업기사
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="광고홍보 영상편집">
+                          <span className="text-lg text-zinc-600">
+                            광고홍보 영상편집
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="디지털디자인 영상편집">
+                          <span className="text-lg text-zinc-600">
+                            디지털디자인 영상편집
+                          </span>
+                        </Checkbox>
+                        <Checkbox size="md" value="GTQ">
+                          <span className="text-lg text-zinc-600">GTQ</span>
+                        </Checkbox>
+                      </CheckboxGroup>
+                    </div>
+                  </Tab>
+                  <Tab key="IT" title="IT">
+                    <div className="w-full border-2 rounded-lg p-7">
+                      <CheckboxGroup
+                        value={groupSelected}
+                        onValueChange={handleCheckboxChange}
+                      >
+                        <h4 className="text-base text-primary">커리어패스</h4>
+                        <Checkbox size="md" value="파이썬">
                           <span className="text-lg text-zinc-600">파이썬</span>
                         </Checkbox>
                         <Checkbox size="md" value="React">
@@ -142,12 +241,11 @@ export default function Form() {
                           </span>
                         </Checkbox>
                       </CheckboxGroup>
-                    )}
-                  />
-                </div>
-              </Tab>
-              <Tab key="music" title="Music"></Tab>
-            </Tabs>
+                    </div>
+                  </Tab>
+                </Tabs>
+              )}
+            />
           </div>
           <div className="lg:w-1/3 f-full">
             <ul className="flex flex-wrap mb-2">
@@ -157,20 +255,39 @@ export default function Form() {
                   className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"
                 >
                   <span>{item}</span>
-                  <button className="text-lg text-center text-primary">
+                  <button
+                    onClick={() => handleRemoveItem(index)}
+                    className="text-lg text-center text-primary"
+                  >
                     <i className="xi-close-min" />
                   </button>
                 </li>
               ))}
+              {errors.groupSelected && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.groupSelected.message)}
+                </p>
+              )}
             </ul>
             <ul>
+              <li className="hidden py-2">
+                <Input
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="상담 구분"
+                  className="w-full"
+                  name="온라인"
+                  {...register('subDiv')}
+                />
+              </li>
               <li className="hidden py-2">
                 <Select
                   variant="bordered"
                   label="분야"
                   className="w-full"
                   defaultSelectedKeys={['IT']}
-                  // {...register('cate', { required: true })}
+                  {...register('cate')}
                 >
                   <SelectItem value={'그래픽'} key={'그래픽'}>
                     그래픽
@@ -186,12 +303,22 @@ export default function Form() {
                   label="캠퍼스"
                   className="w-full"
                   defaultSelectedKeys={['신촌']}
-                  {...register('campus', { required: true })}
+                  {...register('campus', {
+                    required: {
+                      value: true,
+                      message: '지점을 선택해주세요.',
+                    },
+                  })}
                 >
                   <SelectItem value={'신촌'} key={'신촌'}>
                     신촌
                   </SelectItem>
                 </Select>
+                {errors.campus && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.campus.message)}
+                  </p>
+                )}
               </li>
               <li className="py-2">
                 <Input
@@ -201,9 +328,23 @@ export default function Form() {
                   type="text"
                   label="이름"
                   className="w-full"
-                  {...register('name', { required: true })}
+                  {...register('name', {
+                    required: {
+                      value: true,
+                      message: '이름을 입력해주세요.',
+                    },
+                    pattern: {
+                      value: /^[ㄱ-ㅎ|가-힣]+$/,
+                      message: '한글로 입력해주세요.',
+                    },
+                  })}
                   onClear={() => console.log('input cleared')}
                 />
+                {errors.name && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.name.message)}
+                  </p>
+                )}
               </li>
               <li className="py-2">
                 <Input
@@ -213,18 +354,52 @@ export default function Form() {
                   type="text"
                   label="휴대폰 번호"
                   className="w-full"
-                  {...register('phone', { required: true })}
+                  maxLength={11}
+                  {...register('phone', {
+                    required: {
+                      value: true,
+                      message: '번호를 입력해주세요.',
+                    },
+                    maxLength: {
+                      value: 11,
+                      message: '최대 11자리까지 입력 가능합니다.',
+                    },
+                    minLength: {
+                      value: 10,
+                      message: '최소 10자리 이상이어야 합니다.',
+                    },
+                    pattern: {
+                      value: /^010[0-9]{7,8}$/,
+                      message: '010으로 시작해주세요.',
+                    },
+                  })}
                   onClear={() => console.log('input cleared')}
                 />
+                {errors.phone && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.phone.message)}
+                  </p>
+                )}
               </li>
               <li className="py-2">
                 <p className="text-lg font-bold">상담 내용</p>
                 <Textarea
+                  maxLength={300}
                   variant="bordered"
                   placeholder="상담을 원하시는 과목과 내용을 포함하여 최대한 상세하게 적어주시면 상담에 큰 도움이 됩니다."
-                  // {...register('contents', { required: true })}
+                  {...register('contents', {
+                    maxLength: {
+                      value: 300,
+                      message: '최대 300자리까지 입력 가능합니다.',
+                    },
+                  })}
                   className="w-full"
                 />
+                {errors.contents && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.contents.message)}
+                  </p>
+                )}
               </li>
             </ul>
             <div>
@@ -298,7 +473,7 @@ export default function Form() {
                 )}
               />
               {errors.privacy && (
-                <p className="text-sm text-red-600">
+                <p className="text-xs text-red-500">
                   개인정보수집 및 이용에 동의를 체크해주세요.
                 </p>
               )}
