@@ -47,7 +47,10 @@ export const moAsideOpenState = atom<boolean>({
 
 export const moCateOpenState = atom({
   key: 'moCateOpenState',
-  default: [],
+  default: {
+    cateNum: 0,
+    cateOpen: false,
+  },
 })
 
 export const isMenuOpenState = atom<boolean>({
