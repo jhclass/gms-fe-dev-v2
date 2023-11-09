@@ -3,6 +3,7 @@ import { moMenuOpenState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
 import { useRecoilState } from 'recoil'
 import Accordion from '@/components/Accordion'
+import router from 'next/router'
 
 export default function Menu() {
   const [moMenuOpen, setmoMenuOpen] = useRecoilState(moMenuOpenState)
@@ -147,7 +148,7 @@ export default function Menu() {
               </Link>
             </li>
           </ul>
-          <div className="h-[calc(100%-4rem)]">
+          <div className="h-[calc(100%-9rem)] overflow-y-auto">
             {menu.map((item, index) => (
               <Accordion key={index} item={item} index={index} />
             ))}
