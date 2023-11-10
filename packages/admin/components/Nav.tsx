@@ -127,7 +127,7 @@ export default function Header() {
           </ConBox>
         </NavWrap>
       </NavSec>
-      {navOpen &&   <Dim/>  }
+      {navOpen &&   <Dim onClick={toggleNav} />  }
       
     </>
   )

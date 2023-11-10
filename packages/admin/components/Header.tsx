@@ -216,7 +216,7 @@ export default function Header() {
       <HeaderSec $navOpen={navOpen}>
         <HeaderLt>
           <MenuBtn onClick={toggleNav}><i className="text-zinc-500 xi-hamburger-back" /></MenuBtn>
-          <MenuBtnMo onClick={toggleNav}><i className="text-zinc-500 xi-xi-bars" /></MenuBtnMo>
+          <MenuBtnMo onClick={toggleNav}><i className="text-zinc-500 xi-bars" /></MenuBtnMo>
         </HeaderLt>
         <HeaderRt>
           <NotiBtn>
