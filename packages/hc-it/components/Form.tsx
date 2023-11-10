@@ -15,6 +15,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { useRecoilState } from 'recoil'
 import { formGroupSelectedState } from '@/lib/recoilAtoms'
 import { gql, useMutation } from '@apollo/react-hooks'
+import badwords from '@/lib/badwords.json'
+
 const STUDENT_STATE_MUTATION = gql`
   mutation CreateStudentState(
     $stName: String!
@@ -55,31 +57,40 @@ export default function Form() {
   const [groupSelected, setGroupSelected] = useRecoilState(
     formGroupSelectedState,
   )
+  const regExp= new RegExp(badwords.join('|'), 'i')
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    setError,
     clearErrors,
+    setFocus,
     formState: { errors },
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
     try {
-      await studentStateResult({
-        variables: {
-          stName: data.name,
-          subject: data.groupSelected,
-          campus: data.campus,
-          agreement: data.privacy ? '동의' : '비동의',
-          phoneNum1: data.phone,
-          detail: data.contents,
-          subDiv: data.subDiv,
-        },
-        onCompleted: data => {
-          console.log(data)
-        },
-      })
+      if (regExp.test(data.contents)) {
+        setError('contents', {
+          type: 'manual',
+          message: '비속어는 사용불가능합니다.',
+        })
+        setFocus('contents')
+      } else {
+        await studentStateResult({
+          variables: {
+            stName: data.name,
+            subject: data.groupSelected,
+            campus: data.campus,
+            agreement: data.privacy ? '동의' : '비동의',
+            phoneNum1: data.phone,
+            detail: data.contents,
+            subDiv: data.subDiv,
+          },
+        })
+        alert('상담신청이 완료되었습니다. 😊')
+      }
     } catch (error) {
       console.error(error)
     }
