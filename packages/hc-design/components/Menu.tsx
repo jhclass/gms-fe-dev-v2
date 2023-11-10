@@ -111,9 +111,9 @@ export default function Menu() {
       <div
         className={`${
           moMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        } transition-all duration-150 ease-in-out fixed flex justify-end top-0 right-0 w-full h-[100%] z-50`}
+        } transition-all duration-150 ease-in-out fixed flex justify-end top-0 right-0 w-[90%] h-[100%] z-50`}
       >
-        <div className="w-[90%] h-full bg-white">
+        <div className="w-full h-full bg-white">
           <div className="px-3 items-center justify-between flex h-[5rem] bg-white">
             <Link href="#" className="flex items-center">
               <span className="mr-1 text-5xl text-primary">
@@ -156,6 +156,7 @@ export default function Menu() {
         </div>
       </div>
       <div
+        onClick={handleButtonClick}
         className={`${
           moMenuOpen ? 'block' : 'hidden'
         } fixed top-0 left-0 w-full h-[100%] bg-black/80 z-[49]`}

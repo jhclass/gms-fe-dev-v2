@@ -105,7 +105,6 @@ export default function Form() {
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
     setGroupSelected(value)
-    console.log(regExp)
   }
 
   const handleRemoveItem = (index: number) => {
