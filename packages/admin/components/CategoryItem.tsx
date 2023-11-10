@@ -50,7 +50,7 @@ const CateActive = styled(motion.div)`
 `
 
 
-export default function CategoryItem({
+export default function CategoryItem<CategoryItemProps>({
   href,
   iconSrc,
   alt,
