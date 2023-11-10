@@ -1,3 +1,4 @@
+import Header from '@/components/Header'
 import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
 
@@ -8,7 +9,7 @@ const Container = styled.div`
   height: 100vh;
 `
 
-const Title = styled.h1`
+const Nav = styled.nav`
   font-size: 2rem;
   color: #333;
 `
@@ -22,8 +23,8 @@ export default function Home() {
   return (
     <>
       <Container>
-        <Title>행복하다 집가쟈~</Title>
-        <Button>click</Button>
+        <Header />
+        <Nav></Nav>
       </Container>
     </>
   )
