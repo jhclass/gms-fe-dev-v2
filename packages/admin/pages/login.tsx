@@ -177,7 +177,7 @@ export default function Login() {
                 variants={InputVariants}
                 initial="initial"
                 animate={loginPasswordFocus || passValue ? 'focus' : 'initial'}
-                htmlFor="id"
+                htmlFor="password"
               >
                 Password
               </Label>
