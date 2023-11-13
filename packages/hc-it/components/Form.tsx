@@ -57,43 +57,47 @@ export default function Form() {
   const [groupSelected, setGroupSelected] = useRecoilState(
     formGroupSelectedState,
   )
-  const regExp= new RegExp(badwords.join('|'), 'i')
+  const regExp = new RegExp(badwords.join('|'), 'i')
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    getValues,
     setError,
     clearErrors,
     setFocus,
-    formState: { errors },
+    reset,
+    formState,
+    formState: { errors, isSubmitSuccessful },
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
-    try {
-      if (regExp.test(data.contents)) {
-        setError('contents', {
-          type: 'manual',
-          message: '비속어는 사용불가능합니다.',
-        })
-        setFocus('contents')
-      } else {
-        await studentStateResult({
-          variables: {
-            stName: data.name,
-            subject: data.groupSelected,
-            campus: data.campus,
-            agreement: data.privacy ? '동의' : '비동의',
-            phoneNum1: data.phone,
-            detail: data.contents,
-            subDiv: data.subDiv,
-          },
-        })
-        alert('상담신청이 완료되었습니다. 😊')
-      }
-    } catch (error) {
-      console.error(error)
-    }
+    // try {
+    //   if (regExp.test(data.contents)) {
+    //     setError('contents', {
+    //       type: 'manual',
+    //       message: '비속어는 사용불가능합니다.',
+    //     })
+    //     setFocus('contents')
+    //   } else {
+    //     await studentStateResult({
+    //       variables: {
+    //         stName: data.name,
+    //         subject: data.groupSelected,
+    //         campus: data.campus,
+    //         agreement: data.privacy ? '동의' : '비동의',
+    //         phoneNum1: data.phone,
+    //         detail: data.contents,
+    //         subDiv: data.subDiv,
+    //       },
+    //     })
+    //     alert('상담신청이 완료되었습니다. 😊')
+    //   }
+    // } catch (error) {
+    //   console.error(error)
+    // }
+    alert('상담신청이 완료되었습니다. 😊')
   }
 
   useEffect(() => {
@@ -101,6 +105,22 @@ export default function Form() {
       clearErrors('groupSelected')
     }
   }, [groupSelected])
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      // Reset the form and checkbox state when the submission is successful
+      reset({
+        campus: '',
+        name: '',
+        phone: '',
+        contents: '',
+        subDiv: '',
+      })
+      setValue('groupSelected', [])
+      setValue('privacy', false)
+      console.log(getValues('privacy'))
+    }
+  }, [formState.isSubmitSuccessful, reset, setValue])
 
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
@@ -454,8 +474,9 @@ export default function Form() {
                 name="privacy"
                 render={({ field }) => (
                   <Checkbox
+                    isSelected={field.value}
+                    onChange={e => setValue('privacy', e.target.checked)}
                     value={field.value}
-                    onChange={e => field.onChange(e.target.checked)}
                     className="mt-2"
                     size="md"
                   >

@@ -4,10 +4,11 @@ import Layout from '@/components/layout/Layout'
 import { NextUIProvider } from '@nextui-org/react'
 import { ApolloProvider } from '@apollo/client'
 import apolloClient from '@/lib/apolloClient'
-import { RecoilRoot } from 'recoil'
+import { RecoilRoot, RecoilEnv } from 'recoil'
 import Head from 'next/head'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>
