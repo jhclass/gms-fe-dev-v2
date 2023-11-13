@@ -1,17 +1,18 @@
-import { headerUserMenuState , navOpenState } from '@/lib/recoilAtoms'
+import { headerUserMenuState, navOpenState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 
-const HeaderSec = styled(motion.header)<{$navOpen:boolean}>`
-  max-width: ${(props) => (props.$navOpen ? 'calc(100vw - 18rem)' : 'calc(100vw - 5rem)')};
+const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
+  max-width: ${props =>
+    props.$navOpen ? 'calc(100vw - 18rem)' : 'calc(100vw - 5rem)'};
   width: 100%;
   height: 4rem;
   position: fixed;
-  display:flex;
-  right:0;
-  top:0;
+  display: flex;
+  right: 0;
+  top: 0;
   padding: 0 1rem;
   justify-content: space-between;
   align-items: center;
@@ -20,36 +21,36 @@ const HeaderSec = styled(motion.header)<{$navOpen:boolean}>`
   background-color: #fff;
 
   @media screen and (max-width: 1024px) {
-    max-width:100%;
+    max-width: 100%;
     width: calc(100vw);
   }
 `
 const HeaderLt = styled.div`
-  display:flex;
+  display: flex;
   gap: 1.8rem;
   align-items: center;
 `
 const MenuBtn = styled(motion.button)`
-  display:flex;
+  display: flex;
   align-items: center;
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.3rem;
   position: relative;
-  font-size:1.5rem;
+  font-size: 1.5rem;
 
   @media screen and (max-width: 1024px) {
     display: none;
   }
 `
 const MenuBtnMo = styled(motion.button)`
-  display:none;
+  display: none;
   align-items: center;
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.3rem;
   position: relative;
-  font-size:1.5rem;
+  font-size: 1.5rem;
 
   @media screen and (max-width: 1024px) {
     display: flex;
@@ -57,7 +58,7 @@ const MenuBtnMo = styled(motion.button)`
 `
 
 const HeaderRt = styled.div`
-  display:flex;
+  display: flex;
   gap: 1.8rem;
   align-items: center;
   position: relative;
@@ -76,7 +77,7 @@ const HeaderRt = styled.div`
 `
 
 const NotiBtn = styled.button`
-  display:flex;
+  display: flex;
   align-items: center;
   width: 2.2rem;
   height: 2.2rem;
@@ -85,14 +86,14 @@ const NotiBtn = styled.button`
 `
 
 const NotiNum = styled.span`
-  display:flex;
+  display: flex;
   align-items: center;
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 100%;
   position: absolute;
-  right:-0.2rem;
-  top:-0.2rem;
+  right: -0.2rem;
+  top: -0.2rem;
   background: #007de9;
   font-size: 0.8rem;
   color: #fff;
@@ -101,11 +102,11 @@ const NotiNum = styled.span`
 `
 
 const UserBox = styled.div`
-  display:flex;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
   position: relative;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const UserGrade = styled.span`
@@ -115,15 +116,15 @@ const UserGrade = styled.span`
   border-radius: 100%;
   border: 1px solid #d4d4d8;
   background: #4f46e5;
-  text-align:center;
-  font-size:1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
-  line-height:2.2rem;
+  line-height: 2.2rem;
 `
 
 const UserInfo = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
 
@@ -151,20 +152,20 @@ const IconArrow = styled.span`
   }
 `
 
-const DropUser = styled(motion.div)<{$headerUserMenu:boolean}>`
-  position:absolute;
+const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
+  position: absolute;
   width: 8rem;
   padding: 0.5rem 0;
-  top: 2.5rem;
+  top: 2.7rem;
   right: 0;
   border-radius: 0.5rem;
   background: #fff;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
-  pointer-events: ${(props) => (props.$headerUserMenu ? 'auto' : 'none')};
+  pointer-events: ${props => (props.$headerUserMenu ? 'auto' : 'none')};
 
   ul {
   }
-  
+
   li {
     display: flex;
     align-items: center;
@@ -178,36 +179,43 @@ const DropUser = styled(motion.div)<{$headerUserMenu:boolean}>`
 `
 
 export default function Header() {
-
-  const [headerUserMenu, setHeaderUserMenu] = useRecoilState(headerUserMenuState);
-  const [navOpen, setNavOpen] = useRecoilState(navOpenState);
+  const [headerUserMenu, setHeaderUserMenu] =
+    useRecoilState(headerUserMenuState)
+  const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
   const toggleNav = () => {
-    setNavOpen(!navOpen);
-  };
+    setNavOpen(!navOpen)
+  }
 
   const toggleUserMenu = () => {
-    setHeaderUserMenu((headerUserMenu) => !headerUserMenu);
-  };
+    setHeaderUserMenu(headerUserMenu => !headerUserMenu)
+  }
 
   useEffect(() => {
-    animate('.xi-hamburger-back', { rotate: navOpen ? 0 : 180 }, { duration: 0.2 });
-    animate('.xi-angle-down-min', { rotate: headerUserMenu ? 180 : 0 }, { duration: 0.2 });
+    animate(
+      '.xi-hamburger-back',
+      { rotate: navOpen ? 0 : 180 },
+      { duration: 0.2 },
+    )
+    animate(
+      '.xi-angle-down-min',
+      { rotate: headerUserMenu ? 180 : 0 },
+      { duration: 0.2 },
+    )
     animate(
       '.drop',
       {
         clipPath: headerUserMenu
-          ? "inset(0% 0% 0% 0% round 10px)"
-          : "inset(10% 50% 90% 50% round 10px)"
+          ? 'inset(0% 0% 0% 0% round 10px)'
+          : 'inset(10% 50% 90% 50% round 10px)',
       },
       {
-        type: "spring",
+        type: 'spring',
         bounce: 0,
-        duration: 0.4
-      }
-    );
-
-  }, [navOpen, headerUserMenu]);
+        duration: 0.4,
+      },
+    )
+  }, [navOpen, headerUserMenu])
 
   console.log(navOpen)
 
@@ -215,8 +223,12 @@ export default function Header() {
     <>
       <HeaderSec $navOpen={navOpen}>
         <HeaderLt>
-          <MenuBtn onClick={toggleNav}><i className="text-zinc-500 xi-hamburger-back" /></MenuBtn>
-          <MenuBtnMo onClick={toggleNav}><i className="text-zinc-500 xi-bars" /></MenuBtnMo>
+          <MenuBtn onClick={toggleNav}>
+            <i className="text-zinc-500 xi-hamburger-back" />
+          </MenuBtn>
+          <MenuBtnMo onClick={toggleNav}>
+            <i className="text-zinc-500 xi-bars" />
+          </MenuBtnMo>
         </HeaderLt>
         <HeaderRt>
           <NotiBtn>
@@ -224,9 +236,7 @@ export default function Header() {
             <NotiNum>0</NotiNum>
           </NotiBtn>
           <UserBox onClick={toggleUserMenu}>
-            <UserGrade>
-              M
-            </UserGrade>
+            <UserGrade>M</UserGrade>
             <UserInfo>
               <UserId>HongHong123</UserId>
               <UserName>홍길동</UserName>
@@ -239,23 +249,18 @@ export default function Header() {
               $headerUserMenu={headerUserMenu}
               className="drop"
               style={{
-                clipPath: "inset(10% 50% 90% 50% round 10px)"
+                clipPath: 'inset(10% 50% 90% 50% round 10px)',
               }}
             >
               <ul>
                 <li>
-                  <button>
-                    프로필
-                  </button>
+                  <button>프로필</button>
                 </li>
                 <li>
-                  <button>
-                    로그아웃
-                  </button>
+                  <button>로그아웃</button>
                 </li>
               </ul>
             </DropUser>
-      
           </UserBox>
         </HeaderRt>
       </HeaderSec>

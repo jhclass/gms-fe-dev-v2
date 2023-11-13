@@ -1,10 +1,9 @@
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { loginIdInputState, loginPasswordInputState } from '@/lib/recoilAtoms'
+import { loginIdFocuseState, loginPasswordFocuseState } from '@/lib/recoilAtoms'
 import Button from '@/components/Button'
 
 type LoginForm = {
@@ -60,6 +59,20 @@ const Input = styled(motion.input)`
   outline: 2px solid transparent;
   outline-offset: 2px;
   background: transparent;
+
+  &:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 0 transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+  }
+
+  &:autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 0 transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+  }
 `
 
 const Label = styled(motion.label)`
@@ -94,40 +107,37 @@ const InputVariants = {
   initial: {
     top: '1rem',
     fontSize: '1rem',
-    opacity: '1'
+    opacity: '1',
   },
   focus: {
     top: '0.3rem',
     fontSize: '0.8rem',
-    opacity: '0.5'
+    opacity: '0.5',
   },
   hasValue: {
     top: '0.3rem',
     fontSize: '0.8rem',
-    opacity: '0.5'
+    opacity: '0.5',
   },
-};
+}
 
 export default function Login() {
-  const { register, handleSubmit } = useForm<LoginForm>();
-  const [loginIdInput, setLoginIdInput] = useRecoilState(loginIdInputState);
-  const [loginPasswordInput, setLoginPasswordInput] = useRecoilState(loginPasswordInputState);
+  const { register, control, handleSubmit } = useForm<LoginForm>()
+  const [loginIdFocus, setLoginIdFocus] = useRecoilState(loginIdFocuseState)
+  const [loginPasswordFocus, setLoginPasswordFocus] = useRecoilState(
+    loginPasswordFocuseState,
+  )
 
   const onSubmit = (data: LoginForm) => {
-    console.log(data);
-  };
+    console.log(data)
+  }
 
-  useEffect(() => {
-    setLoginIdInput((prev) => ({ ...prev, isFocused: loginIdInput.isFocused || loginIdInput.hasValue }));
-  }, [loginIdInput.isFocused, loginIdInput.hasValue, setLoginIdInput]);
-
-  useEffect(() => {
-    setLoginPasswordInput((prev) => ({ ...prev, isFocused: loginPasswordInput.isFocused || loginPasswordInput.hasValue }));
-  }, [loginPasswordInput.isFocused, loginPasswordInput.hasValue, setLoginPasswordInput]);
+  const idValue = useWatch({ control, name: 'id' })
+  const passValue = useWatch({ control, name: 'password' })
 
   return (
     <>
-            <Container>
+      <Container>
         <LoginBox>
           <Logo>
             <img src="/src/images/hc_logo_2_w.svg" alt="high class" />
@@ -137,7 +147,7 @@ export default function Login() {
               <Label
                 variants={InputVariants}
                 initial="initial"
-                animate={loginIdInput.isFocused || loginIdInput.hasValue ? 'focus' : 'initial'}
+                animate={loginIdFocus || idValue ? 'focus' : 'initial'}
                 htmlFor="id"
               >
                 User ID
@@ -145,22 +155,28 @@ export default function Login() {
               <Input
                 type="text"
                 id="id"
-                onFocus={() => setLoginIdInput((prev) => ({ ...prev, isFocused: true }))}
-                onBlur={() => setLoginIdInput((prev) => ({ ...prev, isFocused: false }))}
-                onChange={(e) => setLoginIdInput((prev) => ({ ...prev, hasValue: e.target.value.trim() !== '' }))}
-                {...register('id', { 
+                onFocus={() => setLoginIdFocus(true)}
+                onBlur={() => setLoginIdFocus(false)}
+                {...register('id', {
                   required: {
                     value: true,
                     message: '아이디를 입력해주세요',
-                  }
-                 })}
+                  },
+                  onBlur: () => {
+                    if (idValue) {
+                      setLoginIdFocus(true)
+                    } else {
+                      setLoginIdFocus(false)
+                    }
+                  },
+                })}
               />
             </InputBox>
-             <InputBox>
+            <InputBox>
               <Label
                 variants={InputVariants}
                 initial="initial"
-                animate={loginPasswordInput.isFocused || loginPasswordInput.hasValue ? 'focus' : 'initial'}
+                animate={loginPasswordFocus || passValue ? 'focus' : 'initial'}
                 htmlFor="id"
               >
                 Password
@@ -168,21 +184,23 @@ export default function Login() {
               <Input
                 type="password"
                 id="password"
-                onFocus={() => setLoginPasswordInput((prev) => ({ ...prev, isFocused: true }))}
-                onBlur={() => setLoginPasswordInput((prev) => ({ ...prev, isFocused: false }))}
-                onChange={(e) => setLoginPasswordInput((prev) => ({ ...prev, hasValue: e.target.value.trim() !== '' }))}
-                {...register('password', { 
+                onFocus={() => setLoginPasswordFocus(true)}
+                {...register('password', {
                   required: {
                     value: true,
                     message: '비밀번호를 입력해주세요',
-                  }
-                 })}
+                  },
+                  onBlur: () => {
+                    if (passValue) {
+                      setLoginPasswordFocus(true)
+                    } else {
+                      setLoginPasswordFocus(false)
+                    }
+                  },
+                })}
               />
             </InputBox>
-            <Button
-              buttonType="submit">
-                로그인
-            </Button>
+            <Button buttonType="submit">로그인</Button>
           </form>
           <Alink>
             <Link href={''}>Forget ID or PW ?</Link>
