@@ -5,7 +5,19 @@ import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { loginIdFocuseState, loginPasswordFocuseState } from '@/lib/recoilAtoms'
 import Button from '@/components/common/Button'
-
+import { useRouter } from 'next/router'
+import { useMutation, useReactiveVar } from '@apollo/client'
+import { LogUserIn, isLoggedInVar } from '@/lib/apolloClient'
+import { gql } from '@apollo/client'
+const LOGIN_MUTATION = gql`
+  mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
+    mLogin(mUserId: $mUserId, mPassword: $mPassword) {
+      error
+      ok
+      token
+    }
+  }
+`
 type LoginForm = {
   id: string
   password: string
@@ -127,9 +139,27 @@ export default function Login() {
   const [loginPasswordFocus, setLoginPasswordFocus] = useRecoilState(
     loginPasswordFocuseState,
   )
-
+  //api Test
+  const router = useRouter()
+  const isLoggedIn = useReactiveVar(isLoggedInVar)
+  console.log(isLoggedIn, '로그인상태체크') //로그인상태체크
+  const [login, { loading, error, data }] = useMutation(LOGIN_MUTATION)
   const onSubmit = (data: LoginForm) => {
     console.log(data)
+    login({
+      variables: {
+        mUserId: data.id,
+        mPassword: data.password,
+      },
+      onCompleted: data => {
+        console.log(data) //데이터가 잘 들어오고 있는지 확인
+        const {
+          mLogin: { token },
+        } = data
+        LogUserIn(token) //토큰을 입력
+        router.push('/')
+      },
+    })
   }
 
   const idValue = useWatch({ control, name: 'id' })

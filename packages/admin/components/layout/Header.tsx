@@ -5,6 +5,25 @@ import router from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
+import { LogUserOut } from '@/lib/apolloClient'
+import { gql, useQuery } from '@apollo/client'
+
+const MME_QUERY = gql`
+  query MMe {
+    mMe {
+      id
+      mUserId
+      mUsername
+      mPassword
+      mGrade
+      mRank
+      mPhoneNum
+      createdAt
+      updatedAt
+      mAvatar
+    }
+  }
+`
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>
@@ -209,6 +228,10 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 `
 
 export default function Header() {
+  const { loading, error, data } = useQuery(MME_QUERY)
+  console.log(data)
+  console.log(error)
+
   const [headerUserMenu, setHeaderUserMenu] =
     useRecoilState(headerUserMenuState)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
@@ -302,7 +325,7 @@ export default function Header() {
                   </button>
                 </li>
                 <li>
-                  <button>로그아웃</button>
+                  <button onClick={LogUserOut}>로그아웃</button>
                 </li>
               </ul>
             </DropUser>
