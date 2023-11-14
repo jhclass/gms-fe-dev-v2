@@ -1,8 +1,0 @@
-overwrite: true
-schema: 'https://testserver.h-class.co.kr/graphql'
-generates:
-  src/generated/graphql.tsx:
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-react-apollo'
