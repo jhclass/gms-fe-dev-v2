@@ -5,12 +5,12 @@ import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 
-const Wrap = styled(motion.div)<{$navOpen:boolean}>`
+const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding: ${(props) => (props.$navOpen ? '4rem 0 0 18rem;' : '4rem 0 0 5rem;')};
+  padding: ${props => (props.$navOpen ? '4rem 0 0 18rem;' : '4rem 0 0 5rem;')};
   background-color: #d6e4f1;
 
   @media screen and (max-width: 1024px) {
@@ -18,15 +18,14 @@ const Wrap = styled(motion.div)<{$navOpen:boolean}>`
   }
 `
 export default function Home() {
-  const [navOpen] = useRecoilState(navOpenState);
+  const [navOpen] = useRecoilState(navOpenState)
 
   return (
     <>
       <Wrap $navOpen={navOpen}>
         <Header />
         <Nav />
-        <div>
-        </div>
+        <div></div>
       </Wrap>
     </>
   )
