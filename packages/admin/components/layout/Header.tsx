@@ -228,9 +228,8 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 `
 
 export default function Header() {
-  const { loading, error, data } = useQuery(MME_QUERY)
-  console.log(data)
-  console.log(error)
+  // const { loading, error, data } = useQuery(MME_QUERY)
+  // const userInfo = data.mMe
 
   const [headerUserMenu, setHeaderUserMenu] =
     useRecoilState(headerUserMenuState)
@@ -299,9 +298,15 @@ export default function Header() {
           </NotiBtn>
           <UserBox onClick={toggleUserMenu}>
             <UserGrade>M</UserGrade>
+            {/* {userInfo && (
+              <UserInfo>
+                <UserId>{userInfo.mUserId}</UserId>
+                <UserName>{userInfo.mUsername}</UserName>
+              </UserInfo>
+            )} */}
             <UserInfo>
-              <UserId>HongHong123</UserId>
-              <UserName>홍길동</UserName>
+              <UserId>UserID</UserId>
+              <UserName>Username</UserName>
             </UserInfo>
             <IconArrow>
               <i className="text-zinc-500 xi-angle-down-min" />

@@ -8,6 +8,7 @@ import { ApolloProvider, useReactiveVar } from '@apollo/client'
 import { apolloClient, isLoggedInVar } from '@/lib/apolloClient'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import IsLogin from '@/components/wrappers/IsLogin'
 export default function MyApp({ Component, pageProps }: AppProps) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
@@ -16,7 +17,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const isLoggedIn = useReactiveVar(isLoggedInVar)
   useEffect(() => {
-    console.log(isLoggedIn, '현재 로그인상태?')
     if (!isLoggedIn && router.pathname !== '/login') {
       router.push('/login')
     }
