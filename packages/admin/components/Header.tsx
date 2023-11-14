@@ -3,6 +3,7 @@ import { animate, motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
+import { LogUserOut } from '@/lib/apolloClient'
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>
@@ -257,7 +258,7 @@ export default function Header() {
                   <button>프로필</button>
                 </li>
                 <li>
-                  <button>로그아웃</button>
+                  <button onClick={LogUserOut}>로그아웃</button>
                 </li>
               </ul>
             </DropUser>
