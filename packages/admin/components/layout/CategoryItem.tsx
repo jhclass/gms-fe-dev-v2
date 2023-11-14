@@ -84,7 +84,7 @@ export default function CategoryItem<CategoryItemProps>({
           transition: { duration: 0.2 },
         }}
       >
-        <Link href={href} onClick={() => setNavOpen(!navOpen)}>
+        <Link href={href}>
           <CateLink $navOpen={navOpen}>
             <CateIcon>
               <img src={iconSrc} alt={alt} />
