@@ -20,8 +20,6 @@ const httpLink = createHttpLink({
 const authLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem(TOKEN)
   const headers = operation.getContext().headers || {} // 기본 헤더 객체 설정
-  console.log('authLink 안에토큰있음', token)
-  console.log(headers, '이건뭔데??')
   operation.setContext({
     headers: {
       ...headers,
@@ -39,8 +37,6 @@ export const apolloClient = new ApolloClient({
 export const LogUserIn = (token: string) => {
   localStorage.setItem(TOKEN, token)
   isLoggedInVar(true)
-
-  console.log('로그인되었음', String(localStorage.getItem(TOKEN)))
 }
 
 //로그아웃

@@ -73,7 +73,7 @@ export default function CategoryItem<CategoryItemProps>({
   isActive,
   onClick,
 }) {
-  const [navOpen] = useRecoilState(navOpenState)
+  const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
   return (
     <>
