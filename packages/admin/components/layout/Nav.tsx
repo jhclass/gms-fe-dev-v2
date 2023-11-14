@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import Category from '@/components/Category'
+import Category from '@/components/layout/Category'
 
 const NavSec = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -19,7 +19,6 @@ const NavSec = styled(motion.div)<{ $navOpen: boolean }>`
   @media screen and (max-width: 1024px) {
     max-width: 100%;
     width: 80vw;
-    padding: 0 1rem;
     transform: ${props =>
       props.$navOpen ? 'translatex(0);' : 'translatex(-100%);'};
   }
@@ -36,6 +35,10 @@ const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
 
   @media screen and (max-width: 1024px) {
     padding: 0 1.5rem 1rem;
+  }
+
+  @media screen and (max-width: 640px) {
+    padding: 0 1rem 0.5rem;
   }
 `
 
@@ -116,14 +119,17 @@ export default function Header() {
       <NavSec $navOpen={navOpen}>
         <NavWrap $navOpen={navOpen}>
           <Logo $navOpen={navOpen}>
-            <LogoImg
-              $navOpen={navOpen}
-              src={
-                navOpen
-                  ? '/src/images/hc_logo_2.svg'
-                  : '/src/images/hc_symbol.svg'
-              }
-            />
+            <Link href={'/'}>
+              <LogoImg
+                $navOpen={navOpen}
+                src={
+                  navOpen
+                    ? '/src/images/hc_logo_2.svg'
+                    : '/src/images/hc_symbol.svg'
+                }
+                alt="High Class Admin"
+              />
+            </Link>
           </Logo>
           <DimBtn onClick={toggleNav}>
             <i className="xi-close" />

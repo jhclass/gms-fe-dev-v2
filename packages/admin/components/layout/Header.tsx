@@ -1,5 +1,7 @@
 import { headerUserMenuState, navOpenState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
+import Link from 'next/link'
+import router from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
@@ -14,6 +16,7 @@ const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   right: 0;
   top: 0;
   padding: 0 1rem;
+  z-index: 40;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #d4d4d8;
@@ -54,6 +57,33 @@ const MenuBtnMo = styled(motion.button)`
 
   @media screen and (max-width: 1024px) {
     display: flex;
+  }
+`
+
+const HeaderCt = styled(motion.div)`
+  display: none;
+  align-items: center;
+  scale: 0;
+  transition: 0.3s;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    scale: 1;
+  }
+`
+
+const Logo = styled.h1`
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 2rem;
+  }
+
+  @media screen and (max-width: 640px) {
+    img {
+      height: 1.8rem;
+    }
   }
 `
 
@@ -217,8 +247,6 @@ export default function Header() {
     )
   }, [navOpen, headerUserMenu])
 
-  console.log(navOpen)
-
   return (
     <>
       <HeaderSec $navOpen={navOpen}>
@@ -230,8 +258,19 @@ export default function Header() {
             <i className="text-zinc-500 xi-bars" />
           </MenuBtnMo>
         </HeaderLt>
+        <HeaderCt>
+          <Logo>
+            <Link href="/">
+              <img src="/src/images/hc_text_2.svg" alt="High Class Admin" />
+            </Link>
+          </Logo>
+        </HeaderCt>
         <HeaderRt>
-          <NotiBtn>
+          <NotiBtn
+            onClick={() => {
+              router.push('/')
+            }}
+          >
             <img src="/src/icon/ico_noti.png" alt="알림" />
             <NotiNum>0</NotiNum>
           </NotiBtn>
@@ -254,7 +293,13 @@ export default function Header() {
             >
               <ul>
                 <li>
-                  <button>프로필</button>
+                  <button
+                    onClick={() => {
+                      console.log('준비중입니다. ')
+                    }}
+                  >
+                    프로필
+                  </button>
                 </li>
                 <li>
                   <button>로그아웃</button>

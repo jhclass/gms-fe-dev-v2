@@ -1,4 +1,5 @@
-import Layout from '@/components/wrappers/MainWrap'
+import Header from '@/components/layout/Header'
+import Nav from '@/components/layout/Nav'
 import { navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
@@ -16,14 +17,29 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
     padding: 4rem 0 0 0;
   }
 `
-export default function Home() {
+const Container = styled.div`
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  background-color: none;
+
+  @media screen and (max-width: 1024px) {
+    padding: 1rem;
+  }
+`
+
+export default function MainWrap({ children }) {
   const [navOpen] = useRecoilState(navOpenState)
 
   return (
     <>
-      <Layout>
-        <p>대쉬보드</p>
-      </Layout>
+      <Wrap $navOpen={navOpen}>
+        <Header />
+        <Nav />
+        <Container>{children}</Container>
+      </Wrap>
     </>
   )
 }

@@ -73,7 +73,7 @@ export default function CategoryItem<CategoryItemProps>({
   isActive,
   onClick,
 }) {
-  const [navOpen] = useRecoilState(navOpenState)
+  const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
   return (
     <>
@@ -84,7 +84,7 @@ export default function CategoryItem<CategoryItemProps>({
           transition: { duration: 0.2 },
         }}
       >
-        <Link href={href}>
+        <Link href={href} onClick={() => setNavOpen(!navOpen)}>
           <CateLink $navOpen={navOpen}>
             <CateIcon>
               <img src={iconSrc} alt={alt} />

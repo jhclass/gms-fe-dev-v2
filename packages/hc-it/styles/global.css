@@ -68,6 +68,20 @@
     background-repeat: repeat-x;
     background-size: auto;
   }
+
+  input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 0 transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: inherit !important;
+  }
+
+  input:autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 0 transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: inherit !important;
+  }
 }
 
 html {

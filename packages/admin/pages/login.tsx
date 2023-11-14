@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { loginIdFocuseState, loginPasswordFocuseState } from '@/lib/recoilAtoms'
-import Button from '@/components/Button'
+import Button from '@/components/common/Button'
 
 type LoginForm = {
   id: string

@@ -48,7 +48,7 @@ type FormValues = {
   name: string
   phone: string
   contents: string
-  privacy: boolean
+  privacy: string
   subDiv: string
 }
 
@@ -63,41 +63,41 @@ export default function Form() {
     handleSubmit,
     control,
     setValue,
-    getValues,
     setError,
     clearErrors,
     setFocus,
     reset,
-    formState,
     formState: { errors, isSubmitSuccessful },
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
-    // try {
-    //   if (regExp.test(data.contents)) {
-    //     setError('contents', {
-    //       type: 'manual',
-    //       message: '비속어는 사용불가능합니다.',
-    //     })
-    //     setFocus('contents')
-    //   } else {
-    //     await studentStateResult({
-    //       variables: {
-    //         stName: data.name,
-    //         subject: data.groupSelected,
-    //         campus: data.campus,
-    //         agreement: data.privacy ? '동의' : '비동의',
-    //         phoneNum1: data.phone,
-    //         detail: data.contents,
-    //         subDiv: data.subDiv,
-    //       },
-    //     })
-    //     alert('상담신청이 완료되었습니다. 😊')
-    //   }
-    // } catch (error) {
-    //   console.error(error)
-    // }
-    alert('상담신청이 완료되었습니다. 😊')
+    try {
+      if (regExp.test(data.contents)) {
+        setError('contents', {
+          type: 'manual',
+          message: '비속어는 사용불가능합니다.',
+        })
+        setFocus('contents')
+      } else {
+        await studentStateResult({
+          variables: {
+            stName: data.name,
+            subject: data.groupSelected,
+            campus: data.campus,
+            agreement: data.privacy ? '동의' : '비동의',
+            phoneNum1: data.phone,
+            detail: data.contents,
+            subDiv: data.subDiv,
+          },
+          onCompleted: data => {
+            console.log(data)
+          },
+        })
+        alert('상담신청이 완료되었습니다. 😊')
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
@@ -107,20 +107,19 @@ export default function Form() {
   }, [groupSelected])
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      // Reset the form and checkbox state when the submission is successful
+    if (isSubmitSuccessful) {
       reset({
+        groupSelected: [],
         campus: '',
         name: '',
         phone: '',
         contents: '',
         subDiv: '',
       })
-      setValue('groupSelected', [])
+      setGroupSelected([])
       setValue('privacy', false)
-      console.log(getValues('privacy'))
     }
-  }, [formState.isSubmitSuccessful, reset, setValue])
+  }, [isSubmitSuccessful, reset])
 
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
