@@ -42,15 +42,15 @@ export default function Detail() {
               웹툰제작과정 Webtoon
             </b>
           </p>
-          <figure className="w-4/5 mx-auto mt-10">
+          <figure className="w-full mx-auto mt-10">
             <img src="/src/detail/d2_main_section.jpg" />
           </figure>
         </div>
       </section>
-      <section className="py-16 bg-[#28232A]">
+      <section className="py-16 bg-white">
         <div className="wrap">
           <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
-            <div className="py-10 bg-black rounded-lg">
+            <div className="py-10 bg-[#28232A] rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
                 <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
                   웹툰작가님이 직접 설계한 커리큘럼
@@ -62,7 +62,7 @@ export default function Detail() {
                 실력을 점점 쌓아가는 구조로 커리큘럼 구성.
               </p>
             </div>
-            <div className="py-10 bg-black rounded-lg">
+            <div className="py-10 bg-[#28232A] rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
                 <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
                   입학 테스트와 1:1피드백을 통한 개인 맞춤 지도
@@ -74,7 +74,7 @@ export default function Detail() {
                 1:1 피드백을 통해 개인 맞춤형 수업 제공
               </p>
             </div>
-            <div className="py-10 bg-black rounded-lg">
+            <div className="py-10 bg-[#28232A] rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
                 <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
                   웹툰을 좋아하는 사람은 모두 환영
@@ -89,7 +89,7 @@ export default function Detail() {
           </div>
         </div>
       </section>
-      <section className="bg-white">
+      <section className="pb-16 bg-white">
         <div className="wrap">
           <figure className="w-full overflow-hidden">
             <img src="/src/detail/d2_img_section.jpg" width="100%" />
