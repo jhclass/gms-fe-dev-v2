@@ -89,7 +89,7 @@ export default function Detail() {
           </div>
         </div>
       </section>
-      <section className="bg-white">
+      <section className="pb-16 bg-white">
         <div className="wrap">
           <figure className="w-full overflow-hidden">
             <img src="/src/detail/d2_img_section.jpg" width="100%" />
