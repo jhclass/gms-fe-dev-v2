@@ -11,51 +11,61 @@ export default function ListSlider({ slideNo }) {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음111',
       img: '/src/images/thumb01.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/2',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb02.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb04.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb05.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb06.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb07.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb08.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb09.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb10.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
       img: '/src/images/thumb11.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      link: '/detail/1',
     },
   ]
   return (
@@ -87,7 +97,7 @@ export default function ListSlider({ slideNo }) {
           {list.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="">
-                <Link href="/detail">
+                <Link href={item.link}>
                   <div className="relative overflow-hidden rounded-r-xl rounded-tl-xl">
                     <img alt={item.title} src={item.img} />
                   </div>
