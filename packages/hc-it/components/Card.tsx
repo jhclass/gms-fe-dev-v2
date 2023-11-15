@@ -12,7 +12,7 @@ export default function CardBnr() {
   return (
     <div className="grid grid-cols-5 gap-2 max-w-guid">
       <Card shadow="none">
-        <Link href="/detail">
+        <Link href="/detail/1">
           <CardHeader className="absolute z-10 top-1 flex-col !items-start">
             <p className="font-bold uppercase text-tiny text-white/60">
               What to watch

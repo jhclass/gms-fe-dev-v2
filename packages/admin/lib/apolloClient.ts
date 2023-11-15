@@ -38,14 +38,3 @@ export const LogUserIn = (token: string) => {
   localStorage.setItem(TOKEN, token)
   isLoggedInVar(true)
 }
-
-//로그아웃
-
-//export const LogUserOut = (history: any) => {
-export const LogUserOut = () => {
-  localStorage.removeItem(TOKEN)
-  //history?.replace()
-
-  window.location.href = '/login'
-  window.location.reload()
-}

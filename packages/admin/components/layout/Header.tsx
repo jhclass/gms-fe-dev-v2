@@ -1,11 +1,10 @@
 import { headerUserMenuState, navOpenState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import { LogUserOut } from '@/lib/apolloClient'
 import { gql, useQuery } from '@apollo/client'
 
 const MME_QUERY = gql`
@@ -228,9 +227,11 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 `
 
 export default function Header() {
-  // const { loading, error, data } = useQuery(MME_QUERY)
-  // const userInfo = data.mMe
+  const { loading, error, data } = useQuery(MME_QUERY)
+  const { mMe } = data || {}
+  const { mUserId = '', mUsername = '' } = mMe || {}
 
+  const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] =
     useRecoilState(headerUserMenuState)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
@@ -241,6 +242,11 @@ export default function Header() {
 
   const toggleUserMenu = () => {
     setHeaderUserMenu(headerUserMenu => !headerUserMenu)
+  }
+
+  const LogUserOut = () => {
+    localStorage.removeItem('token')
+    router.push('/login')
   }
 
   useEffect(() => {
@@ -298,15 +304,9 @@ export default function Header() {
           </NotiBtn>
           <UserBox onClick={toggleUserMenu}>
             <UserGrade>M</UserGrade>
-            {/* {userInfo && (
-              <UserInfo>
-                <UserId>{userInfo.mUserId}</UserId>
-                <UserName>{userInfo.mUsername}</UserName>
-              </UserInfo>
-            )} */}
             <UserInfo>
-              <UserId>UserID</UserId>
-              <UserName>Username</UserName>
+              <UserId>{mUserId}</UserId>
+              <UserName>{mUsername}</UserName>
             </UserInfo>
             <IconArrow>
               <i className="text-zinc-500 xi-angle-down-min" />
