@@ -4,6 +4,7 @@ import { navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
+import WithAuth from '@/components/wrappers/WithAuth'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -35,11 +36,13 @@ export default function MainWrap({ children }) {
 
   return (
     <>
-      <Wrap $navOpen={navOpen}>
-        <Header />
-        <Nav />
-        <Container>{children}</Container>
-      </Wrap>
+      <WithAuth>
+        <Wrap $navOpen={navOpen}>
+          <Header />
+          <Nav />
+          <Container>{children}</Container>
+        </Wrap>
+      </WithAuth>
     </>
   )
 }

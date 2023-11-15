@@ -6,8 +6,8 @@ import { useRecoilState } from 'recoil'
 import { loginIdFocuseState, loginPasswordFocuseState } from '@/lib/recoilAtoms'
 import Button from '@/components/common/Button'
 import { useRouter } from 'next/router'
-import { useMutation, useReactiveVar } from '@apollo/client'
-import { LogUserIn } from '@/lib/apolloClient'
+import { useMutation } from '@apollo/client'
+import { LogUserIn, isLoggedInVar } from '@/lib/apolloClient'
 import { gql } from '@apollo/client'
 const LOGIN_MUTATION = gql`
   mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
@@ -115,6 +115,14 @@ const Alink = styled.p`
     left: 0;
   }
 `
+
+const ErrorMessage = styled.p`
+  padding: 0.5rem 0.5rem 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: tomato;
+`
+
 const InputVariants = {
   initial: {
     top: '1rem',
@@ -134,7 +142,12 @@ const InputVariants = {
 }
 
 export default function Login() {
-  const { register, control, handleSubmit } = useForm<LoginForm>()
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<LoginForm>()
   const [loginIdFocus, setLoginIdFocus] = useRecoilState(loginIdFocuseState)
   const [loginPasswordFocus, setLoginPasswordFocus] = useRecoilState(
     loginPasswordFocuseState,
@@ -200,6 +213,9 @@ export default function Login() {
                 })}
               />
             </InputBox>
+            {errors.id && (
+              <ErrorMessage>{String(errors.id.message)}</ErrorMessage>
+            )}
             <InputBox>
               <Label
                 variants={InputVariants}
@@ -228,6 +244,9 @@ export default function Login() {
                 })}
               />
             </InputBox>
+            {errors.password && (
+              <ErrorMessage>{String(errors.password.message)}</ErrorMessage>
+            )}
             <Button buttonType="submit">로그인</Button>
           </form>
           <Alink>
