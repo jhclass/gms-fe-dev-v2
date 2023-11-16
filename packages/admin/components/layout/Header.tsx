@@ -48,9 +48,10 @@ const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
 `
 const HeaderLt = styled.div`
   display: flex;
-  gap: 1.8rem;
+  gap: 0.5rem;
   align-items: center;
 `
+
 const MenuBtn = styled(motion.button)`
   display: flex;
   align-items: center;
@@ -79,6 +80,10 @@ const MenuBtnMo = styled(motion.button)`
 `
 
 const HeaderCt = styled(motion.div)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: none;
   align-items: center;
   scale: 0;
@@ -95,13 +100,7 @@ const Logo = styled.h1`
   align-items: center;
 
   img {
-    height: 2rem;
-  }
-
-  @media screen and (max-width: 640px) {
-    img {
-      height: 1.8rem;
-    }
+    height: 2.3rem;
   }
 `
 
@@ -131,6 +130,11 @@ const NotiBtn = styled.button`
   height: 2.2rem;
   padding: 0.3rem;
   position: relative;
+
+  @media screen and (max-width: 1024px) {
+    width: 2rem;
+    height: 2rem;
+  }
 `
 
 const NotiNum = styled.span`
@@ -147,6 +151,14 @@ const NotiNum = styled.span`
   color: #fff;
   line-height: 1rem;
   justify-content: center;
+
+  @media screen and (max-width: 1024px) {
+    width: 1rem;
+    height: 1rem;
+    right: 0;
+    top: 0;
+    font-size: 0.7rem;
+  }
 `
 
 const UserBox = styled.div`
@@ -169,6 +181,13 @@ const UserGrade = styled.span`
   font-weight: 700;
   color: #fff;
   line-height: 2.5rem;
+
+  @media screen and (max-width: 1024px) {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1rem;
+  }
 `
 
 const UserInfo = styled.div`
@@ -289,7 +308,7 @@ export default function Header() {
         <HeaderCt>
           <Logo>
             <Link href="/">
-              <img src="/src/images/hc_text_2.svg" alt="High Class Admin" />
+              <img src="/src/images/hc_symbol.svg" alt="High Class Admin" />
             </Link>
           </Logo>
         </HeaderCt>

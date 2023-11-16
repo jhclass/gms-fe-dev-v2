@@ -1,5 +1,11 @@
 import { atom } from 'recoil'
 
+// screen
+export const isScreenState = atom<boolean>({
+  key: 'isScreenState',
+  default: false,
+})
+
 // header
 export const headerUserMenuState = atom<boolean>({
   key: 'headerUserMenuState',
