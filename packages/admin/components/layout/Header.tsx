@@ -168,7 +168,7 @@ const UserGrade = styled.span`
   font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
-  line-height: 2.2rem;
+  line-height: 2.5rem;
 `
 
 const UserInfo = styled.div`

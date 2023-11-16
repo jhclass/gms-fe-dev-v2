@@ -151,7 +151,10 @@ export default function ConsolutationTable() {
         <TableItem>
           <Tnum>1</Tnum>
           <T1>
-            <input type="checkbox" />
+            <label>
+              <i className="xi-star-o"></i>
+              <input id="" type="checkbox" />
+            </label>
           </T1>
           <T2>온라인</T2>
           <TsuvDiv>HRD</TsuvDiv>
