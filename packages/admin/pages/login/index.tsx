@@ -94,6 +94,10 @@ const Label = styled(motion.label)`
   color: #fafafa;
 `
 
+const BtnBox = styled.div`
+  margin-top: 3rem;
+`
+
 const Alink = styled.p`
   margin-top: 0.7rem;
   font-size: 0.9rem;
@@ -247,7 +251,9 @@ export default function Login() {
             {errors.password && (
               <ErrorMessage>{String(errors.password.message)}</ErrorMessage>
             )}
-            <Button buttonType="submit">로그인</Button>
+            <BtnBox>
+              <Button buttonType="submit">로그인</Button>
+            </BtnBox>
           </form>
           <Alink>
             <Link href={''}>Forget ID or PW ?</Link>

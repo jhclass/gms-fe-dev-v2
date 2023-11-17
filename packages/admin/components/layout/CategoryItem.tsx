@@ -87,7 +87,11 @@ export default function CategoryItem<CategoryItemProps>({
         <Link href={href}>
           <CateLink $navOpen={navOpen}>
             <CateIcon>
-              <img src={iconSrc} alt={alt} />
+              {isActive ? (
+                <img src={`/src/icon/${iconSrc}_w.png`} alt={alt} />
+              ) : (
+                <img src={`/src/icon/${iconSrc}.png`} alt={alt} />
+              )}
             </CateIcon>
             <motion.span
               variants={cateName}

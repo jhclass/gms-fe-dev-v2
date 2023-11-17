@@ -330,7 +330,6 @@ export default function Header() {
             <IconArrow>
               <i className="text-zinc-500 xi-angle-down-min" />
             </IconArrow>
-
             <DropUser
               $headerUserMenu={headerUserMenu}
               className="drop"

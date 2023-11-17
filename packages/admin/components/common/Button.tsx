@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
-import { ripplesState } from '@/lib/recoilAtoms'
+import { useState } from 'react'
 
 type CustomRippleButtonProps = {
   buttonType?: 'button' | 'submit' | 'reset'
   width?: string
+  height?: string
   radius?: string
   bgColor?: string
   fontColor?: string
@@ -18,6 +19,7 @@ type CustomRippleButtonProps = {
 
 const Btn = styled(motion.button)<{
   $width: string
+  $height: string
   $radius: string
   $fontSize: string
   $bgColor: string
@@ -26,34 +28,37 @@ const Btn = styled(motion.button)<{
   $bWidth: string
 }>`
   position: relative;
-  margin-top: 3rem;
   width: ${props => props.$width || '100%'};
   min-height: 1.5rem;
-  height: 3rem;
+  height: ${props => props.$height || '3rem'};
   padding: 0.375rem 0.75rem;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  background-color: ${props => props.$bgColor || '#007de9'};
+  background-color: ${props =>
+    props.$typeBorder ? 'transparent' : props.$bgColor || '#007de9'};
   overflow: hidden;
   font-size: ${props => props.$fontSize || '0.9rem'};
   border: ${props =>
     props.$typeBorder
       ? `${props.$bWidth || '1px'} solid ${props.$bgColor}`
-      : 'none'};
+      : '#007de9'};
   border-radius: ${props => props.$radius || '0.75rem'};
-  color: ${props => (props.$fontColor ? props.$fontColor : '#fff')};
+  color: ${props =>
+    props.$typeBorder ? props.$bgColor : props.$fontColor || '#fff'};
   font-weight: bold;
 `
 
-const BtnWrap = styled(motion.span)`
+const BtnWrap = styled(motion.span)<{ $typeBorder: boolean }>`
   position: absolute;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: ${props =>
+    props.$typeBorder ? 'rgba(0, 125, 233, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
 `
 export default function CustomRippleButton(props: CustomRippleButtonProps) {
   const {
     buttonType,
     width,
+    height,
     radius,
     bgColor = '#007de9',
     fontColor,
@@ -64,7 +69,7 @@ export default function CustomRippleButton(props: CustomRippleButtonProps) {
     onClick,
   } = props
 
-  const [ripples, setRipples] = useRecoilState(ripplesState)
+  const [ripples, setRipples] = useState<Array<any>>([])
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -93,6 +98,7 @@ export default function CustomRippleButton(props: CustomRippleButtonProps) {
         whileTap={{ scale: 0.95 }}
         onClick={handleClick}
         $width={width}
+        $height={height}
         $radius={radius}
         $bgColor={bgColor}
         $fontColor={fontColor}
@@ -103,6 +109,7 @@ export default function CustomRippleButton(props: CustomRippleButtonProps) {
         {children}
         {ripples.map(ripple => (
           <BtnWrap
+            $typeBorder={typeBorder}
             key={ripple.id}
             initial={{ scale: 0, opacity: 0.5 }}
             animate={{ scale: 1, opacity: 0 }}

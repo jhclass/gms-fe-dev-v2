@@ -1,12 +1,18 @@
-import Layout from '@/components/wrappers/MainWrap'
+import MainWrap from '@/components/wrappers/MainWrap'
 import ConsolutationTableMo from '@/components/table/ConsoultationMo'
 import ConsolutationTable from '@/components/table/Consoultation'
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
 import { useEffect, useState } from 'react'
+import Breadcrumb from '@/components/common/Breadcrumb'
+import ConsoultFilter from '@/components/common/ConsoultFilter'
+import { styled } from 'styled-components'
+
+const ConBox = styled.div`
+  margin: 2rem 0;
+`
 
 export default function Consoultation() {
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false)
+  const [filterActive, setFilterActive] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,9 +31,13 @@ export default function Consoultation() {
 
   return (
     <>
-      <Layout>
-        {isSmallScreen ? <ConsolutationTableMo /> : <ConsolutationTable />}
-      </Layout>
+      <MainWrap>
+        <Breadcrumb onFilterToggle={setFilterActive} isActive={filterActive} />
+        <ConsoultFilter isActive={filterActive} />
+        <ConBox>
+          {isSmallScreen ? <ConsolutationTableMo /> : <ConsolutationTable />}
+        </ConBox>
+      </MainWrap>
     </>
   )
 }

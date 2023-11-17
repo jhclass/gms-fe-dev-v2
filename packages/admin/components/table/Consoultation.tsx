@@ -7,11 +7,6 @@ const TableWrap = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: auto;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
 `
 
 const Theader = styled.div`
@@ -150,6 +145,31 @@ const Tprogress = styled.div`
   min-width: 90px;
 `
 
+const tableData = [
+  {
+    name: '김초코',
+    progress: '상담예정',
+    phone: '01022223333',
+    enrDiv: '온라인',
+    suvDiv: 'HRD',
+    createdAt: '2023.09.12',
+    stVisit: '2023.09.14',
+    expEnrollDate: '',
+    manager: '이주임',
+  },
+  {
+    name: '박딸기',
+    progress: '상담대기',
+    phone: '01009871234',
+    enrDiv: '온라인',
+    suvDiv: 'HRD',
+    createdAt: '2023.03.12',
+    stVisit: '2023.06.14',
+    expEnrollDate: '2023.07.16',
+    manager: '김사원',
+  },
+]
+
 export default function ConsolutationTable() {
   // const router = useRouter()
   // const tableRef = useRef(null)
@@ -217,60 +237,28 @@ export default function ConsolutationTable() {
           <TexpEnrollDate>수강예정월</TexpEnrollDate>
           <Tprogress>상담상태</Tprogress>
         </Theader>
-        <TableItem>
-          <Tnum>1</Tnum>
-          <T1>
-            <label htmlFor="check1">
-              <i className="xi-star-o"></i>
-              <input id="check1" type="checkbox" hidden />
-            </label>
-          </T1>
-          <T2>
-            <span>접수구분</span>
-            온라인
-          </T2>
-          <TsuvDiv>
-            <span>수강구분</span>
-            HRD
-          </TsuvDiv>
-          <Tname>김초코</Tname>
-          <Tphone>01022223333</Tphone>
-          <TcreatedAt>2023.09.10</TcreatedAt>
-          <Tmanager>박주임</Tmanager>
-          <TstVisit>2023.09.12</TstVisit>
-          <TexpEnrollDate> - </TexpEnrollDate>
-          <Tprogress>상담예정</Tprogress>
-        </TableItem>
-        <TableItem>
-          <Tnum>1</Tnum>
-          <T1>
-            <input type="checkbox" />
-          </T1>
-          <T2>온라인</T2>
-          <TsuvDiv>HRD</TsuvDiv>
-          <Tname>김초코</Tname>
-          <Tphone>01022223333</Tphone>
-          <TcreatedAt>2023.09.10</TcreatedAt>
-          <Tmanager>박주임</Tmanager>
-          <TstVisit>2023.09.12</TstVisit>
-          <TexpEnrollDate> - </TexpEnrollDate>
-          <Tprogress>상담예정</Tprogress>
-        </TableItem>
-        <TableItem>
-          <Tnum>1</Tnum>
-          <T1>
-            <input type="checkbox" />
-          </T1>
-          <T2>온라인</T2>
-          <TsuvDiv>HRD</TsuvDiv>
-          <Tname>김초코</Tname>
-          <Tphone>01022223333</Tphone>
-          <TcreatedAt>2023.09.10</TcreatedAt>
-          <Tmanager>박주임</Tmanager>
-          <TstVisit>2023.09.12</TstVisit>
-          <TexpEnrollDate> - </TexpEnrollDate>
-          <Tprogress>상담예정</Tprogress>
-        </TableItem>
+        {tableData.map((item, index) => (
+          <TableItem key={index}>
+            <Tnum>{index}</Tnum>
+            <T1>
+              <label htmlFor={`check${index}`}>
+                <i className="xi-star-o"></i>
+                <input id={`check${index}`} type="checkbox" hidden />
+              </label>
+            </T1>
+            <T2>{item.enrDiv}</T2>
+            <TsuvDiv>{item.suvDiv}</TsuvDiv>
+            <Tname>{item.name}</Tname>
+            <Tphone>{item.phone}</Tphone>
+            <TcreatedAt>{item.createdAt}</TcreatedAt>
+            <Tmanager>{item.manager !== '' ? item.manager : '-'}</Tmanager>
+            <TstVisit>{item.stVisit !== '' ? item.stVisit : '-'}</TstVisit>
+            <TexpEnrollDate>
+              {item.expEnrollDate !== '' ? item.expEnrollDate : '-'}
+            </TexpEnrollDate>
+            <Tprogress>{item.progress}</Tprogress>
+          </TableItem>
+        ))}
       </TableWrap>
     </>
   )
