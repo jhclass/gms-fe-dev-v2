@@ -14,19 +14,19 @@ export default function Category() {
   const categories = [
     {
       href: '/',
-      iconSrc: '/src/icon/ico_home.png',
+      iconSrc: 'ico_home',
       alt: '대시보드',
       label: '대시보드',
     },
     {
       href: '/consult',
-      iconSrc: '/src/icon/ico_consult.png',
+      iconSrc: 'ico_consult',
       alt: '상담관리',
       label: '상담관리',
     },
     {
       href: '/login',
-      iconSrc: '/src/icon/ico_work.png',
+      iconSrc: 'ico_work',
       alt: '업무관리',
       label: '업무관리',
     },

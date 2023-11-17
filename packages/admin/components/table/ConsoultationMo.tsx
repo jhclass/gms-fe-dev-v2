@@ -1,11 +1,13 @@
+import { animate, motion } from 'framer-motion'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
 const TableWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `
 
 const TableItem = styled.div`
@@ -64,6 +66,19 @@ const TableRt = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+
+const ArrowBtn = styled(motion.button)`
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+`
+
+const InfoBox = styled(motion.div)`
+  display: block;
+  width: 100%;
+`
+
 const Info = styled.ul`
   display: flex;
   width: 100%;
@@ -85,6 +100,31 @@ const TheaderMo = styled.span`
   color: #111;
   font-size: 0.8rem;
 `
+
+const tableData = [
+  {
+    name: '김초코',
+    progress: '상담예정',
+    phone: '01022223333',
+    enrDiv: '온라인',
+    suvDiv: 'HRD',
+    createdAt: '2023.09.12',
+    stVisit: '2023.09.14',
+    expEnrollDate: '2023.09.16',
+    manager: '이주임',
+  },
+  {
+    name: '박딸기',
+    progress: '상담대기',
+    phone: '01009871234',
+    enrDiv: '온라인',
+    suvDiv: 'HRD',
+    createdAt: '2023.03.12',
+    stVisit: '2023.06.14',
+    expEnrollDate: '2023.07.16',
+    manager: '김사원',
+  },
+]
 
 export default function ConsolutationTable() {
   // const router = useRouter()
@@ -134,44 +174,97 @@ export default function ConsolutationTable() {
   //     }
   //   }
   // }, [tableRef])
+  const [infoActive, setInfoActive] = useState<{ [key: number]: boolean }>({})
+
+  const toggleInfo = (index: number) => {
+    setInfoActive(prev => {
+      const updatedInfo = { ...prev }
+      updatedInfo[index] = !prev[index]
+      console.log(updatedInfo)
+      return updatedInfo
+    })
+  }
+
+  const moreIconVariants = {
+    initial: {
+      rotate: 0,
+    },
+    active: {
+      rotate: 180,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  }
+
+  const moreInfoVariants = {
+    hidden: {
+      scaleY: 0,
+      transformOrigin: 'top',
+      height: 0,
+    },
+    visible: {
+      scaleY: 1,
+      transformOrigin: 'top',
+      height: 'auto',
+      transition: {
+        duration: 0.3,
+      },
+    },
+  }
 
   return (
     <>
       <TableWrap>
-        <TableItem>
-          <TableLt>
-            <Tname>홍길동</Tname>
-            <Tprogress>상담예정</Tprogress>
-            <Tphone>01022223333</Tphone>
-            <TsuvDiv>온라인 / HRD</TsuvDiv>
-          </TableLt>
-          <TableRt>
-            <button>
-              <i className="xi-star" />
-            </button>
-            <button>
-              <i className="xi-angle-down-min" />
-            </button>
-          </TableRt>
-          <Info>
-            <li>
-              <TheaderMo>등록일시</TheaderMo>
-              2023.09.12
-            </li>
-            <li>
-              <TheaderMo>상담예정일</TheaderMo>
-              2023.09.12
-            </li>
-            <li>
-              <TheaderMo>수강예정일</TheaderMo>
-              2023.09.12
-            </li>
-            <li>
-              <TheaderMo>담당자</TheaderMo>
-              박주임
-            </li>
-          </Info>
-        </TableItem>
+        {tableData.map((item, index) => (
+          <TableItem key={index}>
+            <TableLt>
+              <Tname>{item.name}</Tname>
+              <Tprogress>{item.progress}</Tprogress>
+              <Tphone>{item.phone}</Tphone>
+              <TsuvDiv>
+                {item.enrDiv}/{item.suvDiv}
+              </TsuvDiv>
+            </TableLt>
+            <TableRt>
+              <button>
+                <i className="xi-star" />
+              </button>
+              <ArrowBtn
+                variants={moreIconVariants}
+                initial="initial"
+                animate={infoActive[index] ? 'active' : 'initial'}
+                onClick={() => toggleInfo(index)}
+              >
+                <i className="xi-angle-down-min" />
+              </ArrowBtn>
+            </TableRt>
+            <InfoBox
+              variants={moreInfoVariants}
+              initial="hidden"
+              animate={infoActive[index] ? 'visible' : 'hidden'}
+            >
+              <Info>
+                <li>
+                  <TheaderMo>등록일시</TheaderMo>
+                  {item.manager !== '' ? item.manager : '-'}
+                </li>
+                <li>
+                  <TheaderMo>상담예정일</TheaderMo>
+                  {item.stVisit !== '' ? item.stVisit : '-'}
+                </li>
+                <li>
+                  <TheaderMo>수강예정일</TheaderMo>
+                  {item.expEnrollDate !== '' ? item.expEnrollDate : '-'}
+                </li>
+                <li>
+                  <TheaderMo>담당자</TheaderMo>
+                  {item.manager}
+                </li>
+              </Info>
+            </InfoBox>
+          </TableItem>
+        ))}
       </TableWrap>
     </>
   )
