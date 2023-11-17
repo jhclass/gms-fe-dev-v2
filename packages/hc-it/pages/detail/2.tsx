@@ -36,10 +36,13 @@ export default function Detail() {
       <section className="bg-white">
         <div className="text-center wrap">
           <p className="pt-20 text-center text-black">
-            <b className="inline-block text-4xl/[3rem]">
+            <span className="inline-block text-black border-2 border-[#2ECEF2] bg-[#2ECEF2] rounded-lg text-center text-xl font-bold px-2 py-1">
               웹툰작가에게 배우는
-              <br />
-              웹툰제작과정 Webtoon
+            </span>
+            <br />
+            <b className="inline-block mt-5 text-4xl/[3rem]">
+              웹툰제작과정
+              <span className="text-2xl/[3rem] pl-3">Webtoon</span>
             </b>
           </p>
           <figure className="w-full mx-auto mt-10">
@@ -50,37 +53,37 @@ export default function Detail() {
       <section className="py-16 bg-white">
         <div className="wrap">
           <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
-            <div className="py-10 bg-[#28232A] rounded-lg">
+            <div className="py-10 rounded-lg border-1 border-zinc-300">
               <p className="mx-auto my-0 text-lg text-center">
                 <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
                   웹툰작가님이 직접 설계한 커리큘럼
                 </span>
               </p>
-              <p className="mt-5 text-base text-center text-white">
+              <p className="mt-5 text-base text-center text-[#28232A]">
                 처음 입문하시는 분들도 쉽게 따라올 수 있도록 3단계로 나누어
                 <br />
                 실력을 점점 쌓아가는 구조로 커리큘럼 구성.
               </p>
             </div>
-            <div className="py-10 bg-[#28232A] rounded-lg">
+            <div className="py-10 rounded-lg border-1 border-zinc-300">
               <p className="mx-auto my-0 text-lg text-center">
                 <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
                   입학 테스트와 1:1피드백을 통한 개인 맞춤 지도
                 </span>
               </p>
-              <p className="mt-5 text-base text-center text-white">
+              <p className="mt-5 text-base text-center text-[#28232A]">
                 입학 시 테스트를 통해 나의 실력을 체크할 수 있고
                 <br />
                 1:1 피드백을 통해 개인 맞춤형 수업 제공
               </p>
             </div>
-            <div className="py-10 bg-[#28232A] rounded-lg">
+            <div className="py-10 rounded-lg border-1 border-zinc-300">
               <p className="mx-auto my-0 text-lg text-center">
                 <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
                   웹툰을 좋아하는 사람은 모두 환영
                 </span>
               </p>
-              <p className="mt-5 text-base text-center text-white">
+              <p className="mt-5 text-base text-center text-[#28232A]">
                 처음 입문자도 스킬업이 필요한 사람도, 취미로 배우고 싶은 사람도
                 <br />
                 작가데뷔나 취업을 희망하는 사람도 웹툰을 좋아하면 모두 환영 !
@@ -96,13 +99,13 @@ export default function Detail() {
           </figure>
         </div>
       </section>
-      <section className="py-16 bg-[#28232A]">
+      <section className="pb-16 bg-white">
         <div className="wrap">
           <div className="text-center">
-            <p className="inline-block px-4 py-2 mb-5 text-sm font-bold text-center text-black bg-white border-2 border-white rounded-lg">
-              POINT 1
+            <p className="inline-block px-4 py-2 mb-5 text-sm/none font-bold text-center text-black bg-[#2ECEF2] border-2 border-[#2ECEF2] rounded-lg">
+              CURRICULUM
             </p>
-            <h4 className="text-center text-white">
+            <h4 className="text-center text-[#28232A]">
               <span className="text-2xl">
                 웹툰 작가님이 직접 설계한 커리큘럼!
               </span>
@@ -112,7 +115,7 @@ export default function Detail() {
               </b>
             </h4>
             <ul className="mx-auto mt-10 lg:w-full xl:w-4/5">
-              <li className="relative p-6 mb-20 text-left text-white border-2 border-white rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -127,14 +130,14 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     웹툰에서의 툴(클립스튜디오, 포토샵)의 이해 및 실습
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-white border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     웹툰제작을 시작하기에 앞서 웹툰제작에 사용되는 하드웨어와
                     소프트웨어의 종류 및 활용법을 이해하고 각각의 활용 예시 등을
                     통해 사용법을 익힐 수 있습니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#CDFBFF] border-2 border-[#CDFBFF] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -148,7 +151,7 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     크로키, 모작 등 다양한 방법을 통한 인체 익히기
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#CDFBFF] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     인체의 기본 비율, 캐릭터 두상의 비율 및 형태, 근육을 통한
                     인체의 연결과 윤곽, 인체 무게 중심, 옷 주름과 신발, 얼굴
                     표정 등 다양한 인체비율 연구를 통해 인체 드로잉을 이해할 수
@@ -156,7 +159,7 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#CDFBFF] border-2 border-[#CDFBFF] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -171,14 +174,14 @@ export default function Detail() {
                     채색 실습 (기본 채색 및 명암 활용법과 레이어 및 효과를
                     이용한 응용)
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#CDFBFF] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     클립스튜디오의 다양한 브러시 도구를 이용한 펜선 연습을 통해
                     다양한 펜선의 종류를 이해할 수 있고, 다양한 채색 활용 예시를
                     통해 채색 및 명암 활용법 등을 익힐 수 있습니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#6BEDF9] border-2 border-[#6BEDF9] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -193,13 +196,13 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#6BEDF9] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     원고가 어떻게 완성되는지 간단한 예시를 보고 원고 중 1컷
                     완성을 목표로 합니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-white border-2 border-white rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -220,7 +223,7 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#CDFBFF] border-2 border-[#CDFBFF] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -234,13 +237,13 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     흉상, 반신상, 전신 완성하기
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#CDFBFF] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     내가 원하는 캐릭터 샘플을 완성하고 캐릭터 설정에 나오는
                     흉상, 반신상, 전신을 완성해 봅니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#CDFBFF] border-2 border-[#CDFBFF] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -254,14 +257,14 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     스케치업을 활용한 배경제작 및 3D 이질감 보정
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#CDFBFF] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     투시를 이용한 인물을 그려보며 투시법, 투시별 연출 및 활용
                     방법 등 배경연출을 이해할 수 있고, 스케치업을 통해 3D 배경을
                     제작하거나 활용할 수 있습니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#6BEDF9] border-2 border-[#6BEDF9] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -276,13 +279,13 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#6BEDF9] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     내가 만든 캐릭터와 배경을 기반으로 원고시안의 개인별
                     피드백을 통해 4컷 원고 완성을 목표로 합니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-white border-2 border-white rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -299,14 +302,14 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     사건의 중심이 되는 3명의 캐릭터 설정
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-white border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     다양한 스토리의 활용 및 적용 예시를 통해 스토리 작법 이론
                     및, 스토리를 어떻게 시작할 것인지, 나에게 맞는 장르는 어떤
                     것인지 파악하고 나만의 스토리를 작성할 수 있습니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#CDFBFF] border-2 border-[#CDFBFF] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -322,13 +325,13 @@ export default function Detail() {
                     다양한 장르의 연출 (ex 일상, 판타지, 스릴러 등 장르에 따른
                     다양한 연출연구)
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#CDFBFF] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     다양한 연출법에 대한 기초이론의 학습을 통해 스토리의 전개,
                     장르, 시간의 흐름에 따라 나의 작품을 연출할 수 있습니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#CDFBFF] border-2 border-[#CDFBFF] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -343,14 +346,14 @@ export default function Detail() {
                     배경, 채색의 연출 활용(긴장감, 추격패턴, 혼란, 시선의
                     흐름으로 컷의 연결 및 전조)
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#CDFBFF] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     다양한 연출방법의 학습을 통해 단지 그리는 것이 아니라 인물과
                     배경, 오브제 등 디테일한 부분들의 연출 활용법을 배우고
                     본인이 만든 스토리를 더욱 생동감 있게 연출할 수 있습니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#6BEDF9] border-2 border-[#6BEDF9] rounded-lg">
+              <li className="relative p-6 mb-20 text-left text-[#28232A] border-2 border-[#28232A] rounded-lg">
                 <span className="absolute bottom-[-5rem] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
@@ -365,14 +368,14 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#6BEDF9] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#28232A] border-t-1">
                     본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례 원고를
                     거듭하면서 원고에 시작과 마무리에 대한 감을 익힙니다.
                   </li>
                 </ul>
               </li>
-              <li className="mt-10 p-6 text-left text-black border-2 border-[#42E0EF] rounded-lg bg-[#42E0EF]">
-                <span className="text-[#42E0EF] border-2 border-black bg-black text-center text-xl py-1 px-4 inline-block mb-2">
+              <li className="mt-10 p-6 text-left text-black border-2 border-[#2ECEF2] rounded-lg bg-[#2ECEF2]">
+                <span className="text-[#2ECEF2] border-2 border-black bg-black text-center text-xl py-1 px-4 inline-block mb-2">
                   Final Portfolio.
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">

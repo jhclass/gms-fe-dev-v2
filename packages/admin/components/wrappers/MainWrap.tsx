@@ -1,10 +1,11 @@
 import Header from '@/components/layout/Header'
 import Nav from '@/components/layout/Nav'
-import { navOpenState } from '@/lib/recoilAtoms'
+import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import WithAuth from '@/components/wrappers/WithAuth'
+import { useEffect } from 'react'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -32,7 +33,26 @@ const Container = styled.div`
 `
 
 export default function MainWrap({ children }) {
-  const [navOpen] = useRecoilState(navOpenState)
+  const [isScreen, setIsScreen] = useRecoilState(isScreenState)
+  const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isSmall = window.innerWidth <= 1024
+      setIsScreen(isSmall)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [setIsScreen])
+
+  useEffect(() => {
+    if (isScreen) {
+      setNavOpen(false)
+    }
+  }, [setNavOpen])
 
   return (
     <>

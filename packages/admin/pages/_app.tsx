@@ -1,25 +1,17 @@
 import '@/styles/global.css'
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
-import { RecoilRoot, RecoilEnv } from 'recoil'
+import { RecoilRoot, RecoilEnv, useRecoilState } from 'recoil'
 import Head from 'next/head'
 import { GlobalStyle } from '@/styles/GlobalStyle'
 import { ApolloProvider, useReactiveVar } from '@apollo/client'
 import { apolloClient, isLoggedInVar } from '@/lib/apolloClient'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
 export default function MyApp({ Component, pageProps }: AppProps) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
-  //현재 로그인상태
-
-  // const router = useRouter()
-  // const isLoggedIn = useReactiveVar(isLoggedInVar)
-  // useEffect(() => {
-  //   if (!isLoggedIn && router.pathname !== '/login') {
-  //     router.push('/login')
-  //   }
-  // }, [isLoggedIn, router])
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>
