@@ -112,18 +112,6 @@ export default function CustomRippleButton({
         />
       </InputBox>
       {errors && <ErrorMessage>{String(errors)}</ErrorMessage>}
-      {/* <Input
-        type="password"
-        id="password"
-        label="Password"
-        {...register('password', {
-          required: {
-            value: true,
-            message: '비밀번호를 입력해주세요',
-          },
-        })}
-        errors={errors.password && errors.password.message}
-      /> */}
     </>
   )
 }
