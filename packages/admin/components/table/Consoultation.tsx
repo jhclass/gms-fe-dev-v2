@@ -1,3 +1,4 @@
+import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { styled } from 'styled-components'
@@ -6,7 +7,6 @@ const TableWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow-x: auto;
 `
 
 const Theader = styled.div`
@@ -145,6 +145,12 @@ const Tprogress = styled.div`
   min-width: 90px;
 `
 
+const PagerWrap = styled.div`
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+`
+
 const tableData = [
   {
     name: '김초코',
@@ -222,44 +228,50 @@ export default function ConsolutationTable() {
   return (
     <>
       <TableWrap>
-        <Theader>
-          <Tnum>No</Tnum>
-          <T1>
-            <i className="xi-star"></i>
-          </T1>
-          <T2>접수구분</T2>
-          <TsuvDiv>수강구분</TsuvDiv>
-          <Tname>이름</Tname>
-          <Tphone>연락처</Tphone>
-          <TcreatedAt>등록일시</TcreatedAt>
-          <Tmanager>담당자</Tmanager>
-          <TstVisit>상담예정일</TstVisit>
-          <TexpEnrollDate>수강예정월</TexpEnrollDate>
-          <Tprogress>상담상태</Tprogress>
-        </Theader>
-        {tableData.map((item, index) => (
-          <TableItem key={index}>
-            <Tnum>{index + 1}</Tnum>
+        <ScrollShadow orientation="horizontal" className="scrollbar">
+          <Theader>
+            <Tnum>No</Tnum>
             <T1>
-              <label htmlFor={`check${index}`}>
-                <i className="xi-star-o"></i>
-                <input id={`check${index}`} type="checkbox" hidden />
-              </label>
+              <i className="xi-star"></i>
             </T1>
-            <T2>{item.enrDiv}</T2>
-            <TsuvDiv>{item.suvDiv}</TsuvDiv>
-            <Tname>{item.name}</Tname>
-            <Tphone>{item.phone}</Tphone>
-            <TcreatedAt>{item.createdAt}</TcreatedAt>
-            <Tmanager>{item.manager !== '' ? item.manager : '-'}</Tmanager>
-            <TstVisit>{item.stVisit !== '' ? item.stVisit : '-'}</TstVisit>
-            <TexpEnrollDate>
-              {item.expEnrollDate !== '' ? item.expEnrollDate : '-'}
-            </TexpEnrollDate>
-            <Tprogress>{item.progress}</Tprogress>
-          </TableItem>
-        ))}
+            <T2>접수구분</T2>
+            <TsuvDiv>수강구분</TsuvDiv>
+            <Tname>이름</Tname>
+            <Tphone>연락처</Tphone>
+            <TcreatedAt>등록일시</TcreatedAt>
+            <Tmanager>담당자</Tmanager>
+            <TstVisit>상담예정일</TstVisit>
+            <TexpEnrollDate>수강예정월</TexpEnrollDate>
+            <Tprogress>상담상태</Tprogress>
+          </Theader>
+          {tableData.map((item, index) => (
+            <TableItem key={index}>
+              <Tnum>{index + 1}</Tnum>
+              <T1>
+                <label htmlFor={`check${index}`}>
+                  <i className="xi-star-o"></i>
+                  <input id={`check${index}`} type="checkbox" hidden />
+                </label>
+              </T1>
+              <T2>{item.enrDiv}</T2>
+              <TsuvDiv>{item.suvDiv}</TsuvDiv>
+              <Tname>{item.name}</Tname>
+              <Tphone>{item.phone}</Tphone>
+              <TcreatedAt>{item.createdAt}</TcreatedAt>
+              <Tmanager>{item.manager !== '' ? item.manager : '-'}</Tmanager>
+              <TstVisit>{item.stVisit !== '' ? item.stVisit : '-'}</TstVisit>
+              <TexpEnrollDate>
+                {item.expEnrollDate !== '' ? item.expEnrollDate : '-'}
+              </TexpEnrollDate>
+              <Tprogress>{item.progress}</Tprogress>
+            </TableItem>
+          ))}
+        </ScrollShadow>
       </TableWrap>
+
+      <PagerWrap>
+        <Pagination variant="light" showControls total={10} initialPage={1} />
+      </PagerWrap>
     </>
   )
 }
