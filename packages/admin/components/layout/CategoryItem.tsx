@@ -1,4 +1,5 @@
 import { navOpenState } from '@/lib/recoilAtoms'
+import { Tooltip } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRecoilState } from 'recoil'
@@ -86,13 +87,19 @@ export default function CategoryItem<CategoryItemProps>({
       >
         <Link href={href}>
           <CateLink $navOpen={navOpen}>
-            <CateIcon>
-              {isActive ? (
-                <img src={`/src/icon/${iconSrc}_w.png`} alt={alt} />
-              ) : (
-                <img src={`/src/icon/${iconSrc}.png`} alt={alt} />
-              )}
-            </CateIcon>
+            <Tooltip
+              content={label}
+              placement="right"
+              isDisabled={navOpen ? true : false}
+            >
+              <CateIcon>
+                {isActive ? (
+                  <img src={`/src/icon/${iconSrc}_w.png`} alt={alt} />
+                ) : (
+                  <img src={`/src/icon/${iconSrc}.png`} alt={alt} />
+                )}
+              </CateIcon>
+            </Tooltip>
             <motion.span
               variants={cateName}
               initial={navOpen ? 'close' : 'open'}

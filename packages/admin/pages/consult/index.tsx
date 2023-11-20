@@ -11,23 +11,7 @@ const ConBox = styled.div`
 `
 
 export default function Consoultation() {
-  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false)
   const [filterActive, setFilterActive] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => {
-      const isSmall = window.innerWidth <= 768
-      setIsSmallScreen(isSmall)
-    }
-
-    handleResize()
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
 
   return (
     <>
@@ -35,7 +19,7 @@ export default function Consoultation() {
         <Breadcrumb onFilterToggle={setFilterActive} isActive={filterActive} />
         <ConsoultFilter isActive={filterActive} />
         <ConBox>
-          {isSmallScreen ? <ConsolutationTableMo /> : <ConsolutationTable />}
+          <ConsolutationTable />
         </ConBox>
       </MainWrap>
     </>

@@ -7,7 +7,7 @@ type CustomInputProps = {
   type?: string
   id?: string
   label?: string
-  errors?: any
+  errorMessage?: any
 }
 
 const InputBox = styled(motion.div)`
@@ -81,10 +81,10 @@ export default function CustomRippleButton({
   type,
   id,
   label,
-  errors,
+  errorMessage,
 }: CustomInputProps) {
   const [isFocused, setIsFocused] = useState(false)
-  const { register, control, setValue } = useForm()
+  const { register, control } = useForm()
 
   const value = useWatch({
     control,
@@ -106,12 +106,12 @@ export default function CustomRippleButton({
           type={type}
           id={id}
           onFocus={() => setIsFocused(true)}
-          {...register(id, {
-            onBlur: () => setIsFocused(value ? true : false),
-          })}
+          // {...register(id, {
+          //   onBlur: () => setIsFocused(value ? true : false),
+          // })}
         />
       </InputBox>
-      {errors && <ErrorMessage>{String(errors)}</ErrorMessage>}
+      {/* {errorMessage && <ErrorMessage>{String(errorMessage)}</ErrorMessage>} */}
     </>
   )
 }

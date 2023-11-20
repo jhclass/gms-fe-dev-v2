@@ -9,7 +9,6 @@ import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import { LogUserIn, isLoggedInVar } from '@/lib/apolloClient'
 import { gql } from '@apollo/client'
-import { Input } from '@nextui-org/react'
 const LOGIN_MUTATION = gql`
   mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
     mLogin(mUserId: $mUserId, mPassword: $mPassword) {
@@ -52,30 +51,47 @@ const LoginBox = styled.div`
   background: rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 5rem rgba(0, 0, 0, 0.4);
 `
-const InputBox = styled.div`
+
+const InputBox = styled(motion.div)`
   margin-top: 0.7rem;
+  position: relative;
+  padding: 0.375rem 0.75rem;
+  width: 100%;
+  height: 3.5rem;
+  border: 1px solid #fafafa;
+  border-radius: 0.75rem;
+  font-weight: 400;
   color: #fafafa;
   font-size: 1rem;
+`
+const Input = styled(motion.input)`
+  height: 100%;
+  width: 100%;
+  padding-top: 1rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  background: transparent;
 
-  label {
-    color: inherit;
+  &:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 0 transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
   }
 
-  input {
-    &:-webkit-autofill {
-      background-color: transparent !important;
-      -webkit-box-shadow: 0 0 0px 0 transparent inset;
-      transition: background-color 5000s ease-in-out 0s;
-      -webkit-text-fill-color: #fff !important;
-    }
-
-    &:autofill {
-      background-color: transparent !important;
-      -webkit-box-shadow: 0 0 0px 0 transparent inset;
-      transition: background-color 5000s ease-in-out 0s;
-      -webkit-text-fill-color: #fff !important;
-    }
+  &:autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 0 transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
   }
+`
+
+const Label = styled(motion.label)`
+  position: absolute;
+  left: 0.75rem;
+  font-weight: 200;
+  color: #fafafa;
 `
 
 const BtnBox = styled.div`
@@ -173,13 +189,19 @@ export default function Login() {
           </Logo>
           <form onSubmit={handleSubmit(onSubmit)}>
             <InputBox>
+              <Label
+                variants={InputVariants}
+                initial="initial"
+                animate={loginIdFocus || idValue ? 'focus' : 'initial'}
+                htmlFor="id"
+              >
+                User ID
+              </Label>
               <Input
                 type="text"
-                variant="bordered"
-                label="User ID"
                 id="id"
                 onFocus={() => setLoginIdFocus(true)}
-                className="text-white"
+                onBlur={() => setLoginIdFocus(false)}
                 {...register('id', {
                   required: {
                     value: true,
@@ -194,15 +216,21 @@ export default function Login() {
                   },
                 })}
               />
-              {errors.id && (
-                <ErrorMessage>{String(errors.id.message)}</ErrorMessage>
-              )}
             </InputBox>
+            {errors.id && (
+              <ErrorMessage>{String(errors.id.message)}</ErrorMessage>
+            )}
             <InputBox>
+              <Label
+                variants={InputVariants}
+                initial="initial"
+                animate={loginPasswordFocus || passValue ? 'focus' : 'initial'}
+                htmlFor="password"
+              >
+                Password
+              </Label>
               <Input
                 type="password"
-                variant="bordered"
-                label="password"
                 id="password"
                 onFocus={() => setLoginPasswordFocus(true)}
                 {...register('password', {
@@ -219,10 +247,10 @@ export default function Login() {
                   },
                 })}
               />
-              {errors.password && (
-                <ErrorMessage>{String(errors.password.message)}</ErrorMessage>
-              )}
             </InputBox>
+            {errors.password && (
+              <ErrorMessage>{String(errors.password.message)}</ErrorMessage>
+            )}
             <BtnBox>
               <Button buttonType="submit">로그인</Button>
             </BtnBox>
