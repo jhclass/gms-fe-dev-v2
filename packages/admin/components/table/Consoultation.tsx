@@ -239,7 +239,7 @@ export default function ConsolutationTable() {
         </Theader>
         {tableData.map((item, index) => (
           <TableItem key={index}>
-            <Tnum>{index}</Tnum>
+            <Tnum>{index + 1}</Tnum>
             <T1>
               <label htmlFor={`check${index}`}>
                 <i className="xi-star-o"></i>
