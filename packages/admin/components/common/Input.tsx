@@ -77,10 +77,12 @@ const InputVariants = {
   },
 }
 
-export default function CustomRippleButton(
-  { type, id, label, errors }: CustomInputProps,
-  ref,
-) {
+export default function CustomRippleButton({
+  type,
+  id,
+  label,
+  errors,
+}: CustomInputProps) {
   const [isFocused, setIsFocused] = useState(false)
   const { register, control, setValue } = useForm()
 
@@ -101,7 +103,6 @@ export default function CustomRippleButton(
           {label}
         </Label>
         <Input
-          ref={ref}
           type={type}
           id={id}
           onFocus={() => setIsFocused(true)}
@@ -111,8 +112,7 @@ export default function CustomRippleButton(
         />
       </InputBox>
       {errors && <ErrorMessage>{String(errors)}</ErrorMessage>}
-      Login{' '}
-      <Input
+      {/* <Input
         type="password"
         id="password"
         label="Password"
@@ -122,9 +122,8 @@ export default function CustomRippleButton(
             message: '비밀번호를 입력해주세요',
           },
         })}
-        ref={passwordRef}
         errors={errors.password && errors.password.message}
-      />
+      /> */}
     </>
   )
 }
