@@ -8,7 +8,6 @@ import { Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
-import { ko } from 'date-fns/esm/locale'
 
 type ConsoultFilterProps = {
   isActive: boolean
@@ -130,7 +129,6 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
             </ItemBox>
             <ItemBox>
               <DatePicker
-                locale={ko}
                 selectsRange={true}
                 startDate={startCreatDate}
                 endDate={endCreatDate}
@@ -191,7 +189,6 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
             </ItemBox>
             <ItemBox>
               <DatePicker
-                locale={ko}
                 selectsRange={true}
                 startDate={startVisitDate}
                 endDate={endVisitDate}
