@@ -195,6 +195,7 @@ export type Mutation = {
   deleteConsultationMemo?: Maybe<DeleteConsultationMemoResult>;
   deleteMessage: MutationResponse;
   deletePhoto: DeletePhotoResult;
+  deleteSubject?: Maybe<CommonResponse>;
   editComment: MutationResponse;
   editPhoto: EditPhotoResult;
   editProfile?: Maybe<EditProfileResult>;
@@ -206,7 +207,9 @@ export type Mutation = {
   sendMessage: MutationResponse;
   toggleLike: ToggleLikeResult;
   unfollowUser?: Maybe<UnfollowUserResult>;
+  updateFavorite?: Maybe<StudentState>;
   updateStudentState?: Maybe<UpdateStudentStateResult>;
+  updateSubject?: Maybe<CommonResponse>;
   uploadPhoto?: Maybe<Photo>;
 };
 
@@ -314,6 +317,11 @@ export type MutationDeletePhotoArgs = {
 };
 
 
+export type MutationDeleteSubjectArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationEditCommentArgs = {
   id: Scalars['Int']['input'];
   payload: Scalars['String']['input'];
@@ -381,6 +389,12 @@ export type MutationUnfollowUserArgs = {
 };
 
 
+export type MutationUpdateFavoriteArgs = {
+  favorite: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationUpdateStudentStateArgs = {
   birthday?: InputMaybe<Scalars['String']['input']>;
   campus?: InputMaybe<Scalars['String']['input']>;
@@ -400,6 +414,18 @@ export type MutationUpdateStudentStateArgs = {
   stVisit?: InputMaybe<Scalars['String']['input']>;
   subDiv?: InputMaybe<Scalars['String']['input']>;
   subject?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUpdateSubjectArgs = {
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  exposure?: InputMaybe<Scalars['Boolean']['input']>;
+  fee: Scalars['Int']['input'];
+  id: Scalars['Int']['input'];
+  roomNum?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  subDiv: Scalars['String']['input'];
+  subjectName: Scalars['String']['input'];
 };
 
 
@@ -443,6 +469,7 @@ export type Query = {
   seeFollowing: SeeFollowingResult;
   seeFollows: SeeFollowsResult;
   seeHashtag?: Maybe<Hashtag>;
+  seeManageUser?: Maybe<Array<Maybe<ManageUser>>>;
   seePhoto?: Maybe<Photo>;
   seePhotoComments?: Maybe<Array<Maybe<Comment>>>;
   seePhotoLikes?: Maybe<Array<Maybe<User>>>;
@@ -451,6 +478,7 @@ export type Query = {
   seeRoom: Room;
   seeRooms?: Maybe<Array<Maybe<Room>>>;
   seeStudentState?: Maybe<Array<Maybe<StudentState>>>;
+  seeSubject?: Maybe<Array<Maybe<Subject>>>;
 };
 
 
@@ -575,18 +603,20 @@ export type StudentState = {
   currentManager?: Maybe<Scalars['String']['output']>;
   detail?: Maybe<Scalars['String']['output']>;
   expEnrollDate?: Maybe<Scalars['String']['output']>;
+  favorite?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['Int']['output'];
   perchase?: Maybe<Scalars['Boolean']['output']>;
   phoneNum1: Scalars['String']['output'];
   phoneNum2?: Maybe<Scalars['String']['output']>;
   phoneNum3?: Maybe<Scalars['String']['output']>;
   progress: Scalars['Int']['output'];
+  receiptDiv?: Maybe<Scalars['String']['output']>;
   stAddr?: Maybe<Scalars['String']['output']>;
   stEmail?: Maybe<Scalars['String']['output']>;
   stName: Scalars['String']['output'];
   stVisit?: Maybe<Scalars['String']['output']>;
   subDiv?: Maybe<Scalars['String']['output']>;
-  subject?: Maybe<Scalars['String']['output']>;
+  subject?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   updatedAt: Scalars['String']['output'];
 };
 

@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
-
+import { gql, useMutation } from '@apollo/client'
+const UPDATE_FAVORITE_MUTATION = gql`
+  mutation UpdateFavorite($updateFavoriteId: Int!, $favorite: Boolean!) {
+    updateFavorite(id: $updateFavoriteId, favorite: $favorite) {
+      favorite
+    }
+  }
+`
 type ConsoultItemProps = {
   tableData: {
     id: number
@@ -166,22 +173,28 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props: ConsoultItemProps) {
+  const [toggleFavo, setToggleFavo] = useState<boolean>(false)
+  const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const conIndex = props.itemIndex
   const student = props.tableData
-  const [checkedItems, setCheckedItems] = useState<boolean[]>([])
 
-  const handleCheckboxChange = (index: number) => {
-    setCheckedItems(prevCheckedItems => {
-      const updatedCheckedItems = [...prevCheckedItems]
-      updatedCheckedItems[index] = !updatedCheckedItems[index]
-      return updatedCheckedItems
-    })
-  }
+  console.log(props.tableData.id, '아이디올시다', toggleFavo)
 
   const testClick = () => {
     alert('a')
   }
-
+  const favoClick = () => {
+    setToggleFavo(!toggleFavo)
+    updateFavo({
+      variables: {
+        updateFavoriteId: props.tableData.id,
+        favorite: toggleFavo,
+      },
+      onCompleted: data => {
+        console.log('현재 favo 상태', data)
+      },
+    })
+  }
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
@@ -223,15 +236,15 @@ export default function ConsolutItem(props: ConsoultItemProps) {
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`check${student.id}`}
-              className={checkedItems[student.id] ? 'text-yellow-300' : ''}
+              className={toggleFavo ? 'text-yellow-300' : ''}
             >
-              <i
-                className={checkedItems[student.id] ? 'xi-star' : 'xi-star-o'}
-              />
+              <i className={toggleFavo ? 'xi-star' : 'xi-star-o'} />
               <input
                 id={`check${student.id}`}
                 type="checkbox"
-                onChange={() => handleCheckboxChange(student.id)}
+                onClick={() => {
+                  favoClick()
+                }}
                 hidden
               />
             </TfavoriteLabel>
