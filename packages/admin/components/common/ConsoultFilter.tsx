@@ -224,7 +224,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
             <ItemBox>
               <Select
                 labelPlacement="outside"
-                label="상담상태"
+                label="진행상태"
                 placeholder=" "
                 className="w-full"
                 defaultValue=""
