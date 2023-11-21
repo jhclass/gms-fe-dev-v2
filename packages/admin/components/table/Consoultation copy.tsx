@@ -25,90 +25,90 @@ const SeeStudent_QUERY = gql`
 
 const TableWrap = styled.div`
   width: 100%;
-  display: table;
-  min-width: 1200px;
+  display: flex;
+  flex-direction: column;
 `
 
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
-  display: table-row;
+  display: flex;
   flex-wrap: nowrap;
   row-gap: 1rem;
   color: #111;
   font-size: 0.875rem;
   font-weight: 700;
   border-bottom: 1px solid #e4e4e7;
-  text-align: center;
-`
-
-const TheaderBox = styled.div`
-  display: flex;
 `
 const Tfavorite = styled.div`
-  display: table-cell;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2%;
   font-size: inherit;
   color: inherit;
   min-width: 30px;
   padding: 1rem 1rem 1rem 2rem;
+  min-width: 30px;
 `
-
 const ClickBox = styled.div`
   display: flex;
-  width: 100%;
+  width: 98%;
 `
 const Tnum = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 6%;
-  padding: 1rem;
+  width: 5%;
   font-size: inherit;
   color: inherit;
-  min-width: 50px;
+  min-width: 68px;
+  padding: 1rem;
 `
 const TreceiptDiv = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 9%;
-  padding: 1rem;
+  width: 10%;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  padding: 1rem;
+  min-width: 114px;
 `
 const TsubDiv = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 114px;
 `
 const Tname = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 147px;
 `
 const Tphone = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 150px;
 `
 const TcreatedAt = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 12%;
@@ -118,17 +118,17 @@ const TcreatedAt = styled.div`
   min-width: 120px;
 `
 const Tmanager = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 114px;
 `
 const TstVisit = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 12%;
@@ -138,7 +138,7 @@ const TstVisit = styled.div`
   min-width: 120px;
 `
 const TexpEnrollDate = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 12%;
@@ -148,7 +148,7 @@ const TexpEnrollDate = styled.div`
   min-width: 120px;
 `
 const Tprogress = styled.div`
-  display: table-cell;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 10%;
@@ -175,32 +175,31 @@ export default function ConsolutationTable() {
 
   return (
     <>
-      <ScrollShadow orientation="horizontal" className="scrollbar">
-        <TableWrap>
+      <TableWrap>
+        <ScrollShadow orientation="horizontal" className="scrollbar">
           <Theader>
-            <TheaderBox>
-              <Tfavorite>
-                <i className="xi-star"></i>
-              </Tfavorite>
-              <ClickBox>
-                <Tnum>No</Tnum>
-                <TreceiptDiv>접수구분</TreceiptDiv>
-                <TsubDiv>수강구분</TsubDiv>
-                <Tname>이름</Tname>
-                <Tphone>연락처</Tphone>
-                <TcreatedAt>등록일시</TcreatedAt>
-                <Tmanager>담당자</Tmanager>
-                <TstVisit>상담예정일</TstVisit>
-                <TexpEnrollDate>수강예정월</TexpEnrollDate>
-                <Tprogress>진행상태</Tprogress>
-              </ClickBox>
-            </TheaderBox>
+            <Tfavorite>
+              <i className="xi-star"></i>
+            </Tfavorite>
+            <ClickBox>
+              <Tnum>No</Tnum>
+
+              <TreceiptDiv>접수구분</TreceiptDiv>
+              <TsubDiv>수강구분</TsubDiv>
+              <Tname>이름</Tname>
+              <Tphone>연락처</Tphone>
+              <TcreatedAt>등록일시</TcreatedAt>
+              <Tmanager>담당자</Tmanager>
+              <TstVisit>상담예정일</TstVisit>
+              <TexpEnrollDate>수강예정월</TexpEnrollDate>
+              <Tprogress>진행상태</Tprogress>
+            </ClickBox>
           </Theader>
           {students.map((item, index) => (
             <ConsoultItem key={index} tableData={item} itemIndex={index} />
           ))}
-        </TableWrap>
-      </ScrollShadow>
+        </ScrollShadow>
+      </TableWrap>
 
       <PagerWrap>
         <Pagination

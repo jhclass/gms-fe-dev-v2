@@ -11,7 +11,8 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   padding: ${props => (props.$navOpen ? '4rem 0 0 18rem;' : '4rem 0 0 5rem;')};
   background-color: #d6e4f1;
 
