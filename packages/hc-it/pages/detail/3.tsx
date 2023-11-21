@@ -36,7 +36,7 @@ export default function Detail() {
       <section className="bg-black">
         <div className="text-center wrap">
           <p className="pt-20 text-center text-white">
-            <span className="inline-block text-black border-2 border-[#2ECEF2] bg-[#2ECEF2] rounded-lg text-center text-xl font-bold px-2 py-1">
+            <span className="inline-block text-black border-2 border-[#F28705] bg-[#F28705] rounded-lg text-center text-xl font-bold px-2 py-1">
               웹툰작가에게 배우는
             </span>
             <br />
@@ -45,11 +45,8 @@ export default function Detail() {
               <span className="text-2xl/[3rem] pl-3">Webtoon</span>
             </b>
           </p>
-          <figure className="hidden w-full mx-auto mt-10 md:block">
-            <img src="/src/detail/d2_main_section02.jpg" />
-          </figure>
-          <figure className="w-full mx-auto mt-10 md:hidden">
-            <img src="/src/detail/d2_main_section02_mo.jpg" />
+          <figure className="w-full mx-auto mt-10">
+            <img src="/src/detail/d2_main_section03.jpg" />
           </figure>
         </div>
       </section>
@@ -63,7 +60,7 @@ export default function Detail() {
           <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
             <div className="px-10 py-10 bg-black rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
+                <span className="text-black border-2 border-[#F28705] font-bold bg-[#F28705] rounded-lg px-3 py-2 mb-2">
                   입학상담 및 사전평가
                 </span>
               </p>
@@ -74,7 +71,7 @@ export default function Detail() {
             </div>
             <div className="px-10 py-10 bg-black rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
+                <span className="text-black border-2 border-[#F28705] font-bold bg-[#F28705] rounded-lg px-3 py-2 mb-2">
                   웹툰작가님의 커리큘럼
                 </span>
               </p>
@@ -85,7 +82,7 @@ export default function Detail() {
             </div>
             <div className="px-10 py-10 bg-black rounded-lg">
               <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#2ECEF2] font-bold bg-[#2ECEF2] rounded-lg px-3 py-2 mb-2">
+                <span className="text-black border-2 border-[#F28705] font-bold bg-[#F28705] rounded-lg px-3 py-2 mb-2">
                   1:1피드백, 개인맞춤지도
                 </span>
               </p>
@@ -114,15 +111,15 @@ export default function Detail() {
       <section className="py-16 bg-white">
         <div className="wrap">
           <div className="text-center">
-            <p className="inline-block px-4 py-2 text-sm/none font-bold text-center text-black bg-[#2ECEF2] border-2 border-[#2ECEF2] rounded-lg">
+            <p className="inline-block px-4 py-2 text-sm font-bold text-center text-white bg-[#F28705] border-2 border-[#F28705] rounded-lg">
               Flowchart
             </p>
-            {/* <h4 className="text-center text-[#28232A]">
+            {/* <h4 className="text-center text-[#021226]">
               <b className="inline-block mt-2 text-2xl">[ Flowchart ]</b>
             </h4> */}
             <ul className="mx-auto mt-10 lg:w-full xl:w-4/5">
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -144,8 +141,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -166,8 +163,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -188,8 +185,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -209,8 +206,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -230,8 +227,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -250,8 +247,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -271,8 +268,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -292,8 +289,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -316,8 +313,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -338,8 +335,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -360,8 +357,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#0D0D0D] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#2ECEF2] left-[50%] text-6xl ml-[-1.5rem]">
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -381,8 +378,8 @@ export default function Detail() {
                   </li>
                 </ul>
               </li>
-              <li className="mt-10 p-6 text-left text-[#0D0D0D] border-2 border-[#07F2F2] rounded-lg bg-[#07F2F2]">
-                <span className="text-[#07F2F2] border-2 border-[#0D0D0D] bg-[#0D0D0D] text-center text-xl py-1 px-4 inline-block mb-2">
+              <li className="mt-10 p-6 text-left text-[#021226] border-2 border-[#F28705] rounded-lg bg-[#F28705]">
+                <span className="text-[#F28705] border-2 border-[#021226] bg-[#021226] text-center text-xl py-1 px-4 inline-block mb-2">
                   Portfolio.
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
@@ -401,7 +398,7 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     단편 원고 작업, 편집
                   </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#0D0D0D] border-t-1">
+                  <li className="relative pt-5 pl-4 mt-5 border-[#021226] border-t-1">
                     작가 데뷔 및 취업을 위한 포트폴리오 제작
                   </li>
                 </ul>
@@ -535,7 +532,7 @@ export default function Detail() {
           </p>
           <ul className="mt-10">
             <li>
-              <p className="inline-block text-black border-2 border-[#07F2F2] font-bold bg-[#07F2F2] text-base rounded-lg px-2 py-1 mb-2">
+              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
                 Part1. 오리엔테이션
               </p>
               <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
@@ -581,7 +578,7 @@ export default function Detail() {
               </div>
             </li>
             <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#07F2F2] font-bold bg-[#07F2F2] text-base rounded-lg px-2 py-1 mb-2">
+              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
                 Part2. 웹툰 캐릭터 제작
               </p>
               <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
@@ -637,7 +634,7 @@ export default function Detail() {
               </div>
             </li>
             <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#07F2F2] font-bold bg-[#07F2F2] text-base rounded-lg px-2 py-1 mb-2">
+              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
                 Part3. 4컷 웹툰 제작
               </p>
               <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
@@ -709,7 +706,7 @@ export default function Detail() {
               </div>
             </li>
             <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#07F2F2] font-bold bg-[#07F2F2] text-base rounded-lg px-2 py-1 mb-2">
+              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
                 Part4. 웹툰 프롤로그 완성
               </p>
               <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
@@ -770,7 +767,7 @@ export default function Detail() {
               </div>
             </li>
             <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#07F2F2] font-bold bg-[#07F2F2] text-base rounded-lg px-2 py-1 mb-2">
+              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
                 Part5. Portfolio
               </p>
               <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">

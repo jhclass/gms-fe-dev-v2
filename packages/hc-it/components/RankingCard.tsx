@@ -4,15 +4,15 @@ export default function RankingCard() {
   const list = [
     {
       title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
-      img: '/src/detail/d2_thumb.webp',
+      img: '/src/detail/d2_thumb02_big.jpg',
       subs: '처음 입문자도 스킬업이 필요한 사람도, 취미로 배우고 싶은 사람도, 작가데뷔나 취업을 희망하는 사람도 웹툰을 좋아하면 모두 환영!',
       link: '/detail/2',
     },
     {
-      title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/new01.jpg',
+      title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
+      img: '/src/detail/d2_thumb03_big.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
-      link: '/detail/1',
+      link: '/detail/3',
     },
     {
       title: '면접 전에 알고 가면 좋을 것들 - 신입 JAVA 백엔드',

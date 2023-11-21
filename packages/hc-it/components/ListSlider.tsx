@@ -8,16 +8,16 @@ import Link from 'next/link'
 export default function ListSlider({ slideNo }) {
   const list = [
     {
-      title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음111',
-      img: '/src/images/thumb01.jpg',
+      title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
+      img: '/src/detail/d2_thumb02.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
       link: '/detail/2',
     },
     {
-      title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb02.jpg',
+      title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
+      img: '/src/detail/d2_thumb03.jpg',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
-      link: '/detail/1',
+      link: '/detail/3',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
