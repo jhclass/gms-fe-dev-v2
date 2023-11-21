@@ -161,7 +161,7 @@ export default function Form() {
               name="groupSelected"
               render={({ field, fieldState }) => (
                 <Tabs aria-label="Options" color="primary" className="w-full">
-                  <Tab key="Design" title="디자인">
+                  <Tab key="오프라인" title="오프라인">
                     <div className="w-full border-2 rounded-lg p-7">
                       <CheckboxGroup
                         value={groupSelected}
@@ -229,7 +229,7 @@ export default function Form() {
                       </CheckboxGroup>
                     </div>
                   </Tab>
-                  <Tab key="IT" title="IT">
+                  <Tab key="온라인" title="온라인">
                     <div className="w-full border-2 rounded-lg p-7">
                       <CheckboxGroup
                         value={groupSelected}
