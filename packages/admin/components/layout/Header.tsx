@@ -318,7 +318,7 @@ export default function Header() {
               router.push('/')
             }}
           >
-            <img src="/src/icon/ico_noti.png" alt="알림" />
+            <img src="/src/icon/ico_noti.webp" alt="알림" />
             <NotiNum>0</NotiNum>
           </NotiBtn>
           <UserBox onClick={toggleUserMenu}>

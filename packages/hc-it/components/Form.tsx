@@ -144,7 +144,7 @@ export default function Form() {
           className="flex flex-col lg:flex-row"
         >
           <div className="hidden lg:w-1/3 lg:mr-10 lg:block">
-            <img src="/src/images/info.jpg" alt="HighClass" />
+            <img src="/src/images/info.webp" alt="HighClass" />
           </div>
           <div className="flex flex-col w-full lg:w-1/3 lg:mr-10">
             <p className="mb-3 text-base text-zinc-600">

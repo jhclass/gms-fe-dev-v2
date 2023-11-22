@@ -9,52 +9,52 @@ export default function ListSlider({ slideNo }) {
   const list = [
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음111',
-      img: '/src/images/thumb01.jpg',
+      img: '/src/images/thumb01.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb02.jpg',
+      img: '/src/images/thumb02.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb04.jpg',
+      img: '/src/images/thumb04.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb05.jpg',
+      img: '/src/images/thumb05.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb06.jpg',
+      img: '/src/images/thumb06.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb07.jpg',
+      img: '/src/images/thumb07.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb08.jpg',
+      img: '/src/images/thumb08.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb09.jpg',
+      img: '/src/images/thumb09.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb10.jpg',
+      img: '/src/images/thumb10.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
     {
       title: '웹 프론트엔드를 위한 자바스크립트 첫 걸음',
-      img: '/src/images/thumb11.jpg',
+      img: '/src/images/thumb11.webp',
       subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
     },
   ]

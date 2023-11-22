@@ -46,7 +46,7 @@ export default function Detail() {
             </b>
           </p>
           <figure className="w-full mx-auto mt-10">
-            <img src="/src/detail/d2_main_section03.jpg" />
+            <img src="/src/detail/d2_main_section03.webp" />
           </figure>
         </div>
       </section>
@@ -104,7 +104,7 @@ export default function Detail() {
             </b>
           </p>
           <figure className="w-full mt-10 overflow-hidden">
-            <img src="/src/detail/d2_img_section.jpg" width="100%" />
+            <img src="/src/detail/d2_img_section.webp" width="100%" />
           </figure>
         </div>
       </section>
