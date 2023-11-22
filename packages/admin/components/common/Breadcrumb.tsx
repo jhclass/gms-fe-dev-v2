@@ -27,9 +27,6 @@ const FilterBtn = styled(motion.button)`
   border-radius: 0.5rem;
   align-items: center;
 `
-const FilterTit = styled.span`
-  padding-top: 0.25rem;
-`
 
 const ActiveIcon = styled(motion.i)`
   padding: 0.5rem;
@@ -133,7 +130,7 @@ export default function Breadcrumb({ isActive, onFilterToggle }) {
               animate={isActive ? 'active' : 'initial'}
               className="xi-check-min"
             />
-            <FilterTit>Filter</FilterTit>
+            Filter
           </FilterBtn>
         </BoxRt>
       </BreadcrumbBox>
