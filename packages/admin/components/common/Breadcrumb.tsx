@@ -85,10 +85,16 @@ export default function Breadcrumb({ isActive, onFilterToggle }) {
       label: '상담관리',
     },
     {
-      href: '/login',
+      href: '/registration',
       iconSrc: 'ico_work',
-      alt: '업무관리',
-      label: '업무관리',
+      alt: '수강생등록',
+      label: '수강생등록',
+    },
+    {
+      href: '/accounting',
+      iconSrc: 'ico_work',
+      alt: '회계관리',
+      label: '회계관리',
     },
   ]
 

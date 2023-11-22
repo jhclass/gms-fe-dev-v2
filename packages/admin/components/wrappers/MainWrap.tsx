@@ -9,8 +9,6 @@ import { useEffect } from 'react'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
   height: 100%;
   padding: ${props => (props.$navOpen ? '4rem 0 0 18rem;' : '4rem 0 0 5rem;')};
