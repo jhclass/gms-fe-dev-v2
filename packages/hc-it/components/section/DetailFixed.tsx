@@ -85,7 +85,7 @@ export default function DetailFixed() {
                 variant="flat"
                 className="text-white text-base bg-[#c72835] rounded-lg"
               >
-                수강 신청
+                상담 신청
               </Button>
             </div>
           </div>
