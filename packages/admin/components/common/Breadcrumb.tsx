@@ -30,7 +30,7 @@ const FilterBtn = styled(motion.button)`
 
 const ActiveIcon = styled(motion.i)`
   padding: 0.5rem;
-  color: '#fff';
+  color: #fff;
 `
 
 const FilterVariants = {

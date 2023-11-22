@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { ripplesState } from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
+import { progressStatusState } from '@/lib/recoilAtoms'
 import { useForm } from 'react-hook-form'
 import Button from './Button'
-import { Input, Select, SelectItem } from '@nextui-org/react'
+import ChipCheckbox from '@/components/common/ChipCheckbox'
+import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
@@ -18,43 +19,56 @@ const FilterBox = styled(motion.div)`
 const FilterForm = styled.form`
   display: flex;
   width: 100%;
-  gap: 2rem;
+  gap: 1.5rem;
   background: #fff;
   padding: 1.5rem;
   border-radius: 0.5rem;
   margin-top: 1rem;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
+`
+const BoxTop = styled.div`
+  display: flex;
+  flex: 1;
+  gap: 2rem;
 
   @media (max-width: 768px) {
     gap: 1rem;
     flex-direction: column;
   }
 `
-const BoxLt = styled.div`
+const BoxMiddle = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+    flex-direction: column;
+  }
 `
-const BoxCt = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 1.5rem;
-`
-const BoxRt = styled.div`
+const BoxBottom = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    gap: 1rem;
+    flex-direction: column;
+  }
 `
 const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `
+
 const BtnBox = styled.div`
   display: flex;
   gap: 1rem;
+  flex: 1;
 `
 
 const FilterVariants = {
@@ -73,6 +87,7 @@ const FilterVariants = {
   },
 }
 export default function TableFillter({ isActive }: ConsoultFilterProps) {
+  const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
   const [visitDateRange, setVisitDateRange] = useState([null, null])
@@ -93,7 +108,6 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
   const onSubmit = data => {
     console.log(data)
   }
-  console.log(isActive)
 
   return (
     <>
@@ -103,7 +117,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
         animate={isActive ? 'visible' : 'hidden'}
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
-          <BoxLt>
+          <BoxTop>
             <ItemBox>
               <Select
                 labelPlacement="outside"
@@ -128,25 +142,21 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
               </Select>
             </ItemBox>
             <ItemBox>
-              <DatePicker
-                selectsRange={true}
-                startDate={startCreatDate}
-                endDate={endCreatDate}
-                onChange={update => {
-                  setCreatDateRange(update)
-                }}
-                placeholderText="기간을 선택해주세요."
-                customInput={
-                  <Input
-                    label="등록일시"
-                    labelPlacement="outside"
-                    type="text"
-                    variant="bordered"
-                    id="date"
-                    startContent={<i className="xi-calendar" />}
-                  />
-                }
-              />
+              <Select
+                labelPlacement="outside"
+                label="수강구분"
+                placeholder=" "
+                className="w-full"
+                defaultValue=""
+                {...register('suvDiv')}
+              >
+                <SelectItem key={'HRD'} value={'HRD'}>
+                  HRD
+                </SelectItem>
+                <SelectItem key={'일반'} value={'일반'}>
+                  일반
+                </SelectItem>
+              </Select>
             </ItemBox>
             <ItemBox>
               <Select
@@ -168,24 +178,28 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 </SelectItem>
               </Select>
             </ItemBox>
-          </BoxLt>
-          <BoxCt>
+          </BoxTop>
+          <BoxMiddle>
             <ItemBox>
-              <Select
-                labelPlacement="outside"
-                label="수강구분"
-                placeholder=" "
-                className="w-full"
-                defaultValue=""
-                {...register('suvDiv')}
-              >
-                <SelectItem key={'HRD'} value={'HRD'}>
-                  HRD
-                </SelectItem>
-                <SelectItem key={'일반'} value={'일반'}>
-                  일반
-                </SelectItem>
-              </Select>
+              <DatePicker
+                selectsRange={true}
+                startDate={startCreatDate}
+                endDate={endCreatDate}
+                onChange={update => {
+                  setCreatDateRange(update)
+                }}
+                placeholderText="기간을 선택해주세요."
+                customInput={
+                  <Input
+                    label="등록일시"
+                    labelPlacement="outside"
+                    type="text"
+                    variant="bordered"
+                    id="date"
+                    startContent={<i className="xi-calendar" />}
+                  />
+                }
+              />
             </ItemBox>
             <ItemBox>
               <DatePicker
@@ -219,46 +233,40 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 {...register('stName')}
               />
             </ItemBox>
-          </BoxCt>
-          <BoxRt>
+          </BoxMiddle>
+          <BoxBottom>
             <ItemBox>
-              <Select
-                labelPlacement="outside"
+              <CheckboxGroup
                 label="진행상태"
-                placeholder=" "
-                className="w-full"
-                defaultValue=""
-                {...register('progress')}
+                orientation="horizontal"
+                defaultValue={['buenos-aires', 'london']}
+                className="gap-1"
               >
-                <SelectItem key={'상담대기'} value={'상담대기'}>
-                  상담대기
-                </SelectItem>
-                <SelectItem key={'상담예정'} value={'상담예정'}>
-                  상담예정
-                </SelectItem>
-                <SelectItem key={'방문예정'} value={'방문예정'}>
-                  방문예정
-                </SelectItem>
-              </Select>
+                {Object.entries(progressStatus).map(([key, value]) => (
+                  <ChipCheckbox key={key} value={value}>
+                    {value}
+                  </ChipCheckbox>
+                ))}
+              </CheckboxGroup>
             </ItemBox>
-            <BtnBox>
-              <Button
-                buttonType="button"
-                width="calc(50% - 0.5rem)"
-                height="2.5rem"
-              >
-                검색
-              </Button>
-              <Button
-                buttonType="reset"
-                width="calc(50% - 0.5rem)"
-                height="2.5rem"
-                typeBorder={true}
-              >
-                초기화
-              </Button>
-            </BtnBox>
-          </BoxRt>
+          </BoxBottom>
+          <BtnBox>
+            <Button
+              buttonType="button"
+              width="calc(50% - 0.5rem)"
+              height="2.5rem"
+            >
+              검색
+            </Button>
+            <Button
+              buttonType="reset"
+              width="calc(50% - 0.5rem)"
+              height="2.5rem"
+              typeBorder={true}
+            >
+              초기화
+            </Button>
+          </BtnBox>
         </FilterForm>
       </FilterBox>
     </>

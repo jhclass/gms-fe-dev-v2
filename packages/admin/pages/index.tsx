@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <p>대쉬보드</p>
+        <p>대시보드</p>
       </Layout>
     </>
   )

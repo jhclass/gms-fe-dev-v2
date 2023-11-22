@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { gql, useMutation } from '@apollo/client'
+import { useRecoilValue } from 'recoil'
+import { progressStatusState } from '@/lib/recoilAtoms'
 const UPDATE_FAVORITE_MUTATION = gql`
   mutation UpdateFavorite($updateFavoriteId: Int!, $favorite: Boolean!) {
     updateFavorite(id: $updateFavoriteId, favorite: $favorite) {
@@ -173,27 +175,22 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props: ConsoultItemProps) {
-  const [toggleFavo, setToggleFavo] = useState<boolean>(
-    props.tableData.favorite,
-  )
-  const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const conIndex = props.itemIndex
   const student = props.tableData
-
-  console.log(props.tableData.id, '아이디올시다', toggleFavo)
+  const progressStatus = useRecoilValue(progressStatusState)
+  const [toggleFavo, setToggleFavo] = useState<boolean>(student.favorite)
+  const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
 
   const testClick = () => {
     alert('a')
   }
+
   const favoClick = () => {
     setToggleFavo(!toggleFavo)
     updateFavo({
       variables: {
         updateFavoriteId: props.tableData.id,
         favorite: !toggleFavo,
-      },
-      onCompleted: data => {
-        console.log('현재 favo 상태', data)
       },
     })
   }
@@ -203,32 +200,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   }
 
   const getProgressText = (progress: number): string => {
-    switch (progress) {
-      case 1:
-        return '상담예정'
-      case 2:
-        return '방문예정'
-      case 3:
-        return '상담완료'
-      case 4:
-        return '등록예정'
-      case 5:
-        return '등록완료'
-      case 6:
-        return '재전화요망'
-      case 7:
-        return '부재중'
-      case 8:
-        return '내용확인'
-      case 9:
-        return '가배정'
-      case 10:
-        return '수강생'
-      case 11:
-        return '오류/거부'
-      default:
-        return '접수대기'
-    }
+    return progressStatus[progress] || progressStatus[0]
   }
 
   return (

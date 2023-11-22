@@ -5,20 +5,23 @@ import { styled } from 'styled-components'
 import ConsoultItem from '@/components/table/ConsoultItem'
 
 const SeeStudent_QUERY = gql`
-  query Query($page: Int) {
-    seeStudentState(page: $page) {
-      id
-      campus
-      stName
-      phoneNum1
-      currentManager
-      progress
-      subDiv
-      stVisit
-      expEnrollDate
-      createdAt
-      favorite
-      receiptDiv
+  query Query($page: Int!, $limit: Int) {
+    seeStudentState(page: $page, limit: $limit) {
+      ok
+      message
+      studentState {
+        id
+        stName
+        phoneNum1
+        progress
+        subDiv
+        stVisit
+        expEnrollDate
+        createdAt
+        favorite
+        receiptDiv
+        pic
+      }
     }
   }
 `
@@ -166,12 +169,12 @@ const PagerWrap = styled.div`
 
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useState(1)
-
+  const [currentLimit, setCurrentLimit] = useState(10)
   const { loading, error, data } = useQuery(SeeStudent_QUERY, {
-    variables: { page: currentPage },
+    variables: { page: currentPage, limit: currentLimit },
   })
 
-  const students = data?.seeStudentState || []
+  const students = data?.seeStudentState.studentState || []
 
   return (
     <>

@@ -51,7 +51,7 @@ export default function MainWrap({ children }) {
     if (isScreen) {
       setNavOpen(false)
     }
-  }, [setNavOpen])
+  }, [isScreen, setNavOpen])
 
   return (
     <>
