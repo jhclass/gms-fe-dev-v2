@@ -94,9 +94,9 @@ export default function CategoryItem<CategoryItemProps>({
             >
               <CateIcon>
                 {isActive ? (
-                  <img src={`/src/icon/${iconSrc}_w.png`} alt={alt} />
+                  <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
                 ) : (
-                  <img src={`/src/icon/${iconSrc}.png`} alt={alt} />
+                  <img src={`/src/icon/${iconSrc}.webp`} alt={alt} />
                 )}
               </CateIcon>
             </Tooltip>

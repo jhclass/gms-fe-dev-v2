@@ -30,7 +30,7 @@ export default function MainSilder() {
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_03_m.jpg"
+                  src="/src/images/main_03_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -61,7 +61,7 @@ export default function MainSilder() {
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_02_m.jpg"
+                  src="/src/images/main_02_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -91,7 +91,7 @@ export default function MainSilder() {
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_04_m.jpg"
+                  src="/src/images/main_04_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -117,12 +117,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_05.png"
+                  src="/src/images/main_05.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_05_m.jpg"
+                  src="/src/images/main_05_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                   width="100%"
@@ -155,7 +155,7 @@ export default function MainSilder() {
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_01_m.jpg"
+                  src="/src/images/main_01_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -181,12 +181,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_06.png"
+                  src="/src/images/main_06.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_06_m.jpg"
+                  src="/src/images/main_06_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
