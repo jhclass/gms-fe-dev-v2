@@ -14,6 +14,133 @@ import Section01_3col from '@/components/section/Section01._3col'
 import Curriculum01 from '@/components/section/Curriculum01'
 import Curriculum02 from '@/components/section/Curriculum02'
 import Section01_img from '@/components/section/Section01_img'
+import ReviewSlide from '@/components/section/ReviewSlide'
+
+const list = [
+  {
+    name: '김○○',
+    img: '/src/detail/user_m.webp',
+    content:
+      '수강생입니다. 수업시간 집중력있게 강좌를 들었습니다. 매 강의시간 열정을 갖고 수업해주신 선생님께 감사드립니다. 전문적인 지식을 쉽게 이해했습니다. 주변사람에게도 추천해주고 싶은 매시간 재밌는 강의였습니다!',
+    class: '웹툰 스토리',
+    rating: 5.0,
+    backgroundColor: '#f87171',
+  },
+  {
+    name: '최○○',
+    img: '/src/detail/user_w.webp',
+    content:
+      '비기초부터 자세히 설명해주시고 모르거나 어렵게 느껴지는 부분을 질문했을 때 적극적으로 잘 설명해주셨습니다. 선생님의 열정이 느껴지는 수업이었습니다.',
+    class: '웹툰 배경',
+    rating: 5.0,
+    backgroundColor: '#1d4ed8',
+  },
+  {
+    name: '이○○',
+    img: '/src/detail/user_w.webp',
+    content: '담당 강사님의 친절하고 적절한 수업이 매우 좋았습니다.',
+    class: '웹툰 캐릭터',
+    rating: 4.3,
+    backgroundColor: '#fbcfe8',
+  },
+  {
+    name: '박○○',
+    img: '/src/detail/user_w.webp',
+    content:
+      '강사님이 굉장히 열성적이시며 문의사항에 빠른 피드백을 주십니다. 완전 초보들의 수준을 고려하여 설명 해주셨습니다.',
+    class: '웹툰 캐릭터',
+    rating: 5.0,
+    backgroundColor: '#f97316',
+  },
+  {
+    name: '정○○',
+    img: '/src/detail/user_m.webp',
+    content: '기초 개념과 업무수행 자신감이 확립되었다고 봅니다.',
+    class: '웹툰 캐릭터',
+    rating: 4.5,
+    backgroundColor: '#10b981',
+  },
+  {
+    name: '홍○○',
+    img: '/src/detail/user_m.webp',
+    content:
+      '그림을 거의 그려본 적이 없던 터라, 인체 드로잉에 대한 지식을 얻고 클립스튜디오로 실습해 볼 수 있어서 유의미한 시간이었습니다. 투시도법을 간략하게 배울 수 있어서 괜찮았습니다',
+    class: '웹툰 캐릭터',
+    rating: 4.7,
+    backgroundColor: '#818cf8',
+  },
+  {
+    name: '윤○○',
+    img: '/src/detail/user_m.webp',
+    content:
+      '강사님께서 자세하게 설명해주셔서 초보자인 저도 수업을 잘 들었습니다. 강의내용을 기록한 자료를 다운받게 해주셔서 도움이 많이 됐습니다.',
+    class: '웹툰 캐릭터',
+    rating: 5.0,
+    backgroundColor: '#f43f5e',
+  },
+  {
+    name: '최○○',
+    img: '/src/detail/user_w.webp',
+    content:
+      '클립 스튜디오를 완전히 처음 접하시는 분들께는 좋을 것 같습니다! 이직준비 도중에 수강하게 되었는데요. 새로운 툴 지식 습득(클립스튜디오)에 좋은 수업이었으며 받은 교재도 깔끔했습니다. 학원 시설도 나쁘지 않았습니다. 좋은 수업 감사합니다.',
+    class: '웹툰 캐릭터',
+    rating: 5.0,
+    backgroundColor: '#fb923c',
+  },
+  {
+    name: '류○○',
+    img: '/src/detail/user_w.webp',
+    content: '강사님께서 강의노트 기록해주셔서 정말 좋았습니다!!',
+    class: '웹툰 캐릭터',
+    rating: 4.6,
+    backgroundColor: '#be123c',
+  },
+  {
+    name: '박○○',
+    img: '/src/detail/user_m.webp',
+    content:
+      '3시간 온전히 그림에 집중 할 수 있어서 좋았습니다. 수업 중에 많은 캐릭터들을 구상하고 그릴 수 있어서 저에게도 많이 남는 수업이었습니다.',
+    class: '웹툰 캐릭터',
+    rating: 4.8,
+    backgroundColor: '#0e7490',
+  },
+  {
+    name: '이○○',
+    img: '/src/detail/user_w.webp',
+    content:
+      '늘 그리던 방식이 아닌 새로운 관점에서 그리는 것도 새로운 재미있었어요! 강사님이 실제 현장에 계신 분이라 수업이 자세하고 실용성이 높았습니다. 저는 작가가 아닌 웹툰PD 지망인지라 강의에 맞는 실력이 아니였음에도 배려해주셔서 감사했습니다. 만약 웹툰 작가를 지망하시는 분이라면 유익하고 도움이 되는 강의라고 생각합니다.',
+    class: '웹툰 캐릭터',
+    rating: 5,
+    backgroundColor: '#d8b4fe',
+  },
+  {
+    name: '정○○',
+    img: '/src/detail/user_m.webp',
+    content:
+      '질문을 하면 잘 알려주셔서 좋았어요. 이것 저것 웹툰 관련 내용을 많이 알려주셔서 좋았어요',
+    class: '웹툰 캐릭터',
+    rating: 4.3,
+    backgroundColor: '#38bdf8',
+  },
+  {
+    name: '김○○',
+    img: '/src/detail/user_w.webp',
+    content:
+      '인체 비율 등 기본기를 배우고 싶었는데 도움이 많이 되었습니다. 완전 쌩 초보라서 걱정했는데 강사 선생님이 꼼꼼하게 기초부처 설명 해주셔서 도움 많이 되었습니다. 강의 내용이 매우 유익하면서 재미있었습니다. 강의를 체계적으로 진행하면서도 수강생들의 자유도가 높기 때문에, 배운 내용을 토대로 곧장 원하는 작업을 할 수 있는 환경이 조성되어있습니다. 자신의 실력을 빠르게 시험하면서 갈고 닦고 싶다면 강력하게 추천드립니다. 선생님께서 꼼꼼하게 알려주려고 하시고 모르는 부분 다시 여쭤보면 친절하게 답변해주십니다! 웹툰에 처음 입문하려는 분들이 들으시면 매우 좋은 강의입니다! 가르쳐주시느라 고생 많으셨습니다!',
+    class: '웹툰 캐릭터',
+    rating: 5,
+    backgroundColor: '#5b21b6',
+  },
+  {
+    name: '이○○',
+    img: '/src/detail/user_m.webp',
+    content:
+      '이 분야가 완전 처음이라 걱정이 많았지만 강사님께서 친절하게 지도해주셨습니다. 수업내용이나 수업방향, 모르는 내용은 즉각적으로 피드백이 이루어져서 낙오되는 일도 없었고, 수강생들 수준에 맞춰서 맞춤으로 설명해주셔서 더 좋았습니다. 웹툰에 대한 기초적인 지식을 쌓는데 충분한 커리큘럼이며 강사님도 성실하셨습니다.',
+    class: '웹툰 캐릭터',
+    rating: 5,
+    backgroundColor: '#16a34a',
+  },
+]
 
 export default function Detail() {
   const scrollTo = (target: string): void => {
@@ -50,58 +177,39 @@ export default function Detail() {
           </figure>
         </div>
       </section>
-      <section className="py-16 bg-[#222]">
+      <section className="py-16 bg-zinc-200">
         <div className="wrap">
-          <p className="text-white">
-            <b className="inline-block mb-5 text-2xl">
-              웹툰제작을 원하는 사람 모두 환영
-            </b>
-          </p>
-          <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
-            <div className="px-10 py-10 bg-black rounded-lg">
-              <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#F28705] font-bold bg-[#F28705] rounded-lg px-3 py-2 mb-2">
-                  입학상담 및 사전평가
-                </span>
-              </p>
-              <p className="mt-5 text-base text-center text-white">
-                입문자여도 스킬업을 원해도 나의 실력부터, 취미여도 작가데뷔나
-                취업을 원해도 나의 목적을 이룰 수 있습니다.
-              </p>
-            </div>
-            <div className="px-10 py-10 bg-black rounded-lg">
-              <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#F28705] font-bold bg-[#F28705] rounded-lg px-3 py-2 mb-2">
-                  웹툰작가님의 커리큘럼
-                </span>
-              </p>
-              <p className="mt-5 text-base text-center text-white">
-                입문자 분들도 쉽게 따라올 수 있도록 3단계로 나누어 실력을 점점
-                쌓아갈 수 있도록 커리큘럼 구성하였습니다.
-              </p>
-            </div>
-            <div className="px-10 py-10 bg-black rounded-lg">
-              <p className="mx-auto my-0 text-lg text-center">
-                <span className="text-black border-2 border-[#F28705] font-bold bg-[#F28705] rounded-lg px-3 py-2 mb-2">
-                  1:1피드백, 개인맞춤지도
-                </span>
-              </p>
-              <p className="mt-5 text-base text-center text-white">
-                단계별 테스트를 통해 나의 실력을 체크하고 성장을 위한 1:1
-                피드백을 통해 개인 맞춤형 수업을 제공합니다.
-              </p>
-            </div>
-          </div>
+          <h4 className="text-3xl font-bold text-center">
+            웹툰제작을 원하시는 분들 모두를 환영합니다 🎉
+          </h4>
+          <ul className="mx-auto mt-6 text-base text-center lg:w-full xl:w-[80%]">
+            <li className="px-5 py-5 bg-white rounded-lg">
+              🔥 사전평가를 통해 입문자, 스킬업을 원하는 분 누구나 나의 실력부터
+              시작할 수 있습니다. 🔥
+            </li>
+            <li className="px-5 py-5 mt-5 bg-white rounded-lg">
+              🍭 입학상담을 통해 취미, 작가데뷔, 취업, 프리랜서 무엇을 원하든
+              목적을 이룰 수 있습니다. 🍭
+            </li>
+            <li className="px-5 py-5 mt-5 bg-white rounded-lg">
+              ⭐️ 웹툰작가님이 입문자도 쉽게 따라오며 실력을 쌓아갈 수 있도록
+              커리큘럼을 구성하였습니다. ⭐️
+            </li>
+            <li className="px-5 py-5 mt-5 bg-white rounded-lg">
+              😄 단계별 테스트로 나의 실력에 맞는 1:1피드백을 통해 개인 맞춤형
+              수업을 제공합니다. 😄
+            </li>
+          </ul>
         </div>
       </section>
       <section className="py-16 bg-black">
         <div className="wrap">
           <p className="text-white">
-            <b className="inline-block text-2xl">
-              웹툰 배경 제작
-              <br />
+            <b className="mt-4 text-2xl">웹툰 배경 제작</b>
+            <br />
+            <span className="inline-block text-lg">
               스케치업을 활용한 웹툰배경 이미지
-            </b>
+            </span>
           </p>
           <figure className="w-full mt-10 overflow-hidden">
             <img src="/src/detail/d2_img_section.webp" width="100%" />
@@ -114,9 +222,6 @@ export default function Detail() {
             <p className="inline-block px-4 py-2 text-sm font-bold text-center text-white bg-[#F28705] border-2 border-[#F28705] rounded-lg">
               Flowchart
             </p>
-            {/* <h4 className="text-center text-[#021226]">
-              <b className="inline-block mt-2 text-2xl">[ Flowchart ]</b>
-            </h4> */}
             <ul className="mx-auto mt-10 lg:w-full xl:w-4/5">
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
                 <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
@@ -416,111 +521,201 @@ export default function Detail() {
           </h4>
           <div className="mt-4">
             <div className="flex flex-col py-6 lg:flex-row even:lg:flex-row-reverse">
-              <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[23rem] lg:h-[23rem]">
-                <img
-                  src="/src/images/user.webp"
-                  alt="김○○의 포트폴리오"
-                  loading="lazy"
-                  width="100%"
-                />
+              <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
+                <figure className="w-full h-full p-3 overflow-hidden bg-teal-500 rounded-full">
+                  <img
+                    src="/src/detail/user_w.webp"
+                    alt="김○○의 포트폴리오"
+                    loading="lazy"
+                    width="100%"
+                  />
+                </figure>
               </div>
               <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
                 <h5 className="text-2xl font-bold text-right">
                   <span className="block text-base text-primary">
-                    <b className="text-zinc-600">프론트엔드 마스터반</b> 수강생
+                    <b className="text-zinc-600">웹툰 배경</b> 수강생
                   </span>
                   김○○
                 </h5>
                 <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
                   <p>
-                    <span className="text-primary">3.7</span> / 5
+                    <span className="text-primary">5.0</span> / 5
                   </p>
                   <span
-                    style={{ width: `${1.45 * 3.7}rem` }}
+                    style={{ width: `${1.45 * 5}rem` }}
                     className="h-[1.2rem] display star_bg"
                   ></span>
                 </div>
                 <p className="relative text-base py-6 px-6 mt-16 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-l-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:left-[-0.1rem]">
-                  구현까지만 할 줄 아는 개발자는 많습니다. 하지만{' '}
-                  <b>유저에 대해 치열하게 고민하며 성능을 챙기는 개발자</b>는
-                  드물죠. 이번 프로젝트 구성은 제가 경험해 온
+                  <b>완벽함 최고의 명강</b> 클립스튜디오 사용법을 배웠다.
+                  처음으로 웹툰강좌 비슷하게 캐릭터 수업을 들어봤지만, 선생님
+                  강의가 진짜 너무 저에게 딱맞고
+                  <b>적절하고 실생활에서 적용도 할수있고</b> 많이 배워서
+                  제마음에 들었습니다. 취미로만 해왔거나 관심은 있는데 모르는
+                  사람들에게 딱이었습니다. 사람들 <b>능력난이도</b>도
+                  제각각이였는데 자세히 꼼꼼히 알려주신게 좋았습니다
                   <b>
-                    프로덕트 도메인의 인사이트(금융 - 카드사 &amp; 개인예산관리
-                    프로젝트, 여행 - 여행 프로젝트)를
-                  </b>{' '}
-                  모두 모았습니다. 이 모든 강의는 프로덕트 도메인의 특성에 따라{' '}
-                  <b>
-                    유저가 어떠한 것을 기대하고 불편해하는지 파악하며 최적화
+                    (특히 아예 모르는사람이 듣기는 최고인거같아요, 강력추천)
                   </b>
-                  가 진행됩니다. 이를 통해 여러분은 유저에 대해 치열한 고민을
-                  하고, 최적화까지 할 줄아는 개발자가 될 수 있습니다. 뿐만
-                  아니라 부분 부분 최적화를 다루는 강의는 있지만, 실제 실무
-                  베이스로 서비스에 최적화를 적용해나가는 최적화 강의는 많지
-                  않습니다. 이 강의는{' '}
-                  <b>실제 실무 베이스로 최적화를 다루며 적용</b>해나갑니다. 이
-                  강의를 활용하신다면 개발하고 계시는 프로젝트에 강의 내용을
-                  적용하고{' '}
+                  저는 취미로만 했지 <b>클립스튜디오 기능</b>은 무긍무진해서
+                  자세히 몰랐는데 주로 쓴다던가,
+                  <b>한가지 기법에도 여러방법으로</b>도 알려주셔서 좋았습니다
+                  그리고 학생들의 <b>수업관심도</b>에도 날카롭게 캐치하여
+                  수업재밌게 해주시고 재밌었습니다 학생 부족한 실력에
                   <b>
-                    프론트엔드 개발자로서 UX를 고려한 최적화까지 이뤄낼 수
-                    있다고 자신있게 말씀드립니다.
+                    수격려도 많이 해주시고 가능성을 열게해주시는것도 좋았습니다.
                   </b>
+                  독학으로만으로도 한계가 있었는데 그걸 배워서 제일 좋았고
+                  <b>
+                    장비기능 (타블렛쓰는법,클립스튜디오 프로그램쓰는법 등)
+                    배울사람, 웹툰을 어떻게 시작해야하나, 그림을 그리려면 구도가
+                    어떤가, 배경을 그릴때도 어떻게 하는가 등등
+                  </b>
+                  다방면으로 골고루 알려주신것도 좋았습니다 개인적으로 이 강사님
+                  하는수업은 다듣고싶어요 짦은 수강기간이였지만 많은것을 배울수
+                  있었고 수강기간동안에
+                  <b>나만의 캐릭터를 디자인하고 웹툰 콘티를 짤수있어</b> 참으로
+                  즐거웠다. 선생님께서 매우 열정적이라서 너무 좋았다
                 </p>
               </div>
             </div>
             <div className="flex flex-col py-6 lg:flex-row even:lg:flex-row-reverse">
-              <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[23rem] lg:h-[23rem]">
-                <img
-                  src="/src/images/user.webp"
-                  alt="이○○의 포트폴리오"
-                  loading="lazy"
-                  width="100%"
-                />
+              <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
+                <figure className="w-full h-full p-3 overflow-hidden rounded-full bg-sky-700">
+                  <img
+                    src="/src/detail/user_m.webp"
+                    alt="이○○의 포트폴리오"
+                    loading="lazy"
+                    width="100%"
+                  />
+                </figure>
               </div>
               <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
                 <h5 className="text-2xl font-bold text-right">
                   <span className="block text-base text-primary">
-                    <b className="text-zinc-600">프론트엔드 마스터반</b> 수강생
+                    <b className="text-zinc-600">웹툰 캐릭터반</b> 수강생
                   </span>
                   이○○
                 </h5>
                 <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
                   <p>
-                    <span className="text-primary">4.0</span> / 5
+                    <span className="text-primary">4.8</span> / 5
                   </p>
                   <span
-                    style={{ width: `${1.45 * 4}rem` }}
+                    style={{ width: `${1.45 * 4.8}rem` }}
+                    className="h-[1.2rem] display star_bg"
+                  ></span>
+                </div>
+                <p className="relative text-base py-6 px-6 mt-16 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-r-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:right-[-0.1rem]">
+                  <b>인체 비율 등 기본기</b>를 배우고 싶었는데 도움이 많이
+                  되었습니다 완전 쌩 초보라서 걱정했는데 강사 선생님이
+                  <b>꼼꼼하게 기초부처 설명</b> 해주셔서 도움 많이 되었습니다.
+                  <br />
+                  강의 내용이 매우 유익하면서 재미있었습니다.
+                  <b>강의를 체계적으로</b>
+                  진행하면서도 수강생들의 자유도가 높기 때문에, 배운 내용을
+                  토대로 곧장 <b>원하는 작업을 할 수 있는 환경이 조성</b>
+                  되어있습니다. 자신의 실력을 빠르게 시험하면서 갈고 닦고 싶다면
+                  강력하게 추천드립니다. <br />
+                  선생님께서 꼼꼼하게 알려주려고 하시고 모르는 부분 다시
+                  여쭤보면 친절하게 답변해주십니다!
+                  <b>웹툰에 처음 입문하려는 분들</b>이 들으시면 매우 좋은
+                  강의입니다! 가르쳐주시느라 고생 많으셨습니다!
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col py-6 lg:flex-row even:lg:flex-row-reverse">
+              <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
+                <figure className="w-full h-full p-3 overflow-hidden bg-purple-800 rounded-full">
+                  <img
+                    src="/src/detail/user_m.webp"
+                    alt="최○○의 포트폴리오"
+                    loading="lazy"
+                    width="100%"
+                  />
+                </figure>
+              </div>
+              <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
+                <h5 className="text-2xl font-bold text-right">
+                  <span className="block text-base text-primary">
+                    <b className="text-zinc-600">웹툰 캐릭터반</b> 수강생
+                  </span>
+                  최○○
+                </h5>
+                <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
+                  <p>
+                    <span className="text-primary">4.4</span> / 5
+                  </p>
+                  <span
+                    style={{ width: `${1.45 * 4.4}rem` }}
                     className="h-[1.2rem] display star_bg"
                   ></span>
                 </div>
                 <p className="relative text-base py-6 px-6 mt-16 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-l-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:left-[-0.1rem]">
-                  구현까지만 할 줄 아는 개발자는 많습니다. 하지만{' '}
-                  <b>유저에 대해 치열하게 고민하며 성능을 챙기는 개발자</b>는
-                  드물죠. 이번 프로젝트 구성은 제가 경험해 온
-                  <b>
-                    프로덕트 도메인의 인사이트(금융 - 카드사 &amp; 개인예산관리
-                    프로젝트, 여행 - 여행 프로젝트)를
-                  </b>{' '}
-                  모두 모았습니다. 이 모든 강의는 프로덕트 도메인의 특성에 따라{' '}
-                  <b>
-                    유저가 어떠한 것을 기대하고 불편해하는지 파악하며 최적화
-                  </b>
-                  가 진행됩니다. 이를 통해 여러분은 유저에 대해 치열한 고민을
-                  하고, 최적화까지 할 줄아는 개발자가 될 수 있습니다. 뿐만
-                  아니라 부분 부분 최적화를 다루는 강의는 있지만, 실제 실무
-                  베이스로 서비스에 최적화를 적용해나가는 최적화 강의는 많지
-                  않습니다. 이 강의는{' '}
-                  <b>실제 실무 베이스로 최적화를 다루며 적용</b>해나갑니다. 이
-                  강의를 활용하신다면 개발하고 계시는 프로젝트에 강의 내용을
-                  적용하고{' '}
-                  <b>
-                    프론트엔드 개발자로서 UX를 고려한 최적화까지 이뤄낼 수
-                    있다고 자신있게 말씀드립니다.
-                  </b>
+                  기본기가 부족하시다면 들으면서 엄청 도움될거에요. 포토샵을
+                  중급, <b>클립스튜디오</b> 사용경험 없는 상태에서
+                  클립스튜디오를 배우기 위해 수강을 들었습니다. 초반 툴설명이후
+                  수업이 포토샵 위주로 진행된건 아쉬웠으나, 포토샵에서 몰랐던
+                  새로운 기능들도 알게되었습니다. 다음 수업때는 클립스튜디오
+                  비중을 조금 더 늘려주셔도 좋을 것 같습니다. 강사님의 열정
+                  성실성은 모두 만족스러워 같은 강사님의 다음 수업도 신청합니다.
+                  웹툰을 시작하고 싶지만 아무지식도 없어서 망설이다가 수업을
+                  신청하게 되었습니다. <b>비전공자</b>로서 새로운 지식을
+                  알게돼서 도움이 많이 되었습니다. 또한 선생님께서 한 명의
+                  낙오자도 없도록 친절하게 신경써주셔서 그림 그리는 내내
+                  즐거웠습니다.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col py-6 lg:flex-row even:lg:flex-row-reverse">
+              <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
+                <figure className="w-full h-full p-3 overflow-hidden bg-indigo-500 rounded-full">
+                  <img
+                    src="/src/detail/user_w.webp"
+                    alt="이○○의 포트폴리오"
+                    loading="lazy"
+                    width="100%"
+                  />
+                </figure>
+              </div>
+              <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
+                <h5 className="text-2xl font-bold text-right">
+                  <span className="block text-base text-primary">
+                    <b className="text-zinc-600">웹툰 캐릭터반</b> 수강생
+                  </span>
+                  양○○
+                </h5>
+                <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
+                  <p>
+                    <span className="text-primary">4.8</span> / 5
+                  </p>
+                  <span
+                    style={{ width: `${1.45 * 4.8}rem` }}
+                    className="h-[1.2rem] display star_bg"
+                  ></span>
+                </div>
+                <p className="relative text-base py-6 px-6 mt-16 bg-[#f2f3f5] border-t-2 border-t-white border-l-2 border-l-[#f2f3f5] after:w-12 after:h-12 after:border-l-[3rem] after:border-r-[#f2f3f5] after:border-[3rem] after:border-[transparent] after:absolute after:top-[-3rem] after:right-[-0.1rem]">
+                  <b>인체 비율 등 기본기</b>를 배우고 싶었는데 도움이 많이
+                  되었습니다 완전 쌩 초보라서 걱정했는데 강사 선생님이{' '}
+                  <b>꼼꼼하게 기초부처 설명</b> 해주셔서 도움 많이 되었습니다.
+                  <br />
+                  강의 내용이 매우 유익하면서 재미있었습니다.{' '}
+                  <b>강의를 체계적으로</b>
+                  진행하면서도 수강생들의 자유도가 높기 때문에, 배운 내용을
+                  토대로 곧장 <b>원하는 작업을 할 수 있는 환경이 조성</b>
+                  되어있습니다. 자신의 실력을 빠르게 시험하면서 갈고 닦고 싶다면
+                  강력하게 추천드립니다. <br />
+                  선생님께서 꼼꼼하게 알려주려고 하시고 모르는 부분 다시
+                  여쭤보면 친절하게 답변해주십니다!
+                  <b>웹툰에 처음 입문하려는 분들</b>이 들으시면 매우 좋은
+                  강의입니다! 가르쳐주시느라 고생 많으셨습니다!
                 </p>
               </div>
             </div>
           </div>
         </div>
+        <ReviewSlide reviewList={list} />
       </section>
       <section className="py-16 bg-white">
         <div className="wrap">
@@ -536,11 +731,7 @@ export default function Detail() {
                 Part1. 오리엔테이션
               </p>
               <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
-                <Accordion
-                  defaultExpandedKeys={['1']}
-                  variant="splitted"
-                  className="px-0 font-bold"
-                >
+                <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 1"
@@ -553,11 +744,7 @@ export default function Detail() {
                     </ul>
                   </AccordionItem>
                 </Accordion>
-                <Accordion
-                  defaultExpandedKeys={['1']}
-                  variant="splitted"
-                  className="px-0 font-bold"
-                >
+                <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 2"

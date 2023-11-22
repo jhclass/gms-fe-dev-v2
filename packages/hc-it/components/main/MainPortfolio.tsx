@@ -14,7 +14,7 @@ import 'swiper/swiper-bundle.css'
 import { useState } from 'react'
 import MainTitle from '@/components/MainTitle'
 
-export default function Portfolio() {
+export default function MainPortfolio() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedImage, setSelectedImage] = useState(null)
   const list = [
