@@ -592,13 +592,13 @@ export default function Detail() {
                 </figure>
               </div>
               <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
-                <h5 className="text-2xl font-bold text-right">
+                <h5 className="text-2xl font-bold text-left">
                   <span className="block text-base text-primary">
                     <b className="text-zinc-600">웹툰 캐릭터반</b> 수강생
                   </span>
                   이○○
                 </h5>
-                <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
+                <div className="flex flex-col mt-3 text-3xl font-bold items-left">
                   <p>
                     <span className="text-primary">4.8</span> / 5
                   </p>
@@ -680,13 +680,13 @@ export default function Detail() {
                 </figure>
               </div>
               <div className="relative flex-1 p-6 bg-white rounded-lg lg:p-10 lg:ml-12 even:lg:mr-12">
-                <h5 className="text-2xl font-bold text-right">
+                <h5 className="text-2xl font-bold text-left">
                   <span className="block text-base text-primary">
                     <b className="text-zinc-600">웹툰 캐릭터반</b> 수강생
                   </span>
                   양○○
                 </h5>
-                <div className="flex flex-col mt-3 text-3xl font-bold items-left even:items-end">
+                <div className="flex flex-col mt-3 text-3xl font-bold items-left">
                   <p>
                     <span className="text-primary">4.8</span> / 5
                   </p>
