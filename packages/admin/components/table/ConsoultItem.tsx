@@ -173,7 +173,9 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props: ConsoultItemProps) {
-  const [toggleFavo, setToggleFavo] = useState<boolean>(false)
+  const [toggleFavo, setToggleFavo] = useState<boolean>(
+    props.tableData.favorite,
+  )
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const conIndex = props.itemIndex
   const student = props.tableData
@@ -188,7 +190,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     updateFavo({
       variables: {
         updateFavoriteId: props.tableData.id,
-        favorite: toggleFavo,
+        favorite: !toggleFavo,
       },
       onCompleted: data => {
         console.log('현재 favo 상태', data)
