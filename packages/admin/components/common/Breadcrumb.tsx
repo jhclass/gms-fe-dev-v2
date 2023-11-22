@@ -27,9 +27,6 @@ const FilterBtn = styled(motion.button)`
   border-radius: 0.5rem;
   align-items: center;
 `
-const FilterTit = styled.span`
-  padding-top: 0.25rem;
-`
 
 const ActiveIcon = styled(motion.i)`
   padding: 0.5rem;
@@ -85,10 +82,16 @@ export default function Breadcrumb({ isActive, onFilterToggle }) {
       label: '상담관리',
     },
     {
-      href: '/login',
+      href: '/registration',
       iconSrc: 'ico_work',
-      alt: '업무관리',
-      label: '업무관리',
+      alt: '수강생등록',
+      label: '수강생등록',
+    },
+    {
+      href: '/accounting',
+      iconSrc: 'ico_work',
+      alt: '회계관리',
+      label: '회계관리',
     },
   ]
 
@@ -127,7 +130,7 @@ export default function Breadcrumb({ isActive, onFilterToggle }) {
               animate={isActive ? 'active' : 'initial'}
               className="xi-check-min"
             />
-            <FilterTit>Filter</FilterTit>
+            Filter
           </FilterBtn>
         </BoxRt>
       </BreadcrumbBox>
