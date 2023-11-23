@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
+import { Button } from '@nextui-org/react'
 
 const BreadcrumbBox = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const FilterBtn = styled(motion.button)`
   border: 1px solid #007de9;
   border-radius: 0.5rem;
   align-items: center;
+  margin-right: 0.5rem;
 `
 
 const ActiveIcon = styled(motion.i)`
@@ -132,6 +134,14 @@ export default function Breadcrumb({ isActive, onFilterToggle }) {
             />
             Filter
           </FilterBtn>
+          <Button
+            size="sm"
+            radius="sm"
+            variant="solid"
+            className="text-white bg-flag1"
+          >
+            등록
+          </Button>
         </BoxRt>
       </BreadcrumbBox>
     </>

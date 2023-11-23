@@ -25,6 +25,7 @@ type ConsoultItemProps = {
     pic: string
   }
   itemIndex: number
+  currentPage: number
 }
 
 const TableRow = styled.div`
@@ -43,6 +44,7 @@ const TableItem = styled.div`
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
+  overflow: hidden;
 
   &:hover {
     cursor: pointer;
@@ -50,6 +52,7 @@ const TableItem = styled.div`
   }
 `
 const Tfavorite = styled.div`
+  position: relative;
   display: table-cell;
   width: 2%;
   font-size: inherit;
@@ -60,7 +63,13 @@ const Tfavorite = styled.div`
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-
+const Tflag = styled.span`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.5rem;
+  height: 100%;
+`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -183,7 +192,21 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   const testClick = () => {
     alert('a')
   }
+  const isDisplayFlag = (date: string): string => {
+    const currentDate = new Date()
+    const targetDate = new Date(date)
+    const differenceInDays = Math.floor(
+      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
+    )
 
+    if (differenceInDays >= 0 && differenceInDays <= 3) {
+      return 'new'
+    } else if (differenceInDays > 3 && differenceInDays <= 5) {
+      return 'unprocessed'
+    }
+
+    return ''
+  }
   const favoClick = () => {
     setToggleFavo(!toggleFavo)
     updateFavo({
@@ -207,9 +230,22 @@ export default function ConsolutItem(props: ConsoultItemProps) {
       <TableItem>
         <TableRow>
           <Tfavorite>
+            <Tflag
+              style={{
+                background:
+                  isDisplayFlag(getDate(student.createdAt)) === 'new'
+                    ? '#007de9'
+                    : isDisplayFlag(getDate(student.createdAt)) ===
+                      'unprocessed'
+                    ? '#FF5900'
+                    : '',
+              }}
+            ></Tflag>
             <TfavoriteLabel
               htmlFor={`check${student.id}`}
-              className={toggleFavo ? 'text-yellow-300' : ''}
+              style={{
+                color: toggleFavo ? '#FFC600' : '',
+              }}
             >
               <i className={toggleFavo ? 'xi-star' : 'xi-star-o'} />
               <input
@@ -224,7 +260,9 @@ export default function ConsolutItem(props: ConsoultItemProps) {
           </Tfavorite>
           <ClickBox onClick={testClick}>
             <Tnum>
-              <EllipsisBox>{conIndex + 1}</EllipsisBox>
+              <EllipsisBox>
+                {(props.currentPage - 1) * 10 + (conIndex + 1)}
+              </EllipsisBox>
             </Tnum>
             <Tprogress>
               <EllipsisBox>{getProgressText(student.progress)}</EllipsisBox>

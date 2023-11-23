@@ -9,6 +9,7 @@ const SeeStudent_QUERY = gql`
     seeStudentState(page: $page, limit: $limit) {
       ok
       message
+      totalCount
       studentState {
         id
         stName
@@ -25,13 +26,46 @@ const SeeStudent_QUERY = gql`
     }
   }
 `
+const TableArea = styled.div`
+  margin-top: 0.5rem;
+`
+const TTopic = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const Ttotal = styled.p`
+  font-weight: 300;
+  margin-right: 0.5rem;
 
+  span {
+    font-weight: 400;
+    color: #007de9;
+  }
+`
+const ColorHelp = styled.div`
+  display: flex;
+`
+
+const ColorCip = styled.p`
+  padding-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #71717a;
+  font-size: 0.7rem;
+
+  span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 1rem;
+    height: 2px;
+  }
+`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
   min-width: 1200px;
 `
-
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
@@ -169,53 +203,74 @@ const PagerWrap = styled.div`
 
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit, setCurrentLimit] = useState(10)
+  const [currentLimit] = useState(10)
   const { loading, error, data } = useQuery(SeeStudent_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
-
-  const students = data?.seeStudentState.studentState || []
-
+  const studentsData = data?.seeStudentState || []
+  const students = studentsData.studentState || []
+  const totalPages = Math.ceil(
+    (data?.seeStudentState.totalCount || 0) / currentLimit,
+  )
+  console.log(totalPages)
   return (
     <>
-      <ScrollShadow orientation="horizontal" className="scrollbar">
-        <TableWrap>
-          <Theader>
-            <TheaderBox>
-              <Tfavorite>
-                <i className="xi-star"></i>
-              </Tfavorite>
-              <ClickBox>
-                <Tnum>No</Tnum>
-                <Tprogress>진행상태</Tprogress>
-                <TreceiptDiv>접수구분</TreceiptDiv>
-                <TsubDiv>수강구분</TsubDiv>
-                <Tname>이름</Tname>
-                <Tphone>연락처</Tphone>
-                <TcreatedAt>등록일시</TcreatedAt>
-                <Tmanager>담당자</Tmanager>
-                <TstVisit>상담예정일</TstVisit>
-                <TexpEnrollDate>수강예정월</TexpEnrollDate>
-              </ClickBox>
-            </TheaderBox>
-          </Theader>
-          {students.map((item, index) => (
-            <ConsoultItem key={index} tableData={item} itemIndex={index} />
-          ))}
-        </TableWrap>
-      </ScrollShadow>
-
-      <PagerWrap>
-        <Pagination
-          variant="light"
-          showControls
-          total={10}
-          initialPage={currentPage}
-          onChange={newPage => {
-            setCurrentPage(newPage)
-          }}
-        />
-      </PagerWrap>
+      <TTopic>
+        <Ttotal>
+          총 <span>{studentsData.totalCount}</span>개
+        </Ttotal>
+        <ColorHelp>
+          <ColorCip>
+            <span style={{ background: '#007de9' }}></span> : 신규
+          </ColorCip>
+          <ColorCip>
+            <span style={{ background: '#FF5900' }}></span> : 미처리
+          </ColorCip>
+        </ColorHelp>
+      </TTopic>
+      <TableArea>
+        <ScrollShadow orientation="horizontal" className="scrollbar">
+          <TableWrap>
+            <Theader>
+              <TheaderBox>
+                <Tfavorite>
+                  <i className="xi-star"></i>
+                </Tfavorite>
+                <ClickBox>
+                  <Tnum>No</Tnum>
+                  <Tprogress>진행상태</Tprogress>
+                  <TreceiptDiv>접수구분</TreceiptDiv>
+                  <TsubDiv>수강구분</TsubDiv>
+                  <Tname>이름</Tname>
+                  <Tphone>연락처</Tphone>
+                  <TcreatedAt>등록일시</TcreatedAt>
+                  <Tmanager>담당자</Tmanager>
+                  <TstVisit>상담예정일</TstVisit>
+                  <TexpEnrollDate>수강예정월</TexpEnrollDate>
+                </ClickBox>
+              </TheaderBox>
+            </Theader>
+            {students.map((item, index) => (
+              <ConsoultItem
+                key={index}
+                tableData={item}
+                itemIndex={index}
+                currentPage={currentPage}
+              />
+            ))}
+          </TableWrap>
+        </ScrollShadow>
+        <PagerWrap>
+          <Pagination
+            variant="light"
+            showControls
+            total={4}
+            onChange={newPage => {
+              setCurrentPage(newPage)
+            }}
+          />
+        </PagerWrap>
+      </TableArea>
     </>
   )
 }

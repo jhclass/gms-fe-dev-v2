@@ -42,6 +42,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
           />
+          <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" />
         </Head>
         <body>
           <Main />
