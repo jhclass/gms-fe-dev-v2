@@ -187,6 +187,7 @@ export default function ConsolutationTable() {
               </Tfavorite>
               <ClickBox>
                 <Tnum>No</Tnum>
+                <Tprogress>진행상태</Tprogress>
                 <TreceiptDiv>접수구분</TreceiptDiv>
                 <TsubDiv>수강구분</TsubDiv>
                 <Tname>이름</Tname>
@@ -195,7 +196,6 @@ export default function ConsolutationTable() {
                 <Tmanager>담당자</Tmanager>
                 <TstVisit>상담예정일</TstVisit>
                 <TexpEnrollDate>수강예정월</TexpEnrollDate>
-                <Tprogress>진행상태</Tprogress>
               </ClickBox>
             </TheaderBox>
           </Theader>
