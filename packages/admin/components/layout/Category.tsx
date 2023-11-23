@@ -26,7 +26,7 @@ export default function Category() {
     },
     {
       href: '/registration',
-      iconSrc: 'ico_work',
+      iconSrc: 'ico_regist',
       alt: '수강생등록',
       label: '수강생등록',
     },

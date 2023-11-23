@@ -6,7 +6,7 @@ export default function ReviewSlide(props) {
   const ListItem = props.reviewList
   return (
     <>
-      <div className="relative mt-5 max-w-[1440px] mx-auto main-review px-12">
+      <div className="relative mt-5 max-w-[1440px] mx-auto main-review lg:px-12">
         <Swiper
           slidesPerView={1.1}
           spaceBetween={20}
@@ -58,10 +58,10 @@ export default function ReviewSlide(props) {
             </SwiperSlide>
           ))}
         </Swiper>
-        <button className="absolute left-[-1rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-black slide_prev">
+        <button className="absolute hidden left-[-1rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-black slide_prev lg:block">
           <i className="xi-angle-left-min" />
         </button>
-        <button className="absolute right-[-1rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-black slide_next">
+        <button className="absolute hidden right-[-1rem] top-[50%] mt-[-1.5rem] p-1 text-5xl text-black slide_next lg:block">
           <i className="xi-angle-right-min" />
         </button>
       </div>
