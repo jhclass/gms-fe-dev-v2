@@ -13,10 +13,8 @@ const UPDATE_FAVORITE_MUTATION = gql`
 type ConsoultItemProps = {
   tableData: {
     id: number
-    campus: string
     stName: string
     phoneNum1: string
-    currentManager: string
     progress: number
     subDiv: string
     stVisit: string
@@ -24,6 +22,7 @@ type ConsoultItemProps = {
     createdAt: string
     favorite: boolean
     receiptDiv: string
+    pic: string
   }
   itemIndex: number
 }
