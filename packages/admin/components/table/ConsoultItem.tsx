@@ -13,10 +13,8 @@ const UPDATE_FAVORITE_MUTATION = gql`
 type ConsoultItemProps = {
   tableData: {
     id: number
-    campus: string
     stName: string
     phoneNum1: string
-    currentManager: string
     progress: number
     subDiv: string
     stVisit: string
@@ -24,6 +22,7 @@ type ConsoultItemProps = {
     createdAt: string
     favorite: boolean
     receiptDiv: string
+    pic: string
   }
   itemIndex: number
 }
@@ -227,6 +226,9 @@ export default function ConsolutItem(props: ConsoultItemProps) {
             <Tnum>
               <EllipsisBox>{conIndex + 1}</EllipsisBox>
             </Tnum>
+            <Tprogress>
+              <EllipsisBox>{getProgressText(student.progress)}</EllipsisBox>
+            </Tprogress>
             <TreceiptDiv>
               <EllipsisBox>{student.receiptDiv}</EllipsisBox>
             </TreceiptDiv>
@@ -245,9 +247,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
               </EllipsisBox>
             </TcreatedAt>
             <Tmanager>
-              <EllipsisBox>
-                {student.currentManager ? student.currentManager : '-'}
-              </EllipsisBox>
+              <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
             </Tmanager>
             <TstVisit>
               <EllipsisBox>
@@ -259,9 +259,6 @@ export default function ConsolutItem(props: ConsoultItemProps) {
                 {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
               </EllipsisBox>
             </TexpEnrollDate>
-            <Tprogress>
-              <EllipsisBox>{getProgressText(student.progress)}</EllipsisBox>
-            </Tprogress>
           </ClickBox>
         </TableRow>
       </TableItem>
