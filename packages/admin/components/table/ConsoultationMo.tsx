@@ -1,6 +1,5 @@
-import { animate, motion } from 'framer-motion'
-import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 
 const TableWrap = styled.div`

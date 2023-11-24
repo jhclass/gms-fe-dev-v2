@@ -4,14 +4,15 @@ export default function RankingCard() {
   const list = [
     {
       title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
-      img: '/src/detail/d2_thumb02_big.webp',
-      subs: '처음 입문자도 스킬업이 필요한 사람도, 취미로 배우고 싶은 사람도, 작가데뷔나 취업을 희망하는 사람도 웹툰을 좋아하면 모두 환영!',
+      img: '/src/detail/d2_thumb03_big.webp',
+      subs: '본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례원고를 거듭하면서 원고에 시작과 마무리에 대한 감을 익힙니다.',
       link: '/detail/2',
     },
     {
-      title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
-      img: '/src/detail/d2_thumb03_big.webp',
-      subs: '자바스크립트를 이용해서 애플리케이션을 만들 수 있는 입문자를 위한 리액트!',
+      title:
+        '이모티콘 제작 생동감 있는 감정표현으로5주 만의 이모티콘 크리에이터 되기',
+      img: '/src/detail/d3_thumb01_big.webp',
+      subs: '카카오톡, 라인, 오지큐, 모히톡 등 플랫폼마다 파일크기와 비율이 다르기 때문에 플랫폼별 특징을 이해하고 형식에 맞춰 이식하는 방법을 체험하고 이모티콘 승인을 위한 포인트 및 노하우를 배울 수 있습니다.',
       link: '/detail/3',
     },
     {

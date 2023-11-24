@@ -13,6 +13,7 @@ import { useState } from 'react'
 type ConsoultFilterProps = {
   isActive: boolean
 }
+
 const FilterBox = styled(motion.div)`
   overflow: hidden;
 `
@@ -243,8 +244,8 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 className="gap-1"
               >
                 {Object.entries(progressStatus).map(([key, value]) => (
-                  <ChipCheckbox key={key} value={value}>
-                    {value}
+                  <ChipCheckbox key={key} value={value.name}>
+                    {value.name}
                   </ChipCheckbox>
                 ))}
               </CheckboxGroup>

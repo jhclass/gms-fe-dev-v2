@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilState } from 'recoil'
 import { useState } from 'react'
 
 type CustomRippleButtonProps = {

@@ -5,28 +5,12 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import { gql, useQuery } from '@apollo/client'
-
-const MME_QUERY = gql`
-  query MMe {
-    mMe {
-      id
-      mUserId
-      mUsername
-      mPassword
-      mGrade
-      mRank
-      mPhoneNum
-      createdAt
-      updatedAt
-      mAvatar
-    }
-  }
-`
+import { useQuery } from '@apollo/client'
+import { MME_QUERY } from '@/graphql/queries'
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>
-    props.$navOpen ? 'calc(100vw - 18rem)' : 'calc(100vw - 5rem)'};
+    props.$navOpen ? 'calc(100% - 18rem)' : 'calc(100% - 5rem)'};
   width: 100%;
   height: 4rem;
   position: fixed;

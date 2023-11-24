@@ -1,15 +1,11 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { progressStatusState } from '@/lib/recoilAtoms'
-const UPDATE_FAVORITE_MUTATION = gql`
-  mutation UpdateFavorite($updateFavoriteId: Int!, $favorite: Boolean!) {
-    updateFavorite(id: $updateFavoriteId, favorite: $favorite) {
-      favorite
-    }
-  }
-`
+import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
+import router from 'next/router'
+
 type ConsoultItemProps = {
   tableData: {
     id: number
@@ -25,6 +21,9 @@ type ConsoultItemProps = {
     pic: string
   }
   itemIndex: number
+  currentPage: number
+  limit?: number
+  total?: number
 }
 
 const TableRow = styled.div`
@@ -43,6 +42,7 @@ const TableItem = styled.div`
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
+  overflow: hidden;
 
   &:hover {
     cursor: pointer;
@@ -50,6 +50,7 @@ const TableItem = styled.div`
   }
 `
 const Tfavorite = styled.div`
+  position: relative;
   display: table-cell;
   width: 2%;
   font-size: inherit;
@@ -60,7 +61,13 @@ const Tfavorite = styled.div`
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-
+const Tflag = styled.span`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.5rem;
+  height: 100%;
+`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -174,16 +181,32 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props: ConsoultItemProps) {
+  const favoritTotal = props.total || 0
+  const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
   const progressStatus = useRecoilValue(progressStatusState)
   const [toggleFavo, setToggleFavo] = useState<boolean>(student.favorite)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
 
-  const testClick = () => {
-    alert('a')
+  const ListClick = id => {
+    router.push(`/consult/detail/${id}`)
   }
+  const isDisplayFlag = (date: string): string => {
+    const currentDate = new Date()
+    const targetDate = new Date(date)
+    const differenceInDays = Math.floor(
+      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
+    )
 
+    if (differenceInDays >= 0 && differenceInDays <= 3) {
+      return 'new'
+    } else if (differenceInDays > 3 && differenceInDays <= 5) {
+      return 'unprocessed'
+    }
+
+    return ''
+  }
   const favoClick = () => {
     setToggleFavo(!toggleFavo)
     updateFavo({
@@ -198,18 +221,29 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
-  const getProgressText = (progress: number): string => {
-    return progressStatus[progress] || progressStatus[0]
-  }
+  console.log(favoritTotal, conIndex)
 
   return (
     <>
       <TableItem>
         <TableRow>
           <Tfavorite>
+            <Tflag
+              style={{
+                background:
+                  isDisplayFlag(getDate(student.createdAt)) === 'new'
+                    ? '#007de9'
+                    : isDisplayFlag(getDate(student.createdAt)) ===
+                      'unprocessed'
+                    ? '#FF5900'
+                    : '',
+              }}
+            ></Tflag>
             <TfavoriteLabel
               htmlFor={`check${student.id}`}
-              className={toggleFavo ? 'text-yellow-300' : ''}
+              style={{
+                color: toggleFavo ? '#FFC600' : '',
+              }}
             >
               <i className={toggleFavo ? 'xi-star' : 'xi-star-o'} />
               <input
@@ -222,12 +256,17 @@ export default function ConsolutItem(props: ConsoultItemProps) {
               />
             </TfavoriteLabel>
           </Tfavorite>
-          <ClickBox onClick={testClick}>
+          <ClickBox onClick={() => ListClick(student.id)}>
             <Tnum>
-              <EllipsisBox>{conIndex + 1}</EllipsisBox>
+              <EllipsisBox>
+                {(props.currentPage - 1) * conLimit +
+                  (conIndex + favoritTotal + 1)}
+              </EllipsisBox>
             </Tnum>
-            <Tprogress>
-              <EllipsisBox>{getProgressText(student.progress)}</EllipsisBox>
+            <Tprogress
+              style={{ color: progressStatus[student.progress].color }}
+            >
+              <EllipsisBox>{progressStatus[student.progress].name}</EllipsisBox>
             </Tprogress>
             <TreceiptDiv>
               <EllipsisBox>{student.receiptDiv}</EllipsisBox>

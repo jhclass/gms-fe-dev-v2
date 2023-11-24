@@ -1,19 +1,9 @@
-import Link from 'next/link'
 import React from 'react'
 import Form from '@/components/Form'
 import DetailFixed from '@/components/section/DetailFixed'
-import Curriculum from '@/components/section/Curriculum01'
-import DetailInfo from '@/components/section/DetailInfo'
-import Review from '@/components/section/Review'
 import Portfolio from '@/components/section/Portfolio'
 import TopBnr from '@/components/section/TopBnr'
-import { Accordion, AccordionItem, Button } from '@nextui-org/react'
-import SlideSection from '@/components/section/SlideSection'
-import MainSection01 from '@/components/section/MainSection01'
-import Section01_3col from '@/components/section/Section01._3col'
-import Curriculum01 from '@/components/section/Curriculum01'
-import Curriculum02 from '@/components/section/Curriculum02'
-import Section01_img from '@/components/section/Section01_img'
+import { Accordion, AccordionItem } from '@nextui-org/react'
 import ReviewSlide from '@/components/section/ReviewSlide'
 
 const list = [
@@ -160,49 +150,25 @@ export default function Detail() {
   return (
     <>
       <TopBnr />
-      <section className="bg-black">
+      <section className="bg-white">
         <div className="text-center wrap">
-          <p className="pt-20 text-center text-white">
-            <span className="inline-block text-black border-2 border-[#F28705] bg-[#F28705] rounded-lg text-center text-xl font-bold px-2 py-1">
-              웹툰작가에게 배우는
+          <p className="pt-20 text-center text-black">
+            <span className="inline-block text-black border-2 border-[#F26E22] bg-[#F26E22] rounded-lg text-center text-xl font-bold px-2 py-1">
+              이모티콘 제작
             </span>
             <br />
             <b className="inline-block mt-5 text-4xl/[3rem]">
-              웹툰제작과정
-              <span className="text-2xl/[3rem] pl-3">Webtoon</span>
+              생동감 있는 감정표현으로
+              <br />
+              5주 만의 이모티콘 크리에이터 되기
             </b>
           </p>
           <figure className="w-full mx-auto mt-10">
-            <img src="/src/detail/d2_main_section03.webp" />
+            <img src="/src/detail/d3_main_section.webp" />
           </figure>
         </div>
       </section>
-      <section className="py-16 bg-zinc-200">
-        <div className="wrap">
-          <h4 className="text-3xl font-bold text-center">
-            웹툰제작을 원하시는 분들 모두를 환영합니다 🎉
-          </h4>
-          <ul className="mx-auto mt-6 text-base text-center lg:w-full xl:w-[80%]">
-            <li className="px-5 py-5 bg-white rounded-lg">
-              🔥 사전평가를 통해 입문자, 스킬업을 원하는 분 누구나 나의 실력부터
-              시작할 수 있습니다. 🔥
-            </li>
-            <li className="px-5 py-5 mt-5 bg-white rounded-lg">
-              🍭 입학상담을 통해 취미, 작가데뷔, 취업, 프리랜서 무엇을 원하든
-              목적을 이룰 수 있습니다. 🍭
-            </li>
-            <li className="px-5 py-5 mt-5 bg-white rounded-lg">
-              ⭐️ 웹툰작가님이 입문자도 쉽게 따라오며 실력을 쌓아갈 수 있도록
-              커리큘럼을 구성하였습니다. ⭐️
-            </li>
-            <li className="px-5 py-5 mt-5 bg-white rounded-lg">
-              😄 단계별 테스트로 나의 실력에 맞는 1:1피드백을 통해 개인 맞춤형
-              수업을 제공합니다. 😄
-            </li>
-          </ul>
-        </div>
-      </section>
-      <section className="py-16 bg-black">
+      {/* <section className="py-16 bg-black">
         <div className="wrap">
           <p className="text-white">
             <b className="mt-4 text-2xl">웹툰 배경 제작</b>
@@ -215,304 +181,335 @@ export default function Detail() {
             <img src="/src/detail/d2_img_section.webp" width="100%" />
           </figure>
         </div>
+      </section> */}
+      <section className="py-16">
+        <div className="wrap">
+          <div className="flex flex-wrap justify-between pb-10 border-b-1">
+            <p className="w-full mb-5 lg:w-1/2">
+              <b className="text-3xl">추천 대상.</b>
+            </p>
+            <ul className="text-base lg:w-1/2 md:w-full">
+              <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                자유로운 시간을 활용해 본업에 지장 없이, 자본금 없이 부수입을
+                생각하고 계신 분
+              </li>
+              <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                이모티콘 제작에 대해 기초부터 이모티콘샵의 승인까지 제대로
+                배워보고 싶은 분
+              </li>
+              <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                아이디어는 있는데 어떻게 표현해야 하는지 방법을 몰라 고민이신 분
+              </li>
+              <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                그림을 못 그려도, 나만의 개성있는 이모티콘을 만들어 보고 싶은 분
+              </li>
+              <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                이모티콘 제작에 관심은 있으나 혼자 학습하기에는 부담이 되시는 분
+              </li>
+            </ul>
+          </div>
+          <div className="flex flex-wrap justify-between py-10 border-b-1">
+            <p className="w-full mb-5 lg:w-1/2">
+              <b className="text-3xl">수업 환경.</b>
+            </p>
+            <div className="w-full text-base text-center lg:w-1/2">
+              <figure className="w-[70%] mx-auto mb-10 ">
+                <img src="/src/detail/d3_img_info.webp" width="100%" />
+              </figure>
+              Wacom Tablet & Adobe Photoshop
+            </div>
+          </div>
+        </div>
       </section>
-      <section className="py-16 bg-white">
+      <section className="pb-16 bg-white">
         <div className="wrap">
           <div className="text-center">
-            <p className="inline-block px-4 py-2 text-sm font-bold text-center text-white bg-[#F28705] border-2 border-[#F28705] rounded-lg">
+            <p className="inline-block px-4 py-2 mb-5 text-sm font-bold text-center text-black border-2 rounded-lg bg-[#F26E22] border-[#F26E22]">
               Flowchart
             </p>
+            <h4 className="text-center text-black">
+              <span className="text-2xl">그림을 못 그리는 사람도</span>
+              <br />
+              <b className="mt-4 text-2xl">
+                5주 만에 이모티콘 크리에이터에 도전할 수 있는 커리큘럼!
+              </b>
+            </h4>
             <ul className="mx-auto mt-10 lg:w-full xl:w-4/5">
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 01. 웹툰의 이해
+                  Step 01. 이모티콘 제작의 이해
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    하드웨어 및 소프트웨어의 이해 (tablet, Cintiq, CLIP STUDIO,
-                    Photoshop 등)
+                    하드웨어 및 소프트웨어의 이해 (Tablet, Photoshop)
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    웹툰제작 시 사용되는 툴의 환경설정 및 실습 (클립스튜디오,
-                    포토샵)
+                    동시 작업을 위한 기초 작업과정 이해
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    웹툰제작을 시작하기에 앞서 웹툰제작에 사용되는 하드웨어와
-                    소프트웨어의 종류 및 활용법을 이해하고 각각의 활용 예시 등을
-                    통해 사용법을 익힐 수 있습니다.
+                    이모티콘 제작에 사용되는 Tablet과 Photoshop을 사용하기 위한
+                    환경설정과 활용예시 등을 통해 사용법을 익히고 여러 감정을
+                    표현하고 있는 캐릭터들을 동시에 관리하고 검토하며 작업하기
+                    위한 기초 작업 틀을 구축합니다.
                   </li>
                 </ul>
               </li>
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 02. 드로잉의 이해 및 실습
+                  Step 02. 이모티콘 제작 기획
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    기초 인체드로잉 (손, 발, 몸, 다리, 얼굴, 헤어 등)
+                    이모티콘샵의 시장조사
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    크로키, 모작 등 다양한 방법을 통한 인체 익히기
+                    표절과 창작의 이해
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    인체의 기본 비율, 캐릭터 두상의 비율 및 형태, 근육을 통한
-                    인체의 연결과 윤곽, 인체 무게 중심, 옷 주름과 신발, 얼굴
-                    표정 등 다양한 인체비율 연구를 통해 인체 드로잉을 이해할 수
+                    이모티콘샵의 시장조사를 통해 시장 트렌드를 이해하여 잘
+                    팔리고 인기 있는 이모티콘을 제작하기 위한 방향을 설정할 수
+                    있고, 표절과 창작의 차이를 이해함으로써 나만의 이모티콘을
+                    기획할 수 있습니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
+                  <i className="xi-angle-down" />
+                </span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 03. 이모티콘 캐릭터 제작
+                </h5>
+                <ul className="mt-3 text-base">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    스케치 클린업 및 채색
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    Phtoshop action을 활용한 빠르고 깔끔한 채색
+                  </li>
+                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
+                    기초 스케치와 깔끔하게 따는 클린업 작업의 개념을 이해하며
+                    드로잉을 실습할 수 있고, Photoshop의 로봇기능이라 불리는
+                    'action'을 활용하여 빠르고 정확하게 채색하는 방법을 배워
+                    이모티콘 캐릭터를 제작할 수 있습니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
+                  <i className="xi-angle-down" />
+                </span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 04. 식자 및 감정 표현
+                </h5>
+                <ul className="mt-3 text-base">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    다양한 폰트를 활용한 텍스트 표현
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    다양한 감정 표현과 이펙트 효과
+                  </li>
+                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
+                    무료로 사용할 수 있는 다양한 폰트를 활용하여 텍스트를 표현할
+                    수 있는 방법과 캐릭터들에 생동감을 실어줄 수 있도록 상황에
+                    맞는 감정표현방법, 이를 극대화 할 수 있는 이펙트 효과를
+                    학습해 캐릭터의 감정표현을 극대화 할 수 있습니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
+                  <i className="xi-angle-down" />
+                </span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 05. 시뮬레이터를 통한 세부 보정
+                </h5>
+                <ul className="mt-3 text-base">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    슬라이스로 이모티콘 분할 및 출력
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    이모티콘 스튜디오에 올려 보정 및 확인
+                  </li>
+                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
+                    완성된 작업 틀에서 각각의 이모티콘들을 분리해 출력하고
+                    이모티콘 뷰어(시뮬레이터)를 통해 이미지와 폰트의 사이즈, 선
+                    굵기, 가독성 등을 조절하고 마지막으로 카카오 이모티콘
+                    스튜디오를 통해 확인하는 절차들을 학습할 수 있습니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
+                  <i className="xi-angle-down" />
+                </span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 06. 1:1 개인 피드백 통해 멈춰있는 이모티콘 완성
+                </h5>
+                <ul className="mt-3 text-base">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    기획, 스케치, 클린업, 채색, 식자, 효과, 세부보정 단계 개별
+                    실습
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    1:1 개인 피드백을 통해 각자의 개성 있는 이모티콘 완성
+                  </li>
+                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
+                    앞서 배운 내용을 기반으로 내가 직접 이모티콘을 제작합니다.
+                    보통 3셋트 이상의 이모티콘을 제작해 볼 수 있으며, 1:1
+                    개인피드백을 통해 강사님의 도움 없이 점차적으로 완성된
+                    이모티콘을 만들어 갈 수 있게 됩니다.
+                  </li>
+                </ul>
+              </li>
+              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
+                  <i className="xi-angle-down" />
+                </span>
+                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
+                  Step 07. 애니메이션의 원리 이해
+                </h5>
+                <ul className="mt-3 text-base">
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    디즈니에서 애니메이터들에게 강조하는 애니메이션 원칙
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    간단한 애니메이션 실습(로켓발사)
+                  </li>
+                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
+                    애니메이션의 원리를 이해할 수 있으며 특히, 디즈니에서
+                    애니메이터들에 강조하는 애니메이션 원칙을 학습할 수 있으며
+                    이를 응용해 재미있고 맛깔나는 애니메이션을 만들어 볼 수
                     있습니다.
                   </li>
                 </ul>
               </li>
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 03. 펜선 및 채색
+                  Step 08. 경제적인 애니메이션?
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    펜선 실습 (클립스튜디오 툴을 통한 다양한 브러시 도구와 응용)
+                    경제적인 애니메이션이란 무엇인가?
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    채색 실습 (기본 채색 및 명암 활용법과 레이어 및 효과를
-                    이용한 응용)
+                    펄쩍펄쩍 뛰는 캐릭터 제작
+                  </li>
+                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
+                    가속도 개념과 역가속도 개념에 대한 이해
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    클립스튜디오의 다양한 브러시 도구를 이용한 펜선 연습을 통해
-                    다양한 펜선의 종류를 이해할 수 있고, 다양한 채색 활용 예시를
-                    통해 채색 및 명암 활용법 등을 익힐 수 있습니다.
+                    미국의 ‘디즈니’, 일본의 ‘가이낙스’ 두 회사의 애니메이션
+                    스타일을 예시로 생동감 있으면서도 효율적인, 힘의 분산을 잘
+                    하는 '경제적인' 애니메이션에 대해 학습할 수 있습니다.
                   </li>
                 </ul>
               </li>
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 04. 원고의 이해 및 실습 Part.1
+                  Step 09. 효율적인 애니메이션
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    1컷 완성
+                    Photoshop의 puppet warp 기능 활용
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
-                    및 실습
+                    Photoshop filter를 활용한 강렬한 속도감
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    원고가 어떻게 완성되는지 간단한 예시를 보고 원고 중 1컷
-                    완성을 목표로 합니다.
+                    경제적이고 효율적인 작업을 위해 Photoshop의 puppet
+                    warp기능을 활용하여 부드러운 애니메이션을 만들어보고,
+                    Photoshop의 속도감을 내는 필터를 통해 더욱 더 강렬한
+                    속도감을 표현할 수 있는 방법을 학습할 수 있습니다.
                   </li>
                 </ul>
               </li>
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 05. 캐릭터 및 인체 연구
+                  Step 10. GifCam을 활용한 애니메이션
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    내가 원하는 캐릭터 만들기
+                    동영상을 캡처하여 참고자료를 만들기
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    캐릭터에 맞는 인체연습
+                    참고자료를 트레이싱 또는 참고하여 애니메이션 만들기
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    기성작가들의 작품 중 본인이 생각하는 이미지와 어울리는
-                    캐릭터를 모작해 보고, 내가 구상하고 있는 스토리와 접목시켜
-                    내가 원하는 캐릭터를 만들어 봅니다.
+                    GifCam을 활용해 동영상을 캡쳐하여 gif 파일을 만들고, 그
+                    파일을 참조하여 애니메이션을 재현하고 로토스코핑기법을
+                    활용한 애니메이션 기법을 학습할 수 있습니다.
                   </li>
                 </ul>
               </li>
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
+                <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 06. 내가 원하는 캐릭터 완성
+                  Step 11. 움직이는 이모티콘 완성
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    캐릭터 펜선 및 채색
+                    각자의 개성 있는 이모티콘에 애니메이션 적용
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    흉상, 반신상, 전신 완성하기
+                    1:1 개인 피드백을 통해 움직이는 이모티콘 완성
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    내가 원하는 캐릭터 샘플을 완성하고 캐릭터 설정에 나오는
-                    흉상, 반신상, 전신을 완성해 봅니다.
+                    각자 완성된 멈춰있는 이모티콘에 애니메이션을 적용하여
+                    감정표현을 극대화 해 생동감 있게 움직이는 이모티콘을 만들 수
+                    있으며, 1:1 개인피드백을 통해 강사님의 도움 없이 점차적으로
+                    움직이는 이모티콘을 완성해 갈 수 있게 됩니다.
                   </li>
                 </ul>
               </li>
-              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
-                  <i className="xi-angle-down" />
+              <li className="mt-10 p-6 text-left text-[#021226] border-2 border-[#F26E22] rounded-lg bg-[#F26E22]">
+                <span className="text-[#F26E22] border-2 border-[#021226] bg-[#021226] text-center text-xl py-1 px-4 inline-block mb-2">
+                  Final
                 </span>
                 <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 07. 배경의 이해와 실습
+                  Step 12. 이모티콘 크리에이터가 되기 위한 노하우
                 </h5>
                 <ul className="mt-3 text-base">
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    투시법(기본 1,2,3점 투시, 투시별 연출 및 활용 방법)
+                    여러 플랫폼에 이식해보기
                   </li>
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    스케치업을 활용한 배경제작 및 3D 이질감 보정
+                    크리에이터 등록 및 이모티콘 제안
                   </li>
                   <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    투시를 이용한 인물을 그려보며 투시법, 투시별 연출 및 활용
-                    방법 등 배경연출을 이해할 수 있고, 스케치업을 통해 3D 배경을
-                    제작하거나 활용할 수 있습니다.
-                  </li>
-                </ul>
-              </li>
-              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
-                  <i className="xi-angle-down" />
-                </span>
-                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 08. 원고의 이해 및 실습 Part.2
-                </h5>
-                <ul className="mt-3 text-base">
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    4컷 완성
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
-                    및 실습
-                  </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    내가 만든 캐릭터와 배경을 기반으로 원고시안의 개인별
-                    피드백을 통해 4컷 원고 완성을 목표로 합니다.
-                  </li>
-                </ul>
-              </li>
-              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
-                  <i className="xi-angle-down" />
-                </span>
-                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 09. 스토리 작법
-                </h5>
-                <ul className="mt-3 text-base">
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    다양한 장르의 스토리와 스토리의 전개방식에 대한 이해
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    재미있는 소재를 만드는 6가지 방법
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    사건의 중심이 되는 3명의 캐릭터 설정
-                  </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    다양한 스토리의 활용 및 적용 예시를 통해 스토리 작법 이론
-                    및, 스토리를 어떻게 시작할 것인지, 나에게 맞는 장르는 어떤
-                    것인지 파악하고 나만의 스토리를 작성할 수 있습니다.
-                  </li>
-                </ul>
-              </li>
-              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
-                  <i className="xi-angle-down" />
-                </span>
-                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 10. 연출 이론
-                </h5>
-                <ul className="mt-3 text-base">
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    연출에 대한 기초 이론 ( 샷과 앵글을 통한 연출, 각도와 대조의
-                    연출, 컷에 대한 이해)
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    다양한 장르의 연출 (ex 일상, 판타지, 스릴러 등 장르에 따른
-                    다양한 연출연구)
-                  </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    다양한 연출법에 대한 기초이론의 학습을 통해 스토리의 전개,
-                    장르, 시간의 흐름에 따라 나의 작품을 연출할 수 있습니다.
-                  </li>
-                </ul>
-              </li>
-              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
-                  <i className="xi-angle-down" />
-                </span>
-                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 11. 연출의 이론 및 실습
-                </h5>
-                <ul className="mt-3 text-base">
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    인물의 성격, 감정표현 등에 따른 연출 활용
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    배경, 채색의 연출 활용(긴장감, 추격패턴, 혼란, 시선의
-                    흐름으로 컷의 연결 및 전조)
-                  </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    다양한 연출방법의 학습을 통해 단지 그리는 것이 아니라 인물과
-                    배경, 오브제 등 디테일한 부분들의 연출 활용법을 배우고
-                    본인이 만든 스토리를 더욱 생동감 있게 연출할 수 있습니다.
-                  </li>
-                </ul>
-              </li>
-              <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
-                <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
-                  <i className="xi-angle-down" />
-                </span>
-                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 12. 원고의 이해 및 실습 Part.3
-                </h5>
-                <ul className="mt-3 text-base">
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    프롤로그 완성
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
-                    및 실습
-                  </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#71717a] border-t-1">
-                    본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례 원고를
-                    거듭하면서 원고에 시작과 마무리에 대한 감을 익힙니다.
-                  </li>
-                </ul>
-              </li>
-              <li className="mt-10 p-6 text-left text-[#021226] border-2 border-[#F28705] rounded-lg bg-[#F28705]">
-                <span className="text-[#F28705] border-2 border-[#021226] bg-[#021226] text-center text-xl py-1 px-4 inline-block mb-2">
-                  Portfolio.
-                </span>
-                <h5 className="relative text-xl font-semibold pl-4 after:content-['|'] after:absolute after:left-[0.2rem] after:top-[-0.05rem]">
-                  Step 13. 단편 웹툰 제작
-                </h5>
-                <ul className="mt-3 text-base">
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    시놉시스 작성
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    캐릭터 시트 그리기
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    글, 그림 콘티 작성
-                  </li>
-                  <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
-                    단편 원고 작업, 편집
-                  </li>
-                  <li className="relative pt-5 pl-4 mt-5 border-[#021226] border-t-1">
-                    작가 데뷔 및 취업을 위한 포트폴리오 제작
+                    카카오톡, 라인, 오지큐, 모히톡 등 플랫폼마다 파일크기와
+                    비율이 다르기 때문에 플랫폼별 특징을 이해하고 형식에 맞춰
+                    이식하는 방법을 체험하고 이모티콘 승인을 위한 포인트 및
+                    노하우를 배울 수 있습니다
                   </li>
                 </ul>
               </li>
             </ul>
+            <p className="mt-10 text text-[#021226] text-base">
+              * 수업일정과 소요되는 시간, 진도진행 방식 등 학생들의 평균적인
+              레벨에 기반하여 조금씩 변경 될 수 있습니다.
+            </p>
           </div>
         </div>
       </section>
-      <section className="py-16 bg-[#F2F2F2]">
+      {/* <section className="py-16 bg-[#F2F2F2]">
         <div className="wrap">
           <h4 className="text-center text-black">
             <span className="text-2xl">수강생들의 생생한 후기</span>
@@ -716,21 +713,21 @@ export default function Detail() {
           </div>
         </div>
         <ReviewSlide reviewList={list} />
-      </section>
-      <section className="py-16 bg-white">
+      </section> */}
+      <section className="pb-16 bg-white">
         <div className="wrap">
           <h4 className="text-2xl font-bold">커리큘럼을 확인하세요.</h4>
           <p className="mt-3 text-base">
-            입학상담을 통해 나의 실력에 맞는 진도를 상담하실 수 있습니다.
+            아래의 모든 챕터 클립들을 5주만에 완성할 수 있습니다.
             <br />
-            지금 나의 실력을 체크하고 꿈에 한발 더 다가가세요!
+            지금 등록하시고 이모티콘 크리에이터가 되어보세요!
           </p>
           <ul className="mt-10">
             <li>
-              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
                 Part1. 오리엔테이션
               </p>
-              <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
                 <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
@@ -748,16 +745,14 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 2"
-                    title="02. 웹툰의 이해"
+                    title="02. 이모티콘 제작의 이해"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        하드웨어 및 소프트웨어 이해 (tablet, Cintiq, CLIP
-                        STUDIO, Photoshop 등)
+                        하드웨어 및 소프트웨어의 이해(Tablet, Photoshop)
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        웹툰제작 시 사용되는 툴의 환경설정 및 실습(클립스튜디오,
-                        포토샵)
+                        동시 작업을 위한 기초 작업과정 이해
                       </li>
                     </ul>
                   </AccordionItem>
@@ -765,22 +760,22 @@ export default function Detail() {
               </div>
             </li>
             <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
-                Part2. 웹툰 캐릭터 제작
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part2. 멈춰있는 이모티콘 만들기
               </p>
-              <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
                 <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 3"
-                    title="01. 인체 드로잉의 이해 및 실습"
+                    title="01. 이모티콘 제작 기획"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        기초 인체드로잉
+                        이모티콘샵의 시장조사
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        크로키, 모작 등 다양한 방법을 통한 인체 익히기
+                        표절과 창작의 이해
                       </li>
                     </ul>
                   </AccordionItem>
@@ -789,14 +784,14 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 4"
-                    title="02. 펜선 및 채색"
+                    title="02. 이모티콘 캐릭터 제작"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        클립스튜디오 툴을 활용한 펜선 실습
+                        스케치 클린업 및 채색
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        기본채색 및 명암 활용법 등 실습
+                        Phtoshop action을 활용한 빠르고 깔끔한 채색
                       </li>
                     </ul>
                   </AccordionItem>
@@ -805,38 +800,30 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 5"
-                    title="03. 원고의 이해 및 실습 Part.1"
+                    title="03. 식자 및 감정 표현"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        글콘디 및 콘치, 러프스케치, 펜선 및 채식, 원고 과정의
-                        이해 및 실습
+                        다양한 폰트를 활용한 텍스트 표현
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        웹툰캐릭터 제작
+                        다양한 감정 표현과 이펙트 효과
                       </li>
                     </ul>
                   </AccordionItem>
                 </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
-                Part3. 4컷 웹툰 제작
-              </p>
-              <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
                 <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 6"
-                    title="01. 캐릭터 및 인체 연구"
+                    title="04. 시뮬레이터를 통한 세부 보정"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        내가 원하는 캐릭터 만들기
+                        슬라이스로 이모티콘 분할 및 출력
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        캐릭터에 맞는 인체 연습
+                        이모티콘 스튜디오에 올려 보정 및 확인
                       </li>
                     </ul>
                   </AccordionItem>
@@ -845,30 +832,38 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 7"
-                    title="02. 내가 원하는 캐릭터 완성"
+                    title="05. 1:1 개인 피드백을 통해 멈춰있는 이모티콘 완성"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        캐릭터 펜선 및 채색
+                        기획, 스케치, 클린업, 채색, 식자, 효과, 세부보정 단계
+                        개별 실습
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        흉상, 반신상, 전신 완성하기
+                        1:1 개인 피드백을 통해 각자의 개성 있는 이모티콘 완성
                       </li>
                     </ul>
                   </AccordionItem>
                 </Accordion>
+              </div>
+            </li>
+            <li className="mt-10">
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part3. 움직이는 이모티콘 만들기
+              </p>
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
                 <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 8"
-                    title="03. 배경의 이해와 실습"
+                    title="01. 애니메이션의 원리 이해"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        투시법(기본 1,2,3점 투시, 투시별 연출 및 활용 방법)
+                        디즈니에서 애니메이터들에게 강조하는 애니메이션 원칙
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        스케치업을 활용한 배경 제작 및 3D 이질감 보정
+                        간단한 애니메이션 실습(로켓발사)
                       </li>
                     </ul>
                   </AccordionItem>
@@ -877,41 +872,33 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 9"
-                    title="04. 원고의 이해 및 실습 Part.2"
+                    title="02. 경제적인 애니메이션?"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        글콘디 및 콘치, 러프스케치, 펜선 및 채식, 원고 과정의
-                        이해 및 실습
+                        경제적인 애니메이션이란 무엇인가?
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        4컷 웹툰 완성
+                        펄쩍펄쩍 뛰는 캐릭터 제작
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        가속도 개념과 역가속도 개념에 대한 이해
                       </li>
                     </ul>
                   </AccordionItem>
                 </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
-                Part4. 웹툰 프롤로그 완성
-              </p>
-              <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
                 <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 10"
-                    title="01. 스토리 작법"
+                    title="03. 효율적인 애니메이션"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        다양한 장르의 스토리와 스토리의 전개방식에 대한 이해
+                        Photoshop의 puppet warp 기능 활용
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        재미있는 소재를 만드는 6가지 방법
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        사건의 중심이 되는 3명의 캐릭터 설정
+                        Photoshop filter를 활용한 강렬한 속도감
                       </li>
                     </ul>
                   </AccordionItem>
@@ -920,16 +907,14 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 11"
-                    title="02. 연출 이론"
+                    title="04. GifCam을 활용한 애니메이션"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        연출에 대한 기초 이론(샷과 앵글을 통한 연출, 각도와
-                        대조의 연출, 컷에 대한 이해)
+                        동영상을 캡처하여 참고자료를 만들기
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        다양한 장르의 연출 (ex. 일상, 판타지, 스릴러 등 장르에
-                        따른 다양한 연출 연구)
+                        참고자료를 트레이싱 또는 참고하여 애니메이션 만들기
                       </li>
                     </ul>
                   </AccordionItem>
@@ -938,15 +923,14 @@ export default function Detail() {
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 12"
-                    title="03. 연출의 이론 및 실습"
+                    title=" 05. 움직이는 이모티콘 완성"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        인물의 성격, 감정표현 등에 따른 연출 활용
+                        각자의 개성 있는 이모티콘에 애니메이션 적용
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        배경, 채색의 연출 활용(긴장감, 추격패턴, 혼란, 시선의
-                        흐름으로 컷의 연결 및 전조)
+                        1:1 개인 피드백을 통해 움직이는 이모티콘 완성
                       </li>
                     </ul>
                   </AccordionItem>
@@ -954,31 +938,22 @@ export default function Detail() {
               </div>
             </li>
             <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F28705] font-bold bg-[#F28705] text-base rounded-lg px-2 py-1 mb-2">
-                Part5. Portfolio
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part5. 이모티콘 크리에이터 도전
               </p>
-              <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
                 <Accordion variant="splitted" className="px-0 font-bold">
                   <AccordionItem
                     key="1"
                     aria-label="Accordion 13"
-                    title="01. 단편 웹툰 제작"
+                    title="01. 이모티콘 크리에이터가 되기 위한 노하우"
                   >
                     <ul className="py-3 border-t-1">
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        시놉시스 작성
+                        여러 플랫폼에 이식해보기
                       </li>
                       <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        캐릭터 시트 그리기
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        글, 그림 콘티 작성
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        단편 원고 작업, 편집
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        작가 데뷔 및 취업을 위한 포트폴리오 제작
+                        크리에이터 등록 및 이모티콘 제안
                       </li>
                     </ul>
                   </AccordionItem>
@@ -986,10 +961,6 @@ export default function Detail() {
               </div>
             </li>
           </ul>
-          <p className="mt-10 text-base">
-            * 수업일정과 소요되는 시간, 진도진행 방식 등 학생들의 레벨에
-            기반하여 조금씩 변경 될 수 있습니다
-          </p>
         </div>
       </section>
       <section className="py-16 bg-[#0D0D0D]">

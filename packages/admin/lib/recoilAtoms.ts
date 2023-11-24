@@ -43,17 +43,53 @@ export const ripplesState = atom({
 export const progressStatusState = atom({
   key: 'progressStatus',
   default: {
-    0: '접수대기',
-    10: '상담예정',
-    20: '방문예정',
-    30: '상담완료',
-    40: '등록예정',
-    50: '등록완료',
-    60: '재전화요망',
-    70: '부재중',
-    80: '내용확인',
-    90: '가배정',
-    100: '수강생',
-    110: '오류/거부',
+    0: {
+      name: '접수대기',
+      color: '#c40403',
+    },
+    10: {
+      name: '상담예정',
+      color: '#ff8d4a',
+    },
+    20: {
+      name: '방문예정',
+      color: '#c9ab00',
+    },
+    30: {
+      name: '상담완료',
+      color: '#7dce00',
+    },
+    40: {
+      name: '등록예정',
+      color: '#0eacab',
+    },
+    50: {
+      name: '등록완료',
+      color: '#0070ad',
+    },
+    60: {
+      name: '재전화요망',
+      color: '#043999',
+    },
+    70: {
+      name: '부재중',
+      color: '#7240f7',
+    },
+    80: {
+      name: '내용확인',
+      color: '#7a0075',
+    },
+    90: {
+      name: '가배정',
+      color: '#be058e',
+    },
+    100: {
+      name: '수강생',
+      color: '#f85294',
+    },
+    110: {
+      name: '오류/거부',
+      color: '#cdcdcd',
+    },
   },
 })
