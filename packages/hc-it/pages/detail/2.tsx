@@ -282,14 +282,14 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     크로키, 모작 등 다양한 방법을 통한 인체 익히기
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       인체의 기본 비율, 캐릭터 두상의 비율 및 형태, 근육을 통한
                       인체의 연결과 윤곽, 인체 무게 중심, 옷 주름과 신발, 얼굴
                       표정 등 다양한 인체비율 연구를 통해 인체 드로잉을 이해할
                       수 있습니다.
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex items-center justify-center gap-5">
                       <figure>
                         <img
                           src="/src/detail/flowchart01.webp"
@@ -352,19 +352,19 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       원고가 어떻게 완성되는지 간단한 예시를 보고 원고 중 1컷
                       완성을 목표로 합니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart04.webp"
                           alt="Step 04. 원고의 이해 및 실습 Part.1"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart05.webp"
                           alt="Step 04. 원고의 이해 및 실습 Part.1"
@@ -388,20 +388,20 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     캐릭터에 맞는 인체연습
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       기성작가들의 작품 중 본인이 생각하는 이미지와 어울리는
                       캐릭터를 모작해 보고, 내가 구상하고 있는 스토리와 접목시켜
                       내가 원하는 캐릭터를 만들어 봅니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart07.webp"
                           alt="Step 05. 캐릭터 및 인체 연구"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart08.webp"
                           alt="Step 05. 캐릭터 및 인체 연구"
@@ -425,25 +425,25 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     흉상, 반신상, 전신 완성하기
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       내가 원하는 캐릭터 샘플을 완성하고 캐릭터 설정에 나오는
                       흉상, 반신상, 전신을 완성해 봅니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart09.webp"
                           alt="Step 06. 내가 원하는 캐릭터 완성"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart10.webp"
                           alt="Step 06. 내가 원하는 캐릭터 완성"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart11.webp"
                           alt="Step 06. 내가 원하는 캐릭터 완성"
@@ -467,20 +467,20 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     스케치업을 활용한 배경제작 및 3D 이질감 보정
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       투시를 이용한 인물을 그려보며 투시법, 투시별 연출 및 활용
                       방법 등 배경연출을 이해할 수 있고, 스케치업을 통해 3D
                       배경을 제작하거나 활용할 수 있습니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart12.webp"
                           alt="Step 07. 배경의 이해와 실습"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart13.webp"
                           alt="Step 07. 배경의 이해와 실습"
@@ -505,19 +505,19 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       내가 만든 캐릭터와 배경을 기반으로 원고시안의 개인별
                       피드백을 통해 4컷 원고 완성을 목표로 합니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart14.webp"
                           alt="Step 08. 원고의 이해 및 실습 Part.2"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart15.webp"
                           alt="Step 08. 원고의 이해 및 실습 Part.2"
@@ -544,14 +544,14 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     사건의 중심이 되는 3명의 캐릭터 설정
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       다양한 스토리의 활용 및 적용 예시를 통해 스토리 작법 이론
                       및, 스토리를 어떻게 시작할 것인지, 나에게 맞는 장르는 어떤
                       것인지 파악하고 나만의 스토리를 작성할 수 있습니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart16.webp"
                           alt="Step 09. 스토리 작법"
@@ -578,12 +578,12 @@ export default function Detail() {
                     다양한 연출연구)
                   </li>
                   <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                    <div className="max-w-[50%]">
                       다양한 연출법에 대한 기초이론의 학습을 통해 스토리의 전개,
                       장르, 시간의 흐름에 따라 나의 작품을 연출할 수 있습니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart17.webp"
                           alt="Step 10. 연출 이론"
@@ -608,21 +608,21 @@ export default function Detail() {
                     배경, 채색의 연출 활용(긴장감, 추격패턴, 혼란, 시선의
                     흐름으로 컷의 연결 및 전조)
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       다양한 연출방법의 학습을 통해 단지 그리는 것이 아니라
                       인물과 배경, 오브제 등 디테일한 부분들의 연출 활용법을
                       배우고 본인이 만든 스토리를 더욱 생동감 있게 연출할 수
                       있습니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart18.webp"
                           alt="Step 11. 연출의 이론 및 실습"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart19.webp"
                           alt="Step 11. 연출의 이론 및 실습"
@@ -647,14 +647,14 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
                       본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례
                       원고를 거듭하면서 원고에 시작과 마무리에 대한 감을
                       익힙니다.
                     </div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart20.webp"
                           alt="Step 12. 원고의 이해 및 실습 Part.3"
@@ -684,16 +684,18 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     단편 원고 작업, 편집
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div>작가 데뷔 및 취업을 위한 포트폴리오 제작</div>
-                    <div className="flex gap-5">
-                      <figure className="max-w-full">
+                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
+                    <div className="max-w-[50%]">
+                      작가 데뷔 및 취업을 위한 포트폴리오 제작
+                    </div>
+                    <div className="flex items-center justify-center gap-5">
+                      <figure>
                         <img
                           src="/src/detail/flowchart21.webp"
                           alt="Step 13. 단편 웹툰 제작"
                         />
                       </figure>
-                      <figure className="max-w-full">
+                      <figure>
                         <img
                           src="/src/detail/flowchart22.webp"
                           alt="Step 13. 단편 웹툰 제작"
