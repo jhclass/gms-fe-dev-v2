@@ -1,15 +1,11 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { progressStatusState } from '@/lib/recoilAtoms'
-const UPDATE_FAVORITE_MUTATION = gql`
-  mutation UpdateFavorite($updateFavoriteId: Int!, $favorite: Boolean!) {
-    updateFavorite(id: $updateFavoriteId, favorite: $favorite) {
-      favorite
-    }
-  }
-`
+import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
+import router from 'next/router'
+
 type ConsoultItemProps = {
   tableData: {
     id: number
@@ -26,6 +22,8 @@ type ConsoultItemProps = {
   }
   itemIndex: number
   currentPage: number
+  limit?: number
+  total?: number
 }
 
 const TableRow = styled.div`
@@ -183,14 +181,16 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props: ConsoultItemProps) {
+  const favoritTotal = props.total || 0
+  const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
   const progressStatus = useRecoilValue(progressStatusState)
   const [toggleFavo, setToggleFavo] = useState<boolean>(student.favorite)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
 
-  const testClick = () => {
-    alert('a')
+  const ListClick = id => {
+    router.push(`/consult/detail/${id}`)
   }
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
@@ -221,9 +221,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
-  const getProgressText = (progress: number): string => {
-    return progressStatus[progress] || progressStatus[0]
-  }
+  console.log(favoritTotal, conIndex)
 
   return (
     <>
@@ -258,14 +256,17 @@ export default function ConsolutItem(props: ConsoultItemProps) {
               />
             </TfavoriteLabel>
           </Tfavorite>
-          <ClickBox onClick={testClick}>
+          <ClickBox onClick={() => ListClick(student.id)}>
             <Tnum>
               <EllipsisBox>
-                {(props.currentPage - 1) * 10 + (conIndex + 1)}
+                {(props.currentPage - 1) * conLimit +
+                  (conIndex + favoritTotal + 1)}
               </EllipsisBox>
             </Tnum>
-            <Tprogress>
-              <EllipsisBox>{getProgressText(student.progress)}</EllipsisBox>
+            <Tprogress
+              style={{ color: progressStatus[student.progress].color }}
+            >
+              <EllipsisBox>{progressStatus[student.progress].name}</EllipsisBox>
             </Tprogress>
             <TreceiptDiv>
               <EllipsisBox>{student.receiptDiv}</EllipsisBox>

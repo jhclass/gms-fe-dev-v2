@@ -3,29 +3,8 @@ import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import ConsoultItem from '@/components/table/ConsoultItem'
+import { SEE_STUDENT_QUERY } from '@/graphql/queries'
 
-const SeeStudent_QUERY = gql`
-  query Query($page: Int!, $limit: Int) {
-    seeStudentState(page: $page, limit: $limit) {
-      ok
-      message
-      totalCount
-      studentState {
-        id
-        stName
-        phoneNum1
-        progress
-        subDiv
-        stVisit
-        expEnrollDate
-        createdAt
-        favorite
-        receiptDiv
-        pic
-      }
-    }
-  }
-`
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
@@ -204,15 +183,17 @@ const PagerWrap = styled.div`
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const { loading, error, data } = useQuery(SeeStudent_QUERY, {
+  const { loading, error, data } = useQuery(SEE_STUDENT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
   const studentsData = data?.seeStudentState || []
   const students = studentsData.studentState || []
+  const favoriteStudents = students.filter(student => student.favorite)
+  const favoritTotal = favoriteStudents.length
+
   const totalPages = Math.ceil(
     (data?.seeStudentState.totalCount || 0) / currentLimit,
   )
-  console.log(totalPages)
   return (
     <>
       <TTopic>
@@ -250,12 +231,22 @@ export default function ConsolutationTable() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
+            {favoriteStudents.map((item, index) => (
+              <ConsoultItem
+                key={index}
+                tableData={item}
+                itemIndex={index}
+                currentPage={1}
+              />
+            ))}
             {students.map((item, index) => (
               <ConsoultItem
                 key={index}
                 tableData={item}
                 itemIndex={index}
                 currentPage={currentPage}
+                limit={currentLimit}
+                total={favoritTotal}
               />
             ))}
           </TableWrap>

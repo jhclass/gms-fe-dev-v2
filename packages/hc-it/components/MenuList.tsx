@@ -27,7 +27,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href={`/detail/1`}
+                href={`/detail/3`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 이모티콘

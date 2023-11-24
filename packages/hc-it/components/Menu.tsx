@@ -27,7 +27,7 @@ export default function Menu() {
         },
         {
           title: '이모티콘',
-          link: '/detail/1',
+          link: '/detail/3',
         },
         {
           title: '컴퓨터그래픽스운용기능사',

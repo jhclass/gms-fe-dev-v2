@@ -9,14 +9,15 @@ export default function ListSlider({ slideNo }) {
   const list = [
     {
       title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
-      img: '/src/detail/d2_thumb02.webp',
-      subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      img: '/src/detail/d2_thumb03.webp',
+      subs: '본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례원고를 거듭하면서 원고에 시작과 마무리에 대한 감을 익힙니다.',
       link: '/detail/2',
     },
     {
-      title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
-      img: '/src/detail/d2_thumb03.webp',
-      subs: '프론트엔드 입문자를 위한 개념부터 프로젝트까지 한번에 배우는 자바스크립트',
+      title:
+        '이모티콘 제작 생동감 있는 감정표현으로5주 만의 이모티콘 크리에이터 되기',
+      img: '/src/detail/d3_thumb01.webp',
+      subs: '카카오톡, 라인, 오지큐, 모히톡 등 플랫폼마다 파일크기와 비율이 다르기 때문에 플랫폼별 특징을 이해하고 형식에 맞춰 이식하는 방법을 체험하고 이모티콘 승인을 위한 포인트 및 노하우를 배울 수 있습니다.',
       link: '/detail/3',
     },
     {

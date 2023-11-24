@@ -9,15 +9,8 @@ import { useMutation } from '@apollo/client'
 import { LogUserIn } from '@/lib/apolloClient'
 import { gql } from '@apollo/client'
 import { Input } from '@nextui-org/react'
-const LOGIN_MUTATION = gql`
-  mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
-    mLogin(mUserId: $mUserId, mPassword: $mPassword) {
-      error
-      ok
-      token
-    }
-  }
-`
+import { LOGIN_MUTATION } from '@/graphql/mutations'
+
 type LoginForm = {
   id: string
   password: string

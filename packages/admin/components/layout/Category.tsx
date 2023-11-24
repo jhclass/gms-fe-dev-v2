@@ -32,7 +32,7 @@ export default function Category() {
     },
     {
       href: '/accounting',
-      iconSrc: 'ico_work',
+      iconSrc: 'ico_accounting',
       alt: '회계관리',
       label: '회계관리',
     },
