@@ -9,7 +9,43 @@ import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
-
+import { gql, useMutation } from '@apollo/client'
+//현재 리턴되는 studentState 값은 id,pic,stName 밖에 없음.
+const SEARCH_STUDENTSTATE_MUTATION = gql`
+  mutation Mutation(
+    $searchStudentStateId: Int
+    $receiptDiv: String
+    $subDiv: String
+    $pic: String
+    $stVisit: String
+    $stName: String
+    $progress: Int
+    $page: Int
+    $perPage: Int
+  ) {
+    searchStudentState(
+      id: $searchStudentStateId
+      receiptDiv: $receiptDiv
+      subDiv: $subDiv
+      pic: $pic
+      stVisit: $stVisit
+      stName: $stName
+      progress: $progress
+      page: $page
+      perPage: $perPage
+    ) {
+      totalCount
+      studentState {
+        id
+        pic
+        stName
+      }
+      ok
+      message
+      error
+    }
+  }
+`
 type ConsoultFilterProps = {
   isActive: boolean
 }
@@ -88,6 +124,9 @@ const FilterVariants = {
   },
 }
 export default function TableFillter({ isActive }: ConsoultFilterProps) {
+  const [searchStudentStateMutation, { loading }] = useMutation(
+    SEARCH_STUDENTSTATE_MUTATION,
+  )
   const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
@@ -108,6 +147,23 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
 
   const onSubmit = data => {
     console.log(data)
+    // data 값을 변수값에 대입
+    searchStudentStateMutation({
+      variables: {
+        searchStudentStateId: null, // data?.어쩌구 // data 뒤에 ? 추가
+        receiptDiv: null,
+        subDiv: null,
+        pic: null,
+        stVisit: null,
+        stName: null,
+        progress: null,
+        page: null,
+        perPage: null,
+      },
+      onCompleted: resData => {
+        console.log(resData)
+      },
+    })
   }
 
   return (
