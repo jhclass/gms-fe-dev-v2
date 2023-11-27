@@ -198,8 +198,8 @@ export default function Detail() {
             <p className="w-full mb-5 lg:w-1/2">
               <b className="text-3xl">수업 환경.</b>
             </p>
-            <div className="w-full text-base text-center lg:w-1/2">
-              <figure className="w-[70%] mx-auto mb-10 ">
+            <div className="w-full text-base lg:w-1/2">
+              <figure className="w-[70%] mb-10 ">
                 <img src="/src/detail/03/d3_img_info.webp" width="100%" />
               </figure>
               Wacom Tablet & Adobe Photoshop
