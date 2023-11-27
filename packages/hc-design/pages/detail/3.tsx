@@ -9,7 +9,7 @@ import ReviewSlide from '@/components/section/ReviewSlide'
 const list = [
   {
     name: '김○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '수강생입니다. 수업시간 집중력있게 강좌를 들었습니다. 매 강의시간 열정을 갖고 수업해주신 선생님께 감사드립니다. 전문적인 지식을 쉽게 이해했습니다. 주변사람에게도 추천해주고 싶은 매시간 재밌는 강의였습니다!',
     class: '웹툰 스토리',
@@ -18,7 +18,7 @@ const list = [
   },
   {
     name: '최○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '비기초부터 자세히 설명해주시고 모르거나 어렵게 느껴지는 부분을 질문했을 때 적극적으로 잘 설명해주셨습니다. 선생님의 열정이 느껴지는 수업이었습니다.',
     class: '웹툰 배경',
@@ -27,7 +27,7 @@ const list = [
   },
   {
     name: '이○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content: '담당 강사님의 친절하고 적절한 수업이 매우 좋았습니다.',
     class: '웹툰 캐릭터',
     rating: 4.3,
@@ -35,7 +35,7 @@ const list = [
   },
   {
     name: '박○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '강사님이 굉장히 열성적이시며 문의사항에 빠른 피드백을 주십니다. 완전 초보들의 수준을 고려하여 설명 해주셨습니다.',
     class: '웹툰 캐릭터',
@@ -44,7 +44,7 @@ const list = [
   },
   {
     name: '정○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content: '기초 개념과 업무수행 자신감이 확립되었다고 봅니다.',
     class: '웹툰 캐릭터',
     rating: 4.5,
@@ -52,7 +52,7 @@ const list = [
   },
   {
     name: '홍○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '그림을 거의 그려본 적이 없던 터라, 인체 드로잉에 대한 지식을 얻고 클립스튜디오로 실습해 볼 수 있어서 유의미한 시간이었습니다. 투시도법을 간략하게 배울 수 있어서 괜찮았습니다',
     class: '웹툰 캐릭터',
@@ -61,7 +61,7 @@ const list = [
   },
   {
     name: '윤○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '강사님께서 자세하게 설명해주셔서 초보자인 저도 수업을 잘 들었습니다. 강의내용을 기록한 자료를 다운받게 해주셔서 도움이 많이 됐습니다.',
     class: '웹툰 캐릭터',
@@ -70,7 +70,7 @@ const list = [
   },
   {
     name: '최○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '클립 스튜디오를 완전히 처음 접하시는 분들께는 좋을 것 같습니다! 이직준비 도중에 수강하게 되었는데요. 새로운 툴 지식 습득(클립스튜디오)에 좋은 수업이었으며 받은 교재도 깔끔했습니다. 학원 시설도 나쁘지 않았습니다. 좋은 수업 감사합니다.',
     class: '웹툰 캐릭터',
@@ -79,7 +79,7 @@ const list = [
   },
   {
     name: '류○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content: '강사님께서 강의노트 기록해주셔서 정말 좋았습니다!!',
     class: '웹툰 캐릭터',
     rating: 4.6,
@@ -87,7 +87,7 @@ const list = [
   },
   {
     name: '박○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '3시간 온전히 그림에 집중 할 수 있어서 좋았습니다. 수업 중에 많은 캐릭터들을 구상하고 그릴 수 있어서 저에게도 많이 남는 수업이었습니다.',
     class: '웹툰 캐릭터',
@@ -96,7 +96,7 @@ const list = [
   },
   {
     name: '이○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '늘 그리던 방식이 아닌 새로운 관점에서 그리는 것도 새로운 재미있었어요! 강사님이 실제 현장에 계신 분이라 수업이 자세하고 실용성이 높았습니다. 저는 작가가 아닌 웹툰PD 지망인지라 강의에 맞는 실력이 아니였음에도 배려해주셔서 감사했습니다. 만약 웹툰 작가를 지망하시는 분이라면 유익하고 도움이 되는 강의라고 생각합니다.',
     class: '웹툰 캐릭터',
@@ -105,7 +105,7 @@ const list = [
   },
   {
     name: '정○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '질문을 하면 잘 알려주셔서 좋았어요. 이것 저것 웹툰 관련 내용을 많이 알려주셔서 좋았어요',
     class: '웹툰 캐릭터',
@@ -114,7 +114,7 @@ const list = [
   },
   {
     name: '김○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '인체 비율 등 기본기를 배우고 싶었는데 도움이 많이 되었습니다. 완전 쌩 초보라서 걱정했는데 강사 선생님이 꼼꼼하게 기초부처 설명 해주셔서 도움 많이 되었습니다. 강의 내용이 매우 유익하면서 재미있었습니다. 강의를 체계적으로 진행하면서도 수강생들의 자유도가 높기 때문에, 배운 내용을 토대로 곧장 원하는 작업을 할 수 있는 환경이 조성되어있습니다. 자신의 실력을 빠르게 시험하면서 갈고 닦고 싶다면 강력하게 추천드립니다. 선생님께서 꼼꼼하게 알려주려고 하시고 모르는 부분 다시 여쭤보면 친절하게 답변해주십니다! 웹툰에 처음 입문하려는 분들이 들으시면 매우 좋은 강의입니다! 가르쳐주시느라 고생 많으셨습니다!',
     class: '웹툰 캐릭터',
@@ -123,7 +123,7 @@ const list = [
   },
   {
     name: '이○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '이 분야가 완전 처음이라 걱정이 많았지만 강사님께서 친절하게 지도해주셨습니다. 수업내용이나 수업방향, 모르는 내용은 즉각적으로 피드백이 이루어져서 낙오되는 일도 없었고, 수강생들 수준에 맞춰서 맞춤으로 설명해주셔서 더 좋았습니다. 웹툰에 대한 기초적인 지식을 쌓는데 충분한 커리큘럼이며 강사님도 성실하셨습니다.',
     class: '웹툰 캐릭터',
@@ -164,24 +164,10 @@ export default function Detail() {
             </b>
           </p>
           <figure className="w-full mx-auto mt-10">
-            <img src="/src/detail/d3_main_section.webp" />
+            <img src="/src/detail/03/d3_main_section.webp" />
           </figure>
         </div>
       </section>
-      {/* <section className="py-16 bg-black">
-        <div className="wrap">
-          <p className="text-white">
-            <b className="mt-4 text-2xl">웹툰 배경 제작</b>
-            <br />
-            <span className="inline-block text-lg">
-              스케치업을 활용한 웹툰배경 이미지
-            </span>
-          </p>
-          <figure className="w-full mt-10 overflow-hidden">
-            <img src="/src/detail/d2_img_section.webp" width="100%" />
-          </figure>
-        </div>
-      </section> */}
       <section className="py-16">
         <div className="wrap">
           <div className="flex flex-wrap justify-between pb-10 border-b-1">
@@ -212,12 +198,312 @@ export default function Detail() {
             <p className="w-full mb-5 lg:w-1/2">
               <b className="text-3xl">수업 환경.</b>
             </p>
-            <div className="w-full text-base text-center lg:w-1/2">
-              <figure className="w-[70%] mx-auto mb-10 ">
-                <img src="/src/detail/d3_img_info.webp" width="100%" />
+            <div className="w-full text-base lg:w-1/2">
+              <figure className="w-[70%] mb-10 ">
+                <img src="/src/detail/03/d3_img_info.webp" width="100%" />
               </figure>
               Wacom Tablet & Adobe Photoshop
             </div>
+          </div>
+        </div>
+      </section>
+      <section className="pb-16 bg-white">
+        <div className="wrap">
+          <h4 className="text-2xl font-bold">커리큘럼을 확인하세요.</h4>
+          <p className="mt-3 text-base">
+            아래의 모든 챕터 클립들을 5주만에 완성할 수 있습니다.
+            <br />
+            지금 등록하시고 이모티콘 크리에이터가 되어보세요!
+          </p>
+          <ul className="mt-10">
+            <li>
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part1. 오리엔테이션
+              </p>
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 1"
+                    title="01. 오리엔테이션"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        강의 및 강사 소개
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 2"
+                    title="02. 이모티콘 제작의 이해"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        하드웨어 및 소프트웨어의 이해(Tablet, Photoshop)
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        동시 작업을 위한 기초 작업과정 이해
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </li>
+            <li className="mt-10">
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part2. 멈춰있는 이모티콘 만들기
+              </p>
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 3"
+                    title="01. 이모티콘 제작 기획"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        이모티콘샵의 시장조사
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        표절과 창작의 이해
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 4"
+                    title="02. 이모티콘 캐릭터 제작"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        스케치 클린업 및 채색
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        Phtoshop action을 활용한 빠르고 깔끔한 채색
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 5"
+                    title="03. 식자 및 감정 표현"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        다양한 폰트를 활용한 텍스트 표현
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        다양한 감정 표현과 이펙트 효과
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 6"
+                    title="04. 시뮬레이터를 통한 세부 보정"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        슬라이스로 이모티콘 분할 및 출력
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        이모티콘 스튜디오에 올려 보정 및 확인
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 7"
+                    title="05. 1:1 개인 피드백을 통해 멈춰있는 이모티콘 완성"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        기획, 스케치, 클린업, 채색, 식자, 효과, 세부보정 단계
+                        개별 실습
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        1:1 개인 피드백을 통해 각자의 개성 있는 이모티콘 완성
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </li>
+            <li className="mt-10">
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part3. 움직이는 이모티콘 만들기
+              </p>
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 8"
+                    title="01. 애니메이션의 원리 이해"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        디즈니에서 애니메이터들에게 강조하는 애니메이션 원칙
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        간단한 애니메이션 실습(로켓발사)
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 9"
+                    title="02. 경제적인 애니메이션?"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        경제적인 애니메이션이란 무엇인가?
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        펄쩍펄쩍 뛰는 캐릭터 제작
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        가속도 개념과 역가속도 개념에 대한 이해
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 10"
+                    title="03. 효율적인 애니메이션"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        Photoshop의 puppet warp 기능 활용
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        Photoshop filter를 활용한 강렬한 속도감
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 11"
+                    title="04. GifCam을 활용한 애니메이션"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        동영상을 캡처하여 참고자료를 만들기
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        참고자료를 트레이싱 또는 참고하여 애니메이션 만들기
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 12"
+                    title=" 05. 움직이는 이모티콘 완성"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        각자의 개성 있는 이모티콘에 애니메이션 적용
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        1:1 개인 피드백을 통해 움직이는 이모티콘 완성
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </li>
+            <li className="mt-10">
+              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
+                Part5. 이모티콘 크리에이터 도전
+              </p>
+              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
+                <Accordion variant="splitted" className="px-0 font-bold">
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 13"
+                    title="01. 이모티콘 크리에이터가 되기 위한 노하우"
+                  >
+                    <ul className="py-3 border-t-1">
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        여러 플랫폼에 이식해보기
+                      </li>
+                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
+                        크리에이터 등록 및 이모티콘 제안
+                      </li>
+                    </ul>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section className="pb-16 bg-white">
+        <div className="wrap">
+          <p className="text-black">
+            <b className="mt-4 text-2xl">Preview</b>
+          </p>
+          <div className="grid w-full grid-cols-7 gap-5 mt-10">
+            <img src="/src/detail/03/d3_con01.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con02.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con03.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con04.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con05.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con06.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con07.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con08.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con09.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con10.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con11.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con12.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con13.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con14.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con15.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con16.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con17.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con18.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con19.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con20.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con21.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con22.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con23.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con24.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con25.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con26.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con27.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con28.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con29.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con30.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con31.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con32.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con33.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con34.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con35.webp" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con36.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con37.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con38.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con39.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con40.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con41.gif" alt="" width="100%" />
+            <img src="/src/detail/03/d3_con42.gif" alt="" width="100%" />
           </div>
         </div>
       </section>
@@ -234,7 +520,7 @@ export default function Detail() {
                 5주 만에 이모티콘 크리에이터에 도전할 수 있는 커리큘럼!
               </b>
             </h4>
-            <ul className="mx-auto mt-10 lg:w-full xl:w-4/5">
+            <ul className="w-full mx-auto mt-10">
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
                 <span className="absolute bottom-[-5rem] text-[#F26E22] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
@@ -521,7 +807,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden bg-teal-500 rounded-full">
                   <img
-                    src="/src/detail/user_w.webp"
+                    src="/src/detail/common/user_w.webp"
                     alt="김○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -581,7 +867,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden rounded-full bg-sky-700">
                   <img
-                    src="/src/detail/user_m.webp"
+                    src="/src/detail/common//user_m.webp"
                     alt="이○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -626,7 +912,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden bg-purple-800 rounded-full">
                   <img
-                    src="/src/detail/user_m.webp"
+                    src="/src/detail/common//user_m.webp"
                     alt="최○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -669,7 +955,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden bg-indigo-500 rounded-full">
                   <img
-                    src="/src/detail/user_w.webp"
+                    src="/src/detail/common//user_w.webp"
                     alt="이○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -714,255 +1000,6 @@ export default function Detail() {
         </div>
         <ReviewSlide reviewList={list} />
       </section> */}
-      <section className="pb-16 bg-white">
-        <div className="wrap">
-          <h4 className="text-2xl font-bold">커리큘럼을 확인하세요.</h4>
-          <p className="mt-3 text-base">
-            아래의 모든 챕터 클립들을 5주만에 완성할 수 있습니다.
-            <br />
-            지금 등록하시고 이모티콘 크리에이터가 되어보세요!
-          </p>
-          <ul className="mt-10">
-            <li>
-              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
-                Part1. 오리엔테이션
-              </p>
-              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 1"
-                    title="01. 오리엔테이션"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        강의 및 강사 소개
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 2"
-                    title="02. 이모티콘 제작의 이해"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        하드웨어 및 소프트웨어의 이해(Tablet, Photoshop)
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        동시 작업을 위한 기초 작업과정 이해
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
-                Part2. 멈춰있는 이모티콘 만들기
-              </p>
-              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 3"
-                    title="01. 이모티콘 제작 기획"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        이모티콘샵의 시장조사
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        표절과 창작의 이해
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 4"
-                    title="02. 이모티콘 캐릭터 제작"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        스케치 클린업 및 채색
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        Phtoshop action을 활용한 빠르고 깔끔한 채색
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 5"
-                    title="03. 식자 및 감정 표현"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        다양한 폰트를 활용한 텍스트 표현
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        다양한 감정 표현과 이펙트 효과
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 6"
-                    title="04. 시뮬레이터를 통한 세부 보정"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        슬라이스로 이모티콘 분할 및 출력
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        이모티콘 스튜디오에 올려 보정 및 확인
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 7"
-                    title="05. 1:1 개인 피드백을 통해 멈춰있는 이모티콘 완성"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        기획, 스케치, 클린업, 채색, 식자, 효과, 세부보정 단계
-                        개별 실습
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        1:1 개인 피드백을 통해 각자의 개성 있는 이모티콘 완성
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
-                Part3. 움직이는 이모티콘 만들기
-              </p>
-              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 8"
-                    title="01. 애니메이션의 원리 이해"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        디즈니에서 애니메이터들에게 강조하는 애니메이션 원칙
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        간단한 애니메이션 실습(로켓발사)
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 9"
-                    title="02. 경제적인 애니메이션?"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        경제적인 애니메이션이란 무엇인가?
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        펄쩍펄쩍 뛰는 캐릭터 제작
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        가속도 개념과 역가속도 개념에 대한 이해
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 10"
-                    title="03. 효율적인 애니메이션"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        Photoshop의 puppet warp 기능 활용
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        Photoshop filter를 활용한 강렬한 속도감
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 11"
-                    title="04. GifCam을 활용한 애니메이션"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        동영상을 캡처하여 참고자료를 만들기
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        참고자료를 트레이싱 또는 참고하여 애니메이션 만들기
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 12"
-                    title=" 05. 움직이는 이모티콘 완성"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        각자의 개성 있는 이모티콘에 애니메이션 적용
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        1:1 개인 피드백을 통해 움직이는 이모티콘 완성
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-            <li className="mt-10">
-              <p className="inline-block text-black border-2 border-[#F26E22] font-bold bg-[#F26E22] text-base rounded-lg px-2 py-1 mb-5">
-                Part5. 이모티콘 크리에이터 도전
-              </p>
-              <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
-                <Accordion variant="splitted" className="px-0 font-bold">
-                  <AccordionItem
-                    key="1"
-                    aria-label="Accordion 13"
-                    title="01. 이모티콘 크리에이터가 되기 위한 노하우"
-                  >
-                    <ul className="py-3 border-t-1">
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        여러 플랫폼에 이식해보기
-                      </li>
-                      <li className="relative mt-2 text-base font-normal after:content-['・'] after:absolute after:top-[0.1rem] after:left-0 pl-[1rem]">
-                        크리에이터 등록 및 이모티콘 제안
-                      </li>
-                    </ul>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
       <section className="py-16 bg-[#0D0D0D]">
         <Portfolio />
       </section>

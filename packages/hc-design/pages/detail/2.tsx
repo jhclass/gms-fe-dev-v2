@@ -9,7 +9,7 @@ import ReviewSlide from '@/components/section/ReviewSlide'
 const list = [
   {
     name: '김○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '수강생입니다. 수업시간 집중력있게 강좌를 들었습니다. 매 강의시간 열정을 갖고 수업해주신 선생님께 감사드립니다. 전문적인 지식을 쉽게 이해했습니다. 주변사람에게도 추천해주고 싶은 매시간 재밌는 강의였습니다!',
     class: '웹툰 스토리',
@@ -18,7 +18,7 @@ const list = [
   },
   {
     name: '최○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '비기초부터 자세히 설명해주시고 모르거나 어렵게 느껴지는 부분을 질문했을 때 적극적으로 잘 설명해주셨습니다. 선생님의 열정이 느껴지는 수업이었습니다.',
     class: '웹툰 배경',
@@ -27,7 +27,7 @@ const list = [
   },
   {
     name: '이○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content: '담당 강사님의 친절하고 적절한 수업이 매우 좋았습니다.',
     class: '웹툰 캐릭터',
     rating: 4.3,
@@ -35,7 +35,7 @@ const list = [
   },
   {
     name: '박○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '강사님이 굉장히 열성적이시며 문의사항에 빠른 피드백을 주십니다. 완전 초보들의 수준을 고려하여 설명 해주셨습니다.',
     class: '웹툰 캐릭터',
@@ -44,7 +44,7 @@ const list = [
   },
   {
     name: '정○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content: '기초 개념과 업무수행 자신감이 확립되었다고 봅니다.',
     class: '웹툰 캐릭터',
     rating: 4.5,
@@ -52,7 +52,7 @@ const list = [
   },
   {
     name: '홍○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '그림을 거의 그려본 적이 없던 터라, 인체 드로잉에 대한 지식을 얻고 클립스튜디오로 실습해 볼 수 있어서 유의미한 시간이었습니다. 투시도법을 간략하게 배울 수 있어서 괜찮았습니다',
     class: '웹툰 캐릭터',
@@ -61,7 +61,7 @@ const list = [
   },
   {
     name: '윤○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '강사님께서 자세하게 설명해주셔서 초보자인 저도 수업을 잘 들었습니다. 강의내용을 기록한 자료를 다운받게 해주셔서 도움이 많이 됐습니다.',
     class: '웹툰 캐릭터',
@@ -70,7 +70,7 @@ const list = [
   },
   {
     name: '최○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '클립 스튜디오를 완전히 처음 접하시는 분들께는 좋을 것 같습니다! 이직준비 도중에 수강하게 되었는데요. 새로운 툴 지식 습득(클립스튜디오)에 좋은 수업이었으며 받은 교재도 깔끔했습니다. 학원 시설도 나쁘지 않았습니다. 좋은 수업 감사합니다.',
     class: '웹툰 캐릭터',
@@ -79,7 +79,7 @@ const list = [
   },
   {
     name: '류○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content: '강사님께서 강의노트 기록해주셔서 정말 좋았습니다!!',
     class: '웹툰 캐릭터',
     rating: 4.6,
@@ -87,7 +87,7 @@ const list = [
   },
   {
     name: '박○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '3시간 온전히 그림에 집중 할 수 있어서 좋았습니다. 수업 중에 많은 캐릭터들을 구상하고 그릴 수 있어서 저에게도 많이 남는 수업이었습니다.',
     class: '웹툰 캐릭터',
@@ -96,7 +96,7 @@ const list = [
   },
   {
     name: '이○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '늘 그리던 방식이 아닌 새로운 관점에서 그리는 것도 새로운 재미있었어요! 강사님이 실제 현장에 계신 분이라 수업이 자세하고 실용성이 높았습니다. 저는 작가가 아닌 웹툰PD 지망인지라 강의에 맞는 실력이 아니였음에도 배려해주셔서 감사했습니다. 만약 웹툰 작가를 지망하시는 분이라면 유익하고 도움이 되는 강의라고 생각합니다.',
     class: '웹툰 캐릭터',
@@ -105,7 +105,7 @@ const list = [
   },
   {
     name: '정○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '질문을 하면 잘 알려주셔서 좋았어요. 이것 저것 웹툰 관련 내용을 많이 알려주셔서 좋았어요',
     class: '웹툰 캐릭터',
@@ -114,7 +114,7 @@ const list = [
   },
   {
     name: '김○○',
-    img: '/src/detail/user_w.webp',
+    img: '/src/detail/common/user_w.webp',
     content:
       '인체 비율 등 기본기를 배우고 싶었는데 도움이 많이 되었습니다. 완전 쌩 초보라서 걱정했는데 강사 선생님이 꼼꼼하게 기초부처 설명 해주셔서 도움 많이 되었습니다. 강의 내용이 매우 유익하면서 재미있었습니다. 강의를 체계적으로 진행하면서도 수강생들의 자유도가 높기 때문에, 배운 내용을 토대로 곧장 원하는 작업을 할 수 있는 환경이 조성되어있습니다. 자신의 실력을 빠르게 시험하면서 갈고 닦고 싶다면 강력하게 추천드립니다. 선생님께서 꼼꼼하게 알려주려고 하시고 모르는 부분 다시 여쭤보면 친절하게 답변해주십니다! 웹툰에 처음 입문하려는 분들이 들으시면 매우 좋은 강의입니다! 가르쳐주시느라 고생 많으셨습니다!',
     class: '웹툰 캐릭터',
@@ -123,7 +123,7 @@ const list = [
   },
   {
     name: '이○○',
-    img: '/src/detail/user_m.webp',
+    img: '/src/detail/common/user_m.webp',
     content:
       '이 분야가 완전 처음이라 걱정이 많았지만 강사님께서 친절하게 지도해주셨습니다. 수업내용이나 수업방향, 모르는 내용은 즉각적으로 피드백이 이루어져서 낙오되는 일도 없었고, 수강생들 수준에 맞춰서 맞춤으로 설명해주셔서 더 좋았습니다. 웹툰에 대한 기초적인 지식을 쌓는데 충분한 커리큘럼이며 강사님도 성실하셨습니다.',
     class: '웹툰 캐릭터',
@@ -163,7 +163,7 @@ export default function Detail() {
             </b>
           </p>
           <figure className="w-full mx-auto mt-10">
-            <img src="/src/detail/d2_main_section03.webp" />
+            <img src="/src/detail/02/d2_main_section03.webp" />
           </figure>
         </div>
       </section>
@@ -234,7 +234,7 @@ export default function Detail() {
             </span>
           </p>
           <figure className="w-full mt-10 overflow-hidden">
-            <img src="/src/detail/d2_img_section.webp" width="100%" />
+            <img src="/src/detail/02/d2_img_section.webp" width="100%" />
           </figure>
         </div>
       </section>
@@ -244,7 +244,7 @@ export default function Detail() {
             <p className="inline-block px-4 py-2 text-sm font-bold text-center text-white bg-[#F28705] border-2 border-[#F28705] rounded-lg">
               Flowchart
             </p>
-            <ul className="mx-auto mt-10 lg:w-full xl:w-4/5">
+            <ul className="w-full mx-auto mt-10">
               <li className="relative p-6 mb-20 text-left text-[#021226] border-2 border-[#71717a] rounded-lg">
                 <span className="absolute bottom-[-5rem] text-[#F28705] left-[50%] text-6xl ml-[-1.5rem]">
                   <i className="xi-angle-down" />
@@ -282,36 +282,34 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     크로키, 모작 등 다양한 방법을 통한 인체 익히기
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      인체의 기본 비율, 캐릭터 두상의 비율 및 형태, 근육을 통한
-                      인체의 연결과 윤곽, 인체 무게 중심, 옷 주름과 신발, 얼굴
-                      표정 등 다양한 인체비율 연구를 통해 인체 드로잉을 이해할
-                      수 있습니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart01.webp"
-                          alt="Step 02. 드로잉의 이해 및 실습"
-                          className="w-full"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart02.webp"
-                          alt="Step 02. 드로잉의 이해 및 실습"
-                          className="w-full"
-                        />
-                      </figure>
-                      <figure className="max-w-full">
-                        <img
-                          src="/src/detail/flowchart03.webp"
-                          alt="Step 02. 드로잉의 이해 및 실습"
-                          className="w-full"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    인체의 기본 비율, 캐릭터 두상의 비율 및 형태, 근육을 통한
+                    인체의 연결과 윤곽, 인체 무게 중심, 옷 주름과 신발, 얼굴
+                    표정 등 다양한 인체비율 연구를 통해 인체 드로잉을 이해할 수
+                    있습니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart01.webp"
+                        alt="Step 02. 드로잉의 이해 및 실습"
+                        className="w-full"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart02.webp"
+                        alt="Step 02. 드로잉의 이해 및 실습"
+                        className="w-full"
+                      />
+                    </figure>
+                    <figure className="max-w-full">
+                      <img
+                        src="/src/detail/02/flowchart03.webp"
+                        alt="Step 02. 드로잉의 이해 및 실습"
+                        className="w-full"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -352,25 +350,23 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      원고가 어떻게 완성되는지 간단한 예시를 보고 원고 중 1컷
-                      완성을 목표로 합니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart04.webp"
-                          alt="Step 04. 원고의 이해 및 실습 Part.1"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart05.webp"
-                          alt="Step 04. 원고의 이해 및 실습 Part.1"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    원고가 어떻게 완성되는지 간단한 예시를 보고 원고 중 1컷
+                    완성을 목표로 합니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart04.webp"
+                        alt="Step 04. 원고의 이해 및 실습 Part.1"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart05.webp"
+                        alt="Step 04. 원고의 이해 및 실습 Part.1"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -388,26 +384,24 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     캐릭터에 맞는 인체연습
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      기성작가들의 작품 중 본인이 생각하는 이미지와 어울리는
-                      캐릭터를 모작해 보고, 내가 구상하고 있는 스토리와 접목시켜
-                      내가 원하는 캐릭터를 만들어 봅니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart07.webp"
-                          alt="Step 05. 캐릭터 및 인체 연구"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart08.webp"
-                          alt="Step 05. 캐릭터 및 인체 연구"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    기성작가들의 작품 중 본인이 생각하는 이미지와 어울리는
+                    캐릭터를 모작해 보고, 내가 구상하고 있는 스토리와 접목시켜
+                    내가 원하는 캐릭터를 만들어 봅니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart07.webp"
+                        alt="Step 05. 캐릭터 및 인체 연구"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart08.webp"
+                        alt="Step 05. 캐릭터 및 인체 연구"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -425,31 +419,29 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     흉상, 반신상, 전신 완성하기
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      내가 원하는 캐릭터 샘플을 완성하고 캐릭터 설정에 나오는
-                      흉상, 반신상, 전신을 완성해 봅니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart09.webp"
-                          alt="Step 06. 내가 원하는 캐릭터 완성"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart10.webp"
-                          alt="Step 06. 내가 원하는 캐릭터 완성"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart11.webp"
-                          alt="Step 06. 내가 원하는 캐릭터 완성"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    내가 원하는 캐릭터 샘플을 완성하고 캐릭터 설정에 나오는
+                    흉상, 반신상, 전신을 완성해 봅니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart09.webp"
+                        alt="Step 06. 내가 원하는 캐릭터 완성"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart10.webp"
+                        alt="Step 06. 내가 원하는 캐릭터 완성"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart11.webp"
+                        alt="Step 06. 내가 원하는 캐릭터 완성"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -467,26 +459,24 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     스케치업을 활용한 배경제작 및 3D 이질감 보정
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      투시를 이용한 인물을 그려보며 투시법, 투시별 연출 및 활용
-                      방법 등 배경연출을 이해할 수 있고, 스케치업을 통해 3D
-                      배경을 제작하거나 활용할 수 있습니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart12.webp"
-                          alt="Step 07. 배경의 이해와 실습"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart13.webp"
-                          alt="Step 07. 배경의 이해와 실습"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    투시를 이용한 인물을 그려보며 투시법, 투시별 연출 및 활용
+                    방법 등 배경연출을 이해할 수 있고, 스케치업을 통해 3D 배경을
+                    제작하거나 활용할 수 있습니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart12.webp"
+                        alt="Step 07. 배경의 이해와 실습"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart13.webp"
+                        alt="Step 07. 배경의 이해와 실습"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -505,25 +495,23 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      내가 만든 캐릭터와 배경을 기반으로 원고시안의 개인별
-                      피드백을 통해 4컷 원고 완성을 목표로 합니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart14.webp"
-                          alt="Step 08. 원고의 이해 및 실습 Part.2"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart15.webp"
-                          alt="Step 08. 원고의 이해 및 실습 Part.2"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    내가 만든 캐릭터와 배경을 기반으로 원고시안의 개인별
+                    피드백을 통해 4컷 원고 완성을 목표로 합니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart14.webp"
+                        alt="Step 08. 원고의 이해 및 실습 Part.2"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart15.webp"
+                        alt="Step 08. 원고의 이해 및 실습 Part.2"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -544,20 +532,18 @@ export default function Detail() {
                   <li className="relative mt-1 pl-4 after:content-['∙'] after:absolute after:left-0 after:top-[-0.05rem]">
                     사건의 중심이 되는 3명의 캐릭터 설정
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      다양한 스토리의 활용 및 적용 예시를 통해 스토리 작법 이론
-                      및, 스토리를 어떻게 시작할 것인지, 나에게 맞는 장르는 어떤
-                      것인지 파악하고 나만의 스토리를 작성할 수 있습니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart16.webp"
-                          alt="Step 09. 스토리 작법"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 ">
+                    다양한 스토리의 활용 및 적용 예시를 통해 스토리 작법 이론
+                    및, 스토리를 어떻게 시작할 것인지, 나에게 맞는 장르는 어떤
+                    것인지 파악하고 나만의 스토리를 작성할 수 있습니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart16.webp"
+                        alt="Step 09. 스토리 작법"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -577,19 +563,17 @@ export default function Detail() {
                     다양한 장르의 연출 (ex 일상, 판타지, 스릴러 등 장르에 따른
                     다양한 연출연구)
                   </li>
-                  <li className="relative flex gap-10 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
-                    <div className="max-w-[50%]">
-                      다양한 연출법에 대한 기초이론의 학습을 통해 스토리의 전개,
-                      장르, 시간의 흐름에 따라 나의 작품을 연출할 수 있습니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart17.webp"
-                          alt="Step 10. 연출 이론"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    다양한 연출법에 대한 기초이론의 학습을 통해 스토리의 전개,
+                    장르, 시간의 흐름에 따라 나의 작품을 연출할 수 있습니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart17.webp"
+                        alt="Step 10. 연출 이론"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -608,27 +592,24 @@ export default function Detail() {
                     배경, 채색의 연출 활용(긴장감, 추격패턴, 혼란, 시선의
                     흐름으로 컷의 연결 및 전조)
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      다양한 연출방법의 학습을 통해 단지 그리는 것이 아니라
-                      인물과 배경, 오브제 등 디테일한 부분들의 연출 활용법을
-                      배우고 본인이 만든 스토리를 더욱 생동감 있게 연출할 수
-                      있습니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart18.webp"
-                          alt="Step 11. 연출의 이론 및 실습"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart19.webp"
-                          alt="Step 11. 연출의 이론 및 실습"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    다양한 연출방법의 학습을 통해 단지 그리는 것이 아니라 인물과
+                    배경, 오브제 등 디테일한 부분들의 연출 활용법을 배우고
+                    본인이 만든 스토리를 더욱 생동감 있게 연출할 수 있습니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart18.webp"
+                        alt="Step 11. 연출의 이론 및 실습"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart19.webp"
+                        alt="Step 11. 연출의 이론 및 실습"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -647,20 +628,17 @@ export default function Detail() {
                     글콘티 및 콘티, 러프스케치, 펜선 및 채색, 원고 과정의 이해
                     및 실습
                   </li>
-                  <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례
-                      원고를 거듭하면서 원고에 시작과 마무리에 대한 감을
-                      익힙니다.
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart20.webp"
-                          alt="Step 12. 원고의 이해 및 실습 Part.3"
-                        />
-                      </figure>
-                    </div>
+                  <li className="relative pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1">
+                    본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례 원고를
+                    거듭하면서 원고에 시작과 마무리에 대한 감을 익힙니다.
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart20.webp"
+                        alt="Step 12. 원고의 이해 및 실습 Part.3"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -685,23 +663,21 @@ export default function Detail() {
                     단편 원고 작업, 편집
                   </li>
                   <li className="relative flex gap-5 lg:gap-10pt-5 pt-5 pl-4 justify-between mt-5 border-[#71717a] border-t-1 flex-col lg:flex-row">
-                    <div className="max-w-[50%]">
-                      작가 데뷔 및 취업을 위한 포트폴리오 제작
-                    </div>
-                    <div className="flex items-center justify-center gap-5">
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart21.webp"
-                          alt="Step 13. 단편 웹툰 제작"
-                        />
-                      </figure>
-                      <figure>
-                        <img
-                          src="/src/detail/flowchart22.webp"
-                          alt="Step 13. 단편 웹툰 제작"
-                        />
-                      </figure>
-                    </div>
+                    작가 데뷔 및 취업을 위한 포트폴리오 제작
+                  </li>
+                  <li className="flex items-center justify-center gap-5 mt-5">
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart21.webp"
+                        alt="Step 13. 단편 웹툰 제작"
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src="/src/detail/02/flowchart22.webp"
+                        alt="Step 13. 단편 웹툰 제작"
+                      />
+                    </figure>
                   </li>
                 </ul>
               </li>
@@ -721,7 +697,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden bg-teal-500 rounded-full">
                   <img
-                    src="/src/detail/user_w.webp"
+                    src="/src/detail/common/user_w.webp"
                     alt="김○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -781,7 +757,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden rounded-full bg-sky-700">
                   <img
-                    src="/src/detail/user_m.webp"
+                    src="/src/detail/common/user_m.webp"
                     alt="이○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -826,7 +802,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden bg-purple-800 rounded-full">
                   <img
-                    src="/src/detail/user_m.webp"
+                    src="/src/detail/common/user_m.webp"
                     alt="최○○의 포트폴리오"
                     loading="lazy"
                     width="100%"
@@ -869,7 +845,7 @@ export default function Detail() {
               <div className="flex mx-auto mb-5 w-[15rem] h-[15rem] lg:mx-8 lg:w-[21rem] lg:h-[21rem]">
                 <figure className="w-full h-full p-3 overflow-hidden bg-indigo-500 rounded-full">
                   <img
-                    src="/src/detail/user_w.webp"
+                    src="/src/detail/common/user_w.webp"
                     alt="이○○의 포트폴리오"
                     loading="lazy"
                     width="100%"

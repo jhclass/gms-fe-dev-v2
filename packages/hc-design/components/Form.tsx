@@ -48,7 +48,7 @@ type FormValues = {
   name: string
   phone: string
   contents: string
-  privacy: boolean
+  privacy: string
   subDiv: string
 }
 
@@ -66,7 +66,8 @@ export default function Form() {
     setError,
     clearErrors,
     setFocus,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitSuccessful },
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
@@ -88,6 +89,9 @@ export default function Form() {
             detail: data.contents,
             subDiv: data.subDiv,
           },
+          onCompleted: data => {
+            console.log(data)
+          },
         })
         alert('상담신청이 완료되었습니다. 😊')
       }
@@ -101,6 +105,21 @@ export default function Form() {
       clearErrors('groupSelected')
     }
   }, [groupSelected])
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        groupSelected: [],
+        campus: '',
+        name: '',
+        phone: '',
+        contents: '',
+        subDiv: '',
+      })
+      setGroupSelected([])
+      setValue('privacy', false)
+    }
+  }, [isSubmitSuccessful, reset])
 
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
@@ -142,7 +161,7 @@ export default function Form() {
               name="groupSelected"
               render={({ field, fieldState }) => (
                 <Tabs aria-label="Options" color="primary" className="w-full">
-                  <Tab key="Design" title="디자인">
+                  <Tab key="오프라인" title="오프라인">
                     <div className="w-full border-2 rounded-lg p-7">
                       <CheckboxGroup
                         value={groupSelected}
@@ -210,7 +229,7 @@ export default function Form() {
                       </CheckboxGroup>
                     </div>
                   </Tab>
-                  <Tab key="IT" title="IT">
+                  <Tab key="온라인" title="온라인">
                     <div className="w-full border-2 rounded-lg p-7">
                       <CheckboxGroup
                         value={groupSelected}
@@ -454,8 +473,9 @@ export default function Form() {
                 name="privacy"
                 render={({ field }) => (
                   <Checkbox
+                    isSelected={field.value}
+                    onChange={e => setValue('privacy', e.target.checked)}
                     value={field.value}
-                    onChange={e => field.onChange(e.target.checked)}
                     className="mt-2"
                     size="md"
                   >

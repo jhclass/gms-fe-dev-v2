@@ -19,7 +19,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
           <ul>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/2`}
                 className="inline-block w-full px-4 py-2 tracking-tight text-black hover:text-primary"
               >
                 웹툰
@@ -27,7 +27,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/3`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 이모티콘
@@ -35,7 +35,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 컴퓨터그래픽스운용기능사
@@ -43,7 +43,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 웹디자인기능사
@@ -51,7 +51,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 OA
@@ -59,7 +59,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 실내건축
@@ -67,7 +67,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 영상편집
@@ -75,7 +75,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 포토샵(단기)
@@ -83,7 +83,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 [과정평가형] 실내건축산업기사
@@ -91,7 +91,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 광고홍보 영상편집
@@ -99,7 +99,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 디지털디자인 영상편집
@@ -107,7 +107,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 GTQ
@@ -122,7 +122,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
           <ul>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 파이썬
@@ -130,7 +130,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 react.js
@@ -138,7 +138,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag2 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 자바
@@ -146,7 +146,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 [과정평가형] 정보처리산업기사
@@ -154,7 +154,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 풀스택 웹개발
@@ -162,7 +162,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 앱개발
@@ -170,7 +170,7 @@ export default function MenuList({ isOpen, setIsOpen }) {
             </li>
             <li className="relative after:w-1 after:h-1 after:bg-flag1 after:rounded-full after:absolute after:left-0 after:top-[50%] after:mt-[-0.125rem]">
               <Link
-                href="/detail"
+                href={`/detail/1`}
                 className="inline-block w-full px-4 py-3 tracking-tight text-black hover:text-primary"
               >
                 백앤드개발

@@ -23,51 +23,51 @@ export default function Menu() {
       list: [
         {
           title: '웹툰',
-          link: '/detail',
+          link: '/detail/2',
         },
         {
           title: '이모티콘',
-          link: '/detail',
+          link: '/detail/3',
         },
         {
           title: '컴퓨터그래픽스운용기능사',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '웹디자인기능사',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: 'OA',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '실내건축',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '영상편집',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '포토샵(단기)',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '[과정평가형] 실내건축산업기사',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '광고홍보 영상편집',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: '디지털디자인 영상편집',
-          link: '/detail',
+          link: '/detail/1',
         },
         {
           title: 'GTQ',
-          link: '/detail',
+          link: '/detail/1',
         },
       ],
     },
