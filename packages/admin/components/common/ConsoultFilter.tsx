@@ -9,7 +9,7 @@ import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 //현재 리턴되는 studentState 값은 id,pic,stName 밖에 없음.
 const SEARCH_STUDENTSTATE_MUTATION = gql`
   mutation Mutation(
@@ -46,6 +46,25 @@ const SEARCH_STUDENTSTATE_MUTATION = gql`
       ok
       message
       error
+    }
+  }
+`
+const SEE_MANAGEUSER_QUERY = gql`
+  query SeeManageUser {
+    seeManageUser {
+      createdAt
+      id
+      mAvatar
+      mGrade
+      mPassword
+      mPhoneNum
+      mRank
+      mUserId
+      mUsername
+      studentStates {
+        id
+        stName
+      }
     }
   }
 `
@@ -130,6 +149,17 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
   const [searchStudentStateMutation, { loading }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
   )
+  //전체 담당자를 불러올수 있습니다.
+  //정렬: 가나다 순
+  //이 쿼리는 셀렉트를 누른 시점에서 부르는 것이 좋습니다.
+  const {
+    data: seeManageUserData,
+    error,
+    loading: seeMansgeuserLoading,
+  } = useQuery(SEE_MANAGEUSER_QUERY)
+  //전체 담당자 출력 확인
+  console.log('seeManageuserdata:', seeManageUserData)
+
   const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
