@@ -27,8 +27,13 @@ const FlexBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
-  > div {
+  .react-datepicker-wrapper {
     width: 100%;
+  }
+  .react-datepicker__close-icon {
+    height: 2.5rem;
+    top: auto;
+    bottom: 0;
   }
 `
 
@@ -44,6 +49,7 @@ export default function Consoultation() {
       <MainWrap>
         <Breadcrumb onFilterToggle={setFilterActive} isActive={filterActive} />
         <DetailBox>
+          <p></p>
           <DetailForm>
             <FlexBox>
               <Input
@@ -167,6 +173,7 @@ export default function Consoultation() {
                   selected={startDate}
                   onChange={date => setStartDate(date)}
                   placeholderText="기간을 선택해주세요."
+                  isClearable
                   customInput={
                     <Input
                       label="등록일시"
@@ -184,6 +191,7 @@ export default function Consoultation() {
                   selected={startDate}
                   onChange={date => setStartDate(date)}
                   placeholderText="기간을 선택해주세요."
+                  isClearable
                   customInput={
                     <Input
                       label="상담예정일"
@@ -201,6 +209,7 @@ export default function Consoultation() {
                   selected={startDate}
                   onChange={date => setStartDate(date)}
                   placeholderText="기간을 선택해주세요."
+                  isClearable
                   customInput={
                     <Input
                       label="수강예정일"
