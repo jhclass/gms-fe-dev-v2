@@ -37,7 +37,10 @@ const SEARCH_STUDENTSTATE_MUTATION = gql`
       totalCount
       studentState {
         id
+        receiptDiv
+        subDiv
         pic
+        stVisit
         stName
       }
       ok
@@ -145,18 +148,19 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
     formState: { errors, isSubmitSuccessful },
   } = useForm()
 
+  console.log()
   const onSubmit = data => {
     console.log(data)
     // data 값을 변수값에 대입
     searchStudentStateMutation({
       variables: {
         searchStudentStateId: null, // data?.어쩌구 // data 뒤에 ? 추가
-        receiptDiv: null,
-        subDiv: null,
-        pic: null,
-        stVisit: null,
-        stName: null,
-        progress: null,
+        receiptDiv: data?.receiptDiv,
+        subDiv: data?.subDiv,
+        pic: data?.pic,
+        stVisit: data?.stVisit,
+        stName: data?.stName,
+        progress: data?.progress,
         page: null,
         perPage: null,
       },
@@ -182,13 +186,10 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 placeholder=" "
                 className="w-full"
                 defaultValue=""
-                {...register('div')}
+                {...register('receiptDiv')}
               >
                 <SelectItem key={'온라인'} value={'온라인'}>
                   온라인
-                </SelectItem>
-                <SelectItem key={'HRD'} value={'HRD'}>
-                  HRD
                 </SelectItem>
                 <SelectItem key={'방문'} value={'방문'}>
                   방문
@@ -205,7 +206,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 placeholder=" "
                 className="w-full"
                 defaultValue=""
-                {...register('suvDiv')}
+                {...register('subDiv')}
               >
                 <SelectItem key={'HRD'} value={'HRD'}>
                   HRD
@@ -222,7 +223,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 placeholder=" "
                 className="w-full"
                 defaultValue=""
-                {...register('manager')}
+                {...register('pic')}
               >
                 <SelectItem key={'김사원'} value={'김사원'}>
                   김사원
@@ -309,7 +310,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
           </BoxBottom>
           <BtnBox>
             <Button
-              buttonType="button"
+              buttonType="submit"
               width="calc(50% - 0.5rem)"
               height="2.5rem"
             >
