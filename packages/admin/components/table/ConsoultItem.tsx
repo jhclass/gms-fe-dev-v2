@@ -221,8 +221,6 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
-  console.log(favoritTotal, conIndex)
-
   return (
     <>
       <TableItem>

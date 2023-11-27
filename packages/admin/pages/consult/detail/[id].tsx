@@ -9,7 +9,7 @@ import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
 import { progressStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 
-const DetaiBox = styled.div`
+const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
@@ -25,6 +25,13 @@ const FlexBox = styled.div`
   gap: 1rem;
 `
 
+const DatePickerBox = styled.div`
+  width: 100%;
+  > div {
+    width: 100%;
+  }
+`
+
 export default function Consoultation() {
   const [startDate, setStartDate] = useState(new Date())
   const progressStatus = useRecoilValue(progressStatusState)
@@ -36,7 +43,7 @@ export default function Consoultation() {
     <>
       <MainWrap>
         <Breadcrumb onFilterToggle={setFilterActive} isActive={filterActive} />
-        <DetaiBox>
+        <DetailBox>
           <DetailForm>
             <FlexBox>
               <Input
@@ -155,54 +162,60 @@ export default function Consoultation() {
               ))}
             </RadioGroup>
             <FlexBox>
-              <DatePicker
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                placeholderText="기간을 선택해주세요."
-                customInput={
-                  <Input
-                    label="등록일시"
-                    labelPlacement="outside"
-                    type="text"
-                    variant="bordered"
-                    id="date"
-                    startContent={<i className="xi-calendar" />}
-                  />
-                }
-              />
-              <DatePicker
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                placeholderText="기간을 선택해주세요."
-                customInput={
-                  <Input
-                    label="상담예정일"
-                    labelPlacement="outside"
-                    type="text"
-                    variant="bordered"
-                    id="date"
-                    startContent={<i className="xi-calendar" />}
-                  />
-                }
-              />
-              <DatePicker
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                placeholderText="기간을 선택해주세요."
-                customInput={
-                  <Input
-                    label="수강예정일"
-                    labelPlacement="outside"
-                    type="text"
-                    variant="bordered"
-                    id="date"
-                    startContent={<i className="xi-calendar" />}
-                  />
-                }
-              />
+              <DatePickerBox>
+                <DatePicker
+                  selected={startDate}
+                  onChange={date => setStartDate(date)}
+                  placeholderText="기간을 선택해주세요."
+                  customInput={
+                    <Input
+                      label="등록일시"
+                      labelPlacement="outside"
+                      type="text"
+                      variant="bordered"
+                      id="date"
+                      startContent={<i className="xi-calendar" />}
+                    />
+                  }
+                />
+              </DatePickerBox>
+              <DatePickerBox>
+                <DatePicker
+                  selected={startDate}
+                  onChange={date => setStartDate(date)}
+                  placeholderText="기간을 선택해주세요."
+                  customInput={
+                    <Input
+                      label="상담예정일"
+                      labelPlacement="outside"
+                      type="text"
+                      variant="bordered"
+                      id="date"
+                      startContent={<i className="xi-calendar" />}
+                    />
+                  }
+                />
+              </DatePickerBox>
+              <DatePickerBox>
+                <DatePicker
+                  selected={startDate}
+                  onChange={date => setStartDate(date)}
+                  placeholderText="기간을 선택해주세요."
+                  customInput={
+                    <Input
+                      label="수강예정일"
+                      labelPlacement="outside"
+                      type="text"
+                      variant="bordered"
+                      id="date"
+                      startContent={<i className="xi-calendar" />}
+                    />
+                  }
+                />
+              </DatePickerBox>
             </FlexBox>
           </DetailForm>
-        </DetaiBox>
+        </DetailBox>
       </MainWrap>
     </>
   )

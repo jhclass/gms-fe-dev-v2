@@ -1,8 +1,8 @@
-import Countdown from '@/components/section/Countdown'
 import { Button } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { detailBottomHiddenState } from '@/lib/recoilAtoms'
+import RandomNum from '@/components/section/RandomNum'
 
 export default function DetailFixed() {
   const [detailBottomHidden, setDetailBottomHidden] = useRecoilState(
@@ -73,8 +73,8 @@ export default function DetailFixed() {
                 </span>
               </p>
               <div className="mt-1 text-sm">
-                마감까지
-                <Countdown targetDate={new Date('2023-12-25')} />
+                현재
+                <RandomNum />
                 남음
               </div>
             </div>
@@ -85,7 +85,7 @@ export default function DetailFixed() {
                 variant="flat"
                 className="text-white text-base bg-[#c72835] rounded-lg"
               >
-                수강 신청
+                상담 신청
               </Button>
             </div>
           </div>
