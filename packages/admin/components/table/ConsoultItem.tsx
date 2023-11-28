@@ -199,9 +199,9 @@ export default function ConsolutItem(props: ConsoultItemProps) {
       (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
     )
 
-    if (differenceInDays >= 0 && differenceInDays <= 3) {
+    if (differenceInDays >= 0 && differenceInDays < 3) {
       return 'new'
-    } else if (differenceInDays > 3 && differenceInDays <= 5) {
+    } else if (differenceInDays >= 3 && differenceInDays < 5) {
       return 'unprocessed'
     }
 
