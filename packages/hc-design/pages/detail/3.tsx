@@ -461,7 +461,7 @@ export default function Detail() {
           <p className="text-black">
             <b className="mt-4 text-2xl">Preview</b>
           </p>
-          <div className="grid w-full grid-cols-7 gap-5 mt-10">
+          <div className="grid w-full grid-cols-4 gap-5 mt-10 lg:grid-cols-7">
             <img src="/src/detail/03/d3_con01.webp" alt="" width="100%" />
             <img src="/src/detail/03/d3_con02.webp" alt="" width="100%" />
             <img src="/src/detail/03/d3_con03.webp" alt="" width="100%" />
