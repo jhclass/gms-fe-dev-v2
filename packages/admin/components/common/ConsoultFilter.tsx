@@ -9,65 +9,11 @@ import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 //현재 리턴되는 studentState 값은 id,pic,stName 밖에 없음.
-const SEARCH_STUDENTSTATE_MUTATION = gql`
-  mutation Mutation(
-    $searchStudentStateId: Int
-    $receiptDiv: String
-    $subDiv: String
-    $pic: String
-    $stVisit: String
-    $stName: String
-    $progress: Int
-    $page: Int
-    $perPage: Int
-  ) {
-    searchStudentState(
-      id: $searchStudentStateId
-      receiptDiv: $receiptDiv
-      subDiv: $subDiv
-      pic: $pic
-      stVisit: $stVisit
-      stName: $stName
-      progress: $progress
-      page: $page
-      perPage: $perPage
-    ) {
-      totalCount
-      studentState {
-        id
-        receiptDiv
-        subDiv
-        pic
-        stVisit
-        stName
-      }
-      ok
-      message
-      error
-    }
-  }
-`
-const SEE_MANAGEUSER_QUERY = gql`
-  query SeeManageUser {
-    seeManageUser {
-      createdAt
-      id
-      mAvatar
-      mGrade
-      mPassword
-      mPhoneNum
-      mRank
-      mUserId
-      mUsername
-      studentStates {
-        id
-        stName
-      }
-    }
-  }
-`
+
 type ConsoultFilterProps = {
   isActive: boolean
 }
@@ -152,14 +98,13 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
   //전체 담당자를 불러올수 있습니다.
   //정렬: 가나다 순
   //이 쿼리는 셀렉트를 누른 시점에서 부르는 것이 좋습니다.
-  const {
-    data: seeManageUserData,
-    error,
-    loading: seeMansgeuserLoading,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  //전체 담당자 출력 확인
-  console.log('seeManageuserdata:', seeManageUserData)
 
+  const [
+    getManage,
+    { data: seeManageUserData, error, loading: seeMansgeuserLoading },
+  ] = useLazyQuery(SEE_MANAGEUSER_QUERY)
+
+  const manageData = seeManageUserData?.seeManageUser || []
   const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
@@ -177,8 +122,10 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useForm()
+  const manageClick = () => {
+    getManage()
+  }
 
-  console.log()
   const onSubmit = data => {
     console.log(data)
     // data 값을 변수값에 대입
@@ -248,6 +195,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
             </ItemBox>
             <ItemBox>
               <Select
+                onClick={manageClick}
                 labelPlacement="outside"
                 label="담당자"
                 placeholder=" "
@@ -255,15 +203,11 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                 defaultValue=""
                 {...register('pic')}
               >
-                <SelectItem key={'김사원'} value={'김사원'}>
-                  김사원
-                </SelectItem>
-                <SelectItem key={'이주임'} value={'이주임'}>
-                  이주임
-                </SelectItem>
-                <SelectItem key={'박대리'} value={'박대리'}>
-                  박대리
-                </SelectItem>
+                {manageData.map((item, index) => (
+                  <SelectItem key={index} value={item.mUsername}>
+                    {item.mUsername}
+                  </SelectItem>
+                ))}
               </Select>
             </ItemBox>
           </BoxTop>

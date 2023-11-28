@@ -76,3 +76,45 @@ export const SEE_STUDENT_QUERY = gql`
     }
   }
 `
+
+export const SEE_MANAGEUSER_QUERY = gql`
+  query Query {
+    seeManageUser {
+      id
+      mUserId
+      mUsername
+      mPassword
+      mGrade
+      mRank
+      mPhoneNum
+      studentStates {
+        id
+        campus
+        category
+        stName
+        phoneNum1
+        phoneNum2
+        phoneNum3
+        currentManager
+        subject
+        detail
+        agreement
+        progress
+        stEmail
+        stAddr
+        subDiv
+        stVisit
+        expEnrollDate
+        perchase
+        createdAt
+        updatedAt
+        favorite
+        receiptDiv
+        pic
+      }
+      createdAt
+      updatedAt
+      mAvatar
+    }
+  }
+`
