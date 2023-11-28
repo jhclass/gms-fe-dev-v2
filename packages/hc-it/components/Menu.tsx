@@ -23,11 +23,11 @@ export default function Menu() {
       list: [
         {
           title: '웹툰',
-          link: '/detail/2',
+          link: '/detail/1',
         },
         {
           title: '이모티콘',
-          link: '/detail/3',
+          link: '/detail/1',
         },
         {
           title: '컴퓨터그래픽스운용기능사',
