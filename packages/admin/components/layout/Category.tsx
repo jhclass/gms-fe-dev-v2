@@ -25,6 +25,12 @@ export default function Category() {
       label: '상담관리',
     },
     {
+      href: '/subjects',
+      iconSrc: 'ico_work',
+      alt: '과정등록',
+      label: '과정등록',
+    },
+    {
       href: '/registration',
       iconSrc: 'ico_regist',
       alt: '수강생등록',
