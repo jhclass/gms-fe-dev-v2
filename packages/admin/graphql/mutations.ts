@@ -13,7 +13,35 @@ export const LOGIN_MUTATION = gql`
 export const UPDATE_FAVORITE_MUTATION = gql`
   mutation UpdateFavorite($updateFavoriteId: Int!, $favorite: Boolean!) {
     updateFavorite(id: $updateFavoriteId, favorite: $favorite) {
-      favorite
+      ok
+      message
+      error
+      totalCount
+      studentState {
+        id
+        campus
+        category
+        stName
+        phoneNum1
+        phoneNum2
+        phoneNum3
+        currentManager
+        subject
+        detail
+        agreement
+        progress
+        stEmail
+        stAddr
+        subDiv
+        stVisit
+        expEnrollDate
+        perchase
+        createdAt
+        updatedAt
+        favorite
+        receiptDiv
+        pic
+      }
     }
   }
 `

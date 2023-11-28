@@ -23,7 +23,6 @@ type ConsoultItemProps = {
   itemIndex: number
   currentPage: number
   limit?: number
-  total?: number
 }
 
 const TableRow = styled.div`
@@ -181,7 +180,6 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props: ConsoultItemProps) {
-  const favoritTotal = props.total || 0
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
@@ -257,8 +255,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
           <ClickBox onClick={() => ListClick(student.id)}>
             <Tnum>
               <EllipsisBox>
-                {(props.currentPage - 1) * conLimit +
-                  (conIndex + favoritTotal + 1)}
+                {(props.currentPage - 1) * conLimit + (conIndex + 1)}
               </EllipsisBox>
             </Tnum>
             <Tprogress

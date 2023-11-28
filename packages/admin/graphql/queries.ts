@@ -118,3 +118,33 @@ export const SEE_MANAGEUSER_QUERY = gql`
     }
   }
 `
+
+export const SEE_FAVORITESTATE_QUERY = gql`
+  query SeeFavorite {
+    seeFavorite {
+      id
+      campus
+      category
+      stName
+      phoneNum1
+      phoneNum2
+      phoneNum3
+      currentManager
+      subject
+      detail
+      agreement
+      progress
+      stEmail
+      stAddr
+      subDiv
+      stVisit
+      expEnrollDate
+      perchase
+      createdAt
+      updatedAt
+      favorite
+      receiptDiv
+      pic
+    }
+  }
+`

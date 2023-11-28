@@ -188,12 +188,7 @@ export default function ConsolutationTable() {
   })
   const studentsData = data?.seeStudentState || []
   const students = studentsData.studentState || []
-  const favoriteStudents = students.filter(student => student.favorite)
-  const favoritTotal = favoriteStudents.length
 
-  const totalPages = Math.ceil(
-    (data?.seeStudentState.totalCount || 0) / currentLimit,
-  )
   return (
     <>
       <TTopic>
@@ -231,14 +226,6 @@ export default function ConsolutationTable() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {favoriteStudents.map((item, index) => (
-              <ConsoultItem
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                currentPage={1}
-              />
-            ))}
             {students.map((item, index) => (
               <ConsoultItem
                 key={index}
@@ -246,7 +233,6 @@ export default function ConsolutationTable() {
                 itemIndex={index}
                 currentPage={currentPage}
                 limit={currentLimit}
-                total={favoritTotal}
               />
             ))}
           </TableWrap>
