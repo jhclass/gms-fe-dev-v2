@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from './Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
@@ -11,8 +11,6 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
-//현재 리턴되는 studentState 값은 id,pic,stName 밖에 없음.
 
 type ConsoultFilterProps = {
   isActive: boolean
@@ -91,15 +89,12 @@ const FilterVariants = {
     },
   },
 }
-export default function TableFillter({ isActive }: ConsoultFilterProps) {
-  const [searchStudentStateMutation, { loading }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-  )
-
+export default function TableFillter({ isActive, onFilterToggle }) {
   const [
     getManage,
     { data: seeManageUserData, error, loading: seeMansgeuserLoading },
   ] = useLazyQuery(SEE_MANAGEUSER_QUERY)
+  const setFilterState = useSetRecoilState(studentFilterState)
 
   const manageData = seeManageUserData?.seeManageUser || []
   const [progressSelected, setProgressSelected] = useState([])
@@ -122,7 +117,8 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
   } = useForm()
 
   const handleCheckboxChange = (value: string[]) => {
-    setValue('groupSelected', value)
+    const numericKeys = value.map(key => parseInt(key, 10))
+    setValue('groupSelected', numericKeys)
     setProgressSelected(value)
   }
 
@@ -132,30 +128,31 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
     setProgressSelected(updatedGroupSelected)
   }
 
+  const [values, setValues] = useState('asdasdds')
+
   const manageClick = () => {
     getManage()
   }
 
   const onSubmit = data => {
-    console.log(data)
+    const filter = {
+      receiptDiv: data?.receiptDiv,
+      subDiv: data?.subDiv,
+      pic: data?.pic,
+      createdAt: data?.creatDateRange,
+      stVisit: data?.visitDateRange,
+      stName: data?.stName,
+      progress: data?.groupSelected,
+    }
+    setFilterState(filter)
+    onFilterToggle(false)
+  }
 
-    searchStudentStateMutation({
-      variables: {
-        searchStudentStateId: null,
-        receiptDiv: data?.receiptDiv,
-        subDiv: data?.subDiv,
-        pic: data?.pic,
-        createdAt: data?.creatDateRange,
-        stVisit: data?.visitDateRange,
-        stName: data?.stName,
-        progress: data?.groupSelected,
-        page: null,
-        perPage: null,
-      },
-      onCompleted: resData => {
-        console.log(resData)
-      },
-    })
+  const handleReset = () => {
+    reset({ receiptDiv: '' })
+    setCreatDateRange([null, null])
+    setVisitDateRange([null, null])
+    setValues('sasss')
   }
 
   return (
@@ -171,11 +168,14 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
               <Select
                 labelPlacement="outside"
                 label="접수구분"
-                placeholder=" "
+                placeholder=""
                 className="w-full"
-                defaultValue=""
+                defaultValue={'0'}
                 {...register('receiptDiv')}
               >
+                <SelectItem key={'0'} value="">
+                  온라인
+                </SelectItem>
                 <SelectItem key={'온라인'} value={'온라인'}>
                   온라인
                 </SelectItem>
@@ -188,21 +188,29 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
               </Select>
             </ItemBox>
             <ItemBox>
-              <Select
-                labelPlacement="outside"
-                label="수강구분"
-                placeholder=" "
-                className="w-full"
+              <Controller
+                name="subDiv"
+                control={control}
                 defaultValue=""
-                {...register('subDiv')}
-              >
-                <SelectItem key={'HRD'} value={'HRD'}>
-                  HRD
-                </SelectItem>
-                <SelectItem key={'일반'} value={'일반'}>
-                  일반
-                </SelectItem>
-              </Select>
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
+                    label="수강구분"
+                    placeholder=" "
+                    className="w-full"
+                    defaultValue=""
+                    value={field.value}
+                    {...register('subDiv')}
+                  >
+                    <SelectItem key={'HRD'} value={'HRD'}>
+                      HRD
+                    </SelectItem>
+                    <SelectItem key={'일반'} value={'일반'}>
+                      일반
+                    </SelectItem>
+                  </Select>
+                )}
+              />
             </ItemBox>
             <ItemBox>
               <Controller
@@ -329,7 +337,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
                     onValueChange={handleCheckboxChange}
                   >
                     {Object.entries(progressStatus).map(([key, value]) => (
-                      <ChipCheckbox key={key} value={value.name}>
+                      <ChipCheckbox key={key} value={key}>
                         {value.name}
                       </ChipCheckbox>
                     ))}
@@ -351,6 +359,7 @@ export default function TableFillter({ isActive }: ConsoultFilterProps) {
               width="calc(50% - 0.5rem)"
               height="2.5rem"
               typeBorder={true}
+              onClick={handleReset}
             >
               초기화
             </Button>
