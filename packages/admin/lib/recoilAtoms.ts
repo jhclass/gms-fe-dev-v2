@@ -93,3 +93,9 @@ export const progressStatusState = atom({
     },
   },
 })
+
+// Filter
+export const studentFilterState = atom({
+  key: 'studentFilterState',
+  default: {},
+})
