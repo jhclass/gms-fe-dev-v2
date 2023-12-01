@@ -116,7 +116,11 @@ const subData = {
   1: '일반',
 }
 
-export default function TableFillter({ isActive, onFilterToggle }) {
+export default function TableFillter({
+  isActive,
+  onFilterToggle,
+  onFilterSearch,
+}) {
   const [
     getManage,
     { data: seeManageUserData, error, loading: seeMansgeuserLoading },
@@ -192,6 +196,7 @@ export default function TableFillter({ isActive, onFilterToggle }) {
     }
     setFilterState(filter)
     onFilterToggle(false)
+    onFilterSearch(true)
     console.log(filter)
   }
 

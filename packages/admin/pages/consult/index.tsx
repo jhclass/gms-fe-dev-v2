@@ -14,19 +14,25 @@ const ConBox = styled.div`
 
 export default function Consoultation() {
   const [filterActive, setFilterActive] = useState(false)
+  const [filterSearch, setFilterSearch] = useState(false)
   const studentFilter = useRecoilValue(studentFilterState)
 
   return (
     <>
       <MainWrap>
-        <Breadcrumb onFilterToggle={setFilterActive} isActive={filterActive} />
+        <Breadcrumb
+          onFilterToggle={setFilterActive}
+          isActive={filterActive}
+          onBtn={true}
+        />
         <ConsoultFilter
           isActive={filterActive}
           onFilterToggle={setFilterActive}
+          onFilterSearch={setFilterSearch}
         />
         <ConBox>
-          {studentFilter !== null ? (
-            <ConsoultationFilter />
+          {filterSearch ? (
+            <ConsoultationFilter onFilterSearch={setFilterSearch} />
           ) : (
             <ConsoultationTable />
           )}

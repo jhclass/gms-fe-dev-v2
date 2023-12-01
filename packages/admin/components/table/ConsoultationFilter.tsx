@@ -1,10 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsoultItem from '@/components/table/ConsoultItem'
-import { SEE_STUDENT_QUERY } from '@/graphql/queries'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { studentFilterState } from '@/lib/recoilAtoms'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 
@@ -15,6 +14,11 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 `
 const Ttotal = styled.p`
   font-weight: 300;
@@ -182,12 +186,13 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-export default function ConsolutationFilterTable(props) {
+export default function ConsolutationFilterTable({ onFilterSearch }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const studentFilter = useRecoilValue(studentFilterState)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
+  const setFilterState = useSetRecoilState(studentFilterState)
 
   useEffect(() => {
     searchStudentStateMutation({
@@ -203,12 +208,22 @@ export default function ConsolutationFilterTable(props) {
     })
   }, [studentFilter, currentPage])
 
+  const resetList = () => {
+    setFilterState({})
+    onFilterSearch(false)
+  }
+
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{searchResult?.totalCount}</span>개
-        </Ttotal>
+        <TopBox>
+          <Ttotal>
+            총 <span>{searchResult?.totalCount}</span>개
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
         <ColorHelp>
           <ColorCip>
             <span style={{ background: '#007de9' }}></span> : 신규
@@ -236,7 +251,7 @@ export default function ConsolutationFilterTable(props) {
                   <TcreatedAt>등록일시</TcreatedAt>
                   <Tmanager>담당자</Tmanager>
                   <TstVisit>상담예정일</TstVisit>
-                  <TexpEnrollDate>수강예정월</TexpEnrollDate>
+                  <TexpEnrollDate>수강예정일</TexpEnrollDate>
                 </ClickBox>
               </TheaderBox>
             </Theader>

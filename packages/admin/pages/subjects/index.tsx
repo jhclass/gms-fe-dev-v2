@@ -8,7 +8,11 @@ export default function Subjects() {
   return (
     <>
       <MainWrap>
-        <Breadcrumb onFilterToggle={setFilterActive} isActive={filterActive} />
+        <Breadcrumb
+          onFilterToggle={setFilterActive}
+          isActive={filterActive}
+          onBtn={false}
+        />
       </MainWrap>
     </>
   )
