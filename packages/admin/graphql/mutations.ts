@@ -55,7 +55,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
     $createdAt: [String]
     $stVisit: [String]
     $stName: String
-    $progress: Int
+    $progress: [Int]
     $page: Int
     $perPage: Int
   ) {
@@ -71,10 +71,9 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
       page: $page
       perPage: $perPage
     ) {
-      ok
       error
       message
-      totalCount
+      ok
       studentState {
         id
         campus
@@ -100,6 +99,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         receiptDiv
         pic
       }
+      totalCount
     }
   }
 `
