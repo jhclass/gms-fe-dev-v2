@@ -1,14 +1,21 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from './Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
+import {
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 
@@ -73,6 +80,14 @@ const BtnBox = styled.div`
   gap: 1rem;
   flex: 1;
 `
+const FilterLabel = styled.label`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #11181c;
+  padding-bottom: 0.1rem;
+  display: block;
+`
 
 const FilterVariants = {
   hidden: {
@@ -89,14 +104,29 @@ const FilterVariants = {
     },
   },
 }
+
+const receiptData = {
+  0: '온라인',
+  1: '전화',
+  2: '방문',
+}
+
+const subData = {
+  0: 'HRD',
+  1: '일반',
+}
+
 export default function TableFillter({ isActive, onFilterToggle }) {
   const [
     getManage,
     { data: seeManageUserData, error, loading: seeMansgeuserLoading },
   ] = useLazyQuery(SEE_MANAGEUSER_QUERY)
-  const setFilterState = useSetRecoilState(studentFilterState)
-
   const manageData = seeManageUserData?.seeManageUser || []
+  const setFilterState = useSetRecoilState(studentFilterState)
+  const filterState = useRecoilState(studentFilterState)
+  const [receipt, setReceipt] = useState('')
+  const [sub, setSub] = useState('')
+  const [manager, setManager] = useState('')
   const [progressSelected, setProgressSelected] = useState([])
   const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
@@ -116,6 +146,16 @@ export default function TableFillter({ isActive, onFilterToggle }) {
     formState: { errors, isSubmitSuccessful },
   } = useForm()
 
+  const handleReceiptChange = (value: string) => {
+    setValue('receiptDiv', value)
+    setReceipt(value)
+  }
+
+  const handleSubChange = (value: string) => {
+    setValue('subDiv', value)
+    setSub(value)
+  }
+
   const handleCheckboxChange = (value: string[]) => {
     const numericKeys = value.map(key => parseInt(key, 10))
     setValue('groupSelected', numericKeys)
@@ -128,17 +168,23 @@ export default function TableFillter({ isActive, onFilterToggle }) {
     setProgressSelected(updatedGroupSelected)
   }
 
-  const [values, setValues] = useState('asdasdds')
+  const manageClick = e => {
+    setManager(e.target.value)
+  }
 
-  const manageClick = () => {
-    getManage()
+  const receiptClick = e => {
+    setReceipt(e.target.value)
+  }
+  const subClick = e => {
+    setValue('subDiv', e.target.value)
+    setSub(e.target.value)
   }
 
   const onSubmit = data => {
     const filter = {
-      receiptDiv: data?.receiptDiv,
-      subDiv: data?.subDiv,
-      pic: data?.pic,
+      receiptDiv: data.receiptDiv,
+      subDiv: data.subDiv,
+      pic: data.pic,
       createdAt: data?.creatDateRange,
       stVisit: data?.visitDateRange,
       stName: data?.stName,
@@ -146,13 +192,13 @@ export default function TableFillter({ isActive, onFilterToggle }) {
     }
     setFilterState(filter)
     onFilterToggle(false)
+    console.log(filter)
   }
 
   const handleReset = () => {
-    reset({ receiptDiv: '' })
+    reset()
     setCreatDateRange([null, null])
     setVisitDateRange([null, null])
-    setValues('sasss')
   }
 
   return (
@@ -165,66 +211,69 @@ export default function TableFillter({ isActive, onFilterToggle }) {
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
-              <Select
-                labelPlacement="outside"
-                label="접수구분"
-                placeholder=""
-                className="w-full"
-                defaultValue={'0'}
-                {...register('receiptDiv')}
-              >
-                <SelectItem key={'0'} value="">
-                  온라인
-                </SelectItem>
-                <SelectItem key={'온라인'} value={'온라인'}>
-                  온라인
-                </SelectItem>
-                <SelectItem key={'방문'} value={'방문'}>
-                  방문
-                </SelectItem>
-                <SelectItem key={'전화'} value={'전화'}>
-                  전화
-                </SelectItem>
-              </Select>
-            </ItemBox>
-            <ItemBox>
               <Controller
-                name="subDiv"
                 control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label="수강구분"
-                    placeholder=" "
-                    className="w-full"
-                    defaultValue=""
-                    value={field.value}
-                    {...register('subDiv')}
+                name="receiptDiv"
+                render={({ field, fieldState }) => (
+                  <RadioGroup
+                    label={<FilterLabel>진행상태</FilterLabel>}
+                    orientation="horizontal"
+                    className="gap-1 radioBox"
+                    value={receipt}
+                    onValueChange={handleReceiptChange}
                   >
-                    <SelectItem key={'HRD'} value={'HRD'}>
-                      HRD
-                    </SelectItem>
-                    <SelectItem key={'일반'} value={'일반'}>
-                      일반
-                    </SelectItem>
-                  </Select>
+                    {Object.entries(receiptData).map(([key, item]) => (
+                      <Radio key={key} value={item}>
+                        {item}
+                      </Radio>
+                    ))}
+                  </RadioGroup>
                 )}
               />
             </ItemBox>
             <ItemBox>
               <Controller
+                control={control}
+                name="subDiv"
+                render={({ field, fieldState }) => (
+                  <RadioGroup
+                    label={<FilterLabel>수강구분</FilterLabel>}
+                    orientation="horizontal"
+                    className="gap-1 radioBox"
+                    value={sub}
+                    onValueChange={handleSubChange}
+                  >
+                    {Object.entries(subData).map(([key, item]) => (
+                      <Radio key={key} value={item}>
+                        {item}
+                      </Radio>
+                    ))}
+                  </RadioGroup>
+                )}
+              />
+            </ItemBox>
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
+                placeholder=" "
+                type="text"
+                variant="bordered"
+                label="담당자"
+                id="pic"
+                {...register('pic')}
+              />
+              {/* <Controller
                 name="pic"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <Select
-                    onClick={manageClick}
                     labelPlacement="outside"
                     label="담당자"
                     placeholder=" "
                     className="w-full"
                     value={field.value}
+                    selectedKeys={[manager]}
+                    onChange={manageClick}
                     {...register('pic')}
                   >
                     {manageData.map((item, index) => (
@@ -240,7 +289,7 @@ export default function TableFillter({ isActive, onFilterToggle }) {
                     ))}
                   </Select>
                 )}
-              />
+              /> */}
             </ItemBox>
           </BoxTop>
           <BoxMiddle>
@@ -329,10 +378,10 @@ export default function TableFillter({ isActive, onFilterToggle }) {
                 name="groupSelected"
                 render={({ field, fieldState }) => (
                   <CheckboxGroup
-                    label="진행상태"
+                    label={<FilterLabel>진행상태</FilterLabel>}
                     orientation="horizontal"
                     defaultValue={['buenos-aires', 'london']}
-                    className="gap-1"
+                    className="gap-1 radioBox"
                     value={progressSelected}
                     onValueChange={handleCheckboxChange}
                   >

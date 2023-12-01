@@ -182,7 +182,6 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-
 export default function ConsolutationFilterTable(props) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
