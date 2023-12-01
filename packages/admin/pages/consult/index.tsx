@@ -25,7 +25,7 @@ export default function Consoultation() {
           onFilterToggle={setFilterActive}
         />
         <ConBox>
-          {studentFilter != null ? (
+          {studentFilter !== null ? (
             <ConsoultationFilter />
           ) : (
             <ConsoultationTable />
