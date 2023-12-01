@@ -61,7 +61,40 @@ const IconVariants = {
   },
 }
 
-export default function Breadcrumb({ isActive, onFilterToggle }) {
+const categories = [
+  {
+    href: '/',
+    iconSrc: 'ico_home',
+    alt: '대시보드',
+    label: '대시보드',
+  },
+  {
+    href: '/consult',
+    iconSrc: 'ico_consult',
+    alt: '상담관리',
+    label: '상담관리',
+  },
+  {
+    href: '/subjects',
+    iconSrc: 'ico_work',
+    alt: '과정등록',
+    label: '과정등록',
+  },
+  {
+    href: '/registration',
+    iconSrc: 'ico_regist',
+    alt: '수강생등록',
+    label: '수강생등록',
+  },
+  {
+    href: '/accounting',
+    iconSrc: 'ico_accounting',
+    alt: '회계관리',
+    label: '회계관리',
+  },
+]
+
+export default function Breadcrumb({ isActive, onFilterToggle, onBtn }) {
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
 
@@ -70,85 +103,48 @@ export default function Breadcrumb({ isActive, onFilterToggle }) {
     setBreadcrumb(pathnames)
   }, [router.asPath])
 
-  const categories = [
-    {
-      href: '/',
-      iconSrc: 'ico_home',
-      alt: '대시보드',
-      label: '대시보드',
-    },
-    {
-      href: '/consult',
-      iconSrc: 'ico_consult',
-      alt: '상담관리',
-      label: '상담관리',
-    },
-    {
-      href: '/subjects',
-      iconSrc: 'ico_work',
-      alt: '과정등록',
-      label: '과정등록',
-    },
-    {
-      href: '/registration',
-      iconSrc: 'ico_regist',
-      alt: '수강생등록',
-      label: '수강생등록',
-    },
-    {
-      href: '/accounting',
-      iconSrc: 'ico_accounting',
-      alt: '회계관리',
-      label: '회계관리',
-    },
-  ]
-
+  const currentItem = categories.find(item => item.href === `/${breadcrumb[0]}`)
   return (
     <>
       <BreadcrumbBox>
         <CateTitle>
-          {breadcrumb.map((name, index) => {
-            const currentItem = categories.find(
-              item => item.href === `/${name}`,
-            )
-            return (
-              <span key={index}>
-                {index > 0 && ' > '}
-                {index < breadcrumb.length - 1 ? (
-                  <a href={currentItem?.href}>{currentItem?.label}</a>
-                ) : (
-                  currentItem?.label
-                )}
-              </span>
-            )
-          })}
+          {breadcrumb.length == 1 ? (
+            <a href={currentItem?.href}>{currentItem?.label}</a>
+          ) : (
+            <a href={currentItem?.href}>
+              <i className="xi-angle-left" />
+              {currentItem?.label}
+            </a>
+          )}
         </CateTitle>
-        <BoxRt>
-          <FilterBtn
-            variants={FilterVariants}
-            initial="initial"
-            animate={isActive ? 'active' : 'initial'}
-            onClick={() => {
-              onFilterToggle(prev => !prev)
-            }}
-          >
-            <ActiveIcon
-              variants={IconVariants}
+        {onBtn && (
+          <BoxRt>
+            <FilterBtn
+              variants={FilterVariants}
               initial="initial"
               animate={isActive ? 'active' : 'initial'}
-              className="xi-check-min"
-            />
-            Filter
-          </FilterBtn>
-          <Button
-            size="sm"
-            radius="sm"
-            variant="solid"
-            className="text-white bg-flag1"
-          >
-            등록
-          </Button>
-        </BoxRt>
+              onClick={() => {
+                onFilterToggle(prev => !prev)
+              }}
+            >
+              <ActiveIcon
+                variants={IconVariants}
+                initial="initial"
+                animate={isActive ? 'active' : 'initial'}
+                className="xi-check-min"
+              />
+              Filter
+            </FilterBtn>
+            <Button
+              size="sm"
+              radius="sm"
+              variant="solid"
+              className="text-white bg-flag1"
+            >
+              등록
+            </Button>
+          </BoxRt>
+        )}
       </BreadcrumbBox>
     </>
   )

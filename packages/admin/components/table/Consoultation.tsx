@@ -222,7 +222,7 @@ export default function ConsolutationTable() {
                   <TcreatedAt>등록일시</TcreatedAt>
                   <Tmanager>담당자</Tmanager>
                   <TstVisit>상담예정일</TstVisit>
-                  <TexpEnrollDate>수강예정월</TexpEnrollDate>
+                  <TexpEnrollDate>수강예정일</TexpEnrollDate>
                 </ClickBox>
               </TheaderBox>
             </Theader>
