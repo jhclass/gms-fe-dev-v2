@@ -218,7 +218,7 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총 <span>{searchResult?.totalCount}</span>개
+            총 <span>{searchResult?.totalCount}</span>건
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>
             전체보기

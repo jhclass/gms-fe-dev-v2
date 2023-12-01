@@ -193,7 +193,7 @@ export default function ConsolutationTable() {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{studentsData.totalCount}</span>개
+          총 <span>{studentsData.totalCount}</span>건
         </Ttotal>
         <ColorHelp>
           <ColorCip>
