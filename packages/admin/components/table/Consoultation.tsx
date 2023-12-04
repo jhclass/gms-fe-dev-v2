@@ -1,9 +1,14 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import ConsoultItem from '@/components/table/ConsoultItem'
-import { SEE_STUDENT_QUERY } from '@/graphql/queries'
+import {
+  MME_QUERY,
+  SEE_FAVORITESTATE_QUERY,
+  SEE_STUDENT_QUERY,
+} from '@/graphql/queries'
+import FavoItem from './FavoItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -186,14 +191,22 @@ export default function ConsolutationTable() {
   const { loading, error, data } = useQuery(SEE_STUDENT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
+  const {
+    loading: MMeLoading,
+    error: MMeError,
+    data: MMeData,
+  } = useQuery(MME_QUERY)
+  const FavoList = MMeData?.mMe.favoriteStudentState
+  const { data: seeFavoData } = useQuery(SEE_FAVORITESTATE_QUERY)
   const studentsData = data?.seeStudentState || []
-  const students = studentsData.studentState || []
+  const students = studentsData?.studentState || []
+  const test = seeFavoData?.seeFavorite || []
 
   return (
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{studentsData.totalCount}</span>개
+          총 <span>{studentsData?.totalCount}</span>건
         </Ttotal>
         <ColorHelp>
           <ColorCip>
@@ -226,13 +239,26 @@ export default function ConsolutationTable() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {students.map((item, index) => (
+
+            {test?.map((item, index) => (
+              <FavoItem
+                forName="favo"
+                key={index}
+                tableData={item}
+                itemIndex={index}
+                favorite={FavoList?.includes(item.id)}
+              />
+            ))}
+            <br />
+            {students?.map((item, index) => (
               <ConsoultItem
+                forName="student"
                 key={index}
                 tableData={item}
                 itemIndex={index}
                 currentPage={currentPage}
                 limit={currentLimit}
+                favorite={FavoList?.includes(item.id)}
               />
             ))}
           </TableWrap>

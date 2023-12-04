@@ -31,13 +31,13 @@ export const MME_QUERY = gql`
         perchase
         createdAt
         updatedAt
-        favorite
         receiptDiv
         pic
       }
       createdAt
       updatedAt
       mAvatar
+      favoriteStudentState
     }
   }
 `
@@ -68,7 +68,6 @@ export const SEE_STUDENT_QUERY = gql`
         perchase
         createdAt
         updatedAt
-        favorite
         receiptDiv
         pic
       }
@@ -108,7 +107,6 @@ export const SEE_MANAGEUSER_QUERY = gql`
         perchase
         createdAt
         updatedAt
-        favorite
         receiptDiv
         pic
       }
@@ -142,7 +140,6 @@ export const SEE_FAVORITESTATE_QUERY = gql`
       perchase
       createdAt
       updatedAt
-      favorite
       receiptDiv
       pic
     }

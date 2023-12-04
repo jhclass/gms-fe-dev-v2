@@ -11,36 +11,47 @@ export const LOGIN_MUTATION = gql`
 `
 
 export const UPDATE_FAVORITE_MUTATION = gql`
-  mutation UpdateFavorite($updateFavoriteId: Int!, $favorite: Boolean!) {
-    updateFavorite(id: $updateFavoriteId, favorite: $favorite) {
+  mutation UpdateFavorite($updateFavoriteId: Int!) {
+    updateFavorite(id: $updateFavoriteId) {
       ok
       message
       error
-      totalCount
-      studentState {
+      favoriteStudentState {
         id
-        campus
-        category
-        stName
-        phoneNum1
-        phoneNum2
-        phoneNum3
-        currentManager
-        subject
-        detail
-        agreement
-        progress
-        stEmail
-        stAddr
-        subDiv
-        stVisit
-        expEnrollDate
-        perchase
+        mUserId
+        mUsername
+        mPassword
+        mGrade
+        mRank
+        mPhoneNum
+        studentStates {
+          id
+          campus
+          category
+          stName
+          phoneNum1
+          phoneNum2
+          phoneNum3
+          currentManager
+          subject
+          detail
+          agreement
+          progress
+          stEmail
+          stAddr
+          subDiv
+          stVisit
+          expEnrollDate
+          perchase
+          createdAt
+          updatedAt
+          receiptDiv
+          pic
+        }
         createdAt
         updatedAt
-        favorite
-        receiptDiv
-        pic
+        mAvatar
+        favoriteStudentState
       }
     }
   }
@@ -95,7 +106,6 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         perchase
         createdAt
         updatedAt
-        favorite
         receiptDiv
         pic
       }
