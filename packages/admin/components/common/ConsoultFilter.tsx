@@ -185,19 +185,44 @@ export default function TableFillter({
   }
 
   const onSubmit = data => {
-    const filter = {
-      receiptDiv: data.receiptDiv,
-      subDiv: data.subDiv,
-      pic: data.pic,
-      createdAt: data?.creatDateRange,
-      stVisit: data?.visitDateRange,
-      stName: data?.stName,
-      progress: data?.groupSelected,
+    const validateDateRange = (dateRange, message) => {
+      if (dateRange[0] !== null) {
+        if (dateRange[1] !== null) {
+          return true
+        } else {
+          alert(message)
+          return false
+        }
+      } else {
+        return true
+      }
     }
-    setFilterState(filter)
-    onFilterToggle(false)
-    onFilterSearch(true)
-    console.log(filter)
+
+    const creatDate = validateDateRange(
+      creatDateRange,
+      '등록일시의 마지막날을 선택해주세요.',
+    )
+    const visitDate = validateDateRange(
+      visitDateRange,
+      '방문예정일의 마지막날을 선택해주세요.',
+    )
+
+    if (creatDate && visitDate) {
+      const filter = {
+        receiptDiv: data.receiptDiv,
+        subDiv: data.subDiv,
+        pic: data.pic,
+        createdAt: data.creatDateRange,
+        stVisit: data.visitDateRange,
+        stName: data.stName,
+        progress: data.groupSelected,
+      }
+
+      setFilterState(filter)
+      onFilterToggle(false)
+      onFilterSearch(true)
+      console.log(filter)
+    }
   }
 
   const handleReset = () => {

@@ -56,6 +56,7 @@ const Tfavorite = styled.div`
   color: inherit;
   min-width: 30px;
   padding: 1rem 1rem 1rem 2rem;
+  z-index: 1;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
@@ -66,6 +67,7 @@ const Tflag = styled.span`
   left: 0;
   width: 0.5rem;
   height: 100%;
+  z-index: 2;
 `
 const ClickBox = styled.div`
   display: flex;
