@@ -183,7 +183,6 @@ type studentData = {
   perchase: boolean
   createdAt: string
   updatedAt: string
-  favorite: string
   receiptDiv: string
   pic: string
 }

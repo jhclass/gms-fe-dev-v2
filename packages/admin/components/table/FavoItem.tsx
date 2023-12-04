@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
@@ -21,8 +21,6 @@ type ConsoultItemProps = {
   }
   forName?: string
   itemIndex: number
-  currentPage: number
-  limit?: number
   favorite?: boolean
 }
 
@@ -182,21 +180,17 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-export default function ConsolutItem(props: ConsoultItemProps) {
-  const conLimit = props.limit || 0
+export default function FavoriteItem(props: ConsoultItemProps) {
   const conIndex = props.itemIndex
   const student = props.tableData
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
-
   const ListClick = id => {
     router.push(`/consult/detail/${id}`)
   }
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
     const targetDate = new Date(date)
-    const favoriteBool = props.favorite
-    console.log(favoriteBool)
     const differenceInDays = Math.floor(
       (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
     )
@@ -209,8 +203,8 @@ export default function ConsolutItem(props: ConsoultItemProps) {
 
     return ''
   }
-  const favoClick = async () => {
-    await updateFavo({
+  const favoClick = () => {
+    updateFavo({
       variables: {
         updateFavoriteId: props.tableData.id,
       },
@@ -257,9 +251,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
           </Tfavorite>
           <ClickBox onClick={() => ListClick(student.id)}>
             <Tnum>
-              <EllipsisBox>
-                {(props.currentPage - 1) * conLimit + (conIndex + 1)}
-              </EllipsisBox>
+              <EllipsisBox>{conIndex + 1}</EllipsisBox>
             </Tnum>
             <Tprogress
               style={{ color: progressStatus[student.progress].color }}
