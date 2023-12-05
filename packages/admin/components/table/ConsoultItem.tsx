@@ -5,6 +5,7 @@ import { progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import router from 'next/router'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
+import Link from 'next/link'
 
 type ConsoultItemProps = {
   tableData: {
@@ -191,8 +192,11 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
-  const ListClick = id => {
-    router.push(`/consult/detail/${id}`)
+  const ListClick = data => {
+    router.push({
+      pathname: `/consult/detail/${data.id}`,
+      query: { student: JSON.stringify(data), id: data.id },
+    })
   }
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
@@ -211,7 +215,6 @@ export default function ConsolutItem(props: ConsoultItemProps) {
 
     return ''
   }
-  console.log(props.favoTotal)
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {
       alert('즐겨찾기는 5개까지만 설정가능합니다.')
@@ -262,48 +265,60 @@ export default function ConsolutItem(props: ConsoultItemProps) {
               />
             </TfavoriteLabel>
           </Tfavorite>
-          <ClickBox onClick={() => ListClick(student.id)}>
-            <Tnum>
-              <EllipsisBox>
-                {(props.currentPage - 1) * conLimit + (conIndex + 1)}
-              </EllipsisBox>
-            </Tnum>
-            <Tprogress
-              style={{ color: progressStatus[student.progress].color }}
-            >
-              <EllipsisBox>{progressStatus[student.progress].name}</EllipsisBox>
-            </Tprogress>
-            <TreceiptDiv>
-              <EllipsisBox>{student.receiptDiv}</EllipsisBox>
-            </TreceiptDiv>
-            <TsubDiv>
-              <EllipsisBox>{student.subDiv}</EllipsisBox>
-            </TsubDiv>
-            <Tname>
-              <EllipsisBox>{student.stName}</EllipsisBox>
-            </Tname>
-            <Tphone>
-              <EllipsisBox>{student.phoneNum1}</EllipsisBox>
-            </Tphone>
-            <TcreatedAt>
-              <EllipsisBox>
-                {student.createdAt ? getDate(student.createdAt) : '-'}
-              </EllipsisBox>
-            </TcreatedAt>
-            <Tmanager>
-              <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
-            </Tmanager>
-            <TstVisit>
-              <EllipsisBox>
-                {student.stVisit ? getDate(student.stVisit) : '-'}
-              </EllipsisBox>
-            </TstVisit>
-            <TexpEnrollDate>
-              <EllipsisBox>
-                {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
-              </EllipsisBox>
-            </TexpEnrollDate>
-          </ClickBox>
+          <Link
+            href={
+              {
+                // pathname: `/consult/detail/${student.id}`,
+                // query: { student: JSON.stringify(student) },
+              }
+            }
+            // as={`/consult/detail/${student.id}`}
+          >
+            <ClickBox onClick={() => ListClick(student)}>
+              <Tnum>
+                <EllipsisBox>
+                  {(props.currentPage - 1) * conLimit + (conIndex + 1)}
+                </EllipsisBox>
+              </Tnum>
+              <Tprogress
+                style={{ color: progressStatus[student.progress].color }}
+              >
+                <EllipsisBox>
+                  {progressStatus[student.progress].name}
+                </EllipsisBox>
+              </Tprogress>
+              <TreceiptDiv>
+                <EllipsisBox>{student.receiptDiv}</EllipsisBox>
+              </TreceiptDiv>
+              <TsubDiv>
+                <EllipsisBox>{student.subDiv}</EllipsisBox>
+              </TsubDiv>
+              <Tname>
+                <EllipsisBox>{student.stName}</EllipsisBox>
+              </Tname>
+              <Tphone>
+                <EllipsisBox>{student.phoneNum1}</EllipsisBox>
+              </Tphone>
+              <TcreatedAt>
+                <EllipsisBox>
+                  {student.createdAt ? getDate(student.createdAt) : '-'}
+                </EllipsisBox>
+              </TcreatedAt>
+              <Tmanager>
+                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
+              </Tmanager>
+              <TstVisit>
+                <EllipsisBox>
+                  {student.stVisit ? getDate(student.stVisit) : '-'}
+                </EllipsisBox>
+              </TstVisit>
+              <TexpEnrollDate>
+                <EllipsisBox>
+                  {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
+                </EllipsisBox>
+              </TexpEnrollDate>
+            </ClickBox>
+          </Link>
         </TableRow>
       </TableItem>
     </>
