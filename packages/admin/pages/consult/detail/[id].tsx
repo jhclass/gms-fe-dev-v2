@@ -7,11 +7,13 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
   Input,
+  Modal,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
   Textarea,
+  useDisclosure,
 } from '@nextui-org/react'
 import { progressStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
@@ -19,7 +21,8 @@ import { useMutation, useQuery } from '@apollo/client'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import ClickModal from '@/components/common/ClickModal'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -213,14 +216,22 @@ export default function Consoultation() {
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
+  const {
+    loading: subjectLoading,
+    error: subjectError,
+    data: subjectData,
+  } = useQuery(SEE_SUBJECT_QUERY)
   const managerList = managerData?.seeManageUser || []
+  const subjectList = subjectData?.seeSubject || []
   const [stVisitDate, setStVisitDate] = useState(new Date())
   const [expEnrollDate, setExpEnrollDate] = useState(new Date())
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [progressStste, setProgressState] = useState('')
   const [manager, setManager] = useState('없음')
+  const [subjectSelected, setSubjectSelected] = useState([])
   const defaultValues = parseStudent
+  const { isOpen, onOpen } = useDisclosure()
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
       stName: parseStudent?.stName,
@@ -269,7 +280,8 @@ export default function Consoultation() {
       }
     }
   }, [parseStudent, receipt, sub, progressStste])
-
+  console.log(subjectSelected)
+  console.log(parseStudent?.subject)
   const onSubmit = data => {
     const { isDirty, dirtyFields } = formState
     const upDateStudent = {
@@ -317,7 +329,11 @@ export default function Consoultation() {
   const handleManagerChange = e => {
     setManager(e.target.value)
   }
-
+  const test = () => {
+    console.log('aa')
+    onOpen()
+    console.log(isOpen)
+  }
   return (
     <>
       {parseStudent !== undefined && (
@@ -414,10 +430,18 @@ export default function Consoultation() {
                 radius="md"
                 type="text"
                 label="상담과목"
-                // value={studentData?.subject}
-                className="w-full"
-                {...register('subject')}
+                // value={parseStudent?.subject}
+                className="hidden w-full"
+                onClick={test}
               />
+              <ClickModal
+                label="상담과목"
+                list={subjectList}
+                defaultValue={parseStudent?.subject}
+                subjectSelected={subjectSelected}
+                setSubjectSelected={setSubjectSelected}
+              />
+
               <FlexBox>
                 {/* <RadioBox>
                   <RadioGroup
