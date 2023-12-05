@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -6,6 +6,7 @@ import ConsoultItem from '@/components/table/ConsoultItem'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { studentFilterState } from '@/lib/recoilAtoms'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
+import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -193,6 +194,15 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
   const setFilterState = useSetRecoilState(studentFilterState)
+  const {
+    loading: MMeLoading,
+    error: MMeError,
+    data: MMeData,
+  } = useQuery(MME_QUERY)
+  const FavoList = MMeData?.mMe.favoriteStudentState
+  const { data: seeFavoData } = useQuery(SEE_FAVORITESTATE_QUERY)
+  const favoData = seeFavoData?.seeFavorite || []
+  const favoTotal = favoData?.length || 0
 
   useEffect(() => {
     searchStudentStateMutation({
@@ -263,6 +273,8 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
                 itemIndex={index}
                 currentPage={currentPage}
                 limit={currentLimit}
+                favorite={FavoList?.includes(item.id)}
+                favoTotal={favoTotal}
               />
             ))}
           </TableWrap>

@@ -113,3 +113,51 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
     }
   }
 `
+
+export const UPDATE_STUDENT_STATE_MUTATION = gql`
+  mutation UpdateStudentState(
+    $updateStudentStateId: Int!
+    $category: String!
+    $campus: String
+    $stName: String
+    $phoneNum1: String
+    $phoneNum2: String
+    $phoneNum3: String
+    $currentManager: String
+    $subject: String
+    $detail: String
+    $progress: Int
+    $stEmail: String
+    $stAddr: String
+    $subDiv: String
+    $stVisit: String
+    $expEnrollDate: String
+    $perchase: Boolean
+    $birthday: String
+  ) {
+    updateStudentState(
+      id: $updateStudentStateId
+      category: $category
+      campus: $campus
+      stName: $stName
+      phoneNum1: $phoneNum1
+      phoneNum2: $phoneNum2
+      phoneNum3: $phoneNum3
+      currentManager: $currentManager
+      subject: $subject
+      detail: $detail
+      progress: $progress
+      stEmail: $stEmail
+      stAddr: $stAddr
+      subDiv: $subDiv
+      stVisit: $stVisit
+      expEnrollDate: $expEnrollDate
+      perchase: $perchase
+      birthday: $birthday
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`

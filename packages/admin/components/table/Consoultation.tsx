@@ -200,7 +200,8 @@ export default function ConsolutationTable() {
   const { data: seeFavoData } = useQuery(SEE_FAVORITESTATE_QUERY)
   const studentsData = data?.seeStudentState || []
   const students = studentsData?.studentState || []
-  const test = seeFavoData?.seeFavorite || []
+  const favoData = seeFavoData?.seeFavorite || []
+  const favoTotal = favoData?.length || 0
 
   return (
     <>
@@ -240,7 +241,7 @@ export default function ConsolutationTable() {
               </TheaderBox>
             </Theader>
 
-            {test?.map((item, index) => (
+            {favoData?.map((item, index) => (
               <FavoItem
                 forName="favo"
                 key={index}
@@ -259,6 +260,7 @@ export default function ConsolutationTable() {
                 currentPage={currentPage}
                 limit={currentLimit}
                 favorite={FavoList?.includes(item.id)}
+                favoTotal={favoTotal}
               />
             ))}
           </TableWrap>

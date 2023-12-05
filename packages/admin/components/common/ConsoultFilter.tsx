@@ -5,18 +5,11 @@ import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from './Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import {
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-} from '@nextui-org/react'
+import { CheckboxGroup, Input, Radio, RadioGroup } from '@nextui-org/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useRef, useState } from 'react'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { useState } from 'react'
+import { useLazyQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 type ConsoultFilterProps = {
