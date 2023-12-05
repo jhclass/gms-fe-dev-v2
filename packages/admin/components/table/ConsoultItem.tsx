@@ -24,6 +24,7 @@ type ConsoultItemProps = {
   currentPage: number
   limit?: number
   favorite?: boolean
+  favoTotal: number
 }
 
 const TableRow = styled.div`
@@ -210,13 +211,18 @@ export default function ConsolutItem(props: ConsoultItemProps) {
 
     return ''
   }
-  const favoClick = async () => {
-    await updateFavo({
-      variables: {
-        updateFavoriteId: props.tableData.id,
-      },
-      refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
-    })
+  console.log(props.favoTotal)
+  const favoClick = () => {
+    if (!props.favorite && props.favoTotal >= 5) {
+      alert('즐겨찾기는 5개까지만 설정가능합니다.')
+    } else {
+      updateFavo({
+        variables: {
+          updateFavoriteId: props.tableData.id,
+        },
+        refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
+      })
+    }
   }
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
