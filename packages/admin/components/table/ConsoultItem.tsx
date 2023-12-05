@@ -66,9 +66,10 @@ const Tflag = styled.span`
   position: absolute;
   top: 0;
   left: 0;
-  width: 0.5rem;
+  width: 8px;
   height: 100%;
   z-index: 2;
+  display: block;
 `
 const ClickBox = styled.div`
   display: flex;
@@ -195,15 +196,15 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
     const targetDate = new Date(date)
-    const favoriteBool = props.favorite
-    console.log(favoriteBool)
+    const progressState = props.tableData.progress
+
     const differenceInDays = Math.floor(
       (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
     )
 
     if (differenceInDays >= 0 && differenceInDays < 3) {
       return 'new'
-    } else if (differenceInDays >= 3 && differenceInDays < 5) {
+    } else if (differenceInDays >= 3 && progressState === 0) {
       return 'unprocessed'
     }
 
