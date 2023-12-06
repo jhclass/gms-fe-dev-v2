@@ -62,7 +62,7 @@ const Tfavorite = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 30px;
-  padding: 1rem 1rem 1rem 1.5rem;
+  padding: 1rem 1rem 1rem 2rem;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
@@ -205,23 +205,6 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
-  const isDisplayFlag = (date: string): string => {
-    const currentDate = new Date()
-    const targetDate = new Date(date)
-    const progressState = props.tableData.progress
-
-    const differenceInDays = Math.floor(
-      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
-    )
-
-    if (differenceInDays >= 0 && differenceInDays < 3) {
-      return 'new'
-    } else if (differenceInDays >= 3 && progressState === 0) {
-      return 'unprocessed'
-    }
-
-    return ''
-  }
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {
       alert('즐겨찾기는 5개까지만 설정가능합니다.')
