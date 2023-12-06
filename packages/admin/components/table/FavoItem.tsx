@@ -24,7 +24,6 @@ type ConsoultItemProps = {
   forName?: string
   itemIndex: number
   favorite?: boolean
-  flagNum?: number
 }
 
 const TableRow = styled.div`
@@ -58,11 +57,15 @@ const Tfavorite = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 30px;
-  padding: 1rem 1rem 1rem 2rem;
+  padding: 1rem 1rem 1rem 0rem;
   z-index: 1;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
+`
+const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
+  display: table-cell;
+  width: 2rem;
 `
 // const Tflag = styled.span<{ $flagNum: number; $flagProgress: number }>`
 //   position: absolute;
@@ -191,9 +194,33 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
+const isDisplayFlag = (date: string): string => {
+  const currentDate = new Date()
+
+  const LocalDdate = new Date(parseInt(date)).toLocaleDateString()
+  const targetDate = new Date(LocalDdate)
+  const differenceInDays = Math.floor(
+    (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
+  )
+
+  console.log('currentDate : ', currentDate)
+  console.log('LocalDdate : ', LocalDdate)
+  console.log('targetDate : ', targetDate)
+  console.log('differenceInDays : ', differenceInDays)
+
+  if (differenceInDays >= 0 && differenceInDays < 3) {
+    return 'a'
+  } else if (differenceInDays >= 3) {
+    return 'b'
+  } else {
+    return 'c'
+  }
+}
+
 export default function FavoriteItem(props: ConsoultItemProps) {
   const conIndex = props.itemIndex
   const student = props.tableData
+  const flagString = String(isDisplayFlag(student.createdAt))
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
@@ -210,6 +237,8 @@ export default function FavoriteItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
+  console.log('flagString : ', flagString)
+
   return (
     <>
       <TableItem>
@@ -218,14 +247,14 @@ export default function FavoriteItem(props: ConsoultItemProps) {
             $flagNum={props.flagNum}
             $flagProgress={props.tableData.progress}
           ></Tflag> */}
-          {/* <div
+          <div
             style={{
               width: '50px',
               color: '#111',
             }}
           >
-            {props.flagNum}
-          </div> */}
+            {flagString}
+          </div>
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}

@@ -313,7 +313,6 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
                 limit={currentLimit}
                 favorite={FavoList?.includes(item.id)}
                 favoTotal={favoTotal}
-                // flagColor={isDisplayFlag(item)}
               />
             ))}
           </TableWrap>

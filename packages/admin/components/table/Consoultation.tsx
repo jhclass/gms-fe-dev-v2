@@ -203,16 +203,6 @@ export default function ConsolutationTable() {
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
 
-  const isDisplayFlag = date => {
-    const currentDate = new Date()
-    const LocalDdate = new Date(parseInt(date)).toLocaleDateString()
-    const targetDate = new Date(LocalDdate)
-    const differenceInDays = Math.floor(
-      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
-    )
-    return differenceInDays
-  }
-
   return (
     <>
       <TTopic>
@@ -258,7 +248,6 @@ export default function ConsolutationTable() {
                 tableData={item}
                 itemIndex={index}
                 favorite={FavoList?.includes(item.id)}
-                // flagNum={isDisplayFlag(item.createdAt)}
               />
             ))}
             <br />
@@ -272,7 +261,6 @@ export default function ConsolutationTable() {
                 limit={currentLimit}
                 favorite={FavoList?.includes(item.id)}
                 favoTotal={favoTotal}
-                // flagNum={isDisplayFlag(item.createdAt)}
               />
             ))}
           </TableWrap>
