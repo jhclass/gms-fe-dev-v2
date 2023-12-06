@@ -213,7 +213,6 @@ export default function ConsolutationTable() {
     const differenceInDays = Math.floor(
       (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
     )
-    console.log(targetDate)
     if (differenceInDays >= 0 && differenceInDays < 3) {
       return '#007de9'
     } else if (differenceInDays >= 3 && progressState === 0) {
