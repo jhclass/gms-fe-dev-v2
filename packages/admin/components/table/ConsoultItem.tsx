@@ -26,9 +26,11 @@ type ConsoultItemProps = {
   limit?: number
   favorite?: boolean
   favoTotal: number
+  flagColor?: string
 }
 
 const TableItem = styled.div`
+  position: relative;
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
@@ -69,7 +71,7 @@ const Tflag = styled.span`
   position: absolute;
   top: 0;
   left: 0;
-  width: 8px;
+  width: 0.5rem;
   height: 100%;
   z-index: 2;
   display: block;
@@ -233,12 +235,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
         <TableRow>
           <Tflag
             style={{
-              background:
-                isDisplayFlag(getDate(student.createdAt)) === 'new'
-                  ? '#007de9'
-                  : isDisplayFlag(getDate(student.createdAt)) === 'unprocessed'
-                  ? '#FF5900'
-                  : '',
+              backgroundColor: props.flagColor,
             }}
           ></Tflag>
           <Tfavorite>
