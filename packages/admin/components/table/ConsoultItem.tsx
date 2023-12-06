@@ -192,12 +192,6 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
-  const ListClick = data => {
-    router.push({
-      pathname: `/consult/detail/${data.id}`,
-      query: { student: JSON.stringify(data), id: data.id },
-    })
-  }
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
     const targetDate = new Date(date)
@@ -266,15 +260,13 @@ export default function ConsolutItem(props: ConsoultItemProps) {
             </TfavoriteLabel>
           </Tfavorite>
           <Link
-            href={
-              {
-                // pathname: `/consult/detail/${student.id}`,
-                // query: { student: JSON.stringify(student) },
-              }
-            }
-            // as={`/consult/detail/${student.id}`}
+            href={{
+              pathname: `/consult/detail/${student.id}`,
+              query: { student: JSON.stringify(student) },
+            }}
+            as={`/consult/detail/${student.id}`}
           >
-            <ClickBox onClick={() => ListClick(student)}>
+            <ClickBox>
               <Tnum>
                 <EllipsisBox>
                   {(props.currentPage - 1) * conLimit + (conIndex + 1)}
