@@ -203,40 +203,12 @@ export default function FavoriteItem(props: ConsoultItemProps) {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
-  const isDisplayFlag = (student): string => {
-    const currentDate = new Date()
-    const LocalDdate = new Date(
-      parseInt(student.createdAt),
-    ).toLocaleDateString()
-    const targetDate = new Date(LocalDdate)
-    const progressState = student.progress
-    const differenceInDays = Math.floor(
-      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
-    )
-    if (differenceInDays >= 0 && differenceInDays < 3) {
-      return '#007de9'
-    } else if (differenceInDays >= 3 && progressState === 0) {
-      return '#FF5900'
-    } else {
-      return 'transparent'
-    }
-  }
-
-  useEffect(() => {
-    console.log('u', student)
-    isDisplayFlag(student)
-  }, [props?.flagColor])
 
   return (
     <>
-      <TableItem
-        onLoad={() => {
-          console.log('test')
-        }}
-      >
+      <TableItem>
         <TableRow>
           <Tflag
-            onLoad={() => alert(props.flagColor)}
             style={{
               backgroundColor: props.flagColor,
             }}
