@@ -23,6 +23,7 @@ type ConsoultItemProps = {
   forName?: string
   itemIndex: number
   favorite?: boolean
+  flagColor?: string
 }
 
 const TableRow = styled.div`
@@ -61,15 +62,15 @@ const Tfavorite = styled.div`
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-// const Tflag = styled.span`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 8px;
-//   height: 100%;
-//   z-index: 2;
-//   display: block;
-// `
+const Tflag = styled.span`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 100%;
+  z-index: 2;
+  display: block;
+`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -188,22 +189,6 @@ export default function FavoriteItem(props: ConsoultItemProps) {
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
-  const isDisplayFlag = (date: string): string => {
-    const currentDate = new Date()
-    const targetDate = new Date(date)
-    const progressState = props.tableData.progress
-    const differenceInDays = Math.floor(
-      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
-    )
-
-    if (differenceInDays >= 0 && differenceInDays < 3) {
-      return 'new'
-    } else if (differenceInDays >= 3 && progressState === 0) {
-      return 'unprocessed'
-    }
-
-    return ''
-  }
   const favoClick = () => {
     updateFavo({
       variables: {
@@ -221,28 +206,11 @@ export default function FavoriteItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
-          {/* <Tflag
+          <Tflag
             style={{
-              background:
-                isDisplayFlag(getDate(student.createdAt)) === 'new'
-                  ? '#007de9'
-                  : isDisplayFlag(getDate(student.createdAt)) === 'unprocessed'
-                  ? '#FF5900'
-                  : '',
+              background: props.flagColor,
             }}
-          ></Tflag> */}
-          <div
-            style={{
-              width: '8px',
-              height: '50px',
-              background:
-                isDisplayFlag(getDate(student?.createdAt)) === 'new'
-                  ? '#007de9'
-                  : isDisplayFlag(getDate(student?.createdAt)) === 'unprocessed'
-                  ? '#FF5900'
-                  : '#FFC600',
-            }}
-          ></div>
+          ></Tflag>
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}
