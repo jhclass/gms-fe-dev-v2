@@ -50,7 +50,7 @@ export default function ClickList({
     // values에는 체크된 항목들의 배열이 들어 있음
     setSubjectSelected(values)
   }
-  console.log(subjectSelected)
+
   return (
     <>
       <Input
