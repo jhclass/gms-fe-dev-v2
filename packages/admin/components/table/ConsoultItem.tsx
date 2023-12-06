@@ -6,6 +6,7 @@ import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import router from 'next/router'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 type ConsoultItemProps = {
   tableData: {
@@ -62,7 +63,7 @@ const Tfavorite = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 30px;
-  padding: 1rem 1rem 1rem 2rem;
+  padding: 1rem 1rem 1rem 0rem;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
@@ -198,12 +199,31 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
+const isDisplayFlag = (date: string): string => {
+  const currentDate = new Date()
+  const differenceInDays = Math.floor(
+    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+  )
+
+  console.log('currentDate : ', currentDate)
+  console.log('differenceInDays : ', differenceInDays)
+
+  if (differenceInDays >= 0 && differenceInDays < 3) {
+    return 'a'
+  } else if (differenceInDays >= 3) {
+    return 'b'
+  } else {
+    return 'c'
+  }
+}
+
 export default function ConsolutItem(props: ConsoultItemProps) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
+  const [flagString, setFlagString] = useState('')
 
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {
@@ -222,6 +242,10 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
+  useEffect(() => {
+    setFlagString(isDisplayFlag(student.createdAt))
+  }, [student])
+
   return (
     <>
       <TableItem>
@@ -235,6 +259,14 @@ export default function ConsolutItem(props: ConsoultItemProps) {
               backgroundColor: props.flagColor,
             }}
           ></Tflag> */}
+          <div
+            style={{
+              width: '50px',
+              color: '#111',
+            }}
+          >
+            {flagString}
+          </div>
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}

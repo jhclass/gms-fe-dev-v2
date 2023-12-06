@@ -6,7 +6,7 @@ import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import router from 'next/router'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 type ConsoultItemProps = {
   tableData: {
@@ -196,16 +196,11 @@ const EllipsisBox = styled.p`
 
 const isDisplayFlag = (date: string): string => {
   const currentDate = new Date()
-
-  const LocalDdate = new Date(parseInt(date)).toLocaleDateString()
-  const targetDate = new Date(LocalDdate)
   const differenceInDays = Math.floor(
-    (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
+    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
   )
 
   console.log('currentDate : ', currentDate)
-  console.log('LocalDdate : ', LocalDdate)
-  console.log('targetDate : ', targetDate)
   console.log('differenceInDays : ', differenceInDays)
 
   if (differenceInDays >= 0 && differenceInDays < 3) {
