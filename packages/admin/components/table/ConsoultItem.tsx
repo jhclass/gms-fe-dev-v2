@@ -28,14 +28,6 @@ type ConsoultItemProps = {
   favoTotal: number
 }
 
-const TableRow = styled.div`
-  position: relative;
-  display: table-row;
-  width: 100%;
-  min-width: fit-content;
-  text-align: center;
-`
-
 const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
@@ -51,6 +43,16 @@ const TableItem = styled.div`
     background: rgba(255, 255, 255, 0.8);
   }
 `
+
+const TableRow = styled.div`
+  position: relative;
+  display: table-row;
+  width: 100%;
+  min-width: fit-content;
+  text-align: center;
+  z-index: 1;
+`
+
 const Tfavorite = styled.div`
   position: relative;
   display: table-cell;
@@ -59,7 +61,6 @@ const Tfavorite = styled.div`
   color: inherit;
   min-width: 30px;
   padding: 1rem 1rem 1rem 2rem;
-  z-index: 1;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
@@ -230,18 +231,17 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
+          <Tflag
+            style={{
+              background:
+                isDisplayFlag(getDate(student.createdAt)) === 'new'
+                  ? '#007de9'
+                  : isDisplayFlag(getDate(student.createdAt)) === 'unprocessed'
+                  ? '#FF5900'
+                  : '',
+            }}
+          ></Tflag>
           <Tfavorite>
-            <Tflag
-              style={{
-                background:
-                  isDisplayFlag(getDate(student.createdAt)) === 'new'
-                    ? '#007de9'
-                    : isDisplayFlag(getDate(student.createdAt)) ===
-                      'unprocessed'
-                    ? '#FF5900'
-                    : '',
-              }}
-            ></Tflag>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}
               style={{
