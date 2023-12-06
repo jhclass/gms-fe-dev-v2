@@ -36,6 +36,7 @@ const TableRow = styled.div`
 `
 
 const TableItem = styled.div`
+  position: relative;
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
@@ -67,7 +68,7 @@ const Tflag = styled.span`
   position: absolute;
   top: 0;
   left: 0;
-  width: 8px;
+  width: 0.5rem;
   height: 100%;
   z-index: 2;
   display: block;
@@ -228,93 +229,89 @@ export default function FavoriteItem(props: ConsoultItemProps) {
 
   return (
     <>
-      {props.flagColor === '#FF5900' && (
-        <TableItem
-          onLoad={() => {
-            console.log('test')
-          }}
-        >
-          <TableRow>
-            <Tflag
-              onLoad={() => alert(props.flagColor)}
+      <TableItem
+        onLoad={() => {
+          console.log('test')
+        }}
+      >
+        <TableRow>
+          <Tflag
+            onLoad={() => alert(props.flagColor)}
+            style={{
+              backgroundColor: props.flagColor,
+            }}
+          ></Tflag>
+          <Tfavorite>
+            <TfavoriteLabel
+              htmlFor={`${props.forName}check${student.id}`}
               style={{
-                backgroundColor: props.flagColor,
+                color: props.favorite ? '#FFC600' : '',
               }}
-            ></Tflag>
-            <Tfavorite>
-              <TfavoriteLabel
-                htmlFor={`${props.forName}check${student.id}`}
-                style={{
-                  color: props.favorite ? '#FFC600' : '',
-                }}
-              >
-                <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
-                <input
-                  id={`${props.forName}check${student.id}`}
-                  type="checkbox"
-                  onClick={() => {
-                    favoClick()
-                  }}
-                  hidden
-                />
-              </TfavoriteLabel>
-            </Tfavorite>
-            <Link
-              href={{
-                pathname: `/consult/detail/${student.id}`,
-                query: { student: JSON.stringify(student) },
-              }}
-              as={`/consult/detail/${student.id}`}
-              replace
             >
-              <ClickBox>
-                <Tnum>
-                  <EllipsisBox>{conIndex + 1}</EllipsisBox>
-                </Tnum>
-                <Tprogress
-                  style={{ color: progressStatus[student.progress].color }}
-                >
-                  <EllipsisBox>
-                    {progressStatus[student.progress].name}
-                  </EllipsisBox>
-                </Tprogress>
-                <TreceiptDiv>
-                  <EllipsisBox>{student.receiptDiv}</EllipsisBox>
-                </TreceiptDiv>
-                <TsubDiv>
-                  <EllipsisBox>{student.subDiv}</EllipsisBox>
-                </TsubDiv>
-                <Tname>
-                  <EllipsisBox>{student.stName}</EllipsisBox>
-                </Tname>
-                <Tphone>
-                  <EllipsisBox>{student.phoneNum1}</EllipsisBox>
-                </Tphone>
-                <TcreatedAt>
-                  <EllipsisBox>
-                    {student.createdAt ? getDate(student.createdAt) : '-'}
-                  </EllipsisBox>
-                </TcreatedAt>
-                <Tmanager>
-                  <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
-                </Tmanager>
-                <TstVisit>
-                  <EllipsisBox>
-                    {student.stVisit ? getDate(student.stVisit) : '-'}
-                  </EllipsisBox>
-                </TstVisit>
-                <TexpEnrollDate>
-                  <EllipsisBox>
-                    {student.expEnrollDate
-                      ? getDate(student.expEnrollDate)
-                      : '-'}
-                  </EllipsisBox>
-                </TexpEnrollDate>
-              </ClickBox>
-            </Link>
-          </TableRow>
-        </TableItem>
-      )}
+              <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
+              <input
+                id={`${props.forName}check${student.id}`}
+                type="checkbox"
+                onClick={() => {
+                  favoClick()
+                }}
+                hidden
+              />
+            </TfavoriteLabel>
+          </Tfavorite>
+          <Link
+            href={{
+              pathname: `/consult/detail/${student.id}`,
+              query: { student: JSON.stringify(student) },
+            }}
+            as={`/consult/detail/${student.id}`}
+            replace
+          >
+            <ClickBox>
+              <Tnum>
+                <EllipsisBox>{conIndex + 1}</EllipsisBox>
+              </Tnum>
+              <Tprogress
+                style={{ color: progressStatus[student.progress].color }}
+              >
+                <EllipsisBox>
+                  {progressStatus[student.progress].name}
+                </EllipsisBox>
+              </Tprogress>
+              <TreceiptDiv>
+                <EllipsisBox>{student.receiptDiv}</EllipsisBox>
+              </TreceiptDiv>
+              <TsubDiv>
+                <EllipsisBox>{student.subDiv}</EllipsisBox>
+              </TsubDiv>
+              <Tname>
+                <EllipsisBox>{student.stName}</EllipsisBox>
+              </Tname>
+              <Tphone>
+                <EllipsisBox>{student.phoneNum1}</EllipsisBox>
+              </Tphone>
+              <TcreatedAt>
+                <EllipsisBox>
+                  {student.createdAt ? getDate(student.createdAt) : '-'}
+                </EllipsisBox>
+              </TcreatedAt>
+              <Tmanager>
+                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
+              </Tmanager>
+              <TstVisit>
+                <EllipsisBox>
+                  {student.stVisit ? getDate(student.stVisit) : '-'}
+                </EllipsisBox>
+              </TstVisit>
+              <TexpEnrollDate>
+                <EllipsisBox>
+                  {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
+                </EllipsisBox>
+              </TexpEnrollDate>
+            </ClickBox>
+          </Link>
+        </TableRow>
+      </TableItem>
     </>
   )
 }
