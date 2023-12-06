@@ -194,7 +194,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
   const favoClick = () => {
     updateFavo({
       variables: {
-        updateFavoriteId: props?.tableData.id,
+        updateFavoriteId: props.tableData.id,
       },
       refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
     })
@@ -210,7 +210,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
         <TableRow>
           <Tflag
             style={{
-              backgroundColor: progressStatus[props?.flagColor].color,
+              backgroundColor: progressStatus[props.flagColor].color,
             }}
           ></Tflag>
           <div
@@ -219,18 +219,18 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               color: '#111',
             }}
           >
-            {props?.flagColor}
+            {props.flagColor}
           </div>
           <Tfavorite>
             <TfavoriteLabel
-              htmlFor={`${props?.forName}check${student.id}`}
+              htmlFor={`${props.forName}check${student.id}`}
               style={{
-                color: props?.favorite ? '#FFC600' : '',
+                color: props.favorite ? '#FFC600' : '',
               }}
             >
-              <i className={props?.favorite ? 'xi-star' : 'xi-star-o'} />
+              <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
               <input
-                id={`${props?.forName}check${student.id}`}
+                id={`${props.forName}check${student.id}`}
                 type="checkbox"
                 onClick={() => {
                   favoClick()
@@ -252,41 +252,41 @@ export default function FavoriteItem(props: ConsoultItemProps) {
                 <EllipsisBox>{conIndex + 1}</EllipsisBox>
               </Tnum>
               <Tprogress
-                style={{ color: progressStatus[student?.progress].color }}
+                style={{ color: progressStatus[student.progress].color }}
               >
                 <EllipsisBox>
-                  {progressStatus[student?.progress].name}
+                  {progressStatus[student.progress].name}
                 </EllipsisBox>
               </Tprogress>
               <TreceiptDiv>
-                <EllipsisBox>{student?.receiptDiv}</EllipsisBox>
+                <EllipsisBox>{student.receiptDiv}</EllipsisBox>
               </TreceiptDiv>
               <TsubDiv>
-                <EllipsisBox>{student?.subDiv}</EllipsisBox>
+                <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
               <Tname>
-                <EllipsisBox>{student?.stName}</EllipsisBox>
+                <EllipsisBox>{student.stName}</EllipsisBox>
               </Tname>
               <Tphone>
-                <EllipsisBox>{student?.phoneNum1}</EllipsisBox>
+                <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student?.createdAt ? getDate(student?.createdAt) : '-'}
+                  {student.createdAt ? getDate(student.createdAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tmanager>
-                <EllipsisBox>{student?.pic ? student?.pic : '-'}</EllipsisBox>
+                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
               </Tmanager>
               <TstVisit>
                 <EllipsisBox>
-                  {student?.stVisit ? getDate(student?.stVisit) : '-'}
+                  {student.stVisit ? getDate(student.stVisit) : '-'}
                 </EllipsisBox>
               </TstVisit>
               <TexpEnrollDate>
                 <EllipsisBox>
                   {student?.expEnrollDate
-                    ? getDate(student?.expEnrollDate)
+                    ? getDate(student.expEnrollDate)
                     : '-'}
                 </EllipsisBox>
               </TexpEnrollDate>

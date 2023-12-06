@@ -26,7 +26,7 @@ type ConsoultItemProps = {
   limit?: number
   favorite?: boolean
   favoTotal: number
-  flagColor?: string
+  // flagColor?: string
 }
 
 const TableItem = styled.div`
