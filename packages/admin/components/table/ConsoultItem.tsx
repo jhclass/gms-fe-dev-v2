@@ -233,11 +233,11 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
-          <Tflag
+          {/* <Tflag
             style={{
               backgroundColor: props.flagColor,
             }}
-          ></Tflag>
+          ></Tflag> */}
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}

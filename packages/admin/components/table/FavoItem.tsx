@@ -24,7 +24,7 @@ type ConsoultItemProps = {
   forName?: string
   itemIndex: number
   favorite?: boolean
-  flagColor?: string
+  flagColor?: number
 }
 
 const TableRow = styled.div`
@@ -210,9 +210,17 @@ export default function FavoriteItem(props: ConsoultItemProps) {
         <TableRow>
           <Tflag
             style={{
-              backgroundColor: props.flagColor,
+              backgroundColor: progressStatus[props.flagColor].color,
             }}
           ></Tflag>
+          <div
+            style={{
+              width: '50px',
+              color: '#111',
+            }}
+          >
+            {props.flagColor}
+          </div>
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}
