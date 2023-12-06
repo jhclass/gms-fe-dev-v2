@@ -203,6 +203,26 @@ export default function ConsolutationTable() {
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
 
+  const isDisplayFlag = (student): string => {
+    const currentDate = new Date()
+    const LocalDdate = new Date(
+      parseInt(student.createdAt),
+    ).toLocaleDateString()
+    const targetDate = new Date(LocalDdate)
+    const progressState = student.progress
+    const differenceInDays = Math.floor(
+      (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
+    )
+    console.log(targetDate)
+    if (differenceInDays >= 0 && differenceInDays < 3) {
+      return '#007de9'
+    } else if (differenceInDays >= 3 && progressState === 0) {
+      return '#FF5900'
+    }
+
+    return 'transparent'
+  }
+
   return (
     <>
       <TTopic>
@@ -248,6 +268,7 @@ export default function ConsolutationTable() {
                 tableData={item}
                 itemIndex={index}
                 favorite={FavoList?.includes(item.id)}
+                flagColor={isDisplayFlag(item)}
               />
             ))}
             <br />
@@ -261,6 +282,7 @@ export default function ConsolutationTable() {
                 limit={currentLimit}
                 favorite={FavoList?.includes(item.id)}
                 favoTotal={favoTotal}
+                // flagColor={isDisplayFlag(item)}
               />
             ))}
           </TableWrap>
