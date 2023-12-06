@@ -26,7 +26,7 @@ type ConsoultItemProps = {
   limit?: number
   favorite?: boolean
   favoTotal: number
-  // flagColor?: string
+  flagNum?: number
 }
 
 const TableItem = styled.div`
@@ -62,20 +62,30 @@ const Tfavorite = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 30px;
-  padding: 1rem 1rem 1rem 2rem;
+  padding: 1rem 1rem 1rem 1.5rem;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-const Tflag = styled.span`
-  position: absolute;
-  top: 0;
-  left: 0;
+const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
+  display: table-cell;
   width: 0.5rem;
-  height: 100%;
-  z-index: 2;
-  display: block;
+  background: ${props =>
+    props.$flagNum < 3
+      ? '#007de9'
+      : props.$flagProgress === 0
+      ? '#FF5900'
+      : 'yellow'};
 `
+// const Tflag = styled.span`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 0.5rem;
+//   height: 100%;
+//   z-index: 2;
+//   display: block;
+// `
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -233,6 +243,10 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
+          <Tflag
+            $flagNum={props.flagNum}
+            $flagProgress={props.tableData.progress}
+          ></Tflag>
           {/* <Tflag
             style={{
               backgroundColor: props.flagColor,

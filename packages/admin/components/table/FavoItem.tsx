@@ -24,7 +24,7 @@ type ConsoultItemProps = {
   forName?: string
   itemIndex: number
   favorite?: boolean
-  flagColor?: number
+  flagNum?: number
 }
 
 const TableRow = styled.div`
@@ -64,7 +64,7 @@ const Tfavorite = styled.div`
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-const Tflag = styled.span`
+const Tflag = styled.span<{ $flagNum: number; $flagProgress: number }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -72,6 +72,12 @@ const Tflag = styled.span`
   height: 100%;
   z-index: 2;
   display: block;
+  background: ${props =>
+    props.$flagNum < 3
+      ? '#007de9'
+      : props.$flagProgress === 0
+      ? '#FF5900'
+      : 'yellow'};
 `
 const ClickBox = styled.div`
   display: flex;
@@ -186,15 +192,15 @@ const EllipsisBox = styled.p`
 `
 
 export default function FavoriteItem(props: ConsoultItemProps) {
-  const conIndex = props?.itemIndex
-  const student = props?.tableData
+  const conIndex = props.itemIndex
+  const student = props.tableData
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
   const favoClick = () => {
     updateFavo({
       variables: {
-        updateFavoriteId: props?.tableData.id,
+        updateFavoriteId: props.tableData.id,
       },
       refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
     })
@@ -209,9 +215,8 @@ export default function FavoriteItem(props: ConsoultItemProps) {
       <TableItem>
         <TableRow>
           <Tflag
-            style={{
-              backgroundColor: progressStatus[props?.flagColor].color,
-            }}
+            $flagNum={props.flagNum}
+            $flagProgress={props.tableData.progress}
           ></Tflag>
           <div
             style={{
@@ -219,18 +224,18 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               color: '#111',
             }}
           >
-            {props?.flagColor}
+            {props.flagNum}
           </div>
           <Tfavorite>
             <TfavoriteLabel
-              htmlFor={`${props?.forName}check${student.id}`}
+              htmlFor={`${props.forName}check${student.id}`}
               style={{
-                color: props?.favorite ? '#FFC600' : '',
+                color: props.favorite ? '#FFC600' : '',
               }}
             >
-              <i className={props?.favorite ? 'xi-star' : 'xi-star-o'} />
+              <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
               <input
-                id={`${props?.forName}check${student.id}`}
+                id={`${props.forName}check${student.id}`}
                 type="checkbox"
                 onClick={() => {
                   favoClick()
@@ -285,9 +290,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               </TstVisit>
               <TexpEnrollDate>
                 <EllipsisBox>
-                  {student?.expEnrollDate
-                    ? getDate(student.expEnrollDate)
-                    : '-'}
+                  {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
                 </EllipsisBox>
               </TexpEnrollDate>
             </ClickBox>
