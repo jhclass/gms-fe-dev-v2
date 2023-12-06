@@ -280,8 +280,7 @@ export default function Consoultation() {
       }
     }
   }, [parseStudent, receipt, sub, progressStste])
-  console.log(subjectSelected)
-  console.log(parseStudent?.subject)
+
   const onSubmit = data => {
     const { isDirty, dirtyFields } = formState
     const upDateStudent = {
@@ -330,9 +329,7 @@ export default function Consoultation() {
     setManager(e.target.value)
   }
   const test = () => {
-    console.log('aa')
     onOpen()
-    console.log(isOpen)
   }
   return (
     <>

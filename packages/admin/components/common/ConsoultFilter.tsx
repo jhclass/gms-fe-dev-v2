@@ -214,7 +214,6 @@ export default function TableFillter({
       setFilterState(filter)
       onFilterToggle(false)
       onFilterSearch(true)
-      console.log(filter)
     }
   }
 
