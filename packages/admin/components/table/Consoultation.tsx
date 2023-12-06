@@ -217,9 +217,9 @@ export default function ConsolutationTable() {
       return '#007de9'
     } else if (differenceInDays >= 3 && progressState === 0) {
       return '#FF5900'
+    } else {
+      return 'transparent'
     }
-
-    return 'transparent'
   }
 
   return (
