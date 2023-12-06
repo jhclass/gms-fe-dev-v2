@@ -194,7 +194,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
   const favoClick = () => {
     updateFavo({
       variables: {
-        updateFavoriteId: props.tableData.id,
+        updateFavoriteId: props?.tableData.id,
       },
       refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
     })
@@ -210,7 +210,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
         <TableRow>
           <Tflag
             style={{
-              backgroundColor: progressStatus[props.flagColor].color,
+              backgroundColor: progressStatus[props?.flagColor].color,
             }}
           ></Tflag>
           <div
@@ -219,18 +219,18 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               color: '#111',
             }}
           >
-            {props.flagColor}
+            {props?.flagColor}
           </div>
           <Tfavorite>
             <TfavoriteLabel
-              htmlFor={`${props.forName}check${student.id}`}
+              htmlFor={`${props?.forName}check${student.id}`}
               style={{
-                color: props.favorite ? '#FFC600' : '',
+                color: props?.favorite ? '#FFC600' : '',
               }}
             >
-              <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
+              <i className={props?.favorite ? 'xi-star' : 'xi-star-o'} />
               <input
-                id={`${props.forName}check${student.id}`}
+                id={`${props?.forName}check${student.id}`}
                 type="checkbox"
                 onClick={() => {
                   favoClick()
