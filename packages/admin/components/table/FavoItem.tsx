@@ -236,11 +236,11 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               width: '8px',
               height: '50px',
               background:
-                isDisplayFlag(getDate(student.createdAt)) === 'new'
+                isDisplayFlag(getDate(student?.createdAt)) === 'new'
                   ? '#007de9'
-                  : isDisplayFlag(getDate(student.createdAt)) === 'unprocessed'
+                  : isDisplayFlag(getDate(student?.createdAt)) === 'unprocessed'
                   ? '#FF5900'
-                  : '',
+                  : '#FFC600',
             }}
           ></div>
           <Tfavorite>
