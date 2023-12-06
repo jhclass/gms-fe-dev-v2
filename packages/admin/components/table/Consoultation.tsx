@@ -258,7 +258,7 @@ export default function ConsolutationTable() {
                 tableData={item}
                 itemIndex={index}
                 favorite={FavoList?.includes(item.id)}
-                flagNum={isDisplayFlag(item.createdAt)}
+                // flagNum={isDisplayFlag(item.createdAt)}
               />
             ))}
             <br />
@@ -272,7 +272,7 @@ export default function ConsolutationTable() {
                 limit={currentLimit}
                 favorite={FavoList?.includes(item.id)}
                 favoTotal={favoTotal}
-                flagNum={isDisplayFlag(item.createdAt)}
+                // flagNum={isDisplayFlag(item.createdAt)}
               />
             ))}
           </TableWrap>

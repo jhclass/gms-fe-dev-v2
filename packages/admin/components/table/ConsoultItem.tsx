@@ -67,16 +67,16 @@ const Tfavorite = styled.div`
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
-  display: table-cell;
-  width: 0.5rem;
-  background: ${props =>
-    props.$flagNum < 3
-      ? '#007de9'
-      : props.$flagProgress === 0
-      ? '#FF5900'
-      : 'yellow'};
-`
+// const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
+//   display: table-cell;
+//   width: 0.5rem;
+//   background: ${props =>
+//     props.$flagNum < 3
+//       ? '#007de9'
+//       : props.$flagProgress === 0
+//       ? '#FF5900'
+//       : 'yellow'};
+// `
 // const Tflag = styled.span`
 //   position: absolute;
 //   top: 0;
@@ -243,10 +243,10 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
-          <Tflag
+          {/* <Tflag
             $flagNum={props.flagNum}
             $flagProgress={props.tableData.progress}
-          ></Tflag>
+          ></Tflag> */}
           {/* <Tflag
             style={{
               backgroundColor: props.flagColor,

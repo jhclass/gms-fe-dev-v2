@@ -64,21 +64,21 @@ const Tfavorite = styled.div`
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-const Tflag = styled.span<{ $flagNum: number; $flagProgress: number }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0.5rem;
-  height: 100%;
-  z-index: 2;
-  display: block;
-  background: ${props =>
-    props.$flagNum < 3
-      ? '#007de9'
-      : props.$flagProgress === 0
-      ? '#FF5900'
-      : 'yellow'};
-`
+// const Tflag = styled.span<{ $flagNum: number; $flagProgress: number }>`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 0.5rem;
+//   height: 100%;
+//   z-index: 2;
+//   display: block;
+//   background: ${props =>
+//     props.$flagNum < 3
+//       ? '#007de9'
+//       : props.$flagProgress === 0
+//       ? '#FF5900'
+//       : 'yellow'};
+// `
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -214,18 +214,18 @@ export default function FavoriteItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
-          <Tflag
+          {/* <Tflag
             $flagNum={props.flagNum}
             $flagProgress={props.tableData.progress}
-          ></Tflag>
-          <div
+          ></Tflag> */}
+          {/* <div
             style={{
               width: '50px',
               color: '#111',
             }}
           >
             {props.flagNum}
-          </div>
+          </div> */}
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}
