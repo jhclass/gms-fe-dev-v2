@@ -15,11 +15,22 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
+  }
 `
 const TopBox = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
 `
 const Ttotal = styled.p`
   font-weight: 300;
@@ -32,6 +43,10 @@ const Ttotal = styled.p`
 `
 const ColorHelp = styled.div`
   display: flex;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 const ColorCip = styled.p`
@@ -46,6 +61,10 @@ const ColorCip = styled.p`
     margin-right: 0.5rem;
     width: 1rem;
     height: 2px;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
   }
 `
 const TableWrap = styled.div`
@@ -228,7 +247,7 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총 <span>{searchResult?.totalCount}</span>건
+            총 <span>{searchResult?.totalCount}</span>건이 검색되었습니다.
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>
             전체보기

@@ -221,18 +221,17 @@ export default function FavoriteItem(props: ConsoultItemProps) {
     <>
       <TableItem>
         <TableRow>
+          <Tflag
+            style={{
+              background:
+                isDisplayFlag(getDate(student.createdAt)) === 'new'
+                  ? '#007de9'
+                  : isDisplayFlag(getDate(student.createdAt)) === 'unprocessed'
+                  ? '#FF5900'
+                  : '',
+            }}
+          ></Tflag>
           <Tfavorite>
-            <Tflag
-              style={{
-                background:
-                  isDisplayFlag(getDate(student.createdAt)) === 'new'
-                    ? '#007de9'
-                    : isDisplayFlag(getDate(student.createdAt)) ===
-                      'unprocessed'
-                    ? '#FF5900'
-                    : '',
-              }}
-            ></Tflag>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}
               style={{
