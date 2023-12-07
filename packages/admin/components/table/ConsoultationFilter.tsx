@@ -65,6 +65,7 @@ const ColorCip = styled.p`
 
   @media (max-width: 768px) {
     padding-left: 0;
+    padding-right: 0.5rem;
   }
 `
 const TableWrap = styled.div`
@@ -241,25 +242,6 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
     setFilterState({})
     onFilterSearch(false)
   }
-
-  // const isDisplayFlag = (student): string => {
-  //   const currentDate = new Date()
-  //   const LocalDdate = new Date(
-  //     parseInt(student.createdAt),
-  //   ).toLocaleDateString()
-  //   const targetDate = new Date(LocalDdate)
-  //   const progressState = student.progress
-  //   const differenceInDays = Math.floor(
-  //     (currentDate.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
-  //   )
-  //   if (differenceInDays >= 0 && differenceInDays < 3) {
-  //     return '#007de9'
-  //   } else if (differenceInDays >= 3 && progressState === 0) {
-  //     return '#FF5900'
-  //   } else {
-  //     return 'transparent'
-  //   }
-  // }
 
   return (
     <>

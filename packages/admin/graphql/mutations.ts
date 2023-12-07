@@ -115,16 +115,15 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
 `
 
 export const UPDATE_STUDENT_STATE_MUTATION = gql`
-  mutation UpdateStudentState(
+  mutation Mutation(
     $updateStudentStateId: Int!
-    $category: String!
     $campus: String
+    $category: String
     $stName: String
     $phoneNum1: String
     $phoneNum2: String
     $phoneNum3: String
-    $currentManager: String
-    $subject: String
+    $subject: [String]
     $detail: String
     $progress: Int
     $stEmail: String
@@ -134,16 +133,17 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
     $expEnrollDate: String
     $perchase: Boolean
     $birthday: String
+    $pic: String
+    $receiptDiv: String
   ) {
     updateStudentState(
       id: $updateStudentStateId
-      category: $category
       campus: $campus
+      category: $category
       stName: $stName
       phoneNum1: $phoneNum1
       phoneNum2: $phoneNum2
       phoneNum3: $phoneNum3
-      currentManager: $currentManager
       subject: $subject
       detail: $detail
       progress: $progress
@@ -154,6 +154,8 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
       expEnrollDate: $expEnrollDate
       perchase: $perchase
       birthday: $birthday
+      pic: $pic
+      receiptDiv: $receiptDiv
     ) {
       ok
       error
