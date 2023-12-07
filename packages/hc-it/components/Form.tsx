@@ -10,7 +10,7 @@ import {
   Tabs,
   Textarea,
 } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useRecoilState } from 'recoil'
 import { formGroupSelectedState } from '@/lib/recoilAtoms'
@@ -58,6 +58,7 @@ export default function Form() {
     formGroupSelectedState,
   )
   const regExp = new RegExp(badwords.join('|'), 'i')
+  const [checkPrivacy, setCheckPrivacy] = useState(false)
   const {
     register,
     handleSubmit,
@@ -108,6 +109,7 @@ export default function Form() {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
+      console.log(checkPrivacy)
       reset({
         groupSelected: [],
         campus: '',
@@ -115,9 +117,11 @@ export default function Form() {
         phone: '',
         contents: '',
         subDiv: '',
+        privacy: false,
       })
       setGroupSelected([])
       setValue('privacy', false)
+      setCheckPrivacy(false)
     }
   }, [isSubmitSuccessful, reset])
 
@@ -303,7 +307,7 @@ export default function Form() {
                   type="text"
                   label="상담 구분"
                   className="w-full"
-                  name="온라인"
+                  defaultValue={'온라인'}
                   {...register('subDiv')}
                 />
               </li>
@@ -465,24 +469,23 @@ export default function Form() {
                   </p>
                 </ScrollShadow>
               </div>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
+              <Checkbox
+                isSelected={checkPrivacy}
+                onValueChange={e => {
+                  setValue('privacy', e)
+                  setCheckPrivacy(e)
                 }}
-                name="privacy"
-                render={({ field }) => (
-                  <Checkbox
-                    isSelected={field.value}
-                    onChange={e => setValue('privacy', e.target.checked)}
-                    value={field.value}
-                    className="mt-2"
-                    size="md"
-                  >
-                    개인정보수집 및 이용에 동의합니다.
-                  </Checkbox>
-                )}
-              />
+                className="mt-2"
+                size="md"
+                {...register('privacy', {
+                  required: {
+                    value: true,
+                    message: '개인정보수집 동의를 해주세요.',
+                  },
+                })}
+              >
+                개인정보수집 및 이용에 동의합니다.
+              </Checkbox>
               {errors.privacy && (
                 <p className="text-xs text-red-500">
                   개인정보수집 및 이용에 동의를 체크해주세요.
