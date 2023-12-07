@@ -63,10 +63,15 @@ const Tfavorite = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 30px;
-  padding: 1rem 1rem 1rem 0rem;
+  padding: 1rem 1rem 1rem 1.5rem;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
+`
+const Tflag = styled.div`
+  display: table-cell;
+  width: 0.5rem;
+  height: 100%;
 `
 // const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
 //   display: table-cell;
@@ -199,7 +204,7 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-const isDisplayFlag = (date: string): string => {
+const isDisplayFlag = (date: string, step: number): string => {
   const currentDate = new Date()
   const differenceInDays = Math.floor(
     (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
@@ -207,13 +212,14 @@ const isDisplayFlag = (date: string): string => {
 
   console.log('currentDate : ', currentDate)
   console.log('differenceInDays : ', differenceInDays)
+  console.log('step : ', step)
 
   if (differenceInDays >= 0 && differenceInDays < 3) {
-    return 'a'
-  } else if (differenceInDays >= 3) {
-    return 'b'
+    return '#007de9'
+  } else if (differenceInDays >= 3 && step === 0) {
+    return '#FF5900'
   } else {
-    return 'c'
+    return 'yellow'
   }
 }
 
@@ -221,9 +227,9 @@ export default function ConsolutItem(props: ConsoultItemProps) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
+  const flagString = isDisplayFlag(student.createdAt, student.progress)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
-  const [flagString, setFlagString] = useState('')
 
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {
@@ -242,31 +248,15 @@ export default function ConsolutItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
-  useEffect(() => {
-    setFlagString(isDisplayFlag(student.createdAt))
-  }, [student])
-
   return (
     <>
       <TableItem>
         <TableRow>
-          {/* <Tflag
-            $flagNum={props.flagNum}
-            $flagProgress={props.tableData.progress}
-          ></Tflag> */}
-          {/* <Tflag
+          <Tflag
             style={{
-              backgroundColor: props.flagColor,
+              background: flagString,
             }}
-          ></Tflag> */}
-          <div
-            style={{
-              width: '50px',
-              color: '#111',
-            }}
-          >
-            {flagString}
-          </div>
+          ></Tflag>
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}

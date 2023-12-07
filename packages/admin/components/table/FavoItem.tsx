@@ -57,31 +57,17 @@ const Tfavorite = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 30px;
-  padding: 1rem 1rem 1rem 0rem;
+  padding: 1rem 1rem 1rem 1.5rem;
   z-index: 1;
 `
 const TfavoriteLabel = styled.label`
   cursor: pointer;
 `
-const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
+const Tflag = styled.div`
   display: table-cell;
-  width: 2rem;
+  width: 0.5rem;
+  height: 100%;
 `
-// const Tflag = styled.span<{ $flagNum: number; $flagProgress: number }>`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 0.5rem;
-//   height: 100%;
-//   z-index: 2;
-//   display: block;
-//   background: ${props =>
-//     props.$flagNum < 3
-//       ? '#007de9'
-//       : props.$flagProgress === 0
-//       ? '#FF5900'
-//       : 'yellow'};
-// `
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -194,28 +180,25 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-const isDisplayFlag = (date: string): string => {
+const isDisplayFlag = (date: string, step: number): string => {
   const currentDate = new Date()
   const differenceInDays = Math.floor(
     (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
   )
 
-  console.log('currentDate : ', currentDate)
-  console.log('differenceInDays : ', differenceInDays)
-
   if (differenceInDays >= 0 && differenceInDays < 3) {
-    return 'a'
-  } else if (differenceInDays >= 3) {
-    return 'b'
+    return '#007de9'
+  } else if (differenceInDays >= 3 && step === 0) {
+    return '#FF5900'
   } else {
-    return 'c'
+    return 'yellow'
   }
 }
 
 export default function FavoriteItem(props: ConsoultItemProps) {
   const conIndex = props.itemIndex
   const student = props.tableData
-  const flagString = String(isDisplayFlag(student.createdAt))
+  const flagString = isDisplayFlag(student.createdAt, student.progress)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
 
@@ -232,24 +215,15 @@ export default function FavoriteItem(props: ConsoultItemProps) {
     return LocalDdate
   }
 
-  console.log('flagString : ', flagString)
-
   return (
     <>
       <TableItem>
         <TableRow>
-          {/* <Tflag
-            $flagNum={props.flagNum}
-            $flagProgress={props.tableData.progress}
-          ></Tflag> */}
-          <div
+          <Tflag
             style={{
-              width: '50px',
-              color: '#111',
+              background: flagString,
             }}
-          >
-            {flagString}
-          </div>
+          ></Tflag>
           <Tfavorite>
             <TfavoriteLabel
               htmlFor={`${props.forName}check${student.id}`}
