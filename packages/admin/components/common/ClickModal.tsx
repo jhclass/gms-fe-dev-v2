@@ -20,22 +20,21 @@ const TitleLabel = styled.p`
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #11181c;
-  padding-bottom: 0.1rem;
+  padding-bottom: 0.3rem;
   display: block;
+  cursor: normal;
 `
 const SelectListText = styled.div`
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
+  border-width: 0.15rem;
   border-radius: var(--nextui-radius-medium);
-  border-color: hsl(
-    var(--nextui-default-200) /
-      var(--nextui-default-200-opacity, var(--tw-border-opacity))
-  );
+  border-color: #e4e4e7;
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   -webkit-tap-highlight-color: transparent;
+  padding: 0.5rem 0.75rem;
+  min-height: 2.5rem;
 `
 
 export default function ClickList({
@@ -44,31 +43,29 @@ export default function ClickList({
   defaultValue,
   subjectSelected,
   setSubjectSelected,
+  inputRef,
+  onChange,
 }) {
+  const [selectCheck, setSelectCheck] = useState(subjectSelected)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const handleCheckboxChange = values => {
-    // values에는 체크된 항목들의 배열이 들어 있음
-    setSubjectSelected(values)
+    setSelectCheck(values)
   }
-
+  const clickSubmit = () => {
+    setSubjectSelected(selectCheck)
+    onChange(selectCheck)
+    onClose()
+  }
   return (
     <>
-      <Input
-        labelPlacement="outside"
-        placeholder="상담과목"
-        variant="bordered"
-        radius="md"
-        type="text"
-        label={label}
-        defaultValue={defaultValue.join(', ')}
-        value={
-          subjectSelected.length > 0
+      <div onClick={onOpen}>
+        <TitleLabel>상담과목</TitleLabel>
+        <SelectListText>
+          {subjectSelected.length > 0
             ? subjectSelected.join(', ')
-            : defaultValue.join(', ')
-        }
-        className="w-full"
-        onClick={onOpen}
-      />
+            : defaultValue.join(', ')}
+        </SelectListText>
+      </div>
       <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {onClose => (
@@ -76,7 +73,7 @@ export default function ClickList({
               <ModalHeader className="flex flex-col gap-1"></ModalHeader>
               <ModalBody>
                 <CheckboxGroup
-                  value={subjectSelected}
+                  value={selectCheck}
                   onChange={handleCheckboxChange}
                 >
                   {list?.map(item => (
@@ -90,7 +87,7 @@ export default function ClickList({
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={clickSubmit}>
                   선택
                 </Button>
               </ModalFooter>

@@ -10,6 +10,7 @@ import { LogUserIn } from '@/lib/apolloClient'
 import { gql } from '@apollo/client'
 import { Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
+import { useState } from 'react'
 
 type LoginForm = {
   id: string
@@ -133,6 +134,7 @@ export default function Login() {
     loginPasswordFocuseState,
   )
   //api Test
+  const [loginError, setLoginError] = useState('')
   const router = useRouter()
   const [login, { loading, error, data }] = useMutation(LOGIN_MUTATION)
   const onSubmit = (data: LoginForm) => {
@@ -143,11 +145,13 @@ export default function Login() {
       },
       onCompleted: data => {
         const {
-          mLogin: { ok, token },
+          mLogin: { ok, token, error },
         } = data
         if (ok) {
           LogUserIn(token)
           router.push('/')
+        } else {
+          setLoginError(error)
         }
       },
     })
@@ -215,6 +219,7 @@ export default function Login() {
                 <ErrorMessage>{String(errors.password.message)}</ErrorMessage>
               )}
             </InputBox>
+            {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
             <BtnBox>
               <Button buttonType="submit">로그인</Button>
             </BtnBox>

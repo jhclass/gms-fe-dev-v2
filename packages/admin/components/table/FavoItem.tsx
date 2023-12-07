@@ -191,8 +191,12 @@ const isDisplayFlag = (date: string, step: number): string => {
   } else if (differenceInDays >= 3 && step === 0) {
     return '#FF5900'
   } else {
-    return 'yellow'
+    return 'transparent'
   }
+}
+
+const clickItem = data => {
+  localStorage.setItem('selectStudentState', JSON.stringify(data))
 }
 
 export default function FavoriteItem(props: ConsoultItemProps) {
@@ -243,12 +247,8 @@ export default function FavoriteItem(props: ConsoultItemProps) {
             </TfavoriteLabel>
           </Tfavorite>
           <Link
-            href={{
-              pathname: `/consult/detail/${student.id}`,
-              query: { student: JSON.stringify(student) },
-            }}
-            as={`/consult/detail/${student.id}`}
-            replace
+            href={`/consult/detail/${student.id}`}
+            onClick={() => clickItem(student)}
           >
             <ClickBox>
               <Tnum>

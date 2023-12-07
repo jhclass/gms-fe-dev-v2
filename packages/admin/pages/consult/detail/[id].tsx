@@ -206,11 +206,9 @@ const subData = {
 
 export default function Consoultation() {
   const router = useRouter()
-  const student: string | string[] = router.query.student
-  const parseStudent: studentData =
-    typeof student === 'string' ? JSON.parse(student) : student
+  const studentId = router.query.id
+  const [parseStudent, setparseStudent] = useState<studentData>()
   const [filterActive, setFilterActive] = useState(false)
-  const progressStatus = useRecoilValue(progressStatusState)
   const {
     loading: managerLoading,
     error: managerError,
@@ -221,42 +219,49 @@ export default function Consoultation() {
     error: subjectError,
     data: subjectData,
   } = useQuery(SEE_SUBJECT_QUERY)
+  const progressStatus = useRecoilValue(progressStatusState)
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject || []
   const [stVisitDate, setStVisitDate] = useState(new Date())
   const [expEnrollDate, setExpEnrollDate] = useState(new Date())
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
-  const [progressStste, setProgressState] = useState('')
-  const [manager, setManager] = useState('없음')
+  const [manager, setManager] = useState('담당자 지정필요')
   const [subjectSelected, setSubjectSelected] = useState([])
   const defaultValues = parseStudent
   const { isOpen, onOpen } = useDisclosure()
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
+      updateStudentStateId: parseStudent?.id,
+      campus: parseStudent?.campus,
+      category: parseStudent?.category,
       stName: parseStudent?.stName,
       phoneNum1: parseStudent?.phoneNum1,
       phoneNum2: parseStudent?.phoneNum2,
       phoneNum3: parseStudent?.phoneNum3,
-      currentManager: parseStudent?.currentManager,
       subject: parseStudent?.subject,
       detail: parseStudent?.detail,
-      agreement: parseStudent?.agreement,
       progress: parseStudent?.progress,
       stEmail: parseStudent?.stEmail,
       stAddr: parseStudent?.stAddr,
-      perchase: parseStudent?.perchase,
-      createdAt: parseStudent?.createdAt,
-      receiptDiv: parseStudent?.receiptDiv,
       subDiv: parseStudent?.subDiv,
-      pic: parseStudent?.pic,
       stVisit: parseStudent?.stVisit,
       expEnrollDate: parseStudent?.expEnrollDate,
+      perchase: parseStudent?.perchase,
+      pic: parseStudent?.pic,
+      receiptDiv: parseStudent?.receiptDiv,
     },
   })
+
+  useEffect(() => {
+    const localStorageData = localStorage.getItem('selectStudentState')
+    const parseData = JSON.parse(localStorageData)
+    setparseStudent(parseData)
+  }, [studentId])
+
   useEffect(() => {
     if (parseStudent && receipt === '없음') {
-      if (parseStudent.receiptDiv !== null) {
+      if (parseStudent.receiptDiv !== '') {
         setReceipt(parseStudent.receiptDiv)
       } else {
         setReceipt('없음')
@@ -269,21 +274,21 @@ export default function Consoultation() {
         setSub('없음')
       }
     }
-    if (parseStudent && progressStste === '') {
-      setProgressState(String(parseStudent.progress))
-    }
-    if (parseStudent && manager === '없음') {
+    if (parseStudent && manager === '담당자 지정필요') {
       if (parseStudent.pic !== null) {
         setManager(parseStudent.pic)
       } else {
-        setManager('없음')
+        setManager('담당자 지정필요')
       }
     }
-  }, [parseStudent, receipt, sub, progressStste])
-
+  }, [parseStudent, receipt, sub, stVisitDate])
+  console.log(parseStudent)
   const onSubmit = data => {
     const { isDirty, dirtyFields } = formState
     const upDateStudent = {
+      updateStudentStateId: data.id,
+      campus: data.stName,
+      category: data.category,
       stName: data.stName,
       phoneNum1: data.phoneNum1,
       phoneNum2: data.phoneNum2,
@@ -294,10 +299,11 @@ export default function Consoultation() {
       stEmail: data.stEmail,
       stAddr: data.stAddr,
       subDiv: data.subDiv,
-      receiptDiv: data.receiptDiv,
       stVisit: data.stVisit,
       expEnrollDate: data.expEnrollDate,
+      perchase: data.perchase,
       pic: data.pic,
+      receiptDiv: data.receiptDiv,
     }
     if (isDirty) {
       console.log('수정된 필드:', dirtyFields)
@@ -321,15 +327,11 @@ export default function Consoultation() {
   const handleReceiptChange = e => {
     setReceipt(e.target.value)
   }
-
   const handleSubChange = e => {
     setSub(e.target.value)
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
-  }
-  const test = () => {
-    onOpen()
   }
   return (
     <>
@@ -354,7 +356,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="이름"
-                  defaultValue={parseStudent?.stName || ''}
+                  defaultValue={parseStudent?.stName || null}
                   onChange={e => {
                     register('stName').onChange(e)
                   }}
@@ -368,7 +370,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="이메일"
-                  defaultValue={parseStudent?.stEmail || ''}
+                  defaultValue={parseStudent?.stEmail || null}
                   onChange={e => {
                     register('stEmail').onChange(e)
                   }}
@@ -384,7 +386,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="전화번호1"
-                  defaultValue={parseStudent?.phoneNum1 || ''}
+                  defaultValue={parseStudent?.phoneNum1 || null}
                   onChange={e => {
                     register('phoneNum1').onChange(e)
                   }}
@@ -398,7 +400,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="전화번호2"
-                  defaultValue={parseStudent?.phoneNum2 || ''}
+                  defaultValue={parseStudent?.phoneNum2 || null}
                   onChange={e => {
                     register('phoneNum2').onChange(e)
                   }}
@@ -412,7 +414,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="전화번호3"
-                  defaultValue={parseStudent?.phoneNum3 || ''}
+                  defaultValue={parseStudent?.phoneNum3 || null}
                   onChange={e => {
                     register('phoneNum3').onChange(e)
                   }}
@@ -420,59 +422,30 @@ export default function Consoultation() {
                   {...register('phoneNum3')}
                 />
               </FlexBox>
-              <Input
-                labelPlacement="outside"
-                placeholder="상담과목"
-                variant="bordered"
-                radius="md"
-                type="text"
-                label="상담과목"
-                // value={parseStudent?.subject}
-                className="hidden w-full"
-                onClick={test}
-              />
-              <ClickModal
-                label="상담과목"
-                list={subjectList}
+              <Controller
+                control={control}
+                name="subject"
                 defaultValue={parseStudent?.subject}
-                subjectSelected={subjectSelected}
-                setSubjectSelected={setSubjectSelected}
+                render={({ field }) => (
+                  <ClickModal
+                    label="상담과목"
+                    list={subjectList}
+                    defaultValue={parseStudent?.subject}
+                    subjectSelected={subjectSelected}
+                    setSubjectSelected={setSubjectSelected}
+                    inputRef={field.ref}
+                    onChange={value => {
+                      setValue('subject', value) // 필드의 값 업데이트
+                      setSubjectSelected(value) // subjectSelected 값 업데이트
+                    }}
+                  />
+                )}
               />
-
               <FlexBox>
-                {/* <RadioBox>
-                  <RadioGroup
-                    label={<FilterLabel>접수구분</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={receipt}
-                    onValueChange={setReceipt}
-                  >
-                    {Object.entries(receiptData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                </RadioBox> */}
-                {/* <RadioBox>
-                  <RadioGroup
-                    label={<FilterLabel>수강구분</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={sub}
-                    onValueChange={setSub}
-                  >
-                    {Object.entries(subData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                </RadioBox> */}
                 <Controller
                   control={control}
                   name="receiptDiv"
+                  defaultValue={parseStudent?.receiptDiv}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
@@ -486,6 +459,7 @@ export default function Consoultation() {
                         field.onChange(value)
                         handleReceiptChange(value)
                       }}
+                      {...register('receiptDiv')}
                     >
                       {Object.entries(receiptData).map(([key, item]) => (
                         <SelectItem key={item} value={item}>
@@ -498,6 +472,7 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="subDiv"
+                  defaultValue={parseStudent?.subDiv}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
@@ -511,6 +486,7 @@ export default function Consoultation() {
                         field.onChange(value)
                         handleSubChange(value)
                       }}
+                      {...register('subDiv')}
                     >
                       {Object.entries(subData).map(([key, item]) => (
                         <SelectItem key={item} value={item}>
@@ -525,6 +501,7 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="pic"
+                  defaultValue={parseStudent?.pic}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
@@ -538,9 +515,13 @@ export default function Consoultation() {
                         field.onChange(value)
                         handleManagerChange(value)
                       }}
+                      {...register('pic')}
                     >
-                      <SelectItem key={'없음'} value={'없음'}>
-                        {'없음'}
+                      <SelectItem
+                        key={'담당자 지정필요'}
+                        value={'담당자 지정필요'}
+                      >
+                        {'담당자 지정필요'}
                       </SelectItem>
                       {managerList?.map(item => (
                         <SelectItem key={item.mUsername} value={item.mUsername}>
@@ -561,30 +542,40 @@ export default function Consoultation() {
                   value={fametDate(parseStudent?.createdAt) || ''}
                   startContent={<i className="xi-calendar" />}
                   className="w-full"
-                  {...register('createdAt')}
                 />
               </FlexBox>
               <RadioBox>
-                <RadioGroup
-                  label={<FilterLabel>진행상태</FilterLabel>}
-                  orientation="horizontal"
-                  className="gap-1"
-                  value={progressStste}
-                  onValueChange={setProgressState}
-                  {...register('progress')}
-                >
-                  {Object.entries(progressStatus).map(([key, value]) => (
-                    <Radio key={key} value={key}>
-                      {value.name}
-                    </Radio>
-                  ))}
-                </RadioGroup>
+                <Controller
+                  control={control}
+                  name="progress"
+                  defaultValue={parseStudent?.progress}
+                  render={({ field, fieldState }) => (
+                    <RadioGroup
+                      label={<FilterLabel>진행상태</FilterLabel>}
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={String(parseStudent?.progress)}
+                      onValueChange={value => {
+                        field.onChange(parseInt(value))
+                      }}
+                      {...register('progress')}
+                    >
+                      {Object.entries(progressStatus).map(([key, value]) => (
+                        <Radio key={key} value={key}>
+                          {value.name}
+                        </Radio>
+                      ))}
+                    </RadioGroup>
+                  )}
+                />
               </RadioBox>
               <FlexBox>
                 <DatePickerBox>
                   <Controller
                     control={control}
                     name="stVisit"
+                    // locale="ko"
+                    defaultValue={parseStudent?.stVisit}
                     render={({ field, fieldState }) => (
                       <DatePicker
                         selected={stVisitDate}
@@ -594,6 +585,8 @@ export default function Consoultation() {
                           field.onChange(date)
                           setStVisitDate(date)
                         }}
+                        ref={field.ref}
+                        dateFormat="yyyy/MM/dd HH:mm"
                         customInput={
                           <Input
                             label="상담예정일"
@@ -612,6 +605,7 @@ export default function Consoultation() {
                   <Controller
                     control={control}
                     name="expEnrollDate"
+                    defaultValue={parseStudent?.expEnrollDate}
                     render={({ field, fieldState }) => (
                       <DatePicker
                         selected={expEnrollDate}
@@ -621,6 +615,8 @@ export default function Consoultation() {
                           field.onChange(date)
                           setExpEnrollDate(date)
                         }}
+                        ref={field.ref}
+                        dateFormat="yyyy/MM/dd HH:mm"
                         customInput={
                           <Input
                             label="수강예정일"
