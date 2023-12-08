@@ -149,116 +149,53 @@ export default function Form() {
               }}
               name="groupSelected"
               render={({ field, fieldState }) => (
-                <Tabs aria-label="Options" color="primary" className="w-full">
-                  <Tab key="오프라인" title="오프라인">
-                    <div className="w-full border-2 rounded-lg p-7">
-                      <CheckboxGroup
-                        value={groupSelected}
-                        onValueChange={handleCheckboxChange}
-                      >
-                        <h4 className="text-base text-primary">커리어패스</h4>
-                        <Checkbox size="md" value="웹툰">
-                          <span className="text-lg text-zinc-600">웹툰</span>
-                        </Checkbox>
-                        <Checkbox size="md" value="이모티콘">
-                          <span className="text-lg text-zinc-600">
-                            이모티콘
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="컴퓨터그래픽스운용기능사">
-                          <span className="text-lg text-zinc-600">
-                            컴퓨터그래픽스운용기능사
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="웹디자인기능사">
-                          <span className="text-lg text-zinc-600">
-                            웹디자인기능사
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="OA">
-                          <span className="text-lg text-zinc-600">OA</span>
-                        </Checkbox>
-                        <Checkbox size="md" value="실내건축">
-                          <span className="text-lg text-zinc-600">
-                            실내건축
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="영상편집">
-                          <span className="text-lg text-zinc-600">
-                            영상편집
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="포토샵(단기)">
-                          <span className="text-lg text-zinc-600">
-                            포토샵(단기)
-                          </span>
-                        </Checkbox>
-                        <h4 className="text-base text-primary">국비지원</h4>
-                        <Checkbox
-                          size="md"
-                          value="[과정평가형] 실내건축산업기사"
-                        >
-                          <span className="text-lg text-zinc-600">
-                            [과정평가형] 실내건축산업기사
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="광고홍보 영상편집">
-                          <span className="text-lg text-zinc-600">
-                            광고홍보 영상편집
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="디지털디자인 영상편집">
-                          <span className="text-lg text-zinc-600">
-                            디지털디자인 영상편집
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="GTQ">
-                          <span className="text-lg text-zinc-600">GTQ</span>
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </div>
-                  </Tab>
-                  <Tab key="온라인" title="온라인">
-                    <div className="w-full border-2 rounded-lg p-7">
-                      <CheckboxGroup
-                        value={groupSelected}
-                        onValueChange={handleCheckboxChange}
-                      >
-                        <h4 className="text-base text-primary">커리어패스</h4>
-                        <Checkbox size="md" value="파이썬">
-                          <span className="text-lg text-zinc-600">파이썬</span>
-                        </Checkbox>
-                        <Checkbox size="md" value="React">
-                          <span className="text-lg text-zinc-600">React</span>
-                        </Checkbox>
-                        <Checkbox size="md" value="자바">
-                          <span className="text-lg text-zinc-600">자바</span>
-                        </Checkbox>
-                        <h4 className="text-base mt-7 text-primary">
-                          국비지원
-                        </h4>
-                        <Checkbox size="md" value="정보처리산업기사">
-                          <span className="text-lg text-zinc-600">
-                            정보처리산업기사
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="풀스택 웹개발">
-                          <span className="text-lg text-zinc-600">
-                            풀스택 웹개발
-                          </span>
-                        </Checkbox>
-                        <Checkbox size="md" value="앱개발">
-                          <span className="text-lg text-zinc-600">앱개발</span>
-                        </Checkbox>
-                        <Checkbox size="md" value="백엔드개발">
-                          <span className="text-lg text-zinc-600">
-                            백엔드개발
-                          </span>
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </div>
-                  </Tab>
-                </Tabs>
+                <div className="w-full border-2 rounded-lg p-7">
+                  <CheckboxGroup
+                    value={groupSelected}
+                    onValueChange={handleCheckboxChange}
+                  >
+                    <h4 className="text-base text-primary">상담과정 선택</h4>
+                    <Checkbox size="md" value="웹툰">
+                      <span className="text-lg text-zinc-600">웹툰</span>
+                    </Checkbox>
+                    <Checkbox size="md" value="이모티콘">
+                      <span className="text-lg text-zinc-600">이모티콘</span>
+                    </Checkbox>
+                    <Checkbox size="md" value="컴퓨터그래픽스운용기능사">
+                      <span className="text-lg text-zinc-600">
+                        컴퓨터그래픽스운용기능사
+                      </span>
+                    </Checkbox>
+                    <Checkbox size="md" value="웹디자인기능사">
+                      <span className="text-lg text-zinc-600">
+                        웹디자인기능사
+                      </span>
+                    </Checkbox>
+                    <Checkbox size="md" value="OA">
+                      <span className="text-lg text-zinc-600">OA</span>
+                    </Checkbox>
+                    <Checkbox size="md" value="실내건축">
+                      <span className="text-lg text-zinc-600">실내건축</span>
+                    </Checkbox>
+                    <Checkbox size="md" value="영상편집">
+                      <span className="text-lg text-zinc-600">영상편집</span>
+                    </Checkbox>
+                    <Checkbox size="md" value="포토샵(단기)">
+                      <span className="text-lg text-zinc-600">
+                        포토샵(단기)
+                      </span>
+                    </Checkbox>
+                    <h4 className="text-base text-primary">수업 방식 선택</h4>
+                    <Checkbox size="md" value="오프라인">
+                      <span className="text-lg text-zinc-600">오프라인</span>
+                    </Checkbox>
+                    <Checkbox size="md" value="실시간 온라인">
+                      <span className="text-lg text-zinc-600">
+                        실시간 온라인
+                      </span>
+                    </Checkbox>
+                  </CheckboxGroup>
+                </div>
               )}
             />
           </div>
