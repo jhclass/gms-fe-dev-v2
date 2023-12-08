@@ -210,10 +210,6 @@ const isDisplayFlag = (date: string, step: number): string => {
     (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
   )
 
-  console.log('currentDate : ', currentDate)
-  console.log('differenceInDays : ', differenceInDays)
-  console.log('step : ', step)
-
   if (differenceInDays >= 0 && differenceInDays < 3) {
     return '#007de9'
   } else if (differenceInDays >= 3 && step === 0) {

@@ -6,23 +6,33 @@ import { useRouter } from 'next/router'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
+  Checkbox,
+  CheckboxGroup,
   Input,
   Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
   Textarea,
+  Button,
   useDisclosure,
 } from '@nextui-org/react'
 import { progressStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_STUDENTSTATE_MUTATION,
+  UPDATE_STUDENT_STATE_MUTATION,
+} from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '@/components/common/Button'
 import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import ClickModal from '@/components/common/ClickModal'
+import Button2 from '@/components/common/Button'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -219,17 +229,15 @@ export default function Consoultation() {
     error: subjectError,
     data: subjectData,
   } = useQuery(SEE_SUBJECT_QUERY)
+  const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject || []
-  const [stVisitDate, setStVisitDate] = useState(new Date())
-  const [expEnrollDate, setExpEnrollDate] = useState(new Date())
-  const [receipt, setReceipt] = useState('없음')
-  const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
-  const [subjectSelected, setSubjectSelected] = useState([])
+  const [subjectSelected, setSubjectSelected] = useState(subjectList)
+  const [isOPenModal, setIsOPenModal] = useState(false)
   const defaultValues = parseStudent
-  const { isOpen, onOpen } = useDisclosure()
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
       updateStudentStateId: parseStudent?.id,
@@ -252,6 +260,13 @@ export default function Consoultation() {
       receiptDiv: parseStudent?.receiptDiv,
     },
   })
+  const { isDirty, dirtyFields } = formState
+  const [stVisitDate, setStVisitDate] = useState(null)
+  const [expEnrollDate, setExpEnrollDate] = useState(null)
+  const [receipt, setReceipt] = useState('없음')
+  const [sub, setSub] = useState('없음')
+  const [manager, setManager] = useState('담당자 지정필요')
+  const test = parseStudent?.receiptDiv
 
   useEffect(() => {
     const localStorageData = localStorage.getItem('selectStudentState')
@@ -281,33 +296,56 @@ export default function Consoultation() {
         setManager('담당자 지정필요')
       }
     }
-  }, [parseStudent, receipt, sub, stVisitDate])
-  console.log(parseStudent)
-  const onSubmit = data => {
-    const { isDirty, dirtyFields } = formState
-    const upDateStudent = {
-      updateStudentStateId: data.id,
-      campus: data.stName,
-      category: data.category,
-      stName: data.stName,
-      phoneNum1: data.phoneNum1,
-      phoneNum2: data.phoneNum2,
-      phoneNum3: data.phoneNum3,
-      subject: data.subject,
-      detail: data.detail,
-      progress: data.progress,
-      stEmail: data.stEmail,
-      stAddr: data.stAddr,
-      subDiv: data.subDiv,
-      stVisit: data.stVisit,
-      expEnrollDate: data.expEnrollDate,
-      perchase: data.perchase,
-      pic: data.pic,
-      receiptDiv: data.receiptDiv,
+    if (parseStudent && stVisitDate == null) {
+      if (parseStudent.stVisit !== null) {
+        const date = parseInt(parseStudent.stVisit)
+        setStVisitDate(date)
+      } else {
+        setStVisitDate(null)
+      }
     }
+    if (parseStudent && expEnrollDate == null) {
+      if (parseStudent.expEnrollDate !== null) {
+        const date = parseInt(parseStudent.expEnrollDate)
+        setExpEnrollDate(date)
+      } else {
+        setExpEnrollDate(null)
+      }
+    }
+  }, [parseStudent, receipt, sub, manager, stVisitDate, expEnrollDate])
+
+  const onSubmit = data => {
     if (isDirty) {
+      console.log(isDirty)
       console.log('수정된 필드:', dirtyFields)
-      console.log(upDateStudent)
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        updateStudent({
+          variables: {
+            updateStudentStateId: defaultValues.id,
+            campus: defaultValues.campus,
+            stName: data.stName,
+            category: defaultValues.category,
+            phoneNum1: data.phoneNum1,
+            phoneNum2: data.phoneNum2,
+            phoneNum3: data.phoneNum3,
+            subject: data.subject,
+            detail: data.detail,
+            progress: data.progress,
+            stEmail: data.stEmail,
+            stAddr: defaultValues.stAddr,
+            subDiv: data.subDiv,
+            stVisit: new Date(data.stVisit),
+            expEnrollDate: new Date(data.expEnrollDate),
+            pic: data.pic,
+            receiptDiv: data.receiptDiv,
+          },
+          onCompleted: data => {
+            console.log(data)
+            alert('수정되었습니다.')
+          },
+        })
+      }
     }
   }
 
@@ -332,6 +370,15 @@ export default function Consoultation() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
+  }
+
+  const handleCheckboxChange = values => {
+    setSubjectSelected(values)
+  }
+  const clickSubmit = () => {
+    setValue('subject', subjectSelected)
+    console.log(subjectSelected)
+    onClose()
   }
   return (
     <>
@@ -422,44 +469,91 @@ export default function Consoultation() {
                   {...register('phoneNum3')}
                 />
               </FlexBox>
+
               <Controller
                 control={control}
                 name="subject"
                 defaultValue={parseStudent?.subject}
                 render={({ field }) => (
-                  <ClickModal
-                    label="상담과목"
-                    list={subjectList}
-                    defaultValue={parseStudent?.subject}
-                    subjectSelected={subjectSelected}
-                    setSubjectSelected={setSubjectSelected}
-                    inputRef={field.ref}
-                    onChange={value => {
-                      setValue('subject', value) // 필드의 값 업데이트
-                      setSubjectSelected(value) // subjectSelected 값 업데이트
-                    }}
-                  />
+                  <>
+                    <Textarea
+                      readOnly
+                      label="상담 과정"
+                      labelPlacement="outside"
+                      className="max-w-full"
+                      variant="bordered"
+                      minRows={1}
+                      defaultValue={
+                        subjectSelected.length > 0
+                          ? String(subjectSelected.join(', '))
+                          : String(parseStudent?.subject.join(', '))
+                      }
+                      onClick={onOpen}
+                      {...register('subject')}
+                    />
+                    <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+                      <ModalContent>
+                        {onClose => (
+                          <>
+                            <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                            <ModalBody>
+                              <CheckboxGroup
+                                value={subjectSelected}
+                                onChange={handleCheckboxChange}
+                              >
+                                {subjectList?.map(item => (
+                                  <Checkbox
+                                    key={item.id}
+                                    value={item.subjectName}
+                                  >
+                                    {item.subjectName}
+                                  </Checkbox>
+                                ))}
+                              </CheckboxGroup>
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button
+                                color="danger"
+                                variant="light"
+                                onPress={onClose}
+                              >
+                                Close
+                              </Button>
+                              <Button
+                                color="primary"
+                                onPress={() => {
+                                  field.onChange(subjectSelected)
+                                  clickSubmit()
+                                }}
+                              >
+                                선택
+                              </Button>
+                            </ModalFooter>
+                          </>
+                        )}
+                      </ModalContent>
+                    </Modal>
+                  </>
                 )}
               />
+
               <FlexBox>
                 <Controller
                   control={control}
                   name="receiptDiv"
-                  defaultValue={parseStudent?.receiptDiv}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
                       label={<FilterLabel>접수구분</FilterLabel>}
                       placeholder=" "
                       className="w-full"
-                      defaultValue=""
+                      defaultValue={parseStudent?.receiptDiv}
                       variant="bordered"
                       selectedKeys={[receipt]}
                       onChange={value => {
                         field.onChange(value)
                         handleReceiptChange(value)
                       }}
-                      {...register('receiptDiv')}
                     >
                       {Object.entries(receiptData).map(([key, item]) => (
                         <SelectItem key={item} value={item}>
@@ -472,21 +566,19 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="subDiv"
-                  defaultValue={parseStudent?.subDiv}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
                       label={<FilterLabel>수강구분</FilterLabel>}
                       placeholder=" "
                       className="w-full"
-                      defaultValue=""
+                      defaultValue={parseStudent?.subDiv}
                       variant="bordered"
                       selectedKeys={[sub]}
                       onChange={value => {
                         field.onChange(value)
-                        handleSubChange(value)
+                        handleSubChange
                       }}
-                      {...register('subDiv')}
                     >
                       {Object.entries(subData).map(([key, item]) => (
                         <SelectItem key={item} value={item}>
@@ -501,21 +593,19 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="pic"
-                  defaultValue={parseStudent?.pic}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
                       label="담당자"
                       placeholder=" "
                       className="w-full"
-                      defaultValue=""
+                      defaultValue={parseStudent?.pic}
                       variant="bordered"
                       selectedKeys={[manager]}
                       onChange={value => {
                         field.onChange(value)
                         handleManagerChange(value)
                       }}
-                      {...register('pic')}
                     >
                       <SelectItem
                         key={'담당자 지정필요'}
@@ -558,7 +648,6 @@ export default function Consoultation() {
                       onValueChange={value => {
                         field.onChange(parseInt(value))
                       }}
-                      {...register('progress')}
                     >
                       {Object.entries(progressStatus).map(([key, value]) => (
                         <Radio key={key} value={key}>
@@ -578,13 +667,16 @@ export default function Consoultation() {
                     defaultValue={parseStudent?.stVisit}
                     render={({ field, fieldState }) => (
                       <DatePicker
-                        selected={stVisitDate}
+                        selected={
+                          stVisitDate === null ? null : new Date(stVisitDate)
+                        }
                         placeholderText="기간을 선택해주세요."
                         isClearable
                         onChange={date => {
                           field.onChange(date)
                           setStVisitDate(date)
                         }}
+                        showTimeSelect
                         ref={field.ref}
                         dateFormat="yyyy/MM/dd HH:mm"
                         customInput={
@@ -608,7 +700,11 @@ export default function Consoultation() {
                     defaultValue={parseStudent?.expEnrollDate}
                     render={({ field, fieldState }) => (
                       <DatePicker
-                        selected={expEnrollDate}
+                        selected={
+                          expEnrollDate === null
+                            ? null
+                            : new Date(expEnrollDate)
+                        }
                         placeholderText="기간을 선택해주세요."
                         isClearable
                         onChange={date => {
@@ -616,7 +712,7 @@ export default function Consoultation() {
                           setExpEnrollDate(date)
                         }}
                         ref={field.ref}
-                        dateFormat="yyyy/MM/dd HH:mm"
+                        dateFormat="yyyy/MM/dd"
                         customInput={
                           <Input
                             label="수강예정일"
@@ -647,17 +743,17 @@ export default function Consoultation() {
                 />
               </FlexBox>
               <BtnBox>
-                <Button buttonType="submit" width="100%" height="2.5rem">
+                <Button2 buttonType="submit" width="100%" height="2.5rem">
                   수정
-                </Button>
-                <Button
+                </Button2>
+                <Button2
                   buttonType="reset"
                   width="100%"
                   height="2.5rem"
                   typeBorder={true}
                 >
                   목록으로
-                </Button>
+                </Button2>
               </BtnBox>
             </DetailForm>
           </DetailBox>
@@ -672,9 +768,9 @@ export default function Consoultation() {
                   minRows={5}
                 />
                 <MemoBtn>
-                  <Button buttonType="submit" width="100%" height="2.5rem">
+                  <Button2 buttonType="submit" width="100%" height="2.5rem">
                     등록
-                  </Button>
+                  </Button2>
                 </MemoBtn>
               </MemoBox>
               <MemoList>
@@ -691,12 +787,12 @@ export default function Consoultation() {
                     className="max-w-full"
                   />
                   <MemoListBtn>
-                    <Button buttonType="submit" width="100%" height="2.5rem">
+                    <Button2 buttonType="submit" width="100%" height="2.5rem">
                       수정
-                    </Button>
-                    <Button typeBorder={true} width="100%" height="2.5rem">
+                    </Button2>
+                    <Button2 typeBorder={true} width="100%" height="2.5rem">
                       삭제
-                    </Button>
+                    </Button2>
                   </MemoListBtn>
                 </MemoItem>
                 <MemoItem>
