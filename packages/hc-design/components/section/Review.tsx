@@ -2,13 +2,13 @@ export default function Review() {
   const list = [
     {
       name: '김○○',
-      img: '/src/images/user.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/user.webp',
       class: '프론트엔드 마스터반',
       rating: 3.7,
     },
     {
       name: '이○○',
-      img: '/src/images/user.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/user.webp',
       class: '프론트엔드 마스터반',
       rating: 4.0,
     },

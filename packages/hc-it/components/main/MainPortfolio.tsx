@@ -20,73 +20,87 @@ export default function MainPortfolio() {
   const list = [
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt01.webp',
-      img: '/src/images/po01.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt01.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po01.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt02.webp',
-      img: '/src/images/po02.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt02.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po02.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt03.webp',
-      img: '/src/images/po03.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt03.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po03.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt04.webp',
-      img: '/src/images/po04.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt04.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po04.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt05.webp',
-      img: '/src/images/po05.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt05.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po05.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt06.webp',
-      img: '/src/images/po06.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt06.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po06.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt07.webp',
-      img: '/src/images/po07.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt07.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po07.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt08.webp',
-      img: '/src/images/po08.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt08.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po08.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt09.webp',
-      img: '/src/images/po09.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt09.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po09.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt10.webp',
-      img: '/src/images/po10.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt10.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po10.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt11.webp',
-      img: '/src/images/po11.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt11.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po11.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt12.webp',
-      img: '/src/images/po12.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt12.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po12.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt13.webp',
-      img: '/src/images/po13.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt13.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po13.webp',
     },
     {
       title: '포트폴리오1',
-      thumb: '/src/images/t_pt14.webp',
-      img: '/src/images/po14.webp',
+      thumb:
+        'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/t_pt14.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/po14.webp',
     },
   ]
 

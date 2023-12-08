@@ -9,19 +9,19 @@ export default function MainBnr() {
   const list = [
     {
       title: '프론트엔드 로드맵 마스터',
-      img: '/src/images/card01.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/card01.webp',
     },
     {
       title: '딥러닝, 인공지능 시그니처',
-      img: '/src/images/card02.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/card02.webp',
     },
     {
       title: '완성하는 백엔드 웹 개발',
-      img: '/src/images/card03.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/card03.webp',
     },
     {
       title: '우아한형제들 기술이사 김민태의 프론트엔드 아카데미',
-      img: '/src/images/card04.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/card04.webp',
     },
   ]
   return (

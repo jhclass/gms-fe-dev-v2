@@ -7,31 +7,31 @@ export default function Portfolio() {
   const list = [
     {
       title: '1',
-      img: '/src/images/de_sec5_con01.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_sec5_con01.webp',
       text1: '취업&이직을 위한',
       text2: '자기소개서 작성 꿀팁',
     },
     {
       title: '2',
-      img: '/src/images/de_sec5_con02.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_sec5_con02.webp',
       text1: '면접관 눈을 사로잡는',
       text2: '매력적인 포트폴리오 제작 방법',
     },
     {
       title: '3',
-      img: '/src/images/de_sec5_con03.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_sec5_con03.webp',
       text1: '면사전 과제 &기술 면접',
       text2: '대비 노하우',
     },
     {
       title: '4',
-      img: '/src/images/de_sec5_con04.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_sec5_con04.webp',
       text1: '공식 문서로',
       text2: '부족한 부분 채우는 효과적인 방법',
     },
     {
       title: '5',
-      img: '/src/images/de_sec5_con05.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_sec5_con05.webp',
       text1: '빠르게 변하는 프론트엔드 환경에서',
       text2: '트렌디한 기술 학습&중심잡기 노하우',
     },

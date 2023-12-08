@@ -56,7 +56,7 @@
   .star_bg {
     display: inline-block;
     vertical-align: center;
-    background-image: url('/src/images/star.svg');
+    background-image: url('https://highclass-image.s3.amazonaws.com/academy/hc_desine/common/star.svg');
     background-repeat: repeat-x;
     background-size: auto;
   }
@@ -64,7 +64,7 @@
   .star_bg_w {
     display: inline-block;
     vertical-align: center;
-    background-image: url('/src/images/star_w.svg');
+    background-image: url('https://highclass-image.s3.amazonaws.com/academy/hc_desine/common/star_w.svg');
     background-repeat: repeat-x;
     background-size: auto;
   }
