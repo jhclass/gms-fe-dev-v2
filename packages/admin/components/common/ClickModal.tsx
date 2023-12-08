@@ -1,12 +1,9 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { styled } from 'styled-components'
-import { motion } from 'framer-motion'
 import {
   Button,
   Checkbox,
   CheckboxGroup,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -38,35 +35,29 @@ const SelectListText = styled.div`
 `
 
 export default function ClickList({
-  label,
   list,
-  defaultValue,
   subjectSelected,
   setSubjectSelected,
-  inputRef,
   onChange,
+  isOPenModal,
+  setIsOPenModal,
 }) {
   const [selectCheck, setSelectCheck] = useState(subjectSelected)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const handleCheckboxChange = values => {
     setSelectCheck(values)
   }
   const clickSubmit = () => {
     setSubjectSelected(selectCheck)
     onChange(selectCheck)
-    onClose()
+    setIsOPenModal(false)
+    onClose
   }
+  console.log(isOPenModal)
   return (
     <>
-      <div onClick={onOpen}>
-        <TitleLabel>상담과목</TitleLabel>
-        <SelectListText>
-          {subjectSelected.length > 0
-            ? subjectSelected.join(', ')
-            : defaultValue.join(', ')}
-        </SelectListText>
-      </div>
-      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+      <div onClick={onOpen}>asdfasdf</div>
+      <Modal size={'2xl'} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {onClose => (
             <>

@@ -118,8 +118,8 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $updateStudentStateId: Int!
     $campus: String
-    $category: String
     $stName: String
+    $category: String
     $phoneNum1: String
     $phoneNum2: String
     $phoneNum3: String
@@ -139,8 +139,8 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
     updateStudentState(
       id: $updateStudentStateId
       campus: $campus
-      category: $category
       stName: $stName
+      category: $category
       phoneNum1: $phoneNum1
       phoneNum2: $phoneNum2
       phoneNum3: $phoneNum3
@@ -157,9 +157,9 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
       pic: $pic
       receiptDiv: $receiptDiv
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `

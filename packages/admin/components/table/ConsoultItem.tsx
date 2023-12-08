@@ -73,25 +73,6 @@ const Tflag = styled.div`
   width: 0.5rem;
   height: 100%;
 `
-// const Tflag = styled.div<{ $flagNum: number; $flagProgress: number }>`
-//   display: table-cell;
-//   width: 0.5rem;
-//   background: ${props =>
-//     props.$flagNum < 3
-//       ? '#007de9'
-//       : props.$flagProgress === 0
-//       ? '#FF5900'
-//       : 'yellow'};
-// `
-// const Tflag = styled.span`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 0.5rem;
-//   height: 100%;
-//   z-index: 2;
-//   display: block;
-// `
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -209,10 +190,6 @@ const isDisplayFlag = (date: string, step: number): string => {
   const differenceInDays = Math.floor(
     (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
   )
-
-  console.log('currentDate : ', currentDate)
-  console.log('differenceInDays : ', differenceInDays)
-  console.log('step : ', step)
 
   if (differenceInDays >= 0 && differenceInDays < 3) {
     return '#007de9'
