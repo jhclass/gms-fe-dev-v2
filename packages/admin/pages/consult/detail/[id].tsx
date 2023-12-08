@@ -22,17 +22,18 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react'
-import { progressStatusState } from '@/lib/recoilAtoms'
+import {
+  progressStatusState,
+  subStatusState,
+  receiptStatusState,
+} from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import {
-  SEARCH_STUDENTSTATE_MUTATION,
-  UPDATE_STUDENT_STATE_MUTATION,
-} from '@/graphql/mutations'
+import { UPDATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
-import ClickModal from '@/components/common/ClickModal'
 import Button2 from '@/components/common/Button'
+import SubjectList from '@/components/table/SubjectList'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -95,6 +96,76 @@ const BtnBox = styled.div`
   gap: 0.5rem;
   justify-content: center;
 `
+const Theader = styled.div`
+  width: 100%;
+  min-width: fit-content;
+  display: table-row;
+  flex-wrap: nowrap;
+  color: #111;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-bottom: 1px solid #e4e4e7;
+  text-align: center;
+`
+const TableItem = styled.div`
+  display: table;
+  position: relative;
+  width: 100%;
+  min-width: fit-content;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid #e4e4e7;
+  color: #71717a;
+  font-size: 0.875rem;
+  background: #fff;
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.8);
+  }
+`
+const TableRow = styled.div`
+  display: table-row;
+  width: 100%;
+  min-width: fit-content;
+  text-align: center;
+`
+const Tcheck = styled.div`
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+`
+const Tname = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: 300px;
+`
+const TsubDiv = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: 150px;
+`
+const Tfee = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: 150px;
+`
+
 const MemoBox = styled.div`
   width: 100%;
   display: flex;
@@ -201,19 +272,6 @@ type studentData = {
   pic: string
 }
 
-const receiptData = {
-  0: '없음',
-  1: '온라인',
-  2: '전화',
-  3: '방문',
-}
-
-const subData = {
-  0: '없음',
-  1: 'HRD',
-  2: '일반',
-}
-
 export default function Consoultation() {
   const router = useRouter()
   const studentId = router.query.id
@@ -231,6 +289,8 @@ export default function Consoultation() {
   } = useQuery(SEE_SUBJECT_QUERY)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
+  const receiptStatus = useRecoilValue(receiptStatusState)
+  const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject || []
   const [subjectSelected, setSubjectSelected] = useState(subjectList)
@@ -501,13 +561,25 @@ export default function Consoultation() {
                                 value={subjectSelected}
                                 onChange={handleCheckboxChange}
                               >
+                                <Theader>
+                                  <TableRow>
+                                    <Tcheck></Tcheck>
+                                    <Tname>과정명</Tname>
+                                    <TsubDiv>수강구분</TsubDiv>
+                                    <Tfee>과정 금액</Tfee>
+                                  </TableRow>
+                                </Theader>
                                 {subjectList?.map(item => (
-                                  <Checkbox
-                                    key={item.id}
-                                    value={item.subjectName}
-                                  >
-                                    {item.subjectName}
-                                  </Checkbox>
+                                  <TableItem>
+                                    <TableRow>
+                                      <Checkbox
+                                        key={item.id}
+                                        value={item.subjectName}
+                                      >
+                                        <SubjectList tableData={item} />
+                                      </Checkbox>
+                                    </TableRow>
+                                  </TableItem>
                                 ))}
                               </CheckboxGroup>
                             </ModalBody>
@@ -555,7 +627,7 @@ export default function Consoultation() {
                         handleReceiptChange(value)
                       }}
                     >
-                      {Object.entries(receiptData).map(([key, item]) => (
+                      {Object.entries(receiptStatus).map(([key, item]) => (
                         <SelectItem key={item} value={item}>
                           {item}
                         </SelectItem>
@@ -580,7 +652,7 @@ export default function Consoultation() {
                         handleSubChange
                       }}
                     >
-                      {Object.entries(subData).map(([key, item]) => (
+                      {Object.entries(subStatus).map(([key, item]) => (
                         <SelectItem key={item} value={item}>
                           {item}
                         </SelectItem>

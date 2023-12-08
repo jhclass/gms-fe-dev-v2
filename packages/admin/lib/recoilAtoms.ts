@@ -94,6 +94,21 @@ export const progressStatusState = atom({
   },
 })
 
+export const receiptStatusState = atom({
+  key: 'receiptStatus',
+  default: {
+    0: '없음',
+    1: '온라인',
+    2: '전화',
+    3: '방문',
+  },
+})
+
+export const subStatusState = atom({
+  key: 'subStatus',
+  default: { 0: '없음', 1: 'HRD', 2: '일반' },
+})
+
 // Filter
 export const studentFilterState = atom({
   key: 'studentFilterState',
