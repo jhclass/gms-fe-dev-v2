@@ -8,11 +8,11 @@ export default function Bnr() {
   const list = [
     {
       title: '타이틀111 타이틀111 타이틀111',
-      img: '/src/images/long02.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/long02.webp',
     },
     {
       title: '타이틀111 타이틀111 타이틀111',
-      img: '/src/images/long01.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/long01.webp',
     },
   ]
   return (
@@ -20,12 +20,20 @@ export default function Bnr() {
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="relative w-full flex justify-end md:justify-center bg-[#e7eef4]">
           <Link href="#" onClick={handleTest}>
-            <img alt="배너2" src="/src/images/long02.webp" className="w-full" />
+            <img
+              alt="배너2"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/long02.webp"
+              className="w-full"
+            />
           </Link>
         </div>
         <div className="relative w-full flex justify-start md:justify-center bg-[#370409]">
           <Link href="#" onClick={handleTest}>
-            <img alt="배너1" src="/src/images/long01.webp" className="w-full" />
+            <img
+              alt="배너1"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/long01.webp"
+              className="w-full"
+            />
           </Link>
         </div>
       </div>

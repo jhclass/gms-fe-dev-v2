@@ -53,7 +53,7 @@ export default function TopBnr() {
           <div className="flex flex-wrap items-center justify-center pr-12 lg:pr-0 flex-3 gap-x-4 gap-y-2 wrap">
             <Link href="">
               <img
-                src="/src/images/topbnr.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/topbnr.webp"
                 alt="topbnr"
                 className="h-full"
               />

@@ -10,10 +10,16 @@ export default function Section01_img() {
           </b>
         </p>
         <figure className="w-full mt-10 overflow-hidden rounded-xl">
-          <img src="/src/images/MAYA_01.webp" width="100%" />
+          <img
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/MAYA_01.webp"
+            width="100%"
+          />
         </figure>
         <figure className="inline-block w-full mt-10 overflow-hidden rounded-xl">
-          <img src="/src/images/MAYA_02.webp" width="100%" />
+          <img
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/MAYA_02.webp"
+            width="100%"
+          />
         </figure>
       </div>
     </>

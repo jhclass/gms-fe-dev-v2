@@ -25,12 +25,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_03.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_03.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_03_m.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_03_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -56,12 +56,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_02.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_02.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_02_m.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_02_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -86,12 +86,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_04.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_04.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_04_m.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_04_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -117,12 +117,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_05.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_05.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_05_m.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_05_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                   width="100%"
@@ -150,12 +150,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_01.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_01.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_01_m.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_01_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />
@@ -181,12 +181,12 @@ export default function MainSilder() {
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img
-                  src="/src/images/main_06.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_06.webp"
                   style={{ overflow: 'hidden' }}
                   className="hidden lg:block"
                 />
                 <img
-                  src="/src/images/main_06_m.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_06_m.webp"
                   style={{ overflow: 'hidden' }}
                   className="block lg:hidden"
                 />

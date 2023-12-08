@@ -14,7 +14,7 @@ export default function MainSection01() {
           </b>
         </p>
         <figure className="w-4/5 mx-auto mt-10">
-          <img src="/src/images/detail1.webp" />
+          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/detail1.webp" />
         </figure>
       </div>
     </>

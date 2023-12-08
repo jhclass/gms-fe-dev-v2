@@ -4,7 +4,7 @@ export default function Curriculum02() {
   const list = [
     {
       title: '원화의 드로잉 방법',
-      img: '/src/images/curri02.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/curri02.webp',
       content: [
         {
           tit: '학생의 원하는 스타일에 대한 상담',
@@ -22,7 +22,7 @@ export default function Curriculum02() {
     },
     {
       title: '원화의 드로잉 방법',
-      img: '/src/images/curri01.webp',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/curri01.webp',
       content: [
         {
           tit: '학습상담',

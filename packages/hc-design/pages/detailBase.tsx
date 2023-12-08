@@ -159,7 +159,10 @@ export default function Detail() {
         <div className="wrap">
           <ul className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="/src/images/de_con01.webp" className="w-24" />
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_con01.webp"
+                className="w-24"
+              />
               <p className="mt-5 text-base font-bold">
                 SSR/SSG을 활용한 SEO 최적화
               </p>
@@ -170,7 +173,10 @@ export default function Detail() {
               </p>
             </li>
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="/src/images/de_con02.webp" className="w-24" />
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_con02.webp"
+                className="w-24"
+              />
               <p className="mt-5 text-lg font-bold">
                 SSR/SSG을 활용한 SEO 최적화
               </p>
@@ -181,7 +187,10 @@ export default function Detail() {
               </p>
             </li>
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="/src/images/de_con03.webp" className="w-24" />
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_con03.webp"
+                className="w-24"
+              />
               <p className="mt-5 text-lg font-bold">
                 SSR/SSG을 활용한 SEO 최적화
               </p>
@@ -192,7 +201,10 @@ export default function Detail() {
               </p>
             </li>
             <li className="flex flex-col items-center px-10 py-8 bg-white rounded-lg">
-              <img src="/src/images/de_con04.webp" className="w-24" />
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/de_con04.webp"
+                className="w-24"
+              />
               <p className="mt-5 text-lg font-bold">
                 SSR/SSG을 활용한 SEO 최적화
               </p>

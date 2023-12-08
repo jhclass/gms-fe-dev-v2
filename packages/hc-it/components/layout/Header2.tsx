@@ -82,7 +82,7 @@ export default function Header() {
             <div className="flex items-center">
               <h1 className="mr-10 grow-0">
                 <Link href="/" className="block w-[10rem]">
-                  <img src="/src/images/hc_logo_2.svg" />
+                  <img src="https://highclass-image.s3.amazonaws.com/academy/hc_it/common/hc_logo_2.svg" />
                 </Link>
               </h1>
               <SearchBox />

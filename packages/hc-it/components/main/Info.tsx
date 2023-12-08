@@ -130,7 +130,7 @@ export default function Info() {
                 >
                   <img
                     alt="instagram 이벤트"
-                    src="/src/images/b01.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/b01.webp"
                     width="100%"
                   />
                 </Link>
@@ -145,7 +145,7 @@ export default function Info() {
                 >
                   <img
                     alt="instagram 이벤트"
-                    src="/src/images/b02.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/b02.webp"
                     width="100%"
                   />
                 </Link>
@@ -160,7 +160,7 @@ export default function Info() {
                 >
                   <img
                     alt="instagram 이벤트"
-                    src="/src/images/b03.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/b03.webp"
                     width="100%"
                   />
                 </Link>
@@ -175,7 +175,7 @@ export default function Info() {
                 >
                   <img
                     alt="instagram 이벤트"
-                    src="/src/images/b04.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/b04.webp"
                     width="100%"
                   />
                 </Link>
@@ -190,7 +190,7 @@ export default function Info() {
                 >
                   <img
                     alt="instagram 이벤트"
-                    src="/src/images/b05.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/b05.webp"
                     width="100%"
                   />
                 </Link>
@@ -205,7 +205,7 @@ export default function Info() {
                 >
                   <img
                     alt="instagram 이벤트"
-                    src="/src/images/b06.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_it/eximg/b06.webp"
                     width="100%"
                   />
                 </Link>
