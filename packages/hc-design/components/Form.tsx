@@ -107,24 +107,6 @@ export default function Form() {
     }
   }, [groupSelected])
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      console.log(checkPrivacy)
-      reset({
-        groupSelected: [],
-        campus: '',
-        name: '',
-        phone: '',
-        contents: '',
-        subDiv: '',
-        privacy: false,
-      })
-      setGroupSelected([])
-      setValue('privacy', false)
-      setCheckPrivacy(false)
-    }
-  }, [isSubmitSuccessful, reset])
-
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
     setGroupSelected(value)
