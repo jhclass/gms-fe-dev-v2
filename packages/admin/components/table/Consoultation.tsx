@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsoultItem from '@/components/table/ConsoultItem'
 import {
@@ -188,6 +188,7 @@ const PagerWrap = styled.div`
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
+  const [totalCount, setTotalCount] = useState(0)
   const { loading, error, data } = useQuery(SEE_STUDENT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
@@ -202,6 +203,10 @@ export default function ConsolutationTable() {
   const students = studentsData?.studentState || []
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
+
+  useEffect(() => {
+    setTotalCount(studentsData.totalCount)
+  }, [studentsData, totalCount])
 
   return (
     <>
@@ -265,16 +270,19 @@ export default function ConsolutationTable() {
             ))}
           </TableWrap>
         </ScrollShadow>
-        <PagerWrap>
-          <Pagination
-            variant="light"
-            showControls
-            total={4}
-            onChange={newPage => {
-              setCurrentPage(newPage)
-            }}
-          />
-        </PagerWrap>
+        {totalCount > 0 && (
+          <PagerWrap>
+            <Pagination
+              variant="light"
+              showControls
+              initialPage={currentPage}
+              total={Math.ceil(totalCount / currentLimit)}
+              onChange={newPage => {
+                setCurrentPage(newPage)
+              }}
+            />
+          </PagerWrap>
+        )}
       </TableArea>
     </>
   )

@@ -200,10 +200,6 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-const clickItem = data => {
-  localStorage.setItem('selectStudentState', JSON.stringify(data))
-}
-
 export default function ConsolutItem(props: ConsoultItemProps) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
@@ -256,10 +252,7 @@ export default function ConsolutItem(props: ConsoultItemProps) {
               />
             </TfavoriteLabel>
           </Tfavorite>
-          <Link
-            href={`/consult/detail/${student.id}`}
-            onClick={() => clickItem(student)}
-          >
+          <Link href={`/consult/detail/${student.id}`}>
             <ClickBox>
               <Tnum>
                 <EllipsisBox>

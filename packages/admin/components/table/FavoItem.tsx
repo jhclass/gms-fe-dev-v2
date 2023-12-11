@@ -195,10 +195,6 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-const clickItem = data => {
-  localStorage.setItem('selectStudentState', JSON.stringify(data))
-}
-
 export default function FavoriteItem(props: ConsoultItemProps) {
   const conIndex = props.itemIndex
   const student = props.tableData
@@ -246,10 +242,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               />
             </TfavoriteLabel>
           </Tfavorite>
-          <Link
-            href={`/consult/detail/${student.id}`}
-            onClick={() => clickItem(student)}
-          >
+          <Link href={`/consult/detail/${student.id}`}>
             <ClickBox>
               <Tnum>
                 <EllipsisBox>{conIndex + 1}</EllipsisBox>

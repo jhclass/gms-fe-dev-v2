@@ -29,7 +29,10 @@ import {
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import { UPDATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_STUDENTSTATE_MUTATION,
+  UPDATE_STUDENT_STATE_MUTATION,
+} from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
@@ -274,8 +277,8 @@ type studentData = {
 
 export default function Consoultation() {
   const router = useRouter()
-  const studentId = router.query.id
-  const [parseStudent, setparseStudent] = useState<studentData>()
+  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const [parseStudent, setParseStudent] = useState<studentData>()
   const [filterActive, setFilterActive] = useState(false)
   const {
     loading: managerLoading,
@@ -294,10 +297,11 @@ export default function Consoultation() {
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject || []
   const [subjectSelected, setSubjectSelected] = useState(subjectList)
-  const [isOPenModal, setIsOPenModal] = useState(false)
   const defaultValues = parseStudent
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
+    SEARCH_STUDENTSTATE_MUTATION,
+  )
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
       updateStudentStateId: parseStudent?.id,
@@ -329,10 +333,16 @@ export default function Consoultation() {
   const test = parseStudent?.receiptDiv
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem('selectStudentState')
-    const parseData = JSON.parse(localStorageData)
-    setparseStudent(parseData)
-  }, [studentId])
+    searchStudentStateMutation({
+      variables: {
+        searchStudentStateId: parseInt(studentId),
+      },
+      onCompleted: resData => {
+        const data = resData.searchStudentState.studentState[0]
+        setParseStudent(data)
+      },
+    })
+  }, [router, studentId])
 
   useEffect(() => {
     if (parseStudent && receipt === '없음') {
@@ -437,9 +447,12 @@ export default function Consoultation() {
   }
   const clickSubmit = () => {
     setValue('subject', subjectSelected)
-    console.log(subjectSelected)
     onClose()
   }
+
+  if (loading) return 'Submitting...'
+  if (error) return `Submission error! ${error.message}`
+
   return (
     <>
       {parseStudent !== undefined && (
@@ -449,6 +462,7 @@ export default function Consoultation() {
             isActive={filterActive}
             onBtn={false}
           />
+          {data.searchStudentState.stName}
           <DetailBox>
             <TopInfo>
               <span>최근 업데이트 일시 :</span>
@@ -546,7 +560,7 @@ export default function Consoultation() {
                       defaultValue={
                         subjectSelected.length > 0
                           ? String(subjectSelected.join(', '))
-                          : String(parseStudent?.subject.join(', '))
+                          : String(parseStudent.subject.join(', '))
                       }
                       onClick={onOpen}
                       {...register('subject')}
@@ -823,6 +837,7 @@ export default function Consoultation() {
                   width="100%"
                   height="2.5rem"
                   typeBorder={true}
+                  onClick={() => router.push('/consult')}
                 >
                   목록으로
                 </Button2>
