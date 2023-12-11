@@ -1,12 +1,10 @@
 import { styled } from 'styled-components'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
-import router from 'next/router'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 
 type ConsoultItemProps = {
   tableData: {
@@ -195,10 +193,6 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-const clickItem = data => {
-  localStorage.setItem('selectStudentState', JSON.stringify(data))
-}
-
 export default function FavoriteItem(props: ConsoultItemProps) {
   const conIndex = props.itemIndex
   const student = props.tableData
@@ -246,10 +240,7 @@ export default function FavoriteItem(props: ConsoultItemProps) {
               />
             </TfavoriteLabel>
           </Tfavorite>
-          <Link
-            href={`/consult/detail/${student.id}`}
-            onClick={() => clickItem(student)}
-          >
+          <Link href={`/consult/detail/${student.id}`}>
             <ClickBox>
               <Tnum>
                 <EllipsisBox>{conIndex + 1}</EllipsisBox>

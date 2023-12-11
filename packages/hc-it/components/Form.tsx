@@ -20,25 +20,25 @@ import badwords from '@/lib/badwords.json'
 const STUDENT_STATE_MUTATION = gql`
   mutation CreateStudentState(
     $stName: String!
-    $campus: String!
     $agreement: String!
-    $subject: [String!]
     $phoneNum1: String!
+    $subject: [String!]
     $detail: String
-    $subDiv: String
+    $receiptDiv: String
+    $campus: String
   ) {
     createStudentState(
       stName: $stName
-      campus: $campus
       agreement: $agreement
-      subject: $subject
       phoneNum1: $phoneNum1
+      subject: $subject
       detail: $detail
-      subDiv: $subDiv
+      receiptDiv: $receiptDiv
+      campus: $campus
     ) {
+      ok
       error
       message
-      ok
     }
   }
 `
@@ -49,7 +49,7 @@ type FormValues = {
   phone: string
   contents: string
   privacy: string
-  subDiv: string
+  receiptDiv: string
 }
 
 export default function Form() {
@@ -88,7 +88,7 @@ export default function Form() {
             agreement: data.privacy ? '동의' : '비동의',
             phoneNum1: data.phone,
             detail: data.contents,
-            subDiv: data.subDiv,
+            receiptDiv: data.receiptDiv,
           },
           onCompleted: data => {
             console.log(data)
@@ -230,7 +230,7 @@ export default function Form() {
                   label="상담 구분"
                   className="w-full"
                   defaultValue={'온라인'}
-                  {...register('subDiv')}
+                  {...register('receiptDiv')}
                 />
               </li>
               <li className="hidden py-2">

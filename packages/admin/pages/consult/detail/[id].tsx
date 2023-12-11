@@ -29,11 +29,17 @@ import {
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import { UPDATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_STUDENTSTATE_MUTATION,
+  UPDATE_STUDENT_STATE_MUTATION,
+} from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
-import SubjectList from '@/components/table/SubjectList'
+import useUserLogsMutation from '@/utils/userLogs'
+import SubjectItem from '@/components/table/SubjectItem'
+import useIsMmeQuery from '@/utils/isMme'
+import useMmeQuery from '@/utils/mMe'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -239,7 +245,7 @@ const MemoListBtn = styled.p`
 
 const MemoInfo = styled.label`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 `
 const MemoName = styled.span`
   color: #11181c;
@@ -270,12 +276,22 @@ type studentData = {
   updatedAt: string
   receiptDiv: string
   pic: string
+  consultationMemo: {
+    id: number
+    content: string
+    createdAt: string
+    updatedAt: string
+    manageUsers: {}
+  }
 }
 
 export default function Consoultation() {
+  const { useMme } = useMmeQuery()
+  const mId = useMme('id')
+  console.log(mId)
   const router = useRouter()
-  const studentId = router.query.id
-  const [parseStudent, setparseStudent] = useState<studentData>()
+  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const [parseStudent, setParseStudent] = useState<studentData>()
   const [filterActive, setFilterActive] = useState(false)
   const {
     loading: managerLoading,
@@ -287,17 +303,20 @@ export default function Consoultation() {
     error: subjectError,
     data: subjectData,
   } = useQuery(SEE_SUBJECT_QUERY)
+  const { userLogs } = useUserLogsMutation()
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject || []
-  const [subjectSelected, setSubjectSelected] = useState(subjectList)
-  const [isOPenModal, setIsOPenModal] = useState(false)
-  const defaultValues = parseStudent
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 
+  const [subjectSelected, setSubjectSelected] = useState(subjectList)
+  const defaultValues = parseStudent
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
+    SEARCH_STUDENTSTATE_MUTATION,
+  )
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
       updateStudentStateId: parseStudent?.id,
@@ -326,13 +345,19 @@ export default function Consoultation() {
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
-  const test = parseStudent?.receiptDiv
+  const studentMemoList = parseStudent?.consultationMemo || {}
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem('selectStudentState')
-    const parseData = JSON.parse(localStorageData)
-    setparseStudent(parseData)
-  }, [studentId])
+    searchStudentStateMutation({
+      variables: {
+        searchStudentStateId: parseInt(studentId),
+      },
+      onCompleted: resData => {
+        const data = resData.searchStudentState.studentState[0]
+        setParseStudent(data)
+      },
+    })
+  }, [router, studentId])
 
   useEffect(() => {
     if (parseStudent && receipt === '없음') {
@@ -372,12 +397,21 @@ export default function Consoultation() {
         setExpEnrollDate(null)
       }
     }
-  }, [parseStudent, receipt, sub, manager, stVisitDate, expEnrollDate])
+  }, [
+    parseStudent,
+    receipt,
+    sub,
+    manager,
+    stVisitDate,
+    expEnrollDate,
+    studentMemoList,
+  ])
 
   const onSubmit = data => {
     if (isDirty) {
       console.log(isDirty)
       console.log('수정된 필드:', dirtyFields)
+      console.log(typeof dirtyFields)
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
         updateStudent({
@@ -405,6 +439,11 @@ export default function Consoultation() {
             alert('수정되었습니다.')
           },
         })
+        const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+        userLogs(
+          `${defaultValues.stName}의 상담 수정`,
+          dirtyFieldsArray.join(', '),
+        )
       }
     }
   }
@@ -437,9 +476,15 @@ export default function Consoultation() {
   }
   const clickSubmit = () => {
     setValue('subject', subjectSelected)
-    console.log(subjectSelected)
     onClose()
   }
+
+  const onMemoSubmit = data => {
+    console.log(data)
+  }
+
+  if (loading) return 'Submitting...'
+  if (error) return `Submission error! ${error.message}`
   return (
     <>
       {parseStudent !== undefined && (
@@ -449,6 +494,7 @@ export default function Consoultation() {
             isActive={filterActive}
             onBtn={false}
           />
+          {data.searchStudentState.stName}
           <DetailBox>
             <TopInfo>
               <span>최근 업데이트 일시 :</span>
@@ -529,7 +575,6 @@ export default function Consoultation() {
                   {...register('phoneNum3')}
                 />
               </FlexBox>
-
               <Controller
                 control={control}
                 name="subject"
@@ -546,7 +591,7 @@ export default function Consoultation() {
                       defaultValue={
                         subjectSelected.length > 0
                           ? String(subjectSelected.join(', '))
-                          : String(parseStudent?.subject.join(', '))
+                          : String(parseStudent.subject.join(', '))
                       }
                       onClick={onOpen}
                       {...register('subject')}
@@ -569,14 +614,14 @@ export default function Consoultation() {
                                     <Tfee>과정 금액</Tfee>
                                   </TableRow>
                                 </Theader>
-                                {subjectList?.map(item => (
-                                  <TableItem>
+                                {subjectList?.map((item, index) => (
+                                  <TableItem key={index}>
                                     <TableRow>
                                       <Checkbox
                                         key={item.id}
                                         value={item.subjectName}
                                       >
-                                        <SubjectList tableData={item} />
+                                        <SubjectItem tableData={item} />
                                       </Checkbox>
                                     </TableRow>
                                   </TableItem>
@@ -823,6 +868,7 @@ export default function Consoultation() {
                   width="100%"
                   height="2.5rem"
                   typeBorder={true}
+                  onClick={() => router.push('/consult')}
                 >
                   목록으로
                 </Button2>
@@ -830,7 +876,7 @@ export default function Consoultation() {
             </DetailForm>
           </DetailBox>
           <DetailBox>
-            <DetailForm>
+            <DetailForm onSubmit={handleSubmit(onMemoSubmit)}>
               <MemoBox>
                 <Textarea
                   label="메모작성"
@@ -838,6 +884,10 @@ export default function Consoultation() {
                   className="max-w-full"
                   variant="bordered"
                   minRows={5}
+                  onChange={e => {
+                    // register('memo').onChange(e)
+                  }}
+                  // {...register('memo')}
                 />
                 <MemoBtn>
                   <Button2 buttonType="submit" width="100%" height="2.5rem">
@@ -845,42 +895,45 @@ export default function Consoultation() {
                   </Button2>
                 </MemoBtn>
               </MemoBox>
-              <MemoList>
-                <MemoItem>
-                  <Textarea
-                    label={
-                      <MemoInfo>
-                        <MemoName>메모등록자</MemoName>
-                        <MemoTime>2023.03.11 15:12:11</MemoTime>
-                      </MemoInfo>
-                    }
-                    isReadOnly
-                    variant="faded"
-                    className="max-w-full"
-                  />
-                  <MemoListBtn>
-                    <Button2 buttonType="submit" width="100%" height="2.5rem">
-                      수정
-                    </Button2>
-                    <Button2 typeBorder={true} width="100%" height="2.5rem">
-                      삭제
-                    </Button2>
-                  </MemoListBtn>
-                </MemoItem>
-                <MemoItem>
-                  <Textarea
-                    label={
-                      <MemoInfo>
-                        <MemoName>메모등록자</MemoName>
-                        <MemoTime>2023.03.11 15:12:11</MemoTime>
-                      </MemoInfo>
-                    }
-                    isReadOnly
-                    variant="faded"
-                    className="max-w-full"
-                  />
-                </MemoItem>
-              </MemoList>
+              {/* <MemoList>
+                {Object.entries(studentMemoList).map((key,items) => (
+                  {
+                    items.map((item, index) => (
+                    <MemoItem key={index}>
+                    <Textarea
+                      label={
+                        <MemoInfo>
+                          <MemoName>{item.manageUser?.mUsername}</MemoName>
+                          <MemoTime>{fametDate(item.createdAt)}</MemoTime>
+                        </MemoInfo>
+                      }
+                      defaultValue={item.content}
+                      isReadOnly
+                      variant="faded"
+                      className="max-w-full"
+                      onChange={e => {
+                        // register('memo').onChange(e)
+                      }}
+                      // {...register('memo')}
+                    />
+                    {mId == item.manageUser?.id && (
+                      <MemoListBtn>
+                        <Button2
+                          buttonType="submit"
+                          width="100%"
+                          height="2.5rem"
+                        >
+                          수정
+                        </Button2>
+                        <Button2 typeBorder={true} width="100%" height="2.5rem">
+                          삭제
+                        </Button2>
+                      </MemoListBtn>
+                    )}
+                  </MemoItem>
+                  ))}
+                ))}
+              </MemoList> */}
             </DetailForm>
           </DetailBox>
         </MainWrap>

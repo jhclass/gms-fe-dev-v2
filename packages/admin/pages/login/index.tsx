@@ -11,6 +11,7 @@ import { gql } from '@apollo/client'
 import { Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
 import { useState } from 'react'
+import useUserLogsMutation from '@/utils/userLogs'
 
 type LoginForm = {
   id: string
@@ -133,6 +134,7 @@ export default function Login() {
   const [loginPasswordFocus, setLoginPasswordFocus] = useRecoilState(
     loginPasswordFocuseState,
   )
+  const { userLogs } = useUserLogsMutation()
   //api Test
   const [loginError, setLoginError] = useState('')
   const router = useRouter()
@@ -150,6 +152,7 @@ export default function Login() {
         if (ok) {
           LogUserIn(token)
           router.push('/')
+          userLogs(`로그인`)
         } else {
           setLoginError(error)
         }

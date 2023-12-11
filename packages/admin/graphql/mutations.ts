@@ -9,6 +9,15 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `
+export const USER_LOGS_MUTATION = gql`
+  mutation Mutation($eventName: String!, $uri: String) {
+    createUserActivityLogs(eventName: $eventName, uri: $uri) {
+      ok
+      error
+      message
+    }
+  }
+`
 
 export const UPDATE_FAVORITE_MUTATION = gql`
   mutation UpdateFavorite($updateFavoriteId: Int!) {
@@ -82,9 +91,10 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
       page: $page
       perPage: $perPage
     ) {
+      ok
       error
       message
-      ok
+      totalCount
       studentState {
         id
         campus
@@ -108,8 +118,19 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         updatedAt
         receiptDiv
         pic
+        consultationMemo {
+          id
+          content
+          createdAt
+          updatedAt
+          manageUser {
+            id
+            mUserId
+            mUsername
+          }
+          manageUserId
+        }
       }
-      totalCount
     }
   }
 `

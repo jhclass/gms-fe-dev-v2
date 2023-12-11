@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>
@@ -230,6 +231,7 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 `
 
 export default function Header() {
+  const { userLogs } = useUserLogsMutation()
   const { loading, error, data } = useQuery(MME_QUERY)
   const { mMe } = data || {}
   const { mUserId = '', mUsername = '' } = mMe || {}
@@ -248,6 +250,7 @@ export default function Header() {
   }
 
   const LogUserOut = () => {
+    userLogs(`로그아웃`)
     localStorage.removeItem('token')
     router.push('/login')
   }
@@ -326,6 +329,7 @@ export default function Header() {
                   <button
                     onClick={() => {
                       console.log('준비중입니다. ')
+                      userLogs(`${mUserId} 프로필 클릭`)
                     }}
                   >
                     프로필
