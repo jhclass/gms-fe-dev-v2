@@ -41,7 +41,14 @@ export const MME_QUERY = gql`
     }
   }
 `
-
+export const ISMME_QUERY = gql`
+  query IsMme($isMmeId: Int!) {
+    isMme(id: $isMmeId) {
+      ok
+      error
+    }
+  }
+`
 export const SEE_STUDENT_QUERY = gql`
   query SeeStudentState($page: Int!, $limit: Int) {
     seeStudentState(page: $page, limit: $limit) {

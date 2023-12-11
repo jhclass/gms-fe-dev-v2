@@ -8,7 +8,7 @@ import {
   SEE_FAVORITESTATE_QUERY,
   SEE_STUDENT_QUERY,
 } from '@/graphql/queries'
-import FavoItem from './FavoItem'
+import FavoItem from '@/components/table/FavoItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

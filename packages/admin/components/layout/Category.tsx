@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import { activeCategoryState } from '@/lib/recoilAtoms'
+import useUserLogsMutation from '@/utils/userLogs'
 import CategoryItem from './CategoryItem'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
@@ -8,6 +9,7 @@ import { useRouter } from 'next/router'
 const CateWrap = styled(motion.ul)``
 
 export default function Category() {
+  const { userLogs } = useUserLogsMutation()
   const [activeCategory, setActiveCategory] =
     useRecoilState(activeCategoryState)
 
@@ -27,8 +29,8 @@ export default function Category() {
     {
       href: '/subjects',
       iconSrc: 'ico_work',
-      alt: '과정등록',
-      label: '과정등록',
+      alt: '과정관리',
+      label: '과정관리',
     },
     {
       href: '/registration',
@@ -56,7 +58,10 @@ export default function Category() {
             alt={category.alt}
             label={category.label}
             isActive={router.pathname === category.href}
-            onClick={() => setActiveCategory(index)}
+            onClick={() => {
+              setActiveCategory(index)
+              userLogs(`${category.label} 카테고리 클릭`, `${category.href}`)
+            }}
           />
         ))}
       </CateWrap>
