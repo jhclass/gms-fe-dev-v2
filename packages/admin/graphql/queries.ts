@@ -154,18 +154,24 @@ export const SEE_FAVORITESTATE_QUERY = gql`
 `
 
 export const SEE_SUBJECT_QUERY = gql`
-  query SeeSubject {
-    seeSubject {
-      id
-      subDiv
-      subjectName
-      createdAt
-      updatedAt
-      fee
-      startDate
-      endDate
-      roomNum
-      exposure
+  query SeeSubject($page: Int, $limit: Int) {
+    seeSubject(page: $page, limit: $limit) {
+      ok
+      error
+      message
+      totalCount
+      subject {
+        id
+        subDiv
+        subjectName
+        createdAt
+        updatedAt
+        fee
+        startDate
+        endDate
+        roomNum
+        exposure
+      }
     }
   }
 `
