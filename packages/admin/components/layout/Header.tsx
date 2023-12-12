@@ -234,7 +234,7 @@ export default function Header() {
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data } = useQuery(MME_QUERY)
   const { mMe } = data || {}
-  const { mUserId = '', mUsername = '' } = mMe || {}
+  const { mUserId = '', mUsername = '', mGrade } = mMe || {}
 
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] =
@@ -247,6 +247,15 @@ export default function Header() {
 
   const toggleUserMenu = () => {
     setHeaderUserMenu(headerUserMenu => !headerUserMenu)
+  }
+
+  const gradeStr = data => {
+    if (data == null) {
+      return 'A'
+    } else {
+      const gradeF = data.charAt(0).toUpperCase()
+      return gradeF
+    }
   }
 
   const LogUserOut = () => {
@@ -308,8 +317,9 @@ export default function Header() {
             <img src="/src/icon/ico_noti.webp" alt="알림" />
             <NotiNum>0</NotiNum>
           </NotiBtn>
+
           <UserBox onClick={toggleUserMenu}>
-            <UserGrade>M</UserGrade>
+            <UserGrade>{gradeStr(mGrade)}</UserGrade>
             <UserInfo>
               <UserId>{mUserId}</UserId>
               <UserName>{mUsername}</UserName>

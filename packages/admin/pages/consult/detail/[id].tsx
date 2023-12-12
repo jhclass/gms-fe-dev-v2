@@ -21,6 +21,8 @@ import {
   Textarea,
   Button,
   useDisclosure,
+  Pagination,
+  ScrollShadow,
 } from '@nextui-org/react'
 import {
   progressStatusState,
@@ -34,12 +36,15 @@ import {
   UPDATE_STUDENT_STATE_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import {
+  MME_QUERY,
+  SEE_MANAGEUSER_QUERY,
+  SEE_SUBJECT_QUERY,
+} from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
-import useIsMmeQuery from '@/utils/isMme'
-import useMmeQuery from '@/utils/mMe'
+import ConsolutMemo from '@/components/form/ConsolutMemo'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -172,6 +177,12 @@ const Tfee = styled.div`
   min-width: 150px;
 `
 
+const PagerWrap = styled.div`
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+`
+
 const MemoBox = styled.div`
   width: 100%;
   display: flex;
@@ -286,13 +297,11 @@ type studentData = {
 }
 
 export default function Consoultation() {
-  const { useMme } = useMmeQuery()
-  const mId = useMme('id')
-  console.log(mId)
   const router = useRouter()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [parseStudent, setParseStudent] = useState<studentData>()
   const [filterActive, setFilterActive] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentLimit] = useState(10)
   const {
     loading: managerLoading,
     error: managerError,
@@ -302,41 +311,48 @@ export default function Consoultation() {
     loading: subjectLoading,
     error: subjectError,
     data: subjectData,
-  } = useQuery(SEE_SUBJECT_QUERY)
-  const { userLogs } = useUserLogsMutation()
+  } = useQuery(SEE_SUBJECT_QUERY, {
+    variables: { page: currentPage, limit: currentLimit },
+  })
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
+  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
+    SEARCH_STUDENTSTATE_MUTATION,
+    {
+      variables: {
+        searchStudentStateId: parseInt(studentId),
+      },
+    },
+  )
+  const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
-  const subjectList = subjectData?.seeSubject || []
-
+  const subjectList = subjectData?.seeSubject.subject || []
+  const studentState = data?.searchStudentState.studentState[0] || []
   const [subjectSelected, setSubjectSelected] = useState(subjectList)
-  const defaultValues = parseStudent
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-  )
+
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
-      updateStudentStateId: parseStudent?.id,
-      campus: parseStudent?.campus,
-      category: parseStudent?.category,
-      stName: parseStudent?.stName,
-      phoneNum1: parseStudent?.phoneNum1,
-      phoneNum2: parseStudent?.phoneNum2,
-      phoneNum3: parseStudent?.phoneNum3,
-      subject: parseStudent?.subject,
-      detail: parseStudent?.detail,
-      progress: parseStudent?.progress,
-      stEmail: parseStudent?.stEmail,
-      stAddr: parseStudent?.stAddr,
-      subDiv: parseStudent?.subDiv,
-      stVisit: parseStudent?.stVisit,
-      expEnrollDate: parseStudent?.expEnrollDate,
-      perchase: parseStudent?.perchase,
-      pic: parseStudent?.pic,
-      receiptDiv: parseStudent?.receiptDiv,
+      updateStudentStateId: studentState?.id,
+      campus: studentState?.campus,
+      category: studentState?.category,
+      stName: studentState?.stName,
+      phoneNum1: studentState?.phoneNum1,
+      phoneNum2: studentState?.phoneNum2,
+      phoneNum3: studentState?.phoneNum3,
+      subject: studentState?.subject,
+      detail: studentState?.detail,
+      progress: studentState?.progress,
+      stEmail: studentState?.stEmail,
+      stAddr: studentState?.stAddr,
+      subDiv: studentState?.subDiv,
+      stVisit: studentState?.stVisit,
+      expEnrollDate: studentState?.expEnrollDate,
+      perchase: studentState?.perchase,
+      pic: studentState?.pic,
+      receiptDiv: studentState?.receiptDiv,
     },
   })
   const { isDirty, dirtyFields } = formState
@@ -345,81 +361,63 @@ export default function Consoultation() {
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
-  const studentMemoList = parseStudent?.consultationMemo || {}
-
+  const studentMemoList = studentState?.consultationMemo || {}
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
         searchStudentStateId: parseInt(studentId),
       },
-      onCompleted: resData => {
-        const data = resData.searchStudentState.studentState[0]
-        setParseStudent(data)
-      },
     })
-  }, [router, studentId])
+  }, [router])
 
   useEffect(() => {
-    if (parseStudent && receipt === '없음') {
-      if (parseStudent.receiptDiv !== '') {
-        setReceipt(parseStudent.receiptDiv)
-      } else {
-        setReceipt('없음')
-      }
+    if (
+      studentState.receiptDiv === null ||
+      studentState.receiptDiv === undefined
+    ) {
+      setReceipt('없음')
+    } else {
+      setReceipt(studentState.receiptDiv)
     }
-    if (parseStudent && sub === '없음') {
-      if (parseStudent.subDiv !== null) {
-        setSub(parseStudent.subDiv)
-      } else {
-        setSub('없음')
-      }
+    if (studentState.subDiv === null || studentState.subDiv === undefined) {
+      setSub('없음')
+    } else {
+      setSub(studentState.subDiv)
     }
-    if (parseStudent && manager === '담당자 지정필요') {
-      if (parseStudent.pic !== null) {
-        setManager(parseStudent.pic)
-      } else {
-        setManager('담당자 지정필요')
-      }
+    if (studentState.pic === undefined) {
+      setManager('담당자 지정필요')
+    } else {
+      setManager(studentState.pic)
     }
-    if (parseStudent && stVisitDate == null) {
-      if (parseStudent.stVisit !== null) {
-        const date = parseInt(parseStudent.stVisit)
-        setStVisitDate(date)
-      } else {
-        setStVisitDate(null)
-      }
+    if (studentState.stVisit === null || studentState.stVisit === undefined) {
+      setStVisitDate(null)
+    } else {
+      const date = parseInt(studentState.stVisit)
+      setStVisitDate(date)
     }
-    if (parseStudent && expEnrollDate == null) {
-      if (parseStudent.expEnrollDate !== null) {
-        const date = parseInt(parseStudent.expEnrollDate)
-        setExpEnrollDate(date)
-      } else {
-        setExpEnrollDate(null)
-      }
+    if (
+      studentState.expEnrollDate === null ||
+      studentState.expEnrollDate === undefined
+    ) {
+      setExpEnrollDate(null)
+    } else {
+      const date = parseInt(studentState.expEnrollDate)
+      setExpEnrollDate(date)
     }
-  }, [
-    parseStudent,
-    receipt,
-    sub,
-    manager,
-    stVisitDate,
-    expEnrollDate,
-    studentMemoList,
-  ])
+  }, [studentState])
 
   const onSubmit = data => {
     if (isDirty) {
       console.log(isDirty)
       console.log('수정된 필드:', dirtyFields)
-      console.log(typeof dirtyFields)
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
         updateStudent({
           variables: {
-            updateStudentStateId: defaultValues.id,
-            campus: defaultValues.campus,
+            updateStudentStateId: studentState.id,
+            campus: studentState.campus,
             stName: data.stName,
-            category: defaultValues.category,
+            category: studentState.category,
             phoneNum1: data.phoneNum1,
             phoneNum2: data.phoneNum2,
             phoneNum3: data.phoneNum3,
@@ -427,10 +425,11 @@ export default function Consoultation() {
             detail: data.detail,
             progress: data.progress,
             stEmail: data.stEmail,
-            stAddr: defaultValues.stAddr,
+            stAddr: studentState.stAddr,
             subDiv: data.subDiv,
-            stVisit: new Date(data.stVisit),
-            expEnrollDate: new Date(data.expEnrollDate),
+            stVisit: data.stVisit === null ? null : new Date(data.stVisit),
+            expEnrollDate:
+              data.expEnrollDate === null ? null : new Date(data.expEnrollDate),
             pic: data.pic,
             receiptDiv: data.receiptDiv,
           },
@@ -441,7 +440,7 @@ export default function Consoultation() {
         })
         const dirtyFieldsArray = [...Object.keys(dirtyFields)]
         userLogs(
-          `${defaultValues.stName}의 상담 수정`,
+          `${studentState.stName}의 상담 수정`,
           dirtyFieldsArray.join(', '),
         )
       }
@@ -458,7 +457,6 @@ export default function Consoultation() {
       `${date.getHours().toString().padStart(2, '0')}:` +
       `${date.getMinutes().toString().padStart(2, '0')}:` +
       `${date.getSeconds().toString().padStart(2, '0')}`
-
     return formatted
   }
   const handleReceiptChange = e => {
@@ -479,26 +477,21 @@ export default function Consoultation() {
     onClose()
   }
 
-  const onMemoSubmit = data => {
-    console.log(data)
-  }
-
   if (loading) return 'Submitting...'
   if (error) return `Submission error! ${error.message}`
   return (
     <>
-      {parseStudent !== undefined && (
+      {data !== undefined && (
         <MainWrap>
           <Breadcrumb
             onFilterToggle={setFilterActive}
             isActive={filterActive}
             onBtn={false}
           />
-          {data.searchStudentState.stName}
           <DetailBox>
             <TopInfo>
               <span>최근 업데이트 일시 :</span>
-              {fametDate(parseStudent?.updatedAt)}
+              {fametDate(studentState?.updatedAt)}
             </TopInfo>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
@@ -509,7 +502,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="이름"
-                  defaultValue={parseStudent?.stName || null}
+                  defaultValue={studentState?.stName}
                   onChange={e => {
                     register('stName').onChange(e)
                   }}
@@ -523,7 +516,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="이메일"
-                  defaultValue={parseStudent?.stEmail || null}
+                  defaultValue={studentState?.stEmail || null}
                   onChange={e => {
                     register('stEmail').onChange(e)
                   }}
@@ -539,7 +532,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="전화번호1"
-                  defaultValue={parseStudent?.phoneNum1 || null}
+                  defaultValue={studentState?.phoneNum1 || null}
                   onChange={e => {
                     register('phoneNum1').onChange(e)
                   }}
@@ -553,7 +546,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="전화번호2"
-                  defaultValue={parseStudent?.phoneNum2 || null}
+                  defaultValue={studentState?.phoneNum2 || null}
                   onChange={e => {
                     register('phoneNum2').onChange(e)
                   }}
@@ -567,7 +560,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="전화번호3"
-                  defaultValue={parseStudent?.phoneNum3 || null}
+                  defaultValue={studentState?.phoneNum3 || null}
                   onChange={e => {
                     register('phoneNum3').onChange(e)
                   }}
@@ -578,21 +571,18 @@ export default function Consoultation() {
               <Controller
                 control={control}
                 name="subject"
-                defaultValue={parseStudent?.subject}
+                defaultValue={studentState?.subject}
                 render={({ field }) => (
                   <>
                     <Textarea
                       readOnly
-                      label="상담 과정"
+                      value={field.value}
+                      label="상담 과정 선택"
                       labelPlacement="outside"
                       className="max-w-full"
                       variant="bordered"
                       minRows={1}
-                      defaultValue={
-                        subjectSelected.length > 0
-                          ? String(subjectSelected.join(', '))
-                          : String(parseStudent.subject.join(', '))
-                      }
+                      defaultValue={studentState?.subject}
                       onClick={onOpen}
                       {...register('subject')}
                     />
@@ -602,31 +592,55 @@ export default function Consoultation() {
                           <>
                             <ModalHeader className="flex flex-col gap-1"></ModalHeader>
                             <ModalBody>
-                              <CheckboxGroup
-                                value={subjectSelected}
-                                onChange={handleCheckboxChange}
+                              <ScrollShadow
+                                orientation="horizontal"
+                                className="scrollbar"
                               >
-                                <Theader>
-                                  <TableRow>
-                                    <Tcheck></Tcheck>
-                                    <Tname>과정명</Tname>
-                                    <TsubDiv>수강구분</TsubDiv>
-                                    <Tfee>과정 금액</Tfee>
-                                  </TableRow>
-                                </Theader>
-                                {subjectList?.map((item, index) => (
-                                  <TableItem key={index}>
+                                <CheckboxGroup
+                                  value={subjectSelected}
+                                  onChange={handleCheckboxChange}
+                                  classNames={{
+                                    wrapper: 'gap-0',
+                                  }}
+                                >
+                                  <Theader>
                                     <TableRow>
-                                      <Checkbox
-                                        key={item.id}
-                                        value={item.subjectName}
-                                      >
-                                        <SubjectItem tableData={item} />
-                                      </Checkbox>
+                                      <Tcheck></Tcheck>
+                                      <Tname>과정명</Tname>
+                                      <TsubDiv>수강구분</TsubDiv>
+                                      <Tfee>과정 금액</Tfee>
                                     </TableRow>
-                                  </TableItem>
-                                ))}
-                              </CheckboxGroup>
+                                  </Theader>
+                                  {subjectList?.map((item, index) => (
+                                    <TableItem key={index}>
+                                      <TableRow>
+                                        <Checkbox
+                                          key={item.id}
+                                          value={item.subjectName}
+                                        >
+                                          <SubjectItem tableData={item} />
+                                        </Checkbox>
+                                      </TableRow>
+                                    </TableItem>
+                                  ))}
+                                </CheckboxGroup>
+                              </ScrollShadow>
+                              {subjectData?.seeSubject.totalCount > 0 && (
+                                <PagerWrap>
+                                  <Pagination
+                                    variant="light"
+                                    showControls
+                                    initialPage={currentPage}
+                                    total={Math.ceil(
+                                      subjectData?.seeSubject.totalCount /
+                                        currentLimit,
+                                    )}
+                                    onChange={newPage => {
+                                      setCurrentPage(newPage)
+                                    }}
+                                  />
+                                </PagerWrap>
+                              )}
                             </ModalBody>
                             <ModalFooter>
                               <Button
@@ -639,8 +653,8 @@ export default function Consoultation() {
                               <Button
                                 color="primary"
                                 onPress={() => {
-                                  field.onChange(subjectSelected)
                                   clickSubmit()
+                                  field.onChange(subjectSelected)
                                 }}
                               >
                                 선택
@@ -664,7 +678,7 @@ export default function Consoultation() {
                       label={<FilterLabel>접수구분</FilterLabel>}
                       placeholder=" "
                       className="w-full"
-                      defaultValue={parseStudent?.receiptDiv}
+                      defaultValue={studentState?.receiptDiv}
                       variant="bordered"
                       selectedKeys={[receipt]}
                       onChange={value => {
@@ -689,12 +703,12 @@ export default function Consoultation() {
                       label={<FilterLabel>수강구분</FilterLabel>}
                       placeholder=" "
                       className="w-full"
-                      defaultValue={parseStudent?.subDiv}
+                      defaultValue={[studentState?.subDiv]}
                       variant="bordered"
                       selectedKeys={[sub]}
                       onChange={value => {
                         field.onChange(value)
-                        handleSubChange
+                        handleSubChange(value)
                       }}
                     >
                       {Object.entries(subStatus).map(([key, item]) => (
@@ -716,7 +730,7 @@ export default function Consoultation() {
                       label="담당자"
                       placeholder=" "
                       className="w-full"
-                      defaultValue={parseStudent?.pic}
+                      defaultValue={studentState?.pic}
                       variant="bordered"
                       selectedKeys={[manager]}
                       onChange={value => {
@@ -746,7 +760,7 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="등록일시"
-                  value={fametDate(parseStudent?.createdAt) || ''}
+                  value={fametDate(studentState?.createdAt) || ''}
                   startContent={<i className="xi-calendar" />}
                   className="w-full"
                 />
@@ -755,13 +769,13 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="progress"
-                  defaultValue={parseStudent?.progress}
+                  defaultValue={studentState?.progress}
                   render={({ field, fieldState }) => (
                     <RadioGroup
                       label={<FilterLabel>진행상태</FilterLabel>}
                       orientation="horizontal"
                       className="gap-1"
-                      defaultValue={String(parseStudent?.progress)}
+                      defaultValue={String(studentState?.progress)}
                       onValueChange={value => {
                         field.onChange(parseInt(value))
                       }}
@@ -781,7 +795,7 @@ export default function Consoultation() {
                     control={control}
                     name="stVisit"
                     // locale="ko"
-                    defaultValue={parseStudent?.stVisit}
+                    defaultValue={studentState?.stVisit}
                     render={({ field, fieldState }) => (
                       <DatePicker
                         selected={
@@ -814,7 +828,7 @@ export default function Consoultation() {
                   <Controller
                     control={control}
                     name="expEnrollDate"
-                    defaultValue={parseStudent?.expEnrollDate}
+                    defaultValue={studentState?.expEnrollDate}
                     render={({ field, fieldState }) => (
                       <DatePicker
                         selected={
@@ -852,7 +866,7 @@ export default function Consoultation() {
                   className="max-w-full"
                   variant="bordered"
                   minRows={5}
-                  defaultValue={parseStudent?.detail || ''}
+                  defaultValue={studentState?.detail || ''}
                   onChange={e => {
                     register('detail').onChange(e)
                   }}
@@ -876,65 +890,10 @@ export default function Consoultation() {
             </DetailForm>
           </DetailBox>
           <DetailBox>
-            <DetailForm onSubmit={handleSubmit(onMemoSubmit)}>
-              <MemoBox>
-                <Textarea
-                  label="메모작성"
-                  labelPlacement="outside"
-                  className="max-w-full"
-                  variant="bordered"
-                  minRows={5}
-                  onChange={e => {
-                    // register('memo').onChange(e)
-                  }}
-                  // {...register('memo')}
-                />
-                <MemoBtn>
-                  <Button2 buttonType="submit" width="100%" height="2.5rem">
-                    등록
-                  </Button2>
-                </MemoBtn>
-              </MemoBox>
-              {/* <MemoList>
-                {Object.entries(studentMemoList).map((key,items) => (
-                  {
-                    items.map((item, index) => (
-                    <MemoItem key={index}>
-                    <Textarea
-                      label={
-                        <MemoInfo>
-                          <MemoName>{item.manageUser?.mUsername}</MemoName>
-                          <MemoTime>{fametDate(item.createdAt)}</MemoTime>
-                        </MemoInfo>
-                      }
-                      defaultValue={item.content}
-                      isReadOnly
-                      variant="faded"
-                      className="max-w-full"
-                      onChange={e => {
-                        // register('memo').onChange(e)
-                      }}
-                      // {...register('memo')}
-                    />
-                    {mId == item.manageUser?.id && (
-                      <MemoListBtn>
-                        <Button2
-                          buttonType="submit"
-                          width="100%"
-                          height="2.5rem"
-                        >
-                          수정
-                        </Button2>
-                        <Button2 typeBorder={true} width="100%" height="2.5rem">
-                          삭제
-                        </Button2>
-                      </MemoListBtn>
-                    )}
-                  </MemoItem>
-                  ))}
-                ))}
-              </MemoList> */}
-            </DetailForm>
+            <ConsolutMemo
+              memoData={studentMemoList}
+              studentId={studentState?.id}
+            />
           </DetailBox>
         </MainWrap>
       )}

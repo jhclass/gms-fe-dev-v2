@@ -135,6 +135,54 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
   }
 `
 
+export const CREATE_STUDENT_STATE_MUTATION = gql`
+  mutation CreateStudentState(
+    $stName: String!
+    $phoneNum1: String!
+    $agreement: String!
+    $subject: [String!]
+    $campus: String
+    $detail: String
+    $category: String
+    $phoneNum2: String
+    $phoneNum3: String
+    $stEmail: String
+    $stAddr: String
+    $subDiv: String
+    $stVisit: String
+    $expEnrollDate: String
+    $perchase: Boolean
+    $birthday: String
+    $receiptDiv: String
+    $pic: String
+  ) {
+    createStudentState(
+      stName: $stName
+      phoneNum1: $phoneNum1
+      agreement: $agreement
+      subject: $subject
+      campus: $campus
+      detail: $detail
+      category: $category
+      phoneNum2: $phoneNum2
+      phoneNum3: $phoneNum3
+      stEmail: $stEmail
+      stAddr: $stAddr
+      subDiv: $subDiv
+      stVisit: $stVisit
+      expEnrollDate: $expEnrollDate
+      perchase: $perchase
+      birthday: $birthday
+      receiptDiv: $receiptDiv
+      pic: $pic
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`
+
 export const UPDATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $updateStudentStateId: Int!
@@ -181,6 +229,25 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+export const CREATE_CONSULTATION_MEMO_MUTATION = gql`
+  mutation CreateConsultationMemo($content: String!, $studentStateId: Int!) {
+    createConsultationMemo(content: $content, studentStateId: $studentStateId) {
+      ok
+      error
+      message
+    }
+  }
+`
+export const DELETE_CONSULTATION_MEMO_MUTATION = gql`
+  mutation DeleteConsultationMemo($deleteConsultationMemoId: Int!) {
+    deleteConsultationMemo(id: $deleteConsultationMemoId) {
+      ok
+      error
+      message
     }
   }
 `

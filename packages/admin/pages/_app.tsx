@@ -9,6 +9,14 @@ import { apolloClient, isLoggedInVar } from '@/lib/apolloClient'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
+import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
+import { __DEV__ } from '@apollo/client/utilities/globals'
+
+if (__DEV__) {
+  // Adds messages only in a dev environment
+  loadDevMessages()
+  loadErrorMessages()
+}
 export default function MyApp({ Component, pageProps }: AppProps) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
