@@ -1,11 +1,12 @@
 import { useQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { Link, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import SubjectItem from './SubjectItem'
 import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
+import router from 'next/router'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -148,14 +149,19 @@ const HiddenLabel = styled.label`
 `
 
 export default function SubjectTable() {
-  const { loading, error, data } = useQuery(SEE_SUBJECT_QUERY)
-  const subjectData = data?.seeSubject || []
-  console.log(subjectData)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentLimit] = useState(10)
+  const { loading, error, data } = useQuery(SEE_SUBJECT_QUERY, {
+    variables: { page: currentPage, limit: currentLimit },
+  })
+  const subjectTotal = data?.seeSubject.totalCount || []
+  const subjectData = data?.seeSubject.subject || []
+  console.log(data)
   return (
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{subjectData?.length}</span>건
+          총 <span>{subjectTotal}</span>건
         </Ttotal>
       </TTopic>
       <TableArea>
@@ -173,7 +179,10 @@ export default function SubjectTable() {
               </TheaderBox>
             </Theader>
             {subjectData?.map((item, index) => (
-              <TableItem key={index}>
+              <TableItem
+                key={index}
+                onClick={() => router.push(`/subjects/detail/${item.id}`)}
+              >
                 <TableRow>
                   <Tnum>{index + 1}</Tnum>
                   <Tdiv>
@@ -195,18 +204,19 @@ export default function SubjectTable() {
             ))}
           </TableWrap>
         </ScrollShadow>
-        {/* {subjectData?.length > 0 && (
+        {subjectTotal > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
-              total={Math.ceil(subjectData?.length / 10)}
+              initialPage={currentPage}
+              total={Math.ceil(subjectTotal / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}
             />
           </PagerWrap>
-        )} */}
+        )}
       </TableArea>
     </>
   )

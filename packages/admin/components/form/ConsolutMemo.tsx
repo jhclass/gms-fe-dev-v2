@@ -259,7 +259,14 @@ export default function ConsoultMemo(props) {
             {...register('content')}
           />
           <MemoBtn>
-            <Button2 buttonType="submit" width="100%" height="2.5rem">
+            <Button2
+              buttonType="submit"
+              width="100%"
+              height="2.5rem"
+              typeBorder={true}
+              fontColor="#fff"
+              bgColor="#007de9"
+            >
               등록
             </Button2>
           </MemoBtn>
@@ -286,14 +293,24 @@ export default function ConsoultMemo(props) {
               />
               {mId == item.manageUser?.id && (
                 <MemoListBtn>
-                  <Button2 buttonType="button" width="100%" height="2.5rem">
+                  <Button2
+                    buttonType="submit"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#fff"
+                    bgColor="#007de9"
+                  >
                     수정
                   </Button2>
                   <Button2
                     buttonType="button"
-                    typeBorder={true}
                     width="100%"
                     height="2.5rem"
+                    fontColor="#007de9"
+                    bgColor="#fff"
+                    borderColor="#007de9"
+                    typeBorder={true}
                     onClick={() => onDelete(item.id)}
                   >
                     삭제

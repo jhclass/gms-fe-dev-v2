@@ -251,3 +251,27 @@ export const DELETE_CONSULTATION_MEMO_MUTATION = gql`
     }
   }
 `
+
+export const CREATE_SUBJECT_MUTATION = gql`
+  mutation CreateSubject(
+    $subDiv: String!
+    $subjectName: String!
+    $fee: Int!
+    $startDate: String
+    $endDate: String
+    $roomNum: String
+  ) {
+    createSubject(
+      subDiv: $subDiv
+      subjectName: $subjectName
+      fee: $fee
+      startDate: $startDate
+      endDate: $endDate
+      roomNum: $roomNum
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`

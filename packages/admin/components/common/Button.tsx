@@ -11,6 +11,7 @@ type CustomRippleButtonProps = {
   fontColor?: string
   fontSize?: string
   typeBorder?: boolean
+  borderColor?: string
   bWidth?: string
   children?: React.ReactNode
   onClick?: () => void
@@ -24,6 +25,7 @@ const Btn = styled(motion.button)<{
   $bgColor: string
   $fontColor: string
   $typeBorder: boolean
+  $borderColor: string
   $bWidth: string
 }>`
   position: relative;
@@ -34,16 +36,26 @@ const Btn = styled(motion.button)<{
   outline: 2px solid transparent;
   outline-offset: 2px;
   background-color: ${props =>
-    props.$typeBorder ? 'transparent' : props.$bgColor || '#007de9'};
+    props.$typeBorder
+      ? props.$bgColor
+        ? props.$bgColor
+        : 'transparent'
+      : props.$bgColor || '#007de9'};
   overflow: hidden;
   font-size: ${props => props.$fontSize || '0.9rem'};
   border: ${props =>
     props.$typeBorder
-      ? `${props.$bWidth || '1px'} solid ${props.$bgColor}`
+      ? props.$borderColor
+        ? `${props.$bWidth || '1px'} solid ${props.$borderColor}`
+        : `${props.$bWidth || '1px'} solid ${props.$bgColor}`
       : '#007de9'};
   border-radius: ${props => props.$radius || '0.75rem'};
   color: ${props =>
-    props.$typeBorder ? props.$bgColor : props.$fontColor || '#fff'};
+    props.$typeBorder
+      ? props.$fontColor
+        ? props.$fontColor
+        : props.$bgColor
+      : props.$fontColor};
   font-weight: bold;
 `
 
@@ -65,6 +77,7 @@ export default function CustomRippleButton(props: CustomRippleButtonProps) {
     typeBorder, // 이 부분을 추가
     bWidth,
     children,
+    borderColor,
     onClick,
   } = props
 
@@ -104,6 +117,7 @@ export default function CustomRippleButton(props: CustomRippleButtonProps) {
         $fontSize={fontSize}
         $typeBorder={typeBorder}
         $bWidth={bWidth}
+        $borderColor={borderColor}
       >
         {children}
         {ripples.map(ripple => (

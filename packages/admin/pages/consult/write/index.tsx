@@ -1,8 +1,8 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import router, { useRouter } from 'next/router'
+import router from 'next/router'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
@@ -31,33 +31,18 @@ import {
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import {
-  CREATE_STUDENT_STATE_MUTATION,
-  SEARCH_STUDENTSTATE_MUTATION,
-  UPDATE_STUDENT_STATE_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
-import ConsolutMemo from '@/components/form/ConsolutMemo'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
-`
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  span {
-    color: #555;
-  }
 `
 
 const DetailForm = styled.form`
@@ -72,6 +57,9 @@ const FlexBox = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
+`
+const AreaBox = styled.div`
+  flex: 1;
 `
 
 const DatePickerBox = styled.div`
@@ -180,119 +168,6 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-const MemoBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex: 1 3;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
-const MemoList = styled.ul`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
-`
-const MemoItem = styled.li`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
-const MemoBtn = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 1.75rem;
-  width: 5rem;
-
-  @media (max-width: 768px) {
-    padding-top: 0;
-    width: 100%;
-  }
-`
-
-const MemoListBtn = styled.p`
-  display: flex;
-  gap: 0.5rem;
-  flex-direction: column;
-
-  button {
-    width: 5rem;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-direction: row;
-
-    button {
-      width: 50%;
-    }
-  }
-`
-
-const MemoInfo = styled.label`
-  display: flex;
-  gap: 0.5rem;
-`
-const MemoName = styled.span`
-  color: #11181c;
-  font-weight: 600;
-`
-const MemoTime = styled.span``
-
-type studentData = {
-  id: number
-  campus: string
-  category: string
-  stName: string
-  phoneNum1: string
-  phoneNum2: string
-  phoneNum3: string
-  currentManager: string
-  subject: [string]
-  detail: string
-  agreement: string
-  progress: number
-  stEmail: string
-  stAddr: string
-  subDiv: string
-  stVisit: string
-  expEnrollDate: string
-  perchase: boolean
-  createdAt: string
-  updatedAt: string
-  receiptDiv: string
-  pic: string
-  consultationMemo: {
-    id: number
-    content: string
-    createdAt: string
-    updatedAt: string
-    manageUsers: {}
-  }
-}
-
 export default function Consoultation() {
   const [filterActive, setFilterActive] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -316,11 +191,10 @@ export default function Consoultation() {
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject.subject || []
-
   const [subjectSelected, setSubjectSelected] = useState(subjectList)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { register, control, setValue, handleSubmit, formState } = useForm()
-  const { isDirty, dirtyFields } = formState
+  const { errors } = formState
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -334,27 +208,31 @@ export default function Consoultation() {
         agreement: '동의',
         subject: data.subject,
         campus: '신촌',
-        detail: data.detail,
+        detail: data.detail === undefined ? null : data.detail,
         category: null,
         phoneNum1: data.phoneNum1,
-        phoneNum2: data.phoneNum2,
-        phoneNum3: data.phoneNum3,
-        stEmail: data.phoneNum2,
+        phoneNum2: data.phoneNum2 === undefined ? null : data.phoneNum2,
+        phoneNum3: data.phoneNum3 === undefined ? null : data.phoneNum3,
+        stEmail: data.stEmail === undefined ? null : data.stEmail,
         stAddr: null,
-        subDiv: data.subDiv,
-        stVisit: data.stVisit === null ? null : new Date(data.stVisit),
+        subDiv: data.subDiv === undefined ? null : data.subDiv,
+        stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
         expEnrollDate:
-          data.expEnrollDate === null ? null : new Date(data.expEnrollDate),
+          data.expEnrollDate === undefined
+            ? null
+            : new Date(data.expEnrollDate),
         perchase: null,
         birthday: null,
-        receiptDiv: data.receiptDiv,
-        pic: data.pic,
+        receiptDiv: data.subDiv === undefined ? null : data.receiptDiv,
+        pic: data.subDiv === undefined ? null : data.pic,
+        // progress: 0,
       },
       onCompleted: data => {
         console.log(data)
         alert('등록되었습니다.')
       },
     })
+
     userLogs(`${data.stName}의 상담 등록`)
   }
 
@@ -399,172 +277,226 @@ export default function Consoultation() {
         <DetailBox>
           <DetailForm onSubmit={handleSubmit(onSubmit)}>
             <FlexBox>
-              <Input
-                labelPlacement="outside"
-                placeholder="이름"
-                variant="bordered"
-                radius="md"
-                type="text"
-                label="이름"
-                defaultValue={''}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                className="w-full"
-                {...register('stName')}
-              />
-              <Input
-                labelPlacement="outside"
-                placeholder="이메일"
-                variant="bordered"
-                radius="md"
-                type="text"
-                label="이메일"
-                onChange={e => {
-                  register('stEmail').onChange(e)
-                }}
-                className="w-full"
-                {...register('stEmail')}
-              />
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="이름"
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="이름"
+                  defaultValue={''}
+                  onChange={e => {
+                    register('stName').onChange(e)
+                  }}
+                  className="w-full"
+                  {...register('stName', {
+                    required: {
+                      value: true,
+                      message: '이름을 입력해주세요.',
+                    },
+                  })}
+                />
+                {errors.stName && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.stName.message)}
+                  </p>
+                )}
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="이메일"
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="이메일"
+                  onChange={e => {
+                    register('stEmail').onChange(e)
+                  }}
+                  className="w-full"
+                  {...register('stEmail')}
+                />
+              </AreaBox>
             </FlexBox>
             <FlexBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                variant="bordered"
-                radius="md"
-                type="text"
-                label="전화번호1"
-                onChange={e => {
-                  register('phoneNum1').onChange(e)
-                }}
-                className="w-full"
-                {...register('phoneNum1')}
-              />
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                variant="bordered"
-                radius="md"
-                type="text"
-                label="전화번호2"
-                onChange={e => {
-                  register('phoneNum2').onChange(e)
-                }}
-                className="w-full"
-                {...register('phoneNum2')}
-              />
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                variant="bordered"
-                radius="md"
-                type="text"
-                label="전화번호3"
-                onChange={e => {
-                  register('phoneNum3').onChange(e)
-                }}
-                className="w-full"
-                {...register('phoneNum3')}
-              />
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder=" "
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="휴대폰번호"
+                  onChange={e => {
+                    register('phoneNum1').onChange(e)
+                  }}
+                  className="w-full"
+                  {...register('phoneNum1', {
+                    required: {
+                      value: true,
+                      message: '휴대폰번호를 입력해주세요.',
+                    },
+                    maxLength: {
+                      value: 11,
+                      message: '최대 11자리까지 입력 가능합니다.',
+                    },
+                    minLength: {
+                      value: 10,
+                      message: '최소 10자리 이상이어야 합니다.',
+                    },
+                    pattern: {
+                      value: /^010[0-9]{7,8}$/,
+                      message: '010으로 시작해주세요.',
+                    },
+                  })}
+                />
+                {errors.phoneNum1 && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.phoneNum1.message)}
+                  </p>
+                )}
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder=" "
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="기타번호1"
+                  onChange={e => {
+                    register('phoneNum2').onChange(e)
+                  }}
+                  className="w-full"
+                  {...register('phoneNum2')}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder=" "
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="기타번호2"
+                  onChange={e => {
+                    register('phoneNum3').onChange(e)
+                  }}
+                  className="w-full"
+                  {...register('phoneNum3')}
+                />
+              </AreaBox>
             </FlexBox>
-            <Controller
-              control={control}
-              name="subject"
-              render={({ field }) => (
-                <>
-                  <Textarea
-                    readOnly
-                    label="상담 과정 선택"
-                    labelPlacement="outside"
-                    className="max-w-full"
-                    variant="bordered"
-                    minRows={1}
-                    onClick={onOpen}
-                    {...register('subject')}
-                  />
-                  <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
-                    <ModalContent>
-                      {onClose => (
-                        <>
-                          <ModalHeader className="flex flex-col gap-1"></ModalHeader>
-                          <ModalBody>
-                            <ScrollShadow
-                              orientation="horizontal"
-                              className="scrollbar"
-                            >
-                              <CheckboxGroup
-                                value={subjectSelected}
-                                onChange={handleCheckboxChange}
-                                classNames={{
-                                  wrapper: 'gap-0',
+            <AreaBox>
+              <Controller
+                control={control}
+                name="subject"
+                rules={{
+                  required: {
+                    value: true,
+                    message: '과정을 최소 1개 이상 선택해주세요.',
+                  },
+                }}
+                render={({ field }) => (
+                  <>
+                    <Textarea
+                      readOnly
+                      label="상담 과정 선택"
+                      labelPlacement="outside"
+                      className="max-w-full"
+                      variant="bordered"
+                      minRows={1}
+                      onClick={onOpen}
+                      {...register('subject')}
+                    />
+                    <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+                      <ModalContent>
+                        {onClose => (
+                          <>
+                            <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                            <ModalBody>
+                              <ScrollShadow
+                                orientation="horizontal"
+                                className="scrollbar"
+                              >
+                                <CheckboxGroup
+                                  value={subjectSelected}
+                                  onChange={handleCheckboxChange}
+                                  classNames={{
+                                    wrapper: 'gap-0',
+                                  }}
+                                >
+                                  <Theader>
+                                    <TableRow>
+                                      <Tcheck></Tcheck>
+                                      <Tname>과정명</Tname>
+                                      <TsubDiv>수강구분</TsubDiv>
+                                      <Tfee>과정 금액</Tfee>
+                                    </TableRow>
+                                  </Theader>
+                                  {subjectList?.map((item, index) => (
+                                    <TableItem key={index}>
+                                      <TableRow>
+                                        <Checkbox
+                                          key={item.id}
+                                          value={item.subjectName}
+                                        >
+                                          <SubjectItem tableData={item} />
+                                        </Checkbox>
+                                      </TableRow>
+                                    </TableItem>
+                                  ))}
+                                </CheckboxGroup>
+                              </ScrollShadow>
+                              {subjectData?.seeSubject.totalCount > 0 && (
+                                <PagerWrap>
+                                  <Pagination
+                                    variant="light"
+                                    showControls
+                                    initialPage={currentPage}
+                                    total={Math.ceil(
+                                      subjectData?.seeSubject.totalCount /
+                                        currentLimit,
+                                    )}
+                                    onChange={newPage => {
+                                      setCurrentPage(newPage)
+                                    }}
+                                  />
+                                </PagerWrap>
+                              )}
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button
+                                color="danger"
+                                variant="light"
+                                onPress={onClose}
+                              >
+                                Close
+                              </Button>
+                              <Button
+                                color="primary"
+                                onPress={() => {
+                                  clickSubmit()
+                                  field.onChange(subjectSelected)
                                 }}
                               >
-                                <Theader>
-                                  <TableRow>
-                                    <Tcheck></Tcheck>
-                                    <Tname>과정명</Tname>
-                                    <TsubDiv>수강구분</TsubDiv>
-                                    <Tfee>과정 금액</Tfee>
-                                  </TableRow>
-                                </Theader>
-                                {subjectList?.map((item, index) => (
-                                  <TableItem key={index}>
-                                    <TableRow>
-                                      <Checkbox
-                                        key={item.id}
-                                        value={item.subjectName}
-                                      >
-                                        <SubjectItem tableData={item} />
-                                      </Checkbox>
-                                    </TableRow>
-                                  </TableItem>
-                                ))}
-                              </CheckboxGroup>
-                            </ScrollShadow>
-                            {subjectData?.seeSubject.totalCount > 0 && (
-                              <PagerWrap>
-                                <Pagination
-                                  variant="light"
-                                  showControls
-                                  initialPage={currentPage}
-                                  total={Math.ceil(
-                                    subjectData?.seeSubject.totalCount /
-                                      currentLimit,
-                                  )}
-                                  onChange={newPage => {
-                                    setCurrentPage(newPage)
-                                  }}
-                                />
-                              </PagerWrap>
-                            )}
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button
-                              color="danger"
-                              variant="light"
-                              onPress={onClose}
-                            >
-                              Close
-                            </Button>
-                            <Button
-                              color="primary"
-                              onPress={() => {
-                                clickSubmit()
-                                field.onChange(subjectSelected)
-                              }}
-                            >
-                              선택
-                            </Button>
-                          </ModalFooter>
-                        </>
-                      )}
-                    </ModalContent>
-                  </Modal>
-                </>
+                                선택
+                              </Button>
+                            </ModalFooter>
+                          </>
+                        )}
+                      </ModalContent>
+                    </Modal>
+                  </>
+                )}
+              />
+              {errors.subject && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.subject.message)}
+                </p>
               )}
-            />
-
+            </AreaBox>
             <FlexBox>
               <Controller
                 control={control}
@@ -760,13 +692,23 @@ export default function Consoultation() {
               />
             </FlexBox>
             <BtnBox>
-              <Button2 buttonType="submit" width="100%" height="2.5rem">
+              <Button2
+                buttonType="submit"
+                width="100%"
+                height="2.5rem"
+                typeBorder={true}
+                fontColor="#fff"
+                bgColor="#007de9"
+              >
                 등록
               </Button2>
               <Button2
-                buttonType="reset"
+                buttonType="button"
                 width="100%"
                 height="2.5rem"
+                fontColor="#007de9"
+                bgColor="#fff"
+                borderColor="#007de9"
                 typeBorder={true}
                 onClick={() => router.push('/consult')}
               >
