@@ -184,7 +184,7 @@ export default function SubjectTable() {
                 onClick={() => router.push(`/subjects/detail/${item.id}`)}
               >
                 <TableRow>
-                  <Tnum>{index + 1}</Tnum>
+                  <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
                     <SubjectItem tableData={item} />
                   </Tdiv>

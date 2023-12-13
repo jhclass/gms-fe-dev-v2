@@ -7,7 +7,6 @@ import Button from '@/components/common/Button'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import { LogUserIn } from '@/lib/apolloClient'
-import { gql } from '@apollo/client'
 import { Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
 import { useState } from 'react'
@@ -224,7 +223,14 @@ export default function Login() {
             </InputBox>
             {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
             <BtnBox>
-              <Button buttonType="submit">로그인</Button>
+              <Button
+                buttonType="submit"
+                typeBorder={true}
+                fontColor="#fff"
+                bgColor="#007de9"
+              >
+                로그인
+              </Button>
             </BtnBox>
           </form>
           <Alink>

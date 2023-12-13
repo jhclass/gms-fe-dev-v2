@@ -3,6 +3,9 @@ import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import SubjectTable from '@/components/table/Subject'
 import { styled } from 'styled-components'
+import SubjectsFilter from '@/components/filter/SubjectsFilter'
+import { studentFilterState } from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -10,6 +13,8 @@ const ConBox = styled.div`
 
 export default function Subjects() {
   const [filterActive, setFilterActive] = useState(false)
+  const [filterSearch, setFilterSearch] = useState(false)
+  const studentFilter = useRecoilValue(studentFilterState)
 
   return (
     <>
@@ -17,7 +22,12 @@ export default function Subjects() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          onBtn={false}
+          rightArea={true}
+        />
+        <SubjectsFilter
+          isActive={filterActive}
+          onFilterToggle={setFilterActive}
+          onFilterSearch={setFilterSearch}
         />
         <ConBox>
           <SubjectTable />
