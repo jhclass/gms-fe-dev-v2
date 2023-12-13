@@ -6,7 +6,7 @@ import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 
-type ConsoultItemProps = {
+type ConsultItemProps = {
   tableData: {
     id: number
     stName: string
@@ -193,7 +193,7 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-export default function FavoriteItem(props: ConsoultItemProps) {
+export default function FavoriteItem(props: ConsultItemProps) {
   const conIndex = props.itemIndex
   const student = props.tableData
   const flagString = isDisplayFlag(student.createdAt, student.progress)

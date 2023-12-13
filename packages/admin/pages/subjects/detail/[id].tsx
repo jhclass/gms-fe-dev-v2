@@ -7,23 +7,28 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { Input, Select, SelectItem, Switch } from '@nextui-org/react'
+import { Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react'
 import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
   CREATE_SUBJECT_MUTATION,
+  DELETE_SUBJECT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
   UPDATE_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
+import { SEE_STUDENT_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
 
 const SwitchDiv = styled.div`
-  width: 6.5rem;
+  display: flex;
+  align-items: center;
 `
 const SwitchText = styled.span`
+  width: 4rem;
+  padding-right: 0.5rem;
   font-size: 0.8rem;
 `
 const DetailForm = styled.form`
@@ -84,12 +89,12 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-export default function Consoultation() {
+export default function SubjectDetail() {
   const router = useRouter()
   const subjectId = typeof router.query.id === 'string' ? router.query.id : null
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit] = useState(10)
-
+  const subjectsPage = router.query.page
+  const subjectsLimit = router.query.limit
+  const [deleteSubject] = useMutation(DELETE_SUBJECT_MUTATION)
   const [updateSubject] = useMutation(UPDATE_SUBJECT_MUTATION)
   const [searchSubjectMutation, { data, loading, error }] = useMutation(
     SEARCH_SUBJECT_MUTATION,
@@ -131,8 +136,6 @@ export default function Consoultation() {
     })
   }, [router])
 
-  console.log(data)
-
   useEffect(() => {
     if (subjectState.exposure) {
       setIsSelected(subjectState.exposure)
@@ -171,7 +174,6 @@ export default function Consoultation() {
   }, [subjectState])
 
   const onSubmit = data => {
-    console.log(typeof parseInt(data.roomNum), parseInt(data.roomNum))
     if (isDirty || subjectState.exposure !== isSelected) {
       console.log(isSelected)
       console.log(isDirty)
@@ -183,12 +185,13 @@ export default function Consoultation() {
             updateSubjectId: subjectState.id,
             subjectName: data.subjectName,
             fee: parseInt(data.fee),
+            subDiv: data.subDiv,
             startDate:
-              data.stVisit === undefined ? null : new Date(data.startDate),
-            endDate: data.endDate === undefined ? null : new Date(data.endDate),
-            roomNum: data.roomNum === '' ? null : parseInt(data.roomNum),
+              data.startDate === null ? null : new Date(data.startDate),
+            endDate: data.endDate === null ? null : new Date(data.endDate),
+            roomNum: data.roomNum === '' ? null : data.roomNum,
             exposure: isSelected,
-            totalTime: data.totalTime === '' ? 0 : data.totalTime,
+            totalTime: data.totalTime === '' ? 0 : parseInt(data.totalTime),
             teacherName:
               data.teacherName === undefined ? '강사명 없음' : data.teacherName,
           },
@@ -203,6 +206,33 @@ export default function Consoultation() {
           dirtyFieldsArray.join(', '),
         )
       }
+    }
+  }
+
+  console.log(subjectsPage)
+  console.log(subjectsLimit)
+  const onDelete = data => {
+    const isDelete = confirm('과정을 삭제시겠습니까?')
+    if (isDelete) {
+      deleteSubject({
+        variables: {
+          deleteSubjectId: data,
+        },
+        refetchQueries: [
+          {
+            query: SEE_SUBJECT_QUERY,
+            variables: {
+              page: Number(subjectsPage),
+              limit: Number(subjectsLimit),
+            },
+          },
+        ],
+        onCompleted: () => {
+          alert('과정이 삭제되었습니다.')
+          router.push('/subjects')
+          userLogs(`${subjectState.subjectName} 과목 삭제`)
+        },
+      })
     }
   }
 
@@ -243,13 +273,12 @@ export default function Consoultation() {
             rightArea={true}
             addRender={
               <SwitchDiv>
+                <SwitchText>노출여부</SwitchText>
                 <Switch
                   size="md"
                   isSelected={isSelected}
                   onValueChange={setIsSelected}
-                >
-                  <SwitchText>노출여부</SwitchText>
-                </Switch>
+                ></Switch>
               </SwitchDiv>
             }
           />
@@ -261,13 +290,14 @@ export default function Consoultation() {
             <DetailDiv>
               <FlexBox>
                 <AreaBox>
-                  <Input
+                  <Textarea
                     labelPlacement="outside"
                     placeholder="과정명"
                     variant="bordered"
                     radius="md"
                     type="text"
                     label="과정명"
+                    minRows={1}
                     defaultValue={subjectState?.subjectName}
                     onChange={e => {
                       register('subjectName').onChange(e)
@@ -286,6 +316,8 @@ export default function Consoultation() {
                     </p>
                   )}
                 </AreaBox>
+              </FlexBox>
+              <FlexBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
@@ -312,17 +344,15 @@ export default function Consoultation() {
                     </p>
                   )}
                 </AreaBox>
-              </FlexBox>
-              <FlexBox>
                 <AreaBox>
                   <Controller
                     control={control}
                     name="subDiv"
-                    defaultValue={[subjectState?.subDiv]}
+                    defaultValue={subjectState?.subDiv}
                     render={({ field, fieldState }) => (
                       <Select
                         labelPlacement="outside"
-                        defaultValue={[subjectState?.subDiv]}
+                        defaultValue={subjectState?.subDiv}
                         label={<FilterLabel>수강구분</FilterLabel>}
                         placeholder=" "
                         className="w-full"
@@ -347,6 +377,8 @@ export default function Consoultation() {
                     </p>
                   )}
                 </AreaBox>
+              </FlexBox>
+              <FlexBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
@@ -512,6 +544,17 @@ export default function Consoultation() {
                   onClick={() => router.push('/subjects')}
                 >
                   목록으로
+                </Button2>
+                <Button2
+                  buttonType="button"
+                  width="100%"
+                  height="2.5rem"
+                  typeBorder={true}
+                  fontColor="#fff"
+                  bgColor="#ff5900"
+                  onClick={() => onDelete(subjectState.id)}
+                >
+                  삭제
                 </Button2>
               </BtnBox>
             </DetailDiv>

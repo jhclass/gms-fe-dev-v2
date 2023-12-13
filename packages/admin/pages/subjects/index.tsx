@@ -6,6 +6,7 @@ import { styled } from 'styled-components'
 import SubjectsFilter from '@/components/filter/SubjectsFilter'
 import { studentFilterState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
+import SubjectFilter from '@/components/table/SubjectFilterTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -14,7 +15,7 @@ const ConBox = styled.div`
 export default function Subjects() {
   const [filterActive, setFilterActive] = useState(false)
   const [filterSearch, setFilterSearch] = useState(false)
-  const studentFilter = useRecoilValue(studentFilterState)
+  const [subjectFilter, setSubjectFilter] = useState()
 
   return (
     <>
@@ -28,9 +29,18 @@ export default function Subjects() {
           isActive={filterActive}
           onFilterToggle={setFilterActive}
           onFilterSearch={setFilterSearch}
+          setSubjectFilter={setSubjectFilter}
         />
         <ConBox>
-          <SubjectTable />
+          {filterSearch ? (
+            <SubjectFilter
+              onFilterSearch={setFilterSearch}
+              subjectFilter={subjectFilter}
+              setSubjectFilter={setSubjectFilter}
+            />
+          ) : (
+            <SubjectTable />
+          )}
         </ConBox>
       </MainWrap>
     </>

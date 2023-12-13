@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import ConsoultItem from '@/components/table/ConsoultItem'
+import ConsultItem from '@/components/table/ConsultItem'
 import {
   MME_QUERY,
   SEE_FAVORITESTATE_QUERY,
@@ -257,7 +257,7 @@ export default function ConsolutationTable() {
             ))}
             <br />
             {students?.map((item, index) => (
-              <ConsoultItem
+              <ConsultItem
                 forName="student"
                 key={index}
                 tableData={item}

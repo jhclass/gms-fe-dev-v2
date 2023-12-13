@@ -7,7 +7,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { Input, Select, SelectItem, Switch } from '@nextui-org/react'
+import { Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react'
 import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
@@ -15,11 +15,15 @@ import { CREATE_SUBJECT_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
+import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 
 const SwitchDiv = styled.div`
-  width: 6.5rem;
+  display: flex;
+  align-items: center;
 `
 const SwitchText = styled.span`
+  width: 4rem;
+  padding-right: 0.5rem;
   font-size: 0.8rem;
 `
 const DetailBox = styled.div`
@@ -70,7 +74,7 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-export default function Consoultation() {
+export default function SubjectWrite() {
   const [createSubject] = useMutation(CREATE_SUBJECT_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)
@@ -96,6 +100,12 @@ export default function Consoultation() {
         teacherName:
           data.teacherName === undefined ? '강사명 없음' : data.teacherName,
       },
+      refetchQueries: [
+        {
+          query: SEE_SUBJECT_QUERY,
+          variables: { page: 1, limit: 10 },
+        },
+      ],
       onCompleted: data => {
         console.log(data)
         alert('등록되었습니다.')
@@ -119,13 +129,12 @@ export default function Consoultation() {
           rightArea={true}
           addRender={
             <SwitchDiv>
+              <SwitchText>노출여부</SwitchText>
               <Switch
                 size="md"
                 isSelected={isSelected}
                 onValueChange={setIsSelected}
-              >
-                <SwitchText>노출여부</SwitchText>
-              </Switch>
+              ></Switch>
             </SwitchDiv>
           }
         />
@@ -133,13 +142,14 @@ export default function Consoultation() {
           <DetailForm onSubmit={handleSubmit(onSubmit)}>
             <FlexBox>
               <AreaBox>
-                <Input
+                <Textarea
                   labelPlacement="outside"
                   placeholder="과정명"
                   variant="bordered"
                   radius="md"
                   type="text"
                   label="과정명"
+                  minRows={1}
                   defaultValue={null}
                   onChange={e => {
                     register('subjectName').onChange(e)
@@ -158,6 +168,8 @@ export default function Consoultation() {
                   </p>
                 )}
               </AreaBox>
+            </FlexBox>
+            <FlexBox>
               <AreaBox>
                 <Input
                   labelPlacement="outside"
@@ -187,8 +199,6 @@ export default function Consoultation() {
                   </p>
                 )}
               </AreaBox>
-            </FlexBox>
-            <FlexBox>
               <AreaBox>
                 <Controller
                   control={control}
@@ -226,6 +236,8 @@ export default function Consoultation() {
                   </p>
                 )}
               </AreaBox>
+            </FlexBox>
+            <FlexBox>
               <AreaBox>
                 <Input
                   labelPlacement="outside"

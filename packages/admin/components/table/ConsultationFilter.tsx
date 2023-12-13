@@ -2,9 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import ConsoultItem from '@/components/table/ConsoultItem'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { studentFilterState } from '@/lib/recoilAtoms'
+import ConsultItem from '@/components/table/ConsultItem'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 
@@ -207,13 +205,15 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-export default function ConsolutationFilterTable({ onFilterSearch }) {
+export default function ConsolutationFilterTable({
+  onFilterSearch,
+  studentFilter,
+  setStudentFilter,
+}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const studentFilter = useRecoilValue(studentFilterState)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
-  const setFilterState = useSetRecoilState(studentFilterState)
   const {
     loading: MMeLoading,
     error: MMeError,
@@ -239,7 +239,7 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    setFilterState({})
+    setStudentFilter({})
     onFilterSearch(false)
   }
 
@@ -287,7 +287,7 @@ export default function ConsolutationFilterTable({ onFilterSearch }) {
             </Theader>
 
             {searchResult?.studentState.map((item, index) => (
-              <ConsoultItem
+              <ConsultItem
                 key={index}
                 tableData={item}
                 itemIndex={index}

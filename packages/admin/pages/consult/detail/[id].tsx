@@ -249,7 +249,7 @@ type studentData = {
   }
 }
 
-export default function Consoultation() {
+export default function ConsultDetail() {
   const router = useRouter()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [filterActive, setFilterActive] = useState(false)
@@ -363,7 +363,6 @@ export default function Consoultation() {
   }, [studentState])
 
   const onSubmit = data => {
-    console.log(data)
     if (isDirty) {
       console.log(isDirty)
       console.log('수정된 필드:', dirtyFields)
@@ -706,14 +705,14 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="subDiv"
-                  defaultValue={[studentState?.subDiv]}
+                  defaultValue={studentState?.subDiv}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
                       label={<FilterLabel>수강구분</FilterLabel>}
                       placeholder=" "
                       className="w-full"
-                      defaultValue={[studentState?.subDiv]}
+                      defaultValue={studentState?.subDiv}
                       variant="bordered"
                       selectedKeys={[sub]}
                       onChange={value => {
@@ -734,6 +733,7 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="pic"
+                  defaultValue={studentState?.pic}
                   render={({ field }) => (
                     <Select
                       labelPlacement="outside"

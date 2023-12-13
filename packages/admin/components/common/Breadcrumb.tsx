@@ -11,11 +11,19 @@ type propsTypes = {
   addRender?: React.ReactNode
 }
 
-const BreadcrumbBox = styled.div`
+const BreadcrumbBox = styled.div<{ $isIndex: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  ${props =>
+    props.$isIndex
+      ? ''
+      : `@media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+      }`}
 `
 const CateTitle = styled.h1`
   width: 100%;
@@ -175,7 +183,7 @@ export default function Breadcrumb(props) {
   return (
     <>
       {currentItem?.isBreadcrumb && (
-        <BreadcrumbBox>
+        <BreadcrumbBox $isIndex={breadcrumb.length == 1 ? true : false}>
           <CateTitle>
             {breadcrumb.length == 1 ? (
               <a href={parentItem?.href}>{parentItem?.label}</a>

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 
-type ConsoultItemProps = {
+type subjectItemProps = {
   tableData: {
     id: number
     subDiv: string
@@ -57,7 +57,7 @@ const EllipsisBox = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `
-export default function SubjectItem(props: ConsoultItemProps) {
+export default function SubjectItem(props: subjectItemProps) {
   const subject = props.tableData
   const feeFormet = fee => {
     const result = fee

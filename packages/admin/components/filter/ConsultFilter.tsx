@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
+import { progressStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '../common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
@@ -14,7 +14,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 
-type ConsoultFilterProps = {
+type ConsultFilterProps = {
   isActive: boolean
 }
 
@@ -115,14 +115,13 @@ export default function TableFillter({
   isActive,
   onFilterToggle,
   onFilterSearch,
+  setStudentFilter,
 }) {
   const [
     getManage,
     { data: seeManageUserData, error, loading: seeMansgeuserLoading },
   ] = useLazyQuery(SEE_MANAGEUSER_QUERY)
   const manageData = seeManageUserData?.seeManageUser || []
-  const setFilterState = useSetRecoilState(studentFilterState)
-  const filterState = useRecoilState(studentFilterState)
   const [receipt, setReceipt] = useState('')
   const [sub, setSub] = useState('')
   const [manager, setManager] = useState('')
@@ -213,7 +212,7 @@ export default function TableFillter({
         progress: data.groupSelected,
       }
 
-      setFilterState(filter)
+      setStudentFilter(filter)
       onFilterToggle(false)
       onFilterSearch(true)
     }
