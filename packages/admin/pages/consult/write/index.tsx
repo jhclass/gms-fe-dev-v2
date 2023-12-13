@@ -232,6 +232,7 @@ export default function Consoultation() {
       onCompleted: data => {
         console.log(data)
         alert('등록되었습니다.')
+        router.push('/consult')
       },
     })
 

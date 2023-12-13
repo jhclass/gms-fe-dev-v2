@@ -16,13 +16,18 @@ import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 
+const SwitchDiv = styled.div`
+  width: 6.5rem;
+`
+const SwitchText = styled.span`
+  font-size: 0.8rem;
+`
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
-
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -85,15 +90,16 @@ export default function Consoultation() {
         fee: parseInt(data.fee),
         startDate: data.stVisit === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),
-        roomNum: data.roomNum === undefined ? null : data.roomNum,
+        roomNum: data.roomNum === '' ? null : Number(data.roomNum),
         exposure: isSelected,
-        totalTime: data.totalTime === '' ? 0 : data.roomNum,
+        totalTime: data.totalTime === '' ? 0 : data.totalTime,
         teacherName:
-          data.teacherName === undefined ? '강사명 없음' : data.roomNum,
+          data.teacherName === undefined ? '강사명 없음' : data.teacherName,
       },
       onCompleted: data => {
         console.log(data)
         alert('등록되었습니다.')
+        router.push('/subjects')
       },
     })
     userLogs(`${data.subjectName}과정 등록`)
@@ -112,9 +118,15 @@ export default function Consoultation() {
         <Breadcrumb
           rightArea={true}
           addRender={
-            <Switch isSelected={isSelected} onValueChange={setIsSelected}>
-              노출여부
-            </Switch>
+            <SwitchDiv>
+              <Switch
+                size="md"
+                isSelected={isSelected}
+                onValueChange={setIsSelected}
+              >
+                <SwitchText>노출여부</SwitchText>
+              </Switch>
+            </SwitchDiv>
           }
         />
         <DetailBox>
