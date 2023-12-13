@@ -253,13 +253,16 @@ export const DELETE_CONSULTATION_MEMO_MUTATION = gql`
 `
 
 export const CREATE_SUBJECT_MUTATION = gql`
-  mutation CreateSubject(
+  mutation Mutation(
     $subDiv: String!
     $subjectName: String!
     $fee: Int!
     $startDate: String
     $endDate: String
     $roomNum: String
+    $exposure: Boolean
+    $totalTime: Int
+    $teacherName: String
   ) {
     createSubject(
       subDiv: $subDiv
@@ -268,6 +271,75 @@ export const CREATE_SUBJECT_MUTATION = gql`
       startDate: $startDate
       endDate: $endDate
       roomNum: $roomNum
+      exposure: $exposure
+      totalTime: $totalTime
+      teacherName: $teacherName
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`
+export const SEARCH_SUBJECT_MUTATION = gql`
+  mutation SearchSubject(
+    $searchSubjectId: Int
+    $subDiv: String
+    $subjectName: String
+    $page: Int
+    $limit: Int
+  ) {
+    searchSubject(
+      id: $searchSubjectId
+      subDiv: $subDiv
+      subjectName: $subjectName
+      page: $page
+      limit: $limit
+    ) {
+      ok
+      error
+      message
+      result {
+        id
+        subDiv
+        subjectName
+        createdAt
+        updatedAt
+        fee
+        startDate
+        endDate
+        roomNum
+        exposure
+        totalTime
+        teacherName
+      }
+    }
+  }
+`
+export const UPDATE_SUBJECT_MUTATION = gql`
+  mutation UpdateSubject(
+    $updateSubjectId: Int!
+    $subDiv: String!
+    $subjectName: String!
+    $fee: Int!
+    $startDate: String
+    $endDate: String
+    $roomNum: String
+    $exposure: Boolean
+    $totalTime: Int
+    $teacherName: String
+  ) {
+    updateSubject(
+      id: $updateSubjectId
+      subDiv: $subDiv
+      subjectName: $subjectName
+      fee: $fee
+      startDate: $startDate
+      endDate: $endDate
+      roomNum: $roomNum
+      exposure: $exposure
+      totalTime: $totalTime
+      teacherName: $teacherName
     ) {
       ok
       error

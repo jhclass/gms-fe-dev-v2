@@ -3,9 +3,11 @@ import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import router from 'next/router'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Input, Select, SelectItem } from '@nextui-org/react'
+import ko from 'date-fns/locale/ko'
+registerLocale('ko', ko)
+import { Input, Select, SelectItem, Switch } from '@nextui-org/react'
 import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
@@ -49,7 +51,6 @@ const DatePickerBox = styled.div`
     bottom: 0;
   }
 `
-
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -68,30 +69,27 @@ export default function Consoultation() {
   const [createSubject] = useMutation(CREATE_SUBJECT_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)
-  const [subjectSelected, setSubjectSelected] = useState()
-
   const { register, control, handleSubmit, formState } = useForm()
   const { errors } = formState
-  const [fee, setFee] = useState(0)
   const [sjStartDate, setSjStartDate] = useState(null)
   const [sjEndDate, setSjEndDate] = useState(null)
   const [sub, setSub] = useState('없음')
+  const [teacher, setTeacher] = useState('강사명 없음')
+  const [isSelected, setIsSelected] = useState(false)
 
   const onSubmit = data => {
-    console.log(data)
-    console.log(typeof data.endDate, data.endDate)
-    console.log(typeof data.startDate, data.startDate)
-    console.log(typeof feeReplace(data.fee), data.fee)
-    console.log(typeof data.roomNum, data.roomNum)
-
     createSubject({
       variables: {
         subDiv: data.subDiv,
         subjectName: data.subjectName,
-        fee: data.fee,
+        fee: parseInt(data.fee),
         startDate: data.stVisit === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),
         roomNum: data.roomNum === undefined ? null : data.roomNum,
+        exposure: isSelected,
+        totalTime: data.totalTime === '' ? 0 : data.roomNum,
+        teacherName:
+          data.teacherName === undefined ? '강사명 없음' : data.roomNum,
       },
       onCompleted: data => {
         console.log(data)
@@ -104,26 +102,21 @@ export default function Consoultation() {
   const handleSubChange = e => {
     setSub(e.target.value)
   }
-  const feeReplace = fee => {
-    const result = parseInt(fee.replaceAll(',', ''))
-    return result
-  }
-  const feeFormet = fee => {
-    // const fee2 = fee
-    const result = fee
-    // .toString()
-    // .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
+  const handleTeacherChange = e => {
+    setTeacher(e.target.value)
   }
 
   return (
     <>
       <MainWrap>
-        {/* <Breadcrumb
-          onFilterToggle={setFilterActive}
-          isActive={filterActive}
-          onBtn={false}
-        /> */}
+        <Breadcrumb
+          rightArea={true}
+          addRender={
+            <Switch isSelected={isSelected} onValueChange={setIsSelected}>
+              노출여부
+            </Switch>
+          }
+        />
         <DetailBox>
           <DetailForm onSubmit={handleSubmit(onSubmit)}>
             <FlexBox>
@@ -161,25 +154,19 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="수강료"
-                  value={fee.toLocaleString()}
-                  onValueChange={value => {
-                    console.log(value)
-                    const test = value
-                    setFee(parseInt(test))
-                  }}
                   onChange={e => {
                     register('fee').onChange(e)
                   }}
                   className="w-full"
                   {...register('fee', {
-                    // required: {
-                    //   value: true,
-                    //   message: '수강료를 입력해주세요.',
-                    // },
-                    // pattern: {
-                    //   value: /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                    //   message: '숫자만 입력해주세요.',
-                    // },
+                    required: {
+                      value: true,
+                      message: '수강료를 입력해주세요.',
+                    },
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: '숫자만 입력 가능합니다.',
+                    },
                   })}
                 />
                 {errors.fee && (
@@ -242,15 +229,51 @@ export default function Consoultation() {
                   {...register('roomNum')}
                 />
               </AreaBox>
+              <AreaBox>
+                <Controller
+                  control={control}
+                  name="teacherName"
+                  render={({ field, fieldState }) => (
+                    <Select
+                      labelPlacement="outside"
+                      label="강사명"
+                      placeholder=" "
+                      className="w-full"
+                      variant="bordered"
+                      selectedKeys={[teacher]}
+                      onChange={value => {
+                        field.onChange(value)
+                        handleTeacherChange(value)
+                      }}
+                    >
+                      <SelectItem key={'강사명 없음'} value={'강사명 없음'}>
+                        {'강사명 없음'}
+                      </SelectItem>
+                      <SelectItem key={'김강사'} value={'김강사'}>
+                        {'김강사'}
+                      </SelectItem>
+                      <SelectItem key={'이강사'} value={'이강사'}>
+                        {'이강사'}
+                      </SelectItem>
+                      {/* {managerList?.map(item => (
+                        <SelectItem key={item.mUsername} value={item.mUsername}>
+                          {item.mUsername}
+                        </SelectItem>
+                      ))} */}
+                    </Select>
+                  )}
+                />
+              </AreaBox>
             </FlexBox>
             <FlexBox>
               <DatePickerBox>
                 <Controller
                   control={control}
                   name="startDate"
-                  // locale="ko"
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <DatePicker
+                      locale="ko"
+                      showYearDropdown
                       selected={
                         sjStartDate === null ? null : new Date(sjStartDate)
                       }
@@ -280,8 +303,10 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="endDate"
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <DatePicker
+                      locale="ko"
+                      showYearDropdown
                       selected={sjEndDate === null ? null : new Date(sjEndDate)}
                       placeholderText="기간을 선택해주세요."
                       isClearable
@@ -305,6 +330,24 @@ export default function Consoultation() {
                   )}
                 />
               </DatePickerBox>
+              <Input
+                labelPlacement="outside"
+                placeholder="총 강의시간"
+                variant="bordered"
+                radius="md"
+                type="text"
+                label="총 강의시간"
+                onChange={e => {
+                  register('totalTime').onChange(e)
+                }}
+                className="w-full"
+                {...register('totalTime', {
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: '숫자만 입력 가능합니다.',
+                  },
+                })}
+              />
             </FlexBox>
             <BtnBox>
               <Button2

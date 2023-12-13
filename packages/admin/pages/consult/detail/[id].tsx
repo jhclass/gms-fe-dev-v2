@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import ko from 'date-fns/locale/ko'
+registerLocale('ko', ko)
 import {
   Checkbox,
   CheckboxGroup,
@@ -187,87 +189,6 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-const MemoBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex: 1 3;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
-const MemoList = styled.ul`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
-`
-const MemoItem = styled.li`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
-const MemoBtn = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 1.75rem;
-  width: 5rem;
-
-  @media (max-width: 768px) {
-    padding-top: 0;
-    width: 100%;
-  }
-`
-
-const MemoListBtn = styled.p`
-  display: flex;
-  gap: 0.5rem;
-  flex-direction: column;
-
-  button {
-    width: 5rem;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-direction: row;
-
-    button {
-      width: 50%;
-    }
-  }
-`
-
-const MemoInfo = styled.label`
-  display: flex;
-  gap: 0.5rem;
-`
-const MemoName = styled.span`
-  color: #11181c;
-  font-weight: 600;
-`
-const MemoTime = styled.span``
-
 type studentData = {
   id: number
   campus: string
@@ -334,7 +255,6 @@ export default function Consoultation() {
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject.subject || []
   const studentState = data?.searchStudentState.studentState[0] || []
-  const [subjectSelected, setSubjectSelected] = useState(subjectList)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { register, control, setValue, handleSubmit, formState } = useForm({
@@ -360,6 +280,7 @@ export default function Consoultation() {
     },
   })
   const { isDirty, dirtyFields, errors } = formState
+  const [subjectSelected, setSubjectSelected] = useState()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -376,7 +297,7 @@ export default function Consoultation() {
 
   useEffect(() => {
     if (
-      studentState.receiptDiv === null ||
+      studentState.receiptDiv === '' ||
       studentState.receiptDiv === undefined
     ) {
       setReceipt('없음')
@@ -388,7 +309,7 @@ export default function Consoultation() {
     } else {
       setSub(studentState.subDiv)
     }
-    if (studentState.pic === undefined) {
+    if (studentState.pic === undefined || studentState.pic === null) {
       setManager('담당자 지정필요')
     } else {
       setManager(studentState.pic)
@@ -487,11 +408,7 @@ export default function Consoultation() {
     <>
       {data !== undefined && (
         <MainWrap>
-          <Breadcrumb
-            onFilterToggle={setFilterActive}
-            isActive={filterActive}
-            onBtn={false}
-          />
+          <Breadcrumb rightArea={false} />
           <DetailBox>
             <TopInfo>
               <span>최근 업데이트 일시 :</span>
@@ -551,6 +468,7 @@ export default function Consoultation() {
                     radius="md"
                     type="text"
                     label="휴대폰번호"
+                    maxLength={11}
                     defaultValue={studentState?.phoneNum1 || null}
                     onChange={e => {
                       register('phoneNum1').onChange(e)
@@ -852,10 +770,11 @@ export default function Consoultation() {
                   <Controller
                     control={control}
                     name="stVisit"
-                    // locale="ko"
                     defaultValue={studentState?.stVisit}
-                    render={({ field, fieldState }) => (
+                    render={({ field }) => (
                       <DatePicker
+                        locale="ko"
+                        showYearDropdown
                         selected={
                           stVisitDate === null ? null : new Date(stVisitDate)
                         }
@@ -887,8 +806,10 @@ export default function Consoultation() {
                     control={control}
                     name="expEnrollDate"
                     defaultValue={studentState?.expEnrollDate}
-                    render={({ field, fieldState }) => (
+                    render={({ field }) => (
                       <DatePicker
+                        locale="ko"
+                        showYearDropdown
                         selected={
                           expEnrollDate === null
                             ? null

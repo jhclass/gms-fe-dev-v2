@@ -11,7 +11,7 @@ export default function Registration() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          onBtn={false}
+          rightArea={false}
         />
       </MainWrap>
     </>

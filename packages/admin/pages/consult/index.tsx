@@ -3,7 +3,7 @@ import ConsoultationTable from '@/components/table/Consoultation'
 import ConsoultationFilter from '@/components/table/ConsoultationFilter'
 import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import ConsoultFilter from '@/components/common/ConsoultFilter'
+import ConsoultFilter from '@/components/filter/ConsoultFilter'
 import { styled } from 'styled-components'
 import { useRecoilValue } from 'recoil'
 import { studentFilterState } from '@/lib/recoilAtoms'
@@ -23,7 +23,7 @@ export default function Consoultation() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          onBtn={true}
+          rightArea={true}
         />
         <ConsoultFilter
           isActive={filterActive}

@@ -3,8 +3,10 @@ import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import router from 'next/router'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import ko from 'date-fns/locale/ko'
+registerLocale('ko', ko)
 import {
   Checkbox,
   CheckboxGroup,
@@ -208,12 +210,12 @@ export default function Consoultation() {
         agreement: '동의',
         subject: data.subject,
         campus: '신촌',
-        detail: data.detail === undefined ? null : data.detail,
+        detail: data.detail === undefined ? undefined : data.detail,
         category: null,
         phoneNum1: data.phoneNum1,
-        phoneNum2: data.phoneNum2 === undefined ? null : data.phoneNum2,
-        phoneNum3: data.phoneNum3 === undefined ? null : data.phoneNum3,
-        stEmail: data.stEmail === undefined ? null : data.stEmail,
+        phoneNum2: data.phoneNum2 === undefined ? undefined : data.phoneNum2,
+        phoneNum3: data.phoneNum3 === undefined ? undefined : data.phoneNum3,
+        stEmail: data.stEmail === undefined ? undefined : data.stEmail,
         stAddr: null,
         subDiv: data.subDiv === undefined ? null : data.subDiv,
         stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
@@ -223,7 +225,7 @@ export default function Consoultation() {
             : new Date(data.expEnrollDate),
         perchase: null,
         birthday: null,
-        receiptDiv: data.subDiv === undefined ? null : data.receiptDiv,
+        receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
         pic: data.subDiv === undefined ? null : data.pic,
         // progress: 0,
       },
@@ -269,11 +271,7 @@ export default function Consoultation() {
   return (
     <>
       <MainWrap>
-        <Breadcrumb
-          onFilterToggle={setFilterActive}
-          isActive={filterActive}
-          onBtn={false}
-        />
+        <Breadcrumb rightArea={false} />
         <DetailBox>
           <DetailForm onSubmit={handleSubmit(onSubmit)}>
             <FlexBox>
@@ -332,6 +330,7 @@ export default function Consoultation() {
                     register('phoneNum1').onChange(e)
                   }}
                   className="w-full"
+                  maxLength={11}
                   {...register('phoneNum1', {
                     required: {
                       value: true,
@@ -501,6 +500,12 @@ export default function Consoultation() {
               <Controller
                 control={control}
                 name="receiptDiv"
+                rules={{
+                  required: {
+                    value: true,
+                    message: '접수구분을 선택해주세요.',
+                  },
+                }}
                 render={({ field, fieldState }) => (
                   <Select
                     labelPlacement="outside"
@@ -594,7 +599,7 @@ export default function Consoultation() {
               <Controller
                 control={control}
                 name="progress"
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <RadioGroup
                     label={<FilterLabel>진행상태</FilterLabel>}
                     orientation="horizontal"
@@ -617,9 +622,10 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="stVisit"
-                  // locale="ko"
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <DatePicker
+                      locale="ko"
+                      showYearDropdown
                       selected={
                         stVisitDate === null ? null : new Date(stVisitDate)
                       }
@@ -650,8 +656,10 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="expEnrollDate"
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <DatePicker
+                      locale="ko"
+                      showYearDropdown
                       selected={
                         expEnrollDate === null ? null : new Date(expEnrollDate)
                       }

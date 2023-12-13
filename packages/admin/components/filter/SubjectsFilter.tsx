@@ -3,11 +3,13 @@ import styled from 'styled-components'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button from './Button'
+import Button from '../common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Radio, RadioGroup } from '@nextui-org/react'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import ko from 'date-fns/locale/ko'
+registerLocale('ko', ko)
 import { useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -321,6 +323,8 @@ export default function TableFillter({
                 name="creatDateRange"
                 render={({ field }) => (
                   <DatePicker
+                    locale="ko"
+                    showYearDropdown
                     selectsRange={true}
                     startDate={startCreatDate}
                     endDate={endCreatDate}
@@ -354,6 +358,8 @@ export default function TableFillter({
                 name="visitDateRange"
                 render={({ field }) => (
                   <DatePicker
+                    locale="ko"
+                    showYearDropdown
                     selectsRange={true}
                     startDate={startVisitDate}
                     endDate={endVisitDate}
@@ -422,6 +428,9 @@ export default function TableFillter({
               buttonType="submit"
               width="calc(50% - 0.5rem)"
               height="2.5rem"
+              typeBorder={true}
+              fontColor="#fff"
+              bgColor="#007de9"
             >
               검색
             </Button>
@@ -429,6 +438,9 @@ export default function TableFillter({
               buttonType="reset"
               width="calc(50% - 0.5rem)"
               height="2.5rem"
+              fontColor="#007de9"
+              bgColor="#fff"
+              borderColor="#007de9"
               typeBorder={true}
               onClick={handleReset}
             >
