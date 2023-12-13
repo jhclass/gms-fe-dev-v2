@@ -47,6 +47,7 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
+import CreateMemo from '@/components/form/CreateMemo'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -189,6 +190,33 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
+const MemoList = styled.ul`
+  margin-top: 1.5rem;
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+  }
+`
+const MemoItem = styled.li`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  textarea {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+`
+
 type studentData = {
   id: number
   campus: string
@@ -286,11 +314,14 @@ export default function Consoultation() {
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
-  const studentMemoList = studentState?.consultationMemo || {}
+  const [memoList, setMemoList] = useState([])
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
         searchStudentStateId: parseInt(studentId),
+      },
+      onCompleted: data => {
+        setMemoList(data.searchStudentState.studentState[0].consultationMemo)
       },
     })
   }, [router])
@@ -332,6 +363,7 @@ export default function Consoultation() {
   }, [studentState])
 
   const onSubmit = data => {
+    console.log(data)
     if (isDirty) {
       console.log(isDirty)
       console.log('수정된 필드:', dirtyFields)
@@ -648,6 +680,7 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="receiptDiv"
+                  defaultValue={studentState?.receiptDiv}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
@@ -673,6 +706,7 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="subDiv"
+                  defaultValue={[studentState?.subDiv]}
                   render={({ field, fieldState }) => (
                     <Select
                       labelPlacement="outside"
@@ -700,7 +734,7 @@ export default function Consoultation() {
                 <Controller
                   control={control}
                   name="pic"
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <Select
                       labelPlacement="outside"
                       label="담당자"
@@ -879,10 +913,23 @@ export default function Consoultation() {
             </DetailForm>
           </DetailBox>
           <DetailBox>
-            <ConsolutMemo
-              memoData={studentMemoList}
+            <CreateMemo
+              setMemoList={setMemoList}
               studentId={studentState?.id}
             />
+            {memoList && (
+              <MemoList>
+                {memoList?.map((item, index) => (
+                  <MemoItem key={index}>
+                    <ConsolutMemo
+                      item={item}
+                      setMemoList={setMemoList}
+                      studentId={studentState?.id}
+                    ></ConsolutMemo>
+                  </MemoItem>
+                ))}
+              </MemoList>
+            )}
           </DetailBox>
         </MainWrap>
       )}

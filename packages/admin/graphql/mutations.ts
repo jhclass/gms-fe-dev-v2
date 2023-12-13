@@ -242,6 +242,18 @@ export const CREATE_CONSULTATION_MEMO_MUTATION = gql`
     }
   }
 `
+export const UPDATE_CONSULTATION_MEMO_MUTATION = gql`
+  mutation UpdateConsultationMemo(
+    $updateConsultationMemoId: Int!
+    $content: String!
+  ) {
+    updateConsultationMemo(id: $updateConsultationMemoId, content: $content) {
+      ok
+      error
+      message
+    }
+  }
+`
 export const DELETE_CONSULTATION_MEMO_MUTATION = gql`
   mutation DeleteConsultationMemo($deleteConsultationMemoId: Int!) {
     deleteConsultationMemo(id: $deleteConsultationMemoId) {
@@ -265,6 +277,37 @@ export const CREATE_SUBJECT_MUTATION = gql`
     $teacherName: String
   ) {
     createSubject(
+      subDiv: $subDiv
+      subjectName: $subjectName
+      fee: $fee
+      startDate: $startDate
+      endDate: $endDate
+      roomNum: $roomNum
+      exposure: $exposure
+      totalTime: $totalTime
+      teacherName: $teacherName
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`
+export const UPDATE_SUBJECT_MUTATION = gql`
+  mutation UpdateSubject(
+    $updateSubjectId: Int!
+    $subDiv: String!
+    $subjectName: String!
+    $fee: Int!
+    $startDate: String
+    $endDate: String
+    $roomNum: String
+    $exposure: Boolean
+    $totalTime: Int
+    $teacherName: String
+  ) {
+    updateSubject(
+      id: $updateSubjectId
       subDiv: $subDiv
       subjectName: $subjectName
       fee: $fee
@@ -313,37 +356,6 @@ export const SEARCH_SUBJECT_MUTATION = gql`
         totalTime
         teacherName
       }
-    }
-  }
-`
-export const UPDATE_SUBJECT_MUTATION = gql`
-  mutation UpdateSubject(
-    $updateSubjectId: Int!
-    $subDiv: String!
-    $subjectName: String!
-    $fee: Int!
-    $startDate: String
-    $endDate: String
-    $roomNum: String
-    $exposure: Boolean
-    $totalTime: Int
-    $teacherName: String
-  ) {
-    updateSubject(
-      id: $updateSubjectId
-      subDiv: $subDiv
-      subjectName: $subjectName
-      fee: $fee
-      startDate: $startDate
-      endDate: $endDate
-      roomNum: $roomNum
-      exposure: $exposure
-      totalTime: $totalTime
-      teacherName: $teacherName
-    ) {
-      ok
-      error
-      message
     }
   }
 `

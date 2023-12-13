@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Textarea, useDisclosure } from '@nextui-org/react'
+import { Input, Textarea, useDisclosure } from '@nextui-org/react'
 import {
   progressStatusState,
   subStatusState,
@@ -14,6 +14,7 @@ import {
   CREATE_CONSULTATION_MEMO_MUTATION,
   DELETE_CONSULTATION_MEMO_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
+  UPDATE_CONSULTATION_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
@@ -23,9 +24,13 @@ import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 
 const DetailForm = styled.form`
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+  }
 `
 
 const MemoBox = styled.div`
@@ -45,6 +50,7 @@ const MemoBox = styled.div`
   }
 `
 const MemoList = styled.ul`
+  margin-top: 1.5rem;
   width: 100%;
   display: flex;
   gap: 1rem;
@@ -112,7 +118,7 @@ const MemoGrade = styled.span`
   text-align: center;
   font-weight: 700;
   color: #fff;
-  line-hieght: 0.8rem;
+  line-height: 0.8rem;
   font-size: 0.5rem;
 `
 const MemoName = styled.span`
@@ -135,53 +141,16 @@ type memoData = {
 }
 
 export default function ConsoultMemo(props) {
-  const memo = props.memoData
-  const studentId = props.studentId
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const mGrade = useMme('mGrade')
-  const [createMemo] = useMutation(CREATE_CONSULTATION_MEMO_MUTATION)
   const [deleteMemo] = useMutation(DELETE_CONSULTATION_MEMO_MUTATION)
+  const [updateMemo] = useMutation(UPDATE_CONSULTATION_MEMO_MUTATION)
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
   )
 
-  const [memoList, setMemoList] = useState(memo)
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      id: memo.id,
-      content: memo.cotent,
-      createdAt: memo.createdAt,
-      updatedAt: memo.updatedAt,
-      manageUser: {
-        id: memo.manageUser,
-        mUserId: memo.mUserId,
-        mUsername: memo.mUsername,
-      },
-      manageUserId: memo.manageUserId,
-    },
-  })
-
-  const onSubmit = data => {
-    createMemo({
-      variables: {
-        content: data.content,
-        studentStateId: studentId,
-      },
-      onCompleted: () => {
-        searchStudentStateMutation({
-          variables: {
-            searchStudentStateId: parseInt(studentId),
-          },
-          onCompleted: data => {
-            setMemoList(
-              data.searchStudentState.studentState[0].consultationMemo,
-            )
-          },
-        })
-      },
-    })
-  }
+  const { register, handleSubmit, control } = useForm({})
 
   const onDelete = data => {
     deleteMemo({
@@ -191,10 +160,10 @@ export default function ConsoultMemo(props) {
       onCompleted: () => {
         searchStudentStateMutation({
           variables: {
-            searchStudentStateId: parseInt(studentId),
+            searchStudentStateId: parseInt(props.studentId),
           },
           onCompleted: data => {
-            setMemoList(
+            props.setMemoList(
               data.searchStudentState.studentState[0].consultationMemo,
             )
           },
@@ -203,18 +172,28 @@ export default function ConsoultMemo(props) {
     })
   }
 
-  // const onModify = data => {
-  //   console.log(data)
-  //   createMemo({
-  //     variables: {
-  //       content: data.content,
-  //       studentStateId: studentId,
-  //     },
-  //     onCompleted: data => {
-  //       console.log(data)
-  //     },
-  //   })
-  // }
+  const onSubmit = data => {
+    console.log(data)
+    updateMemo({
+      variables: {
+        updateConsultationMemoId: parseInt(data.id),
+        content: data.content,
+      },
+      onCompleted: () => {
+        props.setMemoList([])
+        searchStudentStateMutation({
+          variables: {
+            searchStudentStateId: parseInt(props.studentId),
+          },
+          onCompleted: data => {
+            props.setMemoList(
+              data.searchStudentState.studentState[0].consultationMemo,
+            )
+          },
+        })
+      },
+    })
+  }
 
   const fametDate = data => {
     const timestamp = parseInt(data, 10)
@@ -238,89 +217,77 @@ export default function ConsoultMemo(props) {
       return gradeF
     }
   }
-
-  useEffect(() => {
-    console.log(memoList)
-  }, [memoList])
-
   return (
-    <>
-      <DetailForm onSubmit={handleSubmit(onSubmit)}>
-        <MemoBox>
-          <Textarea
-            label="메모작성"
-            labelPlacement="outside"
-            className="max-w-full"
-            variant="bordered"
-            minRows={5}
-            onChange={e => {
-              register('content').onChange(e)
-            }}
-            {...register('content')}
-          />
-          <MemoBtn>
-            <Button2
-              buttonType="submit"
-              width="100%"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
-            >
-              등록
-            </Button2>
-          </MemoBtn>
-        </MemoBox>
-        <MemoList>
-          {memoList.map((item, index) => (
-            <MemoItem key={index}>
-              <Textarea
-                label={
-                  <MemoInfo>
-                    <MemoGrade>{gradeStr(mGrade)}</MemoGrade>
-                    <MemoName>{item.manageUser?.mUsername}</MemoName>
-                    <MemoTime>{fametDate(item.createdAt)}</MemoTime>
-                  </MemoInfo>
-                }
-                defaultValue={item.content}
-                isReadOnly
-                variant="faded"
-                className="max-w-full"
-                onChange={e => {
-                  // register('memo').onChange(e)
-                }}
-                // {...register('memo')}
-              />
-              {mId == item.manageUser?.id && (
-                <MemoListBtn>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
-                  >
-                    수정
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
-                    onClick={() => onDelete(item.id)}
-                  >
-                    삭제
-                  </Button2>
-                </MemoListBtn>
-              )}
-            </MemoItem>
-          ))}
-        </MemoList>
-      </DetailForm>
-    </>
+    <DetailForm onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        labelPlacement="outside"
+        placeholder=" "
+        variant="bordered"
+        radius="md"
+        type="text"
+        label="아이디"
+        defaultValue={props.item?.id}
+        value={props.item?.id}
+        className="hidden w-full"
+        {...register('id')}
+      />
+      <Controller
+        name="content"
+        control={control}
+        rules={{
+          required: {
+            value: true,
+            message: '과정을 최소 1개 이상 선택해주세요.',
+          },
+        }}
+        defaultValue={props.item.content}
+        render={({ field }) => (
+          <>
+            <Textarea
+              label={
+                <MemoInfo>
+                  <MemoGrade>{gradeStr(mGrade)}</MemoGrade>
+                  <MemoName>{props.item.manageUser?.mUsername}</MemoName>
+                  <MemoTime>{fametDate(props.item.createdAt)}</MemoTime>
+                </MemoInfo>
+              }
+              ref={field.ref}
+              isReadOnly={mId == props.item.manageUser?.id ? false : true}
+              variant="faded"
+              className="max-w-full"
+              value={field.value}
+              onChange={e => field.onChange(e.target.value)}
+              {...register('content')}
+            />
+          </>
+        )}
+      />
+      {mId == props.item.manageUser?.id && (
+        <MemoListBtn>
+          <Button2
+            buttonType="submit"
+            width="100%"
+            height="2.5rem"
+            typeBorder={true}
+            fontColor="#fff"
+            bgColor="#007de9"
+          >
+            수정
+          </Button2>
+          <Button2
+            buttonType="button"
+            width="100%"
+            height="2.5rem"
+            fontColor="#007de9"
+            bgColor="#fff"
+            borderColor="#007de9"
+            typeBorder={true}
+            onClick={() => onDelete(props.item.id)}
+          >
+            삭제
+          </Button2>
+        </MemoListBtn>
+      )}
+    </DetailForm>
   )
 }

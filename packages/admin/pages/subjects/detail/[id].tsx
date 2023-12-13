@@ -2,53 +2,31 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
+import router, { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Textarea,
-  Button,
-  useDisclosure,
-  Pagination,
-  ScrollShadow,
-} from '@nextui-org/react'
-import {
-  progressStatusState,
-  subStatusState,
-  receiptStatusState,
-} from '@/lib/recoilAtoms'
+import { Input, Select, SelectItem, Switch } from '@nextui-org/react'
+import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import {
-  SEARCH_STUDENTSTATE_MUTATION,
-  UPDATE_STUDENT_STATE_MUTATION,
+  CREATE_SUBJECT_MUTATION,
+  SEARCH_SUBJECT_MUTATION,
+  UPDATE_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  MME_QUERY,
-  SEE_MANAGEUSER_QUERY,
-  SEE_SUBJECT_QUERY,
-} from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import SubjectItem from '@/components/table/SubjectItem'
-import ConsolutMemo from '@/components/form/ConsolutMemo'
 
-const DetailBox = styled.div`
+const SwitchDiv = styled.div`
+  width: 6.5rem;
+`
+const SwitchText = styled.span`
+  font-size: 0.8rem;
+`
+const DetailForm = styled.form`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
@@ -64,8 +42,7 @@ const TopInfo = styled.div`
     color: #555;
   }
 `
-
-const DetailForm = styled.form`
+const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -78,7 +55,6 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
-
 const AreaBox = styled.div`
   flex: 1;
 `
@@ -94,12 +70,6 @@ const DatePickerBox = styled.div`
     bottom: 0;
   }
 `
-
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-`
-
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -110,253 +80,117 @@ const FilterLabel = styled.label`
 `
 const BtnBox = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: center;
 `
-const Theader = styled.div`
-  width: 100%;
-  min-width: fit-content;
-  display: table-row;
-  flex-wrap: nowrap;
-  color: #111;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
-  text-align: center;
-`
-const TableItem = styled.div`
-  display: table;
-  position: relative;
-  width: 100%;
-  min-width: fit-content;
-  flex-wrap: nowrap;
-  border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
-  font-size: 0.875rem;
-  background: #fff;
-  overflow: hidden;
-
-  &:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
-  }
-`
-const TableRow = styled.div`
-  display: table-row;
-  width: 100%;
-  min-width: fit-content;
-  text-align: center;
-`
-const Tcheck = styled.div`
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.5rem;
-`
-const Tname = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 300px;
-`
-const TsubDiv = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 25%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 150px;
-`
-const Tfee = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 25%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 150px;
-`
-
-const PagerWrap = styled.div`
-  display: flex;
-  margin-top: 1.5rem;
-  justify-content: center;
-`
-
-type studentData = {
-  id: number
-  campus: string
-  category: string
-  stName: string
-  phoneNum1: string
-  phoneNum2: string
-  phoneNum3: string
-  currentManager: string
-  subject: [string]
-  detail: string
-  agreement: string
-  progress: number
-  stEmail: string
-  stAddr: string
-  subDiv: string
-  stVisit: string
-  expEnrollDate: string
-  perchase: boolean
-  createdAt: string
-  updatedAt: string
-  receiptDiv: string
-  pic: string
-  consultationMemo: {
-    id: number
-    content: string
-    createdAt: string
-    updatedAt: string
-    manageUsers: {}
-  }
-}
 
 export default function Consoultation() {
   const router = useRouter()
-  const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [filterActive, setFilterActive] = useState(false)
+  const subjectId = typeof router.query.id === 'string' ? router.query.id : null
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const {
-    loading: subjectLoading,
-    error: subjectError,
-    data: subjectData,
-  } = useQuery(SEE_SUBJECT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
+
+  const [updateSubject] = useMutation(UPDATE_SUBJECT_MUTATION)
+  const [searchSubjectMutation, { data, loading, error }] = useMutation(
+    SEARCH_SUBJECT_MUTATION,
     {
       variables: {
-        searchStudentStateId: parseInt(studentId),
+        searchStudentStateId: parseInt(subjectId),
       },
     },
   )
+  const subjectState = data?.searchSubject.result[0] || []
   const { userLogs } = useUserLogsMutation()
-  const progressStatus = useRecoilValue(progressStatusState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const managerList = managerData?.seeManageUser || []
-  const subjectList = subjectData?.seeSubject.subject || []
-  const studentState = data?.searchStudentState.studentState[0] || []
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
-      updateStudentStateId: studentState?.id,
-      campus: studentState?.campus,
-      category: studentState?.category,
-      stName: studentState?.stName,
-      phoneNum1: studentState?.phoneNum1,
-      phoneNum2: studentState?.phoneNum2,
-      phoneNum3: studentState?.phoneNum3,
-      subject: studentState?.subject,
-      detail: studentState?.detail,
-      progress: studentState?.progress,
-      stEmail: studentState?.stEmail,
-      stAddr: studentState?.stAddr,
-      subDiv: studentState?.subDiv,
-      stVisit: studentState?.stVisit,
-      expEnrollDate: studentState?.expEnrollDate,
-      perchase: studentState?.perchase,
-      pic: studentState?.pic,
-      receiptDiv: studentState?.receiptDiv,
+      updateSubjectId: subjectState.id,
+      subDiv: subjectState.subDiv,
+      subjectName: subjectState.subjectName,
+      fee: subjectState.fee,
+      startDate: subjectState.startDate,
+      endDate: subjectState.endDate,
+      roomNum: subjectState.roomNum,
+      exposure: subjectState.exposure,
+      totalTime: subjectState.totalTime,
+      teacherName: subjectState.teacherName,
     },
   })
   const { isDirty, dirtyFields, errors } = formState
-  const [subjectSelected, setSubjectSelected] = useState()
-  const [stVisitDate, setStVisitDate] = useState(null)
-  const [expEnrollDate, setExpEnrollDate] = useState(null)
-  const [receipt, setReceipt] = useState('없음')
+  const [sjStartDate, setSjStartDate] = useState(null)
+  const [sjEndDate, setSjEndDate] = useState(null)
   const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
-  const studentMemoList = studentState?.consultationMemo || {}
+  const [teacher, setTeacher] = useState('강사명 없음')
+  const [isSelected, setIsSelected] = useState(Boolean)
   useEffect(() => {
-    searchStudentStateMutation({
+    searchSubjectMutation({
       variables: {
-        searchStudentStateId: parseInt(studentId),
+        searchSubjectId: parseInt(subjectId),
       },
     })
   }, [router])
 
+  console.log(data)
+
   useEffect(() => {
-    if (
-      studentState.receiptDiv === '' ||
-      studentState.receiptDiv === undefined
-    ) {
-      setReceipt('없음')
-    } else {
-      setReceipt(studentState.receiptDiv)
+    if (subjectState.exposure) {
+      setIsSelected(subjectState.exposure)
     }
-    if (studentState.subDiv === null || studentState.subDiv === undefined) {
+    if (subjectState.subDiv === null || subjectState.subDiv === undefined) {
       setSub('없음')
     } else {
-      setSub(studentState.subDiv)
+      setSub(subjectState.subDiv)
     }
-    if (studentState.pic === undefined || studentState.pic === null) {
-      setManager('담당자 지정필요')
-    } else {
-      setManager(studentState.pic)
-    }
-    if (studentState.stVisit === null || studentState.stVisit === undefined) {
-      setStVisitDate(null)
-    } else {
-      const date = parseInt(studentState.stVisit)
-      setStVisitDate(date)
-    }
+
     if (
-      studentState.expEnrollDate === null ||
-      studentState.expEnrollDate === undefined
+      subjectState.teacherName === undefined ||
+      subjectState.teacherName === null
     ) {
-      setExpEnrollDate(null)
+      setTeacher('강사명 없음')
     } else {
-      const date = parseInt(studentState.expEnrollDate)
-      setExpEnrollDate(date)
+      setTeacher(subjectState.teacherName)
     }
-  }, [studentState])
+
+    if (
+      subjectState.startDate === null ||
+      subjectState.startDate === undefined
+    ) {
+      setSjStartDate(null)
+    } else {
+      const date = parseInt(subjectState.startDate)
+      setSjStartDate(date)
+    }
+
+    if (subjectState.endDate === null || subjectState.endDate === undefined) {
+      setSjEndDate(null)
+    } else {
+      const date = parseInt(subjectState.endDate)
+      setSjEndDate(date)
+    }
+  }, [subjectState])
 
   const onSubmit = data => {
-    if (isDirty) {
+    console.log(typeof parseInt(data.roomNum), parseInt(data.roomNum))
+    if (isDirty || subjectState.exposure !== isSelected) {
+      console.log(isSelected)
       console.log(isDirty)
       console.log('수정된 필드:', dirtyFields)
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
-        updateStudent({
+        updateSubject({
           variables: {
-            updateStudentStateId: studentState.id,
-            campus: studentState.campus,
-            stName: data.stName,
-            category: studentState.category,
-            phoneNum1: data.phoneNum1,
-            phoneNum2: data.phoneNum2,
-            phoneNum3: data.phoneNum3,
-            subject: data.subject,
-            detail: data.detail,
-            progress: data.progress,
-            stEmail: data.stEmail,
-            stAddr: studentState.stAddr,
-            subDiv: data.subDiv,
-            stVisit: data.stVisit === null ? null : new Date(data.stVisit),
-            expEnrollDate:
-              data.expEnrollDate === null ? null : new Date(data.expEnrollDate),
-            pic: data.pic,
-            receiptDiv: data.receiptDiv,
+            updateSubjectId: subjectState.id,
+            subjectName: data.subjectName,
+            fee: parseInt(data.fee),
+            startDate:
+              data.stVisit === undefined ? null : new Date(data.startDate),
+            endDate: data.endDate === undefined ? null : new Date(data.endDate),
+            roomNum: data.roomNum === '' ? null : parseInt(data.roomNum),
+            exposure: isSelected,
+            totalTime: data.totalTime === '' ? 0 : data.totalTime,
+            teacherName:
+              data.teacherName === undefined ? '강사명 없음' : data.teacherName,
           },
           onCompleted: data => {
             console.log(data)
@@ -365,7 +199,7 @@ export default function Consoultation() {
         })
         const dirtyFieldsArray = [...Object.keys(dirtyFields)]
         userLogs(
-          `${studentState.stName}의 상담 수정`,
+          `${subjectState.subjectName} 과목 수정`,
           dirtyFieldsArray.join(', '),
         )
       }
@@ -384,22 +218,19 @@ export default function Consoultation() {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
-  const handleReceiptChange = e => {
-    setReceipt(e.target.value)
+  const feeDate = fee => {
+    const result = Number(fee.replaceAll(',', ''))
+    return result
+  }
+  const feeFormet = fee => {
+    const result = parseInt(fee).toLocaleString()
+    return result
   }
   const handleSubChange = e => {
     setSub(e.target.value)
   }
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-
-  const handleCheckboxChange = values => {
-    setSubjectSelected(values)
-  }
-  const clickSubmit = () => {
-    setValue('subject', subjectSelected)
-    onClose()
+  const handleTeacherChange = e => {
+    setTeacher(e.target.value)
   }
 
   if (loading) return 'Submitting...'
@@ -408,424 +239,192 @@ export default function Consoultation() {
     <>
       {data !== undefined && (
         <MainWrap>
-          <Breadcrumb rightArea={false} />
-          <DetailBox>
+          <Breadcrumb
+            rightArea={true}
+            addRender={
+              <SwitchDiv>
+                <Switch
+                  size="md"
+                  isSelected={isSelected}
+                  onValueChange={setIsSelected}
+                >
+                  <SwitchText>노출여부</SwitchText>
+                </Switch>
+              </SwitchDiv>
+            }
+          />
+          <DetailForm onSubmit={handleSubmit(onSubmit)}>
             <TopInfo>
               <span>최근 업데이트 일시 :</span>
-              {fametDate(studentState?.updatedAt)}
+              {fametDate(subjectState?.updatedAt)}
             </TopInfo>
-            <DetailForm onSubmit={handleSubmit(onSubmit)}>
+            <DetailDiv>
               <FlexBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
-                    placeholder="이름"
+                    placeholder="과정명"
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="이름"
-                    defaultValue={studentState?.stName}
+                    label="과정명"
+                    defaultValue={subjectState?.subjectName}
                     onChange={e => {
-                      register('stName').onChange(e)
+                      register('subjectName').onChange(e)
                     }}
                     className="w-full"
-                    {...register('stName', {
+                    {...register('subjectName', {
                       required: {
                         value: true,
-                        message: '이름을 입력해주세요.',
+                        message: '과정명을 입력해주세요.',
                       },
                     })}
                   />
-                  {errors.stName && (
+                  {errors.subjectName && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.stName.message)}
+                      {String(errors.subjectName.message)}
                     </p>
                   )}
                 </AreaBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
-                    placeholder="이메일"
+                    placeholder="수강료"
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="이메일"
-                    defaultValue={studentState?.stEmail || null}
+                    label="수강료"
+                    defaultValue={subjectState?.fee}
                     onChange={e => {
-                      register('stEmail').onChange(e)
+                      register('fee').onChange(e)
                     }}
                     className="w-full"
-                    {...register('stEmail')}
+                    {...register('fee', {
+                      required: {
+                        value: true,
+                        message: '수강료를 입력해주세요.',
+                      },
+                    })}
                   />
+                  {errors.fee && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.fee.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
                 <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="휴대폰번호"
-                    maxLength={11}
-                    defaultValue={studentState?.phoneNum1 || null}
-                    onChange={e => {
-                      register('phoneNum1').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('phoneNum1', {
-                      required: {
-                        value: true,
-                        message: '휴대폰번호를 입력해주세요.',
-                      },
-                      maxLength: {
-                        value: 11,
-                        message: '최대 11자리까지 입력 가능합니다.',
-                      },
-                      minLength: {
-                        value: 10,
-                        message: '최소 10자리 이상이어야 합니다.',
-                      },
-                      pattern: {
-                        value: /^010[0-9]{7,8}$/,
-                        message: '010으로 시작해주세요.',
-                      },
-                    })}
-                  />
-                  {errors.phoneNum1 && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.phoneNum1.message)}
-                    </p>
-                  )}
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="기타번호1"
-                    defaultValue={studentState?.phoneNum2 || null}
-                    onChange={e => {
-                      register('phoneNum2').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('phoneNum2')}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="기타번호2"
-                    defaultValue={studentState?.phoneNum3 || null}
-                    onChange={e => {
-                      register('phoneNum3').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('phoneNum3')}
-                  />
-                </AreaBox>
-              </FlexBox>
-              <AreaBox>
-                <Controller
-                  control={control}
-                  name="subject"
-                  rules={{
-                    required: {
-                      value: true,
-                      message: '과정을 최소 1개 이상 선택해주세요.',
-                    },
-                  }}
-                  defaultValue={studentState?.subject}
-                  render={({ field }) => (
-                    <>
-                      <Textarea
-                        readOnly
-                        value={field.value}
-                        label="상담 과정 선택"
+                  <Controller
+                    control={control}
+                    name="subDiv"
+                    defaultValue={[subjectState?.subDiv]}
+                    render={({ field, fieldState }) => (
+                      <Select
                         labelPlacement="outside"
-                        className="max-w-full"
+                        defaultValue={[subjectState?.subDiv]}
+                        label={<FilterLabel>수강구분</FilterLabel>}
+                        placeholder=" "
+                        className="w-full"
                         variant="bordered"
-                        minRows={1}
-                        defaultValue={studentState?.subject}
-                        onClick={onOpen}
-                        {...register('subject')}
-                      />
-                      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
-                        <ModalContent>
-                          {onClose => (
-                            <>
-                              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
-                              <ModalBody>
-                                <ScrollShadow
-                                  orientation="horizontal"
-                                  className="scrollbar"
-                                >
-                                  <CheckboxGroup
-                                    value={subjectSelected}
-                                    onChange={handleCheckboxChange}
-                                    classNames={{
-                                      wrapper: 'gap-0',
-                                    }}
-                                  >
-                                    <Theader>
-                                      <TableRow>
-                                        <Tcheck></Tcheck>
-                                        <Tname>과정명</Tname>
-                                        <TsubDiv>수강구분</TsubDiv>
-                                        <Tfee>과정 금액</Tfee>
-                                      </TableRow>
-                                    </Theader>
-                                    {subjectList?.map((item, index) => (
-                                      <TableItem key={index}>
-                                        <TableRow>
-                                          <Checkbox
-                                            key={item.id}
-                                            value={item.subjectName}
-                                          >
-                                            <SubjectItem tableData={item} />
-                                          </Checkbox>
-                                        </TableRow>
-                                      </TableItem>
-                                    ))}
-                                  </CheckboxGroup>
-                                </ScrollShadow>
-                                {subjectData?.seeSubject.totalCount > 0 && (
-                                  <PagerWrap>
-                                    <Pagination
-                                      variant="light"
-                                      showControls
-                                      initialPage={currentPage}
-                                      total={Math.ceil(
-                                        subjectData?.seeSubject.totalCount /
-                                          currentLimit,
-                                      )}
-                                      onChange={newPage => {
-                                        setCurrentPage(newPage)
-                                      }}
-                                    />
-                                  </PagerWrap>
-                                )}
-                              </ModalBody>
-                              <ModalFooter>
-                                <Button
-                                  color="danger"
-                                  variant="light"
-                                  onPress={onClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  color="primary"
-                                  onPress={() => {
-                                    clickSubmit()
-                                    field.onChange(subjectSelected)
-                                  }}
-                                >
-                                  선택
-                                </Button>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
-                    </>
-                  )}
-                />
-                {errors.subject && (
-                  <p className="px-2 pt-2 text-xs text-red-500">
-                    {String(errors.subject.message)}
-                  </p>
-                )}
-              </AreaBox>
-              <FlexBox>
-                <Controller
-                  control={control}
-                  name="receiptDiv"
-                  render={({ field, fieldState }) => (
-                    <Select
-                      labelPlacement="outside"
-                      label={<FilterLabel>접수구분</FilterLabel>}
-                      placeholder=" "
-                      className="w-full"
-                      defaultValue={studentState?.receiptDiv}
-                      variant="bordered"
-                      selectedKeys={[receipt]}
-                      onChange={value => {
-                        field.onChange(value)
-                        handleReceiptChange(value)
-                      }}
-                    >
-                      {Object.entries(receiptStatus).map(([key, item]) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))}
-                    </Select>
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name="subDiv"
-                  render={({ field, fieldState }) => (
-                    <Select
-                      labelPlacement="outside"
-                      label={<FilterLabel>수강구분</FilterLabel>}
-                      placeholder=" "
-                      className="w-full"
-                      defaultValue={[studentState?.subDiv]}
-                      variant="bordered"
-                      selectedKeys={[sub]}
-                      onChange={value => {
-                        field.onChange(value)
-                        handleSubChange(value)
-                      }}
-                    >
-                      {Object.entries(subStatus).map(([key, item]) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))}
-                    </Select>
-                  )}
-                />
-              </FlexBox>
-              <FlexBox>
-                <Controller
-                  control={control}
-                  name="pic"
-                  render={({ field, fieldState }) => (
-                    <Select
-                      labelPlacement="outside"
-                      label="담당자"
-                      placeholder=" "
-                      className="w-full"
-                      defaultValue={studentState?.pic}
-                      variant="bordered"
-                      selectedKeys={[manager]}
-                      onChange={value => {
-                        field.onChange(value)
-                        handleManagerChange(value)
-                      }}
-                    >
-                      <SelectItem
-                        key={'담당자 지정필요'}
-                        value={'담당자 지정필요'}
+                        selectedKeys={[sub]}
+                        onChange={value => {
+                          field.onChange(value)
+                          handleSubChange(value)
+                        }}
                       >
-                        {'담당자 지정필요'}
-                      </SelectItem>
-                      {managerList?.map(item => (
+                        {Object.entries(subStatus).map(([key, item]) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    )}
+                  />
+                  {errors.subDiv && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.subDiv.message)}
+                    </p>
+                  )}
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="강의실"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="강의실"
+                    defaultValue={subjectState?.roomNum}
+                    onChange={e => {
+                      register('roomNum').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('roomNum')}
+                  />
+                </AreaBox>
+                <AreaBox>
+                  <Controller
+                    control={control}
+                    name="teacherName"
+                    defaultValue={subjectState?.teacherName}
+                    render={({ field }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label="강사명"
+                        placeholder=" "
+                        className="w-full"
+                        variant="bordered"
+                        defaultValue={subjectState?.teacherName}
+                        selectedKeys={[teacher]}
+                        onChange={value => {
+                          field.onChange(value)
+                          handleTeacherChange(value)
+                        }}
+                      >
+                        <SelectItem key={'강사명 없음'} value={'강사명 없음'}>
+                          {'강사명 없음'}
+                        </SelectItem>
+                        <SelectItem key={'김강사'} value={'김강사'}>
+                          {'김강사'}
+                        </SelectItem>
+                        <SelectItem key={'이강사'} value={'이강사'}>
+                          {'이강사'}
+                        </SelectItem>
+                        {/* {managerList?.map(item => (
                         <SelectItem key={item.mUsername} value={item.mUsername}>
                           {item.mUsername}
                         </SelectItem>
-                      ))}
-                    </Select>
-                  )}
-                />
-                <Input
-                  isReadOnly
-                  labelPlacement="outside"
-                  placeholder="등록일시"
-                  variant="faded"
-                  radius="md"
-                  type="text"
-                  label="등록일시"
-                  value={fametDate(studentState?.createdAt) || ''}
-                  startContent={<i className="xi-calendar" />}
-                  className="w-full"
-                />
+                      ))} */}
+                      </Select>
+                    )}
+                  />
+                </AreaBox>
               </FlexBox>
-              <RadioBox>
-                <Controller
-                  control={control}
-                  name="progress"
-                  defaultValue={studentState?.progress}
-                  render={({ field, fieldState }) => (
-                    <RadioGroup
-                      label={<FilterLabel>진행상태</FilterLabel>}
-                      orientation="horizontal"
-                      className="gap-1"
-                      defaultValue={String(studentState?.progress)}
-                      onValueChange={value => {
-                        field.onChange(parseInt(value))
-                      }}
-                    >
-                      {Object.entries(progressStatus).map(([key, value]) => (
-                        <Radio key={key} value={key}>
-                          {value.name}
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-                  )}
-                />
-              </RadioBox>
               <FlexBox>
                 <DatePickerBox>
                   <Controller
                     control={control}
-                    name="stVisit"
-                    defaultValue={studentState?.stVisit}
+                    name="startDate"
+                    defaultValue={subjectState?.startDate}
                     render={({ field }) => (
                       <DatePicker
                         locale="ko"
                         showYearDropdown
                         selected={
-                          stVisitDate === null ? null : new Date(stVisitDate)
+                          sjStartDate === null ? null : new Date(sjStartDate)
                         }
                         placeholderText="기간을 선택해주세요."
                         isClearable
                         onChange={date => {
                           field.onChange(date)
-                          setStVisitDate(date)
-                        }}
-                        showTimeSelect
-                        ref={field.ref}
-                        dateFormat="yyyy/MM/dd HH:mm"
-                        customInput={
-                          <Input
-                            label="상담예정일"
-                            labelPlacement="outside"
-                            type="text"
-                            variant="bordered"
-                            id="date"
-                            startContent={<i className="xi-calendar" />}
-                          />
-                        }
-                      />
-                    )}
-                  />
-                </DatePickerBox>
-                <DatePickerBox>
-                  <Controller
-                    control={control}
-                    name="expEnrollDate"
-                    defaultValue={studentState?.expEnrollDate}
-                    render={({ field }) => (
-                      <DatePicker
-                        locale="ko"
-                        showYearDropdown
-                        selected={
-                          expEnrollDate === null
-                            ? null
-                            : new Date(expEnrollDate)
-                        }
-                        placeholderText="기간을 선택해주세요."
-                        isClearable
-                        onChange={date => {
-                          field.onChange(date)
-                          setExpEnrollDate(date)
+                          setSjStartDate(date)
                         }}
                         ref={field.ref}
                         dateFormat="yyyy/MM/dd"
                         customInput={
                           <Input
-                            label="수강예정일"
+                            label="개강일"
                             labelPlacement="outside"
                             type="text"
                             variant="bordered"
@@ -837,19 +436,58 @@ export default function Consoultation() {
                     )}
                   />
                 </DatePickerBox>
-              </FlexBox>
-              <FlexBox>
-                <Textarea
-                  label="상담 내용"
+                <DatePickerBox>
+                  <Controller
+                    control={control}
+                    name="endDate"
+                    defaultValue={subjectState?.endDate}
+                    render={({ field }) => (
+                      <DatePicker
+                        locale="ko"
+                        showYearDropdown
+                        selected={
+                          sjEndDate === null ? null : new Date(sjEndDate)
+                        }
+                        placeholderText="기간을 선택해주세요."
+                        isClearable
+                        onChange={date => {
+                          field.onChange(date)
+                          setSjEndDate(date)
+                        }}
+                        ref={field.ref}
+                        dateFormat="yyyy/MM/dd"
+                        customInput={
+                          <Input
+                            label="종강일"
+                            labelPlacement="outside"
+                            type="text"
+                            variant="bordered"
+                            id="date"
+                            startContent={<i className="xi-calendar" />}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                </DatePickerBox>
+                <Input
                   labelPlacement="outside"
-                  className="max-w-full"
+                  placeholder="총 강의시간"
                   variant="bordered"
-                  minRows={5}
-                  defaultValue={studentState?.detail || ''}
+                  radius="md"
+                  type="text"
+                  label="총 강의시간"
+                  defaultValue={subjectState?.totalTime}
                   onChange={e => {
-                    register('detail').onChange(e)
+                    register('totalTime').onChange(e)
                   }}
-                  {...register('detail')}
+                  className="w-full"
+                  {...register('totalTime', {
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: '숫자만 입력 가능합니다.',
+                    },
+                  })}
                 />
               </FlexBox>
               <BtnBox>
@@ -871,19 +509,13 @@ export default function Consoultation() {
                   bgColor="#fff"
                   borderColor="#007de9"
                   typeBorder={true}
-                  onClick={() => router.push('/consult')}
+                  onClick={() => router.push('/subjects')}
                 >
                   목록으로
                 </Button2>
               </BtnBox>
-            </DetailForm>
-          </DetailBox>
-          <DetailBox>
-            <ConsolutMemo
-              memoData={studentMemoList}
-              studentId={studentState?.id}
-            />
-          </DetailBox>
+            </DetailDiv>
+          </DetailForm>
         </MainWrap>
       )}
     </>
