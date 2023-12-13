@@ -78,17 +78,11 @@ export default function Consoultation() {
   const [sub, setSub] = useState('없음')
 
   const onSubmit = data => {
-    console.log(data)
-    console.log(typeof data.endDate, data.endDate)
-    console.log(typeof data.startDate, data.startDate)
-    console.log(typeof feeReplace(data.fee), data.fee)
-    console.log(typeof data.roomNum, data.roomNum)
-
     createSubject({
       variables: {
         subDiv: data.subDiv,
         subjectName: data.subjectName,
-        fee: data.fee,
+        fee: parseInt(data.fee),
         startDate: data.stVisit === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),
         roomNum: data.roomNum === undefined ? null : data.roomNum,
@@ -109,10 +103,7 @@ export default function Consoultation() {
     return result
   }
   const feeFormet = fee => {
-    // const fee2 = fee
-    const result = fee
-    // .toString()
-    // .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    const result = fee.toLocaleString()
     return result
   }
 
@@ -161,25 +152,15 @@ export default function Consoultation() {
                   radius="md"
                   type="text"
                   label="수강료"
-                  value={fee.toLocaleString()}
-                  onValueChange={value => {
-                    console.log(value)
-                    const test = value
-                    setFee(parseInt(test))
-                  }}
                   onChange={e => {
                     register('fee').onChange(e)
                   }}
                   className="w-full"
                   {...register('fee', {
-                    // required: {
-                    //   value: true,
-                    //   message: '수강료를 입력해주세요.',
-                    // },
-                    // pattern: {
-                    //   value: /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                    //   message: '숫자만 입력해주세요.',
-                    // },
+                    required: {
+                      value: true,
+                      message: '수강료를 입력해주세요.',
+                    },
                   })}
                 />
                 {errors.fee && (
