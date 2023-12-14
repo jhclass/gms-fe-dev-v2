@@ -1,11 +1,22 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
+import {
+  progressStatusState,
+  studentFilterState,
+  subStatusState,
+} from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '../common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import { CheckboxGroup, Input, Radio, RadioGroup } from '@nextui-org/react'
+import {
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -100,50 +111,59 @@ const FilterVariants = {
   },
 }
 
-const subData = {
-  0: 'HRD',
-  1: '일반',
-}
-
 export default function TableFillter({
   isActive,
   onFilterToggle,
   onFilterSearch,
   setSubjectFilter,
 }) {
-  const [sub, setSub] = useState('')
-
+  const subStatus = useRecoilValue(subStatusState)
+  const [sub, setSub] = useState('-')
+  const [exposure, setExposure] = useState('-')
   const {
     register,
     handleSubmit,
     control,
-    setValue,
     reset,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm()
+    formState: { isDirty },
+  } = useForm({
+    defaultValues: {
+      exposure: '-',
+      subDiv: '-',
+      subjectName: '',
+    },
+  })
 
-  const handleSubChange = (value: string) => {
-    setValue('subDiv', value)
-    setSub(value)
-  }
-
-  const subClick = e => {
-    setValue('subDiv', e.target.value)
+  const handleSubChange = e => {
     setSub(e.target.value)
   }
 
+  const handleExposureChange = e => {
+    setExposure(e.target.value)
+  }
   const onSubmit = data => {
-    const filter = {
-      receiptDiv: data.subjectName,
-      subDiv: data.subDiv,
-    }
+    if (isDirty) {
+      console.log(data)
+      const filter = {
+        subjectName: data.subjectName === '' ? null : data.subjectName,
+        subDiv: data.subDiv === '-' ? null : data.subDiv,
+        exposure:
+          data.exposure === '-'
+            ? null
+            : data.exposure === '노출'
+            ? true
+            : false,
+      }
 
-    setSubjectFilter(filter)
-    onFilterToggle(false)
-    onFilterSearch(true)
+      setSubjectFilter(filter)
+      onFilterToggle(false)
+      onFilterSearch(true)
+    }
   }
 
   const handleReset = () => {
+    setSub('-')
+    setExposure('-')
     reset()
   }
 
@@ -157,35 +177,79 @@ export default function TableFillter({
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
+              <Controller
+                control={control}
+                name="subDiv"
+                defaultValue={'-'}
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
+                    label={<FilterLabel>수강구분</FilterLabel>}
+                    placeholder=" "
+                    defaultValue={'-'}
+                    className="w-full"
+                    variant="bordered"
+                    selectedKeys={[sub]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleSubChange(value)
+                    }}
+                  >
+                    {Object.entries(subStatus).map(([key, item]) =>
+                      key === '0' ? (
+                        <SelectItem value="-" key={'-'}>
+                          -
+                        </SelectItem>
+                      ) : (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ),
+                    )}
+                  </Select>
+                )}
+              />
+            </ItemBox>
+            <ItemBox>
+              <Controller
+                control={control}
+                name="exposure"
+                defaultValue={'-'}
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
+                    label={<FilterLabel>노출여부</FilterLabel>}
+                    placeholder=" "
+                    defaultValue={'-'}
+                    className="w-full"
+                    variant="bordered"
+                    selectedKeys={[exposure]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleExposureChange(value)
+                    }}
+                  >
+                    <SelectItem value="-" key={'-'}>
+                      -
+                    </SelectItem>
+                    <SelectItem value="노출" key={'노출'}>
+                      노출
+                    </SelectItem>
+                    <SelectItem value="미노출" key={'미노출'}>
+                      미노출
+                    </SelectItem>
+                  </Select>
+                )}
+              />
+            </ItemBox>
+            <ItemBox>
               <Input
                 labelPlacement="outside"
                 placeholder=" "
                 type="text"
                 variant="bordered"
                 label="과목명"
-                id="stName"
                 {...register('subjectName')}
-              />
-            </ItemBox>
-            <ItemBox>
-              <Controller
-                control={control}
-                name="subDiv"
-                render={({ field, fieldState }) => (
-                  <RadioGroup
-                    label={<FilterLabel>수강구분</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={sub}
-                    onValueChange={handleSubChange}
-                  >
-                    {Object.entries(subData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                )}
               />
             </ItemBox>
           </BoxTop>

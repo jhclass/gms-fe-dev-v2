@@ -2,7 +2,7 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -12,7 +12,6 @@ import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
-  CREATE_SUBJECT_MUTATION,
   DELETE_SUBJECT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
   UPDATE_SUBJECT_MUTATION,
@@ -20,14 +19,17 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import { SEE_STUDENT_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 
 const SwitchDiv = styled.div`
   display: flex;
   align-items: center;
+  background: #fff;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+  border-radius: 0.75rem;
 `
 const SwitchText = styled.span`
-  width: 4rem;
+  width: 3.5rem;
   padding-right: 0.5rem;
   font-size: 0.8rem;
 `
@@ -278,7 +280,7 @@ export default function SubjectDetail() {
                   size="md"
                   isSelected={isSelected}
                   onValueChange={setIsSelected}
-                ></Switch>
+                />
               </SwitchDiv>
             }
           />

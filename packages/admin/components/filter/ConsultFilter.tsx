@@ -1,13 +1,24 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
+import {
+  progressStatusState,
+  receiptStatusState,
+  subStatusState,
+} from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '../common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import { CheckboxGroup, Input, Radio, RadioGroup } from '@nextui-org/react'
+import {
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import { useState } from 'react'
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -117,14 +128,17 @@ export default function TableFillter({
   onFilterSearch,
   setStudentFilter,
 }) {
-  const [
-    getManage,
-    { data: seeManageUserData, error, loading: seeMansgeuserLoading },
-  ] = useLazyQuery(SEE_MANAGEUSER_QUERY)
-  const manageData = seeManageUserData?.seeManageUser || []
-  const [receipt, setReceipt] = useState('')
-  const [sub, setSub] = useState('')
-  const [manager, setManager] = useState('')
+  const {
+    data: seeManageUserData,
+    error,
+    loading: seeMansgeuserLoading,
+  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const receiptStatus = useRecoilValue(receiptStatusState)
+  const subStatus = useRecoilValue(subStatusState)
+  const managerList = seeManageUserData?.seeManageUser || []
+  const [receipt, setReceipt] = useState('-')
+  const [sub, setSub] = useState('-')
+  const [manager, setManager] = useState('-')
   const [progressSelected, setProgressSelected] = useState([])
   const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
@@ -137,91 +151,87 @@ export default function TableFillter({
     handleSubmit,
     control,
     setValue,
-    setError,
-    clearErrors,
-    setFocus,
     reset,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm()
+    formState: { isDirty },
+  } = useForm({
+    defaultValues: {
+      receiptDiv: '-',
+      subDiv: '-',
+      pic: '-',
+      createdAt: undefined,
+      stVisit: undefined,
+      stName: '',
+      progress: undefined,
+    },
+  })
 
-  const handleReceiptChange = (value: string) => {
-    setValue('receiptDiv', value)
-    setReceipt(value)
+  const handleReceiptChange = e => {
+    setReceipt(e.target.value)
   }
 
-  const handleSubChange = (value: string) => {
-    setValue('subDiv', value)
-    setSub(value)
+  const handleSubChange = e => {
+    setSub(e.target.value)
+  }
+  const handleManagerChange = e => {
+    setManager(e.target.value)
   }
 
   const handleCheckboxChange = (value: string[]) => {
     const numericKeys = value.map(key => parseInt(key, 10))
-    setValue('groupSelected', numericKeys)
+    setValue('progress', numericKeys)
     setProgressSelected(value)
   }
 
-  const handleRemoveItem = (index: number) => {
-    const updatedGroupSelected = progressSelected.filter((_, i) => i !== index)
-    setValue('groupSelected', updatedGroupSelected)
-    setProgressSelected(updatedGroupSelected)
-  }
-
-  const manageClick = e => {
-    setManager(e.target.value)
-  }
-
-  const receiptClick = e => {
-    setReceipt(e.target.value)
-  }
-  const subClick = e => {
-    setValue('subDiv', e.target.value)
-    setSub(e.target.value)
-  }
-
   const onSubmit = data => {
-    const validateDateRange = (dateRange, message) => {
-      if (dateRange[0] !== null) {
-        if (dateRange[1] !== null) {
-          return true
+    if (isDirty) {
+      console.log(data)
+      const validateDateRange = (dateRange, message) => {
+        if (dateRange !== undefined) {
+          if (dateRange[1] !== null) {
+            return true
+          } else {
+            alert(message)
+            return false
+          }
         } else {
-          alert(message)
-          return false
+          return true
         }
-      } else {
-        return true
-      }
-    }
-
-    const creatDate = validateDateRange(
-      creatDateRange,
-      '등록일시의 마지막날을 선택해주세요.',
-    )
-    const visitDate = validateDateRange(
-      visitDateRange,
-      '방문예정일의 마지막날을 선택해주세요.',
-    )
-
-    if (creatDate && visitDate) {
-      const filter = {
-        receiptDiv: data.receiptDiv,
-        subDiv: data.subDiv,
-        pic: data.pic,
-        createdAt: data.creatDateRange,
-        stVisit: data.visitDateRange,
-        stName: data.stName,
-        progress: data.groupSelected,
       }
 
-      setStudentFilter(filter)
-      onFilterToggle(false)
-      onFilterSearch(true)
+      const creatDate = validateDateRange(
+        data.createdAt,
+        '등록일시의 마지막날을 선택해주세요.',
+      )
+      const visitDate = validateDateRange(
+        data.stVisit,
+        '방문예정일의 마지막날을 선택해주세요.',
+      )
+
+      if (creatDate && visitDate) {
+        const filter = {
+          receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
+          subDiv: data.subDiv === '-' ? null : data.subDiv,
+          pic: data.pic === '-' ? null : data.pic,
+          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          stVisit: data.stVisit === undefined ? null : data.stVisit,
+          stName: data.stName === '' ? null : data.stName,
+          progress: data.progress,
+        }
+
+        setStudentFilter(filter)
+        onFilterToggle(false)
+        onFilterSearch(true)
+      }
     }
   }
 
   const handleReset = () => {
-    reset()
+    setReceipt('-')
+    setSub('-')
+    setManager('-')
     setCreatDateRange([null, null])
     setVisitDateRange([null, null])
+    reset()
   }
 
   return (
@@ -237,20 +247,33 @@ export default function TableFillter({
               <Controller
                 control={control}
                 name="receiptDiv"
-                render={({ field, fieldState }) => (
-                  <RadioGroup
-                    label={<FilterLabel>진행상태</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={receipt}
-                    onValueChange={handleReceiptChange}
+                defaultValue={'-'}
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
+                    label={<FilterLabel>접수구분</FilterLabel>}
+                    placeholder=" "
+                    className="w-full"
+                    defaultValue={'-'}
+                    variant="bordered"
+                    selectedKeys={[receipt]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleReceiptChange(value)
+                    }}
                   >
-                    {Object.entries(receiptData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
+                    {Object.entries(receiptStatus).map(([key, item]) =>
+                      key === '0' ? (
+                        <SelectItem value="-" key={'-'}>
+                          -
+                        </SelectItem>
+                      ) : (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ),
+                    )}
+                  </Select>
                 )}
               />
             </ItemBox>
@@ -258,68 +281,73 @@ export default function TableFillter({
               <Controller
                 control={control}
                 name="subDiv"
-                render={({ field, fieldState }) => (
-                  <RadioGroup
+                defaultValue={'-'}
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
                     label={<FilterLabel>수강구분</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={sub}
-                    onValueChange={handleSubChange}
+                    placeholder=" "
+                    defaultValue={'-'}
+                    className="w-full"
+                    variant="bordered"
+                    selectedKeys={[sub]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleSubChange(value)
+                    }}
                   >
-                    {Object.entries(subData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
+                    {Object.entries(subStatus).map(([key, item]) =>
+                      key === '0' ? (
+                        <SelectItem value="-" key={'-'}>
+                          -
+                        </SelectItem>
+                      ) : (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ),
+                    )}
+                  </Select>
                 )}
               />
             </ItemBox>
             <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="담당자"
-                id="pic"
-                {...register('pic')}
-              />
-              {/* <Controller
-                name="pic"
+              <Controller
                 control={control}
+                name="pic"
+                defaultValue={'-'}
                 render={({ field }) => (
                   <Select
                     labelPlacement="outside"
                     label="담당자"
                     placeholder=" "
                     className="w-full"
-                    value={field.value}
+                    defaultValue={'-'}
+                    variant="bordered"
                     selectedKeys={[manager]}
-                    onChange={manageClick}
-                    {...register('pic')}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleManagerChange(value)
+                    }}
                   >
-                    {manageData.map((item, index) => (
-                      <SelectItem
-                        key={index}
-                        value={item.mUsername}
-                        onClick={() => {
-                          field.onChange(item.mUsername)
-                        }}
-                      >
+                    <SelectItem key={'-'} value={'-'}>
+                      {'-'}
+                    </SelectItem>
+                    {managerList?.map(item => (
+                      <SelectItem key={item.mUsername} value={item.mUsername}>
                         {item.mUsername}
                       </SelectItem>
                     ))}
                   </Select>
                 )}
-              /> */}
+              />
             </ItemBox>
           </BoxTop>
           <BoxMiddle>
             <ItemBox>
               <Controller
                 control={control}
-                name="creatDateRange"
+                name="createdAt"
                 render={({ field }) => (
                   <DatePicker
                     selectsRange={true}
@@ -329,10 +357,13 @@ export default function TableFillter({
                     endDate={endCreatDate}
                     onChange={e => {
                       setCreatDateRange(e)
-                      const date = [
-                        e[0],
-                        new Date(e[1]?.setHours(23, 59, 59, 999)),
-                      ]
+                      let date
+                      if (e[1] !== null) {
+                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                      } else {
+                        date = [e[0], null]
+                      }
+
                       field.onChange(date)
                     }}
                     placeholderText="기간을 선택해주세요."
@@ -354,7 +385,7 @@ export default function TableFillter({
             <ItemBox>
               <Controller
                 control={control}
-                name="visitDateRange"
+                name="stVisit"
                 render={({ field }) => (
                   <DatePicker
                     locale="ko"
@@ -364,10 +395,12 @@ export default function TableFillter({
                     endDate={endVisitDate}
                     onChange={e => {
                       setVisitDateRange(e)
-                      const date = [
-                        e[0],
-                        new Date(e[1]?.setHours(23, 59, 59, 999)),
-                      ]
+                      let date
+                      if (e[1] !== null) {
+                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                      } else {
+                        date = [e[0], null]
+                      }
                       field.onChange(date)
                     }}
                     placeholderText="기간을 선택해주세요."
@@ -402,7 +435,7 @@ export default function TableFillter({
             <ItemBox>
               <Controller
                 control={control}
-                name="groupSelected"
+                name="progress"
                 render={({ field, fieldState }) => (
                   <CheckboxGroup
                     label={<FilterLabel>진행상태</FilterLabel>}

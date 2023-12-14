@@ -20,9 +20,12 @@ import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 const SwitchDiv = styled.div`
   display: flex;
   align-items: center;
+  background: #fff;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+  border-radius: 0.75rem;
 `
 const SwitchText = styled.span`
-  width: 4rem;
+  width: 3.5rem;
   padding-right: 0.5rem;
   font-size: 0.8rem;
 `
@@ -134,7 +137,7 @@ export default function SubjectWrite() {
                 size="md"
                 isSelected={isSelected}
                 onValueChange={setIsSelected}
-              ></Switch>
+              />
             </SwitchDiv>
           }
         />

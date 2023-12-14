@@ -680,7 +680,7 @@ export default function ConsultDetail() {
                   control={control}
                   name="receiptDiv"
                   defaultValue={studentState?.receiptDiv}
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <Select
                       labelPlacement="outside"
                       label={<FilterLabel>접수구분</FilterLabel>}
@@ -706,7 +706,7 @@ export default function ConsultDetail() {
                   control={control}
                   name="subDiv"
                   defaultValue={studentState?.subDiv}
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <Select
                       labelPlacement="outside"
                       label={<FilterLabel>수강구분</FilterLabel>}
