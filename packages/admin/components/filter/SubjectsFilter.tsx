@@ -1,11 +1,22 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { progressStatusState, studentFilterState } from '@/lib/recoilAtoms'
+import {
+  progressStatusState,
+  studentFilterState,
+  subStatusState,
+} from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '../common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import { CheckboxGroup, Input, Radio, RadioGroup } from '@nextui-org/react'
+import {
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -14,7 +25,7 @@ import { useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 
-type ConsoultFilterProps = {
+type ConsultFilterProps = {
   isActive: boolean
 }
 
@@ -100,129 +111,60 @@ const FilterVariants = {
   },
 }
 
-const receiptData = {
-  0: '온라인',
-  1: '전화',
-  2: '방문',
-}
-
-const subData = {
-  0: 'HRD',
-  1: '일반',
-}
-
 export default function TableFillter({
   isActive,
   onFilterToggle,
   onFilterSearch,
+  setSubjectFilter,
 }) {
-  const [
-    getManage,
-    { data: seeManageUserData, error, loading: seeMansgeuserLoading },
-  ] = useLazyQuery(SEE_MANAGEUSER_QUERY)
-  const manageData = seeManageUserData?.seeManageUser || []
-  const setFilterState = useSetRecoilState(studentFilterState)
-  const filterState = useRecoilState(studentFilterState)
-  const [receipt, setReceipt] = useState('')
-  const [sub, setSub] = useState('')
-  const [manager, setManager] = useState('')
-  const [progressSelected, setProgressSelected] = useState([])
-  const progressStatus = useRecoilValue(progressStatusState)
-  const [creatDateRange, setCreatDateRange] = useState([null, null])
-  const [startCreatDate, endCreatDate] = creatDateRange
-  const [visitDateRange, setVisitDateRange] = useState([null, null])
-  const [startVisitDate, endVisitDate] = visitDateRange
-
+  const subStatus = useRecoilValue(subStatusState)
+  const [sub, setSub] = useState('-')
+  const [exposure, setExposure] = useState('-')
   const {
     register,
     handleSubmit,
     control,
-    setValue,
-    setError,
-    clearErrors,
-    setFocus,
     reset,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm()
+    formState: { isDirty },
+  } = useForm({
+    defaultValues: {
+      exposure: '-',
+      subDiv: '-',
+      subjectName: '',
+    },
+  })
 
-  const handleReceiptChange = (value: string) => {
-    setValue('receiptDiv', value)
-    setReceipt(value)
-  }
-
-  const handleSubChange = (value: string) => {
-    setValue('subDiv', value)
-    setSub(value)
-  }
-
-  const handleCheckboxChange = (value: string[]) => {
-    const numericKeys = value.map(key => parseInt(key, 10))
-    setValue('groupSelected', numericKeys)
-    setProgressSelected(value)
-  }
-
-  const handleRemoveItem = (index: number) => {
-    const updatedGroupSelected = progressSelected.filter((_, i) => i !== index)
-    setValue('groupSelected', updatedGroupSelected)
-    setProgressSelected(updatedGroupSelected)
-  }
-
-  const manageClick = e => {
-    setManager(e.target.value)
-  }
-
-  const receiptClick = e => {
-    setReceipt(e.target.value)
-  }
-  const subClick = e => {
-    setValue('subDiv', e.target.value)
+  const handleSubChange = e => {
     setSub(e.target.value)
   }
 
+  const handleExposureChange = e => {
+    setExposure(e.target.value)
+  }
   const onSubmit = data => {
-    const validateDateRange = (dateRange, message) => {
-      if (dateRange[0] !== null) {
-        if (dateRange[1] !== null) {
-          return true
-        } else {
-          alert(message)
-          return false
-        }
-      } else {
-        return true
-      }
-    }
-
-    const creatDate = validateDateRange(
-      creatDateRange,
-      '등록일시의 마지막날을 선택해주세요.',
-    )
-    const visitDate = validateDateRange(
-      visitDateRange,
-      '방문예정일의 마지막날을 선택해주세요.',
-    )
-
-    if (creatDate && visitDate) {
+    if (isDirty) {
+      console.log(data)
       const filter = {
-        receiptDiv: data.receiptDiv,
-        subDiv: data.subDiv,
-        pic: data.pic,
-        createdAt: data.creatDateRange,
-        stVisit: data.visitDateRange,
-        stName: data.stName,
-        progress: data.groupSelected,
+        subjectName: data.subjectName === '' ? null : data.subjectName,
+        subDiv: data.subDiv === '-' ? null : data.subDiv,
+        exposure:
+          data.exposure === '-'
+            ? null
+            : data.exposure === '노출'
+            ? true
+            : false,
       }
 
-      setFilterState(filter)
+      setSubjectFilter(filter)
       onFilterToggle(false)
       onFilterSearch(true)
     }
   }
 
   const handleReset = () => {
+    setSub('-')
+    setExposure('-')
     reset()
-    setCreatDateRange([null, null])
-    setVisitDateRange([null, null])
   }
 
   return (
@@ -237,153 +179,66 @@ export default function TableFillter({
             <ItemBox>
               <Controller
                 control={control}
-                name="receiptDiv"
-                render={({ field, fieldState }) => (
-                  <RadioGroup
-                    label={<FilterLabel>진행상태</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={receipt}
-                    onValueChange={handleReceiptChange}
-                  >
-                    {Object.entries(receiptData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                )}
-              />
-            </ItemBox>
-            <ItemBox>
-              <Controller
-                control={control}
                 name="subDiv"
-                render={({ field, fieldState }) => (
-                  <RadioGroup
-                    label={<FilterLabel>수강구분</FilterLabel>}
-                    orientation="horizontal"
-                    className="gap-1 radioBox"
-                    value={sub}
-                    onValueChange={handleSubChange}
-                  >
-                    {Object.entries(subData).map(([key, item]) => (
-                      <Radio key={key} value={item}>
-                        {item}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                )}
-              />
-            </ItemBox>
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="담당자"
-                id="pic"
-                {...register('pic')}
-              />
-              {/* <Controller
-                name="pic"
-                control={control}
+                defaultValue={'-'}
                 render={({ field }) => (
                   <Select
                     labelPlacement="outside"
-                    label="담당자"
+                    label={<FilterLabel>수강구분</FilterLabel>}
                     placeholder=" "
+                    defaultValue={'-'}
                     className="w-full"
-                    value={field.value}
-                    selectedKeys={[manager]}
-                    onChange={manageClick}
-                    {...register('pic')}
-                  >
-                    {manageData.map((item, index) => (
-                      <SelectItem
-                        key={index}
-                        value={item.mUsername}
-                        onClick={() => {
-                          field.onChange(item.mUsername)
-                        }}
-                      >
-                        {item.mUsername}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                )}
-              /> */}
-            </ItemBox>
-          </BoxTop>
-          <BoxMiddle>
-            <ItemBox>
-              <Controller
-                control={control}
-                name="creatDateRange"
-                render={({ field }) => (
-                  <DatePicker
-                    locale="ko"
-                    showYearDropdown
-                    selectsRange={true}
-                    startDate={startCreatDate}
-                    endDate={endCreatDate}
-                    onChange={e => {
-                      setCreatDateRange(e)
-                      const date = [
-                        e[0],
-                        new Date(e[1]?.setHours(23, 59, 59, 999)),
-                      ]
-                      field.onChange(date)
+                    variant="bordered"
+                    selectedKeys={[sub]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleSubChange(value)
                     }}
-                    placeholderText="기간을 선택해주세요."
-                    customInput={
-                      <Input
-                        label="등록일시"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
-                      />
-                    }
-                  />
+                  >
+                    {Object.entries(subStatus).map(([key, item]) =>
+                      key === '0' ? (
+                        <SelectItem value="-" key={'-'}>
+                          -
+                        </SelectItem>
+                      ) : (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ),
+                    )}
+                  </Select>
                 )}
               />
             </ItemBox>
             <ItemBox>
               <Controller
                 control={control}
-                name="visitDateRange"
+                name="exposure"
+                defaultValue={'-'}
                 render={({ field }) => (
-                  <DatePicker
-                    locale="ko"
-                    showYearDropdown
-                    selectsRange={true}
-                    startDate={startVisitDate}
-                    endDate={endVisitDate}
-                    onChange={e => {
-                      setVisitDateRange(e)
-                      const date = [
-                        e[0],
-                        new Date(e[1]?.setHours(23, 59, 59, 999)),
-                      ]
-                      field.onChange(date)
+                  <Select
+                    labelPlacement="outside"
+                    label={<FilterLabel>노출여부</FilterLabel>}
+                    placeholder=" "
+                    defaultValue={'-'}
+                    className="w-full"
+                    variant="bordered"
+                    selectedKeys={[exposure]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleExposureChange(value)
                     }}
-                    placeholderText="기간을 선택해주세요."
-                    customInput={
-                      <Input
-                        label="상담예정일"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        startContent={<i className="xi-calendar" />}
-                        {...register('stVisit')}
-                      />
-                    }
-                  />
+                  >
+                    <SelectItem value="-" key={'-'}>
+                      -
+                    </SelectItem>
+                    <SelectItem value="노출" key={'노출'}>
+                      노출
+                    </SelectItem>
+                    <SelectItem value="미노출" key={'미노출'}>
+                      미노출
+                    </SelectItem>
+                  </Select>
                 )}
               />
             </ItemBox>
@@ -393,36 +248,11 @@ export default function TableFillter({
                 placeholder=" "
                 type="text"
                 variant="bordered"
-                label="수강생이름"
-                id="stName"
-                {...register('stName')}
+                label="과목명"
+                {...register('subjectName')}
               />
             </ItemBox>
-          </BoxMiddle>
-          <BoxBottom>
-            <ItemBox>
-              <Controller
-                control={control}
-                name="groupSelected"
-                render={({ field, fieldState }) => (
-                  <CheckboxGroup
-                    label={<FilterLabel>진행상태</FilterLabel>}
-                    orientation="horizontal"
-                    defaultValue={['buenos-aires', 'london']}
-                    className="gap-1 radioBox"
-                    value={progressSelected}
-                    onValueChange={handleCheckboxChange}
-                  >
-                    {Object.entries(progressStatus).map(([key, value]) => (
-                      <ChipCheckbox key={key} value={key}>
-                        {value.name}
-                      </ChipCheckbox>
-                    ))}
-                  </CheckboxGroup>
-                )}
-              />
-            </ItemBox>
-          </BoxBottom>
+          </BoxTop>
           <BtnBox>
             <Button
               buttonType="submit"

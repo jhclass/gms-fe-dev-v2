@@ -2,6 +2,7 @@ import { navOpenState } from '@/lib/recoilAtoms'
 import { Tooltip } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import router from 'next/router'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 
@@ -14,13 +15,13 @@ type CategoryItemProps = {
   onClick: () => void
 }
 
-const CateItem = styled(motion.div)`
+const CateItem = styled(motion.li)`
   position: relative;
   z-index: 40;
   margin-top: 0.25rem;
 `
 
-const CateLink = styled(motion.span)<{ $navOpen: boolean }>`
+const CateLink = styled(motion.div)<{ $navOpen: boolean }>`
   line-height: 1.5rem;
   font-weight: 600;
   font-size: 1rem;
@@ -38,6 +39,11 @@ const CateIcon = styled.figure`
   width: 1.5rem;
   height: 1.5rem;
 `
+const CateTitle = styled.p<{ $navOpen: boolean }>`
+  display: ${props => (props.$navOpen ? 'block' : 'none')};
+  white-space: nowrap;
+  width: ${props => (props.$navOpen ? 'auto' : '0')};
+`
 
 const CateActive = styled(motion.div)`
   position: absolute;
@@ -52,17 +58,17 @@ const CateActive = styled(motion.div)`
 
 const cateName = {
   close: {
-    scale: 0.5,
-    opacity: 0,
-    width: 0,
-    height: 0,
-    transition: {},
+    // scale: 0.5,
+    // opacity: 0,
+    // width: 0,
+    // height: 0,
+    // transition: {},
   },
   open: {
-    scale: 1,
-    opacity: 1,
-    width: '100%',
-    transition: {},
+    // scale: 1,
+    // opacity: 1,
+    // width: '100%',
+    // transition: {},
   },
 }
 
@@ -75,6 +81,7 @@ export default function CategoryItem<CategoryItemProps>({
   onClick,
 }) {
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+  console.log(navOpen)
 
   return (
     <>
@@ -82,7 +89,7 @@ export default function CategoryItem<CategoryItemProps>({
         onClick={onClick}
         animate={{
           color: isActive ? '#fff' : '#007de9',
-          transition: { duration: 0.2 },
+          transition: { duration: 0.3 },
         }}
       >
         <Link href={href}>
@@ -92,7 +99,13 @@ export default function CategoryItem<CategoryItemProps>({
               placement="right"
               isDisabled={navOpen ? true : false}
             >
-              <CateIcon>
+              <CateIcon
+                onClick={e => {
+                  console.log(e)
+                  e.preventDefault()
+                  router.push(href)
+                }}
+              >
                 {isActive ? (
                   <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
                 ) : (
@@ -100,7 +113,7 @@ export default function CategoryItem<CategoryItemProps>({
                 )}
               </CateIcon>
             </Tooltip>
-            <motion.span
+            {/* <motion.span
               variants={cateName}
               initial={navOpen ? 'close' : 'open'}
               animate={navOpen ? 'open' : 'close'}
@@ -109,13 +122,12 @@ export default function CategoryItem<CategoryItemProps>({
               }}
             >
               {label}
-            </motion.span>
+            </motion.span> */}
+            <CateTitle $navOpen={navOpen}>{label}</CateTitle>
           </CateLink>
         </Link>
 
-        {isActive && (
-          <CateActive className="activeCate" layoutId="activeCate" />
-        )}
+        {isActive && <CateActive layoutId="activeCate" />}
       </CateItem>
     </>
   )

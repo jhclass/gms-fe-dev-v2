@@ -1,11 +1,10 @@
-import { useQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import SubjectItem from './SubjectItem'
 import router from 'next/router'
-import { queries } from '@testing-library/react'
+import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -14,6 +13,22 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
+  }
+`
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
 `
 const Ttotal = styled.p`
   font-weight: 300;
@@ -143,25 +158,48 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-const HiddenLabel = styled.label`
-  display: none;
-`
-
-export default function SubjectTable() {
+export default function SubjectFilterTable({
+  onFilterSearch,
+  subjectFilter,
+  setSubjectFilter,
+}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const { loading, error, data } = useQuery(SEE_SUBJECT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const subjectTotal = data?.seeSubject.totalCount || []
-  const subjectData = data?.seeSubject.subject || []
+  const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
+  const [searchResult, setSearchResult] = useState(null)
 
+  useEffect(() => {
+    searchSubjectMutation({
+      variables: {
+        ...subjectFilter,
+        page: currentPage,
+        limit: currentLimit,
+      },
+      onCompleted: resData => {
+        console.log(resData)
+        // const { result, totalCount } = resData.searchSubject || {}
+        // setSearchResult({ result, totalCount })
+        const subjectSearch = resData.searchSubject.result || {}
+        setSearchResult(subjectSearch)
+      },
+    })
+  }, [subjectFilter, currentPage])
+
+  const resetList = () => {
+    setSubjectFilter({})
+    onFilterSearch(false)
+  }
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{subjectTotal}</span>건
-        </Ttotal>
+        <TopBox>
+          <Ttotal>
+            총 <span>{searchResult?.totalCount}</span>건
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -177,7 +215,7 @@ export default function SubjectTable() {
                 <Texposure>노출여부</Texposure>
               </TheaderBox>
             </Theader>
-            {subjectData?.map((item, index) => (
+            {searchResult?.map((item, index) => (
               <TableItem
                 key={index}
                 onClick={() =>
@@ -211,13 +249,13 @@ export default function SubjectTable() {
             ))}
           </TableWrap>
         </ScrollShadow>
-        {subjectTotal > 0 && (
+        {searchResult?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
-              total={Math.ceil(subjectTotal / currentLimit)}
+              total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

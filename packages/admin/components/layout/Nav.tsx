@@ -1,4 +1,4 @@
-import { headerUserMenuState, navOpenState } from '@/lib/recoilAtoms'
+import { navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRecoilState } from 'recoil'

@@ -6,7 +6,7 @@ import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 
-type ConsoultItemProps = {
+type ConsultItemProps = {
   tableData: {
     id: number
     stName: string
@@ -198,7 +198,7 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-export default function ConsolutItem(props: ConsoultItemProps) {
+export default function ConsolutItem(props: ConsultItemProps) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData

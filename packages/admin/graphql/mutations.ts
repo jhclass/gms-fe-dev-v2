@@ -293,6 +293,15 @@ export const CREATE_SUBJECT_MUTATION = gql`
     }
   }
 `
+export const DELETE_SUBJECT_MUTATION = gql`
+  mutation DeleteSubject($deleteSubjectId: Int!) {
+    deleteSubject(id: $deleteSubjectId) {
+      ok
+      error
+      message
+    }
+  }
+`
 export const UPDATE_SUBJECT_MUTATION = gql`
   mutation UpdateSubject(
     $updateSubjectId: Int!

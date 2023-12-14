@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
-import { Button } from '@nextui-org/react'
+import { Button, Link } from '@nextui-org/react'
 
 type propsTypes = {
   rightArea: boolean
@@ -11,22 +11,53 @@ type propsTypes = {
   addRender?: React.ReactNode
 }
 
-const BreadcrumbBox = styled.div`
+const BreadcrumbBox = styled.div<{ $isIndex: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  ${props =>
+    props.$isIndex
+      ? ''
+      : `@media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+      }`}
 `
 const CateTitle = styled.h1`
+  display: flex;
+  align-items: center;
   width: 100%;
-  font-weight: 700;
-  font-size: 1.875rem;
-  line-height: 1.25;
-  letter-spacing: -0.025em;
+`
+const BackIcon = styled.figure`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border-radius: 100%;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+  margin-right: 0.5rem;
+  background: #007de8;
 
-  span {
-    padding: 0 0.5rem;
+  &:hover {
+    background: #71717a;
   }
+`
+const Title1 = styled.span`
+  font-size: 1.875rem;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  line-height: 1;
+  color: #11181c;
+  padding: 0 0.25rem;
+`
+const Title2 = styled.span`
+  font-weight: normal;
+  font-size: 1.5rem;
+  padding-left: 0.25rem;
 `
 const BoxRt = styled.div`
   display: flex;
@@ -175,18 +206,22 @@ export default function Breadcrumb(props) {
   return (
     <>
       {currentItem?.isBreadcrumb && (
-        <BreadcrumbBox>
+        <BreadcrumbBox $isIndex={breadcrumb.length == 1 ? true : false}>
           <CateTitle>
             {breadcrumb.length == 1 ? (
-              <a href={parentItem?.href}>{parentItem?.label}</a>
+              <Title1>{parentItem?.label}</Title1>
             ) : (
               <>
-                <a href={parentItem?.href}>
-                  <i className="xi-angle-left" />
-                  {parentItem?.label}
-                </a>
-                <span>-</span>
-                {currentItem?.label}
+                <Link href={parentItem?.href}>
+                  <BackIcon>
+                    <i className="xi-arrow-left"></i>
+                  </BackIcon>
+                </Link>
+                <Title1>{parentItem?.label}</Title1>
+                <Title2>
+                  <i className="xi-angle-right-thin" />
+                </Title2>
+                <Title2>{currentItem?.label}</Title2>
               </>
             )}
           </CateTitle>

@@ -35,7 +35,11 @@ import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import {
+  SEE_MANAGEUSER_QUERY,
+  SEE_STUDENT_QUERY,
+  SEE_SUBJECT_QUERY,
+} from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
@@ -170,7 +174,7 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-export default function Consoultation() {
+export default function ConsultWirte() {
   const [filterActive, setFilterActive] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
@@ -193,7 +197,7 @@ export default function Consoultation() {
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const subjectList = subjectData?.seeSubject.subject || []
-  const [subjectSelected, setSubjectSelected] = useState(subjectList)
+  const [subjectSelected, setSubjectSelected] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
@@ -210,12 +214,12 @@ export default function Consoultation() {
         agreement: '동의',
         subject: data.subject,
         campus: '신촌',
-        detail: data.detail === undefined ? undefined : data.detail,
+        detail: data.detail === '' ? null : data.detail,
         category: null,
         phoneNum1: data.phoneNum1,
-        phoneNum2: data.phoneNum2 === undefined ? undefined : data.phoneNum2,
-        phoneNum3: data.phoneNum3 === undefined ? undefined : data.phoneNum3,
-        stEmail: data.stEmail === undefined ? undefined : data.stEmail,
+        phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2,
+        phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3,
+        stEmail: data.stEmail === '' ? null : data.stEmail,
         stAddr: null,
         subDiv: data.subDiv === undefined ? null : data.subDiv,
         stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
@@ -229,6 +233,12 @@ export default function Consoultation() {
         pic: data.subDiv === undefined ? null : data.pic,
         // progress: 0,
       },
+      refetchQueries: [
+        {
+          query: SEE_STUDENT_QUERY,
+          variables: { page: 1, limit: 10 },
+        },
+      ],
       onCompleted: data => {
         console.log(data)
         alert('등록되었습니다.')
@@ -501,13 +511,7 @@ export default function Consoultation() {
               <Controller
                 control={control}
                 name="receiptDiv"
-                rules={{
-                  required: {
-                    value: true,
-                    message: '접수구분을 선택해주세요.',
-                  },
-                }}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <Select
                     labelPlacement="outside"
                     label={<FilterLabel>접수구분</FilterLabel>}

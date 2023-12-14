@@ -29,7 +29,8 @@ const DetailForm = styled.form`
   gap: 1rem;
 
   @media (max-width: 768px) {
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.3rem;
   }
 `
 
@@ -140,10 +141,11 @@ type memoData = {
   manageUserId: number
 }
 
-export default function ConsoultMemo(props) {
+export default function ConsultMemo(props) {
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const mGrade = useMme('mGrade')
+  const { userLogs } = useUserLogsMutation()
   const [deleteMemo] = useMutation(DELETE_CONSULTATION_MEMO_MUTATION)
   const [updateMemo] = useMutation(UPDATE_CONSULTATION_MEMO_MUTATION)
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
@@ -153,23 +155,28 @@ export default function ConsoultMemo(props) {
   const { register, handleSubmit, control } = useForm({})
 
   const onDelete = data => {
-    deleteMemo({
-      variables: {
-        deleteConsultationMemoId: data,
-      },
-      onCompleted: () => {
-        searchStudentStateMutation({
-          variables: {
-            searchStudentStateId: parseInt(props.studentId),
-          },
-          onCompleted: data => {
-            props.setMemoList(
-              data.searchStudentState.studentState[0].consultationMemo,
-            )
-          },
-        })
-      },
-    })
+    const isDelete = confirm('메로를 삭제하시겠습니까?')
+    if (isDelete) {
+      deleteMemo({
+        variables: {
+          deleteConsultationMemoId: data,
+        },
+        onCompleted: () => {
+          props.setMemoList([])
+          searchStudentStateMutation({
+            variables: {
+              searchStudentStateId: parseInt(props.studentId),
+            },
+            onCompleted: data => {
+              props.setMemoList(
+                data.searchStudentState.studentState[0].consultationMemo,
+              )
+            },
+          })
+        },
+      })
+      userLogs(`id:${data} 메모 삭제`)
+    }
   }
 
   const onSubmit = data => {
@@ -193,6 +200,7 @@ export default function ConsoultMemo(props) {
         })
       },
     })
+    userLogs(`id:${data.id} 메모 수정`)
   }
 
   const fametDate = data => {
@@ -234,12 +242,6 @@ export default function ConsoultMemo(props) {
       <Controller
         name="content"
         control={control}
-        rules={{
-          required: {
-            value: true,
-            message: '과정을 최소 1개 이상 선택해주세요.',
-          },
-        }}
         defaultValue={props.item.content}
         render={({ field }) => (
           <>

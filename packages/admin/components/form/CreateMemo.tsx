@@ -82,6 +82,7 @@ const MemoBtn = styled.div`
 
 export default function CreateMemo(props) {
   const studentId = props.studentId
+  const { userLogs } = useUserLogsMutation()
   const [createMemo] = useMutation(CREATE_CONSULTATION_MEMO_MUTATION)
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
@@ -108,6 +109,7 @@ export default function CreateMemo(props) {
         })
       },
     })
+    userLogs(`수강생 ID:${studentId} 메모 등록`)
   }
   return (
     <>
