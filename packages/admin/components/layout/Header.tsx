@@ -338,7 +338,7 @@ export default function Header() {
                 <li>
                   <button
                     onClick={() => {
-                      console.log('준비중입니다. ')
+                      alert('준비중입니다. ')
                       userLogs(`${mUserId} 프로필 클릭`)
                     }}
                   >

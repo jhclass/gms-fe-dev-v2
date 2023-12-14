@@ -40,10 +40,10 @@ const BackIcon = styled.figure`
   height: 2rem;
   color: #fff;
   margin-right: 0.5rem;
-  background: #11181c;
+  background: #007de8;
 
   &:hover {
-    background: #007be9;
+    background: #71717a;
   }
 `
 const Title1 = styled.span`
