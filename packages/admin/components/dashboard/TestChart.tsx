@@ -21,8 +21,6 @@ export default function LinePlot({
     marginTop,
   ])
   const line = d3.line((d, i) => x(i), y)
-  console.log(typeof x, x)
-  console.log(typeof x, y)
   useEffect(() => void d3.select(gx.current), [gx, x])
   useEffect(() => void d3.select(gy.current), [gy, y])
   return (

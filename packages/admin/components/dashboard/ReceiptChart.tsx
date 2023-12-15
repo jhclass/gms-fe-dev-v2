@@ -70,21 +70,10 @@ const DonutChart = ({
         .cornerRadius(20)
         .padAngle(0.1)
 
-      console.log(
-        '1',
-        typeof d3
-          .arc()
-          .innerRadius(radius - thickness) // This is the size of the donut hole
-          .outerRadius(radius)
-          .cornerRadius(20)
-          .padAngle(0.1),
-      )
-
       const path = svg.selectAll('g').data(pie(data))
       path.exit().remove()
       const arcs = path.enter()
 
-      console.log(arcs)
       // Build the pie chart: Each part of the pie is a path that we build using the arc function.
       // d in attr("d", arc), specifies successive coordinates of the points through which the path has to go
 
