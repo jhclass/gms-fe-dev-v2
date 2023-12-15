@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import ReceiptChart from '@/components/dashboard/ReceiptChart'
 import ReceiptChart2 from '@/components/dashboard/ReceiptChart2'
 import TestChart from '@/components/dashboard/TestChart'
-import * as d3 from 'd3'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -65,11 +64,6 @@ export default function Home() {
   const data2 = [1, 0, 1]
 
   const [toggle, setToggle] = useState(false)
-  function onMouseMove(event) {
-    const [x, y] = d3.pointer(event)
-    setData(data.slice(-200).concat(Math.atan2(x, y)))
-    console.log(data)
-  }
   return (
     <>
       <Layout>
@@ -81,14 +75,10 @@ export default function Home() {
             <ConsultNum />
           </div>
           <div>
-            <ReceiptChart data={data1} size={178} thickness={10} animate />
+            <ReceiptChart />
           </div>
           <div>
             <ReceiptChart2 />
-          </div>
-          <div className="bg-slate-500" onMouseMove={onMouseMove}>
-            <TestChart data={data} />
-            마우스 on
           </div>
           <div>
             <DragBox>
