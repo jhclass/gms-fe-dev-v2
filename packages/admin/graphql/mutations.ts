@@ -338,6 +338,7 @@ export const SEARCH_SUBJECT_MUTATION = gql`
     $searchSubjectId: Int
     $subDiv: String
     $subjectName: String
+    $exposure: Boolean
     $page: Int
     $limit: Int
   ) {
@@ -345,11 +346,13 @@ export const SEARCH_SUBJECT_MUTATION = gql`
       id: $searchSubjectId
       subDiv: $subDiv
       subjectName: $subjectName
+      exposure: $exposure
       page: $page
       limit: $limit
     ) {
       ok
       error
+      totalCount
       message
       result {
         id

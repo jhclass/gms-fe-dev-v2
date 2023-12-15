@@ -176,11 +176,8 @@ export default function SubjectFilterTable({
         limit: currentLimit,
       },
       onCompleted: resData => {
-        console.log(resData)
-        // const { result, totalCount } = resData.searchSubject || {}
-        // setSearchResult({ result, totalCount })
-        const subjectSearch = resData.searchSubject.result || {}
-        setSearchResult(subjectSearch)
+        const { result, totalCount } = resData.searchSubject || {}
+        setSearchResult({ result, totalCount })
       },
     })
   }, [subjectFilter, currentPage])
@@ -215,7 +212,7 @@ export default function SubjectFilterTable({
                 <Texposure>노출여부</Texposure>
               </TheaderBox>
             </Theader>
-            {searchResult?.map((item, index) => (
+            {searchResult?.result?.map((item, index) => (
               <TableItem
                 key={index}
                 onClick={() =>

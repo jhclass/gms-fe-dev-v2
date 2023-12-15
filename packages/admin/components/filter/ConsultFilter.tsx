@@ -367,6 +367,7 @@ export default function TableFillter({
                       field.onChange(date)
                     }}
                     placeholderText="기간을 선택해주세요."
+                    dateFormat="yyyy/MM/dd"
                     customInput={
                       <Input
                         label="등록일시"
@@ -403,6 +404,7 @@ export default function TableFillter({
                       }
                       field.onChange(date)
                     }}
+                    dateFormat="yyyy/MM/dd"
                     placeholderText="기간을 선택해주세요."
                     customInput={
                       <Input

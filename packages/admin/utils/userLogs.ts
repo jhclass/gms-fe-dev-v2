@@ -9,10 +9,6 @@ const useUserLogsMutation = () => {
         eventName: evt,
         uri: url,
       },
-      onCompleted: data => {
-        console.log(data)
-        console.log(evt)
-      },
     })
   }
 

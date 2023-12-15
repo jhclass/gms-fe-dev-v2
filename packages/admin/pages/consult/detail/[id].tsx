@@ -35,14 +35,11 @@ import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
 import {
   SEARCH_STUDENTSTATE_MUTATION,
+  SEARCH_SUBJECT_MUTATION,
   UPDATE_STUDENT_STATE_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  MME_QUERY,
-  SEE_MANAGEUSER_QUERY,
-  SEE_SUBJECT_QUERY,
-} from '@/graphql/queries'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
@@ -65,7 +62,6 @@ const TopInfo = styled.div`
     color: #555;
   }
 `
-
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -79,11 +75,9 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
-
 const AreaBox = styled.div`
   flex: 1;
 `
-
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -95,12 +89,10 @@ const DatePickerBox = styled.div`
     bottom: 0;
   }
 `
-
 const RadioBox = styled.div`
   display: flex;
   width: 100%;
 `
-
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -113,6 +105,10 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+`
+const BtnArea = styled.div`
+  display: flex;
+  justify-content: start;
 `
 const Theader = styled.div`
   width: 100%;
@@ -252,7 +248,6 @@ type studentData = {
 export default function ConsultDetail() {
   const router = useRouter()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [filterActive, setFilterActive] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const {
@@ -260,13 +255,7 @@ export default function ConsultDetail() {
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
-  const {
-    loading: subjectLoading,
-    error: subjectError,
-    data: subjectData,
-  } = useQuery(SEE_SUBJECT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
+  const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
@@ -281,7 +270,6 @@ export default function ConsultDetail() {
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
-  const subjectList = subjectData?.seeSubject.subject || []
   const studentState = data?.searchStudentState.studentState[0] || []
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -308,6 +296,7 @@ export default function ConsultDetail() {
     },
   })
   const { isDirty, dirtyFields, errors } = formState
+  const [subjectList, setSubjectList] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
@@ -325,6 +314,15 @@ export default function ConsultDetail() {
       },
     })
   }, [router])
+  useEffect(() => {
+    searchSubjectMutation({
+      variables: { exposure: true, page: currentPage, limit: currentLimit },
+      onCompleted: resData => {
+        const { result, totalCount } = resData.searchSubject || {}
+        setSubjectList({ result, totalCount })
+      },
+    })
+  }, [router, currentPage])
 
   useEffect(() => {
     if (
@@ -594,6 +592,19 @@ export default function ConsultDetail() {
                             <>
                               <ModalHeader className="flex flex-col gap-1"></ModalHeader>
                               <ModalBody>
+                                <BtnArea>
+                                  <Button
+                                    size="sm"
+                                    radius="sm"
+                                    variant="solid"
+                                    className="text-white bg-flag1"
+                                    onClick={() => {
+                                      router.push('/subjects')
+                                    }}
+                                  >
+                                    과정 등록/수정
+                                  </Button>
+                                </BtnArea>
                                 <ScrollShadow
                                   orientation="horizontal"
                                   className="scrollbar"
@@ -613,7 +624,7 @@ export default function ConsultDetail() {
                                         <Tfee>과정 금액</Tfee>
                                       </TableRow>
                                     </Theader>
-                                    {subjectList?.map((item, index) => (
+                                    {subjectList?.result.map((item, index) => (
                                       <TableItem key={index}>
                                         <TableRow>
                                           <Checkbox
@@ -627,15 +638,14 @@ export default function ConsultDetail() {
                                     ))}
                                   </CheckboxGroup>
                                 </ScrollShadow>
-                                {subjectData?.seeSubject.totalCount > 0 && (
+                                {subjectList?.totalCount > 0 && (
                                   <PagerWrap>
                                     <Pagination
                                       variant="light"
                                       showControls
                                       initialPage={currentPage}
                                       total={Math.ceil(
-                                        subjectData?.seeSubject.totalCount /
-                                          currentLimit,
+                                        subjectList?.totalCount / currentLimit,
                                       )}
                                       onChange={newPage => {
                                         setCurrentPage(newPage)
