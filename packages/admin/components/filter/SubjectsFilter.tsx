@@ -154,7 +154,6 @@ export default function TableFillter({
             ? true
             : false,
       }
-
       setSubjectFilter(filter)
       onFilterToggle(false)
       onFilterSearch(true)

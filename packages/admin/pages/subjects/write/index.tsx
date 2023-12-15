@@ -25,7 +25,7 @@ const SwitchDiv = styled.div`
   border-radius: 0.75rem;
 `
 const SwitchText = styled.span`
-  width: 3.5rem;
+  width: max-content;
   padding-right: 0.5rem;
   font-size: 0.8rem;
 `

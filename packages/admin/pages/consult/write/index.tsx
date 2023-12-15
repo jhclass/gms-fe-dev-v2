@@ -1,8 +1,8 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -33,13 +33,12 @@ import {
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
-import { Controller, useForm } from 'react-hook-form'
 import {
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_QUERY,
-  SEE_SUBJECT_QUERY,
-} from '@/graphql/queries'
+  CREATE_STUDENT_STATE_MUTATION,
+  SEARCH_SUBJECT_MUTATION,
+} from '@/graphql/mutations'
+import { Controller, useForm } from 'react-hook-form'
+import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
@@ -97,6 +96,10 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+`
+const BtnArea = styled.div`
+  display: flex;
+  justify-content: start;
 `
 const Theader = styled.div`
   width: 100%;
@@ -175,7 +178,7 @@ const PagerWrap = styled.div`
 `
 
 export default function ConsultWirte() {
-  const [filterActive, setFilterActive] = useState(false)
+  const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const {
@@ -183,29 +186,33 @@ export default function ConsultWirte() {
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
-  const {
-    loading: subjectLoading,
-    error: subjectError,
-    data: subjectData,
-  } = useQuery(SEE_SUBJECT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
+  const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
-  const subjectList = subjectData?.seeSubject.subject || []
-  const [subjectSelected, setSubjectSelected] = useState()
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [subjectList, setSubjectList] = useState(null)
+  const [subjectSelected, setSubjectSelected] = useState()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
+
+  useEffect(() => {
+    searchSubjectMutation({
+      variables: { exposure: true, page: currentPage, limit: currentLimit },
+      onCompleted: resData => {
+        const { result, totalCount } = resData.searchSubject || {}
+        setSubjectList({ result, totalCount })
+      },
+    })
+  }, [router, currentPage])
 
   const onSubmit = data => {
     createStudent({
@@ -426,6 +433,19 @@ export default function ConsultWirte() {
                           <>
                             <ModalHeader className="flex flex-col gap-1"></ModalHeader>
                             <ModalBody>
+                              <BtnArea>
+                                <Button
+                                  size="sm"
+                                  radius="sm"
+                                  variant="solid"
+                                  className="text-white bg-flag1"
+                                  onClick={() => {
+                                    router.push('/subjects')
+                                  }}
+                                >
+                                  과정 등록/수정
+                                </Button>
+                              </BtnArea>
                               <ScrollShadow
                                 orientation="horizontal"
                                 className="scrollbar"
@@ -445,7 +465,7 @@ export default function ConsultWirte() {
                                       <Tfee>과정 금액</Tfee>
                                     </TableRow>
                                   </Theader>
-                                  {subjectList?.map((item, index) => (
+                                  {subjectList?.result.map((item, index) => (
                                     <TableItem key={index}>
                                       <TableRow>
                                         <Checkbox
@@ -459,15 +479,14 @@ export default function ConsultWirte() {
                                   ))}
                                 </CheckboxGroup>
                               </ScrollShadow>
-                              {subjectData?.seeSubject.totalCount > 0 && (
+                              {subjectList?.totalCount > 0 && (
                                 <PagerWrap>
                                   <Pagination
                                     variant="light"
                                     showControls
                                     initialPage={currentPage}
                                     total={Math.ceil(
-                                      subjectData?.seeSubject.totalCount /
-                                        currentLimit,
+                                      subjectList?.totalCount / currentLimit,
                                     )}
                                     onChange={newPage => {
                                       setCurrentPage(newPage)

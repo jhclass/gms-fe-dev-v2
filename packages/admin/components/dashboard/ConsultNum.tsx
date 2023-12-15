@@ -61,7 +61,14 @@ export default function ConsultNum() {
         <span>미처리 상담 수</span>
         <ToolTipBox>
           <Tooltip
-            content={'접수대기 상태 건수 중 신청일자로부터 3일이 지난 건수 '}
+            content={
+              <div className="px-1 py-2">
+                <div className="font-bold text-small">Custom Content</div>
+                <div className="text-tiny">
+                  This is a custom tooltip content
+                </div>
+              </div>
+            }
             placement="bottom"
           >
             <i className="xi-help" />

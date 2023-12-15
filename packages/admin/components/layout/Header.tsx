@@ -155,22 +155,22 @@ const UserBox = styled.div`
 `
 
 const UserGrade = styled.span`
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   overflow: hidden;
   border-radius: 100%;
   border: 1px solid #d4d4d8;
   background: #4f46e5;
-  text-align: center;
   font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
-  line-height: 2.5rem;
 
   @media screen and (max-width: 1024px) {
     width: 2rem;
     height: 2rem;
-    line-height: 2rem;
     font-size: 1rem;
   }
 `
