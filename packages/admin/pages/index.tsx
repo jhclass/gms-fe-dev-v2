@@ -18,6 +18,7 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   }
 `
 const HomeArea = styled.div`
+  width: 100%;
   display: inline-grid;
   grid-template-columns: repeat(4, minmax(320px, 1fr));
   gap: 1rem;
@@ -30,7 +31,7 @@ const HomeArea = styled.div`
     grid-template-columns: repeat(2, minmax(320px, 1fr));
   }
   @media screen and (max-width: 720px) {
-    grid-template-columns: repeat(1, minmax(320px, 1fr));
+    grid-template-columns: repeat(1, minmax(100%, 1fr));
   }
 `
 
