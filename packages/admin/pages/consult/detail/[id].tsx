@@ -801,7 +801,11 @@ export default function ConsultDetail() {
                       }}
                     >
                       {Object.entries(progressStatus).map(([key, value]) => (
-                        <Radio key={key} value={key}>
+                        <Radio
+                          key={key}
+                          value={key}
+                          isDisabled={key === '999' ? true : false}
+                        >
                           {value.name}
                         </Radio>
                       ))}

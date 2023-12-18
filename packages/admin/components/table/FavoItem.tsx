@@ -186,7 +186,7 @@ const isDisplayFlag = (date: string, step: number): string => {
 
   if (differenceInDays >= 0 && differenceInDays < 3) {
     return '#007de9'
-  } else if (differenceInDays >= 3 && step === 0) {
+  } else if (differenceInDays >= 3 && step === 999) {
     return '#FF5900'
   } else {
     return 'transparent'

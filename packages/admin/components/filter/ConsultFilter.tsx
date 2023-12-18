@@ -183,8 +183,8 @@ export default function TableFillter({
   }
 
   const onSubmit = data => {
+    console.log(typeof data.createdAt[1], data.createdAt[1])
     if (isDirty) {
-      console.log(data)
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
           if (dateRange[1] !== null) {
@@ -217,7 +217,7 @@ export default function TableFillter({
           stName: data.stName === '' ? null : data.stName,
           progress: data.progress,
         }
-
+        console.log(filter)
         setStudentFilter(filter)
         onFilterToggle(false)
         onFilterSearch(true)

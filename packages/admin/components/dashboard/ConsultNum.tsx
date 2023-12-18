@@ -2,6 +2,11 @@ import { useMotionValue, Reorder } from 'framer-motion'
 import { useRaisedShadow } from '@/utils/useRaisedShadow'
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
+import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
+import router, { useRouter } from 'next/router'
+import { DASHBOARD_UNP_QUERY } from '@/graphql/queries'
 
 const ItemBox = styled.div`
   padding: 1.5rem;
@@ -13,7 +18,6 @@ const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.2rem;
 `
 
 const Title = styled.div`
@@ -32,6 +36,22 @@ const ToolTipBox = styled.div`
   color: #71717a;
   font-size: 1.2rem;
 `
+const DashTooltip = styled.div`
+  padding: 0.25rem 0.5rem;
+`
+const DashTooltipTitle = styled.div`
+  font-size: 0.875rem;
+  font-weight: 700;
+`
+const DashTooltipCon = styled.p`
+  font-size: 0.75rem;
+
+  span {
+    display: block;
+    font-size: 0.65rem;
+    color: #777;
+  }
+`
 const Content = styled.div`
   display: flex;
   align-items: baseline;
@@ -41,6 +61,7 @@ const Total = styled.div`
   font-weight: 700;
   font-size: 2rem;
   line-height: 2.25rem;
+  color: #ff5900;
 `
 const MoM = styled.div`
   align-items: baseline;
@@ -48,26 +69,42 @@ const MoM = styled.div`
   line-height: 1.25rem;
   display: flex;
   margin-left: 0.5rem;
-  color: #f31260;
+  color: #ff5900;
 `
 const MoMIcon = styled.p`
   height: 1.25rem;
 `
 
 export default function ConsultNum() {
+  const { data, refetch } = useQuery(DASHBOARD_UNP_QUERY)
+  const unpCount = data?.dashboardUnp.unpCount || 0
+  const dateFormet = data => {
+    if (parseInt(data) < 10000) {
+      const result = data.toLocaleString()
+      return result
+    } else {
+      return '9999+'
+    }
+  }
+  useEffect(() => {
+    refetch()
+  }, [refetch])
+
   return (
     <ItemBox>
       <Title>
-        <span>미처리 상담 수</span>
+        <span>미처리 상담</span>
         <ToolTipBox>
           <Tooltip
             content={
-              <div className="px-1 py-2">
-                <div className="font-bold text-small">Custom Content</div>
-                <div className="text-tiny">
-                  This is a custom tooltip content
-                </div>
-              </div>
+              <DashTooltip className="px-1 py-2">
+                <DashTooltipTitle className="font-bold text-small">
+                  미처리 상담
+                </DashTooltipTitle>
+                <DashTooltipCon className="text-tiny">
+                  상담 신청일로부터 3일이 경과되고, 접수 대기였던 상태
+                </DashTooltipCon>
+              </DashTooltip>
             }
             placement="bottom"
           >
@@ -76,13 +113,7 @@ export default function ConsultNum() {
         </ToolTipBox>
       </Title>
       <Content>
-        <Total>12</Total>
-        <MoM>
-          <MoMIcon>
-            <i className="xi-arrow-down" />
-          </MoMIcon>
-          3
-        </MoM>
+        <Total>{dateFormet(unpCount)}</Total>
       </Content>
     </ItemBox>
   )
