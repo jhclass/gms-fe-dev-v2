@@ -632,11 +632,13 @@ export default function ConsultWirte() {
                       field.onChange(parseInt(value))
                     }}
                   >
-                    {Object.entries(progressStatus).map(([key, value]) => (
-                      <Radio key={key} value={key}>
-                        {value.name}
-                      </Radio>
-                    ))}
+                    {Object.entries(progressStatus)
+                      .filter(([key]) => key !== '999')
+                      .map(([key, value]) => (
+                        <Radio key={key} value={key}>
+                          {value.name}
+                        </Radio>
+                      ))}
                   </RadioGroup>
                 )}
               />

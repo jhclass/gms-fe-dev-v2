@@ -91,6 +91,10 @@ export const progressStatusState = atom({
       name: '오류/거부',
       color: '#cdcdcd',
     },
+    999: {
+      name: '미처리',
+      color: '#FF5900',
+    },
   },
 })
 

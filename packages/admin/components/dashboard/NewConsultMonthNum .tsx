@@ -5,7 +5,7 @@ import { Tooltip } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { useEffect, useState } from 'react'
-import { DASHBOARD_TODAY_QUERY } from '@/graphql/queries'
+import { DASHBOARD_MONTH_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 
 const ItemBox = styled.div`
@@ -83,11 +83,12 @@ const MoMIcon = styled.p`
 `
 
 export default function NewConsultNum() {
-  const { data, refetch } = useQuery(DASHBOARD_TODAY_QUERY)
-  const dataToday = data?.dashboardToday.today || 0
-  const dataCompare = data?.dashboardToday.compareToday || 0
+  const { data, refetch } = useQuery(DASHBOARD_MONTH_QUERY)
+  const dataMonth = data?.dashboardMonth.month || 0
+  const dataCompare = data?.dashboardMonth.compareMonth || 0
   const [isIncrease, setIsIncrease] = useState<boolean>()
-  const date = new Date().getDate()
+  const month = new Date().getMonth() + 1
+
   useEffect(() => {
     if (dataCompare > 0) {
       setIsIncrease(true)
@@ -95,9 +96,11 @@ export default function NewConsultNum() {
       setIsIncrease(false)
     }
   }, [data])
+
   useEffect(() => {
     refetch()
   }, [refetch])
+
   const dateFormet = data => {
     if (parseInt(data) < 10000) {
       const result = data.toLocaleString()
@@ -106,20 +109,20 @@ export default function NewConsultNum() {
       return '9999+'
     }
   }
-
   return (
     <ItemBox>
       <Title>
-        <span>오늘의 신규 상담</span>
+        <span>이달의 신규 상담</span>
         <ToolTipBox>
           <Tooltip
             content={
               <DashTooltip className="px-1 py-2">
                 <DashTooltipTitle className="font-bold text-small">
-                  {date}일의 신규 상담
+                  {month}월의 신규 상담
                 </DashTooltipTitle>
                 <DashTooltipCon className="text-tiny">
-                  전일의 신규 상담수 대비 오늘의 상담수
+                  전달의 총 상담수 대비 이번달의 총 상담수
+                  <span>(기준 : 시작일 ~ 마지막일)</span>
                 </DashTooltipCon>
               </DashTooltip>
             }
@@ -130,7 +133,7 @@ export default function NewConsultNum() {
         </ToolTipBox>
       </Title>
       <Content>
-        <Total>{dateFormet(dataToday)}</Total>
+        <Total>{dateFormet(dataMonth)}</Total>
         {dataCompare !== 0 ? (
           <MoM $isIncrease={isIncrease}>
             <MoMIcon>

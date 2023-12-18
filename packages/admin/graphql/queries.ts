@@ -1,5 +1,34 @@
 import { gql } from '@apollo/client'
 
+// Dashboard
+export const DASHBOARD_TODAY_QUERY = gql`
+  query DashboardToday {
+    dashboardToday {
+      ok
+      today
+      compareToday
+    }
+  }
+`
+export const DASHBOARD_MONTH_QUERY = gql`
+  query DashboardMonth {
+    dashboardMonth {
+      ok
+      month
+      compareMonth
+    }
+  }
+`
+export const DASHBOARD_UNP_QUERY = gql`
+  query DashboardUnp {
+    dashboardUnp {
+      ok
+      unpCount
+    }
+  }
+`
+
+// Components
 export const MME_QUERY = gql`
   query MMe {
     mMe {

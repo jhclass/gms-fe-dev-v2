@@ -87,7 +87,10 @@ export default function CreateMemo(props) {
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
   )
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: { content: '', studentStateId: studentId },
+  })
+  const { isSubmitSuccessful } = formState
 
   const onSubmit = data => {
     createMemo({
@@ -111,6 +114,11 @@ export default function CreateMemo(props) {
     })
     userLogs(`수강생 ID:${studentId} 메모 등록`)
   }
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ content: '' })
+    }
+  }, [formState])
   return (
     <>
       <DetailForm onSubmit={handleSubmit(onSubmit)}>
