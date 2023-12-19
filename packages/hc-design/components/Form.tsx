@@ -91,10 +91,9 @@ export default function Form() {
             receiptDiv: data.receiptDiv,
           },
           onCompleted: data => {
-            console.log(data)
+            alert('상담신청이 완료되었습니다. 😊')
           },
         })
-        alert('상담신청이 완료되었습니다. 😊')
       }
     } catch (error) {
       console.error(error)
@@ -258,7 +257,6 @@ export default function Form() {
               </li>
               <li className="py-2">
                 <Input
-                  isClearable
                   variant="bordered"
                   radius="md"
                   type="text"
@@ -274,7 +272,6 @@ export default function Form() {
                       message: '한글로 입력해주세요.',
                     },
                   })}
-                  onClear={() => console.log('input cleared')}
                 />
                 {errors.name && (
                   <p className="px-2 pt-2 text-xs text-red-500">
@@ -284,7 +281,6 @@ export default function Form() {
               </li>
               <li className="py-2">
                 <Input
-                  isClearable
                   variant="bordered"
                   radius="md"
                   type="text"
@@ -309,7 +305,6 @@ export default function Form() {
                       message: '010으로 시작해주세요.',
                     },
                   })}
-                  onClear={() => console.log('input cleared')}
                 />
                 {errors.phone && (
                   <p className="px-2 pt-2 text-xs text-red-500">

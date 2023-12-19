@@ -53,7 +53,6 @@ export default function MainWrap({ children }) {
       setNavOpen(false)
     }
   }, [isScreen, setNavOpen])
-
   return (
     <>
       <WithAuth>

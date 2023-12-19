@@ -65,8 +65,6 @@ const TheaderBox = styled.div`
 `
 const Tnum = styled.div`
   display: table-cell;
-  justify-content: center;
-  align-items: center;
   width: 7%;
   padding: 1rem;
   font-size: inherit;
@@ -80,8 +78,7 @@ const Tdiv = styled.div`
 `
 const Tname = styled.div`
   display: table-cell;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   width: 50%;
   padding: 1rem;
   font-size: inherit;
@@ -89,8 +86,6 @@ const Tname = styled.div`
 `
 const TsubDiv = styled.div`
   display: table-cell;
-  justify-content: center;
-  align-items: center;
   width: 25%;
   padding: 1rem;
   font-size: inherit;
@@ -98,8 +93,6 @@ const TsubDiv = styled.div`
 `
 const Tfee = styled.div`
   display: table-cell;
-  justify-content: center;
-  align-items: center;
   width: 25%;
   padding: 1rem;
   font-size: inherit;
@@ -107,8 +100,6 @@ const Tfee = styled.div`
 `
 const Texposure = styled.div`
   display: table-cell;
-  justify-content: center;
-  align-items: center;
   width: 8%;
   padding: 1rem;
   font-size: inherit;
@@ -158,6 +149,15 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
+const EllipsisBox = styled.p`
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 export default function SubjectFilterTable({
   onFilterSearch,
   subjectFilter,
@@ -181,6 +181,13 @@ export default function SubjectFilterTable({
       },
     })
   }, [subjectFilter, currentPage])
+
+  const feeFormet = fee => {
+    const result = fee
+      .toString()
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    return result
+  }
 
   const resetList = () => {
     setSubjectFilter({})
@@ -228,7 +235,11 @@ export default function SubjectFilterTable({
                 <TableRow>
                   <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
-                    <SubjectItem tableData={item} />
+                    <Tname>
+                      <EllipsisBox>{item.subjectName}</EllipsisBox>
+                    </Tname>
+                    <TsubDiv>{item.subDiv}</TsubDiv>
+                    <Tfee>{feeFormet(item.fee)}</Tfee>
                   </Tdiv>
                   <Texposure>
                     {item.exposure ? (

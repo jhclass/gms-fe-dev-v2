@@ -1,25 +1,13 @@
 import '@/styles/global.css'
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
-import { RecoilRoot, RecoilEnv, useRecoilState } from 'recoil'
+import { RecoilRoot } from 'recoil'
 import Head from 'next/head'
 import { GlobalStyle } from '@/styles/GlobalStyle'
-import { ApolloProvider, useReactiveVar } from '@apollo/client'
-import { apolloClient, isLoggedInVar } from '@/lib/apolloClient'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
-import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
-import { __DEV__ } from '@apollo/client/utilities/globals'
+import { ApolloProvider } from '@apollo/client'
+import { apolloClient } from '@/lib/apolloClient'
 
-if (__DEV__) {
-  // Adds messages only in a dev environment
-  loadDevMessages()
-  loadErrorMessages()
-}
 export default function MyApp({ Component, pageProps }: AppProps) {
-  RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
-
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>

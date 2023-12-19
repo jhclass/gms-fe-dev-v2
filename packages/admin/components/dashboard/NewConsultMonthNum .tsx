@@ -87,6 +87,8 @@ export default function NewConsultNum() {
   const dataMonth = data?.dashboardMonth.month || 0
   const dataCompare = data?.dashboardMonth.compareMonth || 0
   const [isIncrease, setIsIncrease] = useState<boolean>()
+  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenClick, setIsOpenClick] = useState(false)
   const month = new Date().getMonth() + 1
 
   useEffect(() => {
@@ -127,8 +129,16 @@ export default function NewConsultNum() {
               </DashTooltip>
             }
             placement="bottom"
+            isOpen={isOpen}
+            onOpenChange={open => setIsOpen(open)}
           >
-            <i className="xi-help" />
+            <i
+              className="xi-help"
+              onClick={() => {
+                setIsOpenClick(!isOpenClick)
+                setIsOpen(!isOpenClick)
+              }}
+            />
           </Tooltip>
         </ToolTipBox>
       </Title>

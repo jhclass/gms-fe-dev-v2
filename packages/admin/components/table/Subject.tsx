@@ -1,11 +1,10 @@
 import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import SubjectItem from './SubjectItem'
 import router from 'next/router'
-import { queries } from '@testing-library/react'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -65,8 +64,7 @@ const Tdiv = styled.div`
 `
 const Tname = styled.div`
   display: table-cell;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   width: 50%;
   padding: 1rem;
   font-size: inherit;
@@ -136,26 +134,41 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
 `
-
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
 `
-
+const EllipsisBox = styled.p`
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 const HiddenLabel = styled.label`
   display: none;
 `
-
 export default function SubjectTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const { loading, error, data } = useQuery(SEE_SUBJECT_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SEE_SUBJECT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
   const subjectTotal = data?.seeSubject.totalCount || []
   const subjectData = data?.seeSubject.subject || []
 
+  const feeFormet = fee => {
+    const result = fee
+      .toString()
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    return result
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [router, refetch])
   return (
     <>
       <TTopic>
@@ -193,7 +206,11 @@ export default function SubjectTable() {
                 <TableRow>
                   <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
-                    <SubjectItem tableData={item} />
+                    <Tname>
+                      <EllipsisBox>{item.subjectName}</EllipsisBox>
+                    </Tname>
+                    <TsubDiv>{item.subDiv}</TsubDiv>
+                    <Tfee>{feeFormet(item.fee)}</Tfee>
                   </Tdiv>
                   <Texposure>
                     {item.exposure ? (

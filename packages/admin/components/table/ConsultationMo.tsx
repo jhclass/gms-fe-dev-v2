@@ -179,7 +179,6 @@ export default function ConsolutationTable() {
     setInfoActive(prev => {
       const updatedInfo = { ...prev }
       updatedInfo[index] = !prev[index]
-      console.log(updatedInfo)
       return updatedInfo
     })
   }
