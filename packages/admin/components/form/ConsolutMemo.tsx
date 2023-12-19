@@ -180,7 +180,6 @@ export default function ConsultMemo(props) {
   }
 
   const onSubmit = data => {
-    console.log(data)
     updateMemo({
       variables: {
         updateConsultationMemoId: parseInt(data.id),

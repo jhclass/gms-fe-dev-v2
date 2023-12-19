@@ -60,7 +60,6 @@ export default function Category() {
             isActive={router.pathname === category.href}
             onClick={() => {
               setActiveCategory(index)
-              userLogs(`${category.label} 카테고리 클릭`, `${category.href}`)
             }}
           />
         ))}

@@ -9,6 +9,7 @@ import {
   SEE_STUDENT_QUERY,
 } from '@/graphql/queries'
 import FavoItem from '@/components/table/FavoItem'
+import router from 'next/router'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -189,7 +190,7 @@ export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data } = useQuery(SEE_STUDENT_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
   const {
@@ -198,7 +199,9 @@ export default function ConsolutationTable() {
     data: MMeData,
   } = useQuery(MME_QUERY)
   const FavoList = MMeData?.mMe.favoriteStudentState
-  const { data: seeFavoData } = useQuery(SEE_FAVORITESTATE_QUERY)
+  const { data: seeFavoData, refetch: favoRefetch } = useQuery(
+    SEE_FAVORITESTATE_QUERY,
+  )
   const studentsData = data?.seeStudentState || []
   const students = studentsData?.studentState || []
   const favoData = seeFavoData?.seeFavorite || []
@@ -207,6 +210,11 @@ export default function ConsolutationTable() {
   useEffect(() => {
     setTotalCount(studentsData.totalCount)
   }, [studentsData, totalCount])
+
+  useEffect(() => {
+    refetch()
+    favoRefetch()
+  }, [router, refetch, favoRefetch])
 
   return (
     <>

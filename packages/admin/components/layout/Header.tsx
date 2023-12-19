@@ -154,9 +154,9 @@ const UserBox = styled.div`
   cursor: pointer;
 `
 
-const UserGrade = styled.span`
+const UserGrade = styled.div`
   display: flex;
-  /* align-items: center; */
+  align-items: center;
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
@@ -185,19 +185,19 @@ const UserInfo = styled.div`
   }
 `
 
-const UserId = styled.span`
+const UserId = styled.p`
   font-size: 0.875rem;
   line-height: 1rem;
   margin-bottom: 0.1rem;
   font-weight: 600;
 `
 
-const UserName = styled.span`
+const UserName = styled.p`
   font-size: 0.75rem;
   line-height: 1rem;
   color: #3f3f46;
 `
-const IconArrow = styled.span`
+const IconArrow = styled.p`
   display: block;
   @media screen and (max-width: 1024px) {
     display: none;
@@ -319,7 +319,9 @@ export default function Header() {
           </NotiBtn>
 
           <UserBox onClick={toggleUserMenu}>
-            <UserGrade>{gradeStr(mGrade)}</UserGrade>
+            <UserGrade>
+              <span>{gradeStr(mGrade)}</span>
+            </UserGrade>
             <UserInfo>
               <UserId>{mUserId}</UserId>
               <UserName>{mUsername}</UserName>
@@ -339,7 +341,6 @@ export default function Header() {
                   <button
                     onClick={() => {
                       alert('준비중입니다. ')
-                      userLogs(`${mUserId} 프로필 클릭`)
                     }}
                   >
                     프로필

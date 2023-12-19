@@ -4,8 +4,6 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import SubjectTable from '@/components/table/Subject'
 import { styled } from 'styled-components'
 import SubjectsFilter from '@/components/filter/SubjectsFilter'
-import { studentFilterState } from '@/lib/recoilAtoms'
-import { useRecoilValue } from 'recoil'
 import SubjectFilter from '@/components/table/SubjectFilterTable'
 
 const ConBox = styled.div`

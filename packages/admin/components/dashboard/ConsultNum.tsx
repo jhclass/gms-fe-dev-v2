@@ -78,6 +78,8 @@ const MoMIcon = styled.p`
 export default function ConsultNum() {
   const { data, refetch } = useQuery(DASHBOARD_UNP_QUERY)
   const unpCount = data?.dashboardUnp.unpCount || 0
+  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenClick, setIsOpenClick] = useState(false)
   const dateFormet = data => {
     if (parseInt(data) < 10000) {
       const result = data.toLocaleString()
@@ -89,7 +91,6 @@ export default function ConsultNum() {
   useEffect(() => {
     refetch()
   }, [refetch])
-
   return (
     <ItemBox>
       <Title>
@@ -107,8 +108,16 @@ export default function ConsultNum() {
               </DashTooltip>
             }
             placement="bottom"
+            isOpen={isOpen}
+            onOpenChange={open => setIsOpen(open)}
           >
-            <i className="xi-help" />
+            <i
+              className="xi-help"
+              onClick={() => {
+                setIsOpenClick(!isOpenClick)
+                setIsOpen(!isOpenClick)
+              }}
+            />
           </Tooltip>
         </ToolTipBox>
       </Title>

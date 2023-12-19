@@ -18,6 +18,7 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   }
 `
 const HomeArea = styled.div`
+  max-width: 1400px;
   width: 100%;
   display: inline-grid;
   grid-template-columns: repeat(4, minmax(320px, 1fr));

@@ -100,7 +100,6 @@ export default function CategoryItem<CategoryItemProps>({
             >
               <CateIcon
                 onClick={e => {
-                  console.log(e)
                   e.preventDefault()
                   router.push(href)
                 }}

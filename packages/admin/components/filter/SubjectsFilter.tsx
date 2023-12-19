@@ -143,7 +143,6 @@ export default function TableFillter({
   }
   const onSubmit = data => {
     if (isDirty) {
-      console.log(data)
       const filter = {
         subjectName: data.subjectName === '' ? null : data.subjectName,
         subDiv: data.subDiv === '-' ? null : data.subDiv,

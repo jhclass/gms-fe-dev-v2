@@ -53,7 +53,7 @@ export default function ClickList({
     setIsOPenModal(false)
     onClose
   }
-  console.log(isOPenModal)
+
   return (
     <>
       <div onClick={onOpen}>asdfasdf</div>
