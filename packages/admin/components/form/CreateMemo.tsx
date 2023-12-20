@@ -1,26 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Textarea, useDisclosure } from '@nextui-org/react'
-import {
-  progressStatusState,
-  subStatusState,
-  receiptStatusState,
-} from '@/lib/recoilAtoms'
-import { useRecoilValue } from 'recoil'
-import { useMutation, useQuery } from '@apollo/client'
+import { Textarea } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import {
   CREATE_CONSULTATION_MEMO_MUTATION,
-  DELETE_CONSULTATION_MEMO_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
 } from '@/graphql/mutations'
-import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import { useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-
-import useMmeQuery from '@/utils/mMe'
 
 const DetailForm = styled.form`
   display: flex;
@@ -90,32 +79,34 @@ export default function CreateMemo(props) {
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { content: '', studentStateId: studentId },
   })
-  const { isSubmitSuccessful } = formState
+  const { isDirty, isSubmitSuccessful } = formState
 
   const onSubmit = data => {
-    createMemo({
-      variables: {
-        content: data.content,
-        studentStateId: studentId,
-      },
-      onCompleted: () => {
-        props.setMemoList([])
-        searchStudentStateMutation({
-          variables: {
-            searchStudentStateId: parseInt(studentId),
-          },
-          onCompleted: data => {
-            props.setMemoList(
-              data.searchStudentState.studentState[0].consultationMemo,
-            )
-          },
-        })
-      },
-    })
-    userLogs(`수강생 ID:${studentId} 메모 등록`)
+    if (isDirty) {
+      createMemo({
+        variables: {
+          content: data.content,
+          studentStateId: studentId,
+        },
+        onCompleted: () => {
+          props.setMemoList([])
+          searchStudentStateMutation({
+            variables: {
+              searchStudentStateId: parseInt(studentId),
+            },
+            onCompleted: data => {
+              props.setMemoList(
+                data.searchStudentState.studentState[0].consultationMemo,
+              )
+            },
+          })
+        },
+      })
+      userLogs(`수강생 ID:${studentId} 메모 등록`)
+    }
   }
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
+    if (isSubmitSuccessful) {
       reset({ content: '' })
     }
   }, [formState])

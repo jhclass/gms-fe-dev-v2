@@ -1,26 +1,15 @@
-import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Input, Textarea, useDisclosure } from '@nextui-org/react'
+import { Input, Textarea } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import {
-  progressStatusState,
-  subStatusState,
-  receiptStatusState,
-} from '@/lib/recoilAtoms'
-import { useRecoilValue } from 'recoil'
-import { useMutation, useQuery } from '@apollo/client'
-import {
-  CREATE_CONSULTATION_MEMO_MUTATION,
   DELETE_CONSULTATION_MEMO_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
   UPDATE_CONSULTATION_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-
 import useMmeQuery from '@/utils/mMe'
 
 const DetailForm = styled.form`
@@ -151,9 +140,8 @@ export default function ConsultMemo(props) {
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
   )
-
-  const { register, handleSubmit, control } = useForm({})
-
+  const { register, handleSubmit, control, formState } = useForm({})
+  const { isDirty } = formState
   const onDelete = data => {
     const isDelete = confirm('메로를 삭제하시겠습니까?')
     if (isDelete) {
@@ -180,26 +168,28 @@ export default function ConsultMemo(props) {
   }
 
   const onSubmit = data => {
-    updateMemo({
-      variables: {
-        updateConsultationMemoId: parseInt(data.id),
-        content: data.content,
-      },
-      onCompleted: () => {
-        props.setMemoList([])
-        searchStudentStateMutation({
-          variables: {
-            searchStudentStateId: parseInt(props.studentId),
-          },
-          onCompleted: data => {
-            props.setMemoList(
-              data.searchStudentState.studentState[0].consultationMemo,
-            )
-          },
-        })
-      },
-    })
-    userLogs(`id:${data.id} 메모 수정`)
+    if (isDirty) {
+      updateMemo({
+        variables: {
+          updateConsultationMemoId: parseInt(data.id),
+          content: data.content,
+        },
+        onCompleted: () => {
+          props.setMemoList([])
+          searchStudentStateMutation({
+            variables: {
+              searchStudentStateId: parseInt(props.studentId),
+            },
+            onCompleted: data => {
+              props.setMemoList(
+                data.searchStudentState.studentState[0].consultationMemo,
+              )
+            },
+          })
+        },
+      })
+      userLogs(`id:${data.id} 메모 수정`)
+    }
   }
 
   const fametDate = data => {

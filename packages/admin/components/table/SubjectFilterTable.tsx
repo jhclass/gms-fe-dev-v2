@@ -2,7 +2,6 @@ import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import SubjectItem from './SubjectItem'
 import router from 'next/router'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
 

@@ -3,7 +3,6 @@ import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
-import SubjectItem from './SubjectItem'
 import router from 'next/router'
 
 const TableArea = styled.div`
