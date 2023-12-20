@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import router from 'next/router'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
+import SubjectItem from '@/components/table/SubjectItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -234,11 +235,7 @@ export default function SubjectFilterTable({
                 <TableRow>
                   <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
-                    <Tname>
-                      <EllipsisBox>{item.subjectName}</EllipsisBox>
-                    </Tname>
-                    <TsubDiv>{item.subDiv}</TsubDiv>
-                    <Tfee>{feeFormet(item.fee)}</Tfee>
+                    <SubjectItem tableData={item} />
                   </Tdiv>
                   <Texposure>
                     {item.exposure ? (

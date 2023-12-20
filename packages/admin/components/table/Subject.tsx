@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
+import SubjectItem from '@/components/table/SubjectItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -205,11 +206,7 @@ export default function SubjectTable() {
                 <TableRow>
                   <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
-                    <Tname>
-                      <EllipsisBox>{item.subjectName}</EllipsisBox>
-                    </Tname>
-                    <TsubDiv>{item.subDiv}</TsubDiv>
-                    <Tfee>{feeFormet(item.fee)}</Tfee>
+                    <SubjectItem tableData={item} />
                   </Tdiv>
                   <Texposure>
                     {item.exposure ? (

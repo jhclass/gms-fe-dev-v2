@@ -25,6 +25,8 @@ const Tname = styled.div`
   color: inherit;
   min-width: 300px;
   font-size: 0.875rem;
+  font-weight: 600;
+  color: #71717a;
 `
 const TsubDiv = styled.div`
   display: table-cell;
@@ -36,6 +38,7 @@ const TsubDiv = styled.div`
   color: inherit;
   min-width: 150px;
   font-size: 0.875rem;
+  color: #71717a;
 `
 const Tfee = styled.div`
   display: table-cell;
@@ -47,6 +50,7 @@ const Tfee = styled.div`
   color: inherit;
   min-width: 150px;
   font-size: 0.875rem;
+  color: #71717a;
 `
 
 const EllipsisBox = styled.p`

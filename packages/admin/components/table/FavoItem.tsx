@@ -107,8 +107,9 @@ const Tname = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  color: inherit;
   min-width: 100px;
+  font-weight: 600;
+  /* color: #52525b; */
 `
 const Tphone = styled.div`
   display: table-cell;
