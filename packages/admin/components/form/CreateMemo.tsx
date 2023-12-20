@@ -85,7 +85,7 @@ export default function CreateMemo(props) {
     if (isDirty) {
       createMemo({
         variables: {
-          content: data.content,
+          content: data.content.trim(),
           studentStateId: studentId,
         },
         onCompleted: () => {

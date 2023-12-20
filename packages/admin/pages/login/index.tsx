@@ -141,8 +141,8 @@ export default function Login() {
   const onSubmit = (data: LoginForm) => {
     login({
       variables: {
-        mUserId: data.id,
-        mPassword: data.password,
+        mUserId: data.id.trim(),
+        mPassword: data.password.trim(),
       },
       onCompleted: data => {
         const {

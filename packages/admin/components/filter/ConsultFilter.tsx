@@ -145,7 +145,7 @@ export default function TableFillter({
     control,
     setValue,
     reset,
-    formState: { isDirty, dirtyFields },
+    formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
       receiptDiv: '-',
@@ -430,22 +430,23 @@ export default function TableFillter({
                 type="text"
                 variant="bordered"
                 label="연락처"
-                id="stName"
+                id="phoneNum1"
                 {...register('phoneNum1', {
                   maxLength: {
                     value: 11,
                     message: '최대 11자리까지 입력 가능합니다.',
                   },
-                  minLength: {
-                    value: 10,
-                    message: '최소 10자리 이상이어야 합니다.',
-                  },
                   pattern: {
-                    value: /^010[0-9]{7,8}$/,
-                    message: '010으로 시작해주세요.',
+                    value: /^[0-9]+$/,
+                    message: '숫자만 사용가능합니다.',
                   },
                 })}
               />
+              {errors.phoneNum1 && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.phoneNum1.message)}
+                </p>
+              )}
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>

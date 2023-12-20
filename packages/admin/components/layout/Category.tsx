@@ -5,11 +5,11 @@ import useUserLogsMutation from '@/utils/userLogs'
 import CategoryItem from './CategoryItem'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 const CateWrap = styled(motion.ul)``
 
 export default function Category() {
-  const { userLogs } = useUserLogsMutation()
   const [activeCategory, setActiveCategory] =
     useRecoilState(activeCategoryState)
 
@@ -25,6 +25,18 @@ export default function Category() {
       iconSrc: 'ico_consult',
       alt: '상담관리',
       label: '상담관리',
+      children: [
+        {
+          href: '/consult',
+          alt: '상담목록',
+          label: '상담목록',
+        },
+        {
+          href: '/consult/reject',
+          alt: '오류/거부 목록',
+          label: '오류/거부 목록',
+        },
+      ],
     },
     {
       href: '/subjects',
@@ -47,6 +59,18 @@ export default function Category() {
   ]
 
   const router = useRouter()
+  const [breadcrumb, setBreadcrumb] = useState<string[]>([])
+  // const [active, setActive] = useState<boolean>(false)
+  useEffect(() => {
+    const pathnames = router.pathname.split('/').filter(x => x)
+    if (pathnames === undefined) {
+      setBreadcrumb([''])
+    } else {
+      setBreadcrumb(pathnames)
+    }
+  }, [router.pathname])
+  const active = breadcrumb[0] === undefined ? '/' : `/${breadcrumb[0]}`
+  console.log(active)
   return (
     <>
       <CateWrap>
@@ -57,10 +81,11 @@ export default function Category() {
             iconSrc={category.iconSrc}
             alt={category.alt}
             label={category.label}
-            isActive={router.pathname === category.href}
+            isActive={active === category.href}
             onClick={() => {
               setActiveCategory(index)
             }}
+            children={category.children}
           />
         ))}
       </CateWrap>

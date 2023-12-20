@@ -172,7 +172,7 @@ export default function ConsultMemo(props) {
       updateMemo({
         variables: {
           updateConsultationMemoId: parseInt(data.id),
-          content: data.content,
+          content: data.content.trim(),
         },
         onCompleted: () => {
           props.setMemoList([])

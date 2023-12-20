@@ -221,16 +221,16 @@ export default function ConsultWirte() {
   const onSubmit = data => {
     createStudent({
       variables: {
-        stName: data.stName,
+        stName: data.stName.trim(),
         agreement: '동의',
         subject: data.subject,
         campus: '신촌',
-        detail: data.detail === '' ? null : data.detail,
+        detail: data.detail === '' ? null : data.detail.trim(),
         category: null,
-        phoneNum1: data.phoneNum1,
-        phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2,
-        phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3,
-        stEmail: data.stEmail === '' ? null : data.stEmail,
+        phoneNum1: data.phoneNum1.trim(),
+        phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
+        phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
+        stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
         stAddr: null,
         subDiv: data.subDiv === undefined ? null : data.subDiv,
         stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
@@ -390,8 +390,18 @@ export default function ConsultWirte() {
                       register('phoneNum2').onChange(e)
                     }}
                     className="w-full"
-                    {...register('phoneNum2')}
+                    {...register('phoneNum2', {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: '숫자만 입력 가능합니다.',
+                      },
+                    })}
                   />
+                  {errors.phoneNum2 && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.phoneNum2.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <Input
@@ -405,8 +415,18 @@ export default function ConsultWirte() {
                       register('phoneNum3').onChange(e)
                     }}
                     className="w-full"
-                    {...register('phoneNum3')}
+                    {...register('phoneNum3', {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: '숫자만 입력 가능합니다.',
+                      },
+                    })}
                   />
+                  {errors.phoneNum3 && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.phoneNum3.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <AreaBox>

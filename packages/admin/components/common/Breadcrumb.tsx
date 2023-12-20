@@ -140,6 +140,15 @@ const categories = [
     isWrite: '',
   },
   {
+    href: '/consult/reject',
+    iconSrc: 'ico_consult',
+    alt: '오류/거부 목록',
+    label: '오류/거부 목록',
+    isBreadcrumb: true,
+    isFilter: false,
+    isWrite: '',
+  },
+  {
     href: '/subjects',
     iconSrc: 'ico_work',
     alt: '과정관리',

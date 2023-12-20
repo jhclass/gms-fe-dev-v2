@@ -23,6 +23,24 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
+const ColorHelp = styled.div`
+  display: flex;
+`
+
+const ColorCip = styled.p`
+  padding-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #71717a;
+  font-size: 0.7rem;
+
+  span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 1rem;
+    height: 2px;
+  }
+`
 const TableWrap = styled.div`
   width: 100%;
   display: block;
@@ -46,6 +64,11 @@ const TheaderBox = styled.div`
   width: 100%;
   min-width: fit-content;
   text-align: center;
+`
+const Tflag = styled.div`
+  display: table-cell;
+  width: 0.5rem;
+  height: 100%;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -175,12 +198,22 @@ export default function SubjectTable() {
         <Ttotal>
           총 <span>{subjectTotal}</span>건
         </Ttotal>
+        <ColorHelp>
+          <ColorCip>
+            <span style={{ background: '#007de9' }}></span> : 노출
+          </ColorCip>
+          <ColorCip>
+            <span style={{ background: '#71717a', opacity: '0.8' }}></span> :
+            미노출
+          </ColorCip>
+        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tflag></Tflag>
                 <Tnum>No</Tnum>
                 <Tdiv>
                   <Tname>과정명</Tname>
@@ -204,6 +237,12 @@ export default function SubjectTable() {
                 }
               >
                 <TableRow>
+                  <Tflag
+                    style={{
+                      background: item.exposure ? '#007de9' : '#71717a',
+                      opacity: item.exposure ? '1' : '0.8',
+                    }}
+                  ></Tflag>
                   <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
                     <SubjectItem tableData={item} />

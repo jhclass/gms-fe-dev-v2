@@ -375,6 +375,8 @@ export default function ConsultDetail() {
   }, [studentState])
 
   const onSubmit = data => {
+    console.log('11', data.stName, '22')
+    console.log('11', data.stName.trim(), '22')
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -382,15 +384,15 @@ export default function ConsultDetail() {
           variables: {
             updateStudentStateId: studentState.id,
             campus: studentState.campus,
-            stName: data.stName,
+            stName: data.stName.trim(),
             category: studentState.category,
-            phoneNum1: data.phoneNum1,
-            phoneNum2: data.phoneNum2,
-            phoneNum3: data.phoneNum3,
+            phoneNum1: data.phoneNum1.trim(),
+            phoneNum2: data.phoneNum2.trim(),
+            phoneNum3: data.phoneNum3.trim(),
             subject: data.subject,
-            detail: data.detail,
+            detail: data.detail.trim(),
             progress: data.progress,
-            stEmail: data.stEmail,
+            stEmail: data.stEmail.trim(),
             stAddr: studentState.stAddr,
             subDiv: data.subDiv,
             stVisit: data.stVisit === null ? null : new Date(data.stVisit),
@@ -553,8 +555,18 @@ export default function ConsultDetail() {
                         register('phoneNum2').onChange(e)
                       }}
                       className="w-full"
-                      {...register('phoneNum2')}
+                      {...register('phoneNum2', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
                     />
+                    {errors.phoneNum2 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum2.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input
@@ -569,8 +581,18 @@ export default function ConsultDetail() {
                         register('phoneNum3').onChange(e)
                       }}
                       className="w-full"
-                      {...register('phoneNum3')}
+                      {...register('phoneNum3', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
                     />
+                    {errors.phoneNum3 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum3.message)}
+                      </p>
+                    )}
                   </AreaBox>
                 </FlexBox>
                 <AreaBox>

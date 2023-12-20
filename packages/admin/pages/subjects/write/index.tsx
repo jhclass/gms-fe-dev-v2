@@ -97,13 +97,13 @@ export default function SubjectWrite() {
     createSubject({
       variables: {
         subDiv: data.subDiv,
-        subjectName: data.subjectName,
-        fee: parseInt(data.fee),
+        subjectName: data.subjectName.trim(),
+        fee: parseInt(data.fee.trim()),
         startDate: data.stVisit === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),
-        roomNum: data.roomNum === '' ? null : Number(data.roomNum),
+        roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
         exposure: isSelected,
-        totalTime: data.totalTime === '' ? 0 : data.totalTime,
+        totalTime: data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
         teacherName:
           data.teacherName === undefined ? '강사명 없음' : data.teacherName,
       },
@@ -297,90 +297,101 @@ export default function SubjectWrite() {
                 </AreaBox>
               </FlexBox>
               <FlexBox>
-                <DatePickerBox>
-                  <Controller
-                    control={control}
-                    name="startDate"
-                    render={({ field }) => (
-                      <DatePicker
-                        locale="ko"
-                        showYearDropdown
-                        selected={
-                          sjStartDate === null ? null : new Date(sjStartDate)
-                        }
-                        placeholderText="기간을 선택해주세요."
-                        isClearable
-                        onChange={date => {
-                          field.onChange(date)
-                          setSjStartDate(date)
-                        }}
-                        ref={field.ref}
-                        dateFormat="yyyy/MM/dd"
-                        customInput={
-                          <Input
-                            label="개강일"
-                            labelPlacement="outside"
-                            type="text"
-                            variant="bordered"
-                            id="date"
-                            startContent={<i className="xi-calendar" />}
-                          />
-                        }
-                      />
-                    )}
+                <AreaBox>
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="startDate"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            sjStartDate === null ? null : new Date(sjStartDate)
+                          }
+                          placeholderText="기간을 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setSjStartDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label="개강일"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </DatePickerBox>
+                </AreaBox>
+                <AreaBox>
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="endDate"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            sjEndDate === null ? null : new Date(sjEndDate)
+                          }
+                          placeholderText="기간을 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setSjEndDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label="종강일"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </DatePickerBox>
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="총 강의시간"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="총 강의시간"
+                    onChange={e => {
+                      register('totalTime').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('totalTime', {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: '숫자만 입력 가능합니다.',
+                      },
+                    })}
                   />
-                </DatePickerBox>
-                <DatePickerBox>
-                  <Controller
-                    control={control}
-                    name="endDate"
-                    render={({ field }) => (
-                      <DatePicker
-                        locale="ko"
-                        showYearDropdown
-                        selected={
-                          sjEndDate === null ? null : new Date(sjEndDate)
-                        }
-                        placeholderText="기간을 선택해주세요."
-                        isClearable
-                        onChange={date => {
-                          field.onChange(date)
-                          setSjEndDate(date)
-                        }}
-                        ref={field.ref}
-                        dateFormat="yyyy/MM/dd"
-                        customInput={
-                          <Input
-                            label="종강일"
-                            labelPlacement="outside"
-                            type="text"
-                            variant="bordered"
-                            id="date"
-                            startContent={<i className="xi-calendar" />}
-                          />
-                        }
-                      />
-                    )}
-                  />
-                </DatePickerBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder="총 강의시간"
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label="총 강의시간"
-                  onChange={e => {
-                    register('totalTime').onChange(e)
-                  }}
-                  className="w-full"
-                  {...register('totalTime', {
-                    pattern: {
-                      value: /^[0-9]+$/,
-                      message: '숫자만 입력 가능합니다.',
-                    },
-                  })}
-                />
+                  {errors.totalTime && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.totalTime.message)}
+                    </p>
+                  )}
+                </AreaBox>
               </FlexBox>
               <BtnBox>
                 <Button2
