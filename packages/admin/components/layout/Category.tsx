@@ -70,7 +70,6 @@ export default function Category() {
     }
   }, [router.pathname])
   const active = breadcrumb[0] === undefined ? '/' : `/${breadcrumb[0]}`
-  console.log(active)
   return (
     <>
       <CateWrap>

@@ -375,8 +375,6 @@ export default function ConsultDetail() {
   }, [studentState])
 
   const onSubmit = data => {
-    console.log('11', data.stName, '22')
-    console.log('11', data.stName.trim(), '22')
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
