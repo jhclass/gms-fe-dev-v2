@@ -504,7 +504,7 @@ export default function ConsultDetail() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder=" "
+                      placeholder="'-'없이 작성해주세요"
                       variant="bordered"
                       radius="md"
                       type="text"
@@ -543,7 +543,7 @@ export default function ConsultDetail() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder=" "
+                      placeholder="'-'없이 작성해주세요"
                       variant="bordered"
                       radius="md"
                       type="text"
@@ -559,7 +559,7 @@ export default function ConsultDetail() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder=" "
+                      placeholder="'-'없이 작성해주세요"
                       variant="bordered"
                       radius="md"
                       type="text"

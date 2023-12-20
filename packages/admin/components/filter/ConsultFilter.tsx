@@ -145,7 +145,7 @@ export default function TableFillter({
     control,
     setValue,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, dirtyFields },
   } = useForm({
     defaultValues: {
       receiptDiv: '-',
@@ -155,6 +155,7 @@ export default function TableFillter({
       stVisit: undefined,
       stName: '',
       progress: undefined,
+      phoneNum1: '',
     },
   })
 
@@ -189,7 +190,6 @@ export default function TableFillter({
           return true
         }
       }
-
       const creatDate = validateDateRange(
         data.createdAt,
         '등록일시의 마지막날을 선택해주세요.',
@@ -198,7 +198,6 @@ export default function TableFillter({
         data.stVisit,
         '방문예정일의 마지막날을 선택해주세요.',
       )
-
       if (creatDate && visitDate) {
         const filter = {
           receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
@@ -208,6 +207,7 @@ export default function TableFillter({
           stVisit: data.stVisit === undefined ? null : data.stVisit,
           stName: data.stName === '' ? null : data.stName,
           progress: data.progress,
+          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
         }
         setStudentFilter(filter)
         onFilterToggle(false)
@@ -333,6 +333,17 @@ export default function TableFillter({
                 )}
               />
             </ItemBox>
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
+                placeholder=" "
+                type="text"
+                variant="bordered"
+                label="수강생이름"
+                id="stName"
+                {...register('stName')}
+              />
+            </ItemBox>
           </BoxTop>
           <BoxMiddle>
             <ItemBox>
@@ -415,12 +426,25 @@ export default function TableFillter({
             <ItemBox>
               <Input
                 labelPlacement="outside"
-                placeholder=" "
+                placeholder="'-'없이 작성해주세요"
                 type="text"
                 variant="bordered"
-                label="수강생이름"
+                label="연락처"
                 id="stName"
-                {...register('stName')}
+                {...register('phoneNum1', {
+                  maxLength: {
+                    value: 11,
+                    message: '최대 11자리까지 입력 가능합니다.',
+                  },
+                  minLength: {
+                    value: 10,
+                    message: '최소 10자리 이상이어야 합니다.',
+                  },
+                  pattern: {
+                    value: /^010[0-9]{7,8}$/,
+                    message: '010으로 시작해주세요.',
+                  },
+                })}
               />
             </ItemBox>
           </BoxMiddle>
@@ -438,11 +462,13 @@ export default function TableFillter({
                     value={progressSelected}
                     onValueChange={handleCheckboxChange}
                   >
-                    {Object.entries(progressStatus).map(([key, value]) => (
-                      <ChipCheckbox key={key} value={key}>
-                        {value.name}
-                      </ChipCheckbox>
-                    ))}
+                    {Object.entries(progressStatus)
+                      .filter(([key]) => key !== '110')
+                      .map(([key, value]) => (
+                        <ChipCheckbox key={key} value={key}>
+                          {value.name}
+                        </ChipCheckbox>
+                      ))}
                   </CheckboxGroup>
                 )}
               />
