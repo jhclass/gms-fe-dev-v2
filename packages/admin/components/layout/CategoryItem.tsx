@@ -1,8 +1,9 @@
 import { navOpenState } from '@/lib/recoilAtoms'
 import { Tooltip } from '@nextui-org/react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
 import Link from 'next/link'
-import router from 'next/router'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 
@@ -12,6 +13,7 @@ type CategoryItemProps = {
   alt: string
   label: string
   isActive: boolean
+  children: [href: string, alt: string, label: string]
   onClick: () => void
 }
 
@@ -43,6 +45,37 @@ const CateTitle = styled.p<{ $navOpen: boolean }>`
   display: ${props => (props.$navOpen ? 'block' : 'none')};
   white-space: nowrap;
   width: ${props => (props.$navOpen ? 'auto' : '0')};
+`
+const MenuBox = styled(motion.div)`
+  cursor: pointer;
+  position: relative;
+`
+const MenuBtn = styled(motion.button)<{ $navOpen: boolean }>`
+  position: absolute;
+  display: ${props => (props.$navOpen ? 'flex' : 'none')};
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.5rem;
+`
+const Menu = styled(motion.ul)<{ $isOpen: boolean }>`
+  display: ${props => (props.$isOpen ? 'flex' : 'none')};
+  padding: 1rem;
+  background: #d9e3fa;
+  gap: 0.5rem;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 0 0 0.375rem 0.375rem;
+`
+const MenuItem = styled.li<{ $isActive: boolean }>`
+  width: 100%;
+  color: ${props => (props.$isActive ? '#007de9' : '#71717a')};
+
+  a {
+    display: block;
+    width: 100%;
+  }
 `
 
 const CateActive = styled(motion.div)`
@@ -79,8 +112,19 @@ export default function CategoryItem<CategoryItemProps>({
   label,
   isActive,
   onClick,
+  children,
 }) {
+  const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+  const [isOpen, setIsOpen] = useState(true)
+
+  useEffect(() => {
+    animate(
+      '.xi-angle-down-min',
+      { rotate: isOpen ? 180 : 0 },
+      { duration: 0.2 },
+    )
+  }, [isOpen])
 
   return (
     <>
@@ -91,40 +135,90 @@ export default function CategoryItem<CategoryItemProps>({
           transition: { duration: 0.3 },
         }}
       >
-        <Link href={href}>
-          <CateLink $navOpen={navOpen}>
-            <Tooltip
-              content={label}
-              placement="right"
-              isDisabled={navOpen ? true : false}
-            >
-              <CateIcon
-                onClick={e => {
-                  e.preventDefault()
-                  router.push(href)
-                }}
+        {!children ? (
+          <Link href={href}>
+            <CateLink $navOpen={navOpen}>
+              <Tooltip
+                content={label}
+                placement="right"
+                isDisabled={navOpen ? true : false}
               >
-                {isActive ? (
-                  <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
-                ) : (
-                  <img src={`/src/icon/${iconSrc}.webp`} alt={alt} />
-                )}
-              </CateIcon>
-            </Tooltip>
-            {/* <motion.span
-              variants={cateName}
-              initial={navOpen ? 'close' : 'open'}
-              animate={navOpen ? 'open' : 'close'}
-              transition={{
-                type: 'easeInOut',
+                <CateIcon
+                  onClick={e => {
+                    e.preventDefault()
+                    router.push(href)
+                  }}
+                >
+                  {isActive ? (
+                    <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
+                  ) : (
+                    <img src={`/src/icon/${iconSrc}.webp`} alt={alt} />
+                  )}
+                </CateIcon>
+              </Tooltip>
+              <CateTitle $navOpen={navOpen}>{label}</CateTitle>
+            </CateLink>
+          </Link>
+        ) : (
+          <MenuBox>
+            <MenuBtn
+              $navOpen={navOpen}
+              onClick={() => {
+                setIsOpen(!isOpen)
               }}
             >
-              {label}
-            </motion.span> */}
-            <CateTitle $navOpen={navOpen}>{label}</CateTitle>
-          </CateLink>
-        </Link>
+              <i
+                className={`${
+                  isActive
+                    ? 'color-white xi-angle-down-min'
+                    : 'color-[#0007de9] xi-angle-down-min'
+                }`}
+              />
+            </MenuBtn>
 
+            <CateLink
+              $navOpen={navOpen}
+              onClick={() => {
+                setIsOpen(!isOpen)
+              }}
+            >
+              <Tooltip
+                content={label}
+                placement="right"
+                isDisabled={navOpen ? true : false}
+              >
+                <CateIcon
+                  onClick={e => {
+                    e.preventDefault()
+                    router.push(href)
+                  }}
+                >
+                  {isActive ? (
+                    <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
+                  ) : (
+                    <img src={`/src/icon/${iconSrc}.webp`} alt={alt} />
+                  )}
+                </CateIcon>
+              </Tooltip>
+              <CateTitle $navOpen={navOpen}>
+                <Link href={href}>{label}</Link>
+              </CateTitle>
+            </CateLink>
+
+            {navOpen && (
+              <Menu $isOpen={isOpen}>
+                {children.map((item, index) => (
+                  <MenuItem
+                    key={index}
+                    $isActive={router.pathname == item.href}
+                  >
+                    <Link href={item.href}>{item.label}</Link>
+                  </MenuItem>
+                ))}
+              </Menu>
+            )}
+          </MenuBox>
+        )}
         {isActive && <CateActive layoutId="activeCate" />}
       </CateItem>
     </>

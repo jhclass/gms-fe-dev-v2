@@ -1,12 +1,8 @@
-import { useMotionValue, Reorder } from 'framer-motion'
-import { useRaisedShadow } from '@/utils/useRaisedShadow'
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
-import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
+import { useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { DASHBOARD_TODAY_QUERY } from '@/graphql/queries'
-import router from 'next/router'
 
 const ItemBox = styled.div`
   padding: 1.5rem;

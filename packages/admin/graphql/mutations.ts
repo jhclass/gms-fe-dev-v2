@@ -70,6 +70,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
   mutation SearchStudentState(
     $searchStudentStateId: Int
     $receiptDiv: String
+    $phoneNum1: String
     $subDiv: String
     $pic: String
     $createdAt: [String]
@@ -82,6 +83,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
     searchStudentState(
       id: $searchStudentStateId
       receiptDiv: $receiptDiv
+      phoneNum1: $phoneNum1
       subDiv: $subDiv
       pic: $pic
       createdAt: $createdAt
@@ -123,12 +125,15 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
           content
           createdAt
           updatedAt
+          studentStateId
+          manageUserId
           manageUser {
             id
             mUserId
             mUsername
+            mGrade
+            mRank
           }
-          manageUserId
         }
       }
     }

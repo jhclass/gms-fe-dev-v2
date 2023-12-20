@@ -1,29 +1,15 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import {
-  progressStatusState,
-  studentFilterState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
+import { subStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '../common/Button'
-import ChipCheckbox from '@/components/common/ChipCheckbox'
-import {
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-} from '@nextui-org/react'
-import DatePicker, { registerLocale } from 'react-datepicker'
+import { Input, Select, SelectItem } from '@nextui-org/react'
+import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useState } from 'react'
-import { useLazyQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 type ConsultFilterProps = {
   isActive: boolean

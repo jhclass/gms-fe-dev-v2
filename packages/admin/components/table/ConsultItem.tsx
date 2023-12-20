@@ -5,6 +5,7 @@ import { progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
+import { Checkbox } from '@nextui-org/react'
 
 type ConsultItemProps = {
   tableData: {
@@ -24,8 +25,9 @@ type ConsultItemProps = {
   currentPage: number
   limit?: number
   favorite?: boolean
-  favoTotal: number
+  favoTotal?: number
   flagNum?: number
+  checkBtn?: boolean
 }
 
 const TableItem = styled.div`
@@ -106,14 +108,22 @@ const TsubDiv = styled.div`
   min-width: 100px;
 `
 const Tname = styled.div`
+  position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  color: inherit;
   min-width: 100px;
+  font-weight: 600;
+  /* color: #52525b; */
+`
+const Masking = styled.span`
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-filter: blur(2.5px);
+  -o-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
 `
 const Tphone = styled.div`
   display: table-cell;
@@ -227,29 +237,52 @@ export default function ConsolutItem(props: ConsultItemProps) {
     <>
       <TableItem>
         <TableRow>
-          <Tflag
-            style={{
-              background: flagString,
-            }}
-          ></Tflag>
-          <Tfavorite>
-            <TfavoriteLabel
-              htmlFor={`${props.forName}check${student.id}`}
-              style={{
-                color: props.favorite ? '#FFC600' : '',
-              }}
-            >
-              <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
-              <input
-                id={`${props.forName}check${student.id}`}
-                type="checkbox"
-                onClick={() => {
-                  favoClick()
+          {!props.checkBtn ? (
+            <>
+              <Tflag
+                style={{
+                  background: flagString,
                 }}
-                hidden
-              />
-            </TfavoriteLabel>
-          </Tfavorite>
+              ></Tflag>
+              <Tfavorite>
+                <TfavoriteLabel
+                  htmlFor={`${props.forName}check${student.id}`}
+                  style={{
+                    color: props.favorite ? '#FFC600' : '',
+                  }}
+                >
+                  <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
+                  <input
+                    id={`${props.forName}check${student.id}`}
+                    type="checkbox"
+                    onClick={() => {
+                      favoClick()
+                    }}
+                    hidden
+                  />
+                </TfavoriteLabel>
+              </Tfavorite>
+            </>
+          ) : (
+            <>
+              <Tflag
+                style={{
+                  background: 'transparent',
+                }}
+              ></Tflag>
+              <Tfavorite>
+                <TfavoriteLabel htmlFor={`${props.forName}check${student.id}`}>
+                  <Checkbox></Checkbox>
+                  <input
+                    id={`${props.forName}check${student.id}`}
+                    type="checkbox"
+                    hidden
+                  />
+                </TfavoriteLabel>
+              </Tfavorite>
+            </>
+          )}
+
           <Link href={`/consult/detail/${student.id}`}>
             <ClickBox>
               <Tnum>
@@ -271,7 +304,13 @@ export default function ConsolutItem(props: ConsultItemProps) {
                 <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
               <Tname>
-                <EllipsisBox>{student.stName}</EllipsisBox>
+                {student.progress === 110 ? (
+                  <EllipsisBox>
+                    <Masking>{student.stName}</Masking>
+                  </EllipsisBox>
+                ) : (
+                  <EllipsisBox>{student.stName}</EllipsisBox>
+                )}
               </Tname>
               <Tphone>
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>

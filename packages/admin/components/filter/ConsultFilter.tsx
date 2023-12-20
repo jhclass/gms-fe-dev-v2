@@ -9,16 +9,9 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import Button from '../common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import {
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-} from '@nextui-org/react'
+import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import { useState } from 'react'
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -152,7 +145,7 @@ export default function TableFillter({
     control,
     setValue,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
       receiptDiv: '-',
@@ -162,6 +155,7 @@ export default function TableFillter({
       stVisit: undefined,
       stName: '',
       progress: undefined,
+      phoneNum1: '',
     },
   })
 
@@ -196,7 +190,6 @@ export default function TableFillter({
           return true
         }
       }
-
       const creatDate = validateDateRange(
         data.createdAt,
         '등록일시의 마지막날을 선택해주세요.',
@@ -205,7 +198,6 @@ export default function TableFillter({
         data.stVisit,
         '방문예정일의 마지막날을 선택해주세요.',
       )
-
       if (creatDate && visitDate) {
         const filter = {
           receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
@@ -215,6 +207,7 @@ export default function TableFillter({
           stVisit: data.stVisit === undefined ? null : data.stVisit,
           stName: data.stName === '' ? null : data.stName,
           progress: data.progress,
+          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
         }
         setStudentFilter(filter)
         onFilterToggle(false)
@@ -340,6 +333,17 @@ export default function TableFillter({
                 )}
               />
             </ItemBox>
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
+                placeholder=" "
+                type="text"
+                variant="bordered"
+                label="수강생이름"
+                id="stName"
+                {...register('stName')}
+              />
+            </ItemBox>
           </BoxTop>
           <BoxMiddle>
             <ItemBox>
@@ -422,13 +426,27 @@ export default function TableFillter({
             <ItemBox>
               <Input
                 labelPlacement="outside"
-                placeholder=" "
+                placeholder="'-'없이 작성해주세요"
                 type="text"
                 variant="bordered"
-                label="수강생이름"
-                id="stName"
-                {...register('stName')}
+                label="연락처"
+                id="phoneNum1"
+                {...register('phoneNum1', {
+                  maxLength: {
+                    value: 11,
+                    message: '최대 11자리까지 입력 가능합니다.',
+                  },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: '숫자만 사용가능합니다.',
+                  },
+                })}
               />
+              {errors.phoneNum1 && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.phoneNum1.message)}
+                </p>
+              )}
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>
@@ -445,11 +463,13 @@ export default function TableFillter({
                     value={progressSelected}
                     onValueChange={handleCheckboxChange}
                   >
-                    {Object.entries(progressStatus).map(([key, value]) => (
-                      <ChipCheckbox key={key} value={key}>
-                        {value.name}
-                      </ChipCheckbox>
-                    ))}
+                    {Object.entries(progressStatus)
+                      .filter(([key]) => key !== '110')
+                      .map(([key, value]) => (
+                        <ChipCheckbox key={key} value={key}>
+                          {value.name}
+                        </ChipCheckbox>
+                      ))}
                   </CheckboxGroup>
                 )}
               />

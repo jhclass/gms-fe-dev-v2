@@ -1,11 +1,7 @@
-import { useMotionValue, Reorder } from 'framer-motion'
-import { useRaisedShadow } from '@/utils/useRaisedShadow'
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
-import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
-import router, { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
 import { DASHBOARD_UNP_QUERY } from '@/graphql/queries'
 
 const ItemBox = styled.div`

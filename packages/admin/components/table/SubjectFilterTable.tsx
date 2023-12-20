@@ -2,9 +2,9 @@ import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import SubjectItem from './SubjectItem'
 import router from 'next/router'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
+import SubjectItem from '@/components/table/SubjectItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -39,6 +39,24 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
+const ColorHelp = styled.div`
+  display: flex;
+`
+
+const ColorCip = styled.p`
+  padding-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #71717a;
+  font-size: 0.7rem;
+
+  span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 1rem;
+    height: 2px;
+  }
+`
 const TableWrap = styled.div`
   width: 100%;
   display: block;
@@ -56,7 +74,11 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
-
+const Tflag = styled.div`
+  display: table-cell;
+  width: 0.5rem;
+  height: 100%;
+`
 const TheaderBox = styled.div`
   display: table-row;
   width: 100%;
@@ -198,18 +220,28 @@ export default function SubjectFilterTable({
       <TTopic>
         <TopBox>
           <Ttotal>
-            총 <span>{searchResult?.totalCount}</span>건
+            총 <span>{searchResult?.totalCount}</span>건이 검색되었습니다.
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>
             전체보기
           </Button>
         </TopBox>
+        <ColorHelp>
+          <ColorCip>
+            <span style={{ background: '#007de9' }}></span> : 노출
+          </ColorCip>
+          <ColorCip>
+            <span style={{ background: '#71717a', opacity: '0.8' }}></span> :
+            미노출
+          </ColorCip>
+        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tflag></Tflag>
                 <Tnum>No</Tnum>
                 <Tdiv>
                   <Tname>과정명</Tname>
@@ -233,13 +265,15 @@ export default function SubjectFilterTable({
                 }
               >
                 <TableRow>
+                  <Tflag
+                    style={{
+                      background: item.exposure ? '#007de9' : '#71717a',
+                      opacity: item.exposure ? '1' : '0.8',
+                    }}
+                  ></Tflag>
                   <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
                   <Tdiv>
-                    <Tname>
-                      <EllipsisBox>{item.subjectName}</EllipsisBox>
-                    </Tname>
-                    <TsubDiv>{item.subDiv}</TsubDiv>
-                    <Tfee>{feeFormet(item.fee)}</Tfee>
+                    <SubjectItem tableData={item} />
                   </Tdiv>
                   <Texposure>
                     {item.exposure ? (
