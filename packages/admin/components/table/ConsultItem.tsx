@@ -28,6 +28,8 @@ type ConsultItemProps = {
   favoTotal?: number
   flagNum?: number
   checkBtn?: boolean
+  checkItem?: []
+  setCheckItem?: () => void
 }
 
 const TableItem = styled.div`
@@ -271,14 +273,12 @@ export default function ConsolutItem(props: ConsultItemProps) {
                 }}
               ></Tflag>
               <Tfavorite>
-                <TfavoriteLabel htmlFor={`${props.forName}check${student.id}`}>
-                  <Checkbox></Checkbox>
-                  <input
-                    id={`${props.forName}check${student.id}`}
-                    type="checkbox"
-                    hidden
-                  />
-                </TfavoriteLabel>
+                <Checkbox
+                  onClick={e => {
+                    console.log(e)
+                    // setCheckItem(e.target.id)
+                  }}
+                ></Checkbox>
               </Tfavorite>
             </>
           )}

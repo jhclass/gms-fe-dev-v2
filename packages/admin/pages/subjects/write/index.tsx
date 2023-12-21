@@ -98,6 +98,7 @@ export default function SubjectWrite() {
       variables: {
         subDiv: data.subDiv,
         subjectName: data.subjectName.trim(),
+        subjectCode: data.subjectCode.trim(),
         fee: parseInt(data.fee.trim()),
         startDate: data.stVisit === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),
@@ -177,6 +178,21 @@ export default function SubjectWrite() {
                 </AreaBox>
               </FlexBox>
               <FlexBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder=" "
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="과정코드"
+                    onChange={e => {
+                      register('subjectCode').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('subjectCode')}
+                  />
+                </AreaBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"

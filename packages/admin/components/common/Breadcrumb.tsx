@@ -221,11 +221,11 @@ export default function Breadcrumb(props) {
               <Title1>{parentItem?.label}</Title1>
             ) : (
               <>
-                <Link href={parentItem?.href}>
+                <button onClick={() => router.back()}>
                   <BackIcon>
                     <i className="xi-arrow-left"></i>
                   </BackIcon>
-                </Link>
+                </button>
                 <Title1>{parentItem?.label}</Title1>
                 <Title2>
                   <i className="xi-angle-right-thin" />

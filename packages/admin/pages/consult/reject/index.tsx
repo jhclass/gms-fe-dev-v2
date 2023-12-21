@@ -10,6 +10,7 @@ const ConBox = styled.div`
 
 export default function Consult() {
   const [filterActive, setFilterActive] = useState(false)
+  const [checkItem, setCheckItem] = useState([])
 
   return (
     <>
@@ -17,10 +18,14 @@ export default function Consult() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          rightArea={false}
+          rightArea={true}
+          checkItem={checkItem}
         />
         <ConBox>
-          <ConsultationReject />
+          <ConsultationReject
+            checkItem={checkItem}
+            setCheckItem={setCheckItem}
+          />
         </ConBox>
       </MainWrap>
     </>

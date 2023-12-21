@@ -957,7 +957,7 @@ export default function ConsultDetail() {
                     bgColor="#fff"
                     borderColor="#007de9"
                     typeBorder={true}
-                    onClick={() => router.push('/consult')}
+                    onClick={() => router.back()}
                   >
                     목록으로
                   </Button2>
