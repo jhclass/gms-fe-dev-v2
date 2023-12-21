@@ -39,34 +39,24 @@ export const MME_QUERY = gql`
       mGrade
       mRank
       mPhoneNum
-      studentStates {
-        id
-        campus
-        category
-        stName
-        phoneNum1
-        phoneNum2
-        phoneNum3
-        currentManager
-        subject
-        detail
-        agreement
-        progress
-        stEmail
-        stAddr
-        subDiv
-        stVisit
-        expEnrollDate
-        perchase
-        createdAt
-        updatedAt
-        receiptDiv
-        pic
-      }
+      mPhoneNumCompany
+      mPhoneNumInside
+      mPhoneNumFriend
+      mPart
+      mAvatar
+      mJoiningDate
+      mAddresses
       createdAt
       updatedAt
-      mAvatar
       favoriteStudentState
+      ConsultationMemo {
+        id
+        content
+        updatedAt
+        createdAt
+        manageUserId
+        studentStateId
+      }
     }
   }
 `
@@ -113,7 +103,7 @@ export const SEE_STUDENT_QUERY = gql`
 `
 
 export const SEE_MANAGEUSER_QUERY = gql`
-  query Query {
+  query SeeManageUser {
     seeManageUser {
       id
       mUserId
@@ -122,33 +112,24 @@ export const SEE_MANAGEUSER_QUERY = gql`
       mGrade
       mRank
       mPhoneNum
-      studentStates {
-        id
-        campus
-        category
-        stName
-        phoneNum1
-        phoneNum2
-        phoneNum3
-        currentManager
-        subject
-        detail
-        agreement
-        progress
-        stEmail
-        stAddr
-        subDiv
-        stVisit
-        expEnrollDate
-        perchase
-        createdAt
-        updatedAt
-        receiptDiv
-        pic
-      }
+      mPhoneNumCompany
+      mPhoneNumInside
+      mPhoneNumFriend
+      mPart
+      mAvatar
+      mJoiningDate
+      mAddresses
       createdAt
       updatedAt
-      mAvatar
+      ConsultationMemo {
+        id
+        content
+        createdAt
+        updatedAt
+        studentStateId
+        manageUserId
+      }
+      favoriteStudentState
     }
   }
 `
@@ -183,12 +164,8 @@ export const SEE_FAVORITESTATE_QUERY = gql`
 `
 
 export const SEE_SUBJECT_QUERY = gql`
-  query SeeSubject($page: Int, $limit: Int) {
+  query Query($page: Int, $limit: Int) {
     seeSubject(page: $page, limit: $limit) {
-      ok
-      error
-      message
-      totalCount
       subject {
         id
         subDiv
@@ -200,7 +177,14 @@ export const SEE_SUBJECT_QUERY = gql`
         endDate
         roomNum
         exposure
+        totalTime
+        teacherName
+        subjectCode
       }
+      ok
+      error
+      message
+      totalCount
     }
   }
 `

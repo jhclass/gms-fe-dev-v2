@@ -211,12 +211,13 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-export default function ConsolutationRejectTable() {
+export default function ConsolutationRejectTable({ checkItem, setCheckItem }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
 
+  console.log(checkItem)
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
@@ -277,6 +278,8 @@ export default function ConsolutationRejectTable() {
                   currentPage={currentPage}
                   limit={currentLimit}
                   checkBtn={true}
+                  checkItem={checkItem}
+                  setCheckItem={setCheckItem}
                 />
               ))}
             </TableWrap>

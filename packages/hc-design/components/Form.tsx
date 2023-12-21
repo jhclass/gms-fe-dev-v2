@@ -59,6 +59,7 @@ export default function Form() {
   )
   const regExp = new RegExp(badwords.join('|'), 'i')
   const [checkPrivacy, setCheckPrivacy] = useState(false)
+  const [isButtonClickable, setButtonClickable] = useState(true)
   const {
     register,
     handleSubmit,
@@ -72,6 +73,7 @@ export default function Form() {
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
+    setButtonClickable(false)
     try {
       if (regExp.test(data.contents)) {
         setError('contents', {
@@ -98,6 +100,10 @@ export default function Form() {
     } catch (error) {
       console.error(error)
     }
+
+    setTimeout(() => {
+      setButtonClickable(true)
+    }, 500)
   }
 
   useEffect(() => {
@@ -105,6 +111,8 @@ export default function Form() {
       clearErrors('groupSelected')
     }
   }, [groupSelected])
+
+  useEffect(() => {}, [isButtonClickable])
 
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
@@ -413,8 +421,11 @@ export default function Form() {
               type="submit"
               size="lg"
               className="w-full mt-5 text-xl text-white rounded-lg bg-primary"
+              isDisabled={!isButtonClickable}
             >
-              온라인 상담 신청하기
+              {!isButtonClickable
+                ? '잠시만 기다려주세요....'
+                : '온라인 상담 신청하기'}
             </Button>
           </div>
         </form>

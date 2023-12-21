@@ -119,6 +119,7 @@ export default function SubjectDetail() {
       updateSubjectId: subjectState.id,
       subDiv: subjectState.subDiv,
       subjectName: subjectState.subjectName,
+      subjectCode: subjectState.subjectCode,
       fee: subjectState.fee,
       startDate: subjectState.startDate,
       endDate: subjectState.endDate,
@@ -187,6 +188,7 @@ export default function SubjectDetail() {
           variables: {
             updateSubjectId: subjectState.id,
             subjectName: data.subjectName.trim(),
+            subjectCode: data.subjectCode.trim(),
             fee: parseInt(data.fee.trim()),
             subDiv: data.subDiv,
             startDate:
@@ -319,6 +321,22 @@ export default function SubjectDetail() {
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="과정코드"
+                      defaultValue={subjectState?.subjectCode}
+                      onChange={e => {
+                        register('subjectCode').onChange(e)
+                      }}
+                      className="w-full"
+                      {...register('subjectCode')}
+                    />
+                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
