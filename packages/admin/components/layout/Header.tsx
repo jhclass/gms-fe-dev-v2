@@ -1,8 +1,8 @@
-import { headerUserMenuState, navOpenState } from '@/lib/recoilAtoms'
+import { navOpenState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
@@ -232,13 +232,12 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 
 export default function Header() {
   const { userLogs } = useUserLogsMutation()
-  const { loading, error, data } = useQuery(MME_QUERY)
+  const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
-  const { mUserId = '', mUsername = '', mGrade } = mMe || {}
+  const { mUserId = '', mUsername = '' } = mMe || {}
 
   const router = useRouter()
-  const [headerUserMenu, setHeaderUserMenu] =
-    useRecoilState(headerUserMenuState)
+  const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
   const toggleNav = () => {
@@ -253,8 +252,8 @@ export default function Header() {
     if (data == null) {
       return 'A'
     } else {
-      const gradeF = data.charAt(0).toUpperCase()
-      return gradeF
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
     }
   }
 
@@ -265,13 +264,20 @@ export default function Header() {
   }
 
   useEffect(() => {
+    refetch()
+  }, [router])
+
+  useEffect(() => {
     animate(
       '.xi-hamburger-back',
       { rotate: navOpen ? 0 : 180 },
       { duration: 0.2 },
     )
+  }, [navOpen])
+
+  useEffect(() => {
     animate(
-      '.xi-angle-down-min',
+      '.userArrow',
       { rotate: headerUserMenu ? 180 : 0 },
       { duration: 0.2 },
     )
@@ -288,7 +294,7 @@ export default function Header() {
         duration: 0.4,
       },
     )
-  }, [navOpen, headerUserMenu])
+  }, [headerUserMenu])
 
   return (
     <>
@@ -320,14 +326,14 @@ export default function Header() {
 
           <UserBox onClick={toggleUserMenu}>
             <UserGrade>
-              <span>{gradeStr(mGrade)}</span>
+              <span>{gradeStr(mUserId)}</span>
             </UserGrade>
             <UserInfo>
               <UserId>{mUserId}</UserId>
               <UserName>{mUsername}</UserName>
             </UserInfo>
             <IconArrow>
-              <i className="text-zinc-500 xi-angle-down-min" />
+              <i className="text-zinc-500 userArrow xi-angle-down-min" />
             </IconArrow>
             <DropUser
               $headerUserMenu={headerUserMenu}

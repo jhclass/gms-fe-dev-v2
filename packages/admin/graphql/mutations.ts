@@ -237,6 +237,15 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
     }
   }
 `
+export const DELETE_STUDENT_STATE_MUTATION = gql`
+  mutation Mutation($deleteStudentStateId: [Int]!) {
+    deleteStudentState(id: $deleteStudentStateId) {
+      ok
+      message
+      error
+    }
+  }
+`
 
 export const CREATE_CONSULTATION_MEMO_MUTATION = gql`
   mutation CreateConsultationMemo($content: String!, $studentStateId: Int!) {

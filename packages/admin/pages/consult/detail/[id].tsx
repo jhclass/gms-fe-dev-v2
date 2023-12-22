@@ -34,17 +34,19 @@ import {
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
 import {
+  DELETE_STUDENT_STATE_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_SUBJECT_MUTATION,
   UPDATE_STUDENT_STATE_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
 import CreateMemo from '@/components/form/CreateMemo'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -260,6 +262,8 @@ type studentData = {
 
 export default function ConsultDetail() {
   const router = useRouter()
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
@@ -270,6 +274,7 @@ export default function ConsultDetail() {
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
+  const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
   const [searchStudentStateMutation, { data, loading, error }] = useMutation(
     SEARCH_STUDENTSTATE_MUTATION,
     {
@@ -409,6 +414,28 @@ export default function ConsultDetail() {
           dirtyFieldsArray.join(', '),
         )
       }
+    }
+  }
+
+  const onDelete = data => {
+    const isDelete = confirm('상담카드를 삭제시겠습니까?')
+    if (isDelete) {
+      deleteStudent({
+        variables: {
+          deleteStudentStateId: data,
+        },
+        refetchQueries: [
+          {
+            query: SEE_STUDENT_QUERY,
+            variables: { page: 1, limit: 10 },
+          },
+        ],
+        onCompleted: () => {
+          alert('상담카드가 삭제되었습니다.')
+          router.push('/consult')
+          userLogs(`ID : ${studentState.name} 상담카드 삭제`)
+        },
+      })
     }
   }
 
@@ -961,6 +988,19 @@ export default function ConsultDetail() {
                   >
                     목록으로
                   </Button2>
+                  {mGrade < 2 && (
+                    <Button2
+                      buttonType="button"
+                      width="100%"
+                      height="2.5rem"
+                      typeBorder={true}
+                      fontColor="#fff"
+                      bgColor="#ff5900"
+                      onClick={() => onDelete(studentState.id)}
+                    >
+                      삭제
+                    </Button2>
+                  )}
                 </BtnBox>
               </DetailForm>
             </DetailBox>

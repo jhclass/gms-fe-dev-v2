@@ -1,4 +1,4 @@
-import { navOpenState } from '@/lib/recoilAtoms'
+import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
 import { Tooltip } from '@nextui-org/react'
 import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
 import Link from 'next/link'
@@ -116,14 +116,10 @@ export default function CategoryItem<CategoryItemProps>({
 }) {
   const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
 
   useEffect(() => {
-    animate(
-      '.xi-angle-down-min',
-      { rotate: isOpen ? 180 : 0 },
-      { duration: 0.2 },
-    )
+    animate('.cateArrow', { rotate: isOpen ? 0 : 180 }, { duration: 0.2 })
   }, [isOpen])
 
   return (
@@ -169,10 +165,8 @@ export default function CategoryItem<CategoryItemProps>({
             >
               <i
                 className={`${
-                  isActive
-                    ? 'color-white xi-angle-down-min'
-                    : 'color-[#0007de9] xi-angle-down-min'
-                }`}
+                  isActive ? 'color-white' : 'color-[#0007de9]'
+                } cateArrow xi-angle-up-min`}
               />
             </MenuBtn>
 

@@ -7,9 +7,9 @@ export const isScreenState = atom<boolean>({
 })
 
 // header
-export const headerUserMenuState = atom<boolean>({
-  key: 'headerUserMenuState',
-  default: false,
+export const categoryMenuState = atom<boolean>({
+  key: 'categoryMenuState',
+  default: true,
 })
 
 // nav
