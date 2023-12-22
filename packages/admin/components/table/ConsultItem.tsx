@@ -28,8 +28,8 @@ type ConsultItemProps = {
   favoTotal?: number
   flagNum?: number
   checkBtn?: boolean
-  checkItem?: []
-  setCheckItem?: () => void
+  checkItem?: number[]
+  setCheckItem?: (newItems: number[]) => void
 }
 
 const TableItem = styled.div`
@@ -235,6 +235,16 @@ export default function ConsolutItem(props: ConsultItemProps) {
     return LocalDdate
   }
 
+  const rejectCheck = (clickCheck: number): void => {
+    if (props.checkItem !== undefined) {
+      const isItemSelected: boolean = props.checkItem?.includes(clickCheck)
+      const newSelectedItems = isItemSelected
+        ? props.checkItem?.filter(item => item !== clickCheck)
+        : [...props?.checkItem, clickCheck]
+      props.setCheckItem(newSelectedItems)
+    }
+  }
+
   return (
     <>
       <TableItem>
@@ -274,9 +284,9 @@ export default function ConsolutItem(props: ConsultItemProps) {
               ></Tflag>
               <Tfavorite>
                 <Checkbox
-                  onClick={e => {
-                    console.log(e)
-                    // setCheckItem(e.target.id)
+                  isSelected={props.checkItem?.includes(student.id)}
+                  onValueChange={() => {
+                    rejectCheck(student.id)
                   }}
                 ></Checkbox>
               </Tfavorite>

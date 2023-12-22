@@ -11,6 +11,7 @@ import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
+import { addHookAliases } from 'next/dist/server/require-hook'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -211,13 +212,31 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-export default function ConsolutationRejectTable({ checkItem, setCheckItem }) {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit] = useState(10)
+export default function ConsolutationRejectTable({
+  currentLimit,
+  currentPage,
+  setCurrentPage,
+  searchResult,
+  setSearchResult,
+  checkItem,
+  setCheckItem,
+}) {
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
-  const [searchResult, setSearchResult] = useState(null)
+  const [allCheck, setAllCheck] = useState(false)
 
-  console.log(checkItem)
+  const rejectAllCheck = () => {
+    const allId = searchResult?.studentState.map(item => item.id)
+
+    if (!allCheck) {
+      const set = new Set([...checkItem, ...allId])
+      const newSelectedItems = Array.from(set)
+      setCheckItem(newSelectedItems)
+    } else {
+      const newSelectedItems = checkItem.filter(x => !allId.includes(x))
+      setCheckItem(newSelectedItems)
+    }
+  }
+
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
@@ -231,6 +250,17 @@ export default function ConsolutationRejectTable({ checkItem, setCheckItem }) {
       },
     })
   }, [currentPage])
+
+  useEffect(() => {
+    const allId = searchResult?.studentState.map(item => item.id)
+    const equalArray = allId?.filter(x => checkItem.includes(x))
+    if (equalArray?.length === allId?.length) {
+      setAllCheck(true)
+    } else {
+      setAllCheck(false)
+    }
+  }, [checkItem, searchResult, currentPage])
+
   return (
     searchResult !== null && (
       <>
@@ -248,10 +278,17 @@ export default function ConsolutationRejectTable({ checkItem, setCheckItem }) {
                 <TheaderBox>
                   <Tfavorite>
                     <Checkbox
-                      isDisabled
                       classNames={{
                         base: 'opacity-[.8]',
                         wrapper: 'before:border-[#111]',
+                      }}
+                      // onChange={() => {
+                      //   rejectAllCheck(1)
+                      // }}
+                      isSelected={allCheck}
+                      onValueChange={() => {
+                        setAllCheck(!allCheck)
+                        rejectAllCheck()
                       }}
                     ></Checkbox>
                   </Tfavorite>

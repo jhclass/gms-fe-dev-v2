@@ -6,8 +6,17 @@ import Head from 'next/head'
 import { GlobalStyle } from '@/styles/GlobalStyle'
 import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from '@/lib/apolloClient'
+import { NextPage } from 'next'
+import { ReactElement, ReactNode } from 'react'
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout || (page => page)
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>
@@ -20,7 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <title>H-Class | 하이클래스</title>
           </Head>
           <GlobalStyle />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </NextUIProvider>
       </RecoilRoot>
     </ApolloProvider>

@@ -133,7 +133,6 @@ type memoData = {
 export default function ConsultMemo(props) {
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
-  const mGrade = useMme('mGrade')
   const { userLogs } = useUserLogsMutation()
   const [deleteMemo] = useMutation(DELETE_CONSULTATION_MEMO_MUTATION)
   const [updateMemo] = useMutation(UPDATE_CONSULTATION_MEMO_MUTATION)
@@ -210,8 +209,8 @@ export default function ConsultMemo(props) {
     if (data == null) {
       return 'A'
     } else {
-      const gradeF = data.charAt(0).toUpperCase()
-      return gradeF
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
     }
   }
   return (
@@ -237,7 +236,9 @@ export default function ConsultMemo(props) {
             <Textarea
               label={
                 <MemoInfo>
-                  <MemoGrade>{gradeStr(mGrade)}</MemoGrade>
+                  <MemoGrade>
+                    {gradeStr(props.item.manageUser?.mUserId)}
+                  </MemoGrade>
                   <MemoName>{props.item.manageUser?.mUsername}</MemoName>
                   <MemoTime>{fametDate(props.item.createdAt)}</MemoTime>
                 </MemoInfo>

@@ -20,6 +20,7 @@ import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -97,6 +98,8 @@ const BtnBox = styled.div`
 
 export default function SubjectDetail() {
   const router = useRouter()
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   const subjectId = typeof router.query.id === 'string' ? router.query.id : null
   const subjectsPage = router.query.page
   const subjectsLimit = router.query.limit
@@ -581,17 +584,19 @@ export default function SubjectDetail() {
                   >
                     목록으로
                   </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#ff5900"
-                    onClick={() => onDelete(subjectState.id)}
-                  >
-                    삭제
-                  </Button2>
+                  {mGrade < 2 && (
+                    <Button2
+                      buttonType="button"
+                      width="100%"
+                      height="2.5rem"
+                      typeBorder={true}
+                      fontColor="#fff"
+                      bgColor="#ff5900"
+                      onClick={() => onDelete(subjectState.id)}
+                    >
+                      삭제
+                    </Button2>
+                  )}
                 </BtnBox>
               </DetailDiv>
             </DetailForm>
