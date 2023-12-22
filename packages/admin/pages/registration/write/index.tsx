@@ -42,6 +42,7 @@ import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
+import Layout from '../layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -181,7 +182,7 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-export default function ConsultWirte() {
+export default function RegistrationWrite() {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
@@ -292,7 +293,6 @@ export default function ConsultWirte() {
   return (
     <>
       <MainWrap>
-        <p> 보이나</p>
         <ConArea>
           <Breadcrumb rightArea={false} />
           <DetailBox>
@@ -783,3 +783,4 @@ export default function ConsultWirte() {
     </>
   )
 }
+RegistrationWrite.getLayout = page => <Layout>{page}</Layout>

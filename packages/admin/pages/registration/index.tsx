@@ -1,6 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
+import Layout from './layout'
 
 export default function Registration() {
   const [filterActive, setFilterActive] = useState(false)
@@ -13,7 +14,9 @@ export default function Registration() {
           isActive={filterActive}
           rightArea={false}
         />
+        <p>개발자만</p>
       </MainWrap>
     </>
   )
 }
+Registration.getLayout = page => <Layout>{page}</Layout>

@@ -3,17 +3,24 @@ import { useRouter } from 'next/router'
 import { useReactiveVar } from '@apollo/client'
 import { isLoggedInVar } from '@/lib/apolloClient'
 import useMmeQuery from '@/utils/mMe'
+import MainWrap from '@/components/wrappers/MainWrap'
 
-export default function Layout({ children }) {
+export default function RegistrationLayout({ children }) {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const isLoggedIn = useReactiveVar(isLoggedInVar)
-  useEffect(() => {
-    if (!isLoggedIn && router.pathname !== '/login') {
-      router.push('/login')
-    }
-  }, [isLoggedIn, router])
 
-  return <>{mGrade === 0 && { children }}</>
+  // useEffect(() => {
+  //   if (mGrade !== 0) {
+  //     router.push('/')
+  //   }
+  // }, [mGrade])
+
+  // return <main>{children}</main>
+
+  if (mGrade === 0) {
+    return <main>{children}</main>
+  } else {
+    return <MainWrap>준비중입니다.</MainWrap>
+  }
 }

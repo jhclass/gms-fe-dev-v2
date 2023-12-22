@@ -210,23 +210,25 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
   padding: 0.5rem 0;
   top: 2.7rem;
   right: 0;
+  cursor: default;
   border-radius: 0.5rem;
   background: #fff;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
   pointer-events: ${props => (props.$headerUserMenu ? 'auto' : 'none')};
 
-  ul {
-  }
-
   li {
     display: flex;
     align-items: center;
-    padding: 0.4rem 1rem;
     font-size: 0.875rem;
-
     &:hover {
       color: #007de9;
     }
+  }
+  button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0.4rem 1rem;
   }
 `
 
@@ -258,6 +260,7 @@ export default function Header() {
   }
 
   const LogUserOut = () => {
+    console.log('로그아웃?!')
     userLogs(`로그아웃`)
     localStorage.removeItem('token')
     router.push('/login')
@@ -340,6 +343,10 @@ export default function Header() {
               className="drop"
               style={{
                 clipPath: 'inset(10% 50% 90% 50% round 10px)',
+              }}
+              onClick={e => {
+                console.log(e)
+                e.preventDefault()
               }}
             >
               <ul>
