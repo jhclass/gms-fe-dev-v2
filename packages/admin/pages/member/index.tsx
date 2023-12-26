@@ -134,7 +134,7 @@ export default function Profile() {
                     radius="md"
                     type="text"
                     label="이름"
-                    defaultValue={mMeData.mUsername}
+                    defaultValue={mMeData?.mUsername}
                     onChange={e => {
                       register('mUsername').onChange(e)
                     }}
@@ -148,7 +148,7 @@ export default function Profile() {
                   />
                   {errors.mUsername && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.mUsername.message)}
+                      {String(errors.mUsername?.message)}
                     </p>
                   )}
                 </AreaBox>
@@ -167,7 +167,7 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mPhoneNumInside}
+                    defaultValue={mMeData?.mPhoneNumInside}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
@@ -181,7 +181,7 @@ export default function Profile() {
               </FlexBox>
               <FlexBox>
                 <Input
-                  defaultValue={mMeData.mAddresses}
+                  defaultValue={mMeData?.mAddresses}
                   labelPlacement="outside"
                   placeholder=" "
                   variant="bordered"
@@ -199,7 +199,7 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mPhoneNumCompany}
+                    defaultValue={mMeData?.mPhoneNumCompany}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
@@ -212,7 +212,7 @@ export default function Profile() {
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    defaultValue={mMeData.mPhoneNum}
+                    defaultValue={mMeData?.mPhoneNum}
                     labelPlacement="outside"
                     placeholder="'-'없이 작성해주세요"
                     variant="bordered"
@@ -251,7 +251,7 @@ export default function Profile() {
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    defaultValue={mMeData.mPhoneNumFriend}
+                    defaultValue={mMeData?.mPhoneNumFriend}
                     labelPlacement="outside"
                     placeholder="'-'없이 작성해주세요"
                     variant="bordered"
@@ -280,7 +280,7 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mPart}
+                    defaultValue={mMeData?.mPart}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
@@ -294,7 +294,7 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mRank}
+                    defaultValue={mMeData?.mRank}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
@@ -310,9 +310,9 @@ export default function Profile() {
                   <Input
                     isReadOnly
                     defaultValue={
-                      mMeData.mJoiningDate === null
+                      mMeData?.mJoiningDate === null
                         ? ''
-                        : fametDate(mMeData.mJoiningDate)
+                        : fametDate(mMeData?.mJoiningDate)
                     }
                     labelPlacement="outside"
                     placeholder="입사일"
