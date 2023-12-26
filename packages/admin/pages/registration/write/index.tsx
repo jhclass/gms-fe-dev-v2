@@ -59,6 +59,9 @@ const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 const FlexBox = styled.div`
   display: flex;

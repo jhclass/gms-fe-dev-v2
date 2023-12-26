@@ -93,7 +93,7 @@ const Dim = styled(motion.div)`
 const DimBtn = styled.button`
   position: absolute;
   top: 1rem;
-  right: 2.5rem;
+  right: 0.7rem;
   display: none;
   align-items: center;
   width: 2.2rem;
