@@ -7,7 +7,7 @@ export default function Detail() {
       <section>
         <div className="max-w-[2000px] mx-auto my-0">
           <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/webtoon01.jpg"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/webtoon01.webp"
             alt="webtoon"
           ></img>
         </div>
