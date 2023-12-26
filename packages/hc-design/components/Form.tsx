@@ -168,29 +168,8 @@ export default function Form() {
                     <Checkbox size="md" value="이모티콘">
                       <span className="text-lg text-zinc-600">이모티콘</span>
                     </Checkbox>
-                    <Checkbox size="md" value="컴퓨터그래픽스운용기능사">
-                      <span className="text-lg text-zinc-600">
-                        컴퓨터그래픽스운용기능사
-                      </span>
-                    </Checkbox>
-                    <Checkbox size="md" value="웹디자인기능사">
-                      <span className="text-lg text-zinc-600">
-                        웹디자인기능사
-                      </span>
-                    </Checkbox>
-                    <Checkbox size="md" value="OA">
-                      <span className="text-lg text-zinc-600">OA</span>
-                    </Checkbox>
-                    <Checkbox size="md" value="실내건축">
-                      <span className="text-lg text-zinc-600">실내건축</span>
-                    </Checkbox>
-                    <Checkbox size="md" value="영상편집">
-                      <span className="text-lg text-zinc-600">영상편집</span>
-                    </Checkbox>
-                    <Checkbox size="md" value="포토샵(단기)">
-                      <span className="text-lg text-zinc-600">
-                        포토샵(단기)
-                      </span>
+                    <Checkbox size="md" value="모션">
+                      <span className="text-lg text-zinc-600">모션</span>
                     </Checkbox>
                     <h4 className="text-base text-primary">수업 방식 선택</h4>
                     <Checkbox size="md" value="오프라인">

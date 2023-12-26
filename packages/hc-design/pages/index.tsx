@@ -10,18 +10,28 @@ import QuickMenu from '@/components/main/QuickMenu'
 import Coming from '@/components/main/Coming'
 import MainPortfolio from '@/components/main/MainPortfolio'
 import MainReview from '@/components/main/MainReview'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import Image from 'next/image'
 
 export default function Home() {
+  const router = useRouter()
+  useEffect(() => {
+    if (router.pathname == '/') {
+      router.push('/detail/motion')
+    }
+  }, [router])
   return (
     <>
-      <WideSlider />
+      <div className="w-full h-[100rem]"></div>
+      {/* <WideSlider />
       <div className="hidden border-b lg:block">
         <QuickMenu />
       </div>
       <div className="mt-16">
         <New />
       </div>
-      <div className="mt-16">
+      <div className="mt-16">∂∂∂
         <Bnr />
       </div>
       <div className="mt-16">
@@ -47,7 +57,7 @@ export default function Home() {
       </div>
       <div className="py-16">
         <Info />
-      </div>
+      </div> */}
     </>
   )
 }

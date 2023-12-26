@@ -1174,7 +1174,10 @@ export default function Detail() {
       <section id="consult" className="py-20">
         <Form />
       </section>
-      <DetailFixed />
+      <DetailFixed
+        title={`📣 마지막 10주년 특가를 놓치지 마세요! (~10/27)`}
+        description={`내용내용내용내용내용`}
+      />
     </>
   )
 }
