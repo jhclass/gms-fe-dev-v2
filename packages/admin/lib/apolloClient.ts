@@ -8,7 +8,7 @@ import {
   ApolloLink,
 } from '@apollo/client'
 
-console.log(process.env.NEXT_PUBLIC_GRAPHQL_URI, '환경변수')
+// console.log(process.env.NEXT_PUBLIC_GRAPHQL_URI, '환경변수')
 const TOKEN = 'token'
 export const isLoggedInVar = makeVar(
   typeof window !== 'undefined' ? Boolean(localStorage.getItem(TOKEN)) : false,

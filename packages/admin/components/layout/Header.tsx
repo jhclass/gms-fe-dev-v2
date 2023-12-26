@@ -260,7 +260,6 @@ export default function Header() {
   }
 
   const LogUserOut = () => {
-    console.log('로그아웃?!')
     userLogs(`로그아웃`)
     localStorage.removeItem('token')
     router.push('/login')
@@ -345,7 +344,6 @@ export default function Header() {
                 clipPath: 'inset(10% 50% 90% 50% round 10px)',
               }}
               onClick={e => {
-                console.log(e)
                 e.preventDefault()
               }}
             >
