@@ -21,9 +21,10 @@ export default function TopBnr() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY
-      const topBnrTop = document.getElementById('mainTopBnr').clientHeight
+      // const topBnrTop = document.getElementById('mainTopBnr').clientHeight
 
-      if (currentScroll > topBnrTop) {
+      // if (currentScroll > topBnrTop) {
+      if (currentScroll > 0) {
         setDetailTopbnrFixed(true)
       } else {
         setDetailTopbnrFixed(false)

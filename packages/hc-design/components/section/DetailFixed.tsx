@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil'
 import { detailBottomHiddenState } from '@/lib/recoilAtoms'
 import RandomNum from '@/components/section/RandomNum'
 
-export default function DetailFixed() {
+export default function DetailFixed({ title, description }) {
   const [detailBottomHidden, setDetailBottomHidden] = useRecoilState(
     detailBottomHiddenState,
   )
@@ -64,12 +64,10 @@ export default function DetailFixed() {
             <div className="flex flex-1 lg:items-center flex-col lg:flex-row lg:justify-between pr-[5rem]">
               <p className="flex flex-col justify-center flex-1 w-full overflow-hidden lg:pr-20">
                 <strong className="absolute -top-7 left-0 text-base py-1 lg:top-0 lg:bg-transparent lg:text-left lg:py-0 w-full text-center lg:relative bg-[#444] text-[#e6e8eb] line-clamp-1">
-                  📣 마지막 10주년 특가를 놓치지 마세요! (~10/27)
+                  {title}
                 </strong>
                 <span className="mt-1 text-sm line-clamp-1 max-w-[40rem]">
-                  상단 배너를 눌러 혜택을 확인해 보세요러 혜택해 보세요러 혜택해
-                  보세요러 혜택해 보세요러 혜택해 보세요러 혜택해 보세요러
-                  혜택해 보세요러 혜택을 확인해 보세요!
+                  {description}
                 </span>
               </p>
               <div className="mt-1 text-sm">

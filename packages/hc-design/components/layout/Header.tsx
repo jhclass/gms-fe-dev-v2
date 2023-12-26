@@ -30,9 +30,10 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY
-      const topBnrTop = document.getElementById('mainTopBnr').clientHeight
+      // const topBnrTop = document.getElementById('mainTopBnr').clientHeight || 0
 
-      if (currentScroll > topBnrTop) {
+      // if (currentScroll > topBnrTop) {
+      if (currentScroll > 0) {
         setHeaderFixed(true)
       } else {
         setHeaderFixed(false)
@@ -48,7 +49,7 @@ export default function Header() {
 
   return (
     <>
-      <MainTopBnr />
+      {/* <MainTopBnr /> */}
       <header
         id="header"
         className="px-0 m-auto ax-w-full h-[8rem] lg:h-[4.5rem] relative z-[40]"
@@ -66,6 +67,37 @@ export default function Header() {
                 </Link>
               </h1>
               <div className="items-center hidden h-full px-10 lg:flex">
+                <ul className="flex items-center px-3 text-lg font-base lg:px-0 whitespace-nowrap scroll_sm">
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="/detail/webtoon"
+                      className="py-3 lg:py-0"
+                    >
+                      🖌️ 웹툰
+                    </Link>
+                  </li>
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="/detail/emoticon"
+                      className="py-3 lg:py-0"
+                    >
+                      😍 이모티콘
+                    </Link>
+                  </li>
+                  <li className="mx-2">
+                    <Link
+                      color="foreground"
+                      href="/detail/motion"
+                      className="py-3 lg:py-0"
+                    >
+                      🖥️ 모션
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              {/* <div className="items-center hidden h-full px-10 lg:flex">
                 <div className="min-w-[5.5rem] relative hidden h-full mr-3 md:hidden lg:block after:w-[1px]">
                   <MenuAll />
                 </div>
@@ -73,62 +105,40 @@ export default function Header() {
                   <li className="mx-2">
                     <Link
                       color="foreground"
-                      href="#"
-                      onClick={handleTest}
+                      href="/detail/webtoon"
                       className="py-3 lg:py-0"
                     >
-                      ⭐BEST 강의 특별전
+                      🖌️웹툰
                     </Link>
                   </li>
                   <li className="mx-2">
                     <Link
                       color="foreground"
-                      href="#"
-                      onClick={handleTest}
+                      href="/detail/emoticon"
                       className="py-3 lg:py-0"
                     >
-                      😍얼리버드할인
+                      😍이모티콘
                     </Link>
                   </li>
                   <li className="mx-2">
                     <Link
                       color="foreground"
-                      href="#"
-                      onClick={handleTest}
+                      href="/detail/motion"
                       className="py-3 lg:py-0"
                     >
-                      🔥타임세일
-                    </Link>
-                  </li>
-                  <li className="mx-2">
-                    <Link
-                      color="foreground"
-                      href="#"
-                      onClick={handleTest}
-                      className="py-3 lg:py-0"
-                    >
-                      😍얼리버드할인
-                    </Link>
-                  </li>
-                  <li className="mx-2">
-                    <Link
-                      color="foreground"
-                      href="#"
-                      onClick={handleTest}
-                      className="py-3 lg:py-0"
-                    >
-                      🔥타임세일
+                      🖥️모션
                     </Link>
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
             <div className="flex items-center justify-end py-3">
               <Button
                 onClick={consultClick}
                 variant="flat"
-                className="hidden bg-white text-zinc-700 border-1 lg:block border-zinc-700"
+                className="hidden text-white bg-primary border-1 lg:block border-primary"
               >
+                <i className="pr-2 xi-call" />
                 지금 바로 문의하기
               </Button>
               <Link

@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <>
       <footer id="footer">
-        <div className="py-3 bg-zinc-600">
+        {/* <div className="py-3 bg-zinc-600">
           <ul className="flex items-center text-sm wrap">
             <li className="relative pr-2 mr-2 after:block after:w-[1px] after:h-4 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
               <Link href={{}} className="text-white">
@@ -24,7 +24,7 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
         <div className="py-10 bg-zinc-800">
           <div className="flex flex-col justify-center text-white wrap">
             <h1 className="w-[12rem]">

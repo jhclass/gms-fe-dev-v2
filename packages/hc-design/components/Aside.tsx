@@ -47,18 +47,29 @@ export default function Aside() {
           asideHidden ? 'opacity-0' : 'opacity-100'
         } bottom-[8rem] rounded-s-lg right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all`}
       >
-        <div className="flex items-center justify-center w-[3.2rem] h-[3.2rem] text-white rounded-full text-2xl/none bg-primary">
-          <Link href="/consult" as="/consult">
+        <div className="w-[3.2rem] h-[3.2rem] text-white rounded-full text-2xl/none bg-primary">
+          <Link
+            href="/consult"
+            as="/consult"
+            className="flex items-center justify-center w-full h-full"
+          >
             <i className="xi-call" />
           </Link>
         </div>
-        <div className="flex items-center justify-center text-3xl/none w-[3.2rem] h-[3.2rem] mt-3 text-black rounded-full bg-[#ffe839]">
-          <Link href="#" onClick={handleTest}>
+        <div className="text-3xl/none w-[3.2rem] h-[3.2rem] mt-3 text-black rounded-full bg-[#ffe839]">
+          <Link
+            href="#"
+            onClick={handleTest}
+            className="flex items-center justify-center w-full h-full"
+          >
             <i className="xi-kakaotalk" />
           </Link>
         </div>
-        <div className="hidden lg:flex items-center justify-center w-[3.2rem] h-[3.2rem] mt-3 text-white bg-black rounded-full text-2xl/none">
-          <button onClick={scrollToTop}>
+        <div className="hidden lg:block w-[3.2rem] h-[3.2rem] mt-3 text-white bg-black rounded-full text-2xl/none">
+          <button
+            onClick={scrollToTop}
+            className="flex items-center justify-center w-full h-full"
+          >
             <i className="xi-angle-up" />
           </button>
         </div>
