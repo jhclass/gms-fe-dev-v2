@@ -54,7 +54,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
   }
 `
 export const UPDATE_FAVORITE_MUTATION = gql`
-  mutation UpdateFavorite($updateFavoriteId: Int!) {
+  mutation Mutation($updateFavoriteId: Int!) {
     updateFavorite(id: $updateFavoriteId) {
       ok
       message
@@ -67,34 +67,25 @@ export const UPDATE_FAVORITE_MUTATION = gql`
         mGrade
         mRank
         mPhoneNum
-        studentStates {
-          id
-          campus
-          category
-          stName
-          phoneNum1
-          phoneNum2
-          phoneNum3
-          currentManager
-          subject
-          detail
-          agreement
-          progress
-          stEmail
-          stAddr
-          subDiv
-          stVisit
-          expEnrollDate
-          perchase
-          createdAt
-          updatedAt
-          receiptDiv
-          pic
-        }
+        mPhoneNumCompany
+        mPhoneNumInside
+        mPhoneNumFriend
+        mPart
+        mAvatar
+        mJoiningDate
+        mAddresses
         createdAt
         updatedAt
-        mAvatar
         favoriteStudentState
+        StudentStates {
+          id
+          stName
+          phoneNum1
+        }
+        ConsultationMemo {
+          id
+          content
+        }
       }
     }
   }
