@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form'
 import { MME_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from './layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 
 const ConArea = styled.div`
@@ -67,16 +66,6 @@ export default function Profile() {
   const { register, handleSubmit, formState } = useForm()
   const { errors, isDirty, dirtyFields } = formState
 
-  useEffect(() => {
-    // searchSubjectMutation({
-    //   variables: { exposure: true, page: currentPage, limit: currentLimit },
-    //   onCompleted: resData => {
-    //     const { result, totalCount } = resData.searchSubject || {}
-    //     setSubjectList({ result, totalCount })
-    //   },
-    // })
-  }, [router])
-
   const onSubmit = data => {
     if (isDirty) {
       editManager({
@@ -125,6 +114,10 @@ export default function Profile() {
     return formatted
   }
 
+  const clickAdmin = () => {
+    alert(`비밀번호변경은 관리자에게 문의주세요.😀\nkkalim4913@gmail.com`)
+  }
+
   return (
     <>
       <MainWrap>
@@ -141,7 +134,7 @@ export default function Profile() {
                     radius="md"
                     type="text"
                     label="이름"
-                    defaultValue={mMeData.mUsername}
+                    defaultValue={mMeData?.mUsername}
                     onChange={e => {
                       register('mUsername').onChange(e)
                     }}
@@ -155,7 +148,7 @@ export default function Profile() {
                   />
                   {errors.mUsername && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.mUsername.message)}
+                      {String(errors.mUsername?.message)}
                     </p>
                   )}
                 </AreaBox>
@@ -166,6 +159,7 @@ export default function Profile() {
                     radius="md"
                     variant="solid"
                     className="w-full text-white bg-flag1"
+                    onClick={clickAdmin}
                   >
                     비밀번호 변경
                   </Button>
@@ -173,7 +167,7 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mPhoneNumInside}
+                    defaultValue={mMeData?.mPhoneNumInside}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
@@ -187,7 +181,7 @@ export default function Profile() {
               </FlexBox>
               <FlexBox>
                 <Input
-                  defaultValue={mMeData.mAddresses}
+                  defaultValue={mMeData?.mAddresses}
                   labelPlacement="outside"
                   placeholder=" "
                   variant="bordered"
@@ -205,20 +199,20 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mPhoneNumCompany}
+                    defaultValue={mMeData?.mPhoneNumCompany}
                     labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
+                    placeholder=" "
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="번호"
+                    label="직통번호"
                     className="w-full"
                     {...register('mPhoneNumCompany')}
                   />
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    defaultValue={mMeData.mPhoneNum}
+                    defaultValue={mMeData?.mPhoneNum}
                     labelPlacement="outside"
                     placeholder="'-'없이 작성해주세요"
                     variant="bordered"
@@ -257,7 +251,7 @@ export default function Profile() {
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    defaultValue={mMeData.mPhoneNumFriend}
+                    defaultValue={mMeData?.mPhoneNumFriend}
                     labelPlacement="outside"
                     placeholder="'-'없이 작성해주세요"
                     variant="bordered"
@@ -286,7 +280,7 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mPart}
+                    defaultValue={mMeData?.mPart}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
@@ -300,13 +294,13 @@ export default function Profile() {
                 <AreaBox>
                   <Input
                     isReadOnly
-                    defaultValue={mMeData.mRank}
+                    defaultValue={mMeData?.mRank}
                     labelPlacement="outside"
                     placeholder=" "
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="직급"
+                    label="직급/직책"
                     className="w-full"
                     maxLength={11}
                     {...register('mRank')}
@@ -316,9 +310,9 @@ export default function Profile() {
                   <Input
                     isReadOnly
                     defaultValue={
-                      mMeData.mJoiningDate === null
+                      mMeData?.mJoiningDate === null
                         ? ''
-                        : fametDate(mMeData.mJoiningDate)
+                        : fametDate(mMeData?.mJoiningDate)
                     }
                     labelPlacement="outside"
                     placeholder="입사일"
@@ -343,6 +337,18 @@ export default function Profile() {
                 >
                   정보 수정
                 </Button2>
+                <Button2
+                  buttonType="button"
+                  width="100%"
+                  height="2.5rem"
+                  fontColor="#007de9"
+                  bgColor="#fff"
+                  borderColor="#007de9"
+                  typeBorder={true}
+                  onClick={() => router.back()}
+                >
+                  이전으로
+                </Button2>
               </BtnBox>
             </DetailForm>
           </DetailBox>
@@ -351,4 +357,4 @@ export default function Profile() {
     </>
   )
 }
-Profile.getLayout = page => <Layout>{page}</Layout>
+// Profile.getLayout = page => <Layout>{page}</Layout>

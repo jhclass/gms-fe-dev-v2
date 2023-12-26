@@ -159,6 +159,10 @@ export default function Login() {
     })
   }
 
+  const clickAdmin = () => {
+    alert(`ID/PW 찾기는 관리자에게 문의주세요.😀\nkkalim4913@gmail.com`)
+  }
+
   const idValue = useWatch({ control, name: 'id' })
   const passValue = useWatch({ control, name: 'password' })
 
@@ -234,7 +238,9 @@ export default function Login() {
             </BtnBox>
           </form>
           <Alink>
-            <Link href={''}>Forget ID or PW ?</Link>
+            <Link href={''} onClick={clickAdmin}>
+              Forget ID or PW ?
+            </Link>
           </Alink>
         </LoginBox>
       </Container>
