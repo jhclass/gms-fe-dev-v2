@@ -191,7 +191,7 @@ export default function SubjectTable() {
 
   useEffect(() => {
     refetch()
-  }, [router, refetch])
+  }, [router, refetch, currentPage])
   return (
     <>
       <TTopic>

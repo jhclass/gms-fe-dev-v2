@@ -496,18 +496,19 @@ export default function ConsultWirte() {
                                         <Tfee>과정 금액</Tfee>
                                       </TableRow>
                                     </Theader>
-                                    {subjectList?.result.map((item, index) => (
-                                      <TableItem key={index}>
-                                        <TableRow>
-                                          <Checkbox
-                                            key={item.id}
-                                            value={item.subjectName}
-                                          >
-                                            <SubjectItem tableData={item} />
-                                          </Checkbox>
-                                        </TableRow>
-                                      </TableItem>
-                                    ))}
+                                    {subjectList?.result !== null &&
+                                      subjectList?.result.map((item, index) => (
+                                        <TableItem key={index}>
+                                          <TableRow>
+                                            <Checkbox
+                                              key={item.id}
+                                              value={item.subjectName}
+                                            >
+                                              <SubjectItem tableData={item} />
+                                            </Checkbox>
+                                          </TableRow>
+                                        </TableItem>
+                                      ))}
                                   </CheckboxGroup>
                                 </ScrollShadow>
                                 {subjectList?.totalCount > 0 && (
