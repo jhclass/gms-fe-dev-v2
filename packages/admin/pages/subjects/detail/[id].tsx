@@ -58,6 +58,9 @@ const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 const FlexBox = styled.div`
   display: flex;
@@ -191,7 +194,7 @@ export default function SubjectDetail() {
           variables: {
             updateSubjectId: subjectState.id,
             subjectName: data.subjectName.trim(),
-            subjectCode: data.subjectCode.trim(),
+            subjectCode: data.roomNum === '' ? null : data.subjectCode.trim(),
             fee: parseInt(data.fee.trim()),
             subDiv: data.subDiv,
             startDate:

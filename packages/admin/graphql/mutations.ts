@@ -18,7 +18,41 @@ export const USER_LOGS_MUTATION = gql`
     }
   }
 `
-
+export const EDIT_MANAGE_USER_MUTATION = gql`
+  mutation Mutation(
+    $mUsername: String
+    $mPassword: String
+    $mGrade: Int
+    $mRank: String
+    $mPhoneNum: String
+    $mPhoneNumCompany: String
+    $mPhoneNumInside: String
+    $mPhoneNumFriend: String
+    $mPart: String
+    $mAvatar: String
+    $mJoiningDate: String
+    $mAddresses: String
+  ) {
+    editManageUser(
+      mUsername: $mUsername
+      mPassword: $mPassword
+      mGrade: $mGrade
+      mRank: $mRank
+      mPhoneNum: $mPhoneNum
+      mPhoneNumCompany: $mPhoneNumCompany
+      mPhoneNumInside: $mPhoneNumInside
+      mPhoneNumFriend: $mPhoneNumFriend
+      mPart: $mPart
+      mAvatar: $mAvatar
+      mJoiningDate: $mJoiningDate
+      mAddresses: $mAddresses
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`
 export const UPDATE_FAVORITE_MUTATION = gql`
   mutation UpdateFavorite($updateFavoriteId: Int!) {
     updateFavorite(id: $updateFavoriteId) {

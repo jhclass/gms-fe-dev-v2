@@ -53,6 +53,7 @@ export default function Consult() {
               setSearchResult({ studentState, totalCount })
             },
           })
+          setCheckItem([])
           const dirtyFieldsArray = [...Object.values(checkItem)]
           alert('상담카드가 삭제되었습니다.')
           userLogs(`ID : [${dirtyFieldsArray}] 상담카드 삭제`)

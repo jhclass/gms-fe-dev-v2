@@ -43,6 +43,9 @@ const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 const FlexBox = styled.div`
   display: flex;
@@ -98,7 +101,7 @@ export default function SubjectWrite() {
       variables: {
         subDiv: data.subDiv,
         subjectName: data.subjectName.trim(),
-        subjectCode: data.subjectCode.trim(),
+        subjectCode: data.totalTime === '' ? null : data.subjectCode.trim(),
         fee: parseInt(data.fee.trim()),
         startDate: data.stVisit === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),

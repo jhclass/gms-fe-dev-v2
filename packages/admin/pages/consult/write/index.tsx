@@ -58,6 +58,10 @@ const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 const FlexBox = styled.div`
   display: flex;
@@ -183,8 +187,8 @@ const PagerWrap = styled.div`
 
 export default function ConsultWirte() {
   const router = useRouter()
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit] = useState(10)
+  const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
+  const [currentSubjectLimit] = useState(5)
   const {
     loading: managerLoading,
     error: managerError,
@@ -210,13 +214,17 @@ export default function ConsultWirte() {
 
   useEffect(() => {
     searchSubjectMutation({
-      variables: { exposure: true, page: currentPage, limit: currentLimit },
+      variables: {
+        exposure: true,
+        page: currentSubjectPage,
+        limit: currentSubjectLimit,
+      },
       onCompleted: resData => {
         const { result, totalCount } = resData.searchSubject || {}
         setSubjectList({ result, totalCount })
       },
     })
-  }, [router, currentPage])
+  }, [router, currentSubjectPage])
 
   const onSubmit = data => {
     createStudent({
@@ -241,8 +249,7 @@ export default function ConsultWirte() {
         perchase: null,
         birthday: null,
         receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-        pic: data.subDiv === undefined ? null : data.pic,
-        // progress: 0,
+        pic: data.subDiv === undefined ? '담당자 지정필요' : data.pic,
       },
       refetchQueries: [
         {
@@ -508,12 +515,13 @@ export default function ConsultWirte() {
                                     <Pagination
                                       variant="light"
                                       showControls
-                                      initialPage={currentPage}
+                                      initialPage={currentSubjectPage}
                                       total={Math.ceil(
-                                        subjectList?.totalCount / currentLimit,
+                                        subjectList?.totalCount /
+                                          currentSubjectLimit,
                                       )}
                                       onChange={newPage => {
-                                        setCurrentPage(newPage)
+                                        setCurrentSubjectPage(newPage)
                                       }}
                                     />
                                   </PagerWrap>

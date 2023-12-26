@@ -73,6 +73,9 @@ const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 const FlexBox = styled.div`
   display: flex;
@@ -265,8 +268,8 @@ export default function ConsultDetail() {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit, setCurrentLimit] = useState(5)
+  const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
+  const [currentSubjectLimit, setCurrentSubjectLimit] = useState(5)
   const {
     loading: managerLoading,
     error: managerError,
@@ -335,13 +338,17 @@ export default function ConsultDetail() {
 
   useEffect(() => {
     searchSubjectMutation({
-      variables: { exposure: true, page: currentPage, limit: currentLimit },
+      variables: {
+        exposure: true,
+        page: currentSubjectPage,
+        limit: currentSubjectLimit,
+      },
       onCompleted: resData => {
         const { result, totalCount } = resData.searchSubject || {}
         setSubjectList({ result, totalCount })
       },
     })
-  }, [router, currentPage])
+  }, [router, currentSubjectPage])
 
   useEffect(() => {
     if (
@@ -704,13 +711,13 @@ export default function ConsultDetail() {
                                       <Pagination
                                         variant="light"
                                         showControls
-                                        initialPage={currentPage}
+                                        initialPage={currentSubjectPage}
                                         total={Math.ceil(
                                           subjectList?.totalCount /
-                                            currentLimit,
+                                            currentSubjectLimit,
                                         )}
                                         onChange={newPage => {
-                                          setCurrentPage(newPage)
+                                          setCurrentSubjectPage(newPage)
                                         }}
                                       />
                                     </PagerWrap>

@@ -142,7 +142,7 @@ export default function ConsultMemo(props) {
   const { register, handleSubmit, control, formState } = useForm({})
   const { isDirty } = formState
   const onDelete = data => {
-    const isDelete = confirm('메로를 삭제하시겠습니까?')
+    const isDelete = confirm('메모를 삭제하시겠습니까?')
     if (isDelete) {
       deleteMemo({
         variables: {

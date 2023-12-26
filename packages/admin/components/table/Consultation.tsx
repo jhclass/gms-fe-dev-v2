@@ -214,7 +214,7 @@ export default function ConsolutationTable() {
   useEffect(() => {
     refetch()
     favoRefetch()
-  }, [router, refetch, favoRefetch])
+  }, [router, refetch, favoRefetch, currentPage])
 
   return (
     <>
