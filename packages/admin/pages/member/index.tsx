@@ -201,11 +201,11 @@ export default function Profile() {
                     isReadOnly
                     defaultValue={mMeData.mPhoneNumCompany}
                     labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
+                    placeholder=" "
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="번호"
+                    label="직통번호"
                     className="w-full"
                     {...register('mPhoneNumCompany')}
                   />
@@ -300,7 +300,7 @@ export default function Profile() {
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="직급"
+                    label="직급/직책"
                     className="w-full"
                     maxLength={11}
                     {...register('mRank')}
