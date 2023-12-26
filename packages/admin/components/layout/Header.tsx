@@ -351,7 +351,7 @@ export default function Header() {
                 <li>
                   <button
                     onClick={() => {
-                      alert('준비중입니다. ')
+                      router.push('/member')
                     }}
                   >
                     프로필

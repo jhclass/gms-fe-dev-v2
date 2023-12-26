@@ -193,6 +193,15 @@ const categories = [
     isFilter: false,
     isWrite: '',
   },
+  {
+    href: '/member',
+    iconSrc: '',
+    alt: '',
+    label: '프로필',
+    isBreadcrumb: true,
+    isFilter: false,
+    isWrite: '',
+  },
 ]
 
 export default function Breadcrumb(props) {

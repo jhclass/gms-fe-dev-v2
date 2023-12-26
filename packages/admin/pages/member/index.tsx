@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form'
 import { MME_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from './layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 
 const ConArea = styled.div`
@@ -67,16 +66,6 @@ export default function Profile() {
   const { register, handleSubmit, formState } = useForm()
   const { errors, isDirty, dirtyFields } = formState
 
-  useEffect(() => {
-    // searchSubjectMutation({
-    //   variables: { exposure: true, page: currentPage, limit: currentLimit },
-    //   onCompleted: resData => {
-    //     const { result, totalCount } = resData.searchSubject || {}
-    //     setSubjectList({ result, totalCount })
-    //   },
-    // })
-  }, [router])
-
   const onSubmit = data => {
     if (isDirty) {
       editManager({
@@ -125,6 +114,10 @@ export default function Profile() {
     return formatted
   }
 
+  const clickAdmin = () => {
+    alert(`비밀번호변경은 관리자에게 문의주세요.😀\nkkalim4913@gmail.com`)
+  }
+
   return (
     <>
       <MainWrap>
@@ -166,6 +159,7 @@ export default function Profile() {
                     radius="md"
                     variant="solid"
                     className="w-full text-white bg-flag1"
+                    onClick={clickAdmin}
                   >
                     비밀번호 변경
                   </Button>
@@ -343,6 +337,18 @@ export default function Profile() {
                 >
                   정보 수정
                 </Button2>
+                <Button2
+                  buttonType="button"
+                  width="100%"
+                  height="2.5rem"
+                  fontColor="#007de9"
+                  bgColor="#fff"
+                  borderColor="#007de9"
+                  typeBorder={true}
+                  onClick={() => router.back()}
+                >
+                  이전으로
+                </Button2>
               </BtnBox>
             </DetailForm>
           </DetailBox>
@@ -351,4 +357,4 @@ export default function Profile() {
     </>
   )
 }
-Profile.getLayout = page => <Layout>{page}</Layout>
+// Profile.getLayout = page => <Layout>{page}</Layout>
