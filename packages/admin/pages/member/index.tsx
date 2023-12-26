@@ -71,7 +71,6 @@ export default function Profile() {
       editManager({
         variables: {
           mUsername: data.mUsername === '' ? null : data.mUsername,
-          mPassword: mMeData.mPassword,
           mGrade: mMeData.mGrade,
           mRank: mMeData.mRank,
           mPhoneNum: data.mPhoneNum === '' ? null : data.mPhoneNum,
@@ -120,240 +119,238 @@ export default function Profile() {
 
   return (
     <>
-      <MainWrap>
-        <ConArea>
-          <Breadcrumb rightArea={false} />
-          <DetailBox>
-            <DetailForm onSubmit={handleSubmit(onSubmit)}>
-              <FlexBox>
-                <AreaBox>
+      {mMeData !== undefined && (
+        <MainWrap>
+          <ConArea>
+            <Breadcrumb rightArea={false} />
+            <DetailBox>
+              <DetailForm onSubmit={handleSubmit(onSubmit)}>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="이름"
+                      defaultValue={mMeData?.mUsername}
+                      onChange={e => {
+                        register('mUsername').onChange(e)
+                      }}
+                      className="w-full"
+                      {...register('mUsername', {
+                        required: {
+                          value: true,
+                          message: '이름을 입력해주세요.',
+                        },
+                      })}
+                    />
+                    {errors.mUsername && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mUsername?.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <FilterLabel>비밀번호</FilterLabel>
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="solid"
+                      className="w-full text-white bg-flag1"
+                      onClick={clickAdmin}
+                    >
+                      비밀번호 변경
+                    </Button>
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      isReadOnly
+                      defaultValue={mMeData?.mPhoneNumInside}
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="내선번호"
+                      className="w-full"
+                      {...register('mPhoneNumInside')}
+                    />
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
                   <Input
+                    defaultValue={mMeData?.mAddresses}
                     labelPlacement="outside"
-                    placeholder="이름"
+                    placeholder=" "
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="이름"
-                    defaultValue={mMeData?.mUsername}
+                    label="주소"
                     onChange={e => {
-                      register('mUsername').onChange(e)
+                      register('mAddresses').onChange(e)
                     }}
                     className="w-full"
-                    {...register('mUsername', {
-                      required: {
-                        value: true,
-                        message: '이름을 입력해주세요.',
-                      },
-                    })}
+                    {...register('mAddresses')}
                   />
-                  {errors.mUsername && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.mUsername?.message)}
-                    </p>
-                  )}
-                </AreaBox>
-                <AreaBox>
-                  <FilterLabel>비밀번호</FilterLabel>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="solid"
-                    className="w-full text-white bg-flag1"
-                    onClick={clickAdmin}
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      isReadOnly
+                      defaultValue={mMeData?.mPhoneNumCompany}
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="직통번호"
+                      className="w-full"
+                      {...register('mPhoneNumCompany')}
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      defaultValue={mMeData?.mPhoneNum}
+                      labelPlacement="outside"
+                      placeholder="'-'없이 작성해주세요"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="휴대폰번호"
+                      onChange={e => {
+                        register('mPhoneNum').onChange(e)
+                      }}
+                      className="w-full"
+                      maxLength={11}
+                      {...register('mPhoneNum', {
+                        maxLength: {
+                          value: 11,
+                          message: '최대 11자리까지 입력 가능합니다.',
+                        },
+                        minLength: {
+                          value: 10,
+                          message: '최소 10자리 이상이어야 합니다.',
+                        },
+                        pattern: {
+                          value: /^010[0-9]{7,8}$/,
+                          message: '010으로 시작해주세요.',
+                        },
+                      })}
+                    />
+                    {errors.phoneNum1 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum1.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      defaultValue={mMeData?.mPhoneNumFriend}
+                      labelPlacement="outside"
+                      placeholder="'-'없이 작성해주세요"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="기타번호"
+                      onChange={e => {
+                        register('mPhoneNumFriend').onChange(e)
+                      }}
+                      className="w-full"
+                      {...register('mPhoneNumFriend', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumFriend && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumFriend.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      isReadOnly
+                      defaultValue={mMeData?.mPart}
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="부서"
+                      className="w-full"
+                      {...register('mPart')}
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      isReadOnly
+                      defaultValue={mMeData?.mRank}
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="직급/직책"
+                      className="w-full"
+                      maxLength={11}
+                      {...register('mRank')}
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      isReadOnly
+                      defaultValue={
+                        mMeData?.mJoiningDate === null
+                          ? ''
+                          : fametDate(mMeData?.mJoiningDate)
+                      }
+                      labelPlacement="outside"
+                      placeholder="입사일"
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="입사일"
+                      startContent={<i className="xi-calendar" />}
+                      className="w-full"
+                      {...register('mJoiningDate')}
+                    />
+                  </AreaBox>
+                </FlexBox>
+                <BtnBox>
+                  <Button2
+                    buttonType="submit"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#fff"
+                    bgColor="#007de9"
                   >
-                    비밀번호 변경
-                  </Button>
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    isReadOnly
-                    defaultValue={mMeData?.mPhoneNumInside}
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="내선번호"
-                    className="w-full"
-                    {...register('mPhoneNumInside')}
-                  />
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <Input
-                  defaultValue={mMeData?.mAddresses}
-                  labelPlacement="outside"
-                  placeholder=" "
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label="주소"
-                  onChange={e => {
-                    register('mAddresses').onChange(e)
-                  }}
-                  className="w-full"
-                  {...register('mAddresses')}
-                />
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <Input
-                    isReadOnly
-                    defaultValue={mMeData?.mPhoneNumCompany}
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="직통번호"
-                    className="w-full"
-                    {...register('mPhoneNumCompany')}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    defaultValue={mMeData?.mPhoneNum}
-                    labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="휴대폰번호"
-                    onChange={e => {
-                      register('mPhoneNum').onChange(e)
-                    }}
-                    className="w-full"
-                    maxLength={11}
-                    {...register('mPhoneNum', {
-                      required: {
-                        value: true,
-                        message: '휴대폰번호를 입력해주세요.',
-                      },
-                      maxLength: {
-                        value: 11,
-                        message: '최대 11자리까지 입력 가능합니다.',
-                      },
-                      minLength: {
-                        value: 10,
-                        message: '최소 10자리 이상이어야 합니다.',
-                      },
-                      pattern: {
-                        value: /^010[0-9]{7,8}$/,
-                        message: '010으로 시작해주세요.',
-                      },
-                    })}
-                  />
-                  {errors.phoneNum1 && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.phoneNum1.message)}
-                    </p>
-                  )}
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    defaultValue={mMeData?.mPhoneNumFriend}
-                    labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="기타번호"
-                    onChange={e => {
-                      register('mPhoneNumFriend').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('mPhoneNumFriend', {
-                      pattern: {
-                        value: /^[0-9]+$/,
-                        message: '숫자만 입력 가능합니다.',
-                      },
-                    })}
-                  />
-                  {errors.mPhoneNumFriend && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.mPhoneNumFriend.message)}
-                    </p>
-                  )}
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <Input
-                    isReadOnly
-                    defaultValue={mMeData?.mPart}
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="부서"
-                    className="w-full"
-                    {...register('mPart')}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    isReadOnly
-                    defaultValue={mMeData?.mRank}
-                    labelPlacement="outside"
-                    placeholder=" "
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="직급/직책"
-                    className="w-full"
-                    maxLength={11}
-                    {...register('mRank')}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    isReadOnly
-                    defaultValue={
-                      mMeData?.mJoiningDate === null
-                        ? ''
-                        : fametDate(mMeData?.mJoiningDate)
-                    }
-                    labelPlacement="outside"
-                    placeholder="입사일"
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="입사일"
-                    startContent={<i className="xi-calendar" />}
-                    className="w-full"
-                    {...register('mJoiningDate')}
-                  />
-                </AreaBox>
-              </FlexBox>
-              <BtnBox>
-                <Button2
-                  buttonType="submit"
-                  width="100%"
-                  height="2.5rem"
-                  typeBorder={true}
-                  fontColor="#fff"
-                  bgColor="#007de9"
-                >
-                  정보 수정
-                </Button2>
-                <Button2
-                  buttonType="button"
-                  width="100%"
-                  height="2.5rem"
-                  fontColor="#007de9"
-                  bgColor="#fff"
-                  borderColor="#007de9"
-                  typeBorder={true}
-                  onClick={() => router.back()}
-                >
-                  이전으로
-                </Button2>
-              </BtnBox>
-            </DetailForm>
-          </DetailBox>
-        </ConArea>
-      </MainWrap>
+                    정보 수정
+                  </Button2>
+                  <Button2
+                    buttonType="button"
+                    width="100%"
+                    height="2.5rem"
+                    fontColor="#007de9"
+                    bgColor="#fff"
+                    borderColor="#007de9"
+                    typeBorder={true}
+                    onClick={() => router.back()}
+                  >
+                    이전으로
+                  </Button2>
+                </BtnBox>
+              </DetailForm>
+            </DetailBox>
+          </ConArea>
+        </MainWrap>
+      )}
     </>
   )
 }
