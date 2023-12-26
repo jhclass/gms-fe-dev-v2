@@ -44,7 +44,7 @@ const ColorCip = styled.p`
 const TableWrap = styled.div`
   width: 100%;
   display: block;
-  min-width: 1200px;
+  min-width: 700px;
 `
 const Theader = styled.div`
   width: 100%;
