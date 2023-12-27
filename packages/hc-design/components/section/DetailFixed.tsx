@@ -59,22 +59,22 @@ export default function DetailFixed({ title, description }) {
           detailBottomHidden ? 'translate-y-32' : ''
         }`}
       >
-        <div className="flex items-center justify-center mx-auto w-full lg:max-w-[95%] xl:w-[100rem]">
+        <div className="flex items-center justify-center mx-auto w-full lg:max-w-[95%] xl:w-[100rem]  flex-col lg:flex-row">
           <div className="bg-[#222] w-full lg:w-[95%] xl:w-[80%] text-[#aaaaaf] py-3 px-6 flex flex-row relative justify-between lg:rounded-2xl items-center">
-            <div className="flex flex-1 lg:items-center flex-col lg:flex-row lg:justify-between pr-[5rem]">
+            <div className="flex flex-1 lg:items-center flex-col lg:flex-row lg:justify-between lg:pr-[5rem]">
               <p className="flex flex-col justify-center flex-1 w-full overflow-hidden lg:pr-20">
                 <strong className="absolute -top-7 left-0 text-base py-1 lg:top-0 lg:bg-transparent lg:text-left lg:py-0 w-full text-center lg:relative bg-[#444] text-[#e6e8eb] line-clamp-1">
                   {title}
                 </strong>
-                <span className="mt-1 text-sm line-clamp-1 max-w-[40rem]">
+                <span className="mt-1 text-sm max-w-[40rem] pr-3">
                   {description}
                 </span>
               </p>
-              <div className="mt-1 text-sm">
+              {/* <div className="mt-1 text-sm">
                 현재
                 <RandomNum />
                 남음
-              </div>
+              </div> */}
             </div>
             <div className="text-[#aaaaaf]">
               <Button
@@ -83,7 +83,7 @@ export default function DetailFixed({ title, description }) {
                 variant="flat"
                 className="text-white text-base bg-[#c72835] rounded-lg"
               >
-                상담 신청
+                문의해요 👍
               </Button>
             </div>
           </div>
