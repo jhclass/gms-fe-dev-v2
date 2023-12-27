@@ -66,7 +66,7 @@ export default function DetailFixed({ title, description }) {
                 <strong className="absolute -top-7 left-0 text-base py-1 lg:top-0 lg:bg-transparent lg:text-left lg:py-0 w-full text-center lg:relative bg-[#444] text-[#e6e8eb] line-clamp-1">
                   {title}
                 </strong>
-                <span className="mt-1 text-sm max-w-[40rem] pr-3">
+                <span className="mt-1 text-sm max-w-[70rem] pr-3">
                   {description}
                 </span>
               </p>
