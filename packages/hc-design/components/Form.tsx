@@ -325,7 +325,7 @@ export default function Form() {
               <div className="mt-3 border-2 rounded-lg">
                 <ScrollShadow className="w-full h-60">
                   <p className="p-3 text-sm text-zinc-600">
-                    HighClass가 운영하는 웹&amp;모바일 사이트에 대하여 상담 및
+                    H ACADEMY가 운영하는 웹&amp;모바일 사이트에 대하여 상담 및
                     이용자가 원하는 서비스를 충족시키기 위해 아래와 같은
                     개인정보를 수집하고 있습니다.
                     <br />
@@ -363,7 +363,7 @@ export default function Form() {
                       불이익 내용
                     </b>
                     <br />
-                    이용자는 HighClass가 운영하는 컴퓨터학원 및 계열 브랜드
+                    이용자는 H ACADEMY가 운영하는 컴퓨터학원 및 계열 브랜드
                     웹&모바일 사이트에서 수집하는 개인정보에 대해 동의를 거부할
                     권리가 있으며 동의 거부 시에는 회원가입 및 인터넷 수강료
                     조회, 온라인 상담 등의 홈페이지 서비스가 일부 제한됩니다.
