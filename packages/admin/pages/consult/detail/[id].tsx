@@ -52,7 +52,6 @@ const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
 `
-
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
@@ -159,51 +158,41 @@ const Tcheck = styled.div`
   height: 1.25rem;
   margin-right: 0.5rem;
 `
-const Tdiv = styled.div`
-  width: 100%;
-  min-width: 595px;
-
-  @media (max-width: 768px) {
-    min-width: 595px;
-  }
-`
 const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 60%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 300px;
+  min-width: 360px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 17%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: 102px;
 `
 const Tfee = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 23%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: 132px;
 `
-
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
 `
-
 const MemoList = styled.ul`
   margin-top: 1.5rem;
   width: 100%;
@@ -229,6 +218,14 @@ const MemoItem = styled.li`
     flex-direction: column;
     gap: 0.3rem;
   }
+`
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
 `
 
 type studentData = {
@@ -405,9 +402,18 @@ export default function ConsultDetail() {
             stEmail: data.stEmail.trim(),
             stAddr: studentState.stAddr,
             subDiv: data.subDiv,
-            stVisit: data.stVisit === null ? null : new Date(data.stVisit),
+            stVisit:
+              data.stVisit === null
+                ? null
+                : typeof data.stVisit === 'string'
+                ? new Date(parseInt(data.stVisit))
+                : new Date(data.stVisit),
             expEnrollDate:
-              data.expEnrollDate === null ? null : new Date(data.expEnrollDate),
+              data.expEnrollDate === null
+                ? null
+                : typeof data.expEnrollDate === 'string'
+                ? new Date(parseInt(data.expEnrollDate))
+                : new Date(data.expEnrollDate),
             pic: data.pic,
             receiptDiv: data.receiptDiv,
           },
@@ -478,6 +484,7 @@ export default function ConsultDetail() {
 
   if (loading) return 'Submitting...'
   if (error) return `Submission error! ${error.message}`
+
   return (
     <>
       {data !== undefined && (
@@ -707,9 +714,14 @@ export default function ConsultDetail() {
                                             </TableItem>
                                           ),
                                         )}
+                                      {subjectList?.result === null && (
+                                        <Nolist>
+                                          노출중인 과정이 없습니다.
+                                        </Nolist>
+                                      )}
                                     </CheckboxGroup>
                                   </ScrollShadow>
-                                  {subjectList?.totalCount > 0 && (
+                                  {subjectList?.totalCount !== null && (
                                     <PagerWrap>
                                       <Pagination
                                         variant="light"

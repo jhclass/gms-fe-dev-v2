@@ -53,7 +53,6 @@ const DetailBox = styled.div`
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
-
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -74,7 +73,6 @@ const FlexBox = styled.div`
 const AreaBox = styled.div`
   flex: 1;
 `
-
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -86,12 +84,10 @@ const DatePickerBox = styled.div`
     bottom: 0;
   }
 `
-
 const RadioBox = styled.div`
   display: flex;
   width: 100%;
 `
-
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -152,37 +148,44 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 60%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 300px;
+  min-width: 360px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 17%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: 102px;
 `
 const Tfee = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 23%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: 132px;
 `
-
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
+`
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
 `
 
 export default function ConsultWirte() {
@@ -509,9 +512,12 @@ export default function ConsultWirte() {
                                           </TableRow>
                                         </TableItem>
                                       ))}
+                                    {subjectList?.result === null && (
+                                      <Nolist>노출중인 과정이 없습니다.</Nolist>
+                                    )}
                                   </CheckboxGroup>
                                 </ScrollShadow>
-                                {subjectList?.totalCount > 0 && (
+                                {subjectList?.totalCount !== null && (
                                   <PagerWrap>
                                     <Pagination
                                       variant="light"

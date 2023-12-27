@@ -179,11 +179,18 @@ const Tprogress = styled.div`
   color: inherit;
   min-width: 90px;
 `
-
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
+`
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
 `
 
 export default function ConsolutationTable() {
@@ -264,18 +271,20 @@ export default function ConsolutationTable() {
               />
             ))}
             <br />
-            {students?.map((item, index) => (
-              <ConsultItem
-                forName="student"
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                currentPage={currentPage}
-                limit={currentLimit}
-                favorite={FavoList?.includes(item.id)}
-                favoTotal={favoTotal}
-              />
-            ))}
+            {totalCount > 0 &&
+              students?.map((item, index) => (
+                <ConsultItem
+                  forName="student"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                  favorite={FavoList?.includes(item.id)}
+                  favoTotal={favoTotal}
+                />
+              ))}
+            {totalCount === 0 && <Nolist>등록된 상담카드가 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
         {totalCount > 0 && (

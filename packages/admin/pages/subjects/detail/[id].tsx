@@ -185,7 +185,6 @@ export default function SubjectDetail() {
       setSjEndDate(date)
     }
   }, [subjectState])
-
   const onSubmit = data => {
     if (isDirty || subjectState.exposure !== isSelected) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
@@ -198,8 +197,17 @@ export default function SubjectDetail() {
             fee: parseInt(data.fee.trim()),
             subDiv: data.subDiv,
             startDate:
-              data.startDate === null ? null : new Date(data.startDate),
-            endDate: data.endDate === null ? null : new Date(data.endDate),
+              data.startDate === null
+                ? null
+                : typeof data.startDate === 'string'
+                ? new Date(parseInt(data.startDate))
+                : new Date(data.startDate),
+            endDate:
+              data.endDate === null
+                ? null
+                : typeof data.endDate === 'string'
+                ? new Date(parseInt(data.endDate))
+                : new Date(data.endDate),
             roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
             exposure: isSelected,
             totalTime:
@@ -207,7 +215,7 @@ export default function SubjectDetail() {
             teacherName:
               data.teacherName === undefined ? '강사명 없음' : data.teacherName,
           },
-          onCompleted: data => {
+          onCompleted: () => {
             alert('수정되었습니다.')
           },
         })
