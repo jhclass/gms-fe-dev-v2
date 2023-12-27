@@ -19,11 +19,11 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 60%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 300px;
+  min-width: 360px;
   font-size: 0.875rem;
   font-weight: 600;
   color: #71717a;
@@ -32,11 +32,11 @@ const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 17%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: 102px;
   font-size: 0.875rem;
   color: #71717a;
 `
@@ -44,11 +44,11 @@ const Tfee = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 23%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: 132px;
   font-size: 0.875rem;
   color: #71717a;
 `

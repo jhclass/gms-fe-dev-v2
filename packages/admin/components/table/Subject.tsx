@@ -44,7 +44,7 @@ const ColorCip = styled.p`
 const TableWrap = styled.div`
   width: 100%;
   display: block;
-  min-width: 700px;
+  min-width: 1200px;
 `
 const Theader = styled.div`
   width: 100%;
@@ -74,11 +74,11 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 5%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.05}px;
   vertical-align: middle;
 `
 const Tdiv = styled.div`
@@ -88,42 +88,75 @@ const Tdiv = styled.div`
 const Tname = styled.div`
   display: table-cell;
   text-align: center;
-  width: 50%;
+  width: 60%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
+  min-width: 360px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 17%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
+  min-width: 102px;
 `
 const Tfee = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 23%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
+  min-width: 132px;
 `
 const Texposure = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.07}px;
   vertical-align: middle;
   i {
     font-size: 1rem;
   }
+`
+const Tdate = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+const Troom = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 7%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.07}px;
+`
+const Tteache = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.1}px;
 `
 const OnExposure = styled.span`
   color: #007de9;
@@ -173,6 +206,15 @@ const EllipsisBox = styled.p`
 const HiddenLabel = styled.label`
   display: none;
 `
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
+`
+
 export default function SubjectTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
@@ -189,9 +231,15 @@ export default function SubjectTable() {
     return result
   }
 
+  const getDate = (DataDate: string): string => {
+    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    return LocalDdate
+  }
+
   useEffect(() => {
     refetch()
   }, [router, refetch, currentPage])
+
   return (
     <>
       <TTopic>
@@ -221,46 +269,60 @@ export default function SubjectTable() {
                   <Tfee>수강료</Tfee>
                 </Tdiv>
                 <Texposure>노출여부</Texposure>
+                <Tdate>개강일</Tdate>
+                <Tdate>종강일</Tdate>
+                <Troom>강의실</Troom>
+                <Tteache>강사명</Tteache>
               </TheaderBox>
             </Theader>
-            {subjectData?.map((item, index) => (
-              <TableItem
-                key={index}
-                onClick={() =>
-                  router.push(
-                    {
-                      pathname: `/subjects/detail/${item.id}`,
-                      query: { page: currentPage, limit: currentLimit },
-                    },
-                    `/subjects/detail/${item.id}`,
-                  )
-                }
-              >
-                <TableRow>
-                  <Tflag
-                    style={{
-                      background: item.exposure ? '#007de9' : '#71717a',
-                      opacity: item.exposure ? '1' : '0.8',
-                    }}
-                  ></Tflag>
-                  <Tnum>{(currentPage - 1) * currentLimit + (index + 1)}</Tnum>
-                  <Tdiv>
-                    <SubjectItem tableData={item} />
-                  </Tdiv>
-                  <Texposure>
-                    {item.exposure ? (
-                      <OnExposure>
-                        <i className="xi-check-circle" />
-                      </OnExposure>
-                    ) : (
-                      <OffExposure>
-                        <i className="xi-check-circle " />
-                      </OffExposure>
-                    )}
-                  </Texposure>
-                </TableRow>
-              </TableItem>
-            ))}
+            {subjectTotal > 0 &&
+              subjectData?.map((item, index) => (
+                <TableItem
+                  key={index}
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: `/subjects/detail/${item.id}`,
+                        query: { page: currentPage, limit: currentLimit },
+                      },
+                      `/subjects/detail/${item.id}`,
+                    )
+                  }
+                >
+                  <TableRow>
+                    <Tflag
+                      style={{
+                        background: item.exposure ? '#007de9' : '#71717a',
+                        opacity: item.exposure ? '1' : '0.8',
+                      }}
+                    ></Tflag>
+                    <Tnum>
+                      {(currentPage - 1) * currentLimit + (index + 1)}
+                    </Tnum>
+                    <Tdiv>
+                      <SubjectItem tableData={item} />
+                    </Tdiv>
+                    <Texposure>
+                      {item.exposure ? (
+                        <OnExposure>
+                          <i className="xi-check-circle" />
+                        </OnExposure>
+                      ) : (
+                        <OffExposure>
+                          <i className="xi-check-circle " />
+                        </OffExposure>
+                      )}
+                    </Texposure>
+                    <Tdate>
+                      {item.startDate ? getDate(item.startDate) : '-'}
+                    </Tdate>
+                    <Tdate>{item.endDate ? getDate(item.endDate) : '-'}</Tdate>
+                    <Troom>{item.roomNum ? item.roomNum : '-'}</Troom>
+                    <Tteache>{item.teacherName}</Tteache>
+                  </TableRow>
+                </TableItem>
+              ))}
+            {subjectTotal === 0 && <Nolist>등록된 과정이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
         {subjectTotal > 0 && (

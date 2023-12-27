@@ -206,12 +206,20 @@ const Tprogress = styled.div`
   color: inherit;
   min-width: 90px;
 `
-
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
 `
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
+`
+
 export default function ConsolutationRejectTable({
   currentLimit,
   currentPage,
@@ -307,18 +315,22 @@ export default function ConsolutationRejectTable({
                 </TheaderBox>
               </Theader>
 
-              {searchResult?.studentState.map((item, index) => (
-                <ConsultItem
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                  checkBtn={true}
-                  checkItem={checkItem}
-                  setCheckItem={setCheckItem}
-                />
-              ))}
+              {searchResult?.totalCount > 0 &&
+                searchResult?.studentState.map((item, index) => (
+                  <ConsultItem
+                    key={index}
+                    tableData={item}
+                    itemIndex={index}
+                    currentPage={currentPage}
+                    limit={currentLimit}
+                    checkBtn={true}
+                    checkItem={checkItem}
+                    setCheckItem={setCheckItem}
+                  />
+                ))}
+              {searchResult?.totalCount === 0 && (
+                <Nolist>등록된 오류/거부 상담카드가 없습니다.</Nolist>
+              )}
             </TableWrap>
           </ScrollShadow>
           {searchResult?.totalCount > 0 && (

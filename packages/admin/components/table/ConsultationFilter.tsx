@@ -199,12 +199,20 @@ const Tprogress = styled.div`
   color: inherit;
   min-width: 90px;
 `
-
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
 `
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
+`
+
 export default function ConsolutationFilterTable({
   onFilterSearch,
   studentFilter,
@@ -286,17 +294,21 @@ export default function ConsolutationFilterTable({
               </TheaderBox>
             </Theader>
 
-            {searchResult?.studentState.map((item, index) => (
-              <ConsultItem
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                currentPage={currentPage}
-                limit={currentLimit}
-                favorite={FavoList?.includes(item.id)}
-                favoTotal={favoTotal}
-              />
-            ))}
+            {searchResult?.totalCount > 0 &&
+              searchResult?.studentState.map((item, index) => (
+                <ConsultItem
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                  favorite={FavoList?.includes(item.id)}
+                  favoTotal={favoTotal}
+                />
+              ))}
+            {searchResult?.totalCount === 0 && (
+              <Nolist>검색결과가 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
         {searchResult?.totalCount > 0 && (
