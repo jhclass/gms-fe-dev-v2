@@ -482,9 +482,6 @@ export default function ConsultDetail() {
     onClose()
   }
 
-  if (loading) return 'Submitting...'
-  if (error) return `Submission error! ${error.message}`
-
   return (
     <>
       {data !== undefined && (

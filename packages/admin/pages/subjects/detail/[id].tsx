@@ -279,8 +279,6 @@ export default function SubjectDetail() {
     setTeacher(e.target.value)
   }
 
-  if (loading) return 'Submitting...'
-  if (error) return `Submission error! ${error.message}`
   return (
     <>
       {data !== undefined && (
