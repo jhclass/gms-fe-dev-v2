@@ -694,7 +694,7 @@ export default function ConsultWirte() {
                         selected={
                           stVisitDate === null ? null : new Date(stVisitDate)
                         }
-                        placeholderText="기간을 선택해주세요."
+                        placeholderText="날짜를 선택해주세요."
                         isClearable
                         onChange={date => {
                           field.onChange(date)
@@ -730,7 +730,7 @@ export default function ConsultWirte() {
                             ? null
                             : new Date(expEnrollDate)
                         }
-                        placeholderText="기간을 선택해주세요."
+                        placeholderText="날짜를 선택해주세요."
                         isClearable
                         onChange={date => {
                           field.onChange(date)

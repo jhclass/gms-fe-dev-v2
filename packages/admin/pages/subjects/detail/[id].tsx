@@ -502,7 +502,7 @@ export default function SubjectDetail() {
                                 ? null
                                 : new Date(sjStartDate)
                             }
-                            placeholderText="기간을 선택해주세요."
+                            placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
                               field.onChange(date)
@@ -538,7 +538,7 @@ export default function SubjectDetail() {
                             selected={
                               sjEndDate === null ? null : new Date(sjEndDate)
                             }
-                            placeholderText="기간을 선택해주세요."
+                            placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
                               field.onChange(date)
