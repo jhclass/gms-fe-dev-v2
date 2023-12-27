@@ -27,7 +27,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 name="naver-site-verification"
                 content="5562cb762e417b1c3d20bee2ae45eecaaf38b389"
               />
-              <title>H-Class | 하이클래스</title>
+              <title>H ACADEMY | 에이치 아카데미</title>
             </Head>
             <Component {...pageProps} />
           </Layout>
