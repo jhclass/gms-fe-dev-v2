@@ -28,6 +28,22 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 content="5562cb762e417b1c3d20bee2ae45eecaaf38b389"
               />
               <title>H ACADEMY | 에이치 아카데미</title>
+              <meta
+                name="description"
+                content="모션그래픽, 웹툰, 이모티콘, 시네마4D, 에프터이펙트, 3D 블렌더, 클립스튜디오 국비지원 학원."
+              />
+
+              <meta property="og:type" content="website" />
+              <meta property="og:title" content="H ACADEMY | 에이치 아카데미" />
+              <meta
+                property="og:description"
+                content="모션그래픽, 웹툰, 이모티콘, 시네마4D, 에프터이펙트, 3D 블렌더, 클립스튜디오 국비지원 학원."
+              />
+              {/* <meta
+                property="og:image"
+                content="http://www.mysite.com/myimage.jpg"
+              />
+              <meta property="og:url" content="http://www.mysite.com" /> */}
             </Head>
             <Component {...pageProps} />
           </Layout>
