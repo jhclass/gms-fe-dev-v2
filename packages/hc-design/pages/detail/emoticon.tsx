@@ -7,8 +7,14 @@ export default function Detail() {
       <section>
         <div className="max-w-[2000px] mx-auto my-0">
           <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/webtoon01.jpg"
-            alt="webtoon"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/emoticon01.webp"
+            alt="emoticon"
+            className="hidden lg:block"
+          ></img>
+          <img
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/emoticon01_mo.webp"
+            alt="emoticon"
+            className="block lg:hidden"
           ></img>
         </div>
       </section>

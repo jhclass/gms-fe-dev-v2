@@ -60,7 +60,8 @@ export default function Footer() {
               </li>
             </ul>
             <p className="mt-2 text-sm font-thin text-slate-200">
-              Copyright by HIGH-CLASS. All rights reserved.
+              <i className="xi-copyright" /> 2023. HIGH-CLASS Co. All rights
+              reserved.
             </p>
           </div>
         </div>
