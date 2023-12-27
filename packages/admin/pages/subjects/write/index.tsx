@@ -108,8 +108,7 @@ export default function SubjectWrite() {
         roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
         exposure: isSelected,
         totalTime: data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
-        teacherName:
-          data.teacherName === undefined ? '강사명 없음' : data.teacherName,
+        teacherName: data.teacherName === '' ? '강사명 없음' : data.teacherName,
       },
       refetchQueries: [
         {
@@ -267,7 +266,7 @@ export default function SubjectWrite() {
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
-                    placeholder="강의실"
+                    placeholder="예) 204호 또는 별관 204호"
                     variant="bordered"
                     radius="md"
                     type="text"
@@ -279,7 +278,7 @@ export default function SubjectWrite() {
                     {...register('roomNum')}
                   />
                 </AreaBox>
-                <AreaBox>
+                {/* <AreaBox>
                   <Controller
                     control={control}
                     name="teacherName"
@@ -305,13 +304,28 @@ export default function SubjectWrite() {
                         <SelectItem key={'이강사'} value={'이강사'}>
                           {'이강사'}
                         </SelectItem>
-                        {/* {managerList?.map(item => (
+                        {managerList?.map(item => (
                         <SelectItem key={item.mUsername} value={item.mUsername}>
                           {item.mUsername}
                         </SelectItem>
-                      ))} */}
+                      ))}
                       </Select>
                     )}
+                  />
+                </AreaBox> */}
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="강사명"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="강사명"
+                    onChange={e => {
+                      register('teacherName').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('teacherName')}
                   />
                 </AreaBox>
               </FlexBox>
@@ -328,7 +342,7 @@ export default function SubjectWrite() {
                           selected={
                             sjStartDate === null ? null : new Date(sjStartDate)
                           }
-                          placeholderText="기간을 선택해주세요."
+                          placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)
@@ -363,7 +377,7 @@ export default function SubjectWrite() {
                           selected={
                             sjEndDate === null ? null : new Date(sjEndDate)
                           }
-                          placeholderText="기간을 선택해주세요."
+                          placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)

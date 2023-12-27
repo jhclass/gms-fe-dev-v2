@@ -68,7 +68,7 @@ export default function Header() {
               </h1>
               <div className="items-center hidden h-full px-10 lg:flex">
                 <ul className="flex items-center px-3 text-lg font-base lg:px-0 whitespace-nowrap scroll_sm">
-                  <li className="mx-2">
+                  <li className="relative mr-3 after:w-[1px] after:h-[6px] after:bg-zinc-500 after:absolute after:top-[50%] after:mt-[-3px] after:right-[-0.75rem]">
                     <Link
                       color="foreground"
                       href="/detail/webtoon"
@@ -77,7 +77,7 @@ export default function Header() {
                       🖌️ 웹툰
                     </Link>
                   </li>
-                  <li className="mx-2">
+                  <li className="relative mx-3 after:w-[1px] after:h-[6px] after:bg-zinc-500 after:absolute after:top-[50%] after:mt-[-3px] after:right-[-0.75rem]">
                     <Link
                       color="foreground"
                       href="/detail/emoticon"
@@ -86,7 +86,7 @@ export default function Header() {
                       😍 이모티콘
                     </Link>
                   </li>
-                  <li className="mx-2">
+                  <li className="mx-3">
                     <Link
                       color="foreground"
                       href="/detail/motion"
@@ -143,17 +143,17 @@ export default function Header() {
               </Button>
               <Link
                 href="/consult"
-                className="flex items-center justify-center w-10 h-10 mr-2 text-2xl text-white rounded-full lg:hidden bg-primary"
+                className="flex items-center justify-center w-10 h-10 text-2xl text-white rounded-full lg:hidden bg-primary"
               >
                 <i className="xi-call" />
               </Link>
-              <button
-                className="flex items-center justify-center w-7 h-[3rem] outline-none lg:hidden group tap-highlight-transparent"
+              {/* <button
+                className="flex items-center ml-2 justify-center w-7 h-[3rem] outline-none lg:hidden group tap-highlight-transparent"
                 type="button"
                 onClick={handleButtonClick}
-              >
-                <span className="relative w-7 h-[1.5px] bg-black pointer-events-none flex flex-col items-center justify-center text-inherit before:content-[''] before:h-full before:absolute before:w-full before:bg-current before:-translate-y-2 before:rotate-0 after:content-[''] after:absolute before:left-0 after:left-0 after:h-full after:w-full after:bg-current after:translate-y-2 after:rotate-0"></span>
-              </button>
+              > */}
+              {/* <span className="relative w-7 h-[1.5px] bg-black pointer-events-none flex flex-col items-center justify-center text-inherit before:content-[''] before:h-full before:absolute before:w-full before:bg-current before:-translate-y-2 before:rotate-0 after:content-[''] after:absolute before:left-0 after:left-0 after:h-full after:w-full after:bg-current after:translate-y-2 after:rotate-0"></span>
+              </button> */}
             </div>
           </div>
           <div className="flex items-center lg:pb-2 lg:wrap h-[3.5rem] lg:hidden">

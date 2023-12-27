@@ -19,6 +19,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 name="viewport"
                 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
               />
+              <meta
+                name="naver-site-verification"
+                content="7a5bb6648423e8d7bbca8430259b499b13412ec9"
+              />
               <title>H-Class | 하이클래스</title>
             </Head>
             <Component {...pageProps} />

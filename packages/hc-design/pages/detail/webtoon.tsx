@@ -9,6 +9,12 @@ export default function Detail() {
           <img
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/webtoon01.webp"
             alt="webtoon"
+            className="hidden lg:block"
+          ></img>
+          <img
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/webtoon01_mo.webp"
+            alt="webtoon"
+            className="block lg:hidden"
           ></img>
         </div>
       </section>

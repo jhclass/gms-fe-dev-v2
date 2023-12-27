@@ -13,95 +13,61 @@ export default function Gnb() {
       {/* <div className="hidden mr-3 md:hidden lg:block">
         <MenuAll />
       </div> */}
-      <ul className="flex items-center w-full px-3 overflow-x-auto overflow-y-hidden text-lg font-bold lg:px-0 lg:w-auto whitespace-nowrap scroll">
+      {/* <ul className="flex items-center w-full px-3 overflow-x-auto overflow-y-hidden text-lg font-bold lg:px-0 lg:w-auto whitespace-nowrap scroll">
         <li className="mx-2">
           <Link
             color="foreground"
-            href="#"
-            onClick={handleTest}
+            href="/detail/webtoon"
             className="py-3 lg:py-0"
           >
-            ⭐BEST 강의 특별전
+            🖌️ 웹툰
           </Link>
         </li>
         <li className="mx-2">
           <Link
             color="foreground"
-            href="#"
-            onClick={handleTest}
+            href="/detail/emoticon"
             className="py-3 lg:py-0"
           >
-            😍얼리버드할인
+            😍 이모티콘
           </Link>
         </li>
         <li className="mx-2">
           <Link
             color="foreground"
-            href="#"
-            onClick={handleTest}
+            href="/detail/motion"
             className="py-3 lg:py-0"
           >
-            SNS이벤트
+            🖥️ 모션
           </Link>
         </li>
-        <li className="mx-2">
+      </ul> */}
+      <ul className="flex items-center w-full px-3 text-lg font-bold lg:px-0 lg:w-auto">
+        <li className="relative mx-3 after:w-[1px] after:h-[6px] after:bg-zinc-500 after:absolute after:top-[50%] after:mt-[-3px] after:right-[-0.75rem]">
           <Link
             color="foreground"
-            href="#"
-            onClick={handleTest}
+            href="/detail/webtoon"
             className="py-3 lg:py-0"
           >
-            리뉴얼EVENT
+            🖌️ 웹툰
           </Link>
         </li>
-        <li className="mx-2">
+        <li className="relative mx-3 after:w-[1px] after:h-[6px] after:bg-zinc-500 after:absolute after:top-[50%] after:mt-[-3px] after:right-[-0.75rem]">
           <Link
             color="foreground"
-            href="#"
-            onClick={handleTest}
+            href="/detail/emoticon"
             className="py-3 lg:py-0"
           >
-            🔥타임세일
+            😍 이모티콘
           </Link>
         </li>
-        <li className="mx-2">
+        <li className="mx-3">
           <Link
             color="foreground"
-            href="#"
-            onClick={handleTest}
+            href="/detail/motion"
             className="py-3 lg:py-0"
           >
-            EVENT1
-          </Link>
-        </li>
-        <li className="mx-2">
-          <Link
-            color="foreground"
-            href="#"
-            onClick={handleTest}
-            className="py-3 lg:py-0"
-          >
-            EVENT2
-          </Link>
-        </li>
-        <li className="mx-2">
-          <Link
-            color="foreground"
-            href="#"
-            onClick={handleTest}
-            className="py-3 lg:py-0"
-          >
-            EVENT3
-          </Link>
-        </li>
-        <li className="mx-2">
-          <Link
-            color="foreground"
-            href="#"
-            onClick={handleTest}
-            className="py-3 lg:py-0"
-          >
-            EVENT4
+            🖥️ 모션
           </Link>
         </li>
       </ul>
