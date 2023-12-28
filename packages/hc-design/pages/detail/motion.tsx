@@ -9,12 +9,12 @@ export default function Detail() {
           <img
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/motion01.webp"
             alt="motion"
-            className="hidden lg:block"
+            className="hidden w-full wmd:block"
           ></img>
           <img
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/motion01_mo.webp"
             alt="motion"
-            className="block lg:hidden"
+            className="block w-full wmd:hidden"
           ></img>
         </div>
       </section>
