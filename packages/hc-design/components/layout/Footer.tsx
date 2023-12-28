@@ -33,21 +33,18 @@ export default function Footer() {
             <ul className="mt-5 text-sm font-thin text-slate-400">
               <li>
                 <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
-                  H-CLASS
+                  H ACADEMY
                 </span>
                 <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
-                  대표 : 심혜원
+                  대표 : 윤명노
                 </span>
-                <span>사업자등록번호 : 537-42-01115</span>
+                <span>사업자등록번호 : 641-88-00207</span>
               </li>
               <li>
                 <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
-                  통신판매업신고 : 537-42-01115
-                </span>
-                <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
                   개인정보보호책임자 : 윤명노
                 </span>
-                <span>E-mail : admin@highclass.com</span>
+                <span>E-mail : highclass.yoon@gmail.com</span>
               </li>
               <li>
                 <span className="relative pr-2 mr-2 after:block after:w-[1px] after:h-3.5 after:bg-slate-400 after:absolute after:right-0 after:top-0.5">
@@ -60,7 +57,7 @@ export default function Footer() {
               </li>
             </ul>
             <p className="mt-2 text-sm font-thin text-slate-200">
-              <i className="xi-copyright" /> 2023. HIGH-CLASS Co. All rights
+              <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
               reserved.
             </p>
           </div>
