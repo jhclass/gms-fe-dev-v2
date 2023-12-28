@@ -67,7 +67,7 @@ export default function Gnb() {
             href="/detail/motion"
             className="py-3 lg:py-0"
           >
-            🖥️ 모션
+            🏃 모션
           </Link>
         </li>
       </ul>

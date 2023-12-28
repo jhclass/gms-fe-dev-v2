@@ -92,7 +92,7 @@ export default function Header() {
                       href="/detail/motion"
                       className="py-3 lg:py-0"
                     >
-                      🖥️ 모션
+                      🏃 모션
                     </Link>
                   </li>
                 </ul>
