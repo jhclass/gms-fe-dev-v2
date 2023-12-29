@@ -312,7 +312,14 @@ export default function Header() {
         <HeaderCt>
           <Logo>
             <Link href="/">
-              <img src="/src/images/hc_symbol.svg" alt="High Class Admin" />
+              {/* <img
+                src="https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol_1_w.svg"
+                alt="H Academy Admin"
+              /> */}
+              <img
+                src="/src/images/hacademy_symbol.svg"
+                alt="H ACADEMY Admin"
+              />
             </Link>
           </Logo>
         </HeaderCt>
