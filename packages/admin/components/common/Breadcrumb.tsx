@@ -69,6 +69,7 @@ const FilterBtn = styled(motion.button)`
   border-radius: 0.5rem;
   align-items: center;
   margin-right: 0.5rem;
+  font-size: 0.875rem;
 `
 
 const ActiveIcon = styled(motion.i)`

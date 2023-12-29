@@ -93,7 +93,7 @@ const TreceiptDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -103,7 +103,17 @@ const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: 100px;
+`
+const Tfield = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -117,7 +127,7 @@ const Tname = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  min-width: 100px;
+  min-width: 110px;
   font-weight: 600;
   /* color: #52525b; */
 `
@@ -135,7 +145,7 @@ const Tphone = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 110px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -313,6 +323,9 @@ export default function ConsolutItem(props: ConsultItemProps) {
               <TsubDiv>
                 <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
+              {/* <Tfield>
+                <EllipsisBox>분야</EllipsisBox>
+              </Tfield> */}
               <Tname>
                 {student.progress === 110 ? (
                   <EllipsisBox>

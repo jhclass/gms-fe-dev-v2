@@ -290,6 +290,11 @@ export default function ConsultDetail() {
   const managerList = managerData?.seeManageUser || []
   const studentState = data?.searchStudentState.studentState[0] || []
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: sbjIsOpen,
+    onOpen: sbjOpen,
+    onClose: sbjClose,
+  } = useDisclosure()
 
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -311,11 +316,13 @@ export default function ConsultDetail() {
       perchase: studentState?.perchase,
       pic: studentState?.pic,
       receiptDiv: studentState?.receiptDiv,
+      filed: '웹툰',
     },
   })
   const { isDirty, dirtyFields, errors } = formState
   const [subjectList, setSubjectList] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState()
+  const [filedSelected, setFiledSelected] = useState()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -473,13 +480,19 @@ export default function ConsultDetail() {
   const handleManagerChange = e => {
     setManager(e.target.value)
   }
-
-  const handleCheckboxChange = values => {
+  const handleFiledChange = values => {
+    setFiledSelected(values)
+  }
+  const clickFiledSubmit = () => {
+    setValue('filed', filedSelected)
+    onClose()
+  }
+  const handleSbjChange = values => {
     setSubjectSelected(values)
   }
-  const clickSubmit = () => {
+  const clickSbjSubmit = () => {
     setValue('subject', subjectSelected)
-    onClose()
+    sbjClose()
   }
 
   return (
@@ -631,16 +644,122 @@ export default function ConsultDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
+                {/* <AreaBox>
+                  <Controller
+                    control={control}
+                    name="filed"
+                    rules={{
+                      required: {
+                        value: true,
+                        message: '상담 분야를 최소 1개 이상 선택해주세요.',
+                      },
+                    }}
+                    defaultValue={''}
+                    render={({ field }) => (
+                      <>
+                        <Textarea
+                          readOnly
+                          value={field.value}
+                          label="상담 분야 선택"
+                          labelPlacement="outside"
+                          className="max-w-full"
+                          variant="bordered"
+                          minRows={1}
+                          defaultValue={''}
+                          onClick={onOpen}
+                          {...register('filed')}
+                        />
+                        <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+                          <ModalContent>
+                            {onClose => (
+                              <>
+                                <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                                <ModalBody>
+                                  <ScrollShadow
+                                    orientation="horizontal"
+                                    className="scrollbar"
+                                  >
+                                    <CheckboxGroup
+                                      value={filedSelected}
+                                      onChange={handleFiledChange}
+                                      classNames={{
+                                        wrapper: 'gap-0',
+                                      }}
+                                    >
+                                      {filedList?.result !== null &&
+                                        filedList?.result.map(
+                                          (item, index) => (
+                                            <TableItem key={index}>
+                                              <TableRow>
+                                                <Checkbox
+                                                  key={item.id}
+                                                  value={item.subjectName}
+                                                >
+                                                  <SubjectItem
+                                                    tableData={item}
+                                                  />
+                                                </Checkbox>
+                                              </TableRow>
+                                            </TableItem>
+                                          ),
+                                        )}
+                                      {filedList?.result === null && (
+                                        <Nolist>등록된 분야가 없습니다.</Nolist>
+                                      )}
+                                    </CheckboxGroup>
+                                  </ScrollShadow>
+                                  {filedList?.totalCount !== null && (
+                                    <PagerWrap>
+                                      <Pagination
+                                        variant="light"
+                                        showControls
+                                        initialPage={currentFiledPage}
+                                        total={Math.ceil(
+                                          filedList?.totalCount /
+                                            currentFiledLimit,
+                                        )}
+                                        onChange={newPage => {
+                                          setCurrentFiledPage(newPage)
+                                        }}
+                                      />
+                                    </PagerWrap>
+                                  )}
+                                </ModalBody>
+                                <ModalFooter>
+                                  <Button
+                                    color="danger"
+                                    variant="light"
+                                    onPress={onClose}
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    color="primary"
+                                    onPress={() => {
+                                      clickFiledSubmit()
+                                      field.onChange(filedSelected)
+                                    }}
+                                  >
+                                    선택
+                                  </Button>
+                                </ModalFooter>
+                              </>
+                            )}
+                          </ModalContent>
+                        </Modal>
+                      </>
+                    )}
+                  />
+                  {errors.subject && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.subject.message)}
+                    </p>
+                  )}
+                </AreaBox> */}
                 <AreaBox>
                   <Controller
                     control={control}
                     name="subject"
-                    rules={{
-                      required: {
-                        value: true,
-                        message: '과정을 최소 1개 이상 선택해주세요.',
-                      },
-                    }}
                     defaultValue={studentState?.subject}
                     render={({ field }) => (
                       <>
@@ -653,12 +772,16 @@ export default function ConsultDetail() {
                           variant="bordered"
                           minRows={1}
                           defaultValue={studentState?.subject}
-                          onClick={onOpen}
+                          onClick={sbjOpen}
                           {...register('subject')}
                         />
-                        <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+                        <Modal
+                          size={'2xl'}
+                          isOpen={sbjIsOpen}
+                          onClose={sbjClose}
+                        >
                           <ModalContent>
-                            {onClose => (
+                            {sbjClose => (
                               <>
                                 <ModalHeader className="flex flex-col gap-1"></ModalHeader>
                                 <ModalBody>
@@ -681,7 +804,7 @@ export default function ConsultDetail() {
                                   >
                                     <CheckboxGroup
                                       value={subjectSelected}
-                                      onChange={handleCheckboxChange}
+                                      onChange={handleSbjChange}
                                       classNames={{
                                         wrapper: 'gap-0',
                                       }}
@@ -739,14 +862,14 @@ export default function ConsultDetail() {
                                   <Button
                                     color="danger"
                                     variant="light"
-                                    onPress={onClose}
+                                    onPress={sbjClose}
                                   >
                                     Close
                                   </Button>
                                   <Button
                                     color="primary"
                                     onPress={() => {
-                                      clickSubmit()
+                                      clickSbjSubmit()
                                       field.onChange(subjectSelected)
                                     }}
                                   >

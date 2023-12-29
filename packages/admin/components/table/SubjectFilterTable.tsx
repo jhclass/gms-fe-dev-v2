@@ -133,11 +133,11 @@ const Texposure = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.08}px;
   vertical-align: middle;
   i {
     font-size: 1rem;

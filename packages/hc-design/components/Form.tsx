@@ -20,21 +20,23 @@ import badwords from '@/lib/badwords.json'
 const STUDENT_STATE_MUTATION = gql`
   mutation CreateStudentState(
     $stName: String!
-    $agreement: String!
     $phoneNum1: String!
+    $agreement: String!
     $subject: [String!]
+    $campus: String
     $detail: String
     $receiptDiv: String
-    $campus: String
+    $progress: Int
   ) {
     createStudentState(
       stName: $stName
-      agreement: $agreement
       phoneNum1: $phoneNum1
+      agreement: $agreement
       subject: $subject
+      campus: $campus
       detail: $detail
       receiptDiv: $receiptDiv
-      campus: $campus
+      progress: $progress
     ) {
       ok
       error
@@ -49,7 +51,6 @@ type FormValues = {
   phone: string
   contents: string
   privacy: string
-  receiptDiv: string
 }
 
 export default function Form() {
@@ -86,11 +87,12 @@ export default function Form() {
           variables: {
             stName: data.name,
             subject: data.groupSelected,
-            campus: data.campus,
+            campus: '신촌',
             agreement: data.privacy ? '동의' : '비동의',
             phoneNum1: data.phone,
             detail: data.contents,
-            receiptDiv: data.receiptDiv,
+            receiptDiv: '온라인',
+            progress: 0,
           },
           onCompleted: data => {
             alert('상담신청이 완료되었습니다. 😊')
@@ -208,18 +210,7 @@ export default function Form() {
               )}
             </ul>
             <ul>
-              <li className="hidden py-2">
-                <Input
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label="상담 구분"
-                  className="w-full"
-                  defaultValue={'온라인'}
-                  {...register('receiptDiv')}
-                />
-              </li>
-              <li className="hidden py-2">
+              {/* <li className="hidden py-2">
                 <Select
                   variant="bordered"
                   label="캠퍼스"
@@ -241,7 +232,7 @@ export default function Form() {
                     {String(errors.campus.message)}
                   </p>
                 )}
-              </li>
+              </li> */}
               <li className="py-2">
                 <Input
                   variant="bordered"

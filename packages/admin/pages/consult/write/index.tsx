@@ -95,6 +95,10 @@ const FilterLabel = styled.label`
   color: #11181c;
   padding-bottom: 0.1rem;
   display: block;
+
+  span {
+    color: red;
+  }
 `
 const BtnBox = styled.div`
   display: flex;
@@ -190,6 +194,8 @@ const Nolist = styled.div`
 
 export default function ConsultWirte() {
   const router = useRouter()
+  const [currentFiledPage, setCurrentFiledPage] = useState(1)
+  const [currentFiledLimit] = useState(5)
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
   const [currentSubjectLimit] = useState(5)
   const {
@@ -207,8 +213,15 @@ export default function ConsultWirte() {
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: sbjIsOpen,
+    onOpen: sbjOpen,
+    onClose: sbjClose,
+  } = useDisclosure()
+
   const [subjectList, setSubjectList] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState()
+  const [filedSelected, setFiledSelected] = useState()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -251,6 +264,7 @@ export default function ConsultWirte() {
             : new Date(data.expEnrollDate),
         perchase: null,
         birthday: null,
+        progress: data.progress === undefined ? null : data.progress,
         receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
         pic: data.subDiv === undefined ? '담당자 지정필요' : data.pic,
       },
@@ -291,12 +305,19 @@ export default function ConsultWirte() {
     setManager(e.target.value)
   }
 
-  const handleCheckboxChange = values => {
+  const handleFiledChange = values => {
+    setFiledSelected(values)
+  }
+  const clickFiledSubmit = () => {
+    setValue('filed', filedSelected)
+    onClose()
+  }
+  const handleSbjChange = values => {
     setSubjectSelected(values)
   }
-  const clickSubmit = () => {
+  const clickSbjSubmit = () => {
     setValue('subject', subjectSelected)
-    onClose()
+    sbjClose()
   }
 
   return (
@@ -314,7 +335,11 @@ export default function ConsultWirte() {
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="이름"
+                    label={
+                      <FilterLabel>
+                        이름<span>*</span>
+                      </FilterLabel>
+                    }
                     defaultValue={''}
                     onChange={e => {
                       register('stName').onChange(e)
@@ -357,7 +382,11 @@ export default function ConsultWirte() {
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="휴대폰번호"
+                    label={
+                      <FilterLabel>
+                        휴대폰번호<span>*</span>
+                      </FilterLabel>
+                    }
                     onChange={e => {
                       register('phoneNum1').onChange(e)
                     }}
@@ -439,16 +468,124 @@ export default function ConsultWirte() {
                   )}
                 </AreaBox>
               </FlexBox>
+              {/* <AreaBox>
+                <Controller
+                  control={control}
+                  name="filed"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: '상담 분야를 최소 1개 이상 선택해주세요.',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <>
+                      <Textarea
+                        readOnly
+                        label={<FilterLabel>
+                        상담 분야 선택 <span>*</span>
+                      </FilterLabel>}
+                        labelPlacement="outside"
+                        className="max-w-full"
+                        variant="bordered"
+                        minRows={1}
+                        onClick={onOpen}
+                        {...register('filed')}
+                      />
+                      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+                        <ModalContent>
+                          {onClose => (
+                            <>
+                              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                              <ModalBody>
+                                <ScrollShadow
+                                  orientation="horizontal"
+                                  className="scrollbar"
+                                >
+                                  <CheckboxGroup
+                                    value={filedSelected}
+                                    onChange={handleFiledChange}
+                                    classNames={{
+                                      wrapper: 'gap-0',
+                                    }}
+                                  >
+                                    {filedList?.result !== null &&
+                                        filedList?.result.map(
+                                          (item, index) => (
+                                            <TableItem key={index}>
+                                              <TableRow>
+                                                <Checkbox
+                                                  key={item.id}
+                                                  value={item.subjectName}
+                                                >
+                                                  <SubjectItem
+                                                    tableData={item}
+                                                  />
+                                                </Checkbox>
+                                              </TableRow>
+                                            </TableItem>
+                                          ),
+                                        )}
+                                      {filedList?.result === null && (
+                                        <Nolist>등록된 분야가 없습니다.</Nolist>
+                                      )}
+                                    <Checkbox key={'분야1'} value={'분야1'}>
+                                      분야1
+                                    </Checkbox>
+                                  </CheckboxGroup>
+                                </ScrollShadow>
+                                {filedList?.totalCount !== null && (
+                                    <PagerWrap>
+                                      <Pagination
+                                        variant="light"
+                                        showControls
+                                        initialPage={currentFiledPage}
+                                        total={Math.ceil(
+                                          filedList?.totalCount /
+                                            currentFiledLimit,
+                                        )}
+                                        onChange={newPage => {
+                                          setCurrentSubjectPage(newPage)
+                                        }}
+                                      />
+                                    </PagerWrap>
+                                  )}
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button
+                                  color="danger"
+                                  variant="light"
+                                  onPress={onClose}
+                                >
+                                  Close
+                                </Button>
+                                <Button
+                                  color="primary"
+                                  onPress={() => {
+                                    clickFiledSubmit()
+                                    field.onChange(filedSelected)
+                                  }}
+                                >
+                                  선택
+                                </Button>
+                              </ModalFooter>
+                            </>
+                          )}
+                        </ModalContent>
+                      </Modal>
+                    </>
+                  )}
+                />
+                {errors.subject && (
+                  <p className="px-2 pt-2 text-xs text-red-500">
+                    {String(errors.subject.message)}
+                  </p>
+                )}
+              </AreaBox> */}
               <AreaBox>
                 <Controller
                   control={control}
                   name="subject"
-                  rules={{
-                    required: {
-                      value: true,
-                      message: '과정을 최소 1개 이상 선택해주세요.',
-                    },
-                  }}
                   render={({ field }) => (
                     <>
                       <Textarea
@@ -458,12 +595,12 @@ export default function ConsultWirte() {
                         className="max-w-full"
                         variant="bordered"
                         minRows={1}
-                        onClick={onOpen}
+                        onClick={sbjOpen}
                         {...register('subject')}
                       />
-                      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+                      <Modal size={'2xl'} isOpen={sbjIsOpen} onClose={sbjClose}>
                         <ModalContent>
-                          {onClose => (
+                          {sbjClose => (
                             <>
                               <ModalHeader className="flex flex-col gap-1"></ModalHeader>
                               <ModalBody>
@@ -486,7 +623,7 @@ export default function ConsultWirte() {
                                 >
                                   <CheckboxGroup
                                     value={subjectSelected}
-                                    onChange={handleCheckboxChange}
+                                    onChange={handleSbjChange}
                                     classNames={{
                                       wrapper: 'gap-0',
                                     }}
@@ -538,14 +675,14 @@ export default function ConsultWirte() {
                                 <Button
                                   color="danger"
                                   variant="light"
-                                  onPress={onClose}
+                                  onPress={sbjClose}
                                 >
                                   Close
                                 </Button>
                                 <Button
                                   color="primary"
                                   onPress={() => {
-                                    clickSubmit()
+                                    clickSbjSubmit()
                                     field.onChange(subjectSelected)
                                   }}
                                 >

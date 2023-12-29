@@ -77,6 +77,10 @@ const FilterLabel = styled.label`
   color: #11181c;
   padding-bottom: 0.1rem;
   display: block;
+
+  span {
+    color: red;
+  }
 `
 const BtnBox = styled.div`
   display: flex;
@@ -158,7 +162,11 @@ export default function SubjectWrite() {
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="과정명"
+                    label={
+                      <FilterLabel>
+                        과정명<span>*</span>
+                      </FilterLabel>
+                    }
                     minRows={1}
                     defaultValue={null}
                     onChange={e => {
@@ -202,7 +210,11 @@ export default function SubjectWrite() {
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="수강료"
+                    label={
+                      <FilterLabel>
+                        수강료<span>*</span>
+                      </FilterLabel>
+                    }
                     onChange={e => {
                       register('fee').onChange(e)
                     }}
@@ -237,7 +249,11 @@ export default function SubjectWrite() {
                     render={({ field, fieldState }) => (
                       <Select
                         labelPlacement="outside"
-                        label={<FilterLabel>수강구분</FilterLabel>}
+                        label={
+                          <FilterLabel>
+                            수강구분<span>*</span>
+                          </FilterLabel>
+                        }
                         placeholder=" "
                         className="w-full"
                         variant="bordered"
