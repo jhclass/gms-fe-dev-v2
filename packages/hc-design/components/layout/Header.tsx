@@ -63,7 +63,10 @@ export default function Header() {
             <div className="flex items-center h-full">
               <h1 className="grow-0">
                 <Link href="/" className="block w-[10rem] py-3">
-                  <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/hc_logo_2.svg" />
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/hAcademy_logo_1.svg"
+                    alt="H ACADEMY | H아카데미"
+                  />
                 </Link>
               </h1>
               <div className="items-center hidden h-full px-10 lg:flex">
