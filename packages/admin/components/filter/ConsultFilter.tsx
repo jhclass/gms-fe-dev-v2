@@ -104,17 +104,6 @@ const FilterVariants = {
   },
 }
 
-const receiptData = {
-  0: '온라인',
-  1: '전화',
-  2: '방문',
-}
-
-const subData = {
-  0: 'HRD',
-  1: '일반',
-}
-
 export default function TableFillter({
   isActive,
   onFilterToggle,
@@ -302,6 +291,37 @@ export default function TableFillter({
                 )}
               />
             </ItemBox>
+            {/* <ItemBox>
+              <Controller
+                control={control}
+                name="pic"
+                defaultValue={'-'}
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
+                    label="상담분야"
+                    placeholder=" "
+                    className="w-full"
+                    defaultValue={'-'}
+                    variant="bordered"
+                    selectedKeys={[manager]}
+                    onChange={value => {
+                      field.onChange(value)
+                      handleManagerChange(value)
+                    }}
+                  >
+                    <SelectItem key={'-'} value={'-'}>
+                      {'-'}
+                    </SelectItem>
+                    {managerList?.map(item => (
+                      <SelectItem key={item.mUsername} value={item.mUsername}>
+                        {item.mUsername}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            </ItemBox> */}
             <ItemBox>
               <Controller
                 control={control}
@@ -331,17 +351,6 @@ export default function TableFillter({
                     ))}
                   </Select>
                 )}
-              />
-            </ItemBox>
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="수강생이름"
-                id="stName"
-                {...register('stName')}
               />
             </ItemBox>
           </BoxTop>
@@ -447,6 +456,17 @@ export default function TableFillter({
                   {String(errors.phoneNum1.message)}
                 </p>
               )}
+            </ItemBox>
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
+                placeholder=" "
+                type="text"
+                variant="bordered"
+                label="수강생이름"
+                id="stName"
+                {...register('stName')}
+              />
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>

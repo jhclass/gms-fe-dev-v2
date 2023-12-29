@@ -158,7 +158,7 @@ export default function Header() {
             </CateBox>
           </ConBox>
           <Copyright $navOpen={navOpen}>
-            <i className="xi-copyright" /> 2023. HIGH-CLASS Co. All rights
+            <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
             reserved.
           </Copyright>
         </NavWrap>

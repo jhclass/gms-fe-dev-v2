@@ -166,7 +166,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
 `
 
 export const CREATE_STUDENT_STATE_MUTATION = gql`
-  mutation CreateStudentState(
+  mutation Mutation(
     $stName: String!
     $phoneNum1: String!
     $agreement: String!
@@ -185,6 +185,7 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
     $birthday: String
     $receiptDiv: String
     $pic: String
+    $progress: Int
   ) {
     createStudentState(
       stName: $stName
@@ -205,6 +206,7 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
       birthday: $birthday
       receiptDiv: $receiptDiv
       pic: $pic
+      progress: $progress
     ) {
       ok
       error

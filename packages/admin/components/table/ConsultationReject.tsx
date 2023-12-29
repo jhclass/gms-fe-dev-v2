@@ -120,7 +120,7 @@ const TreceiptDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -130,7 +130,17 @@ const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: 100px;
+`
+const Tfield = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -144,7 +154,7 @@ const Tname = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 110px;
 `
 const Tphone = styled.div`
   display: table-cell;
@@ -154,7 +164,7 @@ const Tphone = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 110px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -305,6 +315,7 @@ export default function ConsolutationRejectTable({
                     <Tprogress>진행상태</Tprogress>
                     <TreceiptDiv>접수구분</TreceiptDiv>
                     <TsubDiv>수강구분</TsubDiv>
+                    {/* <Tfield>상담분야</Tfield> */}
                     <Tname>이름</Tname>
                     <Tphone>연락처</Tphone>
                     <TcreatedAt>등록일시</TcreatedAt>
