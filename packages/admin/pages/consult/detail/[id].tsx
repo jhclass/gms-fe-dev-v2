@@ -60,10 +60,17 @@ const DetailBox = styled.div`
 `
 const TopInfo = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 0.5rem;
   font-size: 0.8rem;
+`
+const Noti = styled.p`
+  span {
+    color: red;
+  }
+`
+const UpdateTime = styled.p`
   span {
     color: #555;
   }
@@ -109,6 +116,10 @@ const FilterLabel = styled.label`
   color: #11181c;
   padding-bottom: 0.1rem;
   display: block;
+
+  span {
+    color: red;
+  }
 `
 const BtnBox = styled.div`
   display: flex;
@@ -503,8 +514,13 @@ export default function ConsultDetail() {
             <Breadcrumb rightArea={false} />
             <DetailBox>
               <TopInfo>
-                <span>최근 업데이트 일시 :</span>
-                {fametDate(studentState?.updatedAt)}
+                <Noti>
+                  <span>*</span> 는 필수입력입니다.
+                </Noti>
+                <UpdateTime>
+                  <span>최근 업데이트 일시 :</span>
+                  {fametDate(studentState?.updatedAt)}
+                </UpdateTime>
               </TopInfo>
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
@@ -515,7 +531,11 @@ export default function ConsultDetail() {
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="이름"
+                      label={
+                        <FilterLabel>
+                          이름<span>*</span>
+                        </FilterLabel>
+                      }
                       defaultValue={studentState?.stName}
                       onChange={e => {
                         register('stName').onChange(e)
@@ -559,7 +579,11 @@ export default function ConsultDetail() {
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="휴대폰번호"
+                      label={
+                        <FilterLabel>
+                          휴대폰번호<span>*</span>
+                        </FilterLabel>
+                      }
                       maxLength={11}
                       defaultValue={studentState?.phoneNum1 || null}
                       onChange={e => {
@@ -660,7 +684,9 @@ export default function ConsultDetail() {
                         <Textarea
                           readOnly
                           value={field.value}
-                          label="상담 분야 선택"
+                          label={<FilterLabel>
+                          상담 분야<span>*</span>
+                        </FilterLabel>}
                           labelPlacement="outside"
                           className="max-w-full"
                           variant="bordered"

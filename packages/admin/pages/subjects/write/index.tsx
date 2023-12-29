@@ -39,6 +39,18 @@ const DetailBox = styled.div`
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
+const TopInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+`
+const Noti = styled.p`
+  span {
+    color: red;
+  }
+`
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -47,6 +59,7 @@ const DetailForm = styled.form`
     gap: 1rem;
   }
 `
+
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -153,6 +166,11 @@ export default function SubjectWrite() {
             }
           />
           <DetailBox>
+            <TopInfo>
+              <Noti>
+                <span>*</span> 는 필수입력입니다.
+              </Noti>
+            </TopInfo>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox>
