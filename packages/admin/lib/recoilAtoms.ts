@@ -93,7 +93,7 @@ export const receiptStatusState = atom({
 
 export const subStatusState = atom({
   key: 'subStatus',
-  default: { 0: '없음', 1: '일반', 2: 'HRD', 3: '실업자', 4: '국가기간' },
+  default: { 0: '없음', 1: '일반', 2: '근로자', 3: '실업자', 4: '국가기간' },
 })
 
 // Filter
