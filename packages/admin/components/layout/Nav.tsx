@@ -134,7 +134,7 @@ export default function Header() {
                 src={
                   navOpen
                     ? 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_logo_1.svg'
-                    : 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol_1.svg'
+                    : 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol.svg'
                 }
                 alt=H ACADEMY Admin"
               /> */}
@@ -142,8 +142,8 @@ export default function Header() {
                 $navOpen={navOpen}
                 src={
                   navOpen
-                    ? '/src/images/hacademy_logo_1.svg'
-                    : '/src/images/hacademy_symbol.svg'
+                    ? '/src/images/hAcademy_logo_1.svg'
+                    : '/src/images/hAcademy_symbol.svg'
                 }
                 alt="H ACADEMY Admin"
               />
