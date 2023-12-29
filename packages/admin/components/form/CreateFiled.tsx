@@ -42,15 +42,6 @@ const BoxTop = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
 `
-const BoxMiddle = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
 const BoxBottom = styled.div`
   display: flex;
   flex: 1;
@@ -60,13 +51,18 @@ const BoxBottom = styled.div`
     gap: 1rem;
     flex-direction: column;
   }
+  max-width: 1400px;
 `
 const ItemBox = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  width: 100%;
 
-  width: 70%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const FilterVariants = {
@@ -206,12 +202,13 @@ export default function TableFillter({ isActive, onCreateToggle }) {
                   variant="bordered"
                   label="분야명"
                   classNames={{
-                    mainWrapper: ['w-[90%]'],
+                    label: ['w-[4rem]'],
+                    mainWrapper: ['w-[calc(100%-4rem)]'],
                   }}
                 />
                 <Button
                   buttonType="submit"
-                  width="calc(50% - 0.5rem)"
+                  width="calc(50%)"
                   height="2.5rem"
                   typeBorder={true}
                   fontColor="#fff"
