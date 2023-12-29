@@ -16,19 +16,21 @@ const BreadcrumbBox = styled.div<{ $isIndex: boolean }>`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  ${props =>
-    props.$isIndex
-      ? ''
-      : `@media (max-width: 768px) {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.5rem;
-      }`}
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
 `
-const CateTitle = styled.h1`
+const CateTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  } */
 `
 const BackIcon = styled.figure`
   display: flex;
@@ -46,6 +48,10 @@ const BackIcon = styled.figure`
     background: #71717a;
   }
 `
+const TitleBox = styled.div`
+  display: flex;
+  align-items: center;
+`
 const Title1 = styled.span`
   font-size: 1.875rem;
   letter-spacing: -0.025em;
@@ -53,11 +59,17 @@ const Title1 = styled.span`
   line-height: 1;
   color: #11181c;
   padding: 0 0.25rem;
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `
 const Title2 = styled.span`
   font-weight: normal;
   font-size: 1.5rem;
   padding-left: 0.25rem;
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `
 const BoxRt = styled.div`
   display: flex;
@@ -231,16 +243,20 @@ export default function Breadcrumb(props) {
               <Title1>{parentItem?.label}</Title1>
             ) : (
               <>
-                <button onClick={() => router.back()}>
-                  <BackIcon>
-                    <i className="xi-arrow-left"></i>
-                  </BackIcon>
-                </button>
-                <Title1>{parentItem?.label}</Title1>
-                <Title2>
-                  <i className="xi-angle-right-thin" />
-                </Title2>
-                <Title2>{currentItem?.label}</Title2>
+                <TitleBox>
+                  <button onClick={() => router.back()}>
+                    <BackIcon>
+                      <i className="xi-arrow-left"></i>
+                    </BackIcon>
+                  </button>
+                  <Title1>{parentItem?.label}</Title1>
+                </TitleBox>
+                <TitleBox>
+                  <Title2>
+                    <i className="xi-angle-right-thin" />
+                  </Title2>
+                  <Title2>{currentItem?.label}</Title2>
+                </TitleBox>
               </>
             )}
           </CateTitle>
