@@ -177,7 +177,7 @@ export default function Login() {
             />
           </Logo> */}
           <Logo>
-            <img src="/src/images/hacademy_logo_1_w.svg" alt="H ACADEMY" />
+            <img src="/src/images/hAcademy_logo_1_w.svg" alt="H ACADEMY" />
           </Logo>
           <form onSubmit={handleSubmit(onSubmit)}>
             <InputBox>
