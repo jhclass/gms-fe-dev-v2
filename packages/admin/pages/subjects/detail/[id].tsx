@@ -46,14 +46,22 @@ const DetailForm = styled.form`
 `
 const TopInfo = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 0.5rem;
   font-size: 0.8rem;
+`
+const Noti = styled.p`
+  span {
+    color: red;
+  }
+`
+const UpdateTime = styled.p`
   span {
     color: #555;
   }
 `
+
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,6 +100,10 @@ const FilterLabel = styled.label`
   color: #11181c;
   padding-bottom: 0.1rem;
   display: block;
+
+  span {
+    color: red;
+  }
 `
 const BtnBox = styled.div`
   display: flex;
@@ -299,8 +311,13 @@ export default function SubjectDetail() {
             />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <TopInfo>
-                <span>최근 업데이트 일시 :</span>
-                {fametDate(subjectState?.updatedAt)}
+                <Noti>
+                  <span>*</span> 는 필수입력입니다.
+                </Noti>
+                <UpdateTime>
+                  <span>최근 업데이트 일시 :</span>
+                  {fametDate(subjectState?.updatedAt)}
+                </UpdateTime>
               </TopInfo>
               <DetailDiv>
                 <FlexBox>
@@ -311,7 +328,11 @@ export default function SubjectDetail() {
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="과정명"
+                      label={
+                        <FilterLabel>
+                          과정명<span>*</span>
+                        </FilterLabel>
+                      }
                       minRows={1}
                       defaultValue={subjectState?.subjectName}
                       onChange={e => {
@@ -356,7 +377,11 @@ export default function SubjectDetail() {
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="수강료"
+                      label={
+                        <FilterLabel>
+                          수강료<span>*</span>
+                        </FilterLabel>
+                      }
                       defaultValue={subjectState?.fee}
                       onChange={e => {
                         register('fee').onChange(e)
@@ -388,7 +413,11 @@ export default function SubjectDetail() {
                         <Select
                           labelPlacement="outside"
                           defaultValue={subjectState?.subDiv}
-                          label={<FilterLabel>수강구분</FilterLabel>}
+                          label={
+                            <FilterLabel>
+                              수강구분<span>*</span>
+                            </FilterLabel>
+                          }
                           placeholder=" "
                           className="w-full"
                           variant="bordered"
