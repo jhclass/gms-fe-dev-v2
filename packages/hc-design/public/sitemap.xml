@@ -1,20 +1,33 @@
-<xml version="1.0" encoding="UTF-8">
-   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-     <url>
-       <loc>https://academy.hart.co.kr</loc>
-       <lastmod>2021-06-01</lastmod>
-     </url>
-         <url>
-       <loc>https://academy.hart.co.kr/detail/webtoon</loc>
-       <lastmod>2021-06-01</lastmod>
-     </url>
-         <url>
-       <loc>https://academy.hart.co.kr/detail/emotion</loc>
-       <lastmod>2021-06-01</lastmod>
-     </url>
-         <url>
-       <loc>https://academy.hart.co.kr/detail/motion</loc>
-       <lastmod>2021-06-01</lastmod>
-     </url>
-   </urlset>
-   </xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>https://academy.hart.co.kr/</loc>
+  <lastmod>2023-12-29T00:28:56+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://academy.hart.co.kr/detail/webtoon</loc>
+  <lastmod>2023-12-29T00:28:56+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://academy.hart.co.kr/detail/emoticon</loc>
+  <lastmod>2023-12-29T00:28:56+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://academy.hart.co.kr/detail/motion</loc>
+  <lastmod>2023-12-29T00:28:56+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://academy.hart.co.kr/consult</loc>
+  <lastmod>2023-12-29T00:28:56+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+</urlset>
