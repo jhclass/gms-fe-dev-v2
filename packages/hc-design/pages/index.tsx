@@ -15,20 +15,19 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 
 export default function Home() {
-  const router = useRouter()
-  useEffect(() => {
-    if (router.pathname == '/') {
-      router.push('/detail/motion')
-    }
-  }, [router])
+  // const router = useRouter()
+  // useEffect(() => {
+  //   if (router.pathname == '/') {
+  //     router.push('/detail/motion')
+  //   }
+  // }, [router])
   return (
     <>
-      <div className="w-full h-[100rem]"></div>
-      {/* <WideSlider />
-      <div className="hidden border-b lg:block">
+      <WideSlider />
+      {/* <div className="hidden border-b lg:block">
         <QuickMenu />
-      </div>
-      <div className="mt-16">
+      </div> */}
+      {/* <div className="mt-16">
         <New />
       </div>
       <div className="mt-16">∂∂∂
@@ -54,10 +53,10 @@ export default function Home() {
       </div>
       <div className="py-16 bg-zinc-200">
         <MainPortfolio />
-      </div>
+      </div> */}
       <div className="py-16">
         <Info />
-      </div> */}
+      </div>
     </>
   )
 }

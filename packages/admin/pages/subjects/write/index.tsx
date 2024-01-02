@@ -122,9 +122,10 @@ export default function SubjectWrite() {
       variables: {
         subDiv: data.subDiv,
         subjectName: data.subjectName.trim(),
-        subjectCode: data.totalTime === '' ? null : data.subjectCode.trim(),
+        subjectCode: data.subjectCode === '' ? null : data.subjectCode.trim(),
         fee: parseInt(data.fee.trim()),
-        startDate: data.stVisit === undefined ? null : new Date(data.startDate),
+        startDate:
+          data.startDate === undefined ? null : new Date(data.startDate),
         endDate: data.endDate === undefined ? null : new Date(data.endDate),
         roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
         exposure: isSelected,
