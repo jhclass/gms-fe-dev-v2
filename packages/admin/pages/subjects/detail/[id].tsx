@@ -267,11 +267,11 @@ export default function SubjectDetail() {
           startDate:
             subjectState?.startDate === null
               ? null
-              : new Date(subjectState?.startDate),
+              : new Date(parseInt(subjectState.startDate)),
           endDate:
             subjectState?.endDate === null
               ? null
-              : new Date(subjectState?.endDate),
+              : new Date(parseInt(subjectState.endDate)),
           roomNum: subjectState.roomNum === null ? null : subjectState?.roomNum,
           exposure: subjectState?.exposure,
           totalTime:
