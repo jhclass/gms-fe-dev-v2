@@ -38,7 +38,7 @@ import {
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
@@ -187,30 +187,30 @@ const PagerWrap = styled.div`
 
 export default function RegistrationWrite() {
   const router = useRouter()
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit] = useState(10)
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
-  const { userLogs } = useUserLogsMutation()
-  const progressStatus = useRecoilValue(progressStatusState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
-  const subStatus = useRecoilValue(subStatusState)
-  const managerList = managerData?.seeManageUser || []
-  const { register, control, setValue, handleSubmit, formState } = useForm()
-  const { errors } = formState
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [subjectList, setSubjectList] = useState(null)
-  const [subjectSelected, setSubjectSelected] = useState()
-  const [stVisitDate, setStVisitDate] = useState(null)
-  const [expEnrollDate, setExpEnrollDate] = useState(null)
-  const [receipt, setReceipt] = useState('없음')
-  const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
+  // const [currentPage, setCurrentPage] = useState(1)
+  // const [currentLimit] = useState(10)
+  // const {
+  //   loading: managerLoading,
+  //   error: managerError,
+  //   data: managerData,
+  // } = useQuery(SEE_MANAGEUSER_QUERY)
+  // const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
+  // const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
+  // const { userLogs } = useUserLogsMutation()
+  // const progressStatus = useRecoilValue(progressStatusState)
+  // const receiptStatus = useRecoilValue(receiptStatusState)
+  // const subStatus = useRecoilValue(subStatusState)
+  // const managerList = managerData?.seeManageUser || []
+  // const { register, control, setValue, handleSubmit, formState } = useForm()
+  // const { errors } = formState
+  // const { isOpen, onOpen, onClose } = useDisclosure()
+  // const [subjectList, setSubjectList] = useState(null)
+  // const [subjectSelected, setSubjectSelected] = useState()
+  // const [stVisitDate, setStVisitDate] = useState(null)
+  // const [expEnrollDate, setExpEnrollDate] = useState(null)
+  // const [receipt, setReceipt] = useState('없음')
+  // const [sub, setSub] = useState('없음')
+  // const [manager, setManager] = useState('담당자 지정필요')
 
   useEffect(() => {}, [router])
 
@@ -266,30 +266,30 @@ export default function RegistrationWrite() {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
-  const handleReceiptChange = e => {
-    setReceipt(e.target.value)
-  }
-  const handleSubChange = e => {
-    setSub(e.target.value)
-  }
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
+  // const handleReceiptChange = e => {
+  //   setReceipt(e.target.value)
+  // }
+  // const handleSubChange = e => {
+  //   setSub(e.target.value)
+  // }
+  // const handleManagerChange = e => {
+  //   setManager(e.target.value)
+  // }
 
-  const handleCheckboxChange = values => {
-    setSubjectSelected(values)
-  }
-  const clickSubmit = () => {
-    setValue('subject', subjectSelected)
-    onClose()
-  }
+  // const handleCheckboxChange = values => {
+  //   setSubjectSelected(values)
+  // }
+  // const clickSubmit = () => {
+  //   setValue('subject', subjectSelected)
+  //   onClose()
+  // }
 
   return (
     <>
       <MainWrap>
         <ConArea>
           <Breadcrumb rightArea={false} />
-          <DetailBox>
+          {/* <DetailBox>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox>
@@ -377,9 +377,9 @@ export default function RegistrationWrite() {
                 </Button2>
               </BtnBox>
             </DetailForm>
-          </DetailBox>
+          </DetailBox> */}
 
-          <DetailBox>
+          {/* <DetailBox>
             <FlexBox>
               <AreaBox>
                 <Input
@@ -389,9 +389,9 @@ export default function RegistrationWrite() {
                   radius="md"
                   type="text"
                   label="휴대폰번호"
-                  onChange={e => {
-                    register('phoneNum1').onChange(e)
-                  }}
+                  // onChange={e => {
+                  //   register('phoneNum1').onChange(e)
+                  // }}
                   className="w-full"
                   maxLength={11}
                   {...register('phoneNum1', {
@@ -790,7 +790,7 @@ export default function RegistrationWrite() {
                 {...register('detail')}
               />
             </FlexBox>
-          </DetailBox>
+          </DetailBox> */}
         </ConArea>
       </MainWrap>
     </>

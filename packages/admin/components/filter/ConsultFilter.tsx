@@ -115,18 +115,20 @@ export default function TableFillter({
     error,
     loading: seeMansgeuserLoading,
   } = useQuery(SEE_MANAGEUSER_QUERY)
+  const managerList = seeManageUserData?.seeManageUser || []
+  const adviceList = seeManageUserData?.seeManageUser || []
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const managerList = seeManageUserData?.seeManageUser || []
+  const progressStatus = useRecoilValue(progressStatusState)
   const [receipt, setReceipt] = useState('-')
   const [sub, setSub] = useState('-')
   const [manager, setManager] = useState('-')
-  const [progressSelected, setProgressSelected] = useState([])
-  const progressStatus = useRecoilValue(progressStatusState)
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
   const [visitDateRange, setVisitDateRange] = useState([null, null])
   const [startVisitDate, endVisitDate] = visitDateRange
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState([])
+  const [progressSelected, setProgressSelected] = useState([])
 
   const {
     register,
@@ -158,8 +160,11 @@ export default function TableFillter({
   const handleManagerChange = e => {
     setManager(e.target.value)
   }
-
-  const handleCheckboxChange = (value: string[]) => {
+  // const handleAdviceTypeChange = (value: string[]) => {
+  //   setValue('adviceType', value)
+  //   setAdviceTypeSelected(value)
+  // }
+  const handleProgressChange = (value: string[]) => {
     const numericKeys = value.map(key => parseInt(key, 10))
     setValue('progress', numericKeys)
     setProgressSelected(value)
@@ -291,37 +296,6 @@ export default function TableFillter({
                 )}
               />
             </ItemBox>
-            {/* <ItemBox>
-              <Controller
-                control={control}
-                name="pic"
-                defaultValue={'-'}
-                render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label="상담분야"
-                    placeholder=" "
-                    className="w-full"
-                    defaultValue={'-'}
-                    variant="bordered"
-                    selectedKeys={[manager]}
-                    onChange={value => {
-                      field.onChange(value)
-                      handleManagerChange(value)
-                    }}
-                  >
-                    <SelectItem key={'-'} value={'-'}>
-                      {'-'}
-                    </SelectItem>
-                    {managerList?.map(item => (
-                      <SelectItem key={item.mUsername} value={item.mUsername}>
-                        {item.mUsername}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                )}
-              />
-            </ItemBox> */}
             <ItemBox>
               <Controller
                 control={control}
@@ -470,6 +444,33 @@ export default function TableFillter({
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>
+            {/* <ItemBox>
+              <Controller
+                control={control}
+                name="adviceType"
+                render={({ field, fieldState }) => (
+                  <CheckboxGroup
+                    label={<FilterLabel>상담분야</FilterLabel>}
+                    orientation="horizontal"
+                    defaultValue={['buenos-aires', 'london']}
+                    className="gap-1 radioBox"
+                    color="secondary"
+                    value={adviceTypeSelected}
+                    onValueChange={handleAdviceTypeChange}
+                  >
+                    {Object.entries(progressStatus)
+                      .filter(([key]) => key !== '110')
+                      .map(([key, value]) => (
+                        <ChipCheckbox key={key} value={key}>
+                          {value.name}
+                        </ChipCheckbox>
+                      ))}
+                  </CheckboxGroup>
+                )}
+              />
+            </ItemBox> */}
+          </BoxBottom>
+          <BoxBottom>
             <ItemBox>
               <Controller
                 control={control}
@@ -478,10 +479,9 @@ export default function TableFillter({
                   <CheckboxGroup
                     label={<FilterLabel>진행상태</FilterLabel>}
                     orientation="horizontal"
-                    defaultValue={['buenos-aires', 'london']}
                     className="gap-1 radioBox"
                     value={progressSelected}
-                    onValueChange={handleCheckboxChange}
+                    onValueChange={handleProgressChange}
                   >
                     {Object.entries(progressStatus)
                       .filter(([key]) => key !== '110')

@@ -10,6 +10,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useState } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
+import { CREATE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
+import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
+import useUserLogsMutation from '@/utils/userLogs'
 
 type ConsultFilterProps = {
   isActive: boolean
@@ -81,7 +85,12 @@ const FilterVariants = {
   },
 }
 
-export default function TableFillter({ isActive, onCreateToggle }) {
+export default function CreateAdviceType({ isActive, onCreateToggle }) {
+  const { userLogs } = useUserLogsMutation()
+  const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
+  const [deleteAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
+  const { loading, error, data } = useQuery(SEE_ADVICE_TYPE_QUERY)
+  const adviceList = data?.seeAdviceType.adviceType || []
   const {
     register,
     handleSubmit,
@@ -90,18 +99,46 @@ export default function TableFillter({ isActive, onCreateToggle }) {
     formState: { isDirty },
   } = useForm({
     defaultValues: {
-      exposure: '-',
-      subDiv: '-',
-      subjectName: '',
+      type: '',
     },
   })
 
   const onSubmit = data => {
     console.log(data)
+    createAdvice({
+      variables: {
+        type: data.type,
+      },
+      refetchQueries: [
+        {
+          query: SEE_ADVICE_TYPE_QUERY,
+        },
+      ],
+      onCompleted: data => {
+        alert('상담 분야가 등록되었습니다.')
+      },
+    })
+    userLogs(`${data.type} 상담분야 등록`)
   }
 
-  const deleteFiled = () => {
-    console.log('삭제')
+  const deleteType = item => {
+    const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
+    if (isDelete) {
+      deleteAdvice({
+        variables: {
+          deleteAdviceTypeId: item.id,
+        },
+        refetchQueries: [
+          {
+            query: SEE_ADVICE_TYPE_QUERY,
+          },
+        ],
+        onCompleted: data => {
+          alert('상담 분야가 삭제되었습니다.')
+        },
+      })
+      userLogs(`${item.type} 상담분야 삭제`)
+    }
   }
 
   return (
@@ -113,84 +150,15 @@ export default function TableFillter({ isActive, onCreateToggle }) {
       >
         <BoxArea>
           <BoxTop>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야1
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
-            <Chip variant="bordered" onClose={deleteFiled}>
-              분야2
-            </Chip>
+            {adviceList.map((item, index) => (
+              <Chip
+                key={index}
+                variant="bordered"
+                onClose={() => deleteType(item)}
+              >
+                {item.type}
+              </Chip>
+            ))}
           </BoxTop>
           <BoxBottom>
             <FilterForm onSubmit={handleSubmit(onSubmit)}>
@@ -205,6 +173,10 @@ export default function TableFillter({ isActive, onCreateToggle }) {
                     label: ['w-[4rem]'],
                     mainWrapper: ['w-[calc(100%-4rem)]'],
                   }}
+                  onChange={e => {
+                    register('type').onChange(e)
+                  }}
+                  {...register('type')}
                 />
                 <Button
                   buttonType="submit"

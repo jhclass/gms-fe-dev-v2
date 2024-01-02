@@ -69,35 +69,38 @@ export const ISMME_QUERY = gql`
   }
 `
 export const SEE_STUDENT_QUERY = gql`
-  query SeeStudentState($page: Int!, $limit: Int) {
+  query Query($page: Int!, $limit: Int) {
     seeStudentState(page: $page, limit: $limit) {
       message
       ok
-      studentState {
-        id
-        campus
-        category
-        stName
-        phoneNum1
-        phoneNum2
-        phoneNum3
-        currentManager
-        subject
-        detail
-        agreement
-        progress
-        stEmail
-        stAddr
-        subDiv
-        stVisit
-        expEnrollDate
-        perchase
-        createdAt
-        updatedAt
-        receiptDiv
-        pic
-      }
       totalCount
+      studentState {
+        adviceTypes {
+          id
+          type
+        }
+        id
+        phoneNum1
+        pic
+        progress
+        receiptDiv
+        stName
+        stVisit
+        subDiv
+      }
+    }
+  }
+`
+export const SEE_ADVICE_TYPE_QUERY = gql`
+  query Query {
+    seeAdviceType {
+      adviceType {
+        id
+        type
+      }
+      error
+      message
+      ok
     }
   }
 `

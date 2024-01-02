@@ -219,8 +219,8 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $updateStudentStateId: Int!
     $campus: String
-    $stName: String
     $category: String
+    $stName: String
     $phoneNum1: String
     $phoneNum2: String
     $phoneNum3: String
@@ -236,12 +236,13 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
     $birthday: String
     $pic: String
     $receiptDiv: String
+    $adviceTypes: [String]
   ) {
     updateStudentState(
       id: $updateStudentStateId
       campus: $campus
-      stName: $stName
       category: $category
+      stName: $stName
       phoneNum1: $phoneNum1
       phoneNum2: $phoneNum2
       phoneNum3: $phoneNum3
@@ -257,6 +258,7 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
       birthday: $birthday
       pic: $pic
       receiptDiv: $receiptDiv
+      adviceTypes: $adviceTypes
     ) {
       error
       message
@@ -270,6 +272,26 @@ export const DELETE_STUDENT_STATE_MUTATION = gql`
       ok
       message
       error
+    }
+  }
+`
+
+export const CREATE_ADVICE_TYPE_MUTATION = gql`
+  mutation Mutation($type: String!) {
+    createAdviceType(type: $type) {
+      error
+      message
+      ok
+    }
+  }
+`
+
+export const DELETE_ADVICE_TYPE_MUTATION = gql`
+  mutation DeleteAdviceType($deleteAdviceTypeId: Int!) {
+    deleteAdviceType(id: $deleteAdviceTypeId) {
+      error
+      message
+      ok
     }
   }
 `

@@ -5,7 +5,7 @@ import SubjectTable from '@/components/table/Subject'
 import { styled } from 'styled-components'
 import SubjectsFilter from '@/components/filter/SubjectsFilter'
 import SubjectFilter from '@/components/table/SubjectFilterTable'
-import CreateFiled from '@/components/form/CreateFiled'
+import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import useMmeQuery from '@/utils/mMe'
@@ -76,7 +76,10 @@ export default function Subjects() {
           onFilterSearch={setFilterSearch}
           setSubjectFilter={setSubjectFilter}
         />
-        <CreateFiled isActive={createActive} onCreateToggle={setCreateActive} />
+        <CreateAdviceType
+          isActive={createActive}
+          onCreateToggle={setCreateActive}
+        />
         <ConBox>
           {filterSearch ? (
             <SubjectFilter

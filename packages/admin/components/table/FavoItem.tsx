@@ -8,6 +8,7 @@ import Link from 'next/link'
 
 type ConsultItemProps = {
   tableData: {
+    adviceType: []
     id: number
     stName: string
     phoneNum1: string
@@ -78,7 +79,7 @@ const Tnum = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 50px;
+  min-width: 60px;
 `
 const TreceiptDiv = styled.div`
   display: table-cell;
@@ -88,7 +89,7 @@ const TreceiptDiv = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
@@ -98,7 +99,17 @@ const TsubDiv = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
+`
+const TadviceType = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 13%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: 130px;
 `
 const Tname = styled.div`
   display: table-cell;
@@ -107,7 +118,7 @@ const Tname = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  min-width: 100px;
+  min-width: 110px;
   font-weight: 600;
   /* color: #52525b; */
 `
@@ -119,7 +130,7 @@ const Tphone = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 110px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -165,12 +176,11 @@ const Tprogress = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
-  border-radius: 0 0.5rem 0.5rem 0;
+  min-width: 80px;
 `
 
 const EllipsisBox = styled.p`
@@ -259,6 +269,9 @@ export default function FavoriteItem(props: ConsultItemProps) {
               <TsubDiv>
                 <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
+              <TadviceType>
+                <EllipsisBox>{student.adviceType}</EllipsisBox>
+              </TadviceType>
               <Tname>
                 <EllipsisBox>{student.stName}</EllipsisBox>
               </Tname>
@@ -278,11 +291,6 @@ export default function FavoriteItem(props: ConsultItemProps) {
                   {student.stVisit ? getDate(student.stVisit) : '-'}
                 </EllipsisBox>
               </TstVisit>
-              <TexpEnrollDate>
-                <EllipsisBox>
-                  {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
-                </EllipsisBox>
-              </TexpEnrollDate>
             </ClickBox>
           </Link>
         </TableRow>

@@ -9,13 +9,13 @@ import { Checkbox } from '@nextui-org/react'
 
 type ConsultItemProps = {
   tableData: {
+    adviceType: []
     id: number
     stName: string
     phoneNum1: string
     progress: number
     subDiv: string
     stVisit: string
-    expEnrollDate: string
     createdAt: string
     receiptDiv: string
     pic: string
@@ -87,37 +87,37 @@ const Tnum = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 50px;
+  min-width: 60px;
 `
 const TreceiptDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
-const Tfield = styled.div`
+const TadviceType = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 130px;
 `
 const Tname = styled.div`
   position: relative;
@@ -191,12 +191,11 @@ const Tprogress = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
-  border-radius: 0 0.5rem 0.5rem 0;
+  min-width: 80px;
 `
 
 const EllipsisBox = styled.p`
@@ -323,9 +322,9 @@ export default function ConsolutItem(props: ConsultItemProps) {
               <TsubDiv>
                 <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
-              {/* <Tfield>
-                <EllipsisBox>분야</EllipsisBox>
-              </Tfield> */}
+              <TadviceType>
+                <EllipsisBox>{student.adviceType}</EllipsisBox>
+              </TadviceType>
               <Tname>
                 {student.progress === 110 ? (
                   <EllipsisBox>
@@ -351,11 +350,6 @@ export default function ConsolutItem(props: ConsultItemProps) {
                   {student.stVisit ? getDate(student.stVisit) : '-'}
                 </EllipsisBox>
               </TstVisit>
-              <TexpEnrollDate>
-                <EllipsisBox>
-                  {student.expEnrollDate ? getDate(student.expEnrollDate) : '-'}
-                </EllipsisBox>
-              </TexpEnrollDate>
             </ClickBox>
           </Link>
         </TableRow>

@@ -18,11 +18,12 @@ import { gql, useMutation } from '@apollo/react-hooks'
 import badwords from '@/lib/badwords.json'
 
 const STUDENT_STATE_MUTATION = gql`
-  mutation CreateStudentState(
+  mutation Mutation(
     $stName: String!
     $phoneNum1: String!
     $agreement: String!
     $subject: [String!]
+    $adviceTypes: [String]
     $campus: String
     $detail: String
     $receiptDiv: String
@@ -33,14 +34,15 @@ const STUDENT_STATE_MUTATION = gql`
       phoneNum1: $phoneNum1
       agreement: $agreement
       subject: $subject
+      adviceTypes: $adviceTypes
       campus: $campus
       detail: $detail
       receiptDiv: $receiptDiv
       progress: $progress
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `
@@ -86,7 +88,8 @@ export default function Form() {
         await studentStateResult({
           variables: {
             stName: data.name,
-            subject: data.groupSelected,
+            adviceTypes: data.groupSelected,
+            subject: [''],
             campus: '신촌',
             agreement: data.privacy ? '동의' : '비동의',
             phoneNum1: data.phone,
@@ -146,7 +149,7 @@ export default function Form() {
           </div>
           <div className="flex flex-col w-full lg:w-1/3 lg:mr-10">
             <p className="mb-3 text-base text-zinc-600">
-              원하시는 과정을 선택해주세요. 교육과정은 중복 선택이 가능합니다.
+              원하시는 분야을 선택해주세요. 중복 선택이 가능합니다.
             </p>
             <Controller
               control={control}
