@@ -12,6 +12,7 @@ import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
+  CREATE_SUBJECT_MUTATION,
   DELETE_SUBJECT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
   UPDATE_SUBJECT_MUTATION,
@@ -109,10 +110,17 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
-const BtnBox = styled.div`
+const BtnBox = styled.div<{ $isMaster: boolean }>`
   display: flex;
   gap: 1rem;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    ${props => props.$isMaster && 'flex-wrap:wrap;'}
+    button {
+      ${props => props.$isMaster && ' width: calc(50% - 0.5rem);'}
+    }
+  }
 `
 
 export default function SubjectDetail() {
@@ -122,6 +130,7 @@ export default function SubjectDetail() {
   const subjectId = typeof router.query.id === 'string' ? router.query.id : null
   const subjectsPage = router.query.page
   const subjectsLimit = router.query.limit
+  const [createSubject] = useMutation(CREATE_SUBJECT_MUTATION)
   const [deleteSubject] = useMutation(DELETE_SUBJECT_MUTATION)
   const [updateSubject] = useMutation(UPDATE_SUBJECT_MUTATION)
   const [searchSubjectMutation, { data, loading, error }] = useMutation(
@@ -243,8 +252,54 @@ export default function SubjectDetail() {
       }
     }
   }
+  const onCopy = () => {
+    const isCopy = confirm('과정을 복사하시겠습니까?')
+    if (isCopy) {
+      createSubject({
+        variables: {
+          subDiv: subjectState?.subDiv,
+          subjectName: `${subjectState?.subjectName}_copy`,
+          subjectCode:
+            subjectState?.subjectCode === null
+              ? null
+              : subjectState?.subjectCode,
+          fee: parseInt(subjectState?.fee),
+          startDate:
+            subjectState?.startDate === null
+              ? null
+              : new Date(subjectState?.startDate),
+          endDate:
+            subjectState?.endDate === null
+              ? null
+              : new Date(subjectState?.endDate),
+          roomNum: subjectState.roomNum === null ? null : subjectState?.roomNum,
+          exposure: subjectState?.exposure,
+          totalTime:
+            subjectState?.totalTime === null
+              ? 0
+              : parseInt(subjectState?.totalTime),
+          teacherName:
+            subjectState?.teacherName === null
+              ? '강사명 없음'
+              : subjectState?.teacherName,
+        },
+        refetchQueries: [
+          {
+            query: SEE_SUBJECT_QUERY,
+            variables: { page: 1, limit: 10 },
+          },
+        ],
+        onCompleted: data => {
+          alert('복사되었습니다.')
+          userLogs(`${subjectState.subjectName} 과정 복사`)
+          router.push('/subjects')
+        },
+      })
+    }
+  }
+
   const onDelete = data => {
-    const isDelete = confirm('과정을 삭제시겠습니까?')
+    const isDelete = confirm('과정을 삭제하시겠습니까?')
     if (isDelete) {
       deleteSubject({
         variables: {
@@ -619,7 +674,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <BtnBox>
+                <BtnBox $isMaster={mGrade < 2}>
                   <Button2
                     buttonType="submit"
                     width="100%"
@@ -641,6 +696,18 @@ export default function SubjectDetail() {
                     onClick={() => router.push('/subjects')}
                   >
                     목록으로
+                  </Button2>
+                  <Button2
+                    buttonType="button"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#ff5900"
+                    bgColor="#fff"
+                    borderColor="#ff5900"
+                    onClick={() => onCopy()}
+                  >
+                    복사하기
                   </Button2>
                   {mGrade < 2 && (
                     <Button2
