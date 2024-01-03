@@ -4,42 +4,54 @@ import {
   CheckboxGroup,
   Input,
   ScrollShadow,
-  Select,
-  SelectItem,
-  Tab,
-  Tabs,
   Textarea,
 } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useRecoilState } from 'recoil'
 import { formGroupSelectedState } from '@/lib/recoilAtoms'
-import { gql, useMutation } from '@apollo/react-hooks'
 import badwords from '@/lib/badwords.json'
+import { gql, useMutation, useQuery } from '@apollo/react-hooks'
 
 const STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $stName: String!
     $phoneNum1: String!
+    $subject: [String]!
     $agreement: String!
-    $subject: [String!]
-    $adviceTypes: [String]
+    $progress: Int!
+    $adviceTypes: [String]!
+    $classMethod: [String]
+    $receiptDiv: String
     $campus: String
     $detail: String
-    $receiptDiv: String
-    $progress: Int
   ) {
     createStudentState(
       stName: $stName
       phoneNum1: $phoneNum1
-      agreement: $agreement
       subject: $subject
+      agreement: $agreement
+      progress: $progress
       adviceTypes: $adviceTypes
+      classMethod: $classMethod
+      receiptDiv: $receiptDiv
       campus: $campus
       detail: $detail
-      receiptDiv: $receiptDiv
-      progress: $progress
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+
+export const SEE_ADVICE_TYPE_QUERY = gql`
+  query Query {
+    seeAdviceType {
+      adviceType {
+        id
+        type
+      }
       error
       message
       ok
@@ -48,6 +60,7 @@ const STUDENT_STATE_MUTATION = gql`
 `
 type FormValues = {
   groupSelected: string[]
+  methodSelect: string[]
   campus: string
   name: string
   phone: string
@@ -57,9 +70,12 @@ type FormValues = {
 
 export default function Form() {
   const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
+  const { loading, error, data: adciveData } = useQuery(SEE_ADVICE_TYPE_QUERY)
+  const adviceList = adciveData?.seeAdviceType.adviceType || []
   const [groupSelected, setGroupSelected] = useRecoilState(
     formGroupSelectedState,
   )
+  const [methodSelect, setMethodSelect] = useState([])
   const regExp = new RegExp(badwords.join('|'), 'i')
   const [checkPrivacy, setCheckPrivacy] = useState(false)
   const [isButtonClickable, setButtonClickable] = useState(true)
@@ -71,8 +87,7 @@ export default function Form() {
     setError,
     clearErrors,
     setFocus,
-    reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
@@ -88,14 +103,15 @@ export default function Form() {
         await studentStateResult({
           variables: {
             stName: data.name,
-            adviceTypes: data.groupSelected,
-            subject: [''],
-            campus: '신촌',
-            agreement: data.privacy ? '동의' : '비동의',
             phoneNum1: data.phone,
+            subject: [],
+            agreement: data.privacy ? '동의' : '비동의',
+            progress: 0,
+            adviceTypes: data.groupSelected,
+            campus: '신촌',
             detail: data.contents,
             receiptDiv: '온라인',
-            progress: 0,
+            classMethod: data.methodSelect,
           },
           onCompleted: data => {
             alert('상담신청이 완료되었습니다. 😊')
@@ -122,6 +138,11 @@ export default function Form() {
   const handleCheckboxChange = (value: string[]) => {
     setValue('groupSelected', value)
     setGroupSelected(value)
+  }
+
+  const handleMethodChange = (value: string[]) => {
+    setValue('methodSelect', value)
+    setMethodSelect(value)
   }
 
   const handleRemoveItem = (index: number) => {
@@ -151,48 +172,81 @@ export default function Form() {
             <p className="mb-3 text-base text-zinc-600">
               원하시는 분야을 선택해주세요. 중복 선택이 가능합니다.
             </p>
-            <Controller
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: '과정을 최소 1개 이상 선택해주세요.',
-                },
-              }}
-              name="groupSelected"
-              render={({ field, fieldState }) => (
-                <div className="w-full border-2 rounded-lg p-7">
+            <div className="w-full border-2 rounded-lg p-7">
+              <h4 className="text-base mb-[0.5rem] text-red-500">
+                상담분야 선택(필수)
+              </h4>
+              <Controller
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: '상담 분야를 최소 1개 이상 선택해주세요.',
+                  },
+                }}
+                name="groupSelected"
+                render={({ field, fieldState }) => (
                   <CheckboxGroup
                     value={groupSelected}
                     onValueChange={handleCheckboxChange}
                   >
-                    <h4 className="text-base text-primary">상담과정 선택</h4>
-                    <Checkbox size="md" value="웹툰">
-                      <span className="text-lg text-zinc-600">웹툰</span>
-                    </Checkbox>
-                    <Checkbox size="md" value="이모티콘">
-                      <span className="text-lg text-zinc-600">이모티콘</span>
-                    </Checkbox>
-                    <Checkbox size="md" value="모션">
-                      <span className="text-lg text-zinc-600">모션</span>
-                    </Checkbox>
-                    <h4 className="text-base text-primary">수업 방식 선택</h4>
-                    <Checkbox size="md" value="오프라인">
+                    {adviceList !== null &&
+                      adviceList.map((item, index) => (
+                        <Checkbox key={index} value={item.type}>
+                          <span className="text-lg text-zinc-600">
+                            {item.type}
+                          </span>
+                        </Checkbox>
+                      ))}
+                    {adviceList === null && (
+                      <div className="text-zinc-600">
+                        등록된 분야가 없습니다.
+                      </div>
+                    )}
+                  </CheckboxGroup>
+                )}
+              />
+              <h4 className="text-base my-[0.5rem] text-primary">
+                수업 방식 선택
+              </h4>
+              <Controller
+                control={control}
+                name="groupSelected"
+                render={({ field, fieldState }) => (
+                  <CheckboxGroup
+                    value={methodSelect}
+                    onValueChange={handleMethodChange}
+                  >
+                    <Checkbox key={'오프라인'} value={'오프라인'}>
                       <span className="text-lg text-zinc-600">오프라인</span>
                     </Checkbox>
-                    <Checkbox size="md" value="실시간 온라인">
+                    <Checkbox key={'실시간 온라인'} value={'실시간 온라인'}>
                       <span className="text-lg text-zinc-600">
                         실시간 온라인
                       </span>
                     </Checkbox>
                   </CheckboxGroup>
-                </div>
-              )}
-            />
+                )}
+              />
+            </div>
           </div>
           <div className="lg:w-1/3 f-full">
             <ul className="flex flex-wrap mb-2">
               {groupSelected.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"
+                >
+                  <span>{item}</span>
+                  <button
+                    onClick={() => handleRemoveItem(index)}
+                    className="text-lg text-center text-primary"
+                  >
+                    <i className="xi-close-min" />
+                  </button>
+                </li>
+              ))}
+              {methodSelect.map((item, index) => (
                 <li
                   key={index}
                   className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"

@@ -91,80 +91,6 @@ export const UPDATE_FAVORITE_MUTATION = gql`
   }
 `
 
-export const SEARCH_STUDENTSTATE_MUTATION = gql`
-  mutation SearchStudentState(
-    $searchStudentStateId: Int
-    $receiptDiv: String
-    $phoneNum1: String
-    $subDiv: String
-    $pic: String
-    $createdAt: [String]
-    $stVisit: [String]
-    $stName: String
-    $progress: [Int]
-    $page: Int
-    $perPage: Int
-  ) {
-    searchStudentState(
-      id: $searchStudentStateId
-      receiptDiv: $receiptDiv
-      phoneNum1: $phoneNum1
-      subDiv: $subDiv
-      pic: $pic
-      createdAt: $createdAt
-      stVisit: $stVisit
-      stName: $stName
-      progress: $progress
-      page: $page
-      perPage: $perPage
-    ) {
-      ok
-      error
-      message
-      totalCount
-      studentState {
-        id
-        campus
-        category
-        stName
-        phoneNum1
-        phoneNum2
-        phoneNum3
-        currentManager
-        subject
-        detail
-        agreement
-        progress
-        stEmail
-        stAddr
-        subDiv
-        stVisit
-        expEnrollDate
-        perchase
-        createdAt
-        updatedAt
-        receiptDiv
-        pic
-        consultationMemo {
-          id
-          content
-          createdAt
-          updatedAt
-          studentStateId
-          manageUserId
-          manageUser {
-            id
-            mUserId
-            mUsername
-            mGrade
-            mRank
-          }
-        }
-      }
-    }
-  }
-`
-
 export const CREATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $stName: String!
@@ -213,6 +139,70 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+export const SEARCH_STUDENTSTATE_MUTATION = gql`
+  mutation SearchStudentState(
+    $searchStudentStateId: Int
+    $receiptDiv: String
+    $phoneNum1: String
+    $subDiv: String
+    $pic: String
+    $createdAt: [String]
+    $stVisit: [String]
+    $stName: String
+    $adviceType: String
+    $progress: [Int]
+    $page: Int
+    $perPage: Int
+  ) {
+    searchStudentState(
+      id: $searchStudentStateId
+      receiptDiv: $receiptDiv
+      phoneNum1: $phoneNum1
+      subDiv: $subDiv
+      pic: $pic
+      createdAt: $createdAt
+      stVisit: $stVisit
+      stName: $stName
+      adviceType: $adviceType
+      progress: $progress
+      page: $page
+      perPage: $perPage
+    ) {
+      error
+      message
+      ok
+      studentState {
+        adviceTypes {
+          type
+        }
+        agreement
+        campus
+        category
+        createdAt
+        currentManager
+        detail
+        expEnrollDate
+        id
+        perchase
+        phoneNum1
+        phoneNum2
+        phoneNum3
+        pic
+        progress
+        receiptDiv
+        stAddr
+        stEmail
+        stName
+        stVisit
+        subDiv
+        subject
+        updatedAt
+      }
+      totalCount
     }
   }
 `

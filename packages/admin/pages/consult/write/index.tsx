@@ -212,7 +212,6 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-
 export default function ConsultWirte() {
   const router = useRouter()
   const [currentFiledPage, setCurrentFiledPage] = useState(1)
@@ -247,8 +246,8 @@ export default function ConsultWirte() {
   } = useDisclosure()
 
   const [subjectList, setSubjectList] = useState(null)
-  const [subjectSelected, setSubjectSelected] = useState<string[]>()
-  const [adviceTypeSelected, setAdviceTypeSelected] = useState<string[]>()
+  const [subjectSelected, setSubjectSelected] = useState<string[]>([])
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState<string[]>([])
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -270,14 +269,12 @@ export default function ConsultWirte() {
   }, [router, currentSubjectPage])
 
   const onSubmit = data => {
-    console.log(data.subject)
     createStudent({
       variables: {
         stName: data.stName.trim(),
         agreement: '동의',
-        // adviceTypes: data.adviceTypes === '' ? [''] : [data.adviceTypes],
-        adviceTypes: [],
-        subject: data.subject === '' ? [] : [data.subject],
+        adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
+        subject: data.subject === '' ? [] : subjectSelected,
         campus: '신촌',
         detail: data.detail === '' ? null : data.detail.trim(),
         category: null,
@@ -305,12 +302,10 @@ export default function ConsultWirte() {
         },
       ],
       onCompleted: data => {
-        console.log(data)
         alert('등록되었습니다.')
         router.push('/consult')
       },
     })
-
     userLogs(`${data.stName}의 상담 등록`)
   }
 
@@ -336,18 +331,18 @@ export default function ConsultWirte() {
     setManager(e.target.value)
   }
 
-  const handleAdviceChange = values => {
-    setAdviceTypeSelected(values)
+  const handleAdviceChange = (value: string[]) => {
+    setAdviceTypeSelected(value)
   }
   const clickAdviceSubmit = () => {
-    setValue('adviceTypes', [adviceTypeSelected])
+    setValue('adviceTypes', adviceTypeSelected)
     onClose()
   }
   const handleSbjChange = values => {
     setSubjectSelected(values)
   }
   const clickSbjSubmit = () => {
-    setValue('subject', [subjectSelected])
+    setValue('subject', [...subjectSelected])
     sbjClose()
   }
 
@@ -503,7 +498,7 @@ export default function ConsultWirte() {
                   )}
                 </AreaBox>
               </FlexBox>
-              {/* <AreaBox>
+              <AreaBox>
                 <Controller
                   control={control}
                   name="adviceTypes"
@@ -517,7 +512,7 @@ export default function ConsultWirte() {
                     <>
                       <Textarea
                         readOnly
-                        value={field.value || ['']}
+                        value={field.value || []}
                         label={
                           <FilterLabel>
                             상담 분야<span>*</span>
@@ -590,7 +585,7 @@ export default function ConsultWirte() {
                     {String(errors.adviceTypes.message)}
                   </p>
                 )}
-              </AreaBox> */}
+              </AreaBox>
               <AreaBox>
                 <Controller
                   control={control}
@@ -693,7 +688,7 @@ export default function ConsultWirte() {
                                   color="primary"
                                   onPress={() => {
                                     clickSbjSubmit()
-                                    field.onChange(subjectSelected)
+                                    field.onChange([subjectSelected])
                                   }}
                                 >
                                   선택
@@ -780,11 +775,18 @@ export default function ConsultWirte() {
                       >
                         {'담당자 지정필요'}
                       </SelectItem>
-                      {managerList?.map(item => (
-                        <SelectItem key={item.mUsername} value={item.mUsername}>
-                          {item.mUsername}
-                        </SelectItem>
-                      ))}
+                      {managerList
+                        ?.filter(
+                          manager => manager.mGrade > 0 && manager.mGrade < 3,
+                        )
+                        .map(item => (
+                          <SelectItem
+                            key={item.mUsername}
+                            value={item.mUsername}
+                          >
+                            {item.mUsername}
+                          </SelectItem>
+                        ))}
                     </Select>
                   )}
                 />
