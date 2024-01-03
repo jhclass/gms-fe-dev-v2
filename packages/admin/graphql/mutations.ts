@@ -169,8 +169,10 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $stName: String!
     $phoneNum1: String!
+    $subject: [String]!
     $agreement: String!
-    $subject: [String!]
+    $progress: Int!
+    $adviceTypes: [String]!
     $campus: String
     $detail: String
     $category: String
@@ -185,13 +187,14 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
     $birthday: String
     $receiptDiv: String
     $pic: String
-    $progress: Int
   ) {
     createStudentState(
       stName: $stName
       phoneNum1: $phoneNum1
-      agreement: $agreement
       subject: $subject
+      agreement: $agreement
+      progress: $progress
+      adviceTypes: $adviceTypes
       campus: $campus
       detail: $detail
       category: $category
@@ -206,17 +209,16 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
       birthday: $birthday
       receiptDiv: $receiptDiv
       pic: $pic
-      progress: $progress
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `
 
 export const UPDATE_STUDENT_STATE_MUTATION = gql`
-  mutation Mutation(
+  mutation UpdateStudentState(
     $updateStudentStateId: Int!
     $campus: String
     $category: String

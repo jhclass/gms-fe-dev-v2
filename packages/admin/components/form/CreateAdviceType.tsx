@@ -11,7 +11,10 @@ import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { CREATE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_ADVICE_TYPE_MUTATION,
+  DELETE_ADVICE_TYPE_MUTATION,
+} from '@/graphql/mutations'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 
@@ -69,6 +72,17 @@ const ItemBox = styled.div`
   }
 `
 
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 70%;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+`
+
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -88,15 +102,13 @@ const FilterVariants = {
 export default function CreateAdviceType({ isActive, onCreateToggle }) {
   const { userLogs } = useUserLogsMutation()
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
-  const [deleteAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
+  const [deleteAdvice] = useMutation(DELETE_ADVICE_TYPE_MUTATION)
   const { loading, error, data } = useQuery(SEE_ADVICE_TYPE_QUERY)
   const adviceList = data?.seeAdviceType.adviceType || []
   const {
     register,
     handleSubmit,
-    control,
-    reset,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
       type: '',
@@ -104,21 +116,22 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
   })
 
   const onSubmit = data => {
-    console.log(data)
-    createAdvice({
-      variables: {
-        type: data.type,
-      },
-      refetchQueries: [
-        {
-          query: SEE_ADVICE_TYPE_QUERY,
+    if (isDirty) {
+      createAdvice({
+        variables: {
+          type: data.type,
         },
-      ],
-      onCompleted: data => {
-        alert('상담 분야가 등록되었습니다.')
-      },
-    })
-    userLogs(`${data.type} 상담분야 등록`)
+        refetchQueries: [
+          {
+            query: SEE_ADVICE_TYPE_QUERY,
+          },
+        ],
+        onCompleted: data => {
+          alert('상담 분야가 등록되었습니다.')
+        },
+      })
+      userLogs(`${data.type} 상담분야 등록`)
+    }
   }
 
   const deleteType = item => {
@@ -163,21 +176,33 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
           <BoxBottom>
             <FilterForm onSubmit={handleSubmit(onSubmit)}>
               <ItemBox>
-                <Input
-                  labelPlacement="outside-left"
-                  placeholder=" "
-                  type="text"
-                  variant="bordered"
-                  label="분야명"
-                  classNames={{
-                    label: ['w-[4rem]'],
-                    mainWrapper: ['w-[calc(100%-4rem)]'],
-                  }}
-                  onChange={e => {
-                    register('type').onChange(e)
-                  }}
-                  {...register('type')}
-                />
+                <InputBox>
+                  <Input
+                    labelPlacement="outside-left"
+                    placeholder="2글자 이상 작성해주세요."
+                    type="text"
+                    variant="bordered"
+                    label="분야명"
+                    classNames={{
+                      label: ['w-[4rem]'],
+                      mainWrapper: ['w-[calc(100%-4rem)]'],
+                    }}
+                    onChange={e => {
+                      register('type').onChange(e)
+                    }}
+                    {...register('type', {
+                      minLength: {
+                        value: 2,
+                        message: '2글자 이상 작성해주세요',
+                      },
+                    })}
+                  />
+                  {errors.type && (
+                    <p className="w-full ml-[4.5rem] text-xs text-red-500">
+                      {String(errors.type.message)}
+                    </p>
+                  )}
+                </InputBox>
                 <Button
                   buttonType="submit"
                   width="calc(50%)"

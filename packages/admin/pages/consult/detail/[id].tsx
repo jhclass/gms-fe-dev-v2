@@ -417,6 +417,8 @@ export default function ConsultDetail() {
   }, [studentState])
 
   const onSubmit = data => {
+    console.log(subjectSelected)
+    console.log(studentState)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -429,8 +431,8 @@ export default function ConsultDetail() {
             phoneNum1: data.phoneNum1.trim(),
             phoneNum2: data.phoneNum2.trim(),
             phoneNum3: data.phoneNum3.trim(),
-            adviceTypes: data.adviceTypes,
-            subject: data.subject === '' ? [''] : data.subject,
+            adviceTypes: [],
+            subject: data.subject === '' ? [] : subjectSelected,
             detail: data.detail.trim(),
             progress: data.progress,
             stEmail: data.stEmail.trim(),
@@ -684,7 +686,7 @@ export default function ConsultDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <AreaBox>
+                {/* <AreaBox>
                   <Controller
                     control={control}
                     name="adviceTypes"
@@ -699,7 +701,7 @@ export default function ConsultDetail() {
                       <>
                         <Textarea
                           readOnly
-                          value={field.value}
+                          value={field.value || ''}
                           label={
                             <FilterLabel>
                               상담 분야<span>*</span>
@@ -726,7 +728,7 @@ export default function ConsultDetail() {
                                       orientation="horizontal"
                                       className="gap-1 radioBox"
                                       color="secondary"
-                                      value={adviceTypeSelected}
+                                      value={adviceTypeSelected || []}
                                       onValueChange={handleAdviceChange}
                                     >
                                       {adviceList !== null &&
@@ -774,7 +776,7 @@ export default function ConsultDetail() {
                       {String(errors.adviceTypes.message)}
                     </p>
                   )}
-                </AreaBox>
+                </AreaBox> */}
                 <AreaBox>
                   <Controller
                     control={control}
@@ -784,7 +786,7 @@ export default function ConsultDetail() {
                       <>
                         <Textarea
                           readOnly
-                          value={field.value}
+                          value={field.value || ''}
                           label="상담 과정 선택"
                           labelPlacement="outside"
                           className="max-w-full"
@@ -822,7 +824,7 @@ export default function ConsultDetail() {
                                     className="scrollbar"
                                   >
                                     <CheckboxGroup
-                                      value={subjectSelected}
+                                      value={subjectSelected || []}
                                       onChange={handleSbjChange}
                                       classNames={{
                                         wrapper: 'gap-0',

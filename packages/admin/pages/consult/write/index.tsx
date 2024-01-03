@@ -247,8 +247,8 @@ export default function ConsultWirte() {
   } = useDisclosure()
 
   const [subjectList, setSubjectList] = useState(null)
-  const [subjectSelected, setSubjectSelected] = useState()
-  const [adviceTypeSelected, setAdviceTypeSelected] = useState()
+  const [subjectSelected, setSubjectSelected] = useState<string[]>()
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState<string[]>()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -270,12 +270,14 @@ export default function ConsultWirte() {
   }, [router, currentSubjectPage])
 
   const onSubmit = data => {
+    console.log(data.subject)
     createStudent({
       variables: {
         stName: data.stName.trim(),
         agreement: '동의',
-        adviceTypes: data.adviceTypes,
-        subject: data.subject === '' ? [''] : data.subject,
+        // adviceTypes: data.adviceTypes === '' ? [''] : [data.adviceTypes],
+        adviceTypes: [],
+        subject: data.subject === '' ? [] : [data.subject],
         campus: '신촌',
         detail: data.detail === '' ? null : data.detail.trim(),
         category: null,
@@ -292,9 +294,9 @@ export default function ConsultWirte() {
             : new Date(data.expEnrollDate),
         perchase: null,
         birthday: null,
-        progress: data.progress === undefined ? null : data.progress,
-        receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-        pic: data.subDiv === undefined ? '담당자 지정필요' : data.pic,
+        progress: data.progress === undefined ? 0 : data.progress,
+        receiptDiv: data.receiptDiv === undefined ? '' : data.receiptDiv,
+        pic: data.pic === undefined ? '담당자 지정필요' : data.pic,
       },
       refetchQueries: [
         {
@@ -303,6 +305,7 @@ export default function ConsultWirte() {
         },
       ],
       onCompleted: data => {
+        console.log(data)
         alert('등록되었습니다.')
         router.push('/consult')
       },
@@ -337,14 +340,14 @@ export default function ConsultWirte() {
     setAdviceTypeSelected(values)
   }
   const clickAdviceSubmit = () => {
-    setValue('adviceTypes', adviceTypeSelected)
+    setValue('adviceTypes', [adviceTypeSelected])
     onClose()
   }
   const handleSbjChange = values => {
     setSubjectSelected(values)
   }
   const clickSbjSubmit = () => {
-    setValue('subject', subjectSelected)
+    setValue('subject', [subjectSelected])
     sbjClose()
   }
 
@@ -500,7 +503,7 @@ export default function ConsultWirte() {
                   )}
                 </AreaBox>
               </FlexBox>
-              <AreaBox>
+              {/* <AreaBox>
                 <Controller
                   control={control}
                   name="adviceTypes"
@@ -514,7 +517,7 @@ export default function ConsultWirte() {
                     <>
                       <Textarea
                         readOnly
-                        value={field.value}
+                        value={field.value || ['']}
                         label={
                           <FilterLabel>
                             상담 분야<span>*</span>
@@ -539,7 +542,7 @@ export default function ConsultWirte() {
                                   <CheckboxGroup
                                     orientation="horizontal"
                                     className="gap-1 radioBox"
-                                    value={adviceTypeSelected}
+                                    value={adviceTypeSelected || []}
                                     onValueChange={handleAdviceChange}
                                   >
                                     {adviceList !== null &&
@@ -587,7 +590,7 @@ export default function ConsultWirte() {
                     {String(errors.adviceTypes.message)}
                   </p>
                 )}
-              </AreaBox>
+              </AreaBox> */}
               <AreaBox>
                 <Controller
                   control={control}
@@ -596,6 +599,7 @@ export default function ConsultWirte() {
                     <>
                       <Textarea
                         readOnly
+                        value={field.value || ['']}
                         label="상담 과정 선택"
                         labelPlacement="outside"
                         className="max-w-full"
@@ -628,7 +632,7 @@ export default function ConsultWirte() {
                                   className="scrollbar"
                                 >
                                   <CheckboxGroup
-                                    value={subjectSelected}
+                                    value={subjectSelected || []}
                                     onChange={handleSbjChange}
                                     classNames={{
                                       wrapper: 'gap-0',
