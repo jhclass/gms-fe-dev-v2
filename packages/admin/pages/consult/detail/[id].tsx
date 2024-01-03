@@ -314,6 +314,7 @@ export default function ConsultDetail() {
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const studentState = data?.searchStudentState.studentState[0] || []
+  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type)
   const adviceList = adviceData?.seeAdviceType.adviceType || []
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
@@ -347,14 +348,15 @@ export default function ConsultDetail() {
   })
   const { isDirty, dirtyFields, errors } = formState
   const [subjectList, setSubjectList] = useState(null)
-  const [subjectSelected, setSubjectSelected] = useState()
-  const [adviceTypeSelected, setAdviceTypeSelected] = useState()
+  const [subjectSelected, setSubjectSelected] = useState([])
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState([])
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
   const [memoList, setMemoList] = useState([])
+
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
@@ -379,7 +381,6 @@ export default function ConsultDetail() {
       },
     })
   }, [router, currentSubjectPage])
-
   useEffect(() => {
     if (
       studentState.receiptDiv === '' ||
@@ -414,11 +415,10 @@ export default function ConsultDetail() {
       const date = parseInt(studentState.expEnrollDate)
       setExpEnrollDate(date)
     }
+    setAdviceTypeSelected(studentAdvice)
   }, [studentState])
 
   const onSubmit = data => {
-    console.log(subjectSelected)
-    console.log(studentState)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -431,8 +431,9 @@ export default function ConsultDetail() {
             phoneNum1: data.phoneNum1.trim(),
             phoneNum2: data.phoneNum2.trim(),
             phoneNum3: data.phoneNum3.trim(),
-            adviceTypes: [],
-            subject: data.subject === '' ? [] : subjectSelected,
+            adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
+            subject:
+              data.subject === '' ? studentState.subject : subjectSelected,
             detail: data.detail.trim(),
             progress: data.progress,
             stEmail: data.stEmail.trim(),
@@ -524,6 +525,7 @@ export default function ConsultDetail() {
     sbjClose()
   }
 
+  console.log(managerList)
   return (
     <>
       {data !== undefined && (
@@ -686,7 +688,7 @@ export default function ConsultDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                {/* <AreaBox>
+                <AreaBox>
                   <Controller
                     control={control}
                     name="adviceTypes"
@@ -696,7 +698,7 @@ export default function ConsultDetail() {
                         message: '상담 분야를 최소 1개 이상 선택해주세요.',
                       },
                     }}
-                    defaultValue={studentState?.adviceTypes}
+                    defaultValue={studentAdvice}
                     render={({ field }) => (
                       <>
                         <Textarea
@@ -711,7 +713,6 @@ export default function ConsultDetail() {
                           className="max-w-full"
                           variant="bordered"
                           minRows={1}
-                          defaultValue={studentState?.adviceTypes}
                           onClick={onOpen}
                           {...register('adviceTypes')}
                         />
@@ -728,7 +729,7 @@ export default function ConsultDetail() {
                                       orientation="horizontal"
                                       className="gap-1 radioBox"
                                       color="secondary"
-                                      value={adviceTypeSelected || []}
+                                      value={adviceTypeSelected}
                                       onValueChange={handleAdviceChange}
                                     >
                                       {adviceList !== null &&
@@ -776,7 +777,7 @@ export default function ConsultDetail() {
                       {String(errors.adviceTypes.message)}
                     </p>
                   )}
-                </AreaBox> */}
+                </AreaBox>
                 <AreaBox>
                   <Controller
                     control={control}
@@ -984,14 +985,18 @@ export default function ConsultDetail() {
                         >
                           {'담당자 지정필요'}
                         </SelectItem>
-                        {managerList?.map(item => (
-                          <SelectItem
-                            key={item.mUsername}
-                            value={item.mUsername}
-                          >
-                            {item.mUsername}
-                          </SelectItem>
-                        ))}
+                        {managerList
+                          ?.filter(
+                            manager => manager.mGrade > 0 && manager.mGrade < 3,
+                          )
+                          .map(item => (
+                            <SelectItem
+                              key={item.mUsername}
+                              value={item.mUsername}
+                            >
+                              {item.mUsername}
+                            </SelectItem>
+                          ))}
                       </Select>
                     )}
                   />

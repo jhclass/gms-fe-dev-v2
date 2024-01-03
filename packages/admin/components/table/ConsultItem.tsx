@@ -9,7 +9,7 @@ import { Checkbox } from '@nextui-org/react'
 
 type ConsultItemProps = {
   tableData: {
-    adviceType: []
+    adviceTypes: any
     id: number
     stName: string
     phoneNum1: string
@@ -226,6 +226,7 @@ export default function ConsolutItem(props: ConsultItemProps) {
   const flagString = isDisplayFlag(student.createdAt, student.progress)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
+  const studentAdvice = student?.adviceTypes.map(item => item.type)
 
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {
@@ -323,7 +324,7 @@ export default function ConsolutItem(props: ConsultItemProps) {
                 <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
               <TadviceType>
-                <EllipsisBox>{student.adviceType}</EllipsisBox>
+                <EllipsisBox>{String(studentAdvice)}</EllipsisBox>
               </TadviceType>
               <Tname>
                 {student.progress === 110 ? (

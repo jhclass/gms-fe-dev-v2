@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 type ConsultItemProps = {
   tableData: {
-    adviceType: []
+    adviceTypes: any
     id: number
     stName: string
     phoneNum1: string
@@ -210,6 +210,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
   const flagString = isDisplayFlag(student.createdAt, student.progress)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
+  const studentAdvice = student?.adviceTypes?.map(item => item.type)
 
   const favoClick = () => {
     updateFavo({
@@ -270,7 +271,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
                 <EllipsisBox>{student.subDiv}</EllipsisBox>
               </TsubDiv>
               <TadviceType>
-                <EllipsisBox>{student.adviceType}</EllipsisBox>
+                <EllipsisBox>{studentAdvice}</EllipsisBox>
               </TadviceType>
               <Tname>
                 <EllipsisBox>{student.stName}</EllipsisBox>

@@ -111,7 +111,6 @@ export const SEE_MANAGEUSER_QUERY = gql`
       id
       mUserId
       mUsername
-      mPassword
       mGrade
       mRank
       mPhoneNum
@@ -138,30 +137,20 @@ export const SEE_MANAGEUSER_QUERY = gql`
 `
 
 export const SEE_FAVORITESTATE_QUERY = gql`
-  query SeeFavorite {
+  query Query {
     seeFavorite {
+      adviceTypes {
+        id
+        type
+      }
       id
-      campus
-      category
-      stName
       phoneNum1
-      phoneNum2
-      phoneNum3
-      currentManager
-      subject
-      detail
-      agreement
-      progress
-      stEmail
-      stAddr
-      subDiv
-      stVisit
-      expEnrollDate
-      perchase
-      createdAt
-      updatedAt
-      receiptDiv
       pic
+      progress
+      receiptDiv
+      stName
+      stVisit
+      subDiv
     }
   }
 `
