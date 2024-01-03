@@ -87,37 +87,37 @@ const Tnum = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 50px;
+  min-width: 60px;
 `
 const TreceiptDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
-const Tfield = styled.div`
+const TadviceType = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 130px;
 `
 const Tname = styled.div`
   display: table-cell;
@@ -169,25 +169,15 @@ const TstVisit = styled.div`
   color: inherit;
   min-width: 120px;
 `
-const TexpEnrollDate = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 12%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 120px;
-`
 const Tprogress = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: 80px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -261,13 +251,12 @@ export default function ConsolutationTable() {
                   <Tprogress>진행상태</Tprogress>
                   <TreceiptDiv>접수구분</TreceiptDiv>
                   <TsubDiv>수강구분</TsubDiv>
-                  {/* <Tfield>상담분야</Tfield> */}
+                  <TadviceType>상담분야</TadviceType>
                   <Tname>이름</Tname>
                   <Tphone>연락처</Tphone>
                   <TcreatedAt>등록일시</TcreatedAt>
                   <Tmanager>담당자</Tmanager>
                   <TstVisit>상담예정일</TstVisit>
-                  <TexpEnrollDate>수강예정일</TexpEnrollDate>
                 </ClickBox>
               </TheaderBox>
             </Theader>

@@ -38,10 +38,15 @@ import {
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
+import {
+  SEE_ADVICE_TYPE_QUERY,
+  SEE_MANAGEUSER_QUERY,
+  SEE_STUDENT_QUERY,
+} from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
+import ChipCheckbox from '@/components/common/ChipCheckbox'
 
 const ConArea = styled.div`
   width: 100%;
@@ -219,6 +224,11 @@ export default function ConsultWirte() {
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
+  const {
+    loading: adviceLoading,
+    error: adviceError,
+    data: adviceData,
+  } = useQuery(SEE_ADVICE_TYPE_QUERY)
   const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
@@ -226,6 +236,7 @@ export default function ConsultWirte() {
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
+  const adviceList = adviceData?.seeAdviceType.adviceType || []
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -236,8 +247,8 @@ export default function ConsultWirte() {
   } = useDisclosure()
 
   const [subjectList, setSubjectList] = useState(null)
-  const [subjectSelected, setSubjectSelected] = useState()
-  const [filedSelected, setFiledSelected] = useState()
+  const [subjectSelected, setSubjectSelected] = useState<string[]>()
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState<string[]>()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -259,11 +270,14 @@ export default function ConsultWirte() {
   }, [router, currentSubjectPage])
 
   const onSubmit = data => {
+    console.log(data.subject)
     createStudent({
       variables: {
         stName: data.stName.trim(),
         agreement: '동의',
-        subject: data.subject,
+        // adviceTypes: data.adviceTypes === '' ? [''] : [data.adviceTypes],
+        adviceTypes: [],
+        subject: data.subject === '' ? [] : [data.subject],
         campus: '신촌',
         detail: data.detail === '' ? null : data.detail.trim(),
         category: null,
@@ -280,9 +294,9 @@ export default function ConsultWirte() {
             : new Date(data.expEnrollDate),
         perchase: null,
         birthday: null,
-        progress: data.progress === undefined ? null : data.progress,
-        receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-        pic: data.subDiv === undefined ? '담당자 지정필요' : data.pic,
+        progress: data.progress === undefined ? 0 : data.progress,
+        receiptDiv: data.receiptDiv === undefined ? '' : data.receiptDiv,
+        pic: data.pic === undefined ? '담당자 지정필요' : data.pic,
       },
       refetchQueries: [
         {
@@ -291,6 +305,7 @@ export default function ConsultWirte() {
         },
       ],
       onCompleted: data => {
+        console.log(data)
         alert('등록되었습니다.')
         router.push('/consult')
       },
@@ -321,18 +336,18 @@ export default function ConsultWirte() {
     setManager(e.target.value)
   }
 
-  const handleFiledChange = values => {
-    setFiledSelected(values)
+  const handleAdviceChange = values => {
+    setAdviceTypeSelected(values)
   }
-  const clickFiledSubmit = () => {
-    setValue('filed', filedSelected)
+  const clickAdviceSubmit = () => {
+    setValue('adviceTypes', [adviceTypeSelected])
     onClose()
   }
   const handleSbjChange = values => {
     setSubjectSelected(values)
   }
   const clickSbjSubmit = () => {
-    setValue('subject', subjectSelected)
+    setValue('subject', [subjectSelected])
     sbjClose()
   }
 
@@ -361,7 +376,6 @@ export default function ConsultWirte() {
                         이름<span>*</span>
                       </FilterLabel>
                     }
-                    defaultValue={''}
                     onChange={e => {
                       register('stName').onChange(e)
                     }}
@@ -492,7 +506,7 @@ export default function ConsultWirte() {
               {/* <AreaBox>
                 <Controller
                   control={control}
-                  name="filed"
+                  name="adviceTypes"
                   rules={{
                     required: {
                       value: true,
@@ -503,74 +517,48 @@ export default function ConsultWirte() {
                     <>
                       <Textarea
                         readOnly
-                        label={<FilterLabel>
-                        상담 분야<span>*</span>
-                      </FilterLabel>}
+                        value={field.value || ['']}
+                        label={
+                          <FilterLabel>
+                            상담 분야<span>*</span>
+                          </FilterLabel>
+                        }
                         labelPlacement="outside"
                         className="max-w-full"
                         variant="bordered"
                         minRows={1}
                         onClick={onOpen}
-                        {...register('filed')}
+                        {...register('adviceTypes')}
                       />
                       <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
                         <ModalContent>
                           {onClose => (
                             <>
-                              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                              <ModalHeader className="flex flex-col gap-1">
+                                상담 분야 선택
+                              </ModalHeader>
                               <ModalBody>
-                                <ScrollShadow
-                                  orientation="horizontal"
-                                  className="scrollbar"
-                                >
+                                <ScrollShadow className="scrollbar min-h-[10rem]">
                                   <CheckboxGroup
-                                    value={filedSelected}
-                                    onChange={handleFiledChange}
-                                    classNames={{
-                                      wrapper: 'gap-0',
-                                    }}
+                                    orientation="horizontal"
+                                    className="gap-1 radioBox"
+                                    value={adviceTypeSelected || []}
+                                    onValueChange={handleAdviceChange}
                                   >
-                                    {filedList?.result !== null &&
-                                        filedList?.result.map(
-                                          (item, index) => (
-                                            <TableItem key={index}>
-                                              <TableRow>
-                                                <Checkbox
-                                                  key={item.id}
-                                                  value={item.subjectName}
-                                                >
-                                                  <SubjectItem
-                                                    tableData={item}
-                                                  />
-                                                </Checkbox>
-                                              </TableRow>
-                                            </TableItem>
-                                          ),
-                                        )}
-                                      {filedList?.result === null && (
-                                        <Nolist>등록된 분야가 없습니다.</Nolist>
-                                      )}
-                                    <Checkbox key={'분야1'} value={'분야1'}>
-                                      분야1
-                                    </Checkbox>
+                                    {adviceList !== null &&
+                                      adviceList.map((item, index) => (
+                                        <ChipCheckbox
+                                          key={item.id}
+                                          value={item.type}
+                                        >
+                                          {item.type}
+                                        </ChipCheckbox>
+                                      ))}
+                                    {adviceList === null && (
+                                      <Nolist>등록된 분야가 없습니다.</Nolist>
+                                    )}
                                   </CheckboxGroup>
                                 </ScrollShadow>
-                                {filedList?.totalCount !== null && (
-                                    <PagerWrap>
-                                      <Pagination
-                                        variant="light"
-                                        showControls
-                                        initialPage={currentFiledPage}
-                                        total={Math.ceil(
-                                          filedList?.totalCount /
-                                            currentFiledLimit,
-                                        )}
-                                        onChange={newPage => {
-                                          setCurrentSubjectPage(newPage)
-                                        }}
-                                      />
-                                    </PagerWrap>
-                                  )}
                               </ModalBody>
                               <ModalFooter>
                                 <Button
@@ -583,8 +571,8 @@ export default function ConsultWirte() {
                                 <Button
                                   color="primary"
                                   onPress={() => {
-                                    clickFiledSubmit()
-                                    field.onChange(filedSelected)
+                                    clickAdviceSubmit()
+                                    field.onChange(adviceTypeSelected)
                                   }}
                                 >
                                   선택
@@ -597,9 +585,9 @@ export default function ConsultWirte() {
                     </>
                   )}
                 />
-                {errors.subject && (
+                {errors.adviceTypes && (
                   <p className="px-2 pt-2 text-xs text-red-500">
-                    {String(errors.subject.message)}
+                    {String(errors.adviceTypes.message)}
                   </p>
                 )}
               </AreaBox> */}
@@ -611,6 +599,7 @@ export default function ConsultWirte() {
                     <>
                       <Textarea
                         readOnly
+                        value={field.value || ['']}
                         label="상담 과정 선택"
                         labelPlacement="outside"
                         className="max-w-full"
@@ -643,7 +632,7 @@ export default function ConsultWirte() {
                                   className="scrollbar"
                                 >
                                   <CheckboxGroup
-                                    value={subjectSelected}
+                                    value={subjectSelected || []}
                                     onChange={handleSbjChange}
                                     classNames={{
                                       wrapper: 'gap-0',
@@ -717,11 +706,6 @@ export default function ConsultWirte() {
                     </>
                   )}
                 />
-                {errors.subject && (
-                  <p className="px-2 pt-2 text-xs text-red-500">
-                    {String(errors.subject.message)}
-                  </p>
-                )}
               </AreaBox>
               <FlexBox>
                 <Controller

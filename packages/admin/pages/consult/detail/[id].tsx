@@ -40,13 +40,18 @@ import {
   UPDATE_STUDENT_STATE_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
+import {
+  SEE_ADVICE_TYPE_QUERY,
+  SEE_MANAGEUSER_QUERY,
+  SEE_STUDENT_QUERY,
+} from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubjectItem from '@/components/table/SubjectItem'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
 import CreateMemo from '@/components/form/CreateMemo'
 import useMmeQuery from '@/utils/mMe'
+import ChipCheckbox from '@/components/common/ChipCheckbox'
 
 const ConArea = styled.div`
   width: 100%;
@@ -298,12 +303,18 @@ export default function ConsultDetail() {
       },
     },
   )
+  const {
+    loading: adviceLoading,
+    error: adviceError,
+    data: adviceData,
+  } = useQuery(SEE_ADVICE_TYPE_QUERY)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const studentState = data?.searchStudentState.studentState[0] || []
+  const adviceList = adviceData?.seeAdviceType.adviceType || []
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: sbjIsOpen,
@@ -327,17 +338,17 @@ export default function ConsultDetail() {
       stAddr: studentState?.stAddr,
       subDiv: studentState?.subDiv,
       stVisit: studentState?.stVisit,
+      adviceTypes: studentState?.adviceTypes,
       expEnrollDate: studentState?.expEnrollDate,
       perchase: studentState?.perchase,
       pic: studentState?.pic,
       receiptDiv: studentState?.receiptDiv,
-      filed: '웹툰',
     },
   })
   const { isDirty, dirtyFields, errors } = formState
   const [subjectList, setSubjectList] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState()
-  const [filedSelected, setFiledSelected] = useState()
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState()
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -406,6 +417,8 @@ export default function ConsultDetail() {
   }, [studentState])
 
   const onSubmit = data => {
+    console.log(subjectSelected)
+    console.log(studentState)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -418,7 +431,8 @@ export default function ConsultDetail() {
             phoneNum1: data.phoneNum1.trim(),
             phoneNum2: data.phoneNum2.trim(),
             phoneNum3: data.phoneNum3.trim(),
-            subject: data.subject,
+            adviceTypes: [],
+            subject: data.subject === '' ? [] : subjectSelected,
             detail: data.detail.trim(),
             progress: data.progress,
             stEmail: data.stEmail.trim(),
@@ -495,11 +509,11 @@ export default function ConsultDetail() {
   const handleManagerChange = e => {
     setManager(e.target.value)
   }
-  const handleFiledChange = values => {
-    setFiledSelected(values)
+  const handleAdviceChange = values => {
+    setAdviceTypeSelected(values)
   }
-  const clickFiledSubmit = () => {
-    setValue('filed', filedSelected)
+  const clickAdviceSubmit = () => {
+    setValue('adviceTypes', adviceTypeSelected)
     onClose()
   }
   const handleSbjChange = values => {
@@ -675,85 +689,62 @@ export default function ConsultDetail() {
                 {/* <AreaBox>
                   <Controller
                     control={control}
-                    name="filed"
+                    name="adviceTypes"
                     rules={{
                       required: {
                         value: true,
                         message: '상담 분야를 최소 1개 이상 선택해주세요.',
                       },
                     }}
-                    defaultValue={''}
+                    defaultValue={studentState?.adviceTypes}
                     render={({ field }) => (
                       <>
                         <Textarea
                           readOnly
-                          value={field.value}
-                          label={<FilterLabel>
-                          상담 분야<span>*</span>
-                        </FilterLabel>}
+                          value={field.value || ''}
+                          label={
+                            <FilterLabel>
+                              상담 분야<span>*</span>
+                            </FilterLabel>
+                          }
                           labelPlacement="outside"
                           className="max-w-full"
                           variant="bordered"
                           minRows={1}
-                          defaultValue={''}
+                          defaultValue={studentState?.adviceTypes}
                           onClick={onOpen}
-                          {...register('filed')}
+                          {...register('adviceTypes')}
                         />
                         <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
                           <ModalContent>
                             {onClose => (
                               <>
-                                <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                                <ModalHeader className="flex flex-col gap-1">
+                                  상담 분야 선택
+                                </ModalHeader>
                                 <ModalBody>
-                                  <ScrollShadow
-                                    orientation="horizontal"
-                                    className="scrollbar"
-                                  >
+                                  <ScrollShadow className="scrollbar min-h-[10rem]">
                                     <CheckboxGroup
-                                      value={filedSelected}
-                                      onChange={handleFiledChange}
-                                      classNames={{
-                                        wrapper: 'gap-0',
-                                      }}
+                                      orientation="horizontal"
+                                      className="gap-1 radioBox"
+                                      color="secondary"
+                                      value={adviceTypeSelected || []}
+                                      onValueChange={handleAdviceChange}
                                     >
-                                      {filedList?.result !== null &&
-                                        filedList?.result.map(
-                                          (item, index) => (
-                                            <TableItem key={index}>
-                                              <TableRow>
-                                                <Checkbox
-                                                  key={item.id}
-                                                  value={item.subjectName}
-                                                >
-                                                  <SubjectItem
-                                                    tableData={item}
-                                                  />
-                                                </Checkbox>
-                                              </TableRow>
-                                            </TableItem>
-                                          ),
-                                        )}
-                                      {filedList?.result === null && (
+                                      {adviceList !== null &&
+                                        adviceList.map((item, index) => (
+                                          <ChipCheckbox
+                                            key={item.id}
+                                            value={item.type}
+                                          >
+                                            {item.type}
+                                          </ChipCheckbox>
+                                        ))}
+                                      {adviceList === null && (
                                         <Nolist>등록된 분야가 없습니다.</Nolist>
                                       )}
                                     </CheckboxGroup>
                                   </ScrollShadow>
-                                  {filedList?.totalCount !== null && (
-                                    <PagerWrap>
-                                      <Pagination
-                                        variant="light"
-                                        showControls
-                                        initialPage={currentFiledPage}
-                                        total={Math.ceil(
-                                          filedList?.totalCount /
-                                            currentFiledLimit,
-                                        )}
-                                        onChange={newPage => {
-                                          setCurrentFiledPage(newPage)
-                                        }}
-                                      />
-                                    </PagerWrap>
-                                  )}
                                 </ModalBody>
                                 <ModalFooter>
                                   <Button
@@ -766,8 +757,8 @@ export default function ConsultDetail() {
                                   <Button
                                     color="primary"
                                     onPress={() => {
-                                      clickFiledSubmit()
-                                      field.onChange(filedSelected)
+                                      clickAdviceSubmit()
+                                      field.onChange(adviceTypeSelected)
                                     }}
                                   >
                                     선택
@@ -780,9 +771,9 @@ export default function ConsultDetail() {
                       </>
                     )}
                   />
-                  {errors.subject && (
+                  {errors.adviceTypes && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.subject.message)}
+                      {String(errors.adviceTypes.message)}
                     </p>
                   )}
                 </AreaBox> */}
@@ -795,7 +786,7 @@ export default function ConsultDetail() {
                       <>
                         <Textarea
                           readOnly
-                          value={field.value}
+                          value={field.value || ''}
                           label="상담 과정 선택"
                           labelPlacement="outside"
                           className="max-w-full"
@@ -833,7 +824,7 @@ export default function ConsultDetail() {
                                     className="scrollbar"
                                   >
                                     <CheckboxGroup
-                                      value={subjectSelected}
+                                      value={subjectSelected || []}
                                       onChange={handleSbjChange}
                                       classNames={{
                                         wrapper: 'gap-0',
@@ -913,11 +904,6 @@ export default function ConsultDetail() {
                       </>
                     )}
                   />
-                  {errors.subject && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.subject.message)}
-                    </p>
-                  )}
                 </AreaBox>
                 <FlexBox>
                   <Controller
