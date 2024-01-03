@@ -524,8 +524,6 @@ export default function ConsultDetail() {
     setValue('subject', subjectSelected)
     sbjClose()
   }
-
-  console.log(managerList)
   return (
     <>
       {data !== undefined && (
