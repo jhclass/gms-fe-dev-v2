@@ -144,7 +144,7 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
 `
 
 export const SEARCH_STUDENTSTATE_MUTATION = gql`
-  mutation SearchStudentState(
+  mutation Mutation(
     $searchStudentStateId: Int
     $receiptDiv: String
     $phoneNum1: String
@@ -177,11 +177,28 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
       ok
       studentState {
         adviceTypes {
+          id
           type
         }
         agreement
         campus
         category
+        consultationMemo {
+          content
+          createdAt
+          id
+          manageUser {
+            mGrade
+            id
+            mPart
+            mRank
+            mUserId
+            mUsername
+          }
+          manageUserId
+          studentStateId
+          updatedAt
+        }
         createdAt
         currentManager
         detail
@@ -202,7 +219,6 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         subject
         updatedAt
       }
-      totalCount
     }
   }
 `
