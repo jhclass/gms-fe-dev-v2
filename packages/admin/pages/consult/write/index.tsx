@@ -29,7 +29,7 @@ import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
-import SubjectModal from '@/components/modal/subjectModal'
+import SubjectModal from '@/components/modal/SubjectModal'
 
 const ConArea = styled.div`
   width: 100%;
