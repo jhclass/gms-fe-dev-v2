@@ -368,14 +368,25 @@ export default function SubjectDetail() {
     }
   }
 
-  const fametDate = data => {
+  const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} `
-    return formatted
+    if (isTime) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}:` +
+        `${date.getSeconds().toString().padStart(2, '0')}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
   }
   const feeDate = fee => {
     const result = Number(fee.replaceAll(',', ''))
@@ -417,7 +428,7 @@ export default function SubjectDetail() {
                 </Noti>
                 <UpdateTime>
                   <span>최근 업데이트 일시 :</span>
-                  {fametDate(subjectState?.updatedAt)}
+                  {fametDate(subjectState?.updatedAt, true)}
                 </UpdateTime>
               </TopInfo>
               <DetailDiv>
@@ -594,7 +605,7 @@ export default function SubjectDetail() {
                         value={
                           subjectState?.expiresDateStart === null
                             ? ''
-                            : fametDate(subjectState?.expiresDateStart)
+                            : fametDate(subjectState?.expiresDateStart, false)
                         }
                         startContent={<i className="xi-calendar" />}
                         className="w-full"
@@ -651,7 +662,7 @@ export default function SubjectDetail() {
                         value={
                           subjectState?.expiresDateEnd === null
                             ? ''
-                            : fametDate(subjectState?.expiresDateEnd)
+                            : fametDate(subjectState?.expiresDateEnd, false)
                         }
                         startContent={<i className="xi-calendar" />}
                         className="w-full"
