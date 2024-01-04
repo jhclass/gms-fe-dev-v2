@@ -44,7 +44,7 @@ export default function Subjects() {
           isActive={filterActive}
           rightArea={true}
           addRender={
-            mGrade === 0 && (
+            mGrade < 2 && (
               <>
                 {
                   <Button

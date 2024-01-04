@@ -35,7 +35,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
 import CreateMemo from '@/components/form/CreateMemo'
 import useMmeQuery from '@/utils/mMe'
-import SubjectModal from '@/components/modal/subjectModal'
+import SubjectModal from '@/components/modal/SubjectModal'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 
 const ConArea = styled.div`
