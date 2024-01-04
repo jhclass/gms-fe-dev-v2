@@ -1,10 +1,8 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
-import { Input, Button } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { Input } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { MME_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
@@ -59,7 +57,6 @@ const BtnBox = styled.div`
 `
 
 export default function Profile() {
-  const router = useRouter()
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const { register, handleSubmit, formState } = useForm()

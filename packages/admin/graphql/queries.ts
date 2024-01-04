@@ -60,6 +60,13 @@ export const MME_QUERY = gql`
     }
   }
 `
+export const MME_FAVO_QUERY = gql`
+  query MMe {
+    mMe {
+      favoriteStudentState
+    }
+  }
+`
 export const ISMME_QUERY = gql`
   query IsMme($isMmeId: Int!) {
     isMme(id: $isMmeId) {

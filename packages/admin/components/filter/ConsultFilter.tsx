@@ -7,7 +7,7 @@ import {
   subStatusState,
 } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '../common/Button'
+import Button from '@/components/common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import { useState } from 'react'
@@ -324,11 +324,15 @@ export default function TableFillter({
                     <SelectItem key={'-'} value={'-'}>
                       {'-'}
                     </SelectItem>
-                    {managerList?.map(item => (
-                      <SelectItem key={item.mUsername} value={item.mUsername}>
-                        {item.mUsername}
-                      </SelectItem>
-                    ))}
+                    {managerList
+                      ?.filter(
+                        manager => manager.mGrade > 0 && manager.mGrade < 3,
+                      )
+                      .map(item => (
+                        <SelectItem key={item.mUsername} value={item.mUsername}>
+                          {item.mUsername}
+                        </SelectItem>
+                      ))}
                   </Select>
                 )}
               />

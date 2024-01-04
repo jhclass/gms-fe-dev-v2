@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
-import { Button, Link } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 
 type propsTypes = {
   rightArea: boolean

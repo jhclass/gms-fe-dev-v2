@@ -247,7 +247,7 @@ export default function ConsolutationFilterTable({
       variables: {
         ...studentFilter,
         page: currentPage,
-        limit: currentLimit,
+        perPage: currentLimit,
       },
       onCompleted: resData => {
         const { studentState, totalCount } = resData.searchStudentState || {}
@@ -260,6 +260,7 @@ export default function ConsolutationFilterTable({
     setStudentFilter({})
     onFilterSearch(false)
   }
+  console.log(searchResult)
 
   return (
     <>

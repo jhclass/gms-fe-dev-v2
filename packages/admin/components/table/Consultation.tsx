@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import {
-  MME_QUERY,
+  MME_FAVO_QUERY,
   SEE_FAVORITESTATE_QUERY,
   SEE_STUDENT_QUERY,
 } from '@/graphql/queries'
@@ -201,11 +201,11 @@ export default function ConsolutationTable() {
     variables: { page: currentPage, limit: currentLimit },
   })
   const {
-    loading: MMeLoading,
-    error: MMeError,
-    data: MMeData,
-  } = useQuery(MME_QUERY)
-  const FavoList = MMeData?.mMe.favoriteStudentState
+    loading: MMeFavoLoading,
+    error: MMeFavoError,
+    data: MMeFavoData,
+  } = useQuery(MME_FAVO_QUERY)
+  const FavoList = MMeFavoData?.mMe.favoriteStudentState
   const { data: seeFavoData, refetch: favoRefetch } = useQuery(
     SEE_FAVORITESTATE_QUERY,
   )

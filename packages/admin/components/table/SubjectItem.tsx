@@ -27,6 +27,9 @@ const Tname = styled.div`
   font-size: 0.875rem;
   font-weight: 600;
   color: #71717a;
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 `
 const TsubDiv = styled.div`
   display: table-cell;
@@ -39,6 +42,9 @@ const TsubDiv = styled.div`
   min-width: 102px;
   font-size: 0.875rem;
   color: #71717a;
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 `
 const Tfee = styled.div`
   display: table-cell;
@@ -51,6 +57,9 @@ const Tfee = styled.div`
   min-width: 132px;
   font-size: 0.875rem;
   color: #71717a;
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 `
 
 const EllipsisBox = styled.p`

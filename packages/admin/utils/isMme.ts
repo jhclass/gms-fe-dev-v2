@@ -1,4 +1,4 @@
-import { ISMME_QUERY, MME_QUERY } from '@/graphql/queries'
+import { ISMME_QUERY } from '@/graphql/queries'
 import { useQuery } from '@apollo/client'
 import useMmeQuery from '@/utils/mMe'
 
