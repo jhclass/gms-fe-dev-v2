@@ -56,16 +56,20 @@ export const progressStatusState = atom({
       color: '#c9ab00',
     },
     30: {
-      name: '등록예정',
+      name: '방문완료',
       color: '#7dce00',
     },
     40: {
-      name: '미납고객',
+      name: '등록예정',
       color: '#0eacab',
     },
     50: {
-      name: '등록완료',
+      name: '미납고객',
       color: '#0070ad',
+    },
+    60: {
+      name: '등록완료',
+      color: '#043999',
     },
     110: {
       name: '오류/거부',
@@ -75,6 +79,16 @@ export const progressStatusState = atom({
       name: '미처리',
       color: '#FF5900',
     },
+    //   color: '#ff8d4a',
+    //   color: '#c9ab00',
+    //   color: '#7dce00',
+    //   color: '#0eacab',
+    //   color: '#0070ad',
+    //   color: '#043999',
+    //   color: '#7240f7',
+    //   color: '#7a0075',
+    //   color: '#be058e',
+    //   color: '#f85294',
   },
 })
 
