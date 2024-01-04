@@ -1,17 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client'
-import {
-  Button,
-  Checkbox,
-  Pagination,
-  ScrollShadow,
-  cn,
-} from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
+import { Checkbox, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
-import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
-import { addHookAliases } from 'next/dist/server/require-hook'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -46,33 +38,6 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
-const ColorHelp = styled.div`
-  display: flex;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-    padding-right: 0.5rem;
-  }
-`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
@@ -101,7 +66,6 @@ const Tfavorite = styled.div`
   min-width: 30px;
   padding: 1rem 1rem 1rem 2rem;
 `
-
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -187,16 +151,6 @@ const Tmanager = styled.div`
   min-width: 100px;
 `
 const TstVisit = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 12%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 120px;
-`
-const TexpEnrollDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;

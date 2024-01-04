@@ -175,6 +175,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
       error
       message
       ok
+      totalCount
       studentState {
         adviceTypes {
           id
@@ -347,6 +348,8 @@ export const CREATE_SUBJECT_MUTATION = gql`
     $totalTime: Int
     $teacherName: String
     $subjectCode: String
+    $expiresDateStart: String
+    $expiresDateEnd: String
   ) {
     createSubject(
       subDiv: $subDiv
@@ -359,10 +362,12 @@ export const CREATE_SUBJECT_MUTATION = gql`
       totalTime: $totalTime
       teacherName: $teacherName
       subjectCode: $subjectCode
+      expiresDateStart: $expiresDateStart
+      expiresDateEnd: $expiresDateEnd
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `
@@ -387,7 +392,9 @@ export const UPDATE_SUBJECT_MUTATION = gql`
     $exposure: Boolean
     $totalTime: Int
     $teacherName: String
-    $subjectCode: String
+    $expiresDateStart: String
+    $expiresDateEnd: String
+    $mGrade: Int
   ) {
     updateSubject(
       id: $updateSubjectId
@@ -400,50 +407,54 @@ export const UPDATE_SUBJECT_MUTATION = gql`
       exposure: $exposure
       totalTime: $totalTime
       teacherName: $teacherName
-      subjectCode: $subjectCode
+      expiresDateStart: $expiresDateStart
+      expiresDateEnd: $expiresDateEnd
+      mGrade: $mGrade
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `
 export const SEARCH_SUBJECT_MUTATION = gql`
-  mutation Mutation(
+  mutation SearchSubject(
     $searchSubjectId: Int
     $subDiv: String
-    $page: Int
-    $limit: Int
     $subjectName: String
     $exposure: Boolean
+    $page: Int
+    $limit: Int
   ) {
     searchSubject(
       id: $searchSubjectId
       subDiv: $subDiv
-      page: $page
-      limit: $limit
       subjectName: $subjectName
       exposure: $exposure
+      page: $page
+      limit: $limit
     ) {
-      ok
       error
-      totalCount
       message
+      ok
       result {
-        id
-        subDiv
-        subjectName
         createdAt
-        updatedAt
-        fee
-        startDate
         endDate
-        roomNum
+        expiresDateEnd
+        expiresDateStart
         exposure
-        totalTime
-        teacherName
+        fee
+        id
+        roomNum
+        startDate
+        subDiv
         subjectCode
+        subjectName
+        teacherName
+        totalTime
+        updatedAt
       }
+      totalCount
     }
   }
 `

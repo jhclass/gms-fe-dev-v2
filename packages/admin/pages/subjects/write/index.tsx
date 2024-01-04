@@ -111,6 +111,8 @@ export default function SubjectWrite() {
   const subStatus = useRecoilValue(subStatusState)
   const { register, control, handleSubmit, formState } = useForm()
   const { errors } = formState
+  const [expStartDate, setExpStartDate] = useState(null)
+  const [expEndDate, setExpEndDate] = useState(null)
   const [sjStartDate, setSjStartDate] = useState(null)
   const [sjEndDate, setSjEndDate] = useState(null)
   const [sub, setSub] = useState('없음')
@@ -131,6 +133,14 @@ export default function SubjectWrite() {
         exposure: isSelected,
         totalTime: data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
         teacherName: data.teacherName === '' ? '강사명 없음' : data.teacherName,
+        expiresDateStart:
+          data.expiresDateStart === undefined
+            ? null
+            : new Date(data.expiresDateStart),
+        expiresDateEnd:
+          data.expiresDateEnd === undefined
+            ? null
+            : new Date(data.expiresDateEnd),
       },
       refetchQueries: [
         {
@@ -302,6 +312,78 @@ export default function SubjectWrite() {
                 </AreaBox>
               </FlexBox>
               <FlexBox>
+                <AreaBox>
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="expiresDateStart"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            expStartDate === null
+                              ? null
+                              : new Date(expStartDate)
+                          }
+                          placeholderText="날짜를 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setExpStartDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label="승인 유효기간(시작일)"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </DatePickerBox>
+                </AreaBox>
+                <AreaBox>
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="expiresDateEnd"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            expEndDate === null ? null : new Date(expEndDate)
+                          }
+                          placeholderText="날짜를 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setExpEndDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label="승인 유효기간(만료일)"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </DatePickerBox>
+                </AreaBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"

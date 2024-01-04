@@ -158,9 +158,13 @@ export default function SubjectDetail() {
       exposure: subjectState.exposure,
       totalTime: subjectState.totalTime,
       teacherName: subjectState.teacherName,
+      expiresDateStart: subjectState.expiresDateStart,
+      expiresDateEnd: subjectState.expiresDateEnd,
     },
   })
   const { isDirty, dirtyFields, errors } = formState
+  const [expStartDate, setExpStartDate] = useState(null)
+  const [expEndDate, setExpEndDate] = useState(null)
   const [sjStartDate, setSjStartDate] = useState(null)
   const [sjEndDate, setSjEndDate] = useState(null)
   const [sub, setSub] = useState('없음')
@@ -194,6 +198,26 @@ export default function SubjectDetail() {
     }
 
     if (
+      subjectState.expiresDateStart === null ||
+      subjectState.expiresDateStart === undefined
+    ) {
+      setExpStartDate(null)
+    } else {
+      const date = parseInt(subjectState.expiresDateStart)
+      setExpStartDate(date)
+    }
+
+    if (
+      subjectState.expiresDateEnd === null ||
+      subjectState.expiresDateEnd === undefined
+    ) {
+      setExpEndDate(null)
+    } else {
+      const date = parseInt(subjectState.expiresDateEnd)
+      setExpEndDate(date)
+    }
+
+    if (
       subjectState.startDate === null ||
       subjectState.startDate === undefined
     ) {
@@ -210,6 +234,7 @@ export default function SubjectDetail() {
       setSjEndDate(date)
     }
   }, [subjectState])
+
   const onSubmit = data => {
     if (isDirty || subjectState.exposure !== isSelected) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
@@ -239,6 +264,18 @@ export default function SubjectDetail() {
               data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
             teacherName:
               data.teacherName === '' ? '강사명 없음' : data.teacherName,
+            expiresDateStart:
+              data.expiresDateStart === null
+                ? null
+                : typeof data.expiresDateStart === 'string'
+                ? new Date(parseInt(data.expiresDateStart))
+                : new Date(data.expiresDateStart),
+            expiresDateEnd:
+              data.expiresDateEnd === null
+                ? null
+                : typeof data.expiresDateEnd === 'string'
+                ? new Date(parseInt(data.expiresDateEnd))
+                : new Date(data.expiresDateEnd),
           },
           onCompleted: () => {
             alert('수정되었습니다.')
@@ -282,6 +319,14 @@ export default function SubjectDetail() {
             subjectState?.teacherName === null
               ? '강사명 없음'
               : subjectState?.teacherName,
+          expiresDateStart:
+            subjectState?.expiresDateStart === null
+              ? null
+              : new Date(parseInt(subjectState.expiresDateStart)),
+          expiresDateEnd:
+            subjectState?.expiresDateEnd === null
+              ? null
+              : new Date(parseInt(subjectState.expiresDateEnd)),
         },
         refetchQueries: [
           {
@@ -502,6 +547,80 @@ export default function SubjectDetail() {
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="expiresDateStart"
+                        defaultValue={subjectState?.expiresDateStart}
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              expStartDate === null
+                                ? null
+                                : new Date(expStartDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setExpStartDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label="승인 유효기간(시작일)"
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
+                  </AreaBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="expiresDateEnd"
+                        defaultValue={subjectState?.expiresDateEnd}
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              expEndDate === null ? null : new Date(expEndDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setExpEndDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label="승인 유효기간(만료일)"
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
+                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
