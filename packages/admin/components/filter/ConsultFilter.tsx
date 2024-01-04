@@ -324,11 +324,15 @@ export default function TableFillter({
                     <SelectItem key={'-'} value={'-'}>
                       {'-'}
                     </SelectItem>
-                    {managerList?.map(item => (
-                      <SelectItem key={item.mUsername} value={item.mUsername}>
-                        {item.mUsername}
-                      </SelectItem>
-                    ))}
+                    {managerList
+                      ?.filter(
+                        manager => manager.mGrade > 0 && manager.mGrade < 3,
+                      )
+                      .map(item => (
+                        <SelectItem key={item.mUsername} value={item.mUsername}>
+                          {item.mUsername}
+                        </SelectItem>
+                      ))}
                   </Select>
                 )}
               />
