@@ -76,7 +76,7 @@ export const ISMME_QUERY = gql`
   }
 `
 export const SEE_STUDENT_QUERY = gql`
-  query Query($page: Int!, $limit: Int) {
+  query SeeStudentState($page: Int!, $limit: Int) {
     seeStudentState(page: $page, limit: $limit) {
       message
       ok
@@ -86,6 +86,7 @@ export const SEE_STUDENT_QUERY = gql`
           id
           type
         }
+        createdAt
         id
         phoneNum1
         pic
@@ -150,6 +151,7 @@ export const SEE_FAVORITESTATE_QUERY = gql`
         id
         type
       }
+      createdAt
       id
       phoneNum1
       pic
