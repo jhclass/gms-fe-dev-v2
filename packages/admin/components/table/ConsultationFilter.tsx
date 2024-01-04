@@ -260,8 +260,6 @@ export default function ConsolutationFilterTable({
     setStudentFilter({})
     onFilterSearch(false)
   }
-  console.log(searchResult)
-
   return (
     <>
       <TTopic>

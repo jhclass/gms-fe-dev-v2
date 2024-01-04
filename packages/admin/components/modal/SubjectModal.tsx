@@ -181,7 +181,6 @@ export default function SubjectModal({
   }
 
   const onSubmit = data => {
-    console.log(data)
     setSubjectSearch(data.subjectName)
   }
   const resetSearch = () => {
