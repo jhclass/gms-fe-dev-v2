@@ -21,7 +21,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               />
               <meta
                 name="naver-site-verification"
-                content="7a5bb6648423e8d7bbca8430259b499b13412ec9"
+                content="b4b50776b3b55da6f0bf7cec11cf908a2da0cf1f"
               />
               <title>H ACADEMY | 에이치 아카데미</title>
               <meta
