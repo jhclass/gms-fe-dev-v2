@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -8,23 +8,13 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import {
-  Checkbox,
-  CheckboxGroup,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
   Textarea,
-  Button,
   useDisclosure,
-  Pagination,
-  ScrollShadow,
 } from '@nextui-org/react'
 import {
   progressStatusState,
@@ -33,20 +23,13 @@ import {
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
-import {
-  CREATE_STUDENT_STATE_MUTATION,
-  SEARCH_SUBJECT_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  SEE_ADVICE_TYPE_QUERY,
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_QUERY,
-} from '@/graphql/queries'
+import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import SubjectItem from '@/components/table/SubjectItem'
-import ChipCheckbox from '@/components/common/ChipCheckbox'
+import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
+import SubjectModal from '@/components/modal/subjectModal'
 
 const ConArea = styled.div`
   width: 100%;
@@ -126,116 +109,20 @@ const BtnBox = styled.div`
   gap: 0.5rem;
   justify-content: center;
 `
-const BtnArea = styled.div`
-  display: flex;
-  justify-content: start;
-`
-const Theader = styled.div`
-  width: 100%;
-  min-width: fit-content;
-  display: table-row;
-  flex-wrap: nowrap;
-  color: #111;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
-  text-align: center;
-`
-const TableItem = styled.div`
-  display: table;
-  position: relative;
-  width: 100%;
-  min-width: fit-content;
-  flex-wrap: nowrap;
-  border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
-  font-size: 0.875rem;
-  background: #fff;
-  overflow: hidden;
 
-  &:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
-  }
-`
-const TableRow = styled.div`
-  display: table-row;
-  width: 100%;
-  min-width: fit-content;
-  text-align: center;
-`
-const Tcheck = styled.div`
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.5rem;
-`
-const Tname = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 360px;
-`
-const TsubDiv = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 17%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 102px;
-`
-const Tfee = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 23%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 132px;
-`
-const PagerWrap = styled.div`
-  display: flex;
-  margin-top: 1.5rem;
-  justify-content: center;
-`
-const Nolist = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
-`
 export default function ConsultWirte() {
   const router = useRouter()
-  const [currentFiledPage, setCurrentFiledPage] = useState(1)
-  const [currentFiledLimit] = useState(5)
-  const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
-  const [currentSubjectLimit] = useState(5)
   const {
     loading: managerLoading,
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
-  const {
-    loading: adviceLoading,
-    error: adviceError,
-    data: adviceData,
-  } = useQuery(SEE_ADVICE_TYPE_QUERY)
-  const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
-  const adviceList = adviceData?.seeAdviceType.adviceType || []
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -244,8 +131,6 @@ export default function ConsultWirte() {
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
-
-  const [subjectList, setSubjectList] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState<string[]>([])
   const [adviceTypeSelected, setAdviceTypeSelected] = useState<string[]>([])
   const [stVisitDate, setStVisitDate] = useState(null)
@@ -253,20 +138,6 @@ export default function ConsultWirte() {
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
-
-  useEffect(() => {
-    searchSubjectMutation({
-      variables: {
-        exposure: true,
-        page: currentSubjectPage,
-        limit: currentSubjectLimit,
-      },
-      onCompleted: resData => {
-        const { result, totalCount } = resData.searchSubject || {}
-        setSubjectList({ result, totalCount })
-      },
-    })
-  }, [router, currentSubjectPage])
 
   const onSubmit = data => {
     createStudent({
@@ -301,7 +172,7 @@ export default function ConsultWirte() {
           variables: { page: 1, limit: 10 },
         },
       ],
-      onCompleted: data => {
+      onCompleted: () => {
         alert('등록되었습니다.')
         router.push('/consult')
       },
@@ -309,18 +180,6 @@ export default function ConsultWirte() {
     userLogs(`${data.stName}의 상담 등록`)
   }
 
-  const fametDate = data => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
-    return formatted
-  }
   const handleReceiptChange = e => {
     setReceipt(e.target.value)
   }
@@ -329,21 +188,6 @@ export default function ConsultWirte() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
-  }
-
-  const handleAdviceChange = (value: string[]) => {
-    setAdviceTypeSelected(value)
-  }
-  const clickAdviceSubmit = () => {
-    setValue('adviceTypes', adviceTypeSelected)
-    onClose()
-  }
-  const handleSbjChange = values => {
-    setSubjectSelected(values)
-  }
-  const clickSbjSubmit = () => {
-    setValue('subject', [...subjectSelected])
-    sbjClose()
   }
 
   return (
@@ -525,58 +369,14 @@ export default function ConsultWirte() {
                         onClick={onOpen}
                         {...register('adviceTypes')}
                       />
-                      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
-                        <ModalContent>
-                          {onClose => (
-                            <>
-                              <ModalHeader className="flex flex-col gap-1">
-                                상담 분야 선택
-                              </ModalHeader>
-                              <ModalBody>
-                                <ScrollShadow className="scrollbar min-h-[10rem]">
-                                  <CheckboxGroup
-                                    orientation="horizontal"
-                                    className="gap-1 radioBox"
-                                    value={adviceTypeSelected || []}
-                                    onValueChange={handleAdviceChange}
-                                  >
-                                    {adviceList !== null &&
-                                      adviceList.map((item, index) => (
-                                        <ChipCheckbox
-                                          key={item.id}
-                                          value={item.type}
-                                        >
-                                          {item.type}
-                                        </ChipCheckbox>
-                                      ))}
-                                    {adviceList === null && (
-                                      <Nolist>등록된 분야가 없습니다.</Nolist>
-                                    )}
-                                  </CheckboxGroup>
-                                </ScrollShadow>
-                              </ModalBody>
-                              <ModalFooter>
-                                <Button
-                                  color="danger"
-                                  variant="light"
-                                  onPress={onClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  color="primary"
-                                  onPress={() => {
-                                    clickAdviceSubmit()
-                                    field.onChange(adviceTypeSelected)
-                                  }}
-                                >
-                                  선택
-                                </Button>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
+                      <AdviceTypeModal
+                        adviceTypeSelected={adviceTypeSelected}
+                        setAdviceTypeSelected={setAdviceTypeSelected}
+                        field={field}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        setValue={setValue}
+                      />
                     </>
                   )}
                 />
@@ -603,101 +403,14 @@ export default function ConsultWirte() {
                         onClick={sbjOpen}
                         {...register('subject')}
                       />
-                      <Modal size={'2xl'} isOpen={sbjIsOpen} onClose={sbjClose}>
-                        <ModalContent>
-                          {sbjClose => (
-                            <>
-                              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
-                              <ModalBody>
-                                <BtnArea>
-                                  <Button
-                                    size="sm"
-                                    radius="sm"
-                                    variant="solid"
-                                    className="text-white bg-flag1"
-                                    onClick={() => {
-                                      router.push('/subjects')
-                                    }}
-                                  >
-                                    과정 등록/수정
-                                  </Button>
-                                </BtnArea>
-                                <ScrollShadow
-                                  orientation="horizontal"
-                                  className="scrollbar"
-                                >
-                                  <CheckboxGroup
-                                    value={subjectSelected || []}
-                                    onChange={handleSbjChange}
-                                    classNames={{
-                                      wrapper: 'gap-0',
-                                    }}
-                                  >
-                                    <Theader>
-                                      <TableRow>
-                                        <Tcheck></Tcheck>
-                                        <Tname>과정명</Tname>
-                                        <TsubDiv>수강구분</TsubDiv>
-                                        <Tfee>과정 금액</Tfee>
-                                      </TableRow>
-                                    </Theader>
-                                    {subjectList?.result !== null &&
-                                      subjectList?.result.map((item, index) => (
-                                        <TableItem key={index}>
-                                          <TableRow>
-                                            <Checkbox
-                                              key={item.id}
-                                              value={item.subjectName}
-                                            >
-                                              <SubjectItem tableData={item} />
-                                            </Checkbox>
-                                          </TableRow>
-                                        </TableItem>
-                                      ))}
-                                    {subjectList?.result === null && (
-                                      <Nolist>노출중인 과정이 없습니다.</Nolist>
-                                    )}
-                                  </CheckboxGroup>
-                                </ScrollShadow>
-                                {subjectList?.totalCount !== null && (
-                                  <PagerWrap>
-                                    <Pagination
-                                      variant="light"
-                                      showControls
-                                      initialPage={currentSubjectPage}
-                                      total={Math.ceil(
-                                        subjectList?.totalCount /
-                                          currentSubjectLimit,
-                                      )}
-                                      onChange={newPage => {
-                                        setCurrentSubjectPage(newPage)
-                                      }}
-                                    />
-                                  </PagerWrap>
-                                )}
-                              </ModalBody>
-                              <ModalFooter>
-                                <Button
-                                  color="danger"
-                                  variant="light"
-                                  onPress={sbjClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  color="primary"
-                                  onPress={() => {
-                                    clickSbjSubmit()
-                                    field.onChange([subjectSelected])
-                                  }}
-                                >
-                                  선택
-                                </Button>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
+                      <SubjectModal
+                        subjectSelected={subjectSelected}
+                        setSubjectSelected={setSubjectSelected}
+                        field={field}
+                        sbjIsOpen={sbjIsOpen}
+                        sbjClose={sbjClose}
+                        setValue={setValue}
+                      />
                     </>
                   )}
                 />

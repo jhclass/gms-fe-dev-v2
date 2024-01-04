@@ -7,7 +7,7 @@ import {
   subStatusState,
 } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '../common/Button'
+import Button from '@/components/common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import { useState } from 'react'
