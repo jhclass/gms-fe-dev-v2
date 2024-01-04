@@ -316,106 +316,76 @@ export default function SubjectWrite() {
               </FlexBox>
               <FlexBox>
                 <AreaBox>
-                  {mGrade < 2 ? (
-                    <DatePickerBox>
-                      <Controller
-                        control={control}
-                        name="expiresDateStart"
-                        render={({ field }) => (
-                          <DatePicker
-                            locale="ko"
-                            showYearDropdown
-                            selected={
-                              expStartDate === null
-                                ? null
-                                : new Date(expStartDate)
-                            }
-                            placeholderText="날짜를 선택해주세요."
-                            isClearable
-                            onChange={date => {
-                              field.onChange(date)
-                              setExpStartDate(date)
-                            }}
-                            ref={field.ref}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={
-                              <Input
-                                label="승인 유효기간(시작일)"
-                                labelPlacement="outside"
-                                type="text"
-                                variant="bordered"
-                                id="date"
-                                startContent={<i className="xi-calendar" />}
-                              />
-                            }
-                          />
-                        )}
-                      />
-                    </DatePickerBox>
-                  ) : (
-                    <Input
-                      isReadOnly
-                      labelPlacement="outside"
-                      placeholder="승인 유효기간(시작일)"
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label="승인 유효기간(시작일)"
-                      value=""
-                      startContent={<i className="xi-calendar" />}
-                      className="w-full"
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="expiresDateStart"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            expStartDate === null
+                              ? null
+                              : new Date(expStartDate)
+                          }
+                          placeholderText="날짜를 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setExpStartDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label="승인 유효기간(시작일)"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
                     />
-                  )}
+                  </DatePickerBox>
                 </AreaBox>
                 <AreaBox>
-                  {mGrade < 2 ? (
-                    <DatePickerBox>
-                      <Controller
-                        control={control}
-                        name="expiresDateEnd"
-                        render={({ field }) => (
-                          <DatePicker
-                            locale="ko"
-                            showYearDropdown
-                            selected={
-                              expEndDate === null ? null : new Date(expEndDate)
-                            }
-                            placeholderText="날짜를 선택해주세요."
-                            isClearable
-                            onChange={date => {
-                              field.onChange(date)
-                              setExpEndDate(date)
-                            }}
-                            ref={field.ref}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={
-                              <Input
-                                label="승인 유효기간(만료일)"
-                                labelPlacement="outside"
-                                type="text"
-                                variant="bordered"
-                                id="date"
-                                startContent={<i className="xi-calendar" />}
-                              />
-                            }
-                          />
-                        )}
-                      />
-                    </DatePickerBox>
-                  ) : (
-                    <Input
-                      isReadOnly
-                      labelPlacement="outside"
-                      placeholder="승인 유효기간(만료일)"
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label="승인 유효기간(만료일)"
-                      value=""
-                      startContent={<i className="xi-calendar" />}
-                      className="w-full"
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="expiresDateEnd"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            expEndDate === null ? null : new Date(expEndDate)
+                          }
+                          placeholderText="날짜를 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setExpEndDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label="승인 유효기간(만료일)"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
                     />
-                  )}
+                  </DatePickerBox>
                 </AreaBox>
                 <AreaBox>
                   <Input
