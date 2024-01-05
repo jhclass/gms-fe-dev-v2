@@ -5,7 +5,7 @@ import { isLoggedInVar } from '@/lib/apolloClient'
 import useMmeQuery from '@/utils/mMe'
 import MainWrap from '@/components/wrappers/MainWrap'
 
-export default function RegistrationLayout({ children }) {
+export default function StudentsLayout({ children }) {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')

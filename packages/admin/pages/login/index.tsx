@@ -170,14 +170,11 @@ export default function Login() {
     <>
       <Container>
         <LoginBox>
-          {/* <Logo>
+          <Logo>
             <img
               src="https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_logo_1_w.svg"
               alt="H ACADEMY"
             />
-          </Logo> */}
-          <Logo>
-            <img src="/src/images/hAcademy_logo_1_w.svg" alt="H ACADEMY" />
           </Logo>
           <form onSubmit={handleSubmit(onSubmit)}>
             <InputBox>

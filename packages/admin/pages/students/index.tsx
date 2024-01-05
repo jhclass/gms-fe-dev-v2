@@ -2,8 +2,13 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from './layout'
+import StudentsTable from '@/components/table/StudentsList'
+import { styled } from 'styled-components'
 
-export default function Registration() {
+const ConBox = styled.div`
+  margin: 2rem 0;
+`
+export default function Students() {
   const [filterActive, setFilterActive] = useState(false)
 
   return (
@@ -12,11 +17,13 @@ export default function Registration() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          rightArea={false}
+          rightArea={true}
         />
-        <p>개발자만</p>
+        <ConBox>
+          <StudentsTable />
+        </ConBox>
       </MainWrap>
     </>
   )
 }
-Registration.getLayout = page => <Layout>{page}</Layout>
+Students.getLayout = page => <Layout>{page}</Layout>

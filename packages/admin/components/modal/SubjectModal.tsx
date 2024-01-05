@@ -10,6 +10,8 @@ import {
   ModalFooter,
   ModalHeader,
   Pagination,
+  Radio,
+  RadioGroup,
   ScrollShadow,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -144,6 +146,7 @@ export default function SubjectModal({
   field,
   subjectSelected,
   setSubjectSelected,
+  radio = false,
 }) {
   const router = useRouter()
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
@@ -250,35 +253,67 @@ export default function SubjectModal({
                   </ItemBox>
                 </BtnArea>
                 <ScrollShadow orientation="horizontal" className="scrollbar">
-                  <CheckboxGroup
-                    value={subjectSelected || []}
-                    onChange={handleSbjChange}
-                    classNames={{
-                      wrapper: 'gap-0',
-                    }}
-                  >
-                    <Theader>
-                      <TableRow>
-                        <Tcheck></Tcheck>
-                        <Tname>과정명</Tname>
-                        <TsubDiv>수강구분</TsubDiv>
-                        <Tfee>과정 금액</Tfee>
-                      </TableRow>
-                    </Theader>
-                    {subjectList?.result !== null &&
-                      subjectList?.result.map((item, index) => (
-                        <TableItem key={index}>
-                          <TableRow>
-                            <Checkbox key={item.id} value={item.subjectName}>
-                              <SubjectItem tableData={item} />
-                            </Checkbox>
-                          </TableRow>
-                        </TableItem>
-                      ))}
-                    {subjectList?.result === null && (
-                      <Nolist>노출중인 과정이 없습니다.</Nolist>
-                    )}
-                  </CheckboxGroup>
+                  {radio ? (
+                    <RadioGroup
+                      value={subjectSelected || ''}
+                      onValueChange={handleSbjChange}
+                      classNames={{
+                        wrapper: 'gap-0',
+                      }}
+                    >
+                      <Theader>
+                        <TableRow>
+                          <Tcheck></Tcheck>
+                          <Tname>과정명</Tname>
+                          <TsubDiv>수강구분</TsubDiv>
+                          <Tfee>과정 금액</Tfee>
+                        </TableRow>
+                      </Theader>
+                      {subjectList?.result !== null &&
+                        subjectList?.result.map((item, index) => (
+                          <TableItem key={index}>
+                            <TableRow>
+                              <Radio key={item} value={item.subjectName}>
+                                <SubjectItem tableData={item} />
+                              </Radio>
+                            </TableRow>
+                          </TableItem>
+                        ))}
+                      {subjectList?.result === null && (
+                        <Nolist>노출중인 과정이 없습니다.</Nolist>
+                      )}
+                    </RadioGroup>
+                  ) : (
+                    <CheckboxGroup
+                      value={subjectSelected || []}
+                      onChange={handleSbjChange}
+                      classNames={{
+                        wrapper: 'gap-0',
+                      }}
+                    >
+                      <Theader>
+                        <TableRow>
+                          <Tcheck></Tcheck>
+                          <Tname>과정명</Tname>
+                          <TsubDiv>수강구분</TsubDiv>
+                          <Tfee>과정 금액</Tfee>
+                        </TableRow>
+                      </Theader>
+                      {subjectList?.result !== null &&
+                        subjectList?.result.map((item, index) => (
+                          <TableItem key={index}>
+                            <TableRow>
+                              <Checkbox key={item.id} value={item.subjectName}>
+                                <SubjectItem tableData={item} />
+                              </Checkbox>
+                            </TableRow>
+                          </TableItem>
+                        ))}
+                      {subjectList?.result === null && (
+                        <Nolist>노출중인 과정이 없습니다.</Nolist>
+                      )}
+                    </CheckboxGroup>
+                  )}
                 </ScrollShadow>
                 {subjectList?.totalCount !== null && (
                   <PagerWrap>

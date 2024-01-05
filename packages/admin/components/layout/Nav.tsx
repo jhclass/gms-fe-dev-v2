@@ -129,21 +129,12 @@ export default function Header() {
         <NavWrap $navOpen={navOpen}>
           <Logo $navOpen={navOpen}>
             <Link href={'/'}>
-              {/* <LogoImg
+              <LogoImg
                 $navOpen={navOpen}
                 src={
                   navOpen
                     ? 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_logo_1.svg'
                     : 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol.svg'
-                }
-                alt=H ACADEMY Admin"
-              /> */}
-              <LogoImg
-                $navOpen={navOpen}
-                src={
-                  navOpen
-                    ? '/src/images/hAcademy_logo_1.svg'
-                    : '/src/images/hAcademy_symbol.svg'
                 }
                 alt="H ACADEMY Admin"
               />
