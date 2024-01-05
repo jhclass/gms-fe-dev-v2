@@ -45,10 +45,10 @@ export default function Category() {
       label: '과정관리',
     },
     {
-      href: '/registration',
+      href: '/students',
       iconSrc: 'ico_regist',
-      alt: '수강생등록',
-      label: '수강생등록',
+      alt: '수강생관리',
+      label: '수강생관리',
     },
     {
       href: '/accounting',
