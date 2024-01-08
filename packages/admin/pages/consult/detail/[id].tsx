@@ -91,7 +91,11 @@ const AreaBox = styled.div`
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
+    display: inline;
     width: 100%;
+  }
+  .react-datepicker__input-container {
+    display: inline;
   }
   .react-datepicker__close-icon {
     height: 2.5rem;

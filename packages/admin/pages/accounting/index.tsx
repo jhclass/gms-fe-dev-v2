@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import Layout from './layout'
+import Layout from '@/pages/accounting/layout'
 
 export default function Accounting() {
   const [filterActive, setFilterActive] = useState(false)

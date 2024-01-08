@@ -147,6 +147,7 @@ export default function SubjectModal({
   subjectSelected,
   setSubjectSelected,
   radio = false,
+  setSbjectSelectedId = null,
 }) {
   const router = useRouter()
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
@@ -273,7 +274,7 @@ export default function SubjectModal({
                         subjectList?.result.map((item, index) => (
                           <TableItem key={index}>
                             <TableRow>
-                              <Radio key={item} value={item.subjectName}>
+                              <Radio key={item.id} value={item}>
                                 <SubjectItem tableData={item} />
                               </Radio>
                             </TableRow>
