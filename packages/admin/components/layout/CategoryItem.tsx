@@ -146,9 +146,15 @@ export default function CategoryItem<CategoryItemProps>({
                   }}
                 >
                   {isActive ? (
-                    <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
+                    <img
+                      src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
+                      alt={alt}
+                    />
                   ) : (
-                    <img src={`/src/icon/${iconSrc}.webp`} alt={alt} />
+                    <img
+                      src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
+                      alt={alt}
+                    />
                   )}
                 </CateIcon>
               </Tooltip>
@@ -188,9 +194,15 @@ export default function CategoryItem<CategoryItemProps>({
                   }}
                 >
                   {isActive ? (
-                    <img src={`/src/icon/${iconSrc}_w.webp`} alt={alt} />
+                    <img
+                      src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
+                      alt={alt}
+                    />
                   ) : (
-                    <img src={`/src/icon/${iconSrc}.webp`} alt={alt} />
+                    <img
+                      src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
+                      alt={alt}
+                    />
                   )}
                 </CateIcon>
               </Tooltip>
