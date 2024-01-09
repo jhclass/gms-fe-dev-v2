@@ -6,15 +6,33 @@ import { ApolloProvider } from '@apollo/client'
 import apolloClient from '@/lib/apolloClient'
 import { RecoilRoot, RecoilEnv } from 'recoil'
 import Head from 'next/head'
+import Script from 'next/script'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
+
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>
         <NextUIProvider>
           <Layout>
             <Head>
+              <Script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=G-WP8Q4MBES6`}
+              />
+              <Script
+                dangerouslySetInnerHTML={{
+                  __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WP8Q4MBES6', {
+            page_path: window.location.pathname,
+          });
+        `,
+                }}
+              />
               <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
@@ -40,6 +58,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               />
               <meta property="og:url" content="http://www.mysite.com" /> */}
             </Head>
+
             <Component {...pageProps} />
           </Layout>
         </NextUIProvider>
