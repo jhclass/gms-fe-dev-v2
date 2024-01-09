@@ -104,7 +104,7 @@ const FilterVariants = {
   },
 }
 
-export default function TableFillter({
+export default function ConsultFillter({
   isActive,
   onFilterToggle,
   onFilterSearch,

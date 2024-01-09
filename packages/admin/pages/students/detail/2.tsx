@@ -261,7 +261,7 @@ export default function StudentsWrite() {
                   className="text-white"
                   onClick={() => {
                     {
-                      router.push('/students/edit/0')
+                      router.push('/students/edit/basicInfo/0')
                     }
                   }}
                 >
@@ -340,321 +340,28 @@ export default function StudentsWrite() {
                   </div>
                 </AreaBox>
               </FlexBox>
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>수강료 정보</h4>
-                <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  color="primary"
-                  className="text-white"
-                  onClick={() => {
-                    {
-                      router.push('/students/edit/course/0')
-                    }
-                  }}
-                >
-                  수정
-                </Button>
-              </AreaTitle>
-              <FlexBox>
-                <AreaSmallBox style={{ minWidth: '20%' }}>
-                  <div>
-                    <FilterLabel>과정코드</FilterLabel>
-                    <LineBox>G12345678910549</LineBox>
-                  </div>
-                </AreaSmallBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>과정명</FilterLabel>
-                    <LineBox>
-                      멀티미디어 영상콘텐츠제작(프리미어,에펙,영상편집) A
-                    </LineBox>
-                  </div>
-                </AreaBox>
-                <AreaSmallBox style={{ minWidth: '20%' }}>
-                  <div>
-                    <FilterLabel>수강예정일</FilterLabel>
-                    <LineBox>2024.11.11</LineBox>
-                  </div>
-                </AreaSmallBox>
-              </FlexBox>
               <BtnBox>
-                <Button
-                  size="md"
-                  radius="md"
-                  variant="bordered"
-                  color="primary"
-                  className="w-full"
-                >
-                  강의배정
-                </Button>
                 <Button
                   size="md"
                   radius="md"
                   variant="solid"
                   color="primary"
                   className="w-full text-white"
+                  onClick={() => {
+                    router.push('/students/write/course')
+                  }}
                 >
-                  이수처리
+                  수강신청
                 </Button>
-              </BtnBox>
-              <FlexBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>수강 구분</FilterLabel>
-                    <LineBox>국가기간</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>수강료</FilterLabel>
-                    <LineBox>3,510,000</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>수강당담자</FilterLabel>
-                    <LineBox>박대리</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaSmallBox>
-                  <RadioBox>
-                    <RadioGroup
-                      isReadOnly
-                      label={
-                        <FilterLabel>
-                          교육상황보고여부<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue="비동의"
-                      orientation="horizontal"
-                      className="gap-[0.65rem]"
-                    >
-                      <Radio key={'동의'} value={'동의'}>
-                        동의
-                      </Radio>
-                      <Radio key={'비동의'} value={'비동의'}>
-                        비동의
-                      </Radio>
-                    </RadioGroup>
-                  </RadioBox>
-                </AreaSmallBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>할인금액</FilterLabel>
-                    <LineBox>0원</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>실 수강료</FilterLabel>
-                    <LineBox>3,510,000원</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>미 수납액</FilterLabel>
-                    <LineBox>2,500,000원</LineBox>
-                  </div>
-                </AreaBox>
-              </FlexBox>
-              <BtnBox>
                 <Button
                   size="md"
                   radius="md"
                   variant="solid"
                   className="w-full text-white bg-flag1"
                 >
-                  환불신청
-                </Button>
-                <Button
-                  size="md"
-                  radius="md"
-                  variant="bordered"
-                  className="w-full text-flag1 border-flag1"
-                >
                   삭제
                 </Button>
               </BtnBox>
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>결제 정보</h4>
-                <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  className="text-white bg-flag1"
-                  onClick={() => {
-                    {
-                      router.push('/students/write/payment')
-                    }
-                  }}
-                >
-                  미수금결제
-                </Button>
-              </AreaTitle>
-              <FlexCardBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>결제일자</FilterLabel>
-                      <FlatBox>2024.01.11</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>결제금액</FilterLabel>
-                      <FlatBox>510,000원</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>카드</FilterLabel>
-                      <FlatBox>0원</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>현금</FilterLabel>
-                      <FlatBox>510,000원</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>수납자</FilterLabel>
-                      <FlatBox>이주임</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>영수구분</FilterLabel>
-                      <FlatBox></FlatBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
-                <BtnBox>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="bordered"
-                    color="primary"
-                    className="w-full"
-                  >
-                    영수증 인쇄
-                  </Button>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="solid"
-                    color="primary"
-                    className="w-full text-white"
-                    onClick={() => router.push('/students/edit/payment/0')}
-                  >
-                    결제 변경
-                  </Button>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="bordered"
-                    className="w-full text-flag1 border-flag1"
-                  >
-                    결제 삭제
-                  </Button>
-                </BtnBox>
-              </FlexCardBox>
-              <FlexCardBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>결제일자</FilterLabel>
-                      <FlatBox>2024.01.11</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>결제금액</FilterLabel>
-                      <FlatBox>500,000원</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>카드</FilterLabel>
-                      <FlatBox>500,000원</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>현금</FilterLabel>
-                      <FlatBox>0원</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>수납자</FilterLabel>
-                      <FlatBox>이주임</FlatBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>영수구분</FilterLabel>
-                      <FlatBox></FlatBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
-                <BtnBox>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="bordered"
-                    color="primary"
-                    className="w-full"
-                  >
-                    영수증 인쇄
-                  </Button>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="solid"
-                    color="primary"
-                    className="w-full text-white"
-                    onClick={() => router.push('/students/edit/payment/0')}
-                  >
-                    결제 변경
-                  </Button>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="bordered"
-                    className="w-full text-flag1 border-flag1"
-                  >
-                    결제 삭제
-                  </Button>
-                </BtnBox>
-              </FlexCardBox>
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <CreateMemo />
-              <MemoList>
-                <MemoItem>
-                  <ConsolutMemo
-                    item={''}
-                    setMemoList={[]}
-                    studentId={1}
-                  ></ConsolutMemo>
-                </MemoItem>
-              </MemoList>
             </DetailDiv>
           </DetailBox>
         </ConArea>

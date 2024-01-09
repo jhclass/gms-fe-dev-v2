@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -8,15 +8,11 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import {
-  Checkbox,
-  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
-  Textarea,
-  Button,
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -27,7 +23,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
-import SubjectModal from '@/components/modal/SubjectModal'
 import { SEARCH_SUBJECT_BASIC_MUTATION } from '@/graphql/mutations'
 
 const ConArea = styled.div`
@@ -128,7 +123,7 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function StudentsWrite() {
+export default function StudentsEditInfo() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const {
@@ -409,9 +404,9 @@ export default function StudentsWrite() {
                   bgColor="#fff"
                   borderColor="#007de9"
                   typeBorder={true}
-                  onClick={() => router.push('/consult')}
+                  onClick={() => router.back()}
                 >
-                  목록으로
+                  뒤로가기
                 </Button2>
               </BtnBox>
             </DetailDiv>
@@ -421,4 +416,4 @@ export default function StudentsWrite() {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+StudentsEditInfo.getLayout = page => <Layout>{page}</Layout>

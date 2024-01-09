@@ -220,7 +220,8 @@ export default function studentsItem(props) {
               </TsubDiv>
               <Tbirthday>
                 <EllipsisBox>
-                  {student.birthday ? getDate(student.birthday) : '-'}
+                  {/* {student.birthday ? getDate(student.birthday) : '-'} */}
+                  {student.birthday ? student.birthday : '-'}
                 </EllipsisBox>
               </Tbirthday>
               <Tname>

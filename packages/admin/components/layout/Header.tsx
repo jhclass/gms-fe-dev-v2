@@ -325,7 +325,10 @@ export default function Header() {
               router.push('/')
             }}
           >
-            <img src="/src/icon/ico_noti.webp" alt="알림" />
+            <img
+              src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
+              alt="알림"
+            />
             <NotiNum>0</NotiNum>
           </NotiBtn>
 

@@ -194,7 +194,7 @@ const categories = [
     alt: '수강생관리',
     label: '수강생관리',
     isBreadcrumb: true,
-    isFilter: false,
+    isFilter: true,
     isWrite: '/students/write',
   },
   {

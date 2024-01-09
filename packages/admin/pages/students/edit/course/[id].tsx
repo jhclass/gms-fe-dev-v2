@@ -56,6 +56,11 @@ const Noti = styled.p`
     color: red;
   }
 `
+const UpdateTime = styled.p`
+  span {
+    color: #555;
+  }
+`
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -127,6 +132,14 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
+const LineBox = styled.div`
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-bottom: 2px solid hsl(240 6% 90%);
+  height: 40px;
+  line-height: 40px;
+  font-size: 0.875rem;
+`
 
 export default function StudentsWrite() {
   const router = useRouter()
@@ -196,6 +209,18 @@ export default function StudentsWrite() {
     // })
     // userLogs(`${data.stName}의 상담 등록`)
   }
+  const fametDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
+  }
 
   const feeFormet = fee => {
     const result = fee
@@ -227,38 +252,157 @@ export default function StudentsWrite() {
               <Noti>
                 <span>*</span> 는 필수입력입니다.
               </Noti>
+              <UpdateTime>
+                <span>최근 업데이트 일시 :</span>
+                {fametDate('2023.01.04')}
+              </UpdateTime>
             </TopInfo>
             <DetailDiv>
+              <AreaTitle>
+                <h4>기본정보</h4>
+              </AreaTitle>
+              <FlexBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>
+                      이름<span>*</span>
+                    </FilterLabel>
+                    <LineBox>홍길동</LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>
+                      연락처<span>*</span>
+                    </FilterLabel>
+                    <LineBox>01022224444</LineBox>
+                  </div>
+                </AreaBox>
+                <AreaSmallBox>
+                  <RadioBox>
+                    <RadioGroup
+                      label={
+                        <FilterLabel>
+                          SNS 수신 여부<span>*</span>
+                        </FilterLabel>
+                      }
+                      isReadOnly
+                      defaultValue="동의"
+                      orientation="horizontal"
+                      className="gap-[0.65rem]"
+                    >
+                      <Radio key={'동의'} value={'동의'}>
+                        동의
+                      </Radio>
+                      <Radio key={'비동의'} value={'비동의'}>
+                        비동의
+                      </Radio>
+                    </RadioGroup>
+                  </RadioBox>
+                </AreaSmallBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>
+                      생년월일<span>*</span>
+                    </FilterLabel>
+                    <LineBox>1993.05.10</LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>
+                      선별테스트점수<span>*</span>
+                    </FilterLabel>
+                    <LineBox>
+                      <span>87</span>/100
+                    </LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>담당자</FilterLabel>
+                    <LineBox>김사원</LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>등록일시</FilterLabel>
+                    <LineBox>2024.05.11</LineBox>
+                  </div>
+                </AreaBox>
+              </FlexBox>
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>수강료 정보</h4>
+              </AreaTitle>
+              <FlexBox>
+                <Controller
+                  control={control}
+                  name="subject"
+                  render={({ field }) => (
+                    <>
+                      <AreaBox>
+                        <Textarea
+                          readOnly
+                          value={field.value?.subjectName || ''}
+                          label="상담 과정 선택"
+                          labelPlacement="outside"
+                          className="max-w-full"
+                          variant="bordered"
+                          minRows={1}
+                          onClick={sbjOpen}
+                          {...register('subject')}
+                        />
+                        <SubjectModal
+                          subjectSelected={subjectSelected}
+                          setSubjectSelected={setSubjectSelected}
+                          field={field}
+                          sbjIsOpen={sbjIsOpen}
+                          sbjClose={sbjClose}
+                          setValue={setValue}
+                          radio={true}
+                        />
+                      </AreaBox>
+                    </>
+                  )}
+                />
+              </FlexBox>
               <FlexBox>
                 <AreaBox>
                   <Input
+                    isReadOnly
                     labelPlacement="outside"
-                    placeholder="이름"
-                    variant="bordered"
+                    placeholder="수강 구분"
+                    value={
+                      subjectSelected !== null ? subjectSelected?.subDiv : ''
+                    }
+                    variant="faded"
                     radius="md"
                     type="text"
-                    label={
-                      <FilterLabel>
-                        이름<span>*</span>
-                      </FilterLabel>
-                    }
-                    defaultValue={''}
+                    label="수강 구분"
                     className="w-full"
+                    {...register('testSubDiv')}
                   />
                 </AreaBox>
                 <AreaBox>
                   <Input
+                    readOnly
                     labelPlacement="outside"
-                    placeholder="연락처"
-                    variant="bordered"
+                    placeholder="수강료"
+                    value={
+                      subjectSelected !== null
+                        ? feeFormet(subjectSelected?.fee)
+                        : ''
+                    }
+                    variant="faded"
                     radius="md"
                     type="text"
-                    label={
-                      <FilterLabel>
-                        연락처<span>*</span>
-                      </FilterLabel>
-                    }
-                    defaultValue={''}
+                    label="수강료"
                     className="w-full"
                   />
                 </AreaBox>
@@ -271,7 +415,7 @@ export default function StudentsWrite() {
                         <RadioGroup
                           label={
                             <FilterLabel>
-                              SNS 수신 여부<span>*</span>
+                              교육상황보고여부<span>*</span>
                             </FilterLabel>
                           }
                           orientation="horizontal"
@@ -291,6 +435,71 @@ export default function StudentsWrite() {
                     />
                   </RadioBox>
                 </AreaSmallBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="할인율"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="할인율"
+                    endContent="%"
+                  />
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="할인금액"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="할인금액"
+                  />
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="수납액"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="수납액"
+                  />
+                </AreaBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="현금결제액"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="현금결제액"
+                  />
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="카드 결제액"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="카드 결제액"
+                  />
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="미수납액"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="미수납액"
+                  />
+                </AreaBox>
               </FlexBox>
               <FlexBox>
                 <AreaBox>
@@ -319,7 +528,7 @@ export default function StudentsWrite() {
                             <Input
                               label={
                                 <FilterLabel>
-                                  생년월일<span>*</span>
+                                  결제일자<span>*</span>
                                 </FilterLabel>
                               }
                               labelPlacement="outside"
@@ -335,20 +544,45 @@ export default function StudentsWrite() {
                   </DatePickerBox>
                 </AreaBox>
                 <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="선별테스트 점수"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label={
-                      <FilterLabel>
-                        선별테스트 점수<span>*</span>
-                      </FilterLabel>
-                    }
-                    defaultValue={''}
-                    className="w-full"
-                  />
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="stVisit"
+                      render={({ field }) => (
+                        <DatePicker
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            birthdayDate === null
+                              ? null
+                              : new Date(birthdayDate)
+                          }
+                          placeholderText="날짜를 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setBirthdayDate(date)
+                          }}
+                          ref={field.ref}
+                          dateFormat="yyyy/MM/dd"
+                          customInput={
+                            <Input
+                              label={
+                                <FilterLabel>
+                                  수강예정일<span>*</span>
+                                </FilterLabel>
+                              }
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </DatePickerBox>
                 </AreaBox>
                 <AreaBox>
                   <Controller
@@ -357,14 +591,14 @@ export default function StudentsWrite() {
                     render={({ field, fieldState }) => (
                       <Select
                         labelPlacement="outside"
-                        label="담당자"
+                        label="수강 담당자"
                         placeholder=" "
                         className="w-full"
                         variant="bordered"
-                        selectedKeys={[manager]}
+                        selectedKeys={[subjectManager]}
                         onChange={value => {
                           field.onChange(value)
-                          handleManagerChange(value)
+                          handleSubManagerChange(value)
                         }}
                       >
                         <SelectItem
@@ -390,6 +624,10 @@ export default function StudentsWrite() {
                   />
                 </AreaBox>
               </FlexBox>
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
               <BtnBox>
                 <Button2
                   buttonType="submit"
@@ -409,9 +647,9 @@ export default function StudentsWrite() {
                   bgColor="#fff"
                   borderColor="#007de9"
                   typeBorder={true}
-                  onClick={() => router.push('/consult')}
+                  onClick={() => router.back()}
                 >
-                  목록으로
+                  뒤로가기
                 </Button2>
               </BtnBox>
             </DetailDiv>

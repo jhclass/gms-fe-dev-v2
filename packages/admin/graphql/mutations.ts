@@ -458,3 +458,18 @@ export const SEARCH_SUBJECT_MUTATION = gql`
     }
   }
 `
+export const SEARCH_SUBJECT_BASIC_MUTATION = gql`
+  mutation SearchSubject($subjectName: String, $exposure: Boolean) {
+    searchSubject(subjectName: $subjectName, exposure: $exposure) {
+      error
+      message
+      ok
+      result {
+        fee
+        subDiv
+        subjectCode
+        subjectName
+      }
+    }
+  }
+`

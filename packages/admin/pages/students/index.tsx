@@ -1,15 +1,18 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import Layout from './layout'
+import Layout from '@/pages/students/layout'
 import StudentsTable from '@/components/table/StudentsList'
 import { styled } from 'styled-components'
+import StudentsFilter from '@/components/filter/StudentsFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
 `
 export default function Students() {
   const [filterActive, setFilterActive] = useState(false)
+  const [filterSearch, setFilterSearch] = useState(false)
+  const [studentFilter, setStudentFilter] = useState()
 
   return (
     <>
@@ -18,6 +21,12 @@ export default function Students() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           rightArea={true}
+        />
+        <StudentsFilter
+          isActive={filterActive}
+          onFilterToggle={setFilterActive}
+          onFilterSearch={setFilterSearch}
+          setStudentFilter={setStudentFilter}
         />
         <ConBox>
           <StudentsTable />

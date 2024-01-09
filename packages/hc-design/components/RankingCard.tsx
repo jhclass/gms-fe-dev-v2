@@ -4,64 +4,21 @@ export default function RankingCard() {
   const list = [
     {
       title: '웹툰작가에게 배우는 웹툰제작과정 Webtoon',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/02/d2_thumb03_big.webp',
-      subs: '본인이 만든 스토리의 프롤로그를 만들어 봅니다. 수차례원고를 거듭하면서 원고에 시작과 마무리에 대한 감을 익힙니다.',
-      link: '/detail/2',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/webtoon_thumb_big.webp',
+      subs: '드로잉의 이해부터 단편웹툰 제작까지! H ACADEMY 최고의 강사진이 웹툰의 모든것을 알려드립니다.',
+      link: '/detail/webtoon',
     },
     {
-      title:
-        '이모티콘 제작 생동감 있는 감정표현으로5주 만의 이모티콘 크리에이터 되기',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/03/d3_thumb01_big.webp',
-      subs: '카카오톡, 라인, 오지큐, 모히톡 등 플랫폼마다 파일크기와 비율이 다르기 때문에 플랫폼별 특징을 이해하고 형식에 맞춰 이식하는 방법을 체험하고 이모티콘 승인을 위한 포인트 및 노하우를 배울 수 있습니다.',
-      link: '/detail/3',
+      title: '생동감 있는 감정표현으로 5주 만의 이모티콘 크리에이터 되기',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/emoticon_thumb_big.png',
+      subs: 'H ACADEMY 스페셜 강사진의 1:1 개인 피드백을 통해 이모티콘 크리에이터로 데뷔',
+      link: '/detail/emoticon',
     },
     {
-      title: '면접 전에 알고 가면 좋을 것들 - 신입 JAVA 백엔드',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/hot02.webp',
-      subs: '신입 Spring Java 백엔드 개발자로 취업을 원하는 사람, 특히 면접을 앞둔 사람을 위한 강의',
-      link: '/detail/1',
-    },
-    {
-      title: 'MBTI 테스트로 배우는 웹 개발 왕 초보 입문',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/new04.webp',
-      subs: '[내일배움카드] 국비지원으로 배우는 1:8 웹 개발 왕초보 입문',
-      link: '/detail/1',
-    },
-    {
-      title: '프론트엔드 개발자를 위한 고성능 대규모 프로젝트',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/hot01.webp',
-      subs: '고퀄리티 10개 프로젝트로 최적화 부터 유지보수까지 한번에',
-      link: '/detail/1',
-    },
-    {
-      title: '1분만에 듣는 백엔드 개발 실무 노하우',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/new03.webp',
-      subs: '어디서도 알려주지 않아던 해답 더 나은 백엔드 개발자로 성장하기 위한 실마리를 전해드립니다.',
-      link: '/detail/1',
-    },
-    {
-      title: 'React.js 프론트엔드 개발',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/new02.webp',
-      subs: '자바스크립트를 이용해서 애플리케이션을 만들 수 있는 입문자를 위한 리액트!',
-      link: '/detail/1',
-    },
-    {
-      title: '새로운 신드롬, ChatGPT 강의 시리즈',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/hot04.webp',
-      subs: '지금 내게 필요한 ChatGPT 강의를 살펴 보세요.',
-      link: '/detail/1',
-    },
-    {
-      title: '백엔드 개발자를 위한 Kubernetes',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/hot05.webp',
-      subs: '클라우드 네이티브 프로그래밍 백엔드 개발 관점에서 쿠버네티스 200% 활용법',
-      link: '/detail/1',
-    },
-    {
-      title: 'SIGNATURE 프론트엔드 웹 개발의 모든 것',
-      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/new07.webp',
-      subs: '프론트엔드 웹 개발의 모든 것 사전 지식이 없어도 강의 하나로 입문부터 실전까지 ',
-      link: '/detail/1',
+      title: '영상편집 & 제작 취업과정 Motion Graphics',
+      img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/detail/motion_thumb_big.png',
+      subs: '에프터이펙트, 에프터아이, 스네마4D, 블렌더 등을 활용한 영상 전문가를 양성합니다.',
+      link: '/detail/motion',
     },
   ]
   return (
