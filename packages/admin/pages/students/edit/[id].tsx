@@ -223,193 +223,196 @@ export default function StudentsEditInfo() {
                 <span>*</span> 는 필수입력입니다.
               </Noti>
             </TopInfo>
-            <DetailDiv>
-              <FlexBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="이름"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label={
-                      <FilterLabel>
-                        이름<span>*</span>
-                      </FilterLabel>
-                    }
-                    defaultValue={''}
-                    className="w-full"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="연락처"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label={
-                      <FilterLabel>
-                        연락처<span>*</span>
-                      </FilterLabel>
-                    }
-                    defaultValue={''}
-                    className="w-full"
-                  />
-                </AreaBox>
-                <AreaSmallBox>
-                  <RadioBox>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <DetailDiv>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="이름"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label={
+                        <FilterLabel>
+                          이름<span>*</span>
+                        </FilterLabel>
+                      }
+                      defaultValue={''}
+                      className="w-full"
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="연락처"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label={
+                        <FilterLabel>
+                          연락처<span>*</span>
+                        </FilterLabel>
+                      }
+                      defaultValue={''}
+                      className="w-full"
+                    />
+                  </AreaBox>
+                  <AreaSmallBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="progress"
+                        render={({ field }) => (
+                          <RadioGroup
+                            label={
+                              <FilterLabel>
+                                SNS 수신 여부<span>*</span>
+                              </FilterLabel>
+                            }
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            onValueChange={value => {
+                              field.onChange(parseInt(value))
+                            }}
+                          >
+                            <Radio key={'동의'} value={'동의'}>
+                              동의
+                            </Radio>
+                            <Radio key={'비동의'} value={'비동의'}>
+                              비동의
+                            </Radio>
+                          </RadioGroup>
+                        )}
+                      />
+                    </RadioBox>
+                  </AreaSmallBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="stVisit"
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              birthdayDate === null
+                                ? null
+                                : new Date(birthdayDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setBirthdayDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label={
+                                  <FilterLabel>
+                                    생년월일<span>*</span>
+                                  </FilterLabel>
+                                }
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="선별테스트 점수"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label={
+                        <FilterLabel>
+                          선별테스트 점수<span>*</span>
+                        </FilterLabel>
+                      }
+                      defaultValue={''}
+                      className="w-full"
+                    />
+                  </AreaBox>
+                  <AreaBox>
                     <Controller
                       control={control}
-                      name="progress"
-                      render={({ field }) => (
-                        <RadioGroup
-                          label={
-                            <FilterLabel>
-                              SNS 수신 여부<span>*</span>
-                            </FilterLabel>
-                          }
-                          orientation="horizontal"
-                          className="gap-[0.65rem]"
-                          onValueChange={value => {
-                            field.onChange(parseInt(value))
+                      name="pic"
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label="담당자"
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[manager]}
+                          onChange={value => {
+                            field.onChange(value)
+                            handleManagerChange(value)
                           }}
                         >
-                          <Radio key={'동의'} value={'동의'}>
-                            동의
-                          </Radio>
-                          <Radio key={'비동의'} value={'비동의'}>
-                            비동의
-                          </Radio>
-                        </RadioGroup>
+                          <SelectItem
+                            key={'담당자 지정필요'}
+                            value={'담당자 지정필요'}
+                          >
+                            {'담당자 지정필요'}
+                          </SelectItem>
+                          {managerList
+                            ?.filter(
+                              manager =>
+                                manager.mGrade > 0 && manager.mGrade < 3,
+                            )
+                            .map(item => (
+                              <SelectItem
+                                key={item.mUsername}
+                                value={item.mUsername}
+                              >
+                                {item.mUsername}
+                              </SelectItem>
+                            ))}
+                        </Select>
                       )}
                     />
-                  </RadioBox>
-                </AreaSmallBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <DatePickerBox>
-                    <Controller
-                      control={control}
-                      name="stVisit"
-                      render={({ field }) => (
-                        <DatePicker
-                          locale="ko"
-                          showYearDropdown
-                          selected={
-                            birthdayDate === null
-                              ? null
-                              : new Date(birthdayDate)
-                          }
-                          placeholderText="날짜를 선택해주세요."
-                          isClearable
-                          onChange={date => {
-                            field.onChange(date)
-                            setBirthdayDate(date)
-                          }}
-                          ref={field.ref}
-                          dateFormat="yyyy/MM/dd"
-                          customInput={
-                            <Input
-                              label={
-                                <FilterLabel>
-                                  생년월일<span>*</span>
-                                </FilterLabel>
-                              }
-                              labelPlacement="outside"
-                              type="text"
-                              variant="bordered"
-                              id="date"
-                              startContent={<i className="xi-calendar" />}
-                            />
-                          }
-                        />
-                      )}
-                    />
-                  </DatePickerBox>
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="선별테스트 점수"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label={
-                      <FilterLabel>
-                        선별테스트 점수<span>*</span>
-                      </FilterLabel>
-                    }
-                    defaultValue={''}
-                    className="w-full"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Controller
-                    control={control}
-                    name="pic"
-                    render={({ field, fieldState }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="담당자"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        selectedKeys={[manager]}
-                        onChange={value => {
-                          field.onChange(value)
-                          handleManagerChange(value)
-                        }}
-                      >
-                        <SelectItem
-                          key={'담당자 지정필요'}
-                          value={'담당자 지정필요'}
-                        >
-                          {'담당자 지정필요'}
-                        </SelectItem>
-                        {managerList
-                          ?.filter(
-                            manager => manager.mGrade > 0 && manager.mGrade < 3,
-                          )
-                          .map(item => (
-                            <SelectItem
-                              key={item.mUsername}
-                              value={item.mUsername}
-                            >
-                              {item.mUsername}
-                            </SelectItem>
-                          ))}
-                      </Select>
-                    )}
-                  />
-                </AreaBox>
-              </FlexBox>
-              <BtnBox>
-                <Button2
-                  buttonType="submit"
-                  width="100%"
-                  height="2.5rem"
-                  typeBorder={true}
-                  fontColor="#fff"
-                  bgColor="#007de9"
-                >
-                  등록
-                </Button2>
-                <Button2
-                  buttonType="button"
-                  width="100%"
-                  height="2.5rem"
-                  fontColor="#007de9"
-                  bgColor="#fff"
-                  borderColor="#007de9"
-                  typeBorder={true}
-                  onClick={() => router.back()}
-                >
-                  뒤로가기
-                </Button2>
-              </BtnBox>
-            </DetailDiv>
+                  </AreaBox>
+                </FlexBox>
+                <BtnBox>
+                  <Button2
+                    buttonType="submit"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#fff"
+                    bgColor="#007de9"
+                  >
+                    등록
+                  </Button2>
+                  <Button2
+                    buttonType="button"
+                    width="100%"
+                    height="2.5rem"
+                    fontColor="#007de9"
+                    bgColor="#fff"
+                    borderColor="#007de9"
+                    typeBorder={true}
+                    onClick={() => router.back()}
+                  >
+                    뒤로가기
+                  </Button2>
+                </BtnBox>
+              </DetailDiv>
+            </form>
           </DetailBox>
         </ConArea>
       </MainWrap>

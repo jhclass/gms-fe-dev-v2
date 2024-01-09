@@ -15,12 +15,14 @@ export default function Category() {
 
   const categories = [
     {
+      id: 0,
       href: '/',
       iconSrc: 'ico_home',
       alt: '대시보드',
       label: '대시보드',
     },
     {
+      id: 1,
       href: '/consult',
       iconSrc: 'ico_consult',
       alt: '상담관리',
@@ -39,22 +41,57 @@ export default function Category() {
       ],
     },
     {
+      id: 2,
       href: '/subjects',
       iconSrc: 'ico_work',
       alt: '과정관리',
       label: '과정관리',
     },
     {
+      id: 3,
       href: '/students',
       iconSrc: 'ico_regist',
       alt: '수강생관리',
       label: '수강생관리',
     },
     {
+      id: 4,
       href: '/accounting',
       iconSrc: 'ico_accounting',
       alt: '회계관리',
       label: '회계관리',
+      // children: [
+      //   {
+      //     href: '/accounting',
+      //     alt: '결제내역',
+      //     label: '결제내역',
+      //   },
+      //   {
+      //     href: '/accounting/reject',
+      //     alt: '미수납내역',
+      //     label: '미수납내역',
+      //   },
+      //   {
+      //     href: '/accounting/reject',
+      //     alt: '환불내역',
+      //     label: '환불내역',
+      //   },
+      //   {
+      //     href: '/accounting/reject',
+      //     alt: '환불신청내역',
+      //     label: '환불신청내역',
+      //   },
+      //   {
+      //     href: '/accounting/reject',
+      //     alt: '카드결제내역',
+      //     label: '카드결제내역',
+      //   },
+      //   {
+      //     href: '/accounting/reject',
+      //     alt: '입금내역',
+      //     label: '입금내역',
+      //   },
+      // ],
     },
   ]
 
@@ -82,7 +119,7 @@ export default function Category() {
             label={category.label}
             isActive={active === category.href}
             onClick={() => {
-              setActiveCategory(index)
+              setActiveCategory(category.id)
             }}
             children={category.children}
           />

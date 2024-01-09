@@ -140,7 +140,7 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function StudentsWrite() {
+export default function StudentsEditPayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const {
@@ -312,365 +312,367 @@ export default function StudentsWrite() {
               </FlexBox>
             </DetailDiv>
           </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>결제 정보</h4>
-              </AreaTitle>
-              <FlexBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="현금결제액"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="현금결제액"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="카드 결제액"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="카드 결제액"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <DatePickerBox>
-                    <Controller
-                      control={control}
-                      name="stVisit"
-                      render={({ field }) => (
-                        <DatePicker
-                          locale="ko"
-                          showYearDropdown
-                          selected={
-                            birthdayDate === null
-                              ? null
-                              : new Date(birthdayDate)
-                          }
-                          placeholderText="날짜를 선택해주세요."
-                          isClearable
-                          onChange={date => {
-                            field.onChange(date)
-                            setBirthdayDate(date)
-                          }}
-                          ref={field.ref}
-                          dateFormat="yyyy/MM/dd"
-                          customInput={
-                            <Input
-                              label={
-                                <FilterLabel>
-                                  결제일자<span>*</span>
-                                </FilterLabel>
-                              }
-                              labelPlacement="outside"
-                              type="text"
-                              variant="bordered"
-                              id="date"
-                              startContent={<i className="xi-calendar" />}
-                            />
-                          }
-                        />
-                      )}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>결제 정보</h4>
+                </AreaTitle>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="현금결제액"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="현금결제액"
                     />
-                  </DatePickerBox>
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <RadioBox>
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="카드 결제액"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="카드 결제액"
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="stVisit"
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              birthdayDate === null
+                                ? null
+                                : new Date(birthdayDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setBirthdayDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label={
+                                  <FilterLabel>
+                                    결제일자<span>*</span>
+                                  </FilterLabel>
+                                }
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="progress"
+                        defaultValue={''}
+                        render={({ field, fieldState }) => (
+                          <CheckboxGroup
+                            label={<FilterLabel>영수구분</FilterLabel>}
+                            orientation="horizontal"
+                            className="gap-1"
+                            onChange={value => {
+                              field.onChange(value)
+                            }}
+                          >
+                            {Object.entries(Receipt).map(([key, item]) => (
+                              <Checkbox key={key} value={item}>
+                                {item}
+                              </Checkbox>
+                            ))}
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </RadioBox>
+                  </AreaBox>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>카드 결제 정보</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    className="text-white bg-flag1"
+                  >
+                    추가
+                  </Button>
+                </AreaTitle>
+                <FlexBox>
+                  <AreaBox>
                     <Controller
                       control={control}
-                      name="progress"
-                      defaultValue={''}
+                      name="pic"
                       render={({ field, fieldState }) => (
-                        <CheckboxGroup
-                          label={<FilterLabel>영수구분</FilterLabel>}
-                          orientation="horizontal"
-                          className="gap-1"
+                        <Select
+                          labelPlacement="outside"
+                          label="카드사"
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[cardName]}
                           onChange={value => {
                             field.onChange(value)
+                            handleCardChange(value)
                           }}
                         >
-                          {Object.entries(Receipt).map(([key, item]) => (
-                            <Checkbox key={key} value={item}>
-                              {item}
-                            </Checkbox>
-                          ))}
-                        </CheckboxGroup>
+                          <SelectItem key={'카드사 선택'} value={'카드사 선택'}>
+                            {'카드사 선택'}
+                          </SelectItem>
+                          <SelectItem key={'현대카드'} value={'현대카드'}>
+                            {'현대카드'}
+                          </SelectItem>
+                          <SelectItem key={'KB카드'} value={'KB카드'}>
+                            {'KB카드'}
+                          </SelectItem>
+                        </Select>
                       )}
                     />
-                  </RadioBox>
-                </AreaBox>
-              </FlexBox>
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>카드 결제 정보</h4>
-                <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  className="text-white bg-flag1"
-                >
-                  추가
-                </Button>
-              </AreaTitle>
-              <FlexBox>
-                <AreaBox>
-                  <Controller
-                    control={control}
-                    name="pic"
-                    render={({ field, fieldState }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="카드사"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        selectedKeys={[cardName]}
-                        onChange={value => {
-                          field.onChange(value)
-                          handleCardChange(value)
-                        }}
-                      >
-                        <SelectItem key={'카드사 선택'} value={'카드사 선택'}>
-                          {'카드사 선택'}
-                        </SelectItem>
-                        <SelectItem key={'현대카드'} value={'현대카드'}>
-                          {'현대카드'}
-                        </SelectItem>
-                        <SelectItem key={'KB카드'} value={'KB카드'}>
-                          {'KB카드'}
-                        </SelectItem>
-                      </Select>
-                    )}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="카드번호"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="카드번호"
-                  />
-                </AreaBox>
-                <AreaSmallBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="할부기간"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="할부기간"
-                    endContent={<InputText>개월</InputText>}
-                  />
-                </AreaSmallBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="결제금액"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="결제금액"
-                  />
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="승인번호"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="승인번호"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <DatePickerBox>
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="카드번호"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="카드번호"
+                    />
+                  </AreaBox>
+                  <AreaSmallBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="할부기간"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="할부기간"
+                      endContent={<InputText>개월</InputText>}
+                    />
+                  </AreaSmallBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="결제금액"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="결제금액"
+                    />
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="승인번호"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="승인번호"
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="stVisit"
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              birthdayDate === null
+                                ? null
+                                : new Date(birthdayDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setBirthdayDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label={<FilterLabel>결제일자</FilterLabel>}
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
+                  </AreaBox>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>입금 결제 정보</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    className="text-white bg-flag1"
+                  >
+                    추가
+                  </Button>
+                </AreaTitle>
+                <FlexBox>
+                  <AreaBox>
                     <Controller
                       control={control}
-                      name="stVisit"
-                      render={({ field }) => (
-                        <DatePicker
-                          locale="ko"
-                          showYearDropdown
-                          selected={
-                            birthdayDate === null
-                              ? null
-                              : new Date(birthdayDate)
-                          }
-                          placeholderText="날짜를 선택해주세요."
-                          isClearable
-                          onChange={date => {
-                            field.onChange(date)
-                            setBirthdayDate(date)
+                      name="pic"
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label="은행명"
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[bankName]}
+                          onChange={value => {
+                            field.onChange(value)
+                            handleBankChange(value)
                           }}
-                          ref={field.ref}
-                          dateFormat="yyyy/MM/dd"
-                          customInput={
-                            <Input
-                              label={<FilterLabel>결제일자</FilterLabel>}
-                              labelPlacement="outside"
-                              type="text"
-                              variant="bordered"
-                              id="date"
-                              startContent={<i className="xi-calendar" />}
-                            />
-                          }
-                        />
+                        >
+                          <SelectItem key={'은행 선택'} value={'은행 선택'}>
+                            {'은행 선택'}
+                          </SelectItem>
+                          <SelectItem key={'우리은행'} value={'우리은행'}>
+                            {'우리은행'}
+                          </SelectItem>
+                          <SelectItem key={'KB은행'} value={'KB은행'}>
+                            {'KB은행'}
+                          </SelectItem>
+                        </Select>
                       )}
                     />
-                  </DatePickerBox>
-                </AreaBox>
-              </FlexBox>
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>입금 결제 정보</h4>
-                <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  className="text-white bg-flag1"
-                >
-                  추가
-                </Button>
-              </AreaTitle>
-              <FlexBox>
-                <AreaBox>
-                  <Controller
-                    control={control}
-                    name="pic"
-                    render={({ field, fieldState }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="은행명"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        selectedKeys={[bankName]}
-                        onChange={value => {
-                          field.onChange(value)
-                          handleBankChange(value)
-                        }}
-                      >
-                        <SelectItem key={'은행 선택'} value={'은행 선택'}>
-                          {'은행 선택'}
-                        </SelectItem>
-                        <SelectItem key={'우리은행'} value={'우리은행'}>
-                          {'우리은행'}
-                        </SelectItem>
-                        <SelectItem key={'KB은행'} value={'KB은행'}>
-                          {'KB은행'}
-                        </SelectItem>
-                      </Select>
-                    )}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="입금자명"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="입금자명"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="입금금액"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="입금금액"
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <DatePickerBox>
-                    <Controller
-                      control={control}
-                      name="stVisit"
-                      render={({ field }) => (
-                        <DatePicker
-                          locale="ko"
-                          showYearDropdown
-                          selected={
-                            birthdayDate === null
-                              ? null
-                              : new Date(birthdayDate)
-                          }
-                          placeholderText="날짜를 선택해주세요."
-                          isClearable
-                          onChange={date => {
-                            field.onChange(date)
-                            setBirthdayDate(date)
-                          }}
-                          ref={field.ref}
-                          dateFormat="yyyy/MM/dd"
-                          customInput={
-                            <Input
-                              label={<FilterLabel>결제일자</FilterLabel>}
-                              labelPlacement="outside"
-                              type="text"
-                              variant="bordered"
-                              id="date"
-                              startContent={<i className="xi-calendar" />}
-                            />
-                          }
-                        />
-                      )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="입금자명"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="입금자명"
                     />
-                  </DatePickerBox>
-                </AreaBox>
-              </FlexBox>
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <BtnBox>
-                <Button2
-                  buttonType="submit"
-                  width="100%"
-                  height="2.5rem"
-                  typeBorder={true}
-                  fontColor="#fff"
-                  bgColor="#007de9"
-                >
-                  결제등록
-                </Button2>
-                <Button2
-                  buttonType="button"
-                  width="100%"
-                  height="2.5rem"
-                  fontColor="#007de9"
-                  bgColor="#fff"
-                  borderColor="#007de9"
-                  typeBorder={true}
-                  onClick={() => router.back()}
-                >
-                  뒤로가기
-                </Button2>
-              </BtnBox>
-            </DetailDiv>
-          </DetailBox>
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="입금금액"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="입금금액"
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="stVisit"
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              birthdayDate === null
+                                ? null
+                                : new Date(birthdayDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setBirthdayDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label={<FilterLabel>결제일자</FilterLabel>}
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
+                  </AreaBox>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <BtnBox>
+                  <Button2
+                    buttonType="submit"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#fff"
+                    bgColor="#007de9"
+                  >
+                    결제등록
+                  </Button2>
+                  <Button2
+                    buttonType="button"
+                    width="100%"
+                    height="2.5rem"
+                    fontColor="#007de9"
+                    bgColor="#fff"
+                    borderColor="#007de9"
+                    typeBorder={true}
+                    onClick={() => router.back()}
+                  >
+                    뒤로가기
+                  </Button2>
+                </BtnBox>
+              </DetailDiv>
+            </DetailBox>
+          </form>
         </ConArea>
       </MainWrap>
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+StudentsEditPayment.getLayout = page => <Layout>{page}</Layout>
