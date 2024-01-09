@@ -18,6 +18,39 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <Layout>
             <Head>
               <title>H ACADEMY | 에이치 아카데미</title>
+              <script src="https://www.googletagmanager.com/gtag/js?id=G-WP8Q4MBES6" />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
+            (function(w, d, s, l, i) {
+              w[l] = w[l] || [];
+              w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+              });
+              var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+              j.async = true;
+              j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+              f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-W22FF3RM');
+          `,
+                }}
+              />
+              <script
+                id="google-analytics"
+                dangerouslySetInnerHTML={{
+                  __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag() {
+                dataLayer.push(arguments);
+              }
+              gtag('js', new Date());
+              gtag('config', 'G-WP8Q4MBES6');
+            `,
+                }}
+              />
             </Head>
             <Component {...pageProps} />
           </Layout>
