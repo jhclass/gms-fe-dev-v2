@@ -8,12 +8,15 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import {
+  Checkbox,
+  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
   Textarea,
+  Button,
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -32,12 +35,6 @@ const ConArea = styled.div`
   max-width: 1400px;
 `
 const DetailBox = styled.div`
-  margin-top: 2rem;
-  background: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-`
-const DetailForm = styled.form`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
@@ -144,7 +141,7 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function StudentsEditCourse() {
+export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const {
@@ -276,38 +273,6 @@ export default function StudentsEditCourse() {
                 <AreaBox>
                   <div>
                     <FilterLabel>
-                      연락처<span>*</span>
-                    </FilterLabel>
-                    <LineBox>01022224444</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaSmallBox>
-                  <RadioBox>
-                    <RadioGroup
-                      label={
-                        <FilterLabel>
-                          SNS 수신 여부<span>*</span>
-                        </FilterLabel>
-                      }
-                      isReadOnly
-                      defaultValue="동의"
-                      orientation="horizontal"
-                      className="gap-[0.65rem]"
-                    >
-                      <Radio key={'동의'} value={'동의'}>
-                        동의
-                      </Radio>
-                      <Radio key={'비동의'} value={'비동의'}>
-                        비동의
-                      </Radio>
-                    </RadioGroup>
-                  </RadioBox>
-                </AreaSmallBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>
                       생년월일<span>*</span>
                     </FilterLabel>
                     <LineBox>1993.05.10</LineBox>
@@ -316,25 +281,35 @@ export default function StudentsEditCourse() {
                 <AreaBox>
                   <div>
                     <FilterLabel>
-                      선별테스트점수<span>*</span>
+                      연락처<span>*</span>
                     </FilterLabel>
+                    <LineBox>01022224444</LineBox>
+                  </div>
+                </AreaBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaSmallBox style={{ minWidth: '20%' }}>
+                  <div>
+                    <FilterLabel>
+                      수강구분<span></span>
+                    </FilterLabel>
+                    <LineBox>국가기간</LineBox>
+                  </div>
+                </AreaSmallBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>과정명</FilterLabel>
                     <LineBox>
-                      <span>87</span>/100
+                      멀티미디어 영상콘텐츠제작(프리미어,에펙,영상편집) A
                     </LineBox>
                   </div>
                 </AreaBox>
-                <AreaBox>
+                <AreaSmallBox style={{ minWidth: '20%' }}>
                   <div>
-                    <FilterLabel>담당자</FilterLabel>
+                    <FilterLabel>수강담당자</FilterLabel>
                     <LineBox>김사원</LineBox>
                   </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>등록일시</FilterLabel>
-                    <LineBox>2024.05.11</LineBox>
-                  </div>
-                </AreaBox>
+                </AreaSmallBox>
               </FlexBox>
             </DetailDiv>
           </DetailBox>
@@ -342,137 +317,8 @@ export default function StudentsEditCourse() {
             <DetailBox>
               <DetailDiv>
                 <AreaTitle>
-                  <h4>수강료 정보</h4>
+                  <h4>결제 정보</h4>
                 </AreaTitle>
-                <FlexBox>
-                  <Controller
-                    control={control}
-                    name="subject"
-                    render={({ field }) => (
-                      <>
-                        <AreaBox>
-                          <Textarea
-                            readOnly
-                            value={field.value?.subjectName || ''}
-                            label="상담 과정 선택"
-                            labelPlacement="outside"
-                            className="max-w-full"
-                            variant="bordered"
-                            minRows={1}
-                            onClick={sbjOpen}
-                            {...register('subject')}
-                          />
-                          <SubjectModal
-                            subjectSelected={subjectSelected}
-                            setSubjectSelected={setSubjectSelected}
-                            field={field}
-                            sbjIsOpen={sbjIsOpen}
-                            sbjClose={sbjClose}
-                            setValue={setValue}
-                            radio={true}
-                          />
-                        </AreaBox>
-                      </>
-                    )}
-                  />
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      isReadOnly
-                      labelPlacement="outside"
-                      placeholder="수강 구분"
-                      value={
-                        subjectSelected !== null ? subjectSelected?.subDiv : ''
-                      }
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label="수강 구분"
-                      className="w-full"
-                      {...register('testSubDiv')}
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      readOnly
-                      labelPlacement="outside"
-                      placeholder="수강료"
-                      value={
-                        subjectSelected !== null
-                          ? feeFormet(subjectSelected?.fee)
-                          : ''
-                      }
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label="수강료"
-                      className="w-full"
-                    />
-                  </AreaBox>
-                  <AreaSmallBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="progress"
-                        render={({ field }) => (
-                          <RadioGroup
-                            label={
-                              <FilterLabel>
-                                교육상황보고여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            onValueChange={value => {
-                              field.onChange(parseInt(value))
-                            }}
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        )}
-                      />
-                    </RadioBox>
-                  </AreaSmallBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="할인율"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="할인율"
-                      endContent="%"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="할인금액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="할인금액"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="수납액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="수납액"
-                    />
-                  </AreaBox>
-                </FlexBox>
                 <FlexBox>
                   <AreaBox>
                     <Input
@@ -494,18 +340,6 @@ export default function StudentsEditCourse() {
                       label="카드 결제액"
                     />
                   </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="미수납액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="미수납액"
-                    />
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
                   <AreaBox>
                     <DatePickerBox>
                       <Controller
@@ -547,6 +381,123 @@ export default function StudentsEditCourse() {
                       />
                     </DatePickerBox>
                   </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="progress"
+                        defaultValue={''}
+                        render={({ field, fieldState }) => (
+                          <CheckboxGroup
+                            label={<FilterLabel>영수구분</FilterLabel>}
+                            orientation="horizontal"
+                            className="gap-1"
+                            onChange={value => {
+                              field.onChange(value)
+                            }}
+                          >
+                            {Object.entries(Receipt).map(([key, item]) => (
+                              <Checkbox key={key} value={item}>
+                                {item}
+                              </Checkbox>
+                            ))}
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </RadioBox>
+                  </AreaBox>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>카드 결제 정보</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    className="text-white bg-flag1"
+                  >
+                    추가
+                  </Button>
+                </AreaTitle>
+                <FlexBox>
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="pic"
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label="카드사"
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[cardName]}
+                          onChange={value => {
+                            field.onChange(value)
+                            handleCardChange(value)
+                          }}
+                        >
+                          <SelectItem key={'카드사 선택'} value={'카드사 선택'}>
+                            {'카드사 선택'}
+                          </SelectItem>
+                          <SelectItem key={'현대카드'} value={'현대카드'}>
+                            {'현대카드'}
+                          </SelectItem>
+                          <SelectItem key={'KB카드'} value={'KB카드'}>
+                            {'KB카드'}
+                          </SelectItem>
+                        </Select>
+                      )}
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="카드번호"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="카드번호"
+                    />
+                  </AreaBox>
+                  <AreaSmallBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="할부기간"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="할부기간"
+                      endContent={<InputText>개월</InputText>}
+                    />
+                  </AreaSmallBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="결제금액"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="결제금액"
+                    />
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="승인번호"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="승인번호"
+                    />
+                  </AreaBox>
                   <AreaBox>
                     <DatePickerBox>
                       <Controller
@@ -571,11 +522,7 @@ export default function StudentsEditCourse() {
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
-                                label={
-                                  <FilterLabel>
-                                    수강예정일<span>*</span>
-                                  </FilterLabel>
-                                }
+                                label={<FilterLabel>결제일자</FilterLabel>}
                                 labelPlacement="outside"
                                 type="text"
                                 variant="bordered"
@@ -588,6 +535,23 @@ export default function StudentsEditCourse() {
                       />
                     </DatePickerBox>
                   </AreaBox>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>입금 결제 정보</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    className="text-white bg-flag1"
+                  >
+                    추가
+                  </Button>
+                </AreaTitle>
+                <FlexBox>
                   <AreaBox>
                     <Controller
                       control={control}
@@ -595,38 +559,85 @@ export default function StudentsEditCourse() {
                       render={({ field, fieldState }) => (
                         <Select
                           labelPlacement="outside"
-                          label="수강 담당자"
+                          label="은행명"
                           placeholder=" "
                           className="w-full"
                           variant="bordered"
-                          selectedKeys={[subjectManager]}
+                          selectedKeys={[bankName]}
                           onChange={value => {
                             field.onChange(value)
-                            handleSubManagerChange(value)
+                            handleBankChange(value)
                           }}
                         >
-                          <SelectItem
-                            key={'담당자 지정필요'}
-                            value={'담당자 지정필요'}
-                          >
-                            {'담당자 지정필요'}
+                          <SelectItem key={'은행 선택'} value={'은행 선택'}>
+                            {'은행 선택'}
                           </SelectItem>
-                          {managerList
-                            ?.filter(
-                              manager =>
-                                manager.mGrade > 0 && manager.mGrade < 3,
-                            )
-                            .map(item => (
-                              <SelectItem
-                                key={item.mUsername}
-                                value={item.mUsername}
-                              >
-                                {item.mUsername}
-                              </SelectItem>
-                            ))}
+                          <SelectItem key={'우리은행'} value={'우리은행'}>
+                            {'우리은행'}
+                          </SelectItem>
+                          <SelectItem key={'KB은행'} value={'KB은행'}>
+                            {'KB은행'}
+                          </SelectItem>
                         </Select>
                       )}
                     />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="입금자명"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="입금자명"
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="입금금액"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="입금금액"
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="stVisit"
+                        render={({ field }) => (
+                          <DatePicker
+                            locale="ko"
+                            showYearDropdown
+                            selected={
+                              birthdayDate === null
+                                ? null
+                                : new Date(birthdayDate)
+                            }
+                            placeholderText="날짜를 선택해주세요."
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setBirthdayDate(date)
+                            }}
+                            ref={field.ref}
+                            dateFormat="yyyy/MM/dd"
+                            customInput={
+                              <Input
+                                label={<FilterLabel>결제일자</FilterLabel>}
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                startContent={<i className="xi-calendar" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
                   </AreaBox>
                 </FlexBox>
               </DetailDiv>
@@ -642,7 +653,7 @@ export default function StudentsEditCourse() {
                     fontColor="#fff"
                     bgColor="#007de9"
                   >
-                    등록
+                    결제등록
                   </Button2>
                   <Button2
                     buttonType="button"
@@ -665,4 +676,4 @@ export default function StudentsEditCourse() {
     </>
   )
 }
-StudentsEditCourse.getLayout = page => <Layout>{page}</Layout>
+StudentsWritePayment.getLayout = page => <Layout>{page}</Layout>

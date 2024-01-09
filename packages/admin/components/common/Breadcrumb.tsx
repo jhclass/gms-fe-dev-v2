@@ -216,6 +216,15 @@ const categories = [
     isWrite: '',
   },
   {
+    href: '/students/edit',
+    iconSrc: 'ico_consult',
+    alt: '수강생수정',
+    label: '수강생수정',
+    isBreadcrumb: true,
+    isFilter: false,
+    isWrite: '',
+  },
+  {
     href: '/accounting',
     iconSrc: 'ico_accounting',
     alt: '회계관리',
