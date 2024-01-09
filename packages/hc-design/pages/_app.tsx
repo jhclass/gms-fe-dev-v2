@@ -17,11 +17,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <NextUIProvider>
           <Layout>
             <Head>
-              <Script
+              <script
                 async
                 src={`https://www.googletagmanager.com/gtag/js?id=G-WP8Q4MBES6`}
               />
-              <Script
+              <script
                 dangerouslySetInnerHTML={{
                   __html: `
           window.dataLayer = window.dataLayer || [];
@@ -58,7 +58,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               />
               <meta property="og:url" content="http://www.mysite.com" /> */}
             </Head>
-
+            <Script src="https://www.googletagmanager.com/gtag/js?id=G-WP8Q4MBES6" />
+            <Script id="google-analytics">
+              {`
+              window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WP8Q4MBES6');
+        `}
+            </Script>
             <Component {...pageProps} />
           </Layout>
         </NextUIProvider>
