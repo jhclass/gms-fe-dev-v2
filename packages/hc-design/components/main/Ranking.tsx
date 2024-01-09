@@ -8,7 +8,7 @@ export default function Ringking() {
       <div className="wrap">
         <MainTitle
           title={'인기강의'}
-          subs={'H-CLASS의 인기 강좌🔥'}
+          subs={'H-ACADEMY의 인기 강좌🔥'}
           flag={'HOT'}
         />
         <div className="mt-5">

@@ -32,10 +32,11 @@ export default function Home() {
       </div>
       <div className="mt-16">∂∂∂
         <Bnr />
-      </div>
+      </div> */}
       <div className="mt-16">
         <Ranking />
       </div>
+      {/*
       <div className="py-16 mt-10 bg-zinc-200">
         <MainBnr />
       </div>

@@ -52,36 +52,6 @@ export default function MainSilder() {
               </div>
             </Link>
           </SwiperSlide>
-          <SwiperSlide style={{ background: '#332314' }}>
-            <Link href="#" onClick={handleTest}>
-              <div className="flex justify-end wrap">
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_02.webp"
-                  style={{ overflow: 'hidden' }}
-                  className="hidden lg:block"
-                />
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/eximg/main_02_m.webp"
-                  style={{ overflow: 'hidden' }}
-                  className="block lg:hidden"
-                />
-                <div className="absolute top-[48%] left-6 xl:left-0 translate-y-[-50%]">
-                  <p className="inline px-3 py-2 text-center text-white rounded-r-lg rounded-tl-lg text-sm/none md:text-lg bg-primary">
-                    신규모집
-                  </p>
-                  <h2 className="mt-4 text-2xl font-bold text-white md:text-4xl/tight">
-                    권오상의 금융아카데미
-                    <br />단 5일간의 특별전
-                  </h2>
-                  <p className="mt-4 text-white text-md/tight md:text-xl/tight">
-                    단과 강의 쿠폰부터
-                    <br />
-                    PASS 특별 할인까지 (~10/27)
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </SwiperSlide>
           <SwiperSlide style={{ background: '#0c0918' }}>
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">

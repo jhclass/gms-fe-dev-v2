@@ -58,7 +58,7 @@ export default function Header() {
             headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'
           } flex-col w-full bg-white max-w-full px-0 border-b-1`}
         >
-          <div className="w-full bg-[#27272E] h-[2.5rem]">
+          {/* <div className="w-full bg-[#27272E] h-[2.5rem]">
             <ul className="flex items-center h-full text-lg wrap">
               <li className="min-w-[4.5rem] h-full cursor-pointer border-x-1 border-slate-400 bg-primary">
                 <Link
@@ -78,11 +78,11 @@ export default function Header() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
           <div className="flex wrap items-center justify-between w-full max-w-[1440px] h-[4.5rem] border-b-1 border-primary py-3 lg:border-b-0">
             <div className="flex items-center">
               <h1 className="mr-10 grow-0">
-                <Link href="#" className="block w-[10rem]">
+                <Link href="/" className="block w-[10rem]">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/hAcademy_logo_1.svg"
                     alt="H ACADEMY | H아카데미"
