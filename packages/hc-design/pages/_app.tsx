@@ -19,7 +19,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 name="viewport"
                 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
               />
-              <meta name="robots" content="index,follow" />
               <meta
                 name="naver-site-verification"
                 content="b4b50776b3b55da6f0bf7cec11cf908a2da0cf1f"
