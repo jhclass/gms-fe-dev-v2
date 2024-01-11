@@ -345,7 +345,7 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="연락처"
+                      placeholder="기타 연락처"
                       variant="bordered"
                       radius="md"
                       type="text"

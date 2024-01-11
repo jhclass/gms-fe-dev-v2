@@ -502,3 +502,155 @@ export const CREATE_STUDENT_MUTATION = gql`
     }
   }
 `
+export const SEARCH_STUDENT_MUTATION = gql`
+  mutation SearchStudent($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
+      error
+      message
+      ok
+      student {
+        birthday
+        campus
+        classCode
+        courseComplete
+        createdAt
+        dueDate
+        id
+        lectureAssignment
+        name
+        phoneNum1
+        phoneNum2
+        smsAgreement
+        studentMemo {
+          content
+          id
+          manageUserId
+        }
+        studentPayment {
+          actualAmount
+          cardAmount
+          cashAmount
+          discountAmount
+          id
+          paymentDate
+          paymentDetail {
+            ApprovalNum
+            amountPayment
+            bankName
+            cardCompany
+            cardNum
+            depositAmount
+            depositDate
+            depositorName
+            id
+            installment
+            paymentDate
+            studentPaymentId
+            unpaidPayment
+          }
+          processingManagerId
+          processingManager {
+            mUsername
+          }
+          receiptClassification
+          seScore
+          studentId
+          tuitionFee
+          unCollectedAmount
+        }
+        subDiv
+        subject {
+          fee
+          id
+          subDiv
+          subjectCode
+          subjectName
+          exposure
+        }
+        subjectId
+        updatedAt
+        writer
+      }
+    }
+  }
+`
+export const SEARCH_STUDENT_FILTER_MUTATION = gql`
+  mutation Mutation(
+    $studentName: String
+    $createdAt: String
+    $birthday: String
+    $phoneNum: String
+    $page: Int
+    $limit: Int
+  ) {
+    searchStudent(
+      studentName: $studentName
+      createdAt: $createdAt
+      birthday: $birthday
+      phoneNum: $phoneNum
+      page: $page
+      limit: $limit
+    ) {
+      error
+      ok
+      message
+      totalCount
+      student {
+        birthday
+        courseComplete
+        createdAt
+        id
+        lectureAssignment
+        writer
+        updatedAt
+        subject {
+          subjectName
+        }
+        subDiv
+        phoneNum1
+        name
+      }
+    }
+  }
+`
+export const SEARCH_STUDENT_BASIC_MUTATION = gql`
+  mutation SearchStudent($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
+      error
+      message
+      ok
+      student {
+        birthday
+        id
+        name
+        phoneNum1
+        phoneNum2
+        smsAgreement
+      }
+    }
+  }
+`
+
+export const UPDATE_STUDENT_BASIC_MUTATION = gql`
+  mutation EditStudent(
+    $editStudentId: Int!
+    $name: String
+    $phoneNum1: String
+    $phoneNum2: String
+    $smsAgreement: String
+    $birthday: String
+  ) {
+    editStudent(
+      id: $editStudentId
+      name: $name
+      phoneNum1: $phoneNum1
+      phoneNum2: $phoneNum2
+      smsAgreement: $smsAgreement
+      birthday: $birthday
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`

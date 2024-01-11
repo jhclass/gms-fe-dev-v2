@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -23,7 +23,11 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
-import { SEARCH_SUBJECT_BASIC_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_STUDENT_BASIC_MUTATION,
+  SEARCH_SUBJECT_BASIC_MUTATION,
+  UPDATE_STUDENT_BASIC_MUTATION,
+} from '@/graphql/mutations'
 
 const ConArea = styled.div`
   width: 100%;
@@ -126,296 +130,304 @@ const BtnBox = styled.div`
 export default function StudentsEditInfo() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const [searchSubject] = useMutation(SEARCH_SUBJECT_BASIC_MUTATION)
-
-  const Receipt = useRecoilValue(ReceiptState)
-  const managerList = managerData?.seeManageUser || []
+  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
+  const [UpdateStudentBasic] = useMutation(UPDATE_STUDENT_BASIC_MUTATION)
   const { register, control, setValue, handleSubmit, formState } = useForm()
-  const { errors } = formState
-  const {
-    isOpen: sbjIsOpen,
-    onOpen: sbjOpen,
-    onClose: sbjClose,
-  } = useDisclosure()
-  const [subjectSelected, setSubjectSelected] = useState(null)
-  const [subjectInfo, setSubjectInfo] = useState()
+  const { errors, isDirty, dirtyFields } = formState
+  const [studentData, setStudentData] = useState(null)
   const [birthdayDate, setBirthdayDate] = useState(null)
-  const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
-  const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
-  const [cardName, setCardName] = useState('카드사 선택')
-  const [bankName, setBankName] = useState('은행 선택')
+
+  useEffect(() => {
+    searchStudentBasic({
+      variables: {
+        searchStudentId: parseInt(studentId),
+      },
+      onCompleted: data => {
+        setStudentData(data.searchStudent.student[0])
+      },
+    })
+  }, [router])
+
+  useEffect(() => {
+    if (studentData?.birthday === null || studentData?.birthday === undefined) {
+      setBirthdayDate(null)
+    } else {
+      const date = parseInt(studentData?.birthday)
+      setBirthdayDate(date)
+    }
+  }, [studentData])
 
   const onSubmit = data => {
-    console.log(data)
-    // createStudent({
-    //   variables: {
-    //     stName: data.stName.trim(),
-    //     agreement: '동의',
-    //     subject: data.subject,
-    //     campus: '신촌',
-    //     detail: data.detail === '' ? null : data.detail.trim(),
-    //     category: null,
-    //     phoneNum1: data.phoneNum1.trim(),
-    //     phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
-    //     phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
-    //     stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
-    //     stAddr: null,
-    //     subDiv: data.subDiv === undefined ? null : data.subDiv,
-    //     stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
-    //     expEnrollDate:
-    //       data.expEnrollDate === undefined
-    //         ? null
-    //         : new Date(data.expEnrollDate),
-    //     perchase: null,
-    //     birthday: null,
-    //     receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-    //     pic: data.subDiv === undefined ? null : data.pic,
-    //     // progress: 0,
-    //   },
-    //   refetchQueries: [
-    //     {
-    //       query: SEE_STUDENT_QUERY,
-    //       variables: { page: 1, limit: 10 },
-    //     },
-    //   ],
-    //   onCompleted: data => {
-    //     alert('등록되었습니다.')
-    //     router.push('/consult')
-    //   },
-    // })
-    // userLogs(`${data.stName}의 상담 등록`)
-  }
-
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-  const handleSubManagerChange = e => {
-    setSubjectManager(e.target.value)
-  }
-  const handleCardChange = e => {
-    setCardName(e.target.value)
-  }
-  const handleBankChange = e => {
-    setBankName(e.target.value)
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        UpdateStudentBasic({
+          variables: {
+            editStudentId: studentData.id,
+            name: data.name.trim(),
+            phoneNum1: data.phoneNum1.trim(),
+            phoneNum2: data.phoneNum2.trim(),
+            smsAgreement: data.smsAgreement,
+            birthday:
+              data.birthday === null
+                ? null
+                : typeof data.birthday === 'string'
+                ? new Date(parseInt(data.birthday))
+                : new Date(data.birthday),
+          },
+          onCompleted: data => {
+            alert('수정되었습니다.')
+          },
+        })
+        const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+        userLogs(
+          `${studentData.name} 수강생 기본정보 수정`,
+          dirtyFieldsArray.join(', '),
+        )
+      }
+    }
   }
 
   return (
     <>
-      <MainWrap>
-        <ConArea>
-          <Breadcrumb rightArea={false} />
-          <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-            </TopInfo>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <DetailDiv>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="이름"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label={
-                        <FilterLabel>
-                          이름<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue={''}
-                      className="w-full"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="연락처"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label={
-                        <FilterLabel>
-                          연락처<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue={''}
-                      className="w-full"
-                    />
-                  </AreaBox>
-                  <AreaSmallBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="progress"
-                        render={({ field }) => (
-                          <RadioGroup
-                            label={
-                              <FilterLabel>
-                                SNS 수신 여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            onValueChange={value => {
-                              field.onChange(parseInt(value))
-                            }}
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        )}
+      {studentData !== null && (
+        <MainWrap>
+          <ConArea>
+            <Breadcrumb rightArea={false} />
+            <DetailBox>
+              <TopInfo>
+                <Noti>
+                  <span>*</span> 는 필수입력입니다.
+                </Noti>
+              </TopInfo>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <DetailDiv>
+                  <FlexBox>
+                    <AreaBox>
+                      <Input
+                        defaultValue={studentData?.name}
+                        labelPlacement="outside"
+                        placeholder="이름"
+                        variant="bordered"
+                        radius="md"
+                        type="text"
+                        label={
+                          <FilterLabel>
+                            이름<span>*</span>
+                          </FilterLabel>
+                        }
+                        className="w-full"
+                        onChange={e => {
+                          register('name').onChange(e)
+                        }}
+                        {...register('name', {
+                          required: {
+                            value: true,
+                            message: '이름을 입력해주세요.',
+                          },
+                        })}
                       />
-                    </RadioBox>
-                  </AreaSmallBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <DatePickerBox>
-                      <Controller
-                        control={control}
-                        name="stVisit"
-                        render={({ field }) => (
-                          <DatePicker
-                            locale="ko"
-                            showYearDropdown
-                            selected={
-                              birthdayDate === null
-                                ? null
-                                : new Date(birthdayDate)
-                            }
-                            placeholderText="날짜를 선택해주세요."
-                            isClearable
-                            onChange={date => {
-                              field.onChange(date)
-                              setBirthdayDate(date)
-                            }}
-                            ref={field.ref}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={
-                              <Input
-                                label={
-                                  <FilterLabel>
-                                    생년월일<span>*</span>
-                                  </FilterLabel>
-                                }
-                                labelPlacement="outside"
-                                type="text"
-                                variant="bordered"
-                                id="date"
-                                startContent={<i className="xi-calendar" />}
-                              />
-                            }
-                          />
-                        )}
-                      />
-                    </DatePickerBox>
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="선별테스트 점수"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label={
-                        <FilterLabel>
-                          선별테스트 점수<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue={''}
-                      className="w-full"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Controller
-                      control={control}
-                      name="pic"
-                      render={({ field, fieldState }) => (
-                        <Select
-                          labelPlacement="outside"
-                          label="담당자"
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          selectedKeys={[manager]}
-                          onChange={value => {
-                            field.onChange(value)
-                            handleManagerChange(value)
-                          }}
-                        >
-                          <SelectItem
-                            key={'담당자 지정필요'}
-                            value={'담당자 지정필요'}
-                          >
-                            {'담당자 지정필요'}
-                          </SelectItem>
-                          {managerList
-                            ?.filter(
-                              manager =>
-                                manager.mGrade > 0 && manager.mGrade < 3,
-                            )
-                            .map(item => (
-                              <SelectItem
-                                key={item.mUsername}
-                                value={item.mUsername}
-                              >
-                                {item.mUsername}
-                              </SelectItem>
-                            ))}
-                        </Select>
+                      {errors.name && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.name.message)}
+                        </p>
                       )}
-                    />
-                  </AreaBox>
-                </FlexBox>
-                <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
-                  >
-                    등록
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
-                    onClick={() => router.back()}
-                  >
-                    뒤로가기
-                  </Button2>
-                </BtnBox>
-              </DetailDiv>
-            </form>
-          </DetailBox>
-        </ConArea>
-      </MainWrap>
+                    </AreaBox>
+                    <AreaBox>
+                      <Input
+                        defaultValue={studentData?.phoneNum1}
+                        labelPlacement="outside"
+                        placeholder="연락처"
+                        variant="bordered"
+                        radius="md"
+                        type="text"
+                        label={
+                          <FilterLabel>
+                            연락처<span>*</span>
+                          </FilterLabel>
+                        }
+                        className="w-full"
+                        onChange={e => {
+                          register('phoneNum1').onChange(e)
+                        }}
+                        maxLength={11}
+                        {...register('phoneNum1', {
+                          required: {
+                            value: true,
+                            message: '휴대폰번호를 입력해주세요.',
+                          },
+                          maxLength: {
+                            value: 11,
+                            message: '최대 11자리까지 입력 가능합니다.',
+                          },
+                          minLength: {
+                            value: 10,
+                            message: '최소 10자리 이상이어야 합니다.',
+                          },
+                          pattern: {
+                            value: /^010[0-9]{7,8}$/,
+                            message: '010으로 시작해주세요.',
+                          },
+                        })}
+                      />
+                      {errors.phoneNum1 && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.phoneNum1.message)}
+                        </p>
+                      )}
+                    </AreaBox>
+                    <AreaSmallBox>
+                      <RadioBox>
+                        <Controller
+                          control={control}
+                          name="smsAgreement"
+                          defaultValue={studentData?.smsAgreement}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: 'SMS 수신여부를 선택해주세요.',
+                            },
+                          }}
+                          render={({ field }) => (
+                            <RadioGroup
+                              label={
+                                <FilterLabel>
+                                  SMS 수신 여부<span>*</span>
+                                </FilterLabel>
+                              }
+                              orientation="horizontal"
+                              className="gap-[0.65rem]"
+                              defaultValue={studentData?.smsAgreement}
+                              onValueChange={value => {
+                                field.onChange(value)
+                              }}
+                            >
+                              <Radio key={'동의'} value={'동의'}>
+                                동의
+                              </Radio>
+                              <Radio key={'비동의'} value={'비동의'}>
+                                비동의
+                              </Radio>
+                            </RadioGroup>
+                          )}
+                        />
+                      </RadioBox>
+                      {errors.smsAgreement && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.smsAgreement.message)}
+                        </p>
+                      )}
+                    </AreaSmallBox>
+                  </FlexBox>
+                  <FlexBox>
+                    <AreaBox>
+                      <DatePickerBox>
+                        <Controller
+                          control={control}
+                          name="birthday"
+                          defaultValue={studentData?.birthday}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: '생년월일을 선택해주세요.',
+                            },
+                          }}
+                          render={({ field }) => (
+                            <DatePicker
+                              locale="ko"
+                              showYearDropdown
+                              selected={
+                                birthdayDate === null
+                                  ? null
+                                  : new Date(birthdayDate)
+                              }
+                              placeholderText="날짜를 선택해주세요."
+                              isClearable
+                              onChange={date => {
+                                field.onChange(date)
+                                setBirthdayDate(date)
+                              }}
+                              ref={field.ref}
+                              dateFormat="yyyy/MM/dd"
+                              customInput={
+                                <Input
+                                  label={
+                                    <FilterLabel>
+                                      생년월일<span>*</span>
+                                    </FilterLabel>
+                                  }
+                                  labelPlacement="outside"
+                                  type="text"
+                                  variant="bordered"
+                                  id="date"
+                                  startContent={<i className="xi-calendar" />}
+                                />
+                              }
+                            />
+                          )}
+                        />
+                      </DatePickerBox>
+                      {errors.birthday && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.birthday.message)}
+                        </p>
+                      )}
+                    </AreaBox>
+                    <AreaBox>
+                      <Input
+                        defaultValue={studentData?.phoneNum2}
+                        labelPlacement="outside"
+                        placeholder="기타 연락처"
+                        variant="bordered"
+                        radius="md"
+                        type="text"
+                        label="기타 연락처"
+                        className="w-full"
+                        {...register('phoneNum2', {
+                          pattern: {
+                            value: /^[0-9]+$/,
+                            message: '숫자만 입력 가능합니다.',
+                          },
+                        })}
+                      />
+                      {errors.phoneNum2 && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.phoneNum2.message)}
+                        </p>
+                      )}
+                    </AreaBox>
+                  </FlexBox>
+                  <BtnBox>
+                    <Button2
+                      buttonType="submit"
+                      width="100%"
+                      height="2.5rem"
+                      typeBorder={true}
+                      fontColor="#fff"
+                      bgColor="#007de9"
+                    >
+                      수정
+                    </Button2>
+                    <Button2
+                      buttonType="button"
+                      width="100%"
+                      height="2.5rem"
+                      fontColor="#007de9"
+                      bgColor="#fff"
+                      borderColor="#007de9"
+                      typeBorder={true}
+                      onClick={() => router.back()}
+                    >
+                      이전으로
+                    </Button2>
+                  </BtnBox>
+                </DetailDiv>
+              </form>
+            </DetailBox>
+          </ConArea>
+        </MainWrap>
+      )}
     </>
   )
 }

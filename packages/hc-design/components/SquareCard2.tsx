@@ -47,12 +47,7 @@ export default function SquareCard2() {
     <>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5 lg:gap-8 sm:grid-cols-3 sm:gap-5">
         {list.map((item, index) => (
-          <Card
-            shadow="none"
-            key={index}
-            isPressable
-            onPress={() => console.log('item pressed')}
-          >
+          <Card shadow="none" key={index} isPressable onPress={() => {}}>
             <CardBody className="p-0 overflow-visible ">
               <Image
                 shadow="none"

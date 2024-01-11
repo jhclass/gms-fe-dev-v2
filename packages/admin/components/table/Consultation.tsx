@@ -6,7 +6,7 @@ import ConsultItem from '@/components/table/ConsultItem'
 import {
   MME_FAVO_QUERY,
   SEE_FAVORITESTATE_QUERY,
-  SEE_STUDENT_QUERY,
+  SEE_STUDENT_STATE_QUERY,
 } from '@/graphql/queries'
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
@@ -197,7 +197,7 @@ export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_STATE_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
   const {

@@ -25,7 +25,6 @@ export default function Consult() {
         />
         <ConsultFilter
           isActive={filterActive}
-          onFilterToggle={setFilterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
         />

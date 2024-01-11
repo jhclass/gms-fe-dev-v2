@@ -1,18 +1,11 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
-import {
-  progressStatusState,
-  receiptStatusState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { subStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import ChipCheckbox from '@/components/common/ChipCheckbox'
-import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
+import { Input, Select, SelectItem } from '@nextui-org/react'
 import { useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -106,34 +99,15 @@ const FilterVariants = {
 
 export default function StudentsFillter({
   isActive,
-  onFilterToggle,
   onFilterSearch,
   setStudentFilter,
 }) {
-  const {
-    data: seeManageUserData,
-    error,
-    loading: seeMansgeuserLoading,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const {
-    loading: adviceLoading,
-    error: adviceError,
-    data: adviceData,
-  } = useQuery(SEE_ADVICE_TYPE_QUERY)
-  const managerList = seeManageUserData?.seeManageUser || []
-  const adviceList = adviceData?.seeAdviceType.adviceType || []
-  const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const progressStatus = useRecoilValue(progressStatusState)
-  const [receipt, setReceipt] = useState('-')
   const [sub, setSub] = useState('-')
-  const [manager, setManager] = useState('-')
-  const [adviceType, setAdviceType] = useState('-')
+  const [birthdayRange, setBirthdayRange] = useState([null, null])
+  const [startBirthday, endBirthday] = birthdayRange
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
-  const [visitDateRange, setVisitDateRange] = useState([null, null])
-  const [startVisitDate, endVisitDate] = visitDateRange
-  const [progressSelected, setProgressSelected] = useState([])
 
   const {
     register,
@@ -144,35 +118,17 @@ export default function StudentsFillter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      receiptDiv: '-',
       subDiv: '-',
-      pic: '-',
-      createdAt: undefined,
-      stVisit: undefined,
-      stName: '',
-      progress: undefined,
+      name: '',
       phoneNum1: '',
-      adviceType: '-',
+      createdAt: undefined,
+      birthday: undefined,
+      progress: undefined,
     },
   })
 
-  const handleReceiptChange = e => {
-    setReceipt(e.target.value)
-  }
-
   const handleSubChange = e => {
     setSub(e.target.value)
-  }
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-  const handleAdviceChange = e => {
-    setAdviceType(e.target.value)
-  }
-  const handleProgressChange = (value: string[]) => {
-    const numericKeys = value.map(key => parseInt(key, 10))
-    setValue('progress', numericKeys)
-    setProgressSelected(value)
   }
 
   const onSubmit = data => {
@@ -189,39 +145,32 @@ export default function StudentsFillter({
           return true
         }
       }
-      const creatDate = validateDateRange(
-        data.createdAt,
-        '등록일시의 마지막날을 선택해주세요.',
+      const birthdayDate = validateDateRange(
+        data.birthday,
+        '생년월일의 마지막날을 선택해주세요.',
       )
       const visitDate = validateDateRange(
         data.stVisit,
         '방문예정일의 마지막날을 선택해주세요.',
       )
-      if (creatDate && visitDate) {
+      if (birthdayDate && visitDate) {
         const filter = {
-          receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
           subDiv: data.subDiv === '-' ? null : data.subDiv,
-          pic: data.pic === '-' ? null : data.pic,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
-          stVisit: data.stVisit === undefined ? null : data.stVisit,
-          stName: data.stName === '' ? null : data.stName,
-          progress: data.progress,
+          name: data.name === '' ? null : data.name,
           phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
-          adviceType: data.adviceType === '-' ? null : data.adviceType,
+          birthday: data.birthday === undefined ? null : data.birthday,
+          createdAt: data.createdAt === undefined ? null : data.createdAt,
         }
         setStudentFilter(filter)
-        onFilterToggle(false)
         onFilterSearch(true)
       }
     }
   }
 
   const handleReset = () => {
-    setReceipt('-')
     setSub('-')
-    setManager('-')
     setCreatDateRange([null, null])
-    setVisitDateRange([null, null])
+    setBirthdayRange([null, null])
     reset()
   }
 
@@ -271,15 +220,120 @@ export default function StudentsFillter({
             <ItemBox>
               <Input
                 labelPlacement="outside"
+                placeholder="'-'없이 작성해주세요"
+                type="text"
+                variant="bordered"
+                label="연락처"
+                id="phoneNum1"
+                {...register('phoneNum1', {
+                  maxLength: {
+                    value: 11,
+                    message: '최대 11자리까지 입력 가능합니다.',
+                  },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: '숫자만 사용가능합니다.',
+                  },
+                })}
+              />
+              {errors.phoneNum1 && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.phoneNum1.message)}
+                </p>
+              )}
+            </ItemBox>
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
                 placeholder=" "
                 type="text"
                 variant="bordered"
                 label="수강생이름"
                 id="stName"
-                {...register('stName')}
+                {...register('name')}
               />
             </ItemBox>
           </BoxTop>
+          <BoxMiddle>
+            <ItemBox>
+              <Controller
+                control={control}
+                name="birthday"
+                render={({ field }) => (
+                  <DatePicker
+                    selectsRange={true}
+                    locale="ko"
+                    showYearDropdown
+                    startDate={startBirthday}
+                    endDate={endBirthday}
+                    onChange={e => {
+                      setBirthdayRange(e)
+                      let date
+                      if (e[1] !== null) {
+                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                      } else {
+                        date = [e[0], null]
+                      }
+
+                      field.onChange(date)
+                    }}
+                    placeholderText="기간을 선택해주세요."
+                    dateFormat="yyyy/MM/dd"
+                    customInput={
+                      <Input
+                        label="생년월일"
+                        labelPlacement="outside"
+                        type="text"
+                        variant="bordered"
+                        id="date"
+                        startContent={<i className="xi-calendar" />}
+                        {...register('birthday')}
+                      />
+                    }
+                  />
+                )}
+              />
+            </ItemBox>
+            <ItemBox>
+              <Controller
+                control={control}
+                name="createdAt"
+                render={({ field }) => (
+                  <DatePicker
+                    selectsRange={true}
+                    locale="ko"
+                    showYearDropdown
+                    startDate={startCreatDate}
+                    endDate={endCreatDate}
+                    onChange={e => {
+                      setCreatDateRange(e)
+                      let date
+                      if (e[1] !== null) {
+                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                      } else {
+                        date = [e[0], null]
+                      }
+
+                      field.onChange(date)
+                    }}
+                    placeholderText="기간을 선택해주세요."
+                    dateFormat="yyyy/MM/dd"
+                    customInput={
+                      <Input
+                        label="등록일시"
+                        labelPlacement="outside"
+                        type="text"
+                        variant="bordered"
+                        id="date"
+                        startContent={<i className="xi-calendar" />}
+                        {...register('createdAt')}
+                      />
+                    }
+                  />
+                )}
+              />
+            </ItemBox>
+          </BoxMiddle>
           <BtnBox>
             <Button
               buttonType="submit"

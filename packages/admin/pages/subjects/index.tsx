@@ -72,7 +72,6 @@ export default function Subjects() {
         />
         <SubjectsFilter
           isActive={filterActive}
-          onFilterToggle={setFilterActive}
           onFilterSearch={setFilterSearch}
           setSubjectFilter={setSubjectFilter}
         />

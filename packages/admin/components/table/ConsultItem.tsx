@@ -56,6 +56,9 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
+  /* display: grid;
+  width: 100%;
+  grid-template-columns: 0.5rem 2% auto; */
 `
 
 const Tfavorite = styled.div`

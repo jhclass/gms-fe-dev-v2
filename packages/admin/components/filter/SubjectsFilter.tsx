@@ -99,7 +99,6 @@ const FilterVariants = {
 
 export default function SubjectsFillter({
   isActive,
-  onFilterToggle,
   onFilterSearch,
   setSubjectFilter,
 }) {
@@ -140,7 +139,6 @@ export default function SubjectsFillter({
             : false,
       }
       setSubjectFilter(filter)
-      onFilterToggle(false)
       onFilterSearch(true)
     }
   }
