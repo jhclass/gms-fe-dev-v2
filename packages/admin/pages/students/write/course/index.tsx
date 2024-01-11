@@ -290,16 +290,6 @@ export default function StudentsWriteCourse() {
               <FlexBox>
                 <AreaBox>
                   <div>
-                    <FilterLabel>
-                      선별테스트점수<span>*</span>
-                    </FilterLabel>
-                    <LineBox>
-                      <span>87</span>/100
-                    </LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
                     <FilterLabel>담당자</FilterLabel>
                     <LineBox>김사원</LineBox>
                   </div>
@@ -352,6 +342,42 @@ export default function StudentsWriteCourse() {
                   />
                 </FlexBox>
                 <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="선별테스트 점수"
+                      variant="bordered"
+                      radius="md"
+                      type="number"
+                      endContent={<InputText>/ 100</InputText>}
+                      label={
+                        <FilterLabel>
+                          선별테스트 점수<span>*</span>
+                        </FilterLabel>
+                      }
+                      className="w-full"
+                      {...register('phoneNum2', {
+                        required: {
+                          value: true,
+                          message: '휴대폰번호를 입력해주세요.',
+                        },
+                        min: {
+                          value: 0,
+                          message: '0 이상의 숫자를 작성해주세요.', // JS only: <p>error message</p> TS only support string
+                        },
+
+                        max: {
+                          value: 100,
+                          message: '100 이하의 숫자를 작성해주세요.', // JS only: <p>error message</p> TS only support string
+                        },
+                      })}
+                    />
+                    {errors.phoneNum2 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum2.message)}
+                      </p>
+                    )}
+                  </AreaBox>
                   <AreaBox>
                     <Input
                       isReadOnly
