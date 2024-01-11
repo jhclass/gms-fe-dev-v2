@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/students/layout'
 import StudentsTable from '@/components/table/StudentsList'
+import StudentsFilterTable from '@/components/table/StudentsListFilter'
 import { styled } from 'styled-components'
 import StudentsFilter from '@/components/filter/StudentsFilter'
 
@@ -28,6 +29,15 @@ export default function Students() {
           setStudentFilter={setStudentFilter}
         />
         <ConBox>
+          {filterSearch ? (
+            <StudentsFilterTable
+              onFilterSearch={setFilterSearch}
+              studentFilter={studentFilter}
+              setStudentFilter={setStudentFilter}
+            />
+          ) : (
+            <StudentsTable />
+          )}
           <StudentsTable />
         </ConBox>
       </MainWrap>

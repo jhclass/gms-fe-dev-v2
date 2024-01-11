@@ -177,9 +177,9 @@ const Nolist = styled.div`
 `
 
 export default function StudentsTable({
-  isActive,
   onFilterSearch,
-  setSubjectFilter,
+  studentFilter,
+  setStudentFilter,
 }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
