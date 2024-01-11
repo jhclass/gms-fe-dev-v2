@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -11,6 +11,7 @@ import {
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
 import StudentsItem from '@/components/table/StudentsItem'
+import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -175,22 +176,41 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function StudentsTable() {
+export default function StudentsTable({
+  isActive,
+  onFilterSearch,
+  setSubjectFilter,
+}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  const [searchStudentFilterMutation] = useMutation(
+    SEARCH_STUDENT_FILTER_MUTATION,
+  )
+  const [searchResult, setSearchResult] = useState(null)
+
+  // useEffect(() => {
+  //   searchStudentFilterMutation({
+  //     variables: {
+  //       ...studentFilter,
+  //       page: currentPage,
+  //       perPage: currentLimit,
+  //     },
+  //     onCompleted: resData => {
+  //       const { studentState, totalCount } = resData.searchStudentState || {}
+  //       setSearchResult({ studentState, totalCount })
+  //     },
+  //   })
+  // }, [studentFilter, currentPage])
+
+  // const resetList = () => {
+  //   setStudentFilter({})
+  //   onFilterSearch(false)
+  // }
 
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
+        <Ttotal>{/* 총 <span>{totalCount}</span>건 */}</Ttotal>
         <ColorHelp>
           <ColorCip>
             <span style={{ background: '#007de9' }}></span> : 신규
@@ -216,7 +236,7 @@ export default function StudentsTable() {
                 <TcreatedAt>등록일시</TcreatedAt>
               </TheaderBox>
             </Theader>
-            {students?.map((item, index) => (
+            {/* {students?.map((item, index) => (
               <StudentsItem
                 forName="student"
                 key={index}
@@ -225,7 +245,7 @@ export default function StudentsTable() {
                 currentPage={currentPage}
                 limit={currentLimit}
               />
-            ))}
+            ))} */}
           </TableWrap>
         </ScrollShadow>
         <PagerWrap>

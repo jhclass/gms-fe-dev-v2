@@ -28,7 +28,10 @@ import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
-import { SEARCH_SUBJECT_BASIC_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_STUDENT_MUTATION,
+  SEARCH_SUBJECT_BASIC_MUTATION,
+} from '@/graphql/mutations'
 
 const ConArea = styled.div`
   width: 100%;
@@ -67,7 +70,6 @@ const DetailDiv = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -85,6 +87,7 @@ const AreaTitle = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  width: 100%;
 `
 const AreaSmallBox = styled.div``
 const DatePickerBox = styled.div`
@@ -131,90 +134,33 @@ const BtnBox = styled.div`
 export default function StudentsWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const [searchSubject] = useMutation(SEARCH_SUBJECT_BASIC_MUTATION)
-
+  const [createStudent] = useMutation(CREATE_STUDENT_MUTATION)
   const Receipt = useRecoilValue(ReceiptState)
-  const managerList = managerData?.seeManageUser || []
-  const { register, control, setValue, handleSubmit, formState } = useForm()
+  const { register, control, handleSubmit, formState } = useForm()
   const { errors } = formState
-  const {
-    isOpen: sbjIsOpen,
-    onOpen: sbjOpen,
-    onClose: sbjClose,
-  } = useDisclosure()
-  const [subjectSelected, setSubjectSelected] = useState(null)
-  const [subjectInfo, setSubjectInfo] = useState()
   const [birthdayDate, setBirthdayDate] = useState(null)
-  const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
-  const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
-  const [cardName, setCardName] = useState('카드사 선택')
-  const [bankName, setBankName] = useState('은행 선택')
 
   const onSubmit = data => {
-    console.log(data)
-    // createStudent({
-    //   variables: {
-    //     stName: data.stName.trim(),
-    //     agreement: '동의',
-    //     subject: data.subject,
-    //     campus: '신촌',
-    //     detail: data.detail === '' ? null : data.detail.trim(),
-    //     category: null,
-    //     phoneNum1: data.phoneNum1.trim(),
-    //     phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
-    //     phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
-    //     stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
-    //     stAddr: null,
-    //     subDiv: data.subDiv === undefined ? null : data.subDiv,
-    //     stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
-    //     expEnrollDate:
-    //       data.expEnrollDate === undefined
-    //         ? null
-    //         : new Date(data.expEnrollDate),
-    //     perchase: null,
-    //     birthday: null,
-    //     receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-    //     pic: data.subDiv === undefined ? null : data.pic,
-    //     // progress: 0,
-    //   },
-    //   refetchQueries: [
-    //     {
-    //       query: SEE_STUDENT_QUERY,
-    //       variables: { page: 1, limit: 10 },
-    //     },
-    //   ],
-    //   onCompleted: data => {
-    //     alert('등록되었습니다.')
-    //     router.push('/consult')
-    //   },
-    // })
-    // userLogs(`${data.stName}의 상담 등록`)
-  }
-
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-  const handleSubManagerChange = e => {
-    setSubjectManager(e.target.value)
-  }
-  const handleCardChange = e => {
-    setCardName(e.target.value)
-  }
-  const handleBankChange = e => {
-    setBankName(e.target.value)
+    createStudent({
+      variables: {
+        name: data.name.trim(),
+        phoneNum1: data.phoneNum1.trim(),
+        phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
+        smsAgreement: data.smsAgreement.trim(),
+        birthday: data.birthday,
+      },
+      // refetchQueries: [
+      //   {
+      //     query: SEE_STUDENT_QUERY,
+      //     variables: { page: 1, limit: 10 },
+      //   },
+      // ],
+      onCompleted: data => {
+        alert('등록되었습니다.')
+        router.push('/students')
+      },
+    })
+    userLogs(`${data.name} 수강생 등록`)
   }
 
   return (
@@ -243,9 +189,22 @@ export default function StudentsWrite() {
                           이름<span>*</span>
                         </FilterLabel>
                       }
-                      defaultValue={''}
                       className="w-full"
+                      onChange={e => {
+                        register('name').onChange(e)
+                      }}
+                      {...register('name', {
+                        required: {
+                          value: true,
+                          message: '이름을 입력해주세요.',
+                        },
+                      })}
                     />
+                    {errors.name && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.name.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input
@@ -259,26 +218,58 @@ export default function StudentsWrite() {
                           연락처<span>*</span>
                         </FilterLabel>
                       }
-                      defaultValue={''}
                       className="w-full"
+                      onChange={e => {
+                        register('phoneNum1').onChange(e)
+                      }}
+                      maxLength={11}
+                      {...register('phoneNum1', {
+                        required: {
+                          value: true,
+                          message: '휴대폰번호를 입력해주세요.',
+                        },
+                        maxLength: {
+                          value: 11,
+                          message: '최대 11자리까지 입력 가능합니다.',
+                        },
+                        minLength: {
+                          value: 10,
+                          message: '최소 10자리 이상이어야 합니다.',
+                        },
+                        pattern: {
+                          value: /^010[0-9]{7,8}$/,
+                          message: '010으로 시작해주세요.',
+                        },
+                      })}
                     />
+                    {errors.phoneNum1 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum1.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaSmallBox>
                     <RadioBox>
                       <Controller
                         control={control}
-                        name="progress"
+                        name="smsAgreement"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: 'SMS 수신여부를 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <RadioGroup
                             label={
                               <FilterLabel>
-                                SNS 수신 여부<span>*</span>
+                                SMS 수신 여부<span>*</span>
                               </FilterLabel>
                             }
                             orientation="horizontal"
                             className="gap-[0.65rem]"
                             onValueChange={value => {
-                              field.onChange(parseInt(value))
+                              field.onChange(value)
                             }}
                           >
                             <Radio key={'동의'} value={'동의'}>
@@ -291,6 +282,11 @@ export default function StudentsWrite() {
                         )}
                       />
                     </RadioBox>
+                    {errors.smsAgreement && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.smsAgreement.message)}
+                      </p>
+                    )}
                   </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
@@ -298,7 +294,13 @@ export default function StudentsWrite() {
                     <DatePickerBox>
                       <Controller
                         control={control}
-                        name="stVisit"
+                        name="birthday"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '생년월일을 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <DatePicker
                             locale="ko"
@@ -334,62 +336,33 @@ export default function StudentsWrite() {
                         )}
                       />
                     </DatePickerBox>
+                    {errors.birthday && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.birthday.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="선별테스트 점수"
+                      placeholder="기타 연락처"
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label={
-                        <FilterLabel>
-                          선별테스트 점수<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue={''}
+                      label="기타 연락처"
                       className="w-full"
+                      {...register('phoneNum2', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
                     />
-                  </AreaBox>
-                  <AreaBox>
-                    <Controller
-                      control={control}
-                      name="pic"
-                      render={({ field, fieldState }) => (
-                        <Select
-                          labelPlacement="outside"
-                          label="담당자"
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          selectedKeys={[manager]}
-                          onChange={value => {
-                            field.onChange(value)
-                            handleManagerChange(value)
-                          }}
-                        >
-                          <SelectItem
-                            key={'담당자 지정필요'}
-                            value={'담당자 지정필요'}
-                          >
-                            {'담당자 지정필요'}
-                          </SelectItem>
-                          {managerList
-                            ?.filter(
-                              manager =>
-                                manager.mGrade > 0 && manager.mGrade < 3,
-                            )
-                            .map(item => (
-                              <SelectItem
-                                key={item.mUsername}
-                                value={item.mUsername}
-                              >
-                                {item.mUsername}
-                              </SelectItem>
-                            ))}
-                        </Select>
-                      )}
-                    />
+                    {errors.phoneNum2 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum2.message)}
+                      </p>
+                    )}
                   </AreaBox>
                 </FlexBox>
                 <BtnBox>

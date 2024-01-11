@@ -92,6 +92,28 @@ export const progressStatusState = atom({
   },
 })
 
+export const studentProgressStatusState = atom({
+  key: 'studentProgressStatus',
+  default: {
+    0: {
+      name: '신규',
+      color: '#c40403',
+    },
+    10: {
+      name: '미배정',
+      color: '#FF5900',
+    },
+    20: {
+      name: '배정완료',
+      color: '#7dce00',
+    },
+    30: {
+      name: '이수자',
+      color: '#0eacab',
+    },
+  },
+})
+
 export const receiptStatusState = atom({
   key: 'receiptStatus',
   default: {

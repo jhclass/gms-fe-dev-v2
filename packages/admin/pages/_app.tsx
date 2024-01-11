@@ -1,7 +1,7 @@
 import '@/styles/global.css'
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
-import { RecoilRoot } from 'recoil'
+import { RecoilRoot, RecoilEnv } from 'recoil'
 import Head from 'next/head'
 import { GlobalStyle } from '@/styles/GlobalStyle'
 import { ApolloProvider } from '@apollo/client'
@@ -11,6 +11,8 @@ import { ReactElement, ReactNode } from 'react'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout

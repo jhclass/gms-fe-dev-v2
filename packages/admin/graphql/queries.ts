@@ -75,7 +75,7 @@ export const ISMME_QUERY = gql`
     }
   }
 `
-export const SEE_STUDENT_QUERY = gql`
+export const SEE_STUDENT_STATE_QUERY = gql`
   query SeeStudentState($page: Int!, $limit: Int) {
     seeStudentState(page: $page, limit: $limit) {
       message
@@ -186,6 +186,31 @@ export const SEE_SUBJECT_QUERY = gql`
       error
       message
       totalCount
+    }
+  }
+`
+
+//student
+export const SEE_STUDENT_QUERY = gql`
+  query SeeStudent($page: Int, $limit: Int) {
+    seeStudent(page: $page, limit: $limit) {
+      error
+      message
+      ok
+      student {
+        birthday
+        createdAt
+        id
+        lectureAssignment
+        courseComplete
+        writer
+        subject {
+          subjectName
+        }
+        subDiv
+        phoneNum1
+        name
+      }
     }
   }
 `

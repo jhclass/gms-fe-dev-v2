@@ -106,7 +106,6 @@ const FilterVariants = {
 
 export default function ConsultFillter({
   isActive,
-  onFilterToggle,
   onFilterSearch,
   setStudentFilter,
 }) {
@@ -210,7 +209,6 @@ export default function ConsultFillter({
           adviceType: data.adviceType === '-' ? null : data.adviceType,
         }
         setStudentFilter(filter)
-        onFilterToggle(false)
         onFilterSearch(true)
       }
     }

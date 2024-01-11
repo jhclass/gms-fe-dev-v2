@@ -1,11 +1,8 @@
 import { styled } from 'styled-components'
-import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
-import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
-import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
+import { studentProgressStatusState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
-import { Checkbox } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 
 type ConsultItemProps = {
   tableData: {
@@ -34,6 +31,7 @@ type ConsultItemProps = {
 
 const TableItem = styled.div`
   position: relative;
+  display: table;
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
@@ -56,20 +54,11 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
+  /* display: grid;
+  width: 100%;
+  grid-template-columns: 0.5rem auto; */
 `
 
-const Tfavorite = styled.div`
-  position: relative;
-  display: table-cell;
-  width: 2%;
-  font-size: inherit;
-  color: inherit;
-  min-width: 30px;
-  padding: 1rem 1rem 1rem 1.5rem;
-`
-const TfavoriteLabel = styled.label`
-  cursor: pointer;
-`
 const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
@@ -92,7 +81,16 @@ const Tnum = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.07}px;
-  vertical-align: middle;
+`
+const Tprogress = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 8%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.08}px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
@@ -130,10 +128,10 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 32%;
+  width: 26%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.32}px;
+  min-width: ${1200 * 0.26}px;
   font-weight: 600;
 `
 const Tphone = styled.div`
@@ -150,33 +148,66 @@ const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.1}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.1}px;
 `
-
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
-export default function studentsItem(props) {
+const isDisplayFlag = (date: string, step: boolean): string => {
+  const currentDate = new Date()
+  const differenceInDays = Math.floor(
+    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+  )
+  if (differenceInDays >= 0 && differenceInDays < 3) {
+    return '#007de9'
+  } else if (differenceInDays >= 3 && !step) {
+    return '#FF5900'
+  } else {
+    return 'transparent'
+  }
+}
+
+const displayPprogress = (assignment, complete) => {
+  if (assignment) {
+    if (complete) {
+      return 30
+    } else {
+      return 20
+    }
+  } else {
+    return 10
+  }
+}
+
+export default function StudentsItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
+  const flagString = isDisplayFlag(student.createdAt, student.lectureAssignment)
+  const progressNum = displayPprogress(
+    student.lectureAssignment,
+    student.courseComplete,
+  )
+  const progressStatus = useRecoilValue(studentProgressStatusState)
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
@@ -188,40 +219,27 @@ export default function studentsItem(props) {
         <TableRow>
           <Tflag
             style={{
-              background: 'transparent',
+              background: flagString,
             }}
-          >
-            <p></p>
-          </Tflag>
-          <Tfavorite>
-            <TfavoriteLabel
-              htmlFor={`${props.forName}check${student.id}`}
-              style={{
-                color: props.favorite ? '#FFC600' : '',
-              }}
-            >
-              <i className={props.favorite ? 'xi-star' : 'xi-star-o'} />
-              <input
-                id={`${props.forName}check${student.id}`}
-                type="checkbox"
-                hidden
-              />
-            </TfavoriteLabel>
-          </Tfavorite>
-          <Link href={`/students/detail`}>
+          ></Tflag>
+          <Link href={`/students/detail/${student.id}`}>
             <ClickBox>
               <Tnum>
                 <EllipsisBox>
                   {(props.currentPage - 1) * conLimit + (conIndex + 1)}
                 </EllipsisBox>
               </Tnum>
+              <Tprogress style={{ color: progressStatus[progressNum].color }}>
+                <EllipsisBox>{progressStatus[progressNum].name}</EllipsisBox>
+              </Tprogress>
               <TsubDiv>
-                <EllipsisBox>{student.subDiv}</EllipsisBox>
+                <EllipsisBox>
+                  {student.subDiv ? student.subDiv : '-'}
+                </EllipsisBox>
               </TsubDiv>
               <Tbirthday>
                 <EllipsisBox>
-                  {/* {student.birthday ? getDate(student.birthday) : '-'} */}
-                  {student.birthday ? student.birthday : '-'}
+                  {student.birthday ? getDate(student.birthday) : '-'}
                 </EllipsisBox>
               </Tbirthday>
               <Tname>
@@ -233,16 +251,16 @@ export default function studentsItem(props) {
                 </EllipsisBox>
               </Tsubject>
               <Tphone>
-                <EllipsisBox>{student.phone}</EllipsisBox>
+                <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
               <Tmanager>
                 <EllipsisBox>
-                  {student.createManager ? student.createManager : '-'}
+                  {student.writer ? student.writer : '-'}
                 </EllipsisBox>
               </Tmanager>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student.createAt ? getDate(student.createAt) : '-'}
+                  {student.createdAt ? getDate(student.createdAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
             </ClickBox>

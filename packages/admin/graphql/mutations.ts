@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 
+// login
 export const LOGIN_MUTATION = gql`
   mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
     mLogin(mUserId: $mUserId, mPassword: $mPassword) {
@@ -9,6 +10,8 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `
+
+// logs
 export const USER_LOGS_MUTATION = gql`
   mutation Mutation($eventName: String!, $uri: String) {
     createUserActivityLogs(eventName: $eventName, uri: $uri) {
@@ -18,6 +21,8 @@ export const USER_LOGS_MUTATION = gql`
     }
   }
 `
+
+// manager
 export const EDIT_MANAGE_USER_MUTATION = gql`
   mutation Mutation(
     $mUsername: String
@@ -91,6 +96,7 @@ export const UPDATE_FAVORITE_MUTATION = gql`
   }
 `
 
+// studentState
 export const CREATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $stName: String!
@@ -142,7 +148,6 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
     }
   }
 `
-
 export const SEARCH_STUDENTSTATE_MUTATION = gql`
   mutation Mutation(
     $searchStudentStateId: Int
@@ -223,7 +228,6 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
     }
   }
 `
-
 export const UPDATE_STUDENT_STATE_MUTATION = gql`
   mutation UpdateStudentState(
     $updateStudentStateId: Int!
@@ -285,6 +289,7 @@ export const DELETE_STUDENT_STATE_MUTATION = gql`
   }
 `
 
+// adiveType
 export const CREATE_ADVICE_TYPE_MUTATION = gql`
   mutation Mutation($type: String!) {
     createAdviceType(type: $type) {
@@ -294,7 +299,6 @@ export const CREATE_ADVICE_TYPE_MUTATION = gql`
     }
   }
 `
-
 export const DELETE_ADVICE_TYPE_MUTATION = gql`
   mutation DeleteAdviceType($deleteAdviceTypeId: Int!) {
     deleteAdviceType(id: $deleteAdviceTypeId) {
@@ -305,6 +309,7 @@ export const DELETE_ADVICE_TYPE_MUTATION = gql`
   }
 `
 
+// consultMemo
 export const CREATE_CONSULTATION_MEMO_MUTATION = gql`
   mutation CreateConsultationMemo($content: String!, $studentStateId: Int!) {
     createConsultationMemo(content: $content, studentStateId: $studentStateId) {
@@ -336,6 +341,7 @@ export const DELETE_CONSULTATION_MEMO_MUTATION = gql`
   }
 `
 
+// subject
 export const CREATE_SUBJECT_MUTATION = gql`
   mutation CreateSubject(
     $subDiv: String!
@@ -470,6 +476,181 @@ export const SEARCH_SUBJECT_BASIC_MUTATION = gql`
         subjectCode
         subjectName
       }
+    }
+  }
+`
+
+//students
+export const CREATE_STUDENT_MUTATION = gql`
+  mutation CreateStudent(
+    $name: String
+    $phoneNum1: String
+    $phoneNum2: String
+    $smsAgreement: String
+    $birthday: String
+  ) {
+    createStudent(
+      name: $name
+      phoneNum1: $phoneNum1
+      phoneNum2: $phoneNum2
+      smsAgreement: $smsAgreement
+      birthday: $birthday
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const SEARCH_STUDENT_MUTATION = gql`
+  mutation SearchStudent($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
+      error
+      message
+      ok
+      student {
+        birthday
+        campus
+        classCode
+        courseComplete
+        createdAt
+        dueDate
+        id
+        lectureAssignment
+        name
+        phoneNum1
+        phoneNum2
+        smsAgreement
+        studentMemo {
+          content
+          id
+          manageUserId
+        }
+        studentPayment {
+          actualAmount
+          cardAmount
+          cashAmount
+          discountAmount
+          id
+          paymentDate
+          paymentDetail {
+            ApprovalNum
+            amountPayment
+            bankName
+            cardCompany
+            cardNum
+            depositAmount
+            depositDate
+            depositorName
+            id
+            installment
+            paymentDate
+            studentPaymentId
+            unpaidPayment
+          }
+          processingManagerId
+          processingManager {
+            mUsername
+          }
+          receiptClassification
+          seScore
+          studentId
+          tuitionFee
+          unCollectedAmount
+        }
+        subDiv
+        subject {
+          fee
+          id
+          subDiv
+          subjectCode
+          subjectName
+          exposure
+        }
+        subjectId
+        updatedAt
+        writer
+      }
+    }
+  }
+`
+export const SEARCH_STUDENT_FILTER_MUTATION = gql`
+  mutation Mutation(
+    $studentName: String
+    $createdAt: String
+    $birthday: String
+    $phoneNum: String
+    $page: Int
+    $limit: Int
+  ) {
+    searchStudent(
+      studentName: $studentName
+      createdAt: $createdAt
+      birthday: $birthday
+      phoneNum: $phoneNum
+      page: $page
+      limit: $limit
+    ) {
+      error
+      ok
+      message
+      totalCount
+      student {
+        birthday
+        courseComplete
+        createdAt
+        id
+        lectureAssignment
+        writer
+        updatedAt
+        subject {
+          subjectName
+        }
+        subDiv
+        phoneNum1
+        name
+      }
+    }
+  }
+`
+export const SEARCH_STUDENT_BASIC_MUTATION = gql`
+  mutation SearchStudent($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
+      error
+      message
+      ok
+      student {
+        birthday
+        id
+        name
+        phoneNum1
+        phoneNum2
+        smsAgreement
+      }
+    }
+  }
+`
+
+export const UPDATE_STUDENT_BASIC_MUTATION = gql`
+  mutation EditStudent(
+    $editStudentId: Int!
+    $name: String
+    $phoneNum1: String
+    $phoneNum2: String
+    $smsAgreement: String
+    $birthday: String
+  ) {
+    editStudent(
+      id: $editStudentId
+      name: $name
+      phoneNum1: $phoneNum1
+      phoneNum2: $phoneNum2
+      smsAgreement: $smsAgreement
+      birthday: $birthday
+    ) {
+      error
+      message
+      ok
     }
   }
 `

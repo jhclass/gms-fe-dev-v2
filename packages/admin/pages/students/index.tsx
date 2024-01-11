@@ -24,7 +24,6 @@ export default function Students() {
         />
         <StudentsFilter
           isActive={filterActive}
-          onFilterToggle={setFilterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
         />
