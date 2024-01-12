@@ -690,6 +690,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     $unCollectedAmount: Int
     $receiptClassification: String
     $paymentDate: String
+    $situationReport: Boolean
   ) {
     createStudentPayment(
       campus: $campus
@@ -706,6 +707,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       unCollectedAmount: $unCollectedAmount
       receiptClassification: $receiptClassification
       paymentDate: $paymentDate
+      situationReport: $situationReport
     ) {
       ok
       error

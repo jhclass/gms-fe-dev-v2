@@ -270,6 +270,7 @@ export default function StudentsWrite() {
       fee || (0).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+  console.log(studentSubjectData)
 
   return (
     <>
@@ -519,7 +520,13 @@ export default function StudentsWrite() {
                               교육상황보고여부<span>*</span>
                             </FilterLabel>
                           }
-                          defaultValue=""
+                          defaultValue={
+                            studentSubjectData?.situationRepor === null
+                              ? undefined
+                              : studentSubjectData?.situationRepor
+                              ? '동의'
+                              : '비동의'
+                          }
                           orientation="horizontal"
                           className="gap-[0.65rem]"
                         >

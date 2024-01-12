@@ -188,21 +188,6 @@ export default function StudentsWriteCourse() {
     })
   }, [router])
   const onSubmit = data => {
-    console.log(data)
-    console.log(typeof studentId, studentId)
-    console.log(typeof data.seScore, data.seScore)
-    console.log(typeof data.subject, data.subject)
-    console.log(typeof subjectSelected.fee, subjectSelected.fee)
-    console.log(typeof data.processingManagerId, data.processingManagerId)
-    console.log(typeof subjectSelected.id, subjectSelected.id)
-    console.log(typeof data.situationReport, data.situationReport)
-    console.log(typeof data.paymentDate, data.paymentDate)
-    console.log(typeof data.receiptClassification, data.receiptClassification)
-    console.log(typeof data.unCollectedAmount, data.unCollectedAmount)
-    console.log(typeof data.cardAmount, data.cardAmount)
-    console.log(typeof data.cashAmount, data.cashAmount)
-    console.log(typeof data.discountAmount, data.discountAmount)
-
     createStudentPayment({
       variables: {
         studentId: parseInt(studentId),
