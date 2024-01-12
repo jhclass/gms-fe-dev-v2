@@ -505,72 +505,88 @@ export const CREATE_STUDENT_MUTATION = gql`
 export const SEARCH_STUDENT_MUTATION = gql`
   mutation SearchStudent($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
-      error
-      message
       ok
+      message
+      error
       student {
-        birthday
-        campus
-        classCode
-        courseComplete
-        createdAt
-        dueDate
         id
-        lectureAssignment
         name
         phoneNum1
         phoneNum2
         smsAgreement
-        studentMemo {
-          content
-          id
-          manageUserId
-        }
-        studentPayment {
-          actualAmount
-          cardAmount
-          cashAmount
-          discountAmount
-          id
-          paymentDate
-          paymentDetail {
-            ApprovalNum
-            amountPayment
-            bankName
-            cardCompany
-            cardNum
-            depositAmount
-            depositDate
-            depositorName
-            id
-            installment
-            paymentDate
-            studentPaymentId
-            unpaidPayment
-          }
-          processingManagerId
-          processingManager {
-            mUsername
-          }
-          receiptClassification
-          seScore
-          studentId
-          tuitionFee
-          unCollectedAmount
-        }
-        subDiv
+        writer
+        createdAt
+        updatedAt
+        birthday
+        campus
         subject {
-          fee
-          id
           subDiv
-          subjectCode
           subjectName
-          exposure
+          fee
+          subjectCode
+          id
         }
         subjectId
-        updatedAt
-        writer
+        subDiv
+        manager {
+          id
+          mUserId
+          mUsername
+          mGrade
+        }
+        managerUserId
+        dueDate
+        studentMemo {
+          id
+          content
+          manageUser {
+            mUserId
+            mGrade
+            mUsername
+          }
+        }
+        classCode
+        studentPayment {
+          id
+          seScore
+          tuitionFee
+          discountAmount
+          cashAmount
+          cardAmount
+          actualAmount
+          unCollectedAmount
+          receiptClassification
+          paymentDate
+          studentId
+          paymentDetail {
+            id
+            cashOrCard
+            cardCompany
+            cardNum
+            installment
+            ApprovalNum
+            amountPayment
+            paymentDate
+            bankName
+            depositorName
+            depositAmount
+            depositDate
+            receiver {
+              mUsername
+              mUserId
+            }
+          }
+          processingManager {
+            mUsername
+            mUserId
+          }
+          processingManagerId
+          situationReport
+        }
+        lectureAssignment
+        courseComplete
       }
+      totalCount
     }
   }
 `
@@ -625,6 +641,9 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
         phoneNum1
         phoneNum2
         smsAgreement
+        writer
+        createdAt
+        updatedAt
       }
     }
   }
@@ -650,6 +669,47 @@ export const UPDATE_STUDENT_BASIC_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+//StudentPayment
+export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
+  mutation CreateStudentPayment(
+    $campus: String!
+    $seScore: Int!
+    $subject: String!
+    $tuitionFee: Int!
+    $studentId: Int!
+    $processingManagerId: Int!
+    $subjectId: Int!
+    $discountAmount: Int
+    $cashAmount: Int
+    $cardAmount: Int
+    $actualAmount: Int
+    $unCollectedAmount: Int
+    $receiptClassification: String
+    $paymentDate: String
+  ) {
+    createStudentPayment(
+      campus: $campus
+      seScore: $seScore
+      subject: $subject
+      tuitionFee: $tuitionFee
+      studentId: $studentId
+      processingManagerId: $processingManagerId
+      subjectId: $subjectId
+      discountAmount: $discountAmount
+      cashAmount: $cashAmount
+      cardAmount: $cardAmount
+      actualAmount: $actualAmount
+      unCollectedAmount: $unCollectedAmount
+      receiptClassification: $receiptClassification
+      paymentDate: $paymentDate
+    ) {
+      ok
+      error
+      message
     }
   }
 `

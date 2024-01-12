@@ -28,7 +28,11 @@ import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
-import { SEARCH_SUBJECT_BASIC_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_STUDENT_PAYMENT_MUTATION,
+  SEARCH_STUDENT_BASIC_MUTATION,
+  SEARCH_SUBJECT_BASIC_MUTATION,
+} from '@/graphql/mutations'
 
 const ConArea = styled.div`
   width: 100%;
@@ -144,13 +148,14 @@ const LineBox = styled.div`
 export default function StudentsWriteCourse() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
+  const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
   const {
     loading: managerLoading,
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
-  const [searchSubject] = useMutation(SEARCH_SUBJECT_BASIC_MUTATION)
-
   const Receipt = useRecoilValue(ReceiptState)
   const managerList = managerData?.seeManageUser || []
   const { register, control, setValue, handleSubmit, formState } = useForm()
@@ -160,66 +165,98 @@ export default function StudentsWriteCourse() {
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
+  const [studentData, setStudentData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [subjectInfo, setSubjectInfo] = useState()
-  const [birthdayDate, setBirthdayDate] = useState(null)
-  const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
+  const [paymentDate, setPaymentDate] = useState(null)
+  const [dueDate, setDueDate] = useState(null)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
 
+  const [birthdayDate, setBirthdayDate] = useState(null)
+
+  useEffect(() => {
+    searchStudentBasic({
+      variables: {
+        searchStudentId: parseInt(studentId),
+      },
+      onCompleted: data => {
+        setStudentData(data.searchStudent.student[0])
+      },
+    })
+  }, [router])
   const onSubmit = data => {
     console.log(data)
-    // createStudent({
-    //   variables: {
-    //     stName: data.stName.trim(),
-    //     agreement: '동의',
-    //     subject: data.subject,
-    //     campus: '신촌',
-    //     detail: data.detail === '' ? null : data.detail.trim(),
-    //     category: null,
-    //     phoneNum1: data.phoneNum1.trim(),
-    //     phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
-    //     phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
-    //     stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
-    //     stAddr: null,
-    //     subDiv: data.subDiv === undefined ? null : data.subDiv,
-    //     stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
-    //     expEnrollDate:
-    //       data.expEnrollDate === undefined
-    //         ? null
-    //         : new Date(data.expEnrollDate),
-    //     perchase: null,
-    //     birthday: null,
-    //     receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-    //     pic: data.subDiv === undefined ? null : data.pic,
-    //     // progress: 0,
-    //   },
-    //   refetchQueries: [
-    //     {
-    //       query: SEE_STUDENT_QUERY,
-    //       variables: { page: 1, limit: 10 },
-    //     },
-    //   ],
-    //   onCompleted: data => {
-    //     alert('등록되었습니다.')
-    //     router.push('/consult')
-    //   },
-    // })
-    // userLogs(`${data.stName}의 상담 등록`)
+    console.log(typeof studentId, studentId)
+    console.log(typeof data.seScore, data.seScore)
+    console.log(typeof data.subject, data.subject)
+    console.log(typeof subjectSelected.fee, subjectSelected.fee)
+    console.log(typeof data.processingManagerId, data.processingManagerId)
+    console.log(typeof subjectSelected.id, subjectSelected.id)
+    console.log(typeof data.situationReport, data.situationReport)
+    console.log(typeof data.paymentDate, data.paymentDate)
+    console.log(typeof data.receiptClassification, data.receiptClassification)
+    console.log(typeof data.unCollectedAmount, data.unCollectedAmount)
+    console.log(typeof data.cardAmount, data.cardAmount)
+    console.log(typeof data.cashAmount, data.cashAmount)
+    console.log(typeof data.discountAmount, data.discountAmount)
+
+    createStudentPayment({
+      variables: {
+        studentId: parseInt(studentId),
+        campus: '신촌',
+        seScore: parseInt(data.seScore),
+        subject: data.subject.trim(),
+        tuitionFee: subjectSelected.fee,
+        processingManagerId: parseInt(data.processingManagerId),
+        subjectId: subjectSelected.id,
+        situationReport:
+          data.situationReport === undefined
+            ? null
+            : data.situationReport === '동의'
+            ? true
+            : false,
+        paymentDate:
+          data.paymentDate === undefined ? null : new Date(data.paymentDate),
+        receiptClassification:
+          data.receiptClassification === undefined
+            ? null
+            : data.receiptClassification,
+        unCollectedAmount: parseInt(data.unCollectedAmount),
+        actualAmount:
+          data.actualAmount === '' ? null : parseInt(data.actualAmount),
+        cardAmount: data.cardAmount === '' ? null : parseInt(data.cardAmount),
+        cashAmount: data.cashAmount === '' ? null : parseInt(data.cashAmount),
+        discountAmount:
+          data.discountAmount === '' ? null : parseInt(data.discountAmount),
+      },
+      onCompleted: data => {
+        alert('등록되었습니다.')
+      },
+    })
+    userLogs(`${studentData.name} 수강신청`)
   }
-  const fametDate = data => {
+  const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
-    return formatted
+    if (isTime) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}:` +
+        `${date.getSeconds().toString().padStart(2, '0')}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
   }
 
   const feeFormet = fee => {
@@ -254,7 +291,7 @@ export default function StudentsWriteCourse() {
               </Noti>
               <UpdateTime>
                 <span>최근 업데이트 일시 :</span>
-                {fametDate('2023.01.04')}
+                {fametDate(studentData?.updatedAt, true)}
               </UpdateTime>
             </TopInfo>
             <DetailDiv>
@@ -267,7 +304,7 @@ export default function StudentsWriteCourse() {
                     <FilterLabel>
                       이름<span>*</span>
                     </FilterLabel>
-                    <LineBox>홍길동</LineBox>
+                    <LineBox>{studentData?.name}</LineBox>
                   </div>
                 </AreaBox>
                 <AreaBox>
@@ -275,7 +312,7 @@ export default function StudentsWriteCourse() {
                     <FilterLabel>
                       생년월일<span>*</span>
                     </FilterLabel>
-                    <LineBox>1993.05.10</LineBox>
+                    <LineBox>{fametDate(studentData?.birthday, false)}</LineBox>
                   </div>
                 </AreaBox>
                 <AreaBox>
@@ -283,21 +320,27 @@ export default function StudentsWriteCourse() {
                     <FilterLabel>
                       연락처<span>*</span>
                     </FilterLabel>
-                    <LineBox>01022224444</LineBox>
+                    <LineBox>{studentData?.phoneNum1}</LineBox>
                   </div>
                 </AreaBox>
               </FlexBox>
               <FlexBox>
                 <AreaBox>
                   <div>
+                    <FilterLabel>기타번호</FilterLabel>
+                    <LineBox>{studentData?.phoneNum2}</LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
                     <FilterLabel>담당자</FilterLabel>
-                    <LineBox>김사원</LineBox>
+                    <LineBox>{studentData?.writer}</LineBox>
                   </div>
                 </AreaBox>
                 <AreaBox>
                   <div>
                     <FilterLabel>등록일시</FilterLabel>
-                    <LineBox>2024.05.11</LineBox>
+                    <LineBox>{fametDate(studentData?.createdAt, true)}</LineBox>
                   </div>
                 </AreaBox>
               </FlexBox>
@@ -310,12 +353,30 @@ export default function StudentsWriteCourse() {
                   <h4>수강료 정보</h4>
                 </AreaTitle>
                 <FlexBox>
-                  <Controller
-                    control={control}
-                    name="subject"
-                    render={({ field }) => (
-                      <>
-                        <AreaBox>
+                  <AreaSmallBox style={{ minWidth: '20%' }}>
+                    <Input
+                      readOnly
+                      labelPlacement="outside"
+                      placeholder="과정코드"
+                      value={
+                        subjectSelected !== null &&
+                        subjectSelected?.subjectCode !== null
+                          ? String(subjectSelected?.subjectCode)
+                          : ''
+                      }
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="과정코드"
+                      className="w-full"
+                    />
+                  </AreaSmallBox>
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="subject"
+                      render={({ field }) => (
+                        <>
                           <Textarea
                             readOnly
                             value={field.value?.subjectName || ''}
@@ -336,10 +397,39 @@ export default function StudentsWriteCourse() {
                             setValue={setValue}
                             radio={true}
                           />
-                        </AreaBox>
-                      </>
-                    )}
-                  />
+                        </>
+                      )}
+                    />
+                  </AreaBox>
+                  <AreaSmallBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="situationReport"
+                        render={({ field }) => (
+                          <RadioGroup
+                            label={
+                              <FilterLabel>
+                                교육상황보고여부<span>*</span>
+                              </FilterLabel>
+                            }
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            onValueChange={value => {
+                              field.onChange(value)
+                            }}
+                          >
+                            <Radio key={'동의'} value={'동의'}>
+                              동의
+                            </Radio>
+                            <Radio key={'비동의'} value={'비동의'}>
+                              비동의
+                            </Radio>
+                          </RadioGroup>
+                        )}
+                      />
+                    </RadioBox>
+                  </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
@@ -356,16 +446,15 @@ export default function StudentsWriteCourse() {
                         </FilterLabel>
                       }
                       className="w-full"
-                      {...register('phoneNum2', {
+                      {...register('seScore', {
                         required: {
                           value: true,
-                          message: '휴대폰번호를 입력해주세요.',
+                          message: '선별점수를 입력해주세요.',
                         },
                         min: {
                           value: 0,
                           message: '0 이상의 숫자를 작성해주세요.', // JS only: <p>error message</p> TS only support string
                         },
-
                         max: {
                           value: 100,
                           message: '100 이하의 숫자를 작성해주세요.', // JS only: <p>error message</p> TS only support string
@@ -391,7 +480,6 @@ export default function StudentsWriteCourse() {
                       type="text"
                       label="수강 구분"
                       className="w-full"
-                      {...register('testSubDiv')}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -409,37 +497,13 @@ export default function StudentsWriteCourse() {
                       type="text"
                       label="수강료"
                       className="w-full"
+                      onChange={e => {
+                        console.log('1')
+                        register('tuitionFee').onChange(e)
+                      }}
+                      {...register('tuitionFee')}
                     />
                   </AreaBox>
-                  <AreaSmallBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="progress"
-                        render={({ field }) => (
-                          <RadioGroup
-                            label={
-                              <FilterLabel>
-                                교육상황보고여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            onValueChange={value => {
-                              field.onChange(parseInt(value))
-                            }}
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        )}
-                      />
-                    </RadioBox>
-                  </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
@@ -461,6 +525,7 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="할인금액"
+                      {...register('discountAmount')}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -471,6 +536,7 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="수납액"
+                      {...register('actualAmount')}
                     />
                   </AreaBox>
                 </FlexBox>
@@ -483,6 +549,7 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="현금결제액"
+                      {...register('cashAmount')}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -493,6 +560,7 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="카드 결제액"
+                      {...register('cardAmount')}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -503,6 +571,7 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="미수납액"
+                      {...register('unCollectedAmount')}
                     />
                   </AreaBox>
                 </FlexBox>
@@ -511,23 +580,22 @@ export default function StudentsWriteCourse() {
                     <RadioBox>
                       <Controller
                         control={control}
-                        name="progress"
-                        defaultValue={''}
+                        name="receiptClassification"
                         render={({ field, fieldState }) => (
-                          <CheckboxGroup
+                          <RadioGroup
                             label={<FilterLabel>영수구분</FilterLabel>}
                             orientation="horizontal"
-                            className="gap-1"
-                            onChange={value => {
+                            className="gap-[0.65rem]"
+                            onValueChange={value => {
                               field.onChange(value)
                             }}
                           >
                             {Object.entries(Receipt).map(([key, item]) => (
-                              <Checkbox key={key} value={item}>
+                              <Radio key={key} value={item}>
                                 {item}
-                              </Checkbox>
+                              </Radio>
                             ))}
-                          </CheckboxGroup>
+                          </RadioGroup>
                         )}
                       />
                     </RadioBox>
@@ -538,21 +606,21 @@ export default function StudentsWriteCourse() {
                     <DatePickerBox>
                       <Controller
                         control={control}
-                        name="stVisit"
+                        name="paymentDate"
                         render={({ field }) => (
                           <DatePicker
                             locale="ko"
                             showYearDropdown
                             selected={
-                              birthdayDate === null
+                              paymentDate === null
                                 ? null
-                                : new Date(birthdayDate)
+                                : new Date(paymentDate)
                             }
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
                               field.onChange(date)
-                              setBirthdayDate(date)
+                              setPaymentDate(date)
                             }}
                             ref={field.ref}
                             dateFormat="yyyy/MM/dd"
@@ -585,15 +653,13 @@ export default function StudentsWriteCourse() {
                             locale="ko"
                             showYearDropdown
                             selected={
-                              birthdayDate === null
-                                ? null
-                                : new Date(birthdayDate)
+                              dueDate === null ? null : new Date(dueDate)
                             }
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
                               field.onChange(date)
-                              setBirthdayDate(date)
+                              setDueDate(date)
                             }}
                             ref={field.ref}
                             dateFormat="yyyy/MM/dd"
@@ -619,7 +685,7 @@ export default function StudentsWriteCourse() {
                   <AreaBox>
                     <Controller
                       control={control}
-                      name="pic"
+                      name="processingManagerId"
                       render={({ field, fieldState }) => (
                         <Select
                           labelPlacement="outside"
@@ -645,10 +711,7 @@ export default function StudentsWriteCourse() {
                                 manager.mGrade > 0 && manager.mGrade < 3,
                             )
                             .map(item => (
-                              <SelectItem
-                                key={item.mUsername}
-                                value={item.mUsername}
-                              >
+                              <SelectItem key={item.id} value={item.id}>
                                 {item.mUsername}
                               </SelectItem>
                             ))}

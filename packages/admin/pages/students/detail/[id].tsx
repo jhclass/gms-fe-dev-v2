@@ -148,6 +148,21 @@ const MemoItem = styled.li`
   }
 `
 
+type studentSubject = {
+  actualAmount: number
+  cardAmount: number
+  cashAmount: number
+  discountAmount: number
+  id: number
+  paymentDate: string
+  processingManagerId: number
+  receiptClassification: string
+  seScore: number
+  studentId: number
+  tuitionFee: number
+  unCollectedAmount: number
+}
+
 export default function StudentsWrite() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
@@ -171,8 +186,8 @@ export default function StudentsWrite() {
     onClose: sbjClose,
   } = useDisclosure()
   const [studentData, setStudentData] = useState(null)
-  const [studentSubjectData, setStudentSubjectData] = useState([])
-  const [studentPaymentData, setStudentPaymentData] = useState([])
+  const [studentSubjectData, setStudentSubjectData] = useState(null)
+  const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [memoList, setMemoList] = useState([])
 
   useEffect(() => {
@@ -181,10 +196,10 @@ export default function StudentsWrite() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent.student[0])
-        setStudentSubjectData(data.searchStudent.student[0].studentPayment)
-        setStudentPaymentData(data.searchStudent.student[0].studentPayment)
-        setMemoList(data.searchStudent.student[0].studentMemo)
+        setStudentData(data.searchStudent?.student[0])
+        setStudentSubjectData(data.searchStudent?.student[0].studentPayment[0])
+        setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
+        setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
   }, [router])
@@ -256,8 +271,6 @@ export default function StudentsWrite() {
     return result
   }
 
-  console.log(studentData)
-
   return (
     <>
       {studentData !== null && (
@@ -271,7 +284,7 @@ export default function StudentsWrite() {
                 </Noti>
                 <UpdateTime>
                   <span>최근 업데이트 일시 :</span>
-                  {fametDate(studentData.updatedAt, true)}
+                  {fametDate(studentData?.updatedAt, true)}
                 </UpdateTime>
               </TopInfo>
               <DetailDiv>
@@ -285,7 +298,7 @@ export default function StudentsWrite() {
                     className="text-white"
                     onClick={() => {
                       {
-                        router.push(`/students/edit/${studentData.id}`)
+                        router.push(`/students/edit/${studentData?.id}`)
                       }
                     }}
                   >
@@ -298,7 +311,7 @@ export default function StudentsWrite() {
                       <FilterLabel>
                         이름<span>*</span>
                       </FilterLabel>
-                      <LineBox>{studentData.name}</LineBox>
+                      <LineBox>{studentData?.name}</LineBox>
                     </div>
                   </AreaBox>
                   <AreaBox>
@@ -306,7 +319,7 @@ export default function StudentsWrite() {
                       <FilterLabel>
                         연락처<span>*</span>
                       </FilterLabel>
-                      <LineBox>{studentData.phoneNum1}</LineBox>
+                      <LineBox>{studentData?.phoneNum1}</LineBox>
                     </div>
                   </AreaBox>
                   <AreaSmallBox>
@@ -318,7 +331,7 @@ export default function StudentsWrite() {
                           </FilterLabel>
                         }
                         isReadOnly
-                        defaultValue={studentData.smsAgreement}
+                        defaultValue={studentData?.smsAgreement}
                         orientation="horizontal"
                         className="gap-[0.65rem]"
                       >
@@ -339,43 +352,34 @@ export default function StudentsWrite() {
                         생년월일<span>*</span>
                       </FilterLabel>
                       <LineBox>
-                        {fametDate(studentData.birthday, false)}
+                        {fametDate(studentData?.birthday, false)}
                       </LineBox>
                     </div>
                   </AreaBox>
                   <AreaBox>
                     <div>
                       <FilterLabel>기타 연락처</FilterLabel>
-                      <LineBox>{studentData.phoneNum2}</LineBox>
+                      <LineBox>{studentData?.phoneNum2}</LineBox>
                     </div>
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
                     <div>
-                      <FilterLabel>
-                        선별테스트점수<span>*</span>
-                      </FilterLabel>
-                      {/* <LineBox>{studentSubjectData?.seScore || 0}</LineBox> */}
-                      <LineBox>0</LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
                       <FilterLabel>담당자</FilterLabel>
-                      <LineBox>{studentData.writer}</LineBox>
+                      <LineBox>{studentData?.writer}</LineBox>
                     </div>
                   </AreaBox>
                   <AreaBox>
                     <div>
                       <FilterLabel>등록일시</FilterLabel>
                       <LineBox>
-                        {fametDate(studentData.createdAt, false)}
+                        {fametDate(studentData?.createdAt, false)}
                       </LineBox>
                     </div>
                   </AreaBox>
                 </FlexBox>
-                {studentSubjectData.length === 0 && (
+                {studentSubjectData === undefined && (
                   <BtnBox>
                     <Button
                       size="md"
@@ -384,7 +388,7 @@ export default function StudentsWrite() {
                       color="primary"
                       className="w-full text-white"
                       onClick={() => {
-                        router.push('/students/write/course')
+                        router.push(`/students/write/course/${studentData?.id}`)
                       }}
                     >
                       수강신청
@@ -403,7 +407,7 @@ export default function StudentsWrite() {
                 )}
               </DetailDiv>
             </DetailBox>
-            {studentSubjectData.length > 0 && (
+            {studentSubjectData !== undefined && (
               <DetailBox>
                 <DetailDiv>
                   <AreaTitle>
@@ -416,7 +420,9 @@ export default function StudentsWrite() {
                       className="text-white"
                       onClick={() => {
                         {
-                          router.push(`/students/edit/course/${studentData.id}`)
+                          router.push(
+                            `/students/edit/course/${studentData?.id}`,
+                          )
                         }
                       }}
                     >
@@ -427,44 +433,46 @@ export default function StudentsWrite() {
                     <AreaSmallBox style={{ minWidth: '20%' }}>
                       <div>
                         <FilterLabel>과정코드</FilterLabel>
-                        <LineBox>{studentData.classCode}</LineBox>
+                        <LineBox>{studentData?.classCode}</LineBox>
                       </div>
                     </AreaSmallBox>
                     <AreaBox>
                       <div>
                         <FilterLabel>과정명</FilterLabel>
-                        {/* <LineBox>{studentSubjectData?.subject}</LineBox> */}
+                        <LineBox>{studentData?.subject?.subjectName}</LineBox>
                       </div>
                     </AreaBox>
                     <AreaSmallBox style={{ minWidth: '20%' }}>
                       <div>
-                        <FilterLabel>수강예정일</FilterLabel>
-                        <LineBox>
-                          {fametDate(studentData.dueDate, false)}
-                        </LineBox>
+                        <FilterLabel>
+                          선별테스트점수<span>*</span>
+                        </FilterLabel>
+                        <LineBox>{studentSubjectData?.seScore || 0}</LineBox>
                       </div>
                     </AreaSmallBox>
                   </FlexBox>
                   <BtnBox>
                     <Button
-                      isDisabled={studentData.courseComplete ? true : false}
+                      isDisabled={studentData?.courseComplete ? true : false}
                       size="md"
                       radius="md"
                       variant="bordered"
                       color="primary"
                       className="w-full"
                     >
-                      {studentData.lectureAssignment ? '배정 취소' : '강의배정'}
+                      {studentData?.lectureAssignment
+                        ? '배정 취소'
+                        : '강의배정'}
                     </Button>
                     <Button
-                      isDisabled={studentData.lectureAssignment ? false : true}
+                      isDisabled={studentData?.lectureAssignment ? false : true}
                       size="md"
                       radius="md"
                       variant="solid"
                       color="primary"
                       className="w-full text-white"
                     >
-                      {studentData.courseComplete
+                      {studentData?.courseComplete
                         ? '이수처리 취소'
                         : '이수처리'}
                     </Button>
@@ -480,14 +488,26 @@ export default function StudentsWrite() {
                       <div>
                         <FilterLabel>수강료</FilterLabel>
                         <LineBox>
-                          {/* {feeFormet(studentSubjectData?.tuitionFee)} */}
+                          {feeFormet(studentSubjectData?.tuitionFee)}
                         </LineBox>
                       </div>
                     </AreaBox>
                     <AreaBox>
                       <div>
                         <FilterLabel>수강당담자</FilterLabel>
-                        <LineBox>{studentSubjectData}</LineBox>
+                        <LineBox>
+                          {studentSubjectData?.processingManager}
+                        </LineBox>
+                      </div>
+                    </AreaBox>
+                    <AreaBox>
+                      <div>
+                        <FilterLabel>수강예정일</FilterLabel>
+                        <LineBox>
+                          {studentData?.dueDate === null
+                            ? ''
+                            : fametDate(studentData?.dueDate, false)}
+                        </LineBox>
                       </div>
                     </AreaBox>
                     <AreaSmallBox>
@@ -499,7 +519,7 @@ export default function StudentsWrite() {
                               교육상황보고여부<span>*</span>
                             </FilterLabel>
                           }
-                          defaultValue="비동의"
+                          defaultValue=""
                           orientation="horizontal"
                           className="gap-[0.65rem]"
                         >
@@ -518,7 +538,7 @@ export default function StudentsWrite() {
                       <div>
                         <FilterLabel>할인금액</FilterLabel>
                         <LineBox>
-                          {/* {feeFormet(studentSubjectData?.discountAmount)} */}
+                          {feeFormet(studentSubjectData?.discountAmount)}
                         </LineBox>
                       </div>
                     </AreaBox>
@@ -526,7 +546,7 @@ export default function StudentsWrite() {
                       <div>
                         <FilterLabel>실 수강료</FilterLabel>
                         <LineBox>
-                          {/* {feeFormet(studentSubjectData?.actualAmount)} */}
+                          {feeFormet(studentSubjectData?.actualAmount)}
                         </LineBox>
                       </div>
                     </AreaBox>
@@ -534,7 +554,7 @@ export default function StudentsWrite() {
                       <div>
                         <FilterLabel>미 수납액</FilterLabel>
                         <LineBox>
-                          {/* {feeFormet(studentSubjectData?.unCollectedAmount)} */}
+                          {feeFormet(studentSubjectData?.unCollectedAmount)}
                         </LineBox>
                       </div>
                     </AreaBox>
@@ -560,7 +580,7 @@ export default function StudentsWrite() {
                 </DetailDiv>
               </DetailBox>
             )}
-            {studentPaymentData !== null && (
+            {/* {studentPaymentData !== null && (
               <DetailBox>
                 <DetailDiv>
                   <AreaTitle>
@@ -585,29 +605,29 @@ export default function StudentsWrite() {
                         <div>
                           <FilterLabel>결제일자</FilterLabel>
                           <FlatBox>
-                            {/* {fametDate(studentPaymentData?.paymentDate, false)} */}
+                            {fametDate(studentPaymentData?.paymentDate, false)}
                           </FlatBox>
                         </div>
                       </AreaBox>
                       <AreaBox>
                         <div>
-                          {/* <FilterLabel>{`${studentPaymentData?.cashOrCard} 결제금액`}</FilterLabel> */}
+                          <FilterLabel>{`${studentPaymentData?.cashOrCard} 결제금액`}</FilterLabel>
                           <FlatBox>
-                            {/* {feeFormet(studentPaymentData?.amountPayment)} */}
+                            {feeFormet(studentPaymentData?.amountPayment)}
                           </FlatBox>
                         </div>
                       </AreaBox>
                       <AreaBox>
                         <div>
                           <FilterLabel>수납자</FilterLabel>
-                          {/* <FlatBox>{studentPaymentData?.cashOrCard}</FlatBox> */}
+                          <FlatBox>{studentPaymentData?.cashOrCard}</FlatBox>
                         </div>
                       </AreaBox>
                       <AreaBox>
                         <div>
                           <FilterLabel>영수구분</FilterLabel>
                           <FlatBox>
-                            {/* {studentPaymentData?.ReceiptClassification} */}
+                            {studentPaymentData?.ReceiptClassification}
                           </FlatBox>
                         </div>
                       </AreaBox>
@@ -713,7 +733,7 @@ export default function StudentsWrite() {
                   </FlexCardBox>
                 </DetailDiv>
               </DetailBox>
-            )}
+            )} */}
             {memoList !== null && (
               <DetailBox>
                 <DetailDiv>
