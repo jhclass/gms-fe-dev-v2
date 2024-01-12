@@ -10,7 +10,7 @@ import {
 } from '@/graphql/queries'
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
-import StudentsItem from '@/components/table/StudentsItem'
+
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`

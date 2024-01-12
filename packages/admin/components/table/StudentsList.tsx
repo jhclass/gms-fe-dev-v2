@@ -10,7 +10,7 @@ import {
 } from '@/graphql/queries'
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
-import StudentsItem from '@/components/table/StudentsItem'
+import StudentItem from '@/components/table/StudentItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -217,7 +217,7 @@ export default function StudentsTable() {
               </TheaderBox>
             </Theader>
             {students?.map((item, index) => (
-              <StudentsItem
+              <StudentItem
                 forName="student"
                 key={index}
                 tableData={item}
