@@ -118,12 +118,10 @@ export default function StudentsFillter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      subDiv: '-',
-      name: '',
-      phoneNum1: '',
-      createdAt: undefined,
+      studentName: '',
+      phoneNum: '',
       birthday: undefined,
-      progress: undefined,
+      createdAt: undefined,
     },
   })
 
@@ -155,9 +153,8 @@ export default function StudentsFillter({
       )
       if (birthdayDate && visitDate) {
         const filter = {
-          subDiv: data.subDiv === '-' ? null : data.subDiv,
-          name: data.name === '' ? null : data.name,
-          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
+          studentName: data.studentName === '' ? null : data.studentName,
+          phoneNum: data.phoneNum === '' ? null : data.phoneNum,
           birthday: data.birthday === undefined ? null : data.birthday,
           createdAt: data.createdAt === undefined ? null : data.createdAt,
         }
@@ -168,7 +165,6 @@ export default function StudentsFillter({
   }
 
   const handleReset = () => {
-    setSub('-')
     setCreatDateRange([null, null])
     setBirthdayRange([null, null])
     reset()
@@ -184,48 +180,14 @@ export default function StudentsFillter({
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
-              <Controller
-                control={control}
-                name="subDiv"
-                defaultValue={'-'}
-                render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label={<FilterLabel>수강구분</FilterLabel>}
-                    placeholder=" "
-                    defaultValue={'-'}
-                    className="w-full"
-                    variant="bordered"
-                    selectedKeys={[sub]}
-                    onChange={value => {
-                      field.onChange(value)
-                      handleSubChange(value)
-                    }}
-                  >
-                    {Object.entries(subStatus).map(([key, item]) =>
-                      key === '0' ? (
-                        <SelectItem value="-" key={'-'}>
-                          -
-                        </SelectItem>
-                      ) : (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ),
-                    )}
-                  </Select>
-                )}
-              />
-            </ItemBox>
-            <ItemBox>
               <Input
                 labelPlacement="outside"
                 placeholder="'-'없이 작성해주세요"
                 type="text"
                 variant="bordered"
                 label="연락처"
-                id="phoneNum1"
-                {...register('phoneNum1', {
+                id="phoneNum"
+                {...register('phoneNum', {
                   maxLength: {
                     value: 11,
                     message: '최대 11자리까지 입력 가능합니다.',
@@ -236,9 +198,9 @@ export default function StudentsFillter({
                   },
                 })}
               />
-              {errors.phoneNum1 && (
+              {errors.phoneNum && (
                 <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.phoneNum1.message)}
+                  {String(errors.phoneNum.message)}
                 </p>
               )}
             </ItemBox>
@@ -249,8 +211,8 @@ export default function StudentsFillter({
                 type="text"
                 variant="bordered"
                 label="수강생이름"
-                id="stName"
-                {...register('name')}
+                id="studentName"
+                {...register('studentName')}
               />
             </ItemBox>
           </BoxTop>

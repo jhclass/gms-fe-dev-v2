@@ -185,6 +185,14 @@ export default function StudentsTable() {
   const studentsData = data?.seeStudent || []
   const students = studentsData?.student || []
 
+  useEffect(() => {
+    setTotalCount(studentsData.totalCount)
+  }, [studentsData, totalCount])
+
+  useEffect(() => {
+    refetch()
+  }, [router, refetch, currentPage])
+
   return (
     <>
       <TTopic>
@@ -216,29 +224,33 @@ export default function StudentsTable() {
                 <TcreatedAt>등록일시</TcreatedAt>
               </TheaderBox>
             </Theader>
-            {students?.map((item, index) => (
-              <StudentItem
-                forName="student"
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                currentPage={currentPage}
-                limit={currentLimit}
-              />
-            ))}
+            {totalCount > 0 &&
+              students?.map((item, index) => (
+                <StudentItem
+                  forName="student"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                />
+              ))}
+            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
-        <PagerWrap>
-          <Pagination
-            variant="light"
-            showControls
-            initialPage={1}
-            total={2}
-            onChange={newPage => {
-              setCurrentPage(newPage)
-            }}
-          />
-        </PagerWrap>
+        {totalCount > 0 && (
+          <PagerWrap>
+            <Pagination
+              variant="light"
+              showControls
+              initialPage={currentPage}
+              total={Math.ceil(totalCount / currentLimit)}
+              onChange={newPage => {
+                setCurrentPage(newPage)
+              }}
+            />
+          </PagerWrap>
+        )}
       </TableArea>
     </>
   )

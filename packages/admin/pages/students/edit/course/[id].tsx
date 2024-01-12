@@ -345,12 +345,30 @@ export default function StudentsEditCourse() {
                   <h4>수강료 정보</h4>
                 </AreaTitle>
                 <FlexBox>
-                  <Controller
-                    control={control}
-                    name="subject"
-                    render={({ field }) => (
-                      <>
-                        <AreaBox>
+                  <AreaSmallBox style={{ minWidth: '20%' }}>
+                    <Input
+                      readOnly
+                      labelPlacement="outside"
+                      placeholder="과정코드"
+                      value={
+                        subjectSelected !== null &&
+                        subjectSelected?.subjectCode !== null
+                          ? String(subjectSelected?.subjectCode)
+                          : ''
+                      }
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label="과정코드"
+                      className="w-full"
+                    />
+                  </AreaSmallBox>
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="subject"
+                      render={({ field }) => (
+                        <>
                           <Textarea
                             readOnly
                             value={field.value?.subjectName || ''}
@@ -371,12 +389,52 @@ export default function StudentsEditCourse() {
                             setValue={setValue}
                             radio={true}
                           />
-                        </AreaBox>
-                      </>
-                    )}
-                  />
+                        </>
+                      )}
+                    />
+                  </AreaBox>
+                  <AreaSmallBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="progress"
+                        render={({ field }) => (
+                          <RadioGroup
+                            label={
+                              <FilterLabel>
+                                교육상황보고여부<span>*</span>
+                              </FilterLabel>
+                            }
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            onValueChange={value => {
+                              field.onChange(parseInt(value))
+                            }}
+                          >
+                            <Radio key={'동의'} value={'동의'}>
+                              동의
+                            </Radio>
+                            <Radio key={'비동의'} value={'비동의'}>
+                              비동의
+                            </Radio>
+                          </RadioGroup>
+                        )}
+                      />
+                    </RadioBox>
+                  </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="선별 점수"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="선별 점수"
+                      className="w-full"
+                    />
+                  </AreaBox>
                   <AreaBox>
                     <Input
                       isReadOnly
@@ -410,35 +468,6 @@ export default function StudentsEditCourse() {
                       className="w-full"
                     />
                   </AreaBox>
-                  <AreaSmallBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="progress"
-                        render={({ field }) => (
-                          <RadioGroup
-                            label={
-                              <FilterLabel>
-                                교육상황보고여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            onValueChange={value => {
-                              field.onChange(parseInt(value))
-                            }}
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        )}
-                      />
-                    </RadioBox>
-                  </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>

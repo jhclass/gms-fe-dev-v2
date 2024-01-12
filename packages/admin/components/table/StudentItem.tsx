@@ -212,7 +212,6 @@ export default function StudentsItem(props) {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
-
   return (
     <>
       <TableItem>

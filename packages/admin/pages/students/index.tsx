@@ -38,7 +38,6 @@ export default function Students() {
           ) : (
             <StudentsTable />
           )}
-          <StudentsTable />
         </ConBox>
       </MainWrap>
     </>
