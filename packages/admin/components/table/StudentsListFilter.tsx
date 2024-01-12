@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import {
@@ -12,6 +12,7 @@ import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
 
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
+import StudentItem from './StudentItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -28,6 +29,16 @@ const Ttotal = styled.p`
   span {
     font-weight: 400;
     color: #007de9;
+  }
+`
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
   }
 `
 const ColorHelp = styled.div`
@@ -188,29 +199,36 @@ export default function StudentsTable({
   )
   const [searchResult, setSearchResult] = useState(null)
 
-  // useEffect(() => {
-  //   searchStudentFilterMutation({
-  //     variables: {
-  //       ...studentFilter,
-  //       page: currentPage,
-  //       perPage: currentLimit,
-  //     },
-  //     onCompleted: resData => {
-  //       const { studentState, totalCount } = resData.searchStudentState || {}
-  //       setSearchResult({ studentState, totalCount })
-  //     },
-  //   })
-  // }, [studentFilter, currentPage])
+  useEffect(() => {
+    searchStudentFilterMutation({
+      variables: {
+        ...studentFilter,
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        const { student, totalCount } = resData.searchStudent || {}
+        setSearchResult({ student, totalCount })
+      },
+    })
+  }, [studentFilter, currentPage])
 
-  // const resetList = () => {
-  //   setStudentFilter({})
-  //   onFilterSearch(false)
-  // }
+  const resetList = () => {
+    setStudentFilter({})
+    onFilterSearch(false)
+  }
 
   return (
     <>
       <TTopic>
-        <Ttotal>{/* 총 <span>{totalCount}</span>건 */}</Ttotal>
+        <TopBox>
+          <Ttotal>
+            총 <span>{searchResult?.totalCount}</span>건이 검색되었습니다.
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
         <ColorHelp>
           <ColorCip>
             <span style={{ background: '#007de9' }}></span> : 신규
@@ -236,29 +254,35 @@ export default function StudentsTable({
                 <TcreatedAt>등록일시</TcreatedAt>
               </TheaderBox>
             </Theader>
-            {/* {students?.map((item, index) => (
-              <StudentsItem
-                forName="student"
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                currentPage={currentPage}
-                limit={currentLimit}
-              />
-            ))} */}
+            {searchResult?.totalCount > 0 &&
+              searchResult?.student.map((item, index) => (
+                <StudentItem
+                  forName="student"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                />
+              ))}
+            {searchResult?.totalCount === 0 && (
+              <Nolist>검색결과가 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
-        <PagerWrap>
-          <Pagination
-            variant="light"
-            showControls
-            initialPage={1}
-            total={2}
-            onChange={newPage => {
-              setCurrentPage(newPage)
-            }}
-          />
-        </PagerWrap>
+        {searchResult?.totalCount > 0 && (
+          <PagerWrap>
+            <Pagination
+              variant="light"
+              showControls
+              initialPage={currentPage}
+              total={Math.ceil(searchResult?.totalCount / currentLimit)}
+              onChange={newPage => {
+                setCurrentPage(newPage)
+              }}
+            />
+          </PagerWrap>
+        )}
       </TableArea>
     </>
   )

@@ -197,6 +197,7 @@ export const SEE_STUDENT_QUERY = gql`
       error
       message
       ok
+      totalCount
       student {
         birthday
         createdAt

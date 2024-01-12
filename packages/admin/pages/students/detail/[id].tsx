@@ -256,6 +256,8 @@ export default function StudentsWrite() {
     return result
   }
 
+  console.log(studentData)
+
   return (
     <>
       {studentData !== null && (
@@ -373,7 +375,7 @@ export default function StudentsWrite() {
                     </div>
                   </AreaBox>
                 </FlexBox>
-                {studentSubjectData === null && (
+                {studentSubjectData.length === 0 && (
                   <BtnBox>
                     <Button
                       size="md"
@@ -401,7 +403,7 @@ export default function StudentsWrite() {
                 )}
               </DetailDiv>
             </DetailBox>
-            {studentSubjectData !== null && (
+            {studentSubjectData.length > 0 && (
               <DetailBox>
                 <DetailDiv>
                   <AreaTitle>

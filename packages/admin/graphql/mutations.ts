@@ -575,10 +575,10 @@ export const SEARCH_STUDENT_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_FILTER_MUTATION = gql`
-  mutation Mutation(
+  mutation SearchStudent(
     $studentName: String
-    $createdAt: String
-    $birthday: String
+    $createdAt: [String]
+    $birthday: [String]
     $phoneNum: String
     $page: Int
     $limit: Int
@@ -591,24 +591,23 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
       page: $page
       limit: $limit
     ) {
-      error
       ok
       message
+      error
       totalCount
       student {
-        birthday
-        courseComplete
-        createdAt
+        name
+        phoneNum1
         id
-        lectureAssignment
         writer
-        updatedAt
+        createdAt
+        birthday
         subject {
           subjectName
         }
         subDiv
-        phoneNum1
-        name
+        lectureAssignment
+        courseComplete
       }
     }
   }
