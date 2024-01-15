@@ -112,15 +112,21 @@ const TadviceType = styled.div`
   min-width: 130px;
 `
 const Tname = styled.div`
+  position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
-  min-width: 110px;
+  min-width: 100px;
   font-weight: 600;
-  /* color: #52525b; */
+`
+const Masking = styled.span`
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-filter: blur(2.5px);
+  -o-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
 `
 const Tphone = styled.div`
   display: table-cell;
@@ -136,41 +142,31 @@ const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 110px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
 const TstVisit = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 15%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
-`
-const TexpEnrollDate = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 12%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: 120px;
+  min-width: 150px;
 `
 const Tprogress = styled.div`
   display: table-cell;
@@ -220,9 +216,26 @@ export default function FavoriteItem(props: ConsultItemProps) {
       refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
     })
   }
-  const getDate = (DataDate: string): string => {
-    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
-    return LocalDdate
+
+  const fametDate = (data, isTime) => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    if (isTime) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}` +
+        `${date.getHours() >= 12 ? 'pm' : 'am'}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
   }
 
   return (
@@ -281,7 +294,9 @@ export default function FavoriteItem(props: ConsultItemProps) {
               </Tphone>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student.createdAt ? getDate(student.createdAt) : '-'}
+                  {student.createdAt
+                    ? fametDate(student.createdAt, false)
+                    : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tmanager>
@@ -289,7 +304,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
               </Tmanager>
               <TstVisit>
                 <EllipsisBox>
-                  {student.stVisit ? getDate(student.stVisit) : '-'}
+                  {student.stVisit ? fametDate(student.stVisit, true) : '-'}
                 </EllipsisBox>
               </TstVisit>
             </ClickBox>
