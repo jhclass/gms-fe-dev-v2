@@ -94,7 +94,6 @@ const Tfavorite = styled.div`
   min-width: 30px;
   padding: 1rem 1rem 1rem 2rem;
 `
-
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -149,12 +148,6 @@ const Tname = styled.div`
   font-size: inherit;
   min-width: 100px;
   font-weight: 600;
-`
-const Masking = styled.span`
-  background: rgba(255, 255, 255, 0.8);
-  -webkit-filter: blur(2.5px);
-  -o-filter: blur(2.5px);
-  backdrop-filter: blur(2.5px);
 `
 const Tphone = styled.div`
   display: table-cell;

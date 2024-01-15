@@ -178,6 +178,7 @@ const TstVisit = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 150px;
+  font-weight: 600;
 `
 const Tprogress = styled.div`
   display: table-cell;
@@ -241,9 +242,9 @@ export default function ConsolutItem(props: ConsultItemProps) {
         `${date.getFullYear()}-` +
         `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
         `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours() >= 12 ? 'PM' : 'AM'} ` +
         `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}` +
-        `${date.getHours() >= 12 ? 'pm' : 'am'}`
+        `${date.getMinutes().toString().padStart(2, '0')}`
       return formatted
     } else {
       const formatted =
