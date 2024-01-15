@@ -243,7 +243,7 @@ export default function ConsolutItem(props: ConsultItemProps) {
         `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
         `${date.getDate().toString().padStart(2, '0')} ` +
         `${date.getHours() >= 12 ? 'PM' : 'AM'} ` +
-        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${(date.getHours() % 12 || 12).toString().padStart(2, '0')}:` +
         `${date.getMinutes().toString().padStart(2, '0')}`
       return formatted
     } else {
