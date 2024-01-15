@@ -218,6 +218,7 @@ export default function ConsultFillter({
     setReceipt('-')
     setSub('-')
     setManager('-')
+    setAdviceType('-')
     setCreatDateRange([null, null])
     setVisitDateRange([null, null])
     reset()

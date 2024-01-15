@@ -120,14 +120,15 @@ const TadviceType = styled.div`
   min-width: 130px;
 `
 const Tname = styled.div`
+  position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
-  color: inherit;
-  min-width: 110px;
+  min-width: 100px;
+  font-weight: 600;
 `
 const Tphone = styled.div`
   display: table-cell;
@@ -143,31 +144,31 @@ const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 110px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 100px;
+  min-width: 90px;
 `
 const TstVisit = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 15%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 120px;
+  min-width: 150px;
 `
 const Tprogress = styled.div`
   display: table-cell;
