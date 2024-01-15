@@ -111,6 +111,15 @@ const DatePickerBox = styled.div`
     bottom: 0;
   }
 `
+const SelectBox = styled.select`
+  padding: 0 0.2rem;
+  font-size: 0.825rem;
+  height: 100%;
+
+  option {
+    font-size: 0.825rem;
+  }
+`
 const RadioBox = styled.div`
   display: flex;
   width: 100%;
@@ -158,7 +167,8 @@ export default function StudentsWriteCourse() {
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const Receipt = useRecoilValue(ReceiptState)
   const managerList = managerData?.seeManageUser || []
-  const { register, control, setValue, handleSubmit, formState } = useForm()
+  const { register, watch, control, setValue, handleSubmit, formState } =
+    useForm()
   const { errors } = formState
   const {
     isOpen: sbjIsOpen,
@@ -166,16 +176,19 @@ export default function StudentsWriteCourse() {
     onClose: sbjClose,
   } = useDisclosure()
   const [studentData, setStudentData] = useState(null)
+  const [birthdayDate, setBirthdayDate] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [subjectInfo, setSubjectInfo] = useState()
+  const [disCountType, setDisCountType] = useState('%')
+  const [discountAmount, setDiscountAmount] = useState(0)
+  const [actualAmount, setActualAmount] = useState(0)
+  const [receiptSelected, setReceiptSelected] = useState([])
   const [manager, setManager] = useState('담당자 지정필요')
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
-
-  const [birthdayDate, setBirthdayDate] = useState(null)
 
   useEffect(() => {
     searchStudentBasic({
@@ -187,6 +200,24 @@ export default function StudentsWriteCourse() {
       },
     })
   }, [router])
+
+  useEffect(() => {
+    const tuitionFee = subjectSelected?.fee
+    if (subjectSelected !== null) {
+      if (disCountType === '%') {
+        const disCount = (tuitionFee * (100 - discountAmount)) / 100
+        setActualAmount(disCount)
+        setValue('actualAmount', disCount)
+      } else {
+        const disCount = tuitionFee - discountAmount
+        setActualAmount(disCount)
+        setValue('actualAmount', disCount)
+      }
+    } else {
+      setValue('actualAmount', 0)
+    }
+  }, [subjectSelected, discountAmount])
+
   const onSubmit = data => {
     createStudentPayment({
       variables: {
@@ -215,7 +246,9 @@ export default function StudentsWriteCourse() {
         cardAmount: data.cardAmount === '' ? null : parseInt(data.cardAmount),
         cashAmount: data.cashAmount === '' ? null : parseInt(data.cashAmount),
         discountAmount:
-          data.discountAmount === '' ? null : parseInt(data.discountAmount),
+          data.discountAmount === ''
+            ? null
+            : data.discountAmount + disCountType,
       },
       onCompleted: data => {
         alert('등록되었습니다.')
@@ -251,8 +284,12 @@ export default function StudentsWriteCourse() {
     return result
   }
 
-  const handleManagerChange = e => {
-    setManager(e.target.value)
+  const handleReceiptChange = (value: string[]) => {
+    setValue('receiptClassification', value)
+    setReceiptSelected(value)
+  }
+  const handleDisCountChange = e => {
+    setDisCountType(e.target.value)
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
@@ -360,12 +397,22 @@ export default function StudentsWriteCourse() {
                     <Controller
                       control={control}
                       name="subject"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '수강 과정을 선택해주세요.',
+                        },
+                      }}
                       render={({ field }) => (
                         <>
                           <Textarea
                             readOnly
                             value={field.value?.subjectName || ''}
-                            label="상담 과정 선택"
+                            label={
+                              <FilterLabel>
+                                과정 선택<span>*</span>
+                              </FilterLabel>
+                            }
                             labelPlacement="outside"
                             className="max-w-full"
                             variant="bordered"
@@ -393,11 +440,7 @@ export default function StudentsWriteCourse() {
                         name="situationReport"
                         render={({ field }) => (
                           <RadioGroup
-                            label={
-                              <FilterLabel>
-                                교육상황보고여부<span>*</span>
-                              </FilterLabel>
-                            }
+                            label={<FilterLabel>교육상황보고여부</FilterLabel>}
                             orientation="horizontal"
                             className="gap-[0.65rem]"
                             onValueChange={value => {
@@ -425,24 +468,16 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="number"
                       endContent={<InputText>/ 100</InputText>}
-                      label={
-                        <FilterLabel>
-                          선별테스트 점수<span>*</span>
-                        </FilterLabel>
-                      }
+                      label="선별테스트 점수"
                       className="w-full"
                       {...register('seScore', {
-                        required: {
-                          value: true,
-                          message: '선별점수를 입력해주세요.',
-                        },
                         min: {
                           value: 0,
-                          message: '0 이상의 숫자를 작성해주세요.', // JS only: <p>error message</p> TS only support string
+                          message: '0 이상의 숫자를 작성해주세요.',
                         },
                         max: {
                           value: 100,
-                          message: '100 이하의 숫자를 작성해주세요.', // JS only: <p>error message</p> TS only support string
+                          message: '100 이하의 숫자를 작성해주세요.',
                         },
                       })}
                     />
@@ -482,10 +517,6 @@ export default function StudentsWriteCourse() {
                       type="text"
                       label="수강료"
                       className="w-full"
-                      onChange={e => {
-                        console.log('1')
-                        register('tuitionFee').onChange(e)
-                      }}
                       {...register('tuitionFee')}
                     />
                   </AreaBox>
@@ -494,30 +525,49 @@ export default function StudentsWriteCourse() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="할인율"
+                      placeholder="할인"
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="할인율"
-                      endContent="%"
+                      label="할인"
+                      defaultValue={String(discountAmount)}
+                      onChange={e => {
+                        register('discountAmount').onChange(e)
+                        setDiscountAmount(parseInt(e.target.value))
+                      }}
+                      endContent={
+                        <SelectBox
+                          onChange={handleDisCountChange}
+                          value={disCountType}
+                        >
+                          <option value="%">%</option>
+                          <option value="원">원</option>
+                        </SelectBox>
+                      }
                     />
                   </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="할인금액"
+                      placeholder="할인된 수강료"
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="할인금액"
-                      {...register('discountAmount')}
+                      label="할인된 수강료"
+                      defaultValue={
+                        subjectSelected !== null
+                          ? feeFormet(subjectSelected?.fee)
+                          : ''
+                      }
+                      {...register('actualAmount')}
                     />
                   </AreaBox>
                   <AreaBox>
                     <Input
+                      isReadOnly
                       labelPlacement="outside"
                       placeholder="수납액"
-                      variant="bordered"
+                      variant="faded"
                       radius="md"
                       type="text"
                       label="수납액"
@@ -528,9 +578,10 @@ export default function StudentsWriteCourse() {
                 <FlexBox>
                   <AreaBox>
                     <Input
+                      isReadOnly
                       labelPlacement="outside"
                       placeholder="현금결제액"
-                      variant="bordered"
+                      variant="faded"
                       radius="md"
                       type="text"
                       label="현금결제액"
@@ -539,9 +590,10 @@ export default function StudentsWriteCourse() {
                   </AreaBox>
                   <AreaBox>
                     <Input
+                      isReadOnly
                       labelPlacement="outside"
                       placeholder="카드 결제액"
-                      variant="bordered"
+                      variant="faded"
                       radius="md"
                       type="text"
                       label="카드 결제액"
@@ -550,9 +602,10 @@ export default function StudentsWriteCourse() {
                   </AreaBox>
                   <AreaBox>
                     <Input
+                      isReadOnly
                       labelPlacement="outside"
                       placeholder="미수납액"
-                      variant="bordered"
+                      variant="faded"
                       radius="md"
                       type="text"
                       label="미수납액"
@@ -567,20 +620,19 @@ export default function StudentsWriteCourse() {
                         control={control}
                         name="receiptClassification"
                         render={({ field, fieldState }) => (
-                          <RadioGroup
+                          <CheckboxGroup
                             label={<FilterLabel>영수구분</FilterLabel>}
                             orientation="horizontal"
                             className="gap-[0.65rem]"
-                            onValueChange={value => {
-                              field.onChange(value)
-                            }}
+                            value={receiptSelected}
+                            onValueChange={handleReceiptChange}
                           >
                             {Object.entries(Receipt).map(([key, item]) => (
-                              <Radio key={key} value={item}>
+                              <Checkbox key={key} value={item}>
                                 {item}
-                              </Radio>
+                              </Checkbox>
                             ))}
-                          </RadioGroup>
+                          </CheckboxGroup>
                         )}
                       />
                     </RadioBox>
@@ -592,6 +644,12 @@ export default function StudentsWriteCourse() {
                       <Controller
                         control={control}
                         name="paymentDate"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '결제예정일을 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <DatePicker
                             locale="ko"
@@ -650,11 +708,7 @@ export default function StudentsWriteCourse() {
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
-                                label={
-                                  <FilterLabel>
-                                    수강예정일<span>*</span>
-                                  </FilterLabel>
-                                }
+                                label="수강예정일"
                                 labelPlacement="outside"
                                 type="text"
                                 variant="bordered"
@@ -833,8 +887,6 @@ export default function StudentsWriteCourse() {
                   </AreaBox>
                 </FlexBox>
               </DetailDiv>
-            </DetailBox>
-            <DetailBox>
               <DetailDiv>
                 <AreaTitle>
                   <h4>입금 결제 정보</h4>
@@ -922,7 +974,7 @@ export default function StudentsWriteCourse() {
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
-                                label={<FilterLabel>결제일자</FilterLabel>}
+                                label={<FilterLabel>입금일자</FilterLabel>}
                                 labelPlacement="outside"
                                 type="text"
                                 variant="bordered"

@@ -107,15 +107,6 @@ const DimBtn = styled.button`
   }
 `
 
-const Copyright = styled.div<{ $navOpen: boolean }>`
-  display: ${props => (props.$navOpen ? 'block' : 'none')};
-  font-size: 0.75rem;
-  color: #71717a;
-  @media screen and (max-width: 1024px) {
-    font-size: 0.75rem;
-  }
-`
-
 export default function Header() {
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
@@ -148,10 +139,6 @@ export default function Header() {
               <Category />
             </CateBox>
           </ConBox>
-          <Copyright $navOpen={navOpen}>
-            <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
-            reserved.
-          </Copyright>
         </NavWrap>
       </NavSec>
       {navOpen && <Dim onClick={toggleNav} />}

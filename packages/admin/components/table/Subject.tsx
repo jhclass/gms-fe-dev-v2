@@ -236,8 +236,13 @@ export default function SubjectTable() {
     return LocalDdate
   }
 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     refetch()
+    handleScrollTop()
   }, [router, refetch, currentPage])
 
   return (

@@ -216,6 +216,10 @@ export default function ConsolutationRejectTable({
     }
   }
 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
@@ -226,6 +230,7 @@ export default function ConsolutationRejectTable({
       onCompleted: resData => {
         const { studentState, totalCount } = resData.searchStudentState || {}
         setSearchResult({ studentState, totalCount })
+        handleScrollTop()
       },
     })
   }, [currentPage])

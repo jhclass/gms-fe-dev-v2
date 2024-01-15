@@ -266,8 +266,9 @@ export default function StudentsWrite() {
   }
 
   const feeFormet = fee => {
-    const result =
-      fee || (0).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    const result = fee
+      .toString()
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
   console.log(studentSubjectData)
@@ -409,183 +410,201 @@ export default function StudentsWrite() {
               </DetailDiv>
             </DetailBox>
             {studentSubjectData !== undefined && (
-              <DetailBox>
-                <DetailDiv>
-                  <AreaTitle>
-                    <h4>수강료 정보</h4>
-                    <Button
-                      size="sm"
-                      radius="sm"
-                      variant="solid"
-                      color="primary"
-                      className="text-white"
-                      onClick={() => {
-                        {
-                          router.push(
-                            `/students/edit/course/${studentData?.id}`,
-                          )
+              <>
+                <DetailBox>
+                  <DetailDiv>
+                    <AreaTitle>
+                      <h4>수강료 정보</h4>
+                      <Button
+                        size="sm"
+                        radius="sm"
+                        variant="solid"
+                        color="primary"
+                        className="text-white"
+                        onClick={() => {
+                          {
+                            router.push(
+                              `/students/edit/course/${studentData?.id}`,
+                            )
+                          }
+                        }}
+                      >
+                        수정
+                      </Button>
+                    </AreaTitle>
+                    <FlexBox>
+                      <AreaSmallBox style={{ minWidth: '20%' }}>
+                        <div>
+                          <FilterLabel>과정코드</FilterLabel>
+                          <LineBox>{studentData?.classCode}</LineBox>
+                        </div>
+                      </AreaSmallBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>과정명</FilterLabel>
+                          <LineBox>{studentData?.subject?.subjectName}</LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaSmallBox>
+                        <RadioBox>
+                          <RadioGroup
+                            isReadOnly
+                            label={
+                              <FilterLabel>
+                                교육상황보고여부<span>*</span>
+                              </FilterLabel>
+                            }
+                            defaultValue={
+                              studentSubjectData?.situationRepor === null
+                                ? undefined
+                                : studentSubjectData?.situationRepor
+                                ? '동의'
+                                : '비동의'
+                            }
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                          >
+                            <Radio key={'동의'} value={'동의'}>
+                              동의
+                            </Radio>
+                            <Radio key={'비동의'} value={'비동의'}>
+                              비동의
+                            </Radio>
+                          </RadioGroup>
+                        </RadioBox>
+                      </AreaSmallBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>
+                            선별테스트점수<span>*</span>
+                          </FilterLabel>
+                          <LineBox>{studentSubjectData?.seScore || 0}</LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강 구분</FilterLabel>
+                          <LineBox>국가기간</LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강료</FilterLabel>
+                          <LineBox>
+                            {studentSubjectData?.tuitionFee
+                              ? feeFormet(studentSubjectData?.tuitionFee)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>할인금액</FilterLabel>
+                          <LineBox>
+                            {studentSubjectData?.discountAmount
+                              ? feeFormet(studentSubjectData?.discountAmount)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>실 수강료</FilterLabel>
+                          <LineBox>
+                            {studentSubjectData?.actualAmount
+                              ? feeFormet(studentSubjectData?.actualAmount)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>미 수납액</FilterLabel>
+                          <LineBox>
+                            {studentSubjectData?.unCollectedAmount
+                              ? feeFormet(studentSubjectData?.unCollectedAmount)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강예정일</FilterLabel>
+                          <LineBox>
+                            {studentData?.dueDate === null
+                              ? ''
+                              : fametDate(studentData?.dueDate, false)}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강당담자</FilterLabel>
+                          <LineBox>
+                            {studentSubjectData?.processingManager}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <BtnBox>
+                      <Button
+                        isDisabled={studentData?.courseComplete ? true : false}
+                        size="md"
+                        radius="md"
+                        variant="bordered"
+                        color="primary"
+                        className="w-full"
+                      >
+                        {studentData?.lectureAssignment
+                          ? '배정 취소'
+                          : '강의배정'}
+                      </Button>
+                      <Button
+                        isDisabled={
+                          studentData?.lectureAssignment ? false : true
                         }
-                      }}
-                    >
-                      수정
-                    </Button>
-                  </AreaTitle>
-                  <FlexBox>
-                    <AreaSmallBox style={{ minWidth: '20%' }}>
-                      <div>
-                        <FilterLabel>과정코드</FilterLabel>
-                        <LineBox>{studentData?.classCode}</LineBox>
-                      </div>
-                    </AreaSmallBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>과정명</FilterLabel>
-                        <LineBox>{studentData?.subject?.subjectName}</LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaSmallBox style={{ minWidth: '20%' }}>
-                      <div>
-                        <FilterLabel>
-                          선별테스트점수<span>*</span>
-                        </FilterLabel>
-                        <LineBox>{studentSubjectData?.seScore || 0}</LineBox>
-                      </div>
-                    </AreaSmallBox>
-                  </FlexBox>
-                  <BtnBox>
-                    <Button
-                      isDisabled={studentData?.courseComplete ? true : false}
-                      size="md"
-                      radius="md"
-                      variant="bordered"
-                      color="primary"
-                      className="w-full"
-                    >
-                      {studentData?.lectureAssignment
-                        ? '배정 취소'
-                        : '강의배정'}
-                    </Button>
-                    <Button
-                      isDisabled={studentData?.lectureAssignment ? false : true}
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      color="primary"
-                      className="w-full text-white"
-                    >
-                      {studentData?.courseComplete
-                        ? '이수처리 취소'
-                        : '이수처리'}
-                    </Button>
-                  </BtnBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강 구분</FilterLabel>
-                        <LineBox>국가기간</LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강료</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.tuitionFee)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강당담자</FilterLabel>
-                        <LineBox>
-                          {studentSubjectData?.processingManager}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강예정일</FilterLabel>
-                        <LineBox>
-                          {studentData?.dueDate === null
-                            ? ''
-                            : fametDate(studentData?.dueDate, false)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaSmallBox>
-                      <RadioBox>
-                        <RadioGroup
-                          isReadOnly
-                          label={
-                            <FilterLabel>
-                              교육상황보고여부<span>*</span>
-                            </FilterLabel>
-                          }
-                          defaultValue={
-                            studentSubjectData?.situationRepor === null
-                              ? undefined
-                              : studentSubjectData?.situationRepor
-                              ? '동의'
-                              : '비동의'
-                          }
-                          orientation="horizontal"
-                          className="gap-[0.65rem]"
-                        >
-                          <Radio key={'동의'} value={'동의'}>
-                            동의
-                          </Radio>
-                          <Radio key={'비동의'} value={'비동의'}>
-                            비동의
-                          </Radio>
-                        </RadioGroup>
-                      </RadioBox>
-                    </AreaSmallBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>할인금액</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.discountAmount)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>실 수강료</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.actualAmount)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>미 수납액</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.unCollectedAmount)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                  </FlexBox>
-                  <BtnBox>
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      className="w-full text-white bg-flag1"
-                    >
-                      환불신청
-                    </Button>
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="bordered"
-                      className="w-full text-flag1 border-flag1"
-                    >
-                      삭제
-                    </Button>
-                  </BtnBox>
-                </DetailDiv>
-              </DetailBox>
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        color="primary"
+                        className="w-full text-white"
+                      >
+                        {studentData?.courseComplete
+                          ? '이수처리 취소'
+                          : '이수처리'}
+                      </Button>
+                    </BtnBox>
+                  </DetailDiv>
+                </DetailBox>
+                <DetailBox>
+                  <DetailDiv>
+                    <BtnBox>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        className="w-full text-white bg-flag1"
+                      >
+                        환불신청
+                      </Button>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="bordered"
+                        className="w-full text-flag1 border-flag1"
+                      >
+                        삭제
+                      </Button>
+                    </BtnBox>
+                  </DetailDiv>
+                </DetailBox>
+              </>
             )}
             {/* {studentPaymentData !== null && (
               <DetailBox>

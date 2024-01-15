@@ -215,6 +215,10 @@ export default function ConsolutationTable() {
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     setTotalCount(studentsData.totalCount)
   }, [studentsData, totalCount])
@@ -222,6 +226,7 @@ export default function ConsolutationTable() {
   useEffect(() => {
     refetch()
     favoRefetch()
+    handleScrollTop()
   }, [router, refetch, favoRefetch, currentPage])
 
   return (

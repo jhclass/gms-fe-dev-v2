@@ -160,6 +160,9 @@ export default function SubjectModal({
       subjectName: '',
     },
   })
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     searchSubjectMutation({
@@ -172,6 +175,7 @@ export default function SubjectModal({
       onCompleted: resData => {
         const { result, totalCount } = resData.searchSubject || {}
         setSubjectList({ result, totalCount })
+        handleScrollTop()
       },
     })
   }, [router, currentSubjectPage, subjectSearch])
@@ -179,6 +183,7 @@ export default function SubjectModal({
   const handleSbjChange = values => {
     setSubjectSelected(values)
   }
+
   const clickSbjSubmit = () => {
     setValue('subject', subjectSelected)
     sbjClose()
@@ -187,6 +192,7 @@ export default function SubjectModal({
   const onSubmit = data => {
     setSubjectSearch(data.subjectName)
   }
+
   const resetSearch = () => {
     setSubjectSearch(null)
     reset()

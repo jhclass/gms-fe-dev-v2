@@ -185,12 +185,17 @@ export default function StudentsTable() {
   const studentsData = data?.seeStudent || []
   const students = studentsData?.student || []
 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     setTotalCount(studentsData.totalCount)
   }, [studentsData, totalCount])
 
   useEffect(() => {
     refetch()
+    handleScrollTop()
   }, [router, refetch, currentPage])
 
   return (
