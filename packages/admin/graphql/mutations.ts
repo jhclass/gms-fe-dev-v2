@@ -58,7 +58,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
     }
   }
 `
-export const UPDATE_FAVORITE_MUTATION = gql`
+export const UPDATE_FAVORITE_MUTATION2 = gql`
   mutation Mutation($updateFavoriteId: Int!) {
     updateFavorite(id: $updateFavoriteId) {
       ok
@@ -91,6 +91,36 @@ export const UPDATE_FAVORITE_MUTATION = gql`
           id
           content
         }
+      }
+    }
+  }
+`
+export const UPDATE_FAVORITE_MUTATION = gql`
+  mutation Mutation($updateFavoriteId: Int!) {
+    updateFavorite(id: $updateFavoriteId) {
+      error
+      message
+      ok
+      favoriteStudentState {
+        id
+        favoriteStudentState
+        StudentStates {
+          adviceTypes {
+            id
+            type
+          }
+          phoneNum1
+          createdAt
+          id
+          pic
+          progress
+          receiptDiv
+          stName
+          stVisit
+          subDiv
+        }
+        mUserId
+        mUsername
       }
     }
   }

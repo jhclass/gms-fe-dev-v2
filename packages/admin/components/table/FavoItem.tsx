@@ -79,7 +79,7 @@ const Tnum = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 60px;
+  min-width: ${1200 * 0.06}px;
 `
 const TreceiptDiv = styled.div`
   display: table-cell;
@@ -89,7 +89,7 @@ const TreceiptDiv = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: ${1200 * 0.09}px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
@@ -99,7 +99,7 @@ const TsubDiv = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: ${1200 * 0.09}px;
 `
 const TadviceType = styled.div`
   display: table-cell;
@@ -109,7 +109,7 @@ const TadviceType = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 130px;
+  min-width: ${1200 * 0.13}px;
 `
 const Tname = styled.div`
   position: relative;
@@ -119,7 +119,7 @@ const Tname = styled.div`
   width: 10%;
   padding: 1rem;
   font-size: inherit;
-  min-width: 100px;
+  min-width: ${1200 * 0.1}px;
   font-weight: 600;
 `
 const Masking = styled.span`
@@ -136,17 +136,17 @@ const Tphone = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 110px;
+  min-width: ${1200 * 0.11}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 110px;
+  min-width: ${1200 * 0.1}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
@@ -156,17 +156,17 @@ const Tmanager = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: ${1200 * 0.09}px;
 `
 const TstVisit = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: ${1200 * 0.16}px;
   font-weight: 600;
 `
 const Tprogress = styled.div`
@@ -177,9 +177,8 @@ const Tprogress = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 80px;
+  min-width: ${1200 * 0.08}px;
 `
-
 const EllipsisBox = styled.p`
   white-space: nowrap;
   overflow: hidden;

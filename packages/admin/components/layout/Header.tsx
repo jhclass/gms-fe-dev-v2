@@ -313,7 +313,7 @@ export default function Header() {
           <Logo>
             <Link href="/">
               <img
-                src="https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol.svg"
+                src="https://highclass-image.s3.amazonaws.com/admin/common/H_simbol_color.svg"
                 alt="H Academy Admin"
               />
             </Link>

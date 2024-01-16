@@ -30,7 +30,7 @@ export default function Footer() {
             <h1 className="w-[12rem]">
               <Link href="/">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/hAcademy_logo_1_w.svg"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/H_logo_w.svg"
                   alt="H ACADEMY | H아카데미"
                 />
               </Link>

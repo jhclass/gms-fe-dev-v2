@@ -45,23 +45,24 @@ const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
 const Logo = styled(motion.h1)<{ $navOpen: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: ${props => (props.$navOpen ? 'start' : 'center')};
+  /* justify-content: ${props => (props.$navOpen ? 'start' : 'center')}; */
+  justify-content: center;
   width: 100%;
   height: 4rem;
   flex-shrink: 0;
   overflow: hidden;
 
   @media screen and (max-width: 1024px) {
-    justify-content: start;
+    /* justify-content: start; */
   }
 `
 const LogoImg = styled(motion.img)<{ $navOpen: boolean }>`
   max-width: ${props => (props.$navOpen ? 'none' : '100%')};
-  height: ${props => (props.$navOpen ? '2rem' : '2.5rem')};
+  height: ${props => (props.$navOpen ? '3rem' : '2rem')};
 
   @media screen and (max-width: 1024px) {
     max-width: none;
-    height: 2rem;
+    height: 3rem;
   }
 `
 
@@ -124,8 +125,8 @@ export default function Header() {
                 $navOpen={navOpen}
                 src={
                   navOpen
-                    ? 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_logo_1.svg'
-                    : 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol.svg'
+                    ? 'https://highclass-image.s3.amazonaws.com/admin/common/H_logo.svg'
+                    : 'https://highclass-image.s3.amazonaws.com/admin/common/H_simbol_color.svg'
                 }
                 alt="H ACADEMY Admin"
               />
