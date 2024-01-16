@@ -271,7 +271,9 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-  console.log(studentSubjectData)
+  // console.log(studentData)
+  // console.log(studentSubjectData)
+  // console.log(studentPaymentData)
 
   return (
     <>
