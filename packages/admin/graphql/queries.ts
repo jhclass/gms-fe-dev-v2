@@ -215,3 +215,38 @@ export const SEE_STUDENT_QUERY = gql`
     }
   }
 `
+
+export const SEE_AMOUNT_STUDENT_QUERY = gql`
+  query Query($page: Int, $limit: Int) {
+    seeStudent(page: $page, limit: $limit) {
+      error
+      message
+      ok
+      student {
+        name
+        phoneNum1
+        subject {
+          id
+          subDiv
+          subjectName
+        }
+        studentPayment {
+          actualAmount
+          cardAmount
+          cashAmount
+          discountAmount
+          id
+          paymentDate
+          processingManager {
+            mUserId
+            mUsername
+            id
+          }
+          unCollectedAmount
+          tuitionFee
+        }
+      }
+      totalCount
+    }
+  }
+`

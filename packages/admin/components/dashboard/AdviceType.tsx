@@ -1,8 +1,6 @@
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
-import { useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
-import { DASHBOARD_TODAY_QUERY } from '@/graphql/queries'
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
