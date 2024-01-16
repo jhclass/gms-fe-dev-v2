@@ -271,22 +271,17 @@ export default function FavoriteItem(props: ConsultItemProps) {
               <Tnum>
                 <EllipsisBox>{conIndex + 1}</EllipsisBox>
               </Tnum>
-              <Tprogress
-                style={{ color: progressStatus[student.progress].color }}
-              >
+              <TcreatedAt>
                 <EllipsisBox>
-                  {progressStatus[student.progress].name}
+                  {student.createdAt
+                    ? fametDate(student.createdAt, false)
+                    : '-'}
                 </EllipsisBox>
-              </Tprogress>
+              </TcreatedAt>
+
               <TreceiptDiv>
                 <EllipsisBox>{student.receiptDiv}</EllipsisBox>
               </TreceiptDiv>
-              <TsubDiv>
-                <EllipsisBox>{student.subDiv}</EllipsisBox>
-              </TsubDiv>
-              <TadviceType>
-                <EllipsisBox>{studentAdvice}</EllipsisBox>
-              </TadviceType>
               <Tname>
                 {student.progress === 110 ? (
                   <EllipsisBox>
@@ -299,21 +294,27 @@ export default function FavoriteItem(props: ConsultItemProps) {
               <Tphone>
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
-              <TcreatedAt>
+              <TsubDiv>
+                <EllipsisBox>{student.subDiv}</EllipsisBox>
+              </TsubDiv>
+              <TadviceType>
+                <EllipsisBox>{studentAdvice}</EllipsisBox>
+              </TadviceType>
+              <Tprogress
+                style={{ color: progressStatus[student.progress].color }}
+              >
                 <EllipsisBox>
-                  {student.createdAt
-                    ? fametDate(student.createdAt, false)
-                    : '-'}
+                  {progressStatus[student.progress].name}
                 </EllipsisBox>
-              </TcreatedAt>
-              <Tmanager>
-                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
-              </Tmanager>
+              </Tprogress>
               <TstVisit>
                 <EllipsisBox>
                   {student.stVisit ? fametDate(student.stVisit, true) : '-'}
                 </EllipsisBox>
               </TstVisit>
+              <Tmanager>
+                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
+              </Tmanager>
             </ClickBox>
           </Link>
         </TableRow>

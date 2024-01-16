@@ -278,15 +278,15 @@ export default function ConsolutationRejectTable({
                   </Tfavorite>
                   <ClickBox>
                     <Tnum>No</Tnum>
-                    <Tprogress>진행상태</Tprogress>
+                    <TcreatedAt>등록일시</TcreatedAt>
                     <TreceiptDiv>접수구분</TreceiptDiv>
-                    <TsubDiv>수강구분</TsubDiv>
-                    <TadviceType>상담분야</TadviceType>
                     <Tname>이름</Tname>
                     <Tphone>연락처</Tphone>
-                    <TcreatedAt>등록일시</TcreatedAt>
-                    <Tmanager>담당자</Tmanager>
+                    <TsubDiv>수강구분</TsubDiv>
+                    <TadviceType>상담분야</TadviceType>
+                    <Tprogress>진행상태</Tprogress>
                     <TstVisit>상담예정일</TstVisit>
+                    <Tmanager>담당자</Tmanager>
                   </ClickBox>
                 </TheaderBox>
               </Theader>
