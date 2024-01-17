@@ -57,13 +57,6 @@ const TableRow = styled.div`
   width: 100%;
   grid-template-columns: 0.5rem auto; */
 `
-
-const Tflag = styled.div`
-  display: table-cell;
-  width: 0.5rem;
-  height: 100%;
-  min-width: 7px;
-`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -72,33 +65,13 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 6%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.06}px;
 `
-const Tprogress = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const TsubDiv = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const Tbirthday = styled.div`
+const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -107,16 +80,33 @@ const Tbirthday = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
+  font-weight: 600;
+
+  &.fee {
+    color: #7dce00;
+  }
+  &.discount {
+    color: #f85294;
+  }
+  &.actual {
+    color: #0eacab;
+  }
+  &.unpaid {
+    color: #ff5900;
+  }
+  &.amount {
+    color: #043999;
+  }
 `
 const Tname = styled.div`
   position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
   font-weight: 600;
 `
 const Tsubject = styled.div`
@@ -124,21 +114,20 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 26%;
+  width: 18%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.26}px;
-  font-weight: 600;
+  min-width: ${1200 * 0.18}px;
 `
 const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.1}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -154,11 +143,11 @@ const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const EllipsisBox = styled.p`
   overflow: hidden;
@@ -168,56 +157,26 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-const isDisplayFlag = (date: string, step: boolean): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && !step) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
-
-const displayPprogress = (assignment, complete) => {
-  if (assignment) {
-    if (complete) {
-      return 30
-    } else {
-      return 20
-    }
-  } else {
-    return 10
-  }
-}
-
 export default function StudentsItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
-  const flagString = isDisplayFlag(student.createdAt, student.lectureAssignment)
-  const progressNum = displayPprogress(
-    student.lectureAssignment,
-    student.courseComplete,
-  )
-  const progressStatus = useRecoilValue(studentProgressStatusState)
+  const studentPayment = student.studentPayment[0]
+
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
-
+  const feeFormet = fee => {
+    const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    return result
+  }
+  // console.log(student)
+  // console.log(studentPayment)
   return (
     <>
       <TableItem>
         <TableRow>
-          <Tflag
-            style={{
-              background: flagString,
-            }}
-          ></Tflag>
           <Link href={`/students/detail/${student.id}`}>
             <ClickBox>
               <Tnum>
@@ -225,40 +184,64 @@ export default function StudentsItem(props) {
                   {(props.currentPage - 1) * conLimit + (conIndex + 1)}
                 </EllipsisBox>
               </Tnum>
-              <Tprogress style={{ color: progressStatus[progressNum].color }}>
-                <EllipsisBox>{progressStatus[progressNum].name}</EllipsisBox>
-              </Tprogress>
-              <TsubDiv>
-                <EllipsisBox>
-                  {student.subject.subDiv ? student.subject.subDiv : '-'}
-                </EllipsisBox>
-              </TsubDiv>
-              <Tbirthday>
-                <EllipsisBox>
-                  {student.birthday ? getDate(student.birthday) : '-'}
-                </EllipsisBox>
-              </Tbirthday>
               <Tname>
                 <EllipsisBox>{student.name}</EllipsisBox>
               </Tname>
-              <Tsubject>
-                <EllipsisBox>
-                  {student.subject.subjectName
-                    ? student.subject.subjectName
-                    : '-'}
-                </EllipsisBox>
-              </Tsubject>
+              <Tmanager>
+                <EllipsisBox>{studentPayment?.processingManager}</EllipsisBox>
+              </Tmanager>
               <Tphone>
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
-              <Tmanager>
+              <Tsubject>
+                <EllipsisBox>{student.subject}</EllipsisBox>
+              </Tsubject>
+              <Tamount className="fee">
                 <EllipsisBox>
-                  {student.writer ? student.writer : '-'}
+                  {studentPayment?.tuitionFee === undefined ||
+                  studentPayment?.tuitionFee === null
+                    ? '-'
+                    : feeFormet(studentPayment?.tuitionFee)}
                 </EllipsisBox>
-              </Tmanager>
+              </Tamount>
+              <Tamount className="discount">
+                <EllipsisBox>
+                  {studentPayment?.discountAmount === undefined ||
+                  studentPayment?.discountAmount === null
+                    ? '-'
+                    : feeFormet(studentPayment?.discountAmount)}
+                </EllipsisBox>
+              </Tamount>
+              <Tamount className="actual">
+                <EllipsisBox>
+                  {studentPayment?.actualAmount === undefined ||
+                  studentPayment?.actualAmount === null
+                    ? '-'
+                    : feeFormet(studentPayment?.actualAmount)}
+                </EllipsisBox>
+              </Tamount>
+              <Tamount className="unpaid">
+                <EllipsisBox>
+                  {studentPayment?.unCollectedAmount === undefined ||
+                  studentPayment?.unCollectedAmount === null
+                    ? '-'
+                    : feeFormet(studentPayment?.unCollectedAmount)}
+                </EllipsisBox>
+              </Tamount>
+              <Tamount className="amount">
+                {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
+                <EllipsisBox>
+                  {studentPayment?.actualAmount === undefined ||
+                  studentPayment?.actualAmount === null
+                    ? '-'
+                    : feeFormet(studentPayment?.actualAmount)}
+                </EllipsisBox>
+              </Tamount>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student.createdAt ? getDate(student.createdAt) : '-'}
+                  {studentPayment?.paymentDate
+                    ? getDate(studentPayment?.paymentDate)
+                    : '-'}
                 </EllipsisBox>
               </TcreatedAt>
             </ClickBox>

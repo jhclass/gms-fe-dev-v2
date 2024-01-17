@@ -142,3 +142,56 @@ export const ReceiptState = atom({
     4: 'LGU+',
   },
 })
+
+//filter
+export const consultFilterActiveState = atom<boolean>({
+  key: 'consultFilterActive',
+  default: false,
+})
+export const consultFilterState = atom<boolean>({
+  key: 'onsultFilter',
+  default: false,
+})
+export const consultSearchState = atom({
+  key: 'consultSearch',
+  default: {} as {
+    receiptDiv: string
+    subDiv: string
+    pic: string
+    createdAt: []
+    stVisit: []
+    stName: string
+    progress: number
+    phoneNum1: string
+    adviceType: []
+  },
+})
+export const subjectFilterActiveState = atom<boolean>({
+  key: 'subjectFilterActive',
+  default: false,
+})
+export const subjectFilterState = atom<boolean>({
+  key: 'subjectFilter',
+  default: false,
+})
+export const subjectSearchState = atom({
+  key: 'subjectSearch',
+  default: {} as {
+    subjectName: string
+    subDiv: string
+    exposure: boolean
+  },
+})
+export const studentFilterState = atom<boolean>({
+  key: 'studentFilter',
+  default: false,
+})
+export const studentSearchState = atom({
+  key: 'studentSearch',
+  default: {} as {
+    studentName: string
+    phoneNum: string
+    birthday: string
+    createdAt: string
+  },
+})

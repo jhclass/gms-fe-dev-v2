@@ -27,7 +27,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
-import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_MUTATION,
   SEARCH_SUBJECT_BASIC_MUTATION,

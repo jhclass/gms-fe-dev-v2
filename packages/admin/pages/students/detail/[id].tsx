@@ -14,7 +14,10 @@ import { ReceiptState } from '@/lib/recoilAtoms'
 import CreateMemo from '@/components/form/CreateMemo'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
 import useMmeQuery from '@/utils/mMe'
-import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_STUDENT_MUTATION,
+  UPDATE_STUDENT_COURSE_MUTATION,
+} from '@/graphql/mutations'
 
 const ConArea = styled.div`
   width: 100%;
@@ -178,6 +181,9 @@ export default function StudentsWrite() {
   const Receipt = useRecoilValue(ReceiptState)
   const managerList = managerData?.seeManageUser || []
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
+  const [updateStudentCourseMutation] = useMutation(
+    UPDATE_STUDENT_COURSE_MUTATION,
+  )
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const {
@@ -188,6 +194,7 @@ export default function StudentsWrite() {
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
+  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState(null)
   const [memoList, setMemoList] = useState([])
 
   useEffect(() => {
@@ -197,12 +204,115 @@ export default function StudentsWrite() {
       },
       onCompleted: data => {
         setStudentData(data.searchStudent?.student[0])
-        setStudentSubjectData(data.searchStudent?.student[0].studentPayment[0])
+        setStudentSubjectData(data.searchStudent?.student[0].subject)
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
+        setStudentPaymentDetailData(
+          data.searchStudent?.student[0].studentPayment[0],
+        )
         setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
   }, [router])
+
+  const ClickLectureAssignment = () => {
+    if (studentData.lectureAssignment) {
+      const isAssignment = confirm(
+        `${studentData.name}학생의 ${studentSubjectData.subjectName} 강의 배정을 취소 하시겠습니까?`,
+      )
+      if (isAssignment) {
+        updateStudentCourseMutation({
+          variables: {
+            editStudentId: parseInt(studentId),
+            lectureAssignment: false,
+          },
+          // refetchQueries: [
+          //   {
+          //     query: SEE_STUDENT_QUERY,
+          //     variables: { page: 1, limit: 10 },
+          //   },
+          // ],
+          onCompleted: () => {
+            alert('강의배정 취소되었습니다.')
+            userLogs(
+              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
+            )
+          },
+        })
+      }
+    } else {
+      const isAssignment = confirm(
+        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 배정 하시겠습니까?`,
+      )
+      if (isAssignment) {
+        updateStudentCourseMutation({
+          variables: {
+            editStudentId: parseInt(studentId),
+            lectureAssignment: true,
+          },
+          // refetchQueries: [
+          //   {
+          //     query: SEE_STUDENT_QUERY,
+          //     variables: { page: 1, limit: 10 },
+          //   },
+          // ],
+          onCompleted: () => {
+            alert('강의배정 되었습니다.')
+            userLogs(
+              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
+            )
+          },
+        })
+      }
+    }
+  }
+  const clickLCourseComplete = () => {
+    if (studentData.courseComplete) {
+      const isComplete = confirm(
+        `${studentData.name}학생의 이수처리를 취소하시겠습니까?`,
+      )
+      if (isComplete) {
+        updateStudentCourseMutation({
+          variables: {
+            editStudentId: parseInt(studentId),
+            courseComplete: false,
+          },
+          // refetchQueries: [
+          //   {
+          //     query: SEE_STUDENT_QUERY,
+          //     variables: { page: 1, limit: 10 },
+          //   },
+          // ],
+          onCompleted: () => {
+            alert('이수처리 취소되었습니다.')
+            userLogs(`${studentData.name}학생 이수처리 취소`)
+          },
+        })
+      }
+    } else {
+      const isComplete = confirm(
+        `${studentData.name}학생을 이수처리 하시겠습니까?`,
+      )
+      if (isComplete) {
+        updateStudentCourseMutation({
+          variables: {
+            editStudentId: parseInt(studentId),
+            courseComplete: true,
+          },
+          // refetchQueries: [
+          //   {
+          //     query: SEE_STUDENT_QUERY,
+          //     variables: { page: 1, limit: 10 },
+          //   },
+          // ],
+          onCompleted: () => {
+            alert('이수처리 되었습니다.')
+            userLogs(`${studentData.name}학생 이수처리`)
+          },
+        })
+      }
+    }
+  }
+
   const onSubmit = data => {
     console.log(data)
     // createStudent({
@@ -266,11 +376,15 @@ export default function StudentsWrite() {
   }
 
   const feeFormet = fee => {
-    const result =
-      fee || (0).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    const result = fee
+      .toString()
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-  console.log(studentSubjectData)
+
+  // console.log('1', studentData)
+  // console.log('2', studentSubjectData)
+  // console.log('3', studentPaymentData)
 
   return (
     <>
@@ -409,183 +523,219 @@ export default function StudentsWrite() {
               </DetailDiv>
             </DetailBox>
             {studentSubjectData !== undefined && (
-              <DetailBox>
-                <DetailDiv>
-                  <AreaTitle>
-                    <h4>수강료 정보</h4>
-                    <Button
-                      size="sm"
-                      radius="sm"
-                      variant="solid"
-                      color="primary"
-                      className="text-white"
-                      onClick={() => {
-                        {
-                          router.push(
-                            `/students/edit/course/${studentData?.id}`,
-                          )
+              <>
+                <DetailBox>
+                  <DetailDiv>
+                    <AreaTitle>
+                      <h4>수강료 정보</h4>
+                      <Button
+                        size="sm"
+                        radius="sm"
+                        variant="solid"
+                        color="primary"
+                        className="text-white"
+                        onClick={() => {
+                          {
+                            router.push(
+                              `/students/edit/course/${studentData?.id}`,
+                            )
+                          }
+                        }}
+                      >
+                        수정
+                      </Button>
+                    </AreaTitle>
+                    <FlexBox>
+                      <AreaSmallBox style={{ minWidth: '20%' }}>
+                        <div>
+                          <FilterLabel>과정코드</FilterLabel>
+                          <LineBox>{studentSubjectData?.subDiv}</LineBox>
+                        </div>
+                      </AreaSmallBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>과정명</FilterLabel>
+                          <LineBox>{studentSubjectData?.subjectName}</LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaSmallBox>
+                        <RadioBox>
+                          <RadioGroup
+                            isReadOnly
+                            label={
+                              <FilterLabel>
+                                교육상황보고여부<span>*</span>
+                              </FilterLabel>
+                            }
+                            defaultValue={
+                              studentPaymentData?.situationRepor === null
+                                ? undefined
+                                : studentPaymentData?.situationRepor
+                                ? '동의'
+                                : '비동의'
+                            }
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                          >
+                            <Radio key={'동의'} value={'동의'}>
+                              동의
+                            </Radio>
+                            <Radio key={'비동의'} value={'비동의'}>
+                              비동의
+                            </Radio>
+                          </RadioGroup>
+                        </RadioBox>
+                      </AreaSmallBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>
+                            선별테스트점수<span>*</span>
+                          </FilterLabel>
+                          <LineBox>{studentPaymentData?.seScore || 0}</LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강 구분</FilterLabel>
+                          <LineBox>국가기간</LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강예정일</FilterLabel>
+                          <LineBox>
+                            {studentData?.dueDate === null
+                              ? ''
+                              : fametDate(studentData?.dueDate, false)}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강료</FilterLabel>
+                          <LineBox>
+                            {studentPaymentData?.tuitionFee
+                              ? feeFormet(studentPaymentData?.tuitionFee)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>할인금액</FilterLabel>
+                          <LineBox>
+                            {studentPaymentData?.discountAmount
+                              ? feeFormet(studentPaymentData?.discountAmount)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>실 수강료</FilterLabel>
+                          <LineBox>
+                            {studentPaymentData?.actualAmount
+                              ? feeFormet(studentPaymentData?.actualAmount)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수납액</FilterLabel>
+                          <LineBox>
+                            {studentPaymentData?.amountReceived
+                              ? feeFormet(studentPaymentData?.amountReceived)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>미 수납액</FilterLabel>
+                          <LineBox>
+                            {studentPaymentData?.unCollectedAmount
+                              ? feeFormet(studentPaymentData?.unCollectedAmount)
+                              : '0'}
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                      <AreaBox>
+                        <div>
+                          <FilterLabel>수강당담자</FilterLabel>
+                          <LineBox>
+                            {
+                              managerList.find(
+                                user =>
+                                  user.id ===
+                                  studentPaymentData?.processingManagerId,
+                              )?.mUsername
+                            }
+                          </LineBox>
+                        </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <BtnBox>
+                      <Button
+                        isDisabled={studentData?.courseComplete ? true : false}
+                        size="md"
+                        radius="md"
+                        variant="bordered"
+                        color="primary"
+                        className="w-full"
+                        onClick={ClickLectureAssignment}
+                      >
+                        {studentData?.lectureAssignment
+                          ? '배정 취소'
+                          : '강의배정'}
+                      </Button>
+                      <Button
+                        isDisabled={
+                          studentData?.lectureAssignment ? false : true
                         }
-                      }}
-                    >
-                      수정
-                    </Button>
-                  </AreaTitle>
-                  <FlexBox>
-                    <AreaSmallBox style={{ minWidth: '20%' }}>
-                      <div>
-                        <FilterLabel>과정코드</FilterLabel>
-                        <LineBox>{studentData?.classCode}</LineBox>
-                      </div>
-                    </AreaSmallBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>과정명</FilterLabel>
-                        <LineBox>{studentData?.subject?.subjectName}</LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaSmallBox style={{ minWidth: '20%' }}>
-                      <div>
-                        <FilterLabel>
-                          선별테스트점수<span>*</span>
-                        </FilterLabel>
-                        <LineBox>{studentSubjectData?.seScore || 0}</LineBox>
-                      </div>
-                    </AreaSmallBox>
-                  </FlexBox>
-                  <BtnBox>
-                    <Button
-                      isDisabled={studentData?.courseComplete ? true : false}
-                      size="md"
-                      radius="md"
-                      variant="bordered"
-                      color="primary"
-                      className="w-full"
-                    >
-                      {studentData?.lectureAssignment
-                        ? '배정 취소'
-                        : '강의배정'}
-                    </Button>
-                    <Button
-                      isDisabled={studentData?.lectureAssignment ? false : true}
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      color="primary"
-                      className="w-full text-white"
-                    >
-                      {studentData?.courseComplete
-                        ? '이수처리 취소'
-                        : '이수처리'}
-                    </Button>
-                  </BtnBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강 구분</FilterLabel>
-                        <LineBox>국가기간</LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강료</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.tuitionFee)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강당담자</FilterLabel>
-                        <LineBox>
-                          {studentSubjectData?.processingManager}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>수강예정일</FilterLabel>
-                        <LineBox>
-                          {studentData?.dueDate === null
-                            ? ''
-                            : fametDate(studentData?.dueDate, false)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaSmallBox>
-                      <RadioBox>
-                        <RadioGroup
-                          isReadOnly
-                          label={
-                            <FilterLabel>
-                              교육상황보고여부<span>*</span>
-                            </FilterLabel>
-                          }
-                          defaultValue={
-                            studentSubjectData?.situationRepor === null
-                              ? undefined
-                              : studentSubjectData?.situationRepor
-                              ? '동의'
-                              : '비동의'
-                          }
-                          orientation="horizontal"
-                          className="gap-[0.65rem]"
-                        >
-                          <Radio key={'동의'} value={'동의'}>
-                            동의
-                          </Radio>
-                          <Radio key={'비동의'} value={'비동의'}>
-                            비동의
-                          </Radio>
-                        </RadioGroup>
-                      </RadioBox>
-                    </AreaSmallBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>할인금액</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.discountAmount)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>실 수강료</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.actualAmount)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>미 수납액</FilterLabel>
-                        <LineBox>
-                          {feeFormet(studentSubjectData?.unCollectedAmount)}
-                        </LineBox>
-                      </div>
-                    </AreaBox>
-                  </FlexBox>
-                  <BtnBox>
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      className="w-full text-white bg-flag1"
-                    >
-                      환불신청
-                    </Button>
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="bordered"
-                      className="w-full text-flag1 border-flag1"
-                    >
-                      삭제
-                    </Button>
-                  </BtnBox>
-                </DetailDiv>
-              </DetailBox>
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        color="primary"
+                        className="w-full text-white"
+                        onClick={clickLCourseComplete}
+                      >
+                        {studentData?.courseComplete
+                          ? '이수처리 취소'
+                          : '이수처리'}
+                      </Button>
+                    </BtnBox>
+                  </DetailDiv>
+                </DetailBox>
+                <DetailBox>
+                  <DetailDiv>
+                    <BtnBox>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        className="w-full text-white bg-flag1"
+                      >
+                        환불신청
+                      </Button>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="bordered"
+                        className="w-full text-flag1 border-flag1"
+                      >
+                        삭제
+                      </Button>
+                    </BtnBox>
+                  </DetailDiv>
+                </DetailBox>
+              </>
             )}
             {/* {studentPaymentData !== null && (
               <DetailBox>

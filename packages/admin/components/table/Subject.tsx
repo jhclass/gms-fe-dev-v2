@@ -69,6 +69,7 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
+  min-width: 7px;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -236,8 +237,13 @@ export default function SubjectTable() {
     return LocalDdate
   }
 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     refetch()
+    handleScrollTop()
   }, [router, refetch, currentPage])
 
   return (

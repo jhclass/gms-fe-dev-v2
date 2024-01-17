@@ -27,6 +27,15 @@ export const DASHBOARD_UNP_QUERY = gql`
     }
   }
 `
+export const DASHBOARD_AT_QUERY = gql`
+  query Query {
+    dashboardAT {
+      count
+      topFiveName
+      totalStudentState
+    }
+  }
+`
 
 // Components
 export const MME_QUERY = gql`
@@ -200,18 +209,55 @@ export const SEE_STUDENT_QUERY = gql`
       totalCount
       student {
         birthday
-        createdAt
         id
         lectureAssignment
-        courseComplete
-        writer
+        name
+        phoneNum1
         subject {
+          fee
+          id
+          subjectName
+          subDiv
+        }
+        writer
+        courseComplete
+        createdAt
+      }
+    }
+  }
+`
+
+export const SEE_AMOUNT_STUDENT_QUERY = gql`
+  query Query($page: Int, $limit: Int) {
+    seeStudent(page: $page, limit: $limit) {
+      error
+      message
+      ok
+      student {
+        name
+        phoneNum1
+        subject {
+          id
+          subDiv
           subjectName
         }
-        subDiv
-        phoneNum1
-        name
+        studentPayment {
+          actualAmount
+          cardAmount
+          cashAmount
+          discountAmount
+          id
+          paymentDate
+          processingManager {
+            mUserId
+            mUsername
+            id
+          }
+          unCollectedAmount
+          tuitionFee
+        }
       }
+      totalCount
     }
   }
 `

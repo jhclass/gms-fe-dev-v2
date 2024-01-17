@@ -230,6 +230,11 @@ export default function ConsultDetail() {
   }, [router])
 
   useEffect(() => {
+    if (studentState.subject === null) {
+      setSubjectSelected([])
+    } else {
+      setSubjectSelected(studentState.subject)
+    }
     if (
       studentState.receiptDiv === '' ||
       studentState.receiptDiv === undefined
@@ -566,34 +571,16 @@ export default function ConsultDetail() {
                   )}
                 </AreaBox>
                 <AreaBox>
-                  <Controller
-                    control={control}
-                    name="subject"
+                  <Textarea
+                    readOnly
+                    label="상담 과정 선택"
+                    labelPlacement="outside"
+                    className="max-w-full"
+                    variant="bordered"
+                    minRows={1}
                     defaultValue={studentState?.subject}
-                    render={({ field }) => (
-                      <>
-                        <Textarea
-                          readOnly
-                          value={field.value || ''}
-                          label="상담 과정 선택"
-                          labelPlacement="outside"
-                          className="max-w-full"
-                          variant="bordered"
-                          minRows={1}
-                          defaultValue={studentState?.subject}
-                          onClick={sbjOpen}
-                          {...register('subject')}
-                        />
-                        <SubjectModal
-                          subjectSelected={subjectSelected}
-                          setSubjectSelected={setSubjectSelected}
-                          field={field}
-                          sbjIsOpen={sbjIsOpen}
-                          sbjClose={sbjClose}
-                          setValue={setValue}
-                        />
-                      </>
-                    )}
+                    onClick={sbjOpen}
+                    {...register('subject')}
                   />
                 </AreaBox>
                 <FlexBox>
@@ -879,6 +866,13 @@ export default function ConsultDetail() {
           </ConArea>
         </MainWrap>
       )}
+      <SubjectModal
+        subjectSelected={subjectSelected}
+        setSubjectSelected={setSubjectSelected}
+        sbjIsOpen={sbjIsOpen}
+        sbjClose={sbjClose}
+        setValue={setValue}
+      />
     </>
   )
 }

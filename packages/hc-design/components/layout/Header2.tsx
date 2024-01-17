@@ -84,7 +84,7 @@ export default function Header() {
               <h1 className="mr-10 grow-0">
                 <Link href="/" className="block w-[10rem]">
                   <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/hAcademy_logo_1.svg"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/H_logo.svg"
                     alt="H ACADEMY | H아카데미"
                   />
                 </Link>

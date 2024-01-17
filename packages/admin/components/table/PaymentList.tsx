@@ -2,15 +2,9 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  MME_FAVO_QUERY,
-  SEE_FAVORITESTATE_QUERY,
-  SEE_STUDENT_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
+import { SEE_AMOUNT_STUDENT_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
-import StudentItem from '@/components/table/StudentItem'
+import PaymentItem from '@/components/table/PaymentItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -67,39 +61,18 @@ const Theader = styled.div`
 
 const TheaderBox = styled.div`
   display: flex;
-  padding-left: 0.5rem;
 `
 const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 6%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.06}px;
 `
-const Tprogress = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const TsubDiv = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const Tbirthday = styled.div`
+const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -114,32 +87,30 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
-  font-weight: 600;
+  min-width: ${1200 * 0.09}px;
 `
 const Tsubject = styled.div`
   position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 26%;
+  width: 18%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.26}px;
-  font-weight: 600;
+  min-width: ${1200 * 0.18}px;
 `
 const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.1}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -155,11 +126,11 @@ const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -175,11 +146,11 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function StudentsTable() {
+export default function PaymentTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
   const studentsData = data?.seeStudent || []
@@ -219,20 +190,21 @@ export default function StudentsTable() {
             <Theader>
               <TheaderBox>
                 <Tnum>No</Tnum>
-                <Tprogress>진행상태</Tprogress>
-                <TsubDiv>수강구분</TsubDiv>
-                <Tbirthday>생년월일</Tbirthday>
                 <Tname>이름</Tname>
-                <Tsubject>수강과정</Tsubject>
+                <Tmanager>수납 담당자</Tmanager>
                 <Tphone>연락처</Tphone>
-                <Tmanager>담당자</Tmanager>
-                <TcreatedAt>등록일시</TcreatedAt>
+                <Tsubject>수강과정</Tsubject>
+                <Tamount className="fee">수강료</Tamount>
+                <Tamount className="discount">할인금액</Tamount>
+                <Tamount className="actual">실 수강료</Tamount>
+                <Tamount className="unpaid">미수납액</Tamount>
+                <Tamount className="amount">걸제금액</Tamount>
+                <TcreatedAt>결제일시</TcreatedAt>
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&
               students?.map((item, index) => (
-                <StudentItem
-                  forName="student"
+                <PaymentItem
                   key={index}
                   tableData={item}
                   itemIndex={index}

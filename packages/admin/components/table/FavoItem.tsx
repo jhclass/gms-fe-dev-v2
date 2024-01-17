@@ -66,6 +66,7 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
+  min-width: 7px;
 `
 const ClickBox = styled.div`
   display: flex;
@@ -79,7 +80,7 @@ const Tnum = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 60px;
+  min-width: ${1200 * 0.06}px;
 `
 const TreceiptDiv = styled.div`
   display: table-cell;
@@ -89,7 +90,7 @@ const TreceiptDiv = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: ${1200 * 0.09}px;
 `
 const TsubDiv = styled.div`
   display: table-cell;
@@ -99,7 +100,7 @@ const TsubDiv = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: ${1200 * 0.09}px;
 `
 const TadviceType = styled.div`
   display: table-cell;
@@ -109,7 +110,7 @@ const TadviceType = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 130px;
+  min-width: ${1200 * 0.13}px;
 `
 const Tname = styled.div`
   position: relative;
@@ -119,7 +120,7 @@ const Tname = styled.div`
   width: 10%;
   padding: 1rem;
   font-size: inherit;
-  min-width: 100px;
+  min-width: ${1200 * 0.1}px;
   font-weight: 600;
 `
 const Masking = styled.span`
@@ -136,17 +137,17 @@ const Tphone = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 110px;
+  min-width: ${1200 * 0.11}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 110px;
+  min-width: ${1200 * 0.1}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
@@ -156,17 +157,17 @@ const Tmanager = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 90px;
+  min-width: ${1200 * 0.09}px;
 `
 const TstVisit = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 150px;
+  min-width: ${1200 * 0.16}px;
   font-weight: 600;
 `
 const Tprogress = styled.div`
@@ -177,9 +178,8 @@ const Tprogress = styled.div`
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: 80px;
+  min-width: ${1200 * 0.08}px;
 `
-
 const EllipsisBox = styled.p`
   white-space: nowrap;
   overflow: hidden;
@@ -214,7 +214,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
       variables: {
         updateFavoriteId: props.tableData.id,
       },
-      refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
+      refetchQueries: [SEE_FAVORITESTATE_QUERY],
     })
   }
 
@@ -222,14 +222,22 @@ export default function FavoriteItem(props: ConsultItemProps) {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours() >= 12 ? 'PM' : 'AM'} ` +
-        `${(date.getHours() % 12 || 12).toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}`
-      return formatted
+      if (date.getHours() === 0 && date.getMinutes() === 0) {
+        const formatted =
+          `${date.getFullYear()}-` +
+          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+          `${date.getDate().toString().padStart(2, '0')} ` +
+          `미정`
+        return formatted
+      } else {
+        const formatted =
+          `${date.getFullYear()}-` +
+          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+          `${date.getDate().toString().padStart(2, '0')} ` +
+          `${date.getHours().toString().padStart(2, '0')}:` +
+          `${date.getMinutes().toString().padStart(2, '0')}`
+        return formatted
+      }
     } else {
       const formatted =
         `${date.getFullYear()}-` +
@@ -271,22 +279,17 @@ export default function FavoriteItem(props: ConsultItemProps) {
               <Tnum>
                 <EllipsisBox>{conIndex + 1}</EllipsisBox>
               </Tnum>
-              <Tprogress
-                style={{ color: progressStatus[student.progress].color }}
-              >
+              <TcreatedAt>
                 <EllipsisBox>
-                  {progressStatus[student.progress].name}
+                  {student.createdAt
+                    ? fametDate(student.createdAt, false)
+                    : '-'}
                 </EllipsisBox>
-              </Tprogress>
+              </TcreatedAt>
+
               <TreceiptDiv>
                 <EllipsisBox>{student.receiptDiv}</EllipsisBox>
               </TreceiptDiv>
-              <TsubDiv>
-                <EllipsisBox>{student.subDiv}</EllipsisBox>
-              </TsubDiv>
-              <TadviceType>
-                <EllipsisBox>{studentAdvice}</EllipsisBox>
-              </TadviceType>
               <Tname>
                 {student.progress === 110 ? (
                   <EllipsisBox>
@@ -299,21 +302,27 @@ export default function FavoriteItem(props: ConsultItemProps) {
               <Tphone>
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
-              <TcreatedAt>
+              <TsubDiv>
+                <EllipsisBox>{student.subDiv}</EllipsisBox>
+              </TsubDiv>
+              <TadviceType>
+                <EllipsisBox>{studentAdvice}</EllipsisBox>
+              </TadviceType>
+              <Tprogress
+                style={{ color: progressStatus[student.progress].color }}
+              >
                 <EllipsisBox>
-                  {student.createdAt
-                    ? fametDate(student.createdAt, false)
-                    : '-'}
+                  {progressStatus[student.progress].name}
                 </EllipsisBox>
-              </TcreatedAt>
-              <Tmanager>
-                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
-              </Tmanager>
+              </Tprogress>
               <TstVisit>
                 <EllipsisBox>
                   {student.stVisit ? fametDate(student.stVisit, true) : '-'}
                 </EllipsisBox>
               </TstVisit>
+              <Tmanager>
+                <EllipsisBox>{student.pic ? student.pic : '-'}</EllipsisBox>
+              </Tmanager>
             </ClickBox>
           </Link>
         </TableRow>

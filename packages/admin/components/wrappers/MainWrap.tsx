@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import WithAuth from '@/components/wrappers/WithAuth'
 import { useEffect } from 'react'
+import Footer from '../layout/Footer'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -20,15 +21,23 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   }
 `
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 4rem);
+`
+const ConBox = styled.div`
   display: block;
   position: relative;
   width: 100%;
   height: 100%;
   padding: 2rem;
-  background-color: none;
 
   @media screen and (max-width: 1024px) {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 `
 
@@ -59,7 +68,10 @@ export default function MainWrap({ children }) {
         <Wrap $navOpen={navOpen}>
           <Header />
           <Nav />
-          <Container>{children}</Container>
+          <Container>
+            <ConBox>{children}</ConBox>
+            <Footer />
+          </Container>
         </Wrap>
       </WithAuth>
     </>

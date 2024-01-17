@@ -45,23 +45,24 @@ const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
 const Logo = styled(motion.h1)<{ $navOpen: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: ${props => (props.$navOpen ? 'start' : 'center')};
+  /* justify-content: ${props => (props.$navOpen ? 'start' : 'center')}; */
+  justify-content: center;
   width: 100%;
   height: 4rem;
   flex-shrink: 0;
   overflow: hidden;
 
   @media screen and (max-width: 1024px) {
-    justify-content: start;
+    /* justify-content: start; */
   }
 `
 const LogoImg = styled(motion.img)<{ $navOpen: boolean }>`
   max-width: ${props => (props.$navOpen ? 'none' : '100%')};
-  height: ${props => (props.$navOpen ? '2rem' : '2.5rem')};
+  height: ${props => (props.$navOpen ? '3rem' : '2rem')};
 
   @media screen and (max-width: 1024px) {
     max-width: none;
-    height: 2rem;
+    height: 3rem;
   }
 `
 
@@ -107,15 +108,6 @@ const DimBtn = styled.button`
   }
 `
 
-const Copyright = styled.div<{ $navOpen: boolean }>`
-  display: ${props => (props.$navOpen ? 'block' : 'none')};
-  font-size: 0.75rem;
-  color: #71717a;
-  @media screen and (max-width: 1024px) {
-    font-size: 0.75rem;
-  }
-`
-
 export default function Header() {
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
@@ -133,8 +125,8 @@ export default function Header() {
                 $navOpen={navOpen}
                 src={
                   navOpen
-                    ? 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_logo_1.svg'
-                    : 'https://highclass-image.s3.amazonaws.com/admin/common/hAcademy_symbol.svg'
+                    ? 'https://highclass-image.s3.amazonaws.com/admin/common/H_logo.svg'
+                    : 'https://highclass-image.s3.amazonaws.com/admin/common/H_simbol_color.svg'
                 }
                 alt="H ACADEMY Admin"
               />
@@ -148,10 +140,6 @@ export default function Header() {
               <Category />
             </CateBox>
           </ConBox>
-          <Copyright $navOpen={navOpen}>
-            <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
-            reserved.
-          </Copyright>
         </NavWrap>
       </NavSec>
       {navOpen && <Dim onClick={toggleNav} />}

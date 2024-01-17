@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion'
-import { useRecoilState } from 'recoil'
-import { activeCategoryState } from '@/lib/recoilAtoms'
+import { useRecoilCallback, useRecoilState, useResetRecoilState } from 'recoil'
+import {
+  activeCategoryState,
+  consultFilterActiveState,
+  consultFilterState,
+  consultSearchState,
+  studentFilterState,
+  subjectFilterState,
+} from '@/lib/recoilAtoms'
 import useUserLogsMutation from '@/utils/userLogs'
 import CategoryItem from './CategoryItem'
 import styled from 'styled-components'
@@ -98,6 +105,10 @@ export default function Category() {
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
   // const [active, setActive] = useState<boolean>(false)
+  const resetFilterActive = useResetRecoilState(consultFilterActiveState)
+  const resetFilterSearch = useResetRecoilState(consultFilterState)
+  const resetStudentFilter = useResetRecoilState(consultSearchState)
+
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)
     if (pathnames === undefined) {
@@ -120,6 +131,9 @@ export default function Category() {
             isActive={active === category.href}
             onClick={() => {
               setActiveCategory(category.id)
+              resetFilterActive()
+              resetFilterSearch()
+              resetStudentFilter()
             }}
             children={category.children}
           />
