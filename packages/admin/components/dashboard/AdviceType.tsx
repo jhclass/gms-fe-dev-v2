@@ -65,8 +65,6 @@ export default function AdviceType() {
   const [isOpenClick, setIsOpenClick] = useState(false)
   const adviceTypeData = data?.dashboardAT
 
-  console.log(adviceTypeData)
-
   const donutData = {
     series: adviceTypeData?.count || [],
     options: {
