@@ -161,6 +161,7 @@ export default function StudentsItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
+  const studentSubject = student.subject[0]
   const studentPayment = student.studentPayment[0]
 
   const getDate = (DataDate: string): string => {
@@ -172,6 +173,7 @@ export default function StudentsItem(props) {
     return result
   }
   // console.log(student)
+  // console.log(studentSubject)
   // console.log(studentPayment)
   return (
     <>
@@ -194,7 +196,7 @@ export default function StudentsItem(props) {
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
               <Tsubject>
-                <EllipsisBox>{student.subject}</EllipsisBox>
+                <EllipsisBox>{studentSubject?.subjectName}</EllipsisBox>
               </Tsubject>
               <Tamount className="fee">
                 <EllipsisBox>

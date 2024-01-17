@@ -233,31 +233,31 @@ export const SEE_AMOUNT_STUDENT_QUERY = gql`
       error
       message
       ok
+      totalCount
       student {
-        name
-        phoneNum1
         subject {
-          id
-          subDiv
           subjectName
+          subDiv
+          id
         }
         studentPayment {
-          actualAmount
+          amountReceived
           cardAmount
           cashAmount
           discountAmount
           id
-          paymentDate
           processingManager {
             mUserId
             mUsername
             id
           }
-          unCollectedAmount
+          paymentDate
           tuitionFee
+          unCollectedAmount
         }
+        phoneNum1
+        name
       }
-      totalCount
     }
   }
 `
