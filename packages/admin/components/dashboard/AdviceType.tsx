@@ -65,10 +65,12 @@ export default function AdviceType() {
   const [isOpenClick, setIsOpenClick] = useState(false)
   const adviceTypeData = data?.dashboardAT
 
+  console.log(adviceTypeData)
+
   const donutData = {
-    series: adviceTypeData?.count,
+    series: adviceTypeData?.count || [],
     options: {
-      labels: adviceTypeData?.topFiveName,
+      labels: adviceTypeData?.topFiveName || [],
       responsive: [
         {
           breakpoint: 480,
@@ -97,55 +99,48 @@ export default function AdviceType() {
       },
     },
   }
+
   return (
     <ItemBox>
-      <Title>
-        <span>
-          상담분야 TOP
-          {adviceTypeData?.topFiveName
-            ? adviceTypeData?.topFiveName.length
-            : ''}
-        </span>
-        <ToolTipBox>
-          <Tooltip
-            content={
-              <DashTooltip className="px-1 py-2">
-                <DashTooltipTitle className="font-bold text-small">
-                  상담분야 TOP
-                  {adviceTypeData?.topFiveName
-                    ? adviceTypeData?.topFiveName.length
-                    : ''}
-                </DashTooltipTitle>
-                <DashTooltipCon className="text-tiny">
-                  상담 분야 중 상위{' '}
-                  {adviceTypeData?.topFiveName
-                    ? adviceTypeData?.topFiveName.length
-                    : ''}
-                  개 분야 (중복 선택 포함)
-                </DashTooltipCon>
-              </DashTooltip>
-            }
-            placement="bottom"
-            isOpen={isOpen}
-            onOpenChange={open => setIsOpen(open)}
-          >
-            <i
-              className="xi-help"
-              onClick={() => {
-                setIsOpenClick(!isOpenClick)
-                setIsOpen(!isOpenClick)
-              }}
+      {adviceTypeData !== null && (
+        <>
+          <Title>
+            <span>상담분야 TOP</span>
+            <ToolTipBox>
+              <Tooltip
+                content={
+                  <DashTooltip className="px-1 py-2">
+                    <DashTooltipTitle className="font-bold text-small">
+                      상담분야 TOP
+                    </DashTooltipTitle>
+                    <DashTooltipCon className="text-tiny">
+                      상담 분야 중 상위 분야 (중복 선택 포함)
+                    </DashTooltipCon>
+                  </DashTooltip>
+                }
+                placement="bottom"
+                isOpen={isOpen}
+                onOpenChange={open => setIsOpen(open)}
+              >
+                <i
+                  className="xi-help"
+                  onClick={() => {
+                    setIsOpenClick(!isOpenClick)
+                    setIsOpen(!isOpenClick)
+                  }}
+                />
+              </Tooltip>
+            </ToolTipBox>
+          </Title>
+          <Content>
+            <ApexChart
+              options={donutData.options}
+              series={donutData.series}
+              type="donut"
             />
-          </Tooltip>
-        </ToolTipBox>
-      </Title>
-      <Content>
-        <ApexChart
-          options={donutData.options}
-          series={donutData.series}
-          type="donut"
-        />
-      </Content>
+          </Content>
+        </>
+      )}
     </ItemBox>
   )
 }
