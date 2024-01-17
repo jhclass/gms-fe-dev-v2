@@ -103,16 +103,17 @@ export default function AdviceType() {
       {adviceTypeData !== null && (
         <>
           <Title>
-            <span>상담분야 TOP</span>
+            <span>상담분야 TOP{adviceTypeData?.topFiveName.length}</span>
             <ToolTipBox>
               <Tooltip
                 content={
                   <DashTooltip className="px-1 py-2">
                     <DashTooltipTitle className="font-bold text-small">
-                      상담분야 TOP
+                      상담분야 TOP{adviceTypeData?.topFiveName.length}
                     </DashTooltipTitle>
                     <DashTooltipCon className="text-tiny">
-                      상담 분야 중 상위 분야 (중복 선택 포함)
+                      상담 분야 중 상위 {adviceTypeData?.topFiveName.length}분야
+                      (중복 선택 포함)
                     </DashTooltipCon>
                   </DashTooltip>
                 }
