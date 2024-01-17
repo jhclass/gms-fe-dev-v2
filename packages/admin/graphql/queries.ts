@@ -27,6 +27,15 @@ export const DASHBOARD_UNP_QUERY = gql`
     }
   }
 `
+export const DASHBOARD_AT_QUERY = gql`
+  query Query {
+    dashboardAT {
+      count
+      topFiveName
+      totalStudentState
+    }
+  }
+`
 
 // Components
 export const MME_QUERY = gql`
@@ -200,17 +209,19 @@ export const SEE_STUDENT_QUERY = gql`
       totalCount
       student {
         birthday
-        createdAt
         id
         lectureAssignment
-        courseComplete
-        writer
-        subject {
-          subjectName
-        }
-        subDiv
-        phoneNum1
         name
+        phoneNum1
+        subject {
+          fee
+          id
+          subjectName
+          subDiv
+        }
+        writer
+        courseComplete
+        createdAt
       }
     }
   }

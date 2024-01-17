@@ -420,15 +420,6 @@ export default function StudentsWriteCourse() {
                             onClick={sbjOpen}
                             {...register('subject')}
                           />
-                          <SubjectModal
-                            subjectSelected={subjectSelected}
-                            setSubjectSelected={setSubjectSelected}
-                            field={field}
-                            sbjIsOpen={sbjIsOpen}
-                            sbjClose={sbjClose}
-                            setValue={setValue}
-                            radio={true}
-                          />
                         </>
                       )}
                     />
@@ -1021,6 +1012,14 @@ export default function StudentsWriteCourse() {
           </form>
         </ConArea>
       </MainWrap>
+      <SubjectModal
+        subjectSelected={subjectSelected}
+        setSubjectSelected={setSubjectSelected}
+        sbjIsOpen={sbjIsOpen}
+        sbjClose={sbjClose}
+        setValue={setValue}
+        radio={true}
+      />
     </>
   )
 }

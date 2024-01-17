@@ -77,6 +77,7 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
+  min-width: 7px;
 `
 const ClickBox = styled.div`
   display: flex;
@@ -228,7 +229,7 @@ export default function ConsolutItem(props: ConsultItemProps) {
         variables: {
           updateFavoriteId: props.tableData.id,
         },
-        refetchQueries: [SEE_FAVORITESTATE_QUERY, 'SeeFavo'],
+        refetchQueries: [SEE_FAVORITESTATE_QUERY],
       })
     }
   }
@@ -237,14 +238,22 @@ export default function ConsolutItem(props: ConsultItemProps) {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours() >= 12 ? 'PM' : 'AM'} ` +
-        `${(date.getHours() % 12 || 12).toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}`
-      return formatted
+      if (date.getHours() === 0 && date.getMinutes() === 0) {
+        const formatted =
+          `${date.getFullYear()}-` +
+          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+          `${date.getDate().toString().padStart(2, '0')} ` +
+          `미정`
+        return formatted
+      } else {
+        const formatted =
+          `${date.getFullYear()}-` +
+          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+          `${date.getDate().toString().padStart(2, '0')} ` +
+          `${date.getHours().toString().padStart(2, '0')}:` +
+          `${date.getMinutes().toString().padStart(2, '0')}`
+        return formatted
+      }
     } else {
       const formatted =
         `${date.getFullYear()}-` +

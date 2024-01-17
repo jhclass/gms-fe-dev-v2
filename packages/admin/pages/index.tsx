@@ -64,11 +64,11 @@ export default function Home() {
           <div>
             <ConsultNum />
           </div>
+          <div>
+            <AdviceType />
+          </div>
           {mGrade === 0 && (
             <>
-              <div>
-                <AdviceType />
-              </div>
               <div>
                 <ReceiptDiv />
               </div>

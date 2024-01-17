@@ -2,6 +2,8 @@ import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
+import { useMutation, useQuery } from '@apollo/client'
+import { DASHBOARD_AT_QUERY } from '@/graphql/queries'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -58,13 +60,15 @@ const Content = styled.div`
 `
 
 export default function AdviceType() {
+  const { loading, error, data } = useQuery(DASHBOARD_AT_QUERY)
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
+  const adviceTypeData = data?.dashboardAT
 
-  const data = {
-    series: [44, 55, 41, 17, 15],
+  const donutData = {
+    series: adviceTypeData?.count,
     options: {
-      labels: ['분야1', '분야2', '분야3', '분야4', '분야5'],
+      labels: adviceTypeData?.topFiveName,
       responsive: [
         {
           breakpoint: 480,
@@ -96,16 +100,28 @@ export default function AdviceType() {
   return (
     <ItemBox>
       <Title>
-        <span>상담분야 TOP5</span>
+        <span>
+          상담분야 TOP
+          {adviceTypeData?.topFiveName
+            ? adviceTypeData?.topFiveName.length
+            : ''}
+        </span>
         <ToolTipBox>
           <Tooltip
             content={
               <DashTooltip className="px-1 py-2">
                 <DashTooltipTitle className="font-bold text-small">
-                  상담분야 TOP5
+                  상담분야 TOP
+                  {adviceTypeData?.topFiveName
+                    ? adviceTypeData?.topFiveName.length
+                    : ''}
                 </DashTooltipTitle>
                 <DashTooltipCon className="text-tiny">
-                  상담 분야 중 상위 5분야 (중복 선택 포함)
+                  상담 분야 중 상위{' '}
+                  {adviceTypeData?.topFiveName
+                    ? adviceTypeData?.topFiveName.length
+                    : ''}
+                  개 분야 (중복 선택 포함)
                 </DashTooltipCon>
               </DashTooltip>
             }
@@ -124,7 +140,11 @@ export default function AdviceType() {
         </ToolTipBox>
       </Title>
       <Content>
-        <ApexChart options={data.options} series={data.series} type="donut" />
+        <ApexChart
+          options={donutData.options}
+          series={donutData.series}
+          type="donut"
+        />
       </Content>
     </ItemBox>
   )

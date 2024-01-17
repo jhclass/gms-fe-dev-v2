@@ -69,6 +69,7 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
+  min-width: 7px;
 `
 const Tnum = styled.div`
   display: table-cell;

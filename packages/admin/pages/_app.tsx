@@ -8,11 +8,19 @@ import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from '@/lib/apolloClient'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
+// import { __DEV__ } from '@apollo/client/utilities/globals'
+// import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
+
+// if (__DEV__) {
+//   // Adds messages only in a dev environment
+//   loadDevMessages()
+//   loadErrorMessages()
+// }
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout

@@ -10,12 +10,13 @@ import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
+import { useRouter } from 'next/router'
 registerLocale('ko', ko)
 
 type ConsultFilterProps = {
@@ -107,8 +108,10 @@ const FilterVariants = {
 export default function ConsultFillter({
   isActive,
   onFilterSearch,
+  studentFilter,
   setStudentFilter,
 }) {
+  const router = useRouter()
   const {
     data: seeManageUserData,
     error,
@@ -132,6 +135,8 @@ export default function ConsultFillter({
   const [startCreatDate, endCreatDate] = creatDateRange
   const [visitDateRange, setVisitDateRange] = useState([null, null])
   const [startVisitDate, endVisitDate] = visitDateRange
+  const [phone, setPhone] = useState('')
+  const [name, setName] = useState('')
   const [progressSelected, setProgressSelected] = useState([])
 
   const {
@@ -154,6 +159,86 @@ export default function ConsultFillter({
       adviceType: '-',
     },
   })
+
+  useEffect(() => {
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.receiptDiv === null
+    ) {
+      setReceipt('-')
+    } else {
+      setReceipt(studentFilter?.receiptDiv)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.subDiv === null
+    ) {
+      setSub('-')
+    } else {
+      setSub(studentFilter?.subDiv)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.pic === null
+    ) {
+      setManager('-')
+    } else {
+      setManager(studentFilter?.pic)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.adviceType === null
+    ) {
+      setAdviceType('-')
+    } else {
+      setAdviceType(studentFilter?.adviceType)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.createdAt === null
+    ) {
+      setCreatDateRange([null, null])
+    } else {
+      setCreatDateRange([
+        studentFilter?.createdAt[0],
+        studentFilter?.createdAt[1],
+      ])
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.stVisit === null
+    ) {
+      setVisitDateRange([null, null])
+    } else {
+      setVisitDateRange([studentFilter?.stVisit[0], studentFilter?.stVisit[1]])
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.phoneNum1 === null
+    ) {
+      setPhone('')
+    } else {
+      setPhone(studentFilter?.phoneNum1)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.stName === null
+    ) {
+      setName('')
+    } else {
+      setName(studentFilter?.stName)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.progress === undefined ||
+      studentFilter?.progress === null
+    ) {
+      setProgressSelected([])
+    } else {
+      const numericKeys = studentFilter?.progress.map(key => String(key))
+      setProgressSelected(numericKeys)
+    }
+  }, [router])
 
   const handleReceiptChange = e => {
     setReceipt(e.target.value)
@@ -453,7 +538,11 @@ export default function ConsultFillter({
                 type="text"
                 variant="bordered"
                 label="연락처"
-                id="phoneNum1"
+                value={phone}
+                onValueChange={setPhone}
+                onChange={e => {
+                  register('phoneNum1').onChange(e)
+                }}
                 {...register('phoneNum1', {
                   maxLength: {
                     value: 11,
@@ -478,9 +567,14 @@ export default function ConsultFillter({
                 type="text"
                 variant="bordered"
                 label="수강생이름"
-                id="stName"
+                value={name}
+                onValueChange={setName}
+                onChange={e => {
+                  register('stName').onChange(e)
+                }}
                 {...register('stName')}
               />
+              {name}
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>

@@ -78,6 +78,7 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
+  min-width: 7px;
 `
 const TheaderBox = styled.div`
   display: table-row;
@@ -266,7 +267,7 @@ export default function SubjectFilterTable({
       <TTopic>
         <TopBox>
           <Ttotal>
-            총{' '}
+            총
             <span>
               {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
             </span>

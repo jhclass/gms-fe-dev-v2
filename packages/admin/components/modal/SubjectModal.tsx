@@ -143,7 +143,6 @@ export default function SubjectModal({
   sbjIsOpen,
   sbjClose,
   setValue,
-  field,
   subjectSelected,
   setSubjectSelected,
   radio = false,
@@ -175,7 +174,6 @@ export default function SubjectModal({
       onCompleted: resData => {
         const { result, totalCount } = resData.searchSubject || {}
         setSubjectList({ result, totalCount })
-        handleScrollTop()
       },
     })
   }, [router, currentSubjectPage, subjectSearch])
@@ -185,11 +183,11 @@ export default function SubjectModal({
   }
 
   const clickSbjSubmit = () => {
-    setValue('subject', subjectSelected)
+    setValue('subject', subjectSelected, { shouldDirty: true })
     sbjClose()
   }
 
-  const onSubmit = data => {
+  const onSubjectSubmit = data => {
     setSubjectSearch(data.subjectName)
   }
 
@@ -236,7 +234,7 @@ export default function SubjectModal({
                       과정 등록/수정
                     </Button>
                   </TopBox>
-                  <ItemBox onSubmit={handleSubmit(onSubmit)}>
+                  <ItemBox onSubmit={handleSubmit(onSubjectSubmit)}>
                     <Input
                       labelPlacement="outside-left"
                       size="sm"
@@ -346,7 +344,6 @@ export default function SubjectModal({
                   color="primary"
                   onPress={() => {
                     clickSbjSubmit()
-                    field.onChange(subjectSelected)
                   }}
                 >
                   선택

@@ -533,127 +533,103 @@ export const CREATE_STUDENT_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_MUTATION = gql`
-  mutation SearchStudent($searchStudentId: Int) {
+  mutation Mutation($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
-      ok
-      message
       error
+      message
+      ok
       student {
+        birthday
+        courseComplete
+        createdAt
+        dueDate
         id
+        lectureAssignment
         name
         phoneNum1
         phoneNum2
         smsAgreement
-        writer
-        createdAt
-        updatedAt
-        birthday
-        campus
-        subject {
-          subDiv
-          subjectName
-          fee
-          subjectCode
-          id
-        }
-        subjectId
-        subDiv
-        manager {
-          id
-          mUserId
-          mUsername
-          mGrade
-        }
-        managerUserId
-        dueDate
         studentMemo {
-          id
           content
+          id
           manageUser {
-            mUserId
-            mGrade
             mUsername
+            mUserId
           }
         }
-        classCode
         studentPayment {
-          id
-          seScore
-          tuitionFee
-          discountAmount
-          cashAmount
-          cardAmount
           actualAmount
-          unCollectedAmount
-          receiptClassification
+          amountReceived
+          cardAmount
+          cashAmount
+          discountAmount
+          id
           paymentDate
-          studentId
           paymentDetail {
-            id
-            cashOrCard
-            cardCompany
-            cardNum
-            installment
             ApprovalNum
             amountPayment
-            paymentDate
             bankName
-            depositorName
+            cardCompany
+            cardNum
+            cashOrCard
             depositAmount
             depositDate
+            depositorName
+            id
+            installment
+            paymentDate
             receiver {
-              mUsername
               mUserId
+              mUsername
             }
-          }
-          processingManager {
-            mUsername
-            mUserId
+            studentPaymentId
+            receiverId
           }
           processingManagerId
+          processingManager {
+            mUserId
+            mUsername
+          }
+          receiptClassification
+          seScore
           situationReport
+          tuitionFee
+          unCollectedAmount
         }
-        lectureAssignment
-        courseComplete
+        writer
+        updatedAt
+        subject {
+          subjectCode
+          subjectName
+          subDiv
+          id
+          fee
+        }
       }
-      totalCount
     }
   }
 `
 export const SEARCH_STUDENT_FILTER_MUTATION = gql`
-  mutation SearchStudent(
-    $studentName: String
-    $createdAt: [String]
-    $birthday: [String]
-    $phoneNum: String
-    $page: Int
-    $limit: Int
-  ) {
-    searchStudent(
-      studentName: $studentName
-      createdAt: $createdAt
-      birthday: $birthday
-      phoneNum: $phoneNum
-      page: $page
-      limit: $limit
-    ) {
-      ok
-      message
+  mutation Mutation($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
       error
-      totalCount
+      message
+      ok
       student {
+        birthday
+        courseComplete
+        createdAt
+        id
+        lectureAssignment
         name
         phoneNum1
-        id
         writer
-        createdAt
-        birthday
+        updatedAt
         subject {
           subjectName
+          subDiv
+          id
         }
-        subDiv
-        lectureAssignment
-        courseComplete
       }
     }
   }
@@ -695,6 +671,23 @@ export const UPDATE_STUDENT_BASIC_MUTATION = gql`
       phoneNum2: $phoneNum2
       smsAgreement: $smsAgreement
       birthday: $birthday
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const UPDATE_STUDENT_COURSE_MUTATION = gql`
+  mutation Mutation(
+    $editStudentId: Int!
+    $lectureAssignment: Boolean
+    $courseComplete: Boolean
+  ) {
+    editStudent(
+      id: $editStudentId
+      lectureAssignment: $lectureAssignment
+      courseComplete: $courseComplete
     ) {
       error
       message

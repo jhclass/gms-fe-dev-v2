@@ -391,32 +391,15 @@ export default function ConsultWirte() {
                 )}
               </AreaBox>
               <AreaBox>
-                <Controller
-                  control={control}
-                  name="subject"
-                  render={({ field }) => (
-                    <>
-                      <Textarea
-                        readOnly
-                        value={field.value || ['']}
-                        label="상담 과정 선택"
-                        labelPlacement="outside"
-                        className="max-w-full"
-                        variant="bordered"
-                        minRows={1}
-                        onClick={sbjOpen}
-                        {...register('subject')}
-                      />
-                      <SubjectModal
-                        subjectSelected={subjectSelected}
-                        setSubjectSelected={setSubjectSelected}
-                        field={field}
-                        sbjIsOpen={sbjIsOpen}
-                        sbjClose={sbjClose}
-                        setValue={setValue}
-                      />
-                    </>
-                  )}
+                <Textarea
+                  readOnly
+                  label="상담 과정 선택"
+                  labelPlacement="outside"
+                  className="max-w-full"
+                  variant="bordered"
+                  minRows={1}
+                  onClick={sbjOpen}
+                  {...register('subject')}
                 />
               </AreaBox>
               <FlexBox>
@@ -655,6 +638,13 @@ export default function ConsultWirte() {
           </DetailBox>
         </ConArea>
       </MainWrap>
+      <SubjectModal
+        subjectSelected={subjectSelected}
+        setSubjectSelected={setSubjectSelected}
+        sbjIsOpen={sbjIsOpen}
+        sbjClose={sbjClose}
+        setValue={setValue}
+      />
     </>
   )
 }

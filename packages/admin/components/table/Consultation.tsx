@@ -230,7 +230,6 @@ export default function ConsolutationTable() {
     handleScrollTop()
   }, [router, refetch, favoRefetch, currentPage])
 
-  console.log(favoData)
   return (
     <>
       <TTopic>

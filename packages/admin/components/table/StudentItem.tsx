@@ -62,10 +62,7 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
-
-  p {
-    width: 0.5rem;
-  }
+  min-width: 7px;
 `
 const ClickBox = styled.div`
   display: flex;
@@ -211,6 +208,7 @@ export default function StudentsItem(props) {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
+
   return (
     <>
       <TableItem>
@@ -232,7 +230,7 @@ export default function StudentsItem(props) {
               </Tprogress>
               <TsubDiv>
                 <EllipsisBox>
-                  {student.subDiv ? student.subDiv : '-'}
+                  {student.subject.subDiv ? student.subject.subDiv : '-'}
                 </EllipsisBox>
               </TsubDiv>
               <Tbirthday>
@@ -245,7 +243,9 @@ export default function StudentsItem(props) {
               </Tname>
               <Tsubject>
                 <EllipsisBox>
-                  {student.subject ? student.subject : '-'}
+                  {student.subject.subjectName
+                    ? student.subject.subjectName
+                    : '-'}
                 </EllipsisBox>
               </Tsubject>
               <Tphone>
