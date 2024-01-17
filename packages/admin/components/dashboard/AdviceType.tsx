@@ -99,7 +99,7 @@ export default function AdviceType() {
       },
     },
   }
-  console.log(adviceTypeData)
+
   return (
     <ItemBox>
       {adviceTypeData !== null && (
