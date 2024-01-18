@@ -104,6 +104,7 @@ export const SEE_STUDENT_STATE_QUERY = gql`
         stName
         stVisit
         subDiv
+        classMethod
       }
     }
   }

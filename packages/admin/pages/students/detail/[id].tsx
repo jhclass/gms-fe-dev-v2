@@ -204,7 +204,7 @@ export default function StudentsWrite() {
       },
       onCompleted: data => {
         setStudentData(data.searchStudent?.student[0])
-        setStudentSubjectData(data.searchStudent?.student[0].subject)
+        setStudentSubjectData(data.searchStudent?.student[0].subject[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
         setStudentPaymentDetailData(
           data.searchStudent?.student[0].studentPayment[0],
@@ -527,7 +527,7 @@ export default function StudentsWrite() {
                 <DetailBox>
                   <DetailDiv>
                     <AreaTitle>
-                      <h4>수강료 정보</h4>
+                      <h4>수강 정보</h4>
                       <Button
                         size="sm"
                         radius="sm"
@@ -682,6 +682,19 @@ export default function StudentsWrite() {
                       </AreaBox>
                     </FlexBox>
                     <BtnBox>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        className="w-full text-white bg-flag1"
+                        onClick={() =>
+                          router.push(
+                            `/students/write/payment/${studentData?.id}`,
+                          )
+                        }
+                      >
+                        수강 결제
+                      </Button>
                       <Button
                         isDisabled={studentData?.courseComplete ? true : false}
                         size="md"
