@@ -230,7 +230,7 @@ export default function StudentsWriteCourse() {
         subjectId: subjectSelected.id,
         situationReport:
           data.situationReport === undefined
-            ? null
+            ? false
             : data.situationReport === '동의'
             ? true
             : false,
