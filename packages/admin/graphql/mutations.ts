@@ -655,6 +655,46 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
     }
   }
 `
+export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
+  mutation SearchStudent($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
+      error
+      message
+      ok
+      student {
+        studentPayment {
+          id
+          unCollectedAmount
+          tuitionFee
+          seScore
+          processingManagerId
+          actualAmount
+          amountReceived
+          cardAmount
+          cashAmount
+          discountAmount
+        }
+        birthday
+        courseComplete
+        createdAt
+        dueDate
+        id
+        lectureAssignment
+        name
+        writer
+        updatedAt
+        phoneNum1
+        phoneNum2
+        subject {
+          subDiv
+          subjectCode
+          subjectName
+          id
+        }
+      }
+    }
+  }
+`
 
 export const UPDATE_STUDENT_BASIC_MUTATION = gql`
   mutation EditStudent(
@@ -712,9 +752,9 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     $cardAmount: Int
     $actualAmount: Int
     $unCollectedAmount: Int
-    $receiptClassification: String
     $paymentDate: String
     $situationReport: Boolean
+    $amountReceived: Int
   ) {
     createStudentPayment(
       campus: $campus
@@ -729,13 +769,48 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       cardAmount: $cardAmount
       actualAmount: $actualAmount
       unCollectedAmount: $unCollectedAmount
-      receiptClassification: $receiptClassification
       paymentDate: $paymentDate
       situationReport: $situationReport
+      amountReceived: $amountReceived
     ) {
       ok
       error
       message
+    }
+  }
+`
+export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
+  mutation Mutation(
+    $cashOrCard: String!
+    $studentPaymentId: Int!
+    $cardCompany: String
+    $cardNum: String
+    $installment: Int
+    $approvalNum: String
+    $amountPayment: Int
+    $paymentDate: String
+    $bankName: String
+    $depositorName: String
+    $depositAmount: Int
+    $depositDate: String
+  ) {
+    createPaymentDetail(
+      cashOrCard: $cashOrCard
+      studentPaymentId: $studentPaymentId
+      cardCompany: $cardCompany
+      cardNum: $cardNum
+      installment: $installment
+      ApprovalNum: $approvalNum
+      amountPayment: $amountPayment
+      paymentDate: $paymentDate
+      bankName: $bankName
+      depositorName: $depositorName
+      depositAmount: $depositAmount
+      depositDate: $depositDate
+    ) {
+      error
+      message
+      ok
     }
   }
 `
