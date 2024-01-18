@@ -177,7 +177,9 @@ export default function ConsultDetail() {
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
   const studentState = data?.searchStudentState.studentState[0] || []
-  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type)
+  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type) || []
+  const studentMethod = studentState?.classMethod || []
+  const addArr = [...studentAdvice, ...studentMethod]
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: sbjIsOpen,
@@ -268,7 +270,9 @@ export default function ConsultDetail() {
       const date = parseInt(studentState.expEnrollDate)
       setExpEnrollDate(date)
     }
-    setAdviceTypeSelected(studentAdvice)
+    if (studentAdvice.length > 0) {
+      setAdviceTypeSelected(studentAdvice)
+    }
   }, [studentState])
 
   const onSubmit = data => {
@@ -535,7 +539,7 @@ export default function ConsultDetail() {
                         message: '상담 분야를 최소 1개 이상 선택해주세요.',
                       },
                     }}
-                    defaultValue={studentAdvice}
+                    defaultValue={addArr}
                     render={({ field }) => (
                       <>
                         <Textarea

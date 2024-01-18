@@ -254,6 +254,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         subDiv
         subject
         updatedAt
+        classMethod
       }
     }
   }
