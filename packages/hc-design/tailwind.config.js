@@ -20,7 +20,7 @@ module.exports = {
         web: '1440px',
       },
       colors: {
-        primary: '#007de9',
+        primary: '#100061',
         secondary: '#0D9488',
         flag1: '#FF5900',
         flag2: '#FFC600',
