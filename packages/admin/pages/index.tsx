@@ -67,13 +67,9 @@ export default function Home() {
           <div>
             <AdviceType />
           </div>
-          {mGrade === 0 && (
-            <>
-              <div>
-                <ReceiptDiv />
-              </div>
-            </>
-          )}
+          <div>
+            <ReceiptDiv />
+          </div>
         </HomeArea>
       </Layout>
     </>
