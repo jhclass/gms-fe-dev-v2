@@ -186,7 +186,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function ConsolutationRejectTable({
+export default function ConsolutationCompletedTable({
   currentLimit,
   currentPage,
   setCurrentPage,
@@ -218,7 +218,7 @@ export default function ConsolutationRejectTable({
   useEffect(() => {
     searchStudentStateMutation({
       variables: {
-        progress: 110,
+        progress: 60,
         page: currentPage,
         limit: currentLimit,
       },
@@ -297,7 +297,7 @@ export default function ConsolutationRejectTable({
                   />
                 ))}
               {searchResult?.totalCount === 0 && (
-                <Nolist>등록된 오류/거부 상담카드가 없습니다.</Nolist>
+                <Nolist>완료된 상담카드가 없습니다.</Nolist>
               )}
             </TableWrap>
           </ScrollShadow>

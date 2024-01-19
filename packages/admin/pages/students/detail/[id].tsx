@@ -212,7 +212,7 @@ export default function StudentsWrite() {
         setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
-  }, [router])
+  }, [router, studentData])
 
   const ClickLectureAssignment = () => {
     if (studentData.lectureAssignment) {
@@ -225,13 +225,15 @@ export default function StudentsWrite() {
             editStudentId: parseInt(studentId),
             lectureAssignment: false,
           },
-          // refetchQueries: [
-          //   {
-          //     query: SEE_STUDENT_QUERY,
-          //     variables: { page: 1, limit: 10 },
-          //   },
-          // ],
           onCompleted: () => {
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(studentId),
+              },
+              onCompleted: data => {
+                setStudentData(data.searchStudent?.student[0])
+              },
+            })
             alert('강의배정 취소되었습니다.')
             userLogs(
               `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
@@ -249,13 +251,15 @@ export default function StudentsWrite() {
             editStudentId: parseInt(studentId),
             lectureAssignment: true,
           },
-          // refetchQueries: [
-          //   {
-          //     query: SEE_STUDENT_QUERY,
-          //     variables: { page: 1, limit: 10 },
-          //   },
-          // ],
           onCompleted: () => {
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(studentId),
+              },
+              onCompleted: data => {
+                setStudentData(data.searchStudent?.student[0])
+              },
+            })
             alert('강의배정 되었습니다.')
             userLogs(
               `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
@@ -276,13 +280,15 @@ export default function StudentsWrite() {
             editStudentId: parseInt(studentId),
             courseComplete: false,
           },
-          // refetchQueries: [
-          //   {
-          //     query: SEE_STUDENT_QUERY,
-          //     variables: { page: 1, limit: 10 },
-          //   },
-          // ],
           onCompleted: () => {
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(studentId),
+              },
+              onCompleted: data => {
+                setStudentData(data.searchStudent?.student[0])
+              },
+            })
             alert('이수처리 취소되었습니다.')
             userLogs(`${studentData.name}학생 이수처리 취소`)
           },
@@ -298,13 +304,15 @@ export default function StudentsWrite() {
             editStudentId: parseInt(studentId),
             courseComplete: true,
           },
-          // refetchQueries: [
-          //   {
-          //     query: SEE_STUDENT_QUERY,
-          //     variables: { page: 1, limit: 10 },
-          //   },
-          // ],
           onCompleted: () => {
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(studentId),
+              },
+              onCompleted: data => {
+                setStudentData(data.searchStudent?.student[0])
+              },
+            })
             alert('이수처리 되었습니다.')
             userLogs(`${studentData.name}학생 이수처리`)
           },

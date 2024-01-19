@@ -40,6 +40,11 @@ export default function Category() {
           alt: '상담목록',
           label: '상담목록',
         },
+        // {
+        //   href: '/consult/registered',
+        //   alt: '상담완료 목록',
+        //   label: '상담완료 목록',
+        // },
         {
           href: '/consult/reject',
           alt: '오류/거부 목록',

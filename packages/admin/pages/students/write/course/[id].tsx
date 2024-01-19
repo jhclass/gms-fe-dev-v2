@@ -32,6 +32,7 @@ import {
   CREATE_STUDENT_PAYMENT_MUTATION,
   SEARCH_STUDENT_BASIC_MUTATION,
   SEARCH_SUBJECT_BASIC_MUTATION,
+  UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
 import PaymentDetail from '@/components/form/PaymentDetail'
 
@@ -138,7 +139,7 @@ const FilterLabel = styled.p`
 const InputText = styled.span`
   display: inline-block;
   font-size: 0.75rem;
-  width: 2rem;
+  width: 2.5rem;
 `
 const BtnBox = styled.div`
   display: flex;
@@ -161,6 +162,7 @@ export default function StudentsWriteCourse() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
   const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
+  const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const {
     loading: managerLoading,
     error: managerError,
@@ -180,7 +182,7 @@ export default function StudentsWriteCourse() {
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [subjectInfo, setSubjectInfo] = useState()
   const [disCountType, setDisCountType] = useState('%')
-  const [discountAmount, setDiscountAmount] = useState(0)
+  const [discount, setDiscount] = useState(0)
   const [actualAmount, setActualAmount] = useState(0)
   const [manager, setManager] = useState('담당자 지정필요')
   const [paymentDate, setPaymentDate] = useState(null)
@@ -202,18 +204,18 @@ export default function StudentsWriteCourse() {
     const tuitionFee = subjectSelected?.fee
     if (subjectSelected !== null) {
       if (disCountType === '%') {
-        const disCount = (tuitionFee * (100 - discountAmount)) / 100
-        setActualAmount(disCount)
-        setValue('actualAmount', disCount)
+        const disCountP = (tuitionFee * (100 - discount)) / 100
+        setActualAmount(disCountP)
+        setValue('actualAmount', disCountP)
       } else {
-        const disCount = tuitionFee - discountAmount
-        setActualAmount(disCount)
-        setValue('actualAmount', disCount)
+        const disCountP = tuitionFee - discount
+        setActualAmount(disCountP)
+        setValue('actualAmount', disCountP)
       }
     } else {
       setValue('actualAmount', 0)
     }
-  }, [subjectSelected, discountAmount])
+  }, [subjectSelected, discount, disCountType])
 
   const onSubmit = data => {
     createStudentPayment({
@@ -231,26 +233,27 @@ export default function StudentsWriteCourse() {
             : data.situationReport === '동의'
             ? true
             : false,
-        paymentDate:
-          data.paymentDate === undefined ? null : new Date(data.paymentDate),
-        // receiptClassification:
-        //   data.receiptClassification === undefined
-        //     ? null
-        //     : data.receiptClassification,
-        unCollectedAmount: parseInt(data.unCollectedAmount),
+        paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
         actualAmount:
-          data.actualAmount === '' ? null : parseInt(data.actualAmount),
-        cardAmount: data.cardAmount === '' ? null : parseInt(data.cardAmount),
-        cashAmount: data.cashAmount === '' ? null : parseInt(data.cashAmount),
+          data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
         discountAmount:
-          data.discountAmount === ''
-            ? null
-            : data.discountAmount + disCountType,
+          data.discountAmount === '' ? null : String(discount) + disCountType,
+        unCollectedAmount:
+          data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
       },
-      onCompleted: data => {
-        alert('등록되었습니다.')
+      onCompleted: () => {
+        updateStudentDuedate({
+          variables: {
+            editStudentId: parseInt(studentId),
+            dueDate: data.dueDate === undefined ? null : data.dueDate,
+          },
+          onCompleted: () => {
+            alert('등록되었습니다.')
+          },
+        })
       },
     })
+
     userLogs(`${studentData.name} 수강신청`)
   }
   const fametDate = (data, isTime) => {
@@ -336,12 +339,6 @@ export default function StudentsWriteCourse() {
               <FlexBox>
                 <AreaBox>
                   <div>
-                    <FilterLabel>기타번호</FilterLabel>
-                    <LineBox>{studentData?.phoneNum2}</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
                     <FilterLabel>담당자</FilterLabel>
                     <LineBox>{studentData?.writer}</LineBox>
                   </div>
@@ -416,9 +413,11 @@ export default function StudentsWriteCourse() {
                       <Controller
                         control={control}
                         name="situationReport"
+                        defaultValue={'비동의'}
                         render={({ field }) => (
                           <RadioGroup
                             label={<FilterLabel>교육상황보고여부</FilterLabel>}
+                            defaultValue={'비동의'}
                             orientation="horizontal"
                             className="gap-[0.65rem]"
                             onValueChange={value => {
@@ -508,10 +507,9 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="할인"
-                      defaultValue={String(discountAmount)}
                       onChange={e => {
                         register('discountAmount').onChange(e)
-                        setDiscountAmount(parseInt(e.target.value))
+                        setDiscount(parseInt(e.target.value))
                       }}
                       endContent={
                         <SelectBox
@@ -538,6 +536,9 @@ export default function StudentsWriteCourse() {
                           : ''
                       }
                       {...register('actualAmount')}
+                      onChange={e => {
+                        register('actualAmount').onChange(e)
+                      }}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -643,7 +644,7 @@ export default function StudentsWriteCourse() {
                     <DatePickerBox>
                       <Controller
                         control={control}
-                        name="stVisit"
+                        name="dueDate"
                         render={({ field }) => (
                           <DatePicker
                             locale="ko"
@@ -714,35 +715,35 @@ export default function StudentsWriteCourse() {
                 </FlexBox>
               </DetailDiv>
             </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <BtnBox>
+                  <Button2
+                    buttonType="submit"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#fff"
+                    bgColor="#007de9"
+                  >
+                    등록
+                  </Button2>
+                  <Button2
+                    buttonType="button"
+                    width="100%"
+                    height="2.5rem"
+                    fontColor="#007de9"
+                    bgColor="#fff"
+                    borderColor="#007de9"
+                    typeBorder={true}
+                    onClick={() => router.back()}
+                  >
+                    뒤로가기
+                  </Button2>
+                </BtnBox>
+              </DetailDiv>
+            </DetailBox>
           </form>
-          <DetailBox>
-            <DetailDiv>
-              <BtnBox>
-                <Button2
-                  buttonType="submit"
-                  width="100%"
-                  height="2.5rem"
-                  typeBorder={true}
-                  fontColor="#fff"
-                  bgColor="#007de9"
-                >
-                  등록
-                </Button2>
-                <Button2
-                  buttonType="button"
-                  width="100%"
-                  height="2.5rem"
-                  fontColor="#007de9"
-                  bgColor="#fff"
-                  borderColor="#007de9"
-                  typeBorder={true}
-                  onClick={() => router.back()}
-                >
-                  뒤로가기
-                </Button2>
-              </BtnBox>
-            </DetailDiv>
-          </DetailBox>
         </ConArea>
       </MainWrap>
       <SubjectModal

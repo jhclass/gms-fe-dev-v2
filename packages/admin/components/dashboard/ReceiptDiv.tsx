@@ -2,6 +2,8 @@ import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
+import { useQuery } from '@apollo/client'
+import { DASHBOARD_RD_QUERY } from '@/graphql/queries'
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const ItemBox = styled.div`
@@ -57,57 +59,37 @@ const Content = styled.div`
 `
 
 export default function ReceiptDiv() {
+  const { loading, error, data } = useQuery(DASHBOARD_RD_QUERY)
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
-
-  const donutData = {
-    series: [42, 47, 52, 58, 65, 25],
-    options: {
-      labels: ['온라인', '전화', '내사', 'HRD', '카카오톡', '플레이스'],
-      fill: {
-        opacity: 1,
+  const chartData = data?.dashboardRD
+  const receiptDivValues = chartData
+    ? chartData
+        ?.filter(item => item.receiptDiv !== '')
+        .map(item => item.receiptDiv)
+    : []
+  const countValues = chartData
+    ? chartData?.filter(item => item.receiptDiv !== '').map(item => item.count)
+    : []
+  const chartOption = {
+    series: [
+      {
+        data: countValues,
       },
-      stroke: {
-        width: 1,
-        colors: undefined,
-      },
-      yaxis: {
-        show: false,
-      },
+    ],
+    option: {
       plotOptions: {
-        polarArea: {
-          rings: {
-            strokeWidth: 0,
-          },
-          spokes: {
-            strokeWidth: 0,
-          },
-        },
-        pie: {
-          donut: {
-            labels: {
-              show: true,
-              total: {
-                showAlways: false,
-                show: true,
-              },
-            },
-          },
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
         },
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
       },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+      xaxis: {
+        categories: receiptDivValues,
+      },
     },
   }
 
@@ -143,10 +125,10 @@ export default function ReceiptDiv() {
       </Title>
       <Content>
         <ReactApexChart
-          options={donutData.options}
-          series={donutData.series}
-          type="polarArea"
-          className="w-[20rem]"
+          options={chartOption.option}
+          series={chartOption.series}
+          type="bar"
+          height={175}
         />
       </Content>
     </ItemBox>

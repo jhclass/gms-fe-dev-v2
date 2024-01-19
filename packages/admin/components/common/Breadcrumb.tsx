@@ -153,6 +153,15 @@ const categories = [
     isWrite: '',
   },
   {
+    href: '/consult/registered',
+    iconSrc: 'ico_consult',
+    alt: '등록완료 목록',
+    label: '등록완료 목록',
+    isBreadcrumb: true,
+    isFilter: false,
+    isWrite: '',
+  },
+  {
     href: '/consult/reject',
     iconSrc: 'ico_consult',
     alt: '오류/거부 목록',
