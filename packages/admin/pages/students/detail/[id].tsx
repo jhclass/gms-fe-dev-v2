@@ -537,6 +537,9 @@ export default function StudentsWrite() {
                     <AreaTitle>
                       <h4>수강 정보</h4>
                       <Button
+                        isDisabled={
+                          studentData?.lectureAssignment ? true : false
+                        }
                         size="sm"
                         radius="sm"
                         variant="solid"
