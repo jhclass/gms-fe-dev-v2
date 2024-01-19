@@ -71,13 +71,18 @@ export default function ReceiptDiv() {
   const countValues = chartData
     ? chartData?.filter(item => item.receiptDiv !== '').map(item => item.count)
     : []
+
   const chartOption = {
-    series: [
-      {
-        data: countValues,
-      },
-    ],
+    series: [{ name: '총 건수', data: countValues }],
     option: {
+      chart: {
+        toolbar: {
+          show: true,
+          tools: {
+            download: false,
+          },
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 4,
