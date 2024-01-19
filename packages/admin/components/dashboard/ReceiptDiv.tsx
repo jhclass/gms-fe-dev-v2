@@ -71,8 +71,6 @@ export default function ReceiptDiv() {
   const countValues = chartData
     ? chartData?.filter(item => item.receiptDiv !== '').map(item => item.count)
     : []
-  console.log(receiptDivValues)
-  console.log(countValues)
   const chartOption = {
     series: [
       {

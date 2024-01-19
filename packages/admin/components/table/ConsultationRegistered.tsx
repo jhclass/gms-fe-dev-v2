@@ -240,8 +240,6 @@ export default function ConsolutationCompletedTable({
     }
   }, [checkItem, searchResult, currentPage])
 
-  console.log(searchResult)
-
   return (
     searchResult !== null && (
       <>

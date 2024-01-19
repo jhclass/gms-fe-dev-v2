@@ -510,7 +510,6 @@ export default function StudentsWriteCourse() {
                       onChange={e => {
                         register('discountAmount').onChange(e)
                         setDiscount(parseInt(e.target.value))
-                        console.log('a')
                       }}
                       endContent={
                         <SelectBox

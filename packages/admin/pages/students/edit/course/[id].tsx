@@ -217,7 +217,6 @@ export default function StudentsWriteCourse() {
     })
   }, [router])
 
-  console.log(studentPaymentData?.discountAmount)
   useEffect(() => {
     searchSubject({
       variables: {
