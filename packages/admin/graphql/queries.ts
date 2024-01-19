@@ -36,6 +36,14 @@ export const DASHBOARD_AT_QUERY = gql`
     }
   }
 `
+export const DASHBOARD_RD_QUERY = gql`
+  query DashboardRD {
+    dashboardRD {
+      receiptDiv
+      count
+    }
+  }
+`
 
 // Components
 export const MME_QUERY = gql`
