@@ -149,6 +149,10 @@ export const consultFilterActiveState = atom<boolean>({
   key: 'consultFilterActive',
   default: false,
 })
+export const consultPageState = atom<number>({
+  key: 'consultPage',
+  default: 1,
+})
 export const consultFilterState = atom<boolean>({
   key: 'onsultFilter',
   default: false,
@@ -171,6 +175,10 @@ export const subjectFilterActiveState = atom<boolean>({
   key: 'subjectFilterActive',
   default: false,
 })
+export const subjectPageState = atom<number>({
+  key: 'subjectPage',
+  default: 1,
+})
 export const subjectFilterState = atom<boolean>({
   key: 'subjectFilter',
   default: false,
@@ -186,6 +194,10 @@ export const subjectSearchState = atom({
 export const studentFilterState = atom<boolean>({
   key: 'studentFilter',
   default: false,
+})
+export const studentPageState = atom<number>({
+  key: 'studentPage',
+  default: 1,
 })
 export const studentSearchState = atom({
   key: 'studentSearch',

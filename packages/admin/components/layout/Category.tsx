@@ -4,9 +4,12 @@ import {
   activeCategoryState,
   consultFilterActiveState,
   consultFilterState,
+  consultPageState,
   consultSearchState,
   studentFilterState,
+  studentPageState,
   subjectFilterState,
+  subjectPageState,
 } from '@/lib/recoilAtoms'
 import useUserLogsMutation from '@/utils/userLogs'
 import CategoryItem from './CategoryItem'
@@ -27,6 +30,7 @@ export default function Category() {
       iconSrc: 'ico_home',
       alt: '대시보드',
       label: '대시보드',
+      reset: () => {},
     },
     {
       id: 1,
@@ -51,6 +55,12 @@ export default function Category() {
           label: '오류/거부 목록',
         },
       ],
+      reset: () => {
+        resetFilterActive()
+        resetFilterSearch()
+        resetStudentFilter()
+        consultPage()
+      },
     },
     {
       id: 2,
@@ -58,6 +68,7 @@ export default function Category() {
       iconSrc: 'ico_work',
       alt: '과정관리',
       label: '과정관리',
+      reset: () => {},
     },
     {
       id: 3,
@@ -65,6 +76,7 @@ export default function Category() {
       iconSrc: 'ico_regist',
       alt: '수강생관리',
       label: '수강생관리',
+      reset: () => {},
     },
     {
       id: 4,
@@ -72,6 +84,7 @@ export default function Category() {
       iconSrc: 'ico_accounting',
       alt: '회계관리',
       label: '회계관리',
+      reset: () => {},
       // children: [
       //   {
       //     href: '/accounting',
@@ -113,6 +126,9 @@ export default function Category() {
   const resetFilterActive = useResetRecoilState(consultFilterActiveState)
   const resetFilterSearch = useResetRecoilState(consultFilterState)
   const resetStudentFilter = useResetRecoilState(consultSearchState)
+  const consultPage = useResetRecoilState(consultPageState)
+  const subjectPage = useResetRecoilState(subjectPageState)
+  const studentPage = useResetRecoilState(studentPageState)
 
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)
@@ -136,9 +152,7 @@ export default function Category() {
             isActive={active === category.href}
             onClick={() => {
               setActiveCategory(category.id)
-              resetFilterActive()
-              resetFilterSearch()
-              resetStudentFilter()
+              category.reset()
             }}
             children={category.children}
           />

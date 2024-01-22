@@ -10,6 +10,8 @@ import {
 } from '@/graphql/queries'
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
+import { useRecoilState } from 'recoil'
+import { consultPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -196,7 +198,7 @@ const Nolist = styled.div`
 `
 
 export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const { loading, error, data, refetch } = useQuery(SEE_STUDENT_STATE_QUERY, {
