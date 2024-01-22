@@ -278,7 +278,7 @@ export default function SubjectModal({
                         subjectList?.result.map((item, index) => (
                           <TableItem key={index}>
                             <TableRow>
-                              <Radio key={item.id} value={item}>
+                              <Radio key={item.id} value={item.id}>
                                 <SubjectItem tableData={item} />
                               </Radio>
                             </TableRow>
