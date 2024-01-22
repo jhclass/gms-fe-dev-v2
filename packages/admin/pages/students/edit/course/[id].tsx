@@ -30,9 +30,7 @@ import { ReceiptState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
-  SEARCH_STUDENT_BASIC_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
-  SEARCH_SUBJECT_BASIC_MUTATION,
   SEARCH_SUBJECT_MUTATION,
   UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
@@ -98,8 +96,13 @@ const AreaTitle = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  width: 100%;
 `
-const AreaSmallBox = styled.div``
+const AreaSmallBox = styled.div`
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
+`
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -164,28 +167,18 @@ export default function StudentsWriteCourse() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
-  const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const {
     loading: managerLoading,
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
-  const { register, watch, control, setValue, handleSubmit, formState } =
-    useForm()
-  const { errors } = formState
-  const {
-    isOpen: sbjIsOpen,
-    onOpen: sbjOpen,
-    onClose: sbjClose,
-  } = useDisclosure()
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
-  const [disCountType, setDisCountType] = useState('%')
-  const [discount, setDiscount] = useState(0)
+  const [disCountType, setDisCountType] = useState(null)
+  const [discount, setDiscount] = useState(null)
   const [actualAmount, setActualAmount] = useState(0)
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
@@ -211,7 +204,6 @@ export default function StudentsWriteCourse() {
       },
       onCompleted: data => {
         setStudentData(data.searchStudent?.student[0])
-        setStudentSubjectData(data.searchStudent?.student[0].subject[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
       },
     })
@@ -224,104 +216,11 @@ export default function StudentsWriteCourse() {
       },
       onCompleted: resData => {
         const { result } = resData.searchSubject || {}
-        setSubjectSelected(result[0])
+        // setStudentSubjectData(result[0])
       },
     })
+  }, [studentData])
 
-    if (
-      studentPaymentData?.processingManagerId === undefined ||
-      studentPaymentData?.processingManagerId === null
-    ) {
-      setSubjectManager('담당자 지정필요')
-    } else {
-      setSubjectManager(String(studentPaymentData?.processingManagerId))
-    }
-
-    if (
-      studentPaymentData?.discountAmount === null ||
-      studentPaymentData?.discountAmount === undefined
-    ) {
-      setDiscount(14)
-      setDisCountType('원')
-    } else {
-      const discountText = extractNumberAndUnit(
-        studentPaymentData?.discountAmount,
-      )
-      setDiscount(discountText.number)
-      setDisCountType(discountText.unit)
-    }
-
-    if (
-      studentPaymentData?.paymentDate === null ||
-      studentPaymentData?.paymentDate === undefined
-    ) {
-      setPaymentDate(null)
-    } else {
-      const date = parseInt(studentPaymentData?.paymentDate)
-      setPaymentDate(date)
-    }
-
-    if (studentData?.dueDate === null || studentData?.dueDate === undefined) {
-      setDueDate(null)
-    } else {
-      const date = parseInt(studentData?.dueDate)
-      setDueDate(date)
-    }
-  }, [studentData, studentPaymentData])
-
-  useEffect(() => {
-    const tuitionFee = subjectSelected?.fee
-    if (subjectSelected !== null) {
-      if (disCountType === '%') {
-        const disCountP = (tuitionFee * (100 - discount)) / 100
-        setActualAmount(disCountP)
-      } else {
-        const disCountP = tuitionFee - discount
-        setActualAmount(disCountP)
-      }
-    } else {
-      setActualAmount(0)
-    }
-  }, [subjectSelected, discount, disCountType])
-
-  const onSubmit = data => {
-    console.log(data)
-    // createStudentPayment({
-    //   variables: {
-    //     studentId: parseInt(studentId),
-    //     campus: '신촌',
-    //     seScore: parseInt(data.seScore),
-    //     subject: data.subject.trim(),
-    //     tuitionFee: subjectSelected.fee,
-    //     processingManagerId: parseInt(data.processingManagerId),
-    //     subjectId: subjectSelected.id,
-    //     situationReport:
-    //       data.situationReport === undefined
-    //         ? false
-    //         : data.situationReport === '동의'
-    //         ? true
-    //         : false,
-    //     paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
-    //     actualAmount:
-    //       data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-    //     discountAmount:
-    //       data.discountAmount === '' ? null : String(discount) + disCountType,
-    //   },
-    //   onCompleted: () => {
-    //     updateStudentDuedate({
-    //       variables: {
-    //         editStudentId: parseInt(studentId),
-    //         dueDate: data.dueDate === undefined ? null : data.dueDate,
-    //       },
-    //       onCompleted: () => {
-    //         alert('등록되었습니다.')
-    //       },
-    //     })
-    //   },
-    // })
-
-    // userLogs(`${studentData.name} 수강신청`)
-  }
   const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -341,20 +240,6 @@ export default function StudentsWriteCourse() {
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
     }
-  }
-
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
-  const handleDisCountChange = e => {
-    setDisCountType(e.target.value)
-  }
-  const handleSubManagerChange = e => {
-    setSubjectManager(e.target.value)
   }
 
   return (
@@ -419,437 +304,14 @@ export default function StudentsWriteCourse() {
             </DetailDiv>
           </DetailBox>
 
-          {studentPaymentData !== null && (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <DetailBox>
-                <DetailDiv>
-                  <AreaTitle>
-                    <h4>수강료 정보</h4>
-                  </AreaTitle>
-                  <FlexBox>
-                    <AreaSmallBox style={{ minWidth: '20%' }}>
-                      <Input
-                        readOnly
-                        labelPlacement="outside"
-                        placeholder="과정코드"
-                        value={
-                          subjectSelected !== null &&
-                          subjectSelected?.subjectCode !== null
-                            ? String(subjectSelected?.subjectCode)
-                            : ''
-                        }
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="과정코드"
-                        className="w-full"
-                      />
-                    </AreaSmallBox>
-                    <AreaBox>
-                      <Controller
-                        control={control}
-                        name="subject"
-                        rules={{
-                          required: {
-                            value: true,
-                            message: '수강 과정을 선택해주세요.',
-                          },
-                        }}
-                        render={({ field }) => (
-                          <>
-                            <Textarea
-                              readOnly
-                              value={subjectSelected?.subjectName || ''}
-                              label={
-                                <FilterLabel>
-                                  과정 선택<span>*</span>
-                                </FilterLabel>
-                              }
-                              labelPlacement="outside"
-                              className="max-w-full"
-                              variant="bordered"
-                              minRows={1}
-                              onClick={sbjOpen}
-                              {...register('subject')}
-                            />
-                          </>
-                        )}
-                      />
-                    </AreaBox>
-                    <AreaSmallBox>
-                      <RadioBox>
-                        <Controller
-                          control={control}
-                          name="situationReport"
-                          defaultValue={studentPaymentData?.situationReport}
-                          render={({ field }) => (
-                            <RadioGroup
-                              label={
-                                <FilterLabel>교육상황보고여부</FilterLabel>
-                              }
-                              defaultValue={'비동의'}
-                              orientation="horizontal"
-                              className="gap-[0.65rem]"
-                              onValueChange={value => {
-                                field.onChange(value)
-                              }}
-                            >
-                              <Radio key={'동의'} value={'동의'}>
-                                동의
-                              </Radio>
-                              <Radio key={'비동의'} value={'비동의'}>
-                                비동의
-                              </Radio>
-                            </RadioGroup>
-                          )}
-                        />
-                      </RadioBox>
-                    </AreaSmallBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <Input
-                        labelPlacement="outside"
-                        placeholder="선별테스트 점수"
-                        variant="bordered"
-                        radius="md"
-                        type="number"
-                        defaultValue={String(studentPaymentData?.seScore)}
-                        endContent={<InputText>/ 100</InputText>}
-                        label="선별테스트 점수"
-                        className="w-full"
-                        {...register('seScore', {
-                          min: {
-                            value: 0,
-                            message: '0 이상의 숫자를 작성해주세요.',
-                          },
-                          max: {
-                            value: 100,
-                            message: '100 이하의 숫자를 작성해주세요.',
-                          },
-                        })}
-                      />
-                      {errors.phoneNum2 && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
-                          {String(errors.phoneNum2.message)}
-                        </p>
-                      )}
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        isReadOnly
-                        labelPlacement="outside"
-                        placeholder="수강 구분"
-                        value={
-                          subjectSelected !== null
-                            ? subjectSelected?.subDiv
-                            : ''
-                        }
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="수강 구분"
-                        className="w-full"
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        readOnly
-                        labelPlacement="outside"
-                        placeholder="수강료"
-                        value={
-                          subjectSelected?.fee === null ||
-                          subjectSelected?.fee === undefined
-                            ? ''
-                            : feeFormet(subjectSelected?.fee)
-                        }
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="수강료"
-                        className="w-full"
-                        {...register('tuitionFee')}
-                      />
-                    </AreaBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <Input
-                        labelPlacement="outside"
-                        placeholder="할인"
-                        variant="bordered"
-                        radius="md"
-                        type="text"
-                        label="할인"
-                        defaultValue={String(discount)}
-                        onChange={e => {
-                          register('discountAmount').onChange(e)
-                          setDiscount(parseInt(e.target.value))
-                        }}
-                        endContent={
-                          <SelectBox
-                            onChange={handleDisCountChange}
-                            value={disCountType}
-                          >
-                            <option value="%">%</option>
-                            <option value="원">원</option>
-                          </SelectBox>
-                        }
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        labelPlacement="outside"
-                        placeholder="할인된 수강료"
-                        variant="bordered"
-                        radius="md"
-                        type="text"
-                        label="할인된 수강료"
-                        defaultValue={
-                          studentPaymentData?.actualAmount === null
-                            ? '0'
-                            : feeFormet(studentPaymentData?.actualAmount)
-                        }
-                        onChange={e => {
-                          register('actualAmount').onChange(e)
-                        }}
-                        {...register('actualAmount')}
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        isReadOnly
-                        labelPlacement="outside"
-                        placeholder="수납액"
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="수납액"
-                        defaultValue={
-                          studentPaymentData?.amountReceived === null
-                            ? '0'
-                            : feeFormet(studentPaymentData?.amountReceived)
-                        }
-                        {...register('amountReceived')}
-                      />
-                    </AreaBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <Input
-                        isReadOnly
-                        labelPlacement="outside"
-                        placeholder="현금결제액"
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="현금결제액"
-                        defaultValue={
-                          studentPaymentData?.cashAmount === null
-                            ? '0'
-                            : feeFormet(studentPaymentData?.cashAmount)
-                        }
-                        {...register('cashAmount')}
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        isReadOnly
-                        labelPlacement="outside"
-                        placeholder="카드 결제액"
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="카드 결제액"
-                        defaultValue={
-                          studentPaymentData?.cardAmount === null
-                            ? '0'
-                            : feeFormet(studentPaymentData?.cardAmount)
-                        }
-                        {...register('cardAmount')}
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        isReadOnly
-                        labelPlacement="outside"
-                        placeholder="미수납액"
-                        variant="faded"
-                        radius="md"
-                        type="text"
-                        label="미수납액"
-                        defaultValue={
-                          studentPaymentData?.unCollectedAmount === null
-                            ? '0'
-                            : feeFormet(studentPaymentData?.unCollectedAmount)
-                        }
-                        {...register('unCollectedAmount')}
-                      />
-                    </AreaBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <DatePickerBox>
-                        <Controller
-                          control={control}
-                          name="paymentDate"
-                          rules={{
-                            required: {
-                              value: true,
-                              message: '결제예정일을 선택해주세요.',
-                            },
-                          }}
-                          render={({ field }) => (
-                            <DatePicker
-                              locale="ko"
-                              showYearDropdown
-                              selected={
-                                paymentDate === null
-                                  ? null
-                                  : new Date(paymentDate)
-                              }
-                              placeholderText="날짜를 선택해주세요."
-                              isClearable
-                              onChange={date => {
-                                field.onChange(date)
-                                setPaymentDate(date)
-                              }}
-                              ref={field.ref}
-                              dateFormat="yyyy/MM/dd"
-                              customInput={
-                                <Input
-                                  label={
-                                    <FilterLabel>
-                                      결제일자<span>*</span>
-                                    </FilterLabel>
-                                  }
-                                  labelPlacement="outside"
-                                  type="text"
-                                  variant="bordered"
-                                  id="date"
-                                  startContent={<i className="xi-calendar" />}
-                                />
-                              }
-                            />
-                          )}
-                        />
-                      </DatePickerBox>
-                    </AreaBox>
-                    <AreaBox>
-                      <DatePickerBox>
-                        <Controller
-                          control={control}
-                          name="dueDate"
-                          render={({ field }) => (
-                            <DatePicker
-                              locale="ko"
-                              showYearDropdown
-                              selected={
-                                dueDate === null ? null : new Date(dueDate)
-                              }
-                              placeholderText="날짜를 선택해주세요."
-                              isClearable
-                              onChange={date => {
-                                field.onChange(date)
-                                setDueDate(date)
-                              }}
-                              ref={field.ref}
-                              dateFormat="yyyy/MM/dd"
-                              customInput={
-                                <Input
-                                  label="수강예정일"
-                                  labelPlacement="outside"
-                                  type="text"
-                                  variant="bordered"
-                                  id="date"
-                                  startContent={<i className="xi-calendar" />}
-                                />
-                              }
-                            />
-                          )}
-                        />
-                      </DatePickerBox>
-                    </AreaBox>
-                    <AreaBox>
-                      <Controller
-                        control={control}
-                        name="processingManagerId"
-                        render={({ field, fieldState }) => (
-                          <Select
-                            labelPlacement="outside"
-                            label="수강 담당자"
-                            placeholder=" "
-                            className="w-full"
-                            variant="bordered"
-                            selectedKeys={[subjectManager]}
-                            onChange={value => {
-                              field.onChange(value)
-                              handleSubManagerChange(value)
-                            }}
-                          >
-                            <SelectItem
-                              key={'담당자 지정필요'}
-                              value={'담당자 지정필요'}
-                            >
-                              {'담당자 지정필요'}
-                            </SelectItem>
-                            {managerList
-                              ?.filter(
-                                manager =>
-                                  manager.mGrade > 0 && manager.mGrade < 3,
-                              )
-                              .map(item => (
-                                <SelectItem key={item.id} value={item.id}>
-                                  {item.mUsername}
-                                </SelectItem>
-                              ))}
-                          </Select>
-                        )}
-                      />
-                    </AreaBox>
-                  </FlexBox>
-                </DetailDiv>
-              </DetailBox>
-              <DetailBox>
-                <DetailDiv>
-                  <BtnBox>
-                    <Button2
-                      buttonType="submit"
-                      width="100%"
-                      height="2.5rem"
-                      typeBorder={true}
-                      fontColor="#fff"
-                      bgColor="#007de9"
-                    >
-                      등록
-                    </Button2>
-                    <Button2
-                      buttonType="button"
-                      width="100%"
-                      height="2.5rem"
-                      fontColor="#007de9"
-                      bgColor="#fff"
-                      borderColor="#007de9"
-                      typeBorder={true}
-                      onClick={() => router.back()}
-                    >
-                      뒤로가기
-                    </Button2>
-                  </BtnBox>
-                </DetailDiv>
-              </DetailBox>
-            </form>
-          )}
+          <PaymentDetail
+            studentData={studentData}
+            managerList={managerList}
+            subjectData={studentSubjectData}
+            paymentData={studentPaymentData}
+          />
         </ConArea>
       </MainWrap>
-      <SubjectModal
-        subjectSelected={subjectSelected}
-        setSubjectSelected={setSubjectSelected}
-        sbjIsOpen={sbjIsOpen}
-        sbjClose={sbjClose}
-        setValue={setValue}
-        radio={true}
-      />
     </>
   )
 }

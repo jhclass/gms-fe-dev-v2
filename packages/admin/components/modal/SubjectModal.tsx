@@ -180,6 +180,7 @@ export default function SubjectModal({
 
   const handleSbjChange = values => {
     setSubjectSelected(values)
+    console.log(values)
   }
 
   const clickSbjSubmit = () => {
@@ -278,7 +279,7 @@ export default function SubjectModal({
                         subjectList?.result.map((item, index) => (
                           <TableItem key={index}>
                             <TableRow>
-                              <Radio key={item.id} value={item}>
+                              <Radio key={item.id} value={item.id}>
                                 <SubjectItem tableData={item} />
                               </Radio>
                             </TableRow>
