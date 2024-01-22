@@ -180,7 +180,6 @@ export default function SubjectModal({
 
   const handleSbjChange = values => {
     setSubjectSelected(values)
-    console.log(values)
   }
 
   const clickSbjSubmit = () => {
