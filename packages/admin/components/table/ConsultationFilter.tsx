@@ -5,6 +5,8 @@ import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
+import { consultPageState } from '@/lib/recoilAtoms'
+import { useRecoilState } from 'recoil'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -218,7 +220,7 @@ export default function ConsolutationFilterTable({
   studentFilter,
   setStudentFilter,
 }) {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)

@@ -591,7 +591,7 @@ export default function ConsultFillter({
                     onValueChange={handleProgressChange}
                   >
                     {Object.entries(progressStatus)
-                      .filter(([key]) => key !== '110' && key !== '60')
+                      .filter(([key]) => key !== '110')
                       .map(([key, value]) => (
                         <ChipCheckbox key={key} value={key}>
                           {value.name}
