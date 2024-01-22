@@ -45,16 +45,11 @@ const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
 const Logo = styled(motion.h1)<{ $navOpen: boolean }>`
   display: flex;
   align-items: center;
-  /* justify-content: ${props => (props.$navOpen ? 'start' : 'center')}; */
   justify-content: start;
   width: 100%;
   height: 4rem;
   flex-shrink: 0;
   overflow: hidden;
-
-  @media screen and (max-width: 1024px) {
-    /* justify-content: start; */
-  }
 `
 const LogoImg = styled(motion.img)<{ $navOpen: boolean }>`
   max-width: ${props => (props.$navOpen ? 'none' : '100%')};

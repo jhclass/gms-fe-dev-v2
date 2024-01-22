@@ -79,6 +79,7 @@ export const progressStatusState = atom({
       name: '미처리',
       color: '#FF5900',
     },
+    // 60,110 고정
     //   color: '#ff8d4a',
     //   color: '#c9ab00',
     //   color: '#7dce00',
