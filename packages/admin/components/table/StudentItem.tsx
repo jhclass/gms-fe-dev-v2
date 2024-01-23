@@ -229,7 +229,9 @@ export default function StudentsItem(props) {
               </Tprogress>
               <TsubDiv>
                 <EllipsisBox>
-                  {student.subject[0].subDiv ? student.subject[0].subDiv : '-'}
+                  {student.subject[0]?.subDiv
+                    ? student.subject[0]?.subDiv
+                    : '-'}
                 </EllipsisBox>
               </TsubDiv>
               <Tbirthday>
@@ -242,8 +244,8 @@ export default function StudentsItem(props) {
               </Tname>
               <Tsubject>
                 <EllipsisBox>
-                  {student.subject[0].subjectName
-                    ? student.subject[0].subjectName
+                  {student.subject[0]?.subjectName
+                    ? student.subject[0]?.subjectName
                     : '-'}
                 </EllipsisBox>
               </Tsubject>
