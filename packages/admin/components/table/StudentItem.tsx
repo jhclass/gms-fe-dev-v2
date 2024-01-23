@@ -208,7 +208,6 @@ export default function StudentsItem(props) {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
-
   return (
     <>
       <TableItem>
@@ -230,7 +229,7 @@ export default function StudentsItem(props) {
               </Tprogress>
               <TsubDiv>
                 <EllipsisBox>
-                  {student.subject.subDiv ? student.subject.subDiv : '-'}
+                  {student.subject[0].subDiv ? student.subject[0].subDiv : '-'}
                 </EllipsisBox>
               </TsubDiv>
               <Tbirthday>
@@ -243,8 +242,8 @@ export default function StudentsItem(props) {
               </Tname>
               <Tsubject>
                 <EllipsisBox>
-                  {student.subject.subjectName
-                    ? student.subject.subjectName
+                  {student.subject[0].subjectName
+                    ? student.subject[0].subjectName
                     : '-'}
                 </EllipsisBox>
               </Tsubject>
