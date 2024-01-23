@@ -18,6 +18,8 @@ import {
   SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
+import CreateStudentMemo from '@/components/form/CreateStudentMemo'
+import StudentMemo from '@/components/form/StudentMemo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -86,8 +88,13 @@ const AreaTitle = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  width: 100%;
 `
-const AreaSmallBox = styled.div``
+const AreaSmallBox = styled.div`
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
+`
 
 const RadioBox = styled.div`
   display: flex;
@@ -915,22 +922,28 @@ export default function StudentsWrite() {
                 </DetailDiv>
               </DetailBox>
             )} */}
-            {memoList !== null && (
-              <DetailBox>
-                <DetailDiv>
-                  <CreateMemo />
+
+            <DetailBox>
+              <DetailDiv>
+                <CreateStudentMemo
+                  setMemoList={setMemoList}
+                  studentId={studentData?.id}
+                />
+                {memoList && (
                   <MemoList>
-                    <MemoItem>
-                      <ConsolutMemo
-                        item={''}
-                        setMemoList={[]}
-                        studentId={1}
-                      ></ConsolutMemo>
-                    </MemoItem>
+                    {memoList?.map((item, index) => (
+                      <MemoItem key={index}>
+                        <StudentMemo
+                          item={item}
+                          setMemoList={setMemoList}
+                          studentId={studentData?.id}
+                        />
+                      </MemoItem>
+                    ))}
                   </MemoList>
-                </DetailDiv>
-              </DetailBox>
-            )}
+                )}
+              </DetailDiv>
+            </DetailBox>
           </ConArea>
         </MainWrap>
       )}

@@ -146,7 +146,7 @@ export default function SubjectModal({
   subjectSelected,
   setSubjectSelected,
   radio = false,
-  setSbjectSelectedId = null,
+  setSubjectSelectedData = null,
 }) {
   const router = useRouter()
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
@@ -183,6 +183,17 @@ export default function SubjectModal({
   }
 
   const clickSbjSubmit = () => {
+    if (radio) {
+      searchSubjectMutation({
+        variables: {
+          searchSubjectId: parseInt(subjectSelected),
+        },
+        onCompleted: resData => {
+          const { result } = resData.searchSubject || {}
+          setSubjectSelectedData(result[0])
+        },
+      })
+    }
     setValue('subject', subjectSelected, { shouldDirty: true })
     sbjClose()
   }
@@ -195,7 +206,6 @@ export default function SubjectModal({
     setSubjectSearch(null)
     reset()
   }
-
   return (
     <>
       <Modal size={'2xl'} isOpen={sbjIsOpen} onClose={sbjClose}>
@@ -260,7 +270,7 @@ export default function SubjectModal({
                 <ScrollShadow orientation="horizontal" className="scrollbar">
                   {radio ? (
                     <RadioGroup
-                      value={subjectSelected || ''}
+                      value={String(subjectSelected) || ''}
                       onValueChange={handleSbjChange}
                       classNames={{
                         wrapper: 'gap-0',
@@ -278,7 +288,7 @@ export default function SubjectModal({
                         subjectList?.result.map((item, index) => (
                           <TableItem key={index}>
                             <TableRow>
-                              <Radio key={item.id} value={item.id}>
+                              <Radio key={item.id} value={String(item.id)}>
                                 <SubjectItem tableData={item} />
                               </Radio>
                             </TableRow>

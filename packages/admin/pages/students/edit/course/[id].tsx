@@ -176,26 +176,6 @@ export default function StudentsWriteCourse() {
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
-  const [subjectSelected, setSubjectSelected] = useState(null)
-  const [disCountType, setDisCountType] = useState(null)
-  const [discount, setDiscount] = useState(null)
-  const [actualAmount, setActualAmount] = useState(0)
-  const [paymentDate, setPaymentDate] = useState(null)
-  const [dueDate, setDueDate] = useState(null)
-  const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
-
-  const extractNumberAndUnit = inputString => {
-    const regex = /(\d+(\.\d+)?)([^\d]+)/
-    const match = inputString.match(regex)
-    if (match) {
-      var number = parseFloat(match[1])
-      var unit = match[3].trim()
-      return {
-        number: number,
-        unit: unit,
-      }
-    }
-  }
 
   useEffect(() => {
     searchStudentPayment({
@@ -216,7 +196,7 @@ export default function StudentsWriteCourse() {
       },
       onCompleted: resData => {
         const { result } = resData.searchSubject || {}
-        // setStudentSubjectData(result[0])
+        setStudentSubjectData(result[0])
       },
     })
   }, [studentData])

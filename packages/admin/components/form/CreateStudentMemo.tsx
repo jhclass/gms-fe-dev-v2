@@ -4,8 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
-  CREATE_CONSULTATION_MEMO_MUTATION,
-  SEARCH_STUDENTSTATE_MUTATION,
+  CREATE_STUDENT_MEMO_MUTATION,
+  SEARCH_STUDENT_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
@@ -72,10 +72,8 @@ const MemoBtn = styled.div`
 export default function CreateMemo(props) {
   const studentId = props.studentId
   const { userLogs } = useUserLogsMutation()
-  const [createMemo] = useMutation(CREATE_CONSULTATION_MEMO_MUTATION)
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-  )
+  const [createMemo] = useMutation(CREATE_STUDENT_MEMO_MUTATION)
+  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MEMO_MUTATION)
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { content: '', studentStateId: studentId },
   })
@@ -86,23 +84,21 @@ export default function CreateMemo(props) {
       createMemo({
         variables: {
           content: data.content.trim(),
-          studentStateId: studentId,
+          studentId: studentId,
         },
         onCompleted: () => {
           props.setMemoList([])
-          searchStudentStateMutation({
+          searchStudentMutation({
             variables: {
-              searchStudentStateId: parseInt(studentId),
+              searchStudentId: parseInt(studentId),
             },
             onCompleted: data => {
-              props.setMemoList(
-                data.searchStudentState.studentState[0].consultationMemo,
-              )
+              props.setMemoList(data.searchStudent.student[0].studentMemo)
             },
           })
         },
       })
-      userLogs(`상담학생 ID:${studentId} 메모 등록`)
+      userLogs(`수강생 ID:${studentId} 메모 등록`)
     }
   }
   useEffect(() => {

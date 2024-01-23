@@ -6,7 +6,9 @@ import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
+import { getMonth, getYear } from 'date-fns'
 registerLocale('ko', ko)
+const _ = require('lodash')
 import {
   Checkbox,
   CheckboxGroup,
@@ -138,6 +140,21 @@ export default function StudentsWrite() {
   const { register, control, handleSubmit, formState } = useForm()
   const { errors } = formState
   const [birthdayDate, setBirthdayDate] = useState(null)
+  const years = _.range(1970, getYear(new Date()) + 1, 1)
+  const months = [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월',
+  ]
 
   const onSubmit = data => {
     createStudent({
@@ -302,11 +319,97 @@ export default function StudentsWrite() {
                         }}
                         render={({ field }) => (
                           <DatePicker
+                            renderCustomHeader={({
+                              date,
+                              changeYear,
+                              changeMonth,
+                              decreaseMonth,
+                              increaseMonth,
+                              prevMonthButtonDisabled,
+                              nextMonthButtonDisabled,
+                            }) => (
+                              <div
+                                style={{
+                                  margin: 10,
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  gap: '0.5rem',
+                                }}
+                              >
+                                <button
+                                  onClick={decreaseMonth}
+                                  disabled={prevMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-left" />
+                                </button>
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  defaultSelectedKeys={[String(getYear(date))]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeYear(Number(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {years.map(option => (
+                                    <SelectItem
+                                      key={String(option)}
+                                      value={String(option)}
+                                    >
+                                      {String(option)}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  selectedKeys={[months[getMonth(date)]]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeMonth(months.indexOf(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {months.map(option => (
+                                    <SelectItem key={option} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <button
+                                  onClick={increaseMonth}
+                                  disabled={nextMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-right" />
+                                </button>
+                              </div>
+                            )}
                             locale="ko"
                             showYearDropdown
                             selected={
                               birthdayDate === null
-                                ? null
+                                ? new Date('2000')
                                 : new Date(birthdayDate)
                             }
                             placeholderText="날짜를 선택해주세요."

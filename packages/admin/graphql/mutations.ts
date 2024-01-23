@@ -635,6 +635,27 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
     }
   }
 `
+export const SEARCH_STUDENT_MEMO_MUTATION = gql`
+  mutation SearchStudent($searchStudentId: Int) {
+    searchStudent(id: $searchStudentId) {
+      error
+      message
+      ok
+      student {
+        studentMemo {
+          content
+          id
+          manageUser {
+            mUsername
+            mUserId
+          }
+          manageUserId
+        }
+        id
+      }
+    }
+  }
+`
 export const SEARCH_STUDENT_BASIC_MUTATION = gql`
   mutation SearchStudent($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
@@ -817,6 +838,34 @@ export const UPDATE_STUDENT_DUEDATE_MUTATION = gql`
       ok
       error
       message
+    }
+  }
+`
+// StudentMemo
+export const CREATE_STUDENT_MEMO_MUTATION = gql`
+  mutation Mutation($content: String!, $studentId: Int!) {
+    createStudentMemo(content: $content, studentId: $studentId) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const UPDATE_STUDENT_MEMO_MUTATION = gql`
+  mutation EditStudentMemo($editStudentMemoId: Int!, $content: String!) {
+    editStudentMemo(id: $editStudentMemoId, content: $content) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_STUDENT_MEMO_MUTATION = gql`
+  mutation DeleteStudentMemo($deleteStudentMemoId: Int!) {
+    deleteStudentMemo(id: $deleteStudentMemoId) {
+      error
+      message
+      ok
     }
   }
 `
