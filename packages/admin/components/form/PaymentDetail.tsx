@@ -37,6 +37,7 @@ import {
   SEARCH_SUBJECT_BASIC_MUTATION,
   SEARCH_SUBJECT_MUTATION,
   UPDATE_STUDENT_DUEDATE_MUTATION,
+  UPDATE_STUDENT_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
 
 const ConArea = styled.div`
@@ -159,10 +160,29 @@ export default function StudentsWriteCourse({
 }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
+  const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
   const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const { register, setValue, control, handleSubmit, formState } = useForm()
+  const { register, setValue, control, handleSubmit, formState } = useForm({
+    defaultValues: {
+      editStudentPaymentId: paymentData?.id,
+      seScore: paymentData?.seScore,
+      subject: subjectData?.subjectName,
+      tuitionFee: subjectData?.fee,
+      actualAmount: paymentData?.actualAmount,
+      unCollectedAmount: paymentData?.unCollectedAmount,
+      paymentDate: paymentData?.paymentDate,
+      processingManagerId: paymentData?.processingManagerId,
+      situationReport: paymentData?.situationReport,
+      subjectId: subjectData?.id,
+      amountReceived: paymentData?.amountReceived,
+      cashAmount: paymentData?.cashAmount,
+      cardAmount: paymentData?.cardAmount,
+      discountAmount: paymentData?.discountAmount,
+      dueDate: studentData?.dueDate,
+    },
+  })
+
   const { errors } = formState
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
@@ -268,40 +288,48 @@ export default function StudentsWriteCourse({
   }
 
   const onSubmit = data => {
-    console.log(data)
-    // createStudentPayment({
-    //   variables: {
-    //     studentId: parseInt(studentId),
-    //     campus: '신촌',
-    //     seScore: parseInt(data.seScore),
-    //     subject: data.subject.trim(),
-    //     tuitionFee: subjectSelected.fee,
-    //     processingManagerId: parseInt(data.processingManagerId),
-    //     subjectId: subjectSelected.id,
-    //     situationReport:
-    //       data.situationReport === undefined
-    //         ? false
-    //         : data.situationReport === '동의'
-    //         ? true
-    //         : false,
-    //     paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
-    //     actualAmount:
-    //       data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-    //     discountAmount:
-    //       data.discountAmount === '' ? null : String(discount) + disCountType,
-    //   },
-    //   onCompleted: () => {
-    //     updateStudentDuedate({
-    //       variables: {
-    //         editStudentId: parseInt(studentId),
-    //         dueDate: data.dueDate === undefined ? null : data.dueDate,
-    //       },
-    //       onCompleted: () => {
-    //         alert('등록되었습니다.')
-    //       },
-    //     })
-    //   },
-    // })
+    console.log(typeof paymentData.id, paymentData.id)
+    console.log(typeof studentData.id, studentData.id)
+    updateStudentPayment({
+      variables: {
+        editStudentPaymentId: parseInt(paymentData.id),
+        studentId: parseInt(studentData.id),
+        campus: '신촌',
+        seScore: parseInt(data.seScore),
+        subject:
+          subjectSelectedData === null
+            ? data.subject.trim()
+            : subjectSelectedData.subjectName.trim(),
+        tuitionFee:
+          subjectSelectedData === null
+            ? parseInt(data.tuitionFee)
+            : parseInt(subjectSelectedData.fee),
+        processingManagerId: parseInt(subjectManager),
+        subjectId: parseInt(subjectSelected),
+        situationReport:
+          data.situationReport === undefined
+            ? false
+            : data.situationReport === '동의'
+            ? true
+            : false,
+        paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
+        actualAmount: parseInt(data.actualAmount),
+        discountAmount:
+          data.discountAmount === '' ? null : String(discount) + disCountType,
+      },
+      onCompleted: data => {
+        console.log(data)
+        updateStudentDuedate({
+          variables: {
+            editStudentId: parseInt(studentData.id),
+            dueDate: data.dueDate === undefined ? null : data.dueDate,
+          },
+          onCompleted: () => {
+            alert('등록되었습니다.')
+          },
+        })
+      },
+    })
 
     // userLogs(`${studentData.name} 수강신청`)
   }
@@ -455,9 +483,9 @@ export default function StudentsWriteCourse({
                       },
                     })}
                   />
-                  {errors.phoneNum2 && (
+                  {errors.seScore && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.phoneNum2.message)}
+                      {String(errors.seScore.message)}
                     </p>
                   )}
                 </AreaBox>
@@ -506,7 +534,7 @@ export default function StudentsWriteCourse({
                     radius="md"
                     type="text"
                     label="할인"
-                    defaultValue={extractNumber(paymentData.discountAmount)}
+                    defaultValue={extractNumber(paymentData?.discountAmount)}
                     onChange={e => {
                       register('discountAmount').onChange(e)
                       setDiscount(parseInt(e.target.value))
@@ -530,8 +558,8 @@ export default function StudentsWriteCourse({
                     radius="md"
                     type="text"
                     label="할인된 수강료"
-                    // defaultValue={feeFormet(paymentData?.actualAmount)}
-                    // value={feeFormet(actualAmount)}
+                    defaultValue={feeFormet(paymentData?.actualAmount)}
+                    value={feeFormet(actualAmount)}
                     onChange={e => {
                       register('actualAmount').onChange(e)
                     }}

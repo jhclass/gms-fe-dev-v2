@@ -704,6 +704,7 @@ export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
         id
         lectureAssignment
         name
+        campus
         writer
         updatedAt
         phoneNum1
@@ -793,6 +794,49 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       ok
       error
       message
+    }
+  }
+`
+export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
+  mutation EditStudentPayment(
+    $editStudentPaymentId: Int!
+    $studentId: Int
+    $campus: String
+    $seScore: Int
+    $subject: String
+    $tuitionFee: Int
+    $discountAmount: String
+    $cashAmount: Int
+    $cardAmount: Int
+    $actualAmount: Int
+    $unCollectedAmount: Int
+    $paymentDate: String
+    $processingManagerId: Int
+    $subjectId: Int
+    $situationReport: Boolean
+    $amountReceived: Int
+  ) {
+    editStudentPayment(
+      id: $editStudentPaymentId
+      studentId: $studentId
+      campus: $campus
+      seScore: $seScore
+      subject: $subject
+      tuitionFee: $tuitionFee
+      discountAmount: $discountAmount
+      cashAmount: $cashAmount
+      cardAmount: $cardAmount
+      actualAmount: $actualAmount
+      unCollectedAmount: $unCollectedAmount
+      paymentDate: $paymentDate
+      processingManagerId: $processingManagerId
+      subjectId: $subjectId
+      situationReport: $situationReport
+      amountReceived: $amountReceived
+    ) {
+      error
+      message
+      ok
     }
   }
 `
