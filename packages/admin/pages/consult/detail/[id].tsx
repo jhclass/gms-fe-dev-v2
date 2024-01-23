@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { getMonth, getYear } from 'date-fns'
+import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
@@ -39,6 +39,7 @@ import CreateMemo from '@/components/form/CreateMemo'
 import useMmeQuery from '@/utils/mMe'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
   width: 100%;
@@ -223,20 +224,6 @@ export default function ConsultDetail() {
   const [manager, setManager] = useState('담당자 지정필요')
   const [memoList, setMemoList] = useState([])
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const months = [
-    '1월',
-    '2월',
-    '3월',
-    '4월',
-    '5월',
-    '6월',
-    '7월',
-    '8월',
-    '9월',
-    '10월',
-    '11월',
-    '12월',
-  ]
 
   useEffect(() => {
     searchStudentStateMutation({
@@ -757,82 +744,16 @@ export default function ConsultDetail() {
                             prevMonthButtonDisabled,
                             nextMonthButtonDisabled,
                           }) => (
-                            <div
-                              style={{
-                                margin: 10,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                gap: '0.5rem',
-                              }}
-                            >
-                              <button
-                                onClick={decreaseMonth}
-                                disabled={prevMonthButtonDisabled}
-                              >
-                                <i className="xi-angle-left" />
-                              </button>
-                              <Select
-                                label={
-                                  <span
-                                    style={{
-                                      display: 'none',
-                                    }}
-                                  ></span>
-                                }
-                                labelPlacement="outside"
-                                defaultSelectedKeys={[String(getYear(date))]}
-                                variant="underlined"
-                                onChange={({ target: { value } }) =>
-                                  changeYear(Number(value))
-                                }
-                                style={{
-                                  borderBottom: '1px solid #71717a',
-                                  width: '6rem',
-                                }}
-                              >
-                                {years.map(option => (
-                                  <SelectItem
-                                    key={String(option)}
-                                    value={String(option)}
-                                  >
-                                    {String(option)}
-                                  </SelectItem>
-                                ))}
-                              </Select>
-
-                              <Select
-                                label={
-                                  <span
-                                    style={{
-                                      display: 'none',
-                                    }}
-                                  ></span>
-                                }
-                                labelPlacement="outside"
-                                selectedKeys={[months[getMonth(date)]]}
-                                variant="underlined"
-                                onChange={({ target: { value } }) =>
-                                  changeMonth(months.indexOf(value))
-                                }
-                                style={{
-                                  borderBottom: '1px solid #71717a',
-                                  width: '6rem',
-                                }}
-                              >
-                                {months.map(option => (
-                                  <SelectItem key={option} value={option}>
-                                    {option}
-                                  </SelectItem>
-                                ))}
-                              </Select>
-
-                              <button
-                                onClick={increaseMonth}
-                                disabled={nextMonthButtonDisabled}
-                              >
-                                <i className="xi-angle-right" />
-                              </button>
-                            </div>
+                            <DatePickerHeader
+                              rangeYears={years}
+                              clickDate={date}
+                              changeYear={changeYear}
+                              changeMonth={changeMonth}
+                              decreaseMonth={decreaseMonth}
+                              increaseMonth={increaseMonth}
+                              prevMonthButtonDisabled={prevMonthButtonDisabled}
+                              nextMonthButtonDisabled={nextMonthButtonDisabled}
+                            />
                           )}
                           locale="ko"
                           showYearDropdown
@@ -878,82 +799,16 @@ export default function ConsultDetail() {
                             prevMonthButtonDisabled,
                             nextMonthButtonDisabled,
                           }) => (
-                            <div
-                              style={{
-                                margin: 10,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                gap: '0.5rem',
-                              }}
-                            >
-                              <button
-                                onClick={decreaseMonth}
-                                disabled={prevMonthButtonDisabled}
-                              >
-                                <i className="xi-angle-left" />
-                              </button>
-                              <Select
-                                label={
-                                  <span
-                                    style={{
-                                      display: 'none',
-                                    }}
-                                  ></span>
-                                }
-                                labelPlacement="outside"
-                                defaultSelectedKeys={[String(getYear(date))]}
-                                variant="underlined"
-                                onChange={({ target: { value } }) =>
-                                  changeYear(Number(value))
-                                }
-                                style={{
-                                  borderBottom: '1px solid #71717a',
-                                  width: '6rem',
-                                }}
-                              >
-                                {years.map(option => (
-                                  <SelectItem
-                                    key={String(option)}
-                                    value={String(option)}
-                                  >
-                                    {String(option)}
-                                  </SelectItem>
-                                ))}
-                              </Select>
-
-                              <Select
-                                label={
-                                  <span
-                                    style={{
-                                      display: 'none',
-                                    }}
-                                  ></span>
-                                }
-                                labelPlacement="outside"
-                                selectedKeys={[months[getMonth(date)]]}
-                                variant="underlined"
-                                onChange={({ target: { value } }) =>
-                                  changeMonth(months.indexOf(value))
-                                }
-                                style={{
-                                  borderBottom: '1px solid #71717a',
-                                  width: '6rem',
-                                }}
-                              >
-                                {months.map(option => (
-                                  <SelectItem key={option} value={option}>
-                                    {option}
-                                  </SelectItem>
-                                ))}
-                              </Select>
-
-                              <button
-                                onClick={increaseMonth}
-                                disabled={nextMonthButtonDisabled}
-                              >
-                                <i className="xi-angle-right" />
-                              </button>
-                            </div>
+                            <DatePickerHeader
+                              rangeYears={years}
+                              clickDate={date}
+                              changeYear={changeYear}
+                              changeMonth={changeMonth}
+                              decreaseMonth={decreaseMonth}
+                              increaseMonth={increaseMonth}
+                              prevMonthButtonDisabled={prevMonthButtonDisabled}
+                              nextMonthButtonDisabled={nextMonthButtonDisabled}
+                            />
                           )}
                           locale="ko"
                           showYearDropdown
