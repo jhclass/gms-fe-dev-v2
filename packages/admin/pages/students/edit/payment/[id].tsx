@@ -6,7 +6,9 @@ import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
+import { getMonth, getYear } from 'date-fns'
 registerLocale('ko', ko)
+const _ = require('lodash')
 import {
   Checkbox,
   CheckboxGroup,
@@ -89,8 +91,13 @@ const AreaTitle = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  width: 100%;
 `
-const AreaSmallBox = styled.div``
+const AreaSmallBox = styled.div`
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
+`
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -167,6 +174,21 @@ export default function StudentsEditPayment() {
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
+  const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const months = [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월',
+  ]
 
   const onSubmit = data => {
     console.log(data)
@@ -346,6 +368,92 @@ export default function StudentsEditPayment() {
                         name="stVisit"
                         render={({ field }) => (
                           <DatePicker
+                            renderCustomHeader={({
+                              date,
+                              changeYear,
+                              changeMonth,
+                              decreaseMonth,
+                              increaseMonth,
+                              prevMonthButtonDisabled,
+                              nextMonthButtonDisabled,
+                            }) => (
+                              <div
+                                style={{
+                                  margin: 10,
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  gap: '0.5rem',
+                                }}
+                              >
+                                <button
+                                  onClick={decreaseMonth}
+                                  disabled={prevMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-left" />
+                                </button>
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  defaultSelectedKeys={[String(getYear(date))]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeYear(Number(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {years.map(option => (
+                                    <SelectItem
+                                      key={String(option)}
+                                      value={String(option)}
+                                    >
+                                      {String(option)}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  selectedKeys={[months[getMonth(date)]]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeMonth(months.indexOf(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {months.map(option => (
+                                    <SelectItem key={option} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <button
+                                  onClick={increaseMonth}
+                                  disabled={nextMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-right" />
+                                </button>
+                              </div>
+                            )}
                             locale="ko"
                             showYearDropdown
                             selected={
@@ -504,6 +612,92 @@ export default function StudentsEditPayment() {
                         name="stVisit"
                         render={({ field }) => (
                           <DatePicker
+                            renderCustomHeader={({
+                              date,
+                              changeYear,
+                              changeMonth,
+                              decreaseMonth,
+                              increaseMonth,
+                              prevMonthButtonDisabled,
+                              nextMonthButtonDisabled,
+                            }) => (
+                              <div
+                                style={{
+                                  margin: 10,
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  gap: '0.5rem',
+                                }}
+                              >
+                                <button
+                                  onClick={decreaseMonth}
+                                  disabled={prevMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-left" />
+                                </button>
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  defaultSelectedKeys={[String(getYear(date))]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeYear(Number(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {years.map(option => (
+                                    <SelectItem
+                                      key={String(option)}
+                                      value={String(option)}
+                                    >
+                                      {String(option)}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  selectedKeys={[months[getMonth(date)]]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeMonth(months.indexOf(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {months.map(option => (
+                                    <SelectItem key={option} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <button
+                                  onClick={increaseMonth}
+                                  disabled={nextMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-right" />
+                                </button>
+                              </div>
+                            )}
                             locale="ko"
                             showYearDropdown
                             selected={
@@ -608,6 +802,92 @@ export default function StudentsEditPayment() {
                         name="stVisit"
                         render={({ field }) => (
                           <DatePicker
+                            renderCustomHeader={({
+                              date,
+                              changeYear,
+                              changeMonth,
+                              decreaseMonth,
+                              increaseMonth,
+                              prevMonthButtonDisabled,
+                              nextMonthButtonDisabled,
+                            }) => (
+                              <div
+                                style={{
+                                  margin: 10,
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  gap: '0.5rem',
+                                }}
+                              >
+                                <button
+                                  onClick={decreaseMonth}
+                                  disabled={prevMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-left" />
+                                </button>
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  defaultSelectedKeys={[String(getYear(date))]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeYear(Number(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {years.map(option => (
+                                    <SelectItem
+                                      key={String(option)}
+                                      value={String(option)}
+                                    >
+                                      {String(option)}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <Select
+                                  label={
+                                    <span
+                                      style={{
+                                        display: 'none',
+                                      }}
+                                    ></span>
+                                  }
+                                  labelPlacement="outside"
+                                  selectedKeys={[months[getMonth(date)]]}
+                                  variant="underlined"
+                                  onChange={({ target: { value } }) =>
+                                    changeMonth(months.indexOf(value))
+                                  }
+                                  style={{
+                                    borderBottom: '1px solid #71717a',
+                                    width: '6rem',
+                                  }}
+                                >
+                                  {months.map(option => (
+                                    <SelectItem key={option} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  ))}
+                                </Select>
+
+                                <button
+                                  onClick={increaseMonth}
+                                  disabled={nextMonthButtonDisabled}
+                                >
+                                  <i className="xi-angle-right" />
+                                </button>
+                              </div>
+                            )}
                             locale="ko"
                             showYearDropdown
                             selected={

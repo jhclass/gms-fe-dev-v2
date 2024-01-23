@@ -3,9 +3,9 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
-  DELETE_CONSULTATION_MEMO_MUTATION,
-  SEARCH_STUDENTSTATE_MUTATION,
-  UPDATE_CONSULTATION_MEMO_MUTATION,
+  DELETE_STUDENT_MEMO_MUTATION,
+  SEARCH_STUDENT_MEMO_MUTATION,
+  UPDATE_STUDENT_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
@@ -134,11 +134,9 @@ export default function ConsultMemo(props) {
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const { userLogs } = useUserLogsMutation()
-  const [deleteMemo] = useMutation(DELETE_CONSULTATION_MEMO_MUTATION)
-  const [updateMemo] = useMutation(UPDATE_CONSULTATION_MEMO_MUTATION)
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-  )
+  const [deleteMemo] = useMutation(DELETE_STUDENT_MEMO_MUTATION)
+  const [updateMemo] = useMutation(UPDATE_STUDENT_MEMO_MUTATION)
+  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MEMO_MUTATION)
   const { register, handleSubmit, control, formState } = useForm({})
   const { isDirty } = formState
   const onDelete = data => {
@@ -146,23 +144,21 @@ export default function ConsultMemo(props) {
     if (isDelete) {
       deleteMemo({
         variables: {
-          deleteConsultationMemoId: data,
+          deleteStudentMemoId: data,
         },
         onCompleted: () => {
           props.setMemoList([])
-          searchStudentStateMutation({
+          searchStudentMutation({
             variables: {
-              searchStudentStateId: parseInt(props.studentId),
+              searchStudentId: parseInt(props.studentId),
             },
             onCompleted: data => {
-              props.setMemoList(
-                data.searchStudentState.studentState[0].consultationMemo,
-              )
+              props.setMemoList(data.searchStudent.student[0].studentMemo)
             },
           })
         },
       })
-      userLogs(`상담학생 id:${data} 메모 삭제`)
+      userLogs(`수강생 id:${data} 메모 삭제`)
     }
   }
 
@@ -170,24 +166,22 @@ export default function ConsultMemo(props) {
     if (isDirty) {
       updateMemo({
         variables: {
-          updateConsultationMemoId: parseInt(data.id),
+          editStudentMemoId: parseInt(data.id),
           content: data.content.trim(),
         },
         onCompleted: () => {
           props.setMemoList([])
-          searchStudentStateMutation({
+          searchStudentMutation({
             variables: {
-              searchStudentStateId: parseInt(props.studentId),
+              searchStudentId: parseInt(props.studentId),
             },
             onCompleted: data => {
-              props.setMemoList(
-                data.searchStudentState.studentState[0].consultationMemo,
-              )
+              props.setMemoList(data.searchStudent.student[0].studentMemo)
             },
           })
         },
       })
-      userLogs(`상담학생 id:${data.id} 메모 수정`)
+      userLogs(`수강생 id:${data.id} 메모 수정`)
     }
   }
 

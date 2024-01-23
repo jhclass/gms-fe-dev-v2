@@ -6,7 +6,9 @@ import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
+import { getMonth, getYear } from 'date-fns'
 registerLocale('ko', ko)
+const _ = require('lodash')
 import {
   Checkbox,
   CheckboxGroup,
@@ -140,21 +142,13 @@ const FilterLabel = styled.p`
 const InputText = styled.span`
   display: inline-block;
   font-size: 0.75rem;
-  width: 2rem;
+  width: 2.5rem;
 `
 const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-`
-const LineBox = styled.div`
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  border-bottom: 2px solid hsl(240 6% 90%);
-  height: 40px;
-  line-height: 40px;
-  font-size: 0.875rem;
 `
 
 export default function StudentsWriteCourse({
@@ -170,12 +164,12 @@ export default function StudentsWriteCourse({
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
   const { register, setValue, control, handleSubmit, formState } = useForm()
   const { errors } = formState
-  const [subjectSelectedId, setSubjectSelectedId] = useState(null)
+  const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [disCountType, setDisCountType] = useState(null)
   const [discount, setDiscount] = useState(null)
-  const [paymentDate, setPaymentDate] = useState(null)
-  const [dueDate, setDueDate] = useState(null)
+  const [paymentDateSelect, setPaymentDateSelect] = useState(null)
+  const [dueDateSelect, setDueDateSelect] = useState(null)
   const [actualAmount, setActualAmount] = useState(0)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const {
@@ -183,7 +177,21 @@ export default function StudentsWriteCourse({
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
-
+  const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const months = [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월',
+  ]
   useEffect(() => {
     if (
       paymentData?.processingManagerId === undefined ||
@@ -206,35 +214,23 @@ export default function StudentsWriteCourse({
       paymentData?.paymentDate === null ||
       paymentData?.paymentDate === undefined
     ) {
-      setPaymentDate(null)
+      setPaymentDateSelect(null)
     } else {
       const date = parseInt(paymentData?.paymentDate)
-      setPaymentDate(date)
+      setPaymentDateSelect(date)
     }
     if (studentData?.dueDate === null || studentData?.dueDate === undefined) {
-      setDueDate(null)
+      setDueDateSelect(null)
     } else {
       const date = parseInt(studentData?.dueDate)
-      setDueDate(date)
+      setDueDateSelect(date)
     }
+    setSubjectSelected(subjectData?.id)
   }, [router, paymentData])
 
   useEffect(() => {
-    searchSubject({
-      variables: {
-        searchSubjectId: parseInt(subjectSelected),
-      },
-      onCompleted: resData => {
-        const { result } = resData.searchSubject || {}
-        // setStudentSubjectData(result[0])
-        setSubjectSelected(result[0])
-      },
-    })
-  }, [subjectSelected])
-
-  useEffect(() => {
-    const tuitionFee = subjectSelected?.fee
-    if (subjectSelected !== null) {
+    if (subjectSelectedData !== null) {
+      const tuitionFee = subjectSelectedData?.fee
       if (disCountType === '%') {
         const disCountP = (tuitionFee * (100 - discount)) / 100
         setActualAmount(disCountP)
@@ -243,9 +239,16 @@ export default function StudentsWriteCourse({
         setActualAmount(disCountP)
       }
     } else {
-      setActualAmount(0)
+      const tuitionFee = subjectData?.fee
+      if (disCountType === '%') {
+        const disCountP = (tuitionFee * (100 - discount)) / 100
+        setActualAmount(disCountP)
+      } else {
+        const disCountP = tuitionFee - discount
+        setActualAmount(disCountP)
+      }
     }
-  }, [subjectSelected, discount, disCountType])
+  }, [subjectSelectedData, discount, disCountType])
 
   const extractNumber = inputString => {
     const regex = /(\d+(\.\d+)?)([^\d]+)/
@@ -339,8 +342,6 @@ export default function StudentsWriteCourse({
     setSubjectManager(e.target.value)
   }
 
-  // console.log(subjectSelected)
-
   return (
     <>
       {paymentData !== null && (
@@ -357,8 +358,8 @@ export default function StudentsWriteCourse({
                     labelPlacement="outside"
                     placeholder="과정코드"
                     value={
-                      subjectSelected?.subjectCode !== undefined
-                        ? String(subjectSelected?.subjectCode)
+                      subjectSelectedData?.subjectCode !== undefined
+                        ? String(subjectSelectedData?.subjectCode)
                         : subjectData?.subjectCode
                     }
                     variant="faded"
@@ -383,8 +384,8 @@ export default function StudentsWriteCourse({
                         <Textarea
                           readOnly
                           value={
-                            subjectSelected?.subjectName !== undefined
-                              ? String(subjectSelected?.subjectName)
+                            subjectSelectedData?.subjectName !== undefined
+                              ? String(subjectSelectedData?.subjectName)
                               : subjectData?.subjectName
                           }
                           label={
@@ -466,8 +467,8 @@ export default function StudentsWriteCourse({
                     labelPlacement="outside"
                     placeholder="수강 구분"
                     value={
-                      subjectSelected?.subDiv !== undefined
-                        ? String(subjectSelected?.subDiv)
+                      subjectSelectedData?.subDiv !== undefined
+                        ? String(subjectSelectedData?.subDiv)
                         : subjectData?.subDiv
                     }
                     variant="faded"
@@ -483,8 +484,8 @@ export default function StudentsWriteCourse({
                     labelPlacement="outside"
                     placeholder="수강료"
                     value={
-                      subjectSelected?.fee !== undefined
-                        ? feeFormet(subjectSelected?.fee)
+                      subjectSelectedData?.fee !== undefined
+                        ? feeFormet(subjectSelectedData?.fee)
                         : feeFormet(subjectData?.fee)
                     }
                     variant="faded"
@@ -520,7 +521,6 @@ export default function StudentsWriteCourse({
                       </SelectBox>
                     }
                   />
-                  {discount}
                 </AreaBox>
                 <AreaBox>
                   <Input
@@ -530,11 +530,8 @@ export default function StudentsWriteCourse({
                     radius="md"
                     type="text"
                     label="할인된 수강료"
-                    defaultValue={
-                      actualAmount !== null
-                        ? feeFormet(actualAmount)
-                        : feeFormet(paymentData?.actualAmount)
-                    }
+                    // defaultValue={feeFormet(paymentData?.actualAmount)}
+                    // value={feeFormet(actualAmount)}
                     onChange={e => {
                       register('actualAmount').onChange(e)
                     }}
@@ -618,24 +615,112 @@ export default function StudentsWriteCourse({
                     <Controller
                       control={control}
                       name="paymentDate"
-                      rules={{
-                        required: {
-                          value: true,
-                          message: '결제예정일을 선택해주세요.',
-                        },
-                      }}
+                      // rules={{
+                      //   required: {
+                      //     value: true,
+                      //     message: '결제예정일을 선택해주세요.',
+                      //   },
+                      // }}
                       render={({ field }) => (
                         <DatePicker
+                          renderCustomHeader={({
+                            date,
+                            changeYear,
+                            changeMonth,
+                            decreaseMonth,
+                            increaseMonth,
+                            prevMonthButtonDisabled,
+                            nextMonthButtonDisabled,
+                          }) => (
+                            <div
+                              style={{
+                                margin: 10,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                              }}
+                            >
+                              <button
+                                onClick={decreaseMonth}
+                                disabled={prevMonthButtonDisabled}
+                              >
+                                <i className="xi-angle-left" />
+                              </button>
+                              <Select
+                                label={
+                                  <span
+                                    style={{
+                                      display: 'none',
+                                    }}
+                                  ></span>
+                                }
+                                labelPlacement="outside"
+                                defaultSelectedKeys={[String(getYear(date))]}
+                                variant="underlined"
+                                onChange={({ target: { value } }) =>
+                                  changeYear(Number(value))
+                                }
+                                style={{
+                                  borderBottom: '1px solid #71717a',
+                                  width: '6rem',
+                                }}
+                              >
+                                {years.map(option => (
+                                  <SelectItem
+                                    key={String(option)}
+                                    value={String(option)}
+                                  >
+                                    {String(option)}
+                                  </SelectItem>
+                                ))}
+                              </Select>
+
+                              <Select
+                                label={
+                                  <span
+                                    style={{
+                                      display: 'none',
+                                    }}
+                                  ></span>
+                                }
+                                labelPlacement="outside"
+                                selectedKeys={[months[getMonth(date)]]}
+                                variant="underlined"
+                                onChange={({ target: { value } }) =>
+                                  changeMonth(months.indexOf(value))
+                                }
+                                style={{
+                                  borderBottom: '1px solid #71717a',
+                                  width: '6rem',
+                                }}
+                              >
+                                {months.map(option => (
+                                  <SelectItem key={option} value={option}>
+                                    {option}
+                                  </SelectItem>
+                                ))}
+                              </Select>
+
+                              <button
+                                onClick={increaseMonth}
+                                disabled={nextMonthButtonDisabled}
+                              >
+                                <i className="xi-angle-right" />
+                              </button>
+                            </div>
+                          )}
                           locale="ko"
                           showYearDropdown
                           selected={
-                            paymentDate === null ? null : new Date(paymentDate)
+                            paymentDateSelect === null
+                              ? null
+                              : new Date(paymentDateSelect)
                           }
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)
-                            setPaymentDate(date)
+                            setPaymentDateSelect(date)
                           }}
                           ref={field.ref}
                           dateFormat="yyyy/MM/dd"
@@ -665,14 +750,104 @@ export default function StudentsWriteCourse({
                       name="dueDate"
                       render={({ field }) => (
                         <DatePicker
+                          renderCustomHeader={({
+                            date,
+                            changeYear,
+                            changeMonth,
+                            decreaseMonth,
+                            increaseMonth,
+                            prevMonthButtonDisabled,
+                            nextMonthButtonDisabled,
+                          }) => (
+                            <div
+                              style={{
+                                margin: 10,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                              }}
+                            >
+                              <button
+                                onClick={decreaseMonth}
+                                disabled={prevMonthButtonDisabled}
+                              >
+                                <i className="xi-angle-left" />
+                              </button>
+                              <Select
+                                label={
+                                  <span
+                                    style={{
+                                      display: 'none',
+                                    }}
+                                  ></span>
+                                }
+                                labelPlacement="outside"
+                                defaultSelectedKeys={[String(getYear(date))]}
+                                variant="underlined"
+                                onChange={({ target: { value } }) =>
+                                  changeYear(Number(value))
+                                }
+                                style={{
+                                  borderBottom: '1px solid #71717a',
+                                  width: '6rem',
+                                }}
+                              >
+                                {years.map(option => (
+                                  <SelectItem
+                                    key={String(option)}
+                                    value={String(option)}
+                                  >
+                                    {String(option)}
+                                  </SelectItem>
+                                ))}
+                              </Select>
+
+                              <Select
+                                label={
+                                  <span
+                                    style={{
+                                      display: 'none',
+                                    }}
+                                  ></span>
+                                }
+                                labelPlacement="outside"
+                                selectedKeys={[months[getMonth(date)]]}
+                                variant="underlined"
+                                onChange={({ target: { value } }) =>
+                                  changeMonth(months.indexOf(value))
+                                }
+                                style={{
+                                  borderBottom: '1px solid #71717a',
+                                  width: '6rem',
+                                }}
+                              >
+                                {months.map(option => (
+                                  <SelectItem key={option} value={option}>
+                                    {option}
+                                  </SelectItem>
+                                ))}
+                              </Select>
+
+                              <button
+                                onClick={increaseMonth}
+                                disabled={nextMonthButtonDisabled}
+                              >
+                                <i className="xi-angle-right" />
+                              </button>
+                            </div>
+                          )}
                           locale="ko"
                           showYearDropdown
-                          selected={dueDate === null ? null : new Date(dueDate)}
+                          selected={
+                            dueDateSelect === null
+                              ? null
+                              : new Date(dueDateSelect)
+                          }
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)
-                            setDueDate(date)
+                            setDueDateSelect(date)
                           }}
                           ref={field.ref}
                           dateFormat="yyyy/MM/dd"
@@ -764,6 +939,7 @@ export default function StudentsWriteCourse({
       <SubjectModal
         subjectSelected={subjectSelected}
         setSubjectSelected={setSubjectSelected}
+        setSubjectSelectedData={setSubjectSelectedData}
         sbjIsOpen={sbjIsOpen}
         sbjClose={sbjClose}
         setValue={setValue}
