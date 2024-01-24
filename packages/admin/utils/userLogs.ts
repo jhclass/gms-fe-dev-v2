@@ -3,11 +3,11 @@ import { useMutation } from '@apollo/client'
 
 const useUserLogsMutation = () => {
   const [userLogsResult] = useMutation(USER_LOGS_MUTATION)
-  const userLogs = (evt, url?) => {
+  const userLogs = (evt, description?) => {
     userLogsResult({
       variables: {
         eventName: evt,
-        uri: url,
+        description: description,
       },
     })
   }

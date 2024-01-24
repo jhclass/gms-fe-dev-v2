@@ -28,8 +28,6 @@ export default function DatePickerHeader({
     '12월',
   ]
 
-  useEffect(() => {}, [clickDate, decreaseMonth, decreaseMonth])
-  console.log(prevMonthButtonDisabled)
   return (
     <div
       style={{

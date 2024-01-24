@@ -392,7 +392,6 @@ export default function StudentsEditPayment() {
                               field.onChange(date)
                               setBirthdayDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
@@ -574,7 +573,6 @@ export default function StudentsEditPayment() {
                               field.onChange(date)
                               setBirthdayDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
@@ -702,7 +700,6 @@ export default function StudentsEditPayment() {
                               field.onChange(date)
                               setBirthdayDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input

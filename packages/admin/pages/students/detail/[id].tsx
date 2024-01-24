@@ -11,8 +11,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
-import CreateMemo from '@/components/form/CreateMemo'
-import ConsolutMemo from '@/components/form/ConsolutMemo'
 import useMmeQuery from '@/utils/mMe'
 import {
   SEARCH_STUDENT_MUTATION,
@@ -219,7 +217,7 @@ export default function StudentsWrite() {
         setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
-  }, [router, studentData])
+  }, [router])
 
   const ClickLectureAssignment = () => {
     if (studentData.lectureAssignment) {
@@ -327,7 +325,6 @@ export default function StudentsWrite() {
       }
     }
   }
-
   const onSubmit = data => {
     console.log(data)
     // createStudent({
@@ -396,10 +393,6 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-
-  // console.log('1', studentData)
-  // console.log('2', studentSubjectData)
-  // console.log('3', studentPaymentData)
 
   return (
     <>
@@ -567,7 +560,7 @@ export default function StudentsWrite() {
                       <AreaSmallBox style={{ minWidth: '20%' }}>
                         <div>
                           <FilterLabel>과정코드</FilterLabel>
-                          <LineBox>{studentSubjectData?.subDiv}</LineBox>
+                          <LineBox>{studentSubjectData?.subjectCode}</LineBox>
                         </div>
                       </AreaSmallBox>
                       <AreaBox>
@@ -586,9 +579,7 @@ export default function StudentsWrite() {
                               </FilterLabel>
                             }
                             defaultValue={
-                              studentPaymentData?.situationRepor === null
-                                ? undefined
-                                : studentPaymentData?.situationRepor
+                              studentPaymentData?.situationReport
                                 ? '동의'
                                 : '비동의'
                             }
@@ -617,7 +608,7 @@ export default function StudentsWrite() {
                       <AreaBox>
                         <div>
                           <FilterLabel>수강 구분</FilterLabel>
-                          <LineBox>국가기간</LineBox>
+                          <LineBox>{studentSubjectData?.subDiv}</LineBox>
                         </div>
                       </AreaBox>
                       <AreaBox>
@@ -647,7 +638,7 @@ export default function StudentsWrite() {
                           <FilterLabel>할인금액</FilterLabel>
                           <LineBox>
                             {studentPaymentData?.discountAmount
-                              ? feeFormet(studentPaymentData?.discountAmount)
+                              ? studentPaymentData?.discountAmount
                               : '0'}
                           </LineBox>
                         </div>

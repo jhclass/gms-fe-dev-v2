@@ -81,7 +81,7 @@ const DetailDiv = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -225,33 +225,28 @@ export default function StudentsWriteCourse() {
     } else {
       setValue('actualAmount', 0)
     }
-  }, [subjectSelected, discount, disCountType])
+  }, [subjectSelectedData, discount, disCountType])
 
   const onSubmit = data => {
     createStudentPayment({
       variables: {
-        studentId: parseInt(studentId),
         campus: '신촌',
         seScore: parseInt(data.seScore),
         subject: data.subject.trim(),
         tuitionFee: parseInt(subjectSelectedData.fee),
-        processingManagerId: parseInt(data.processingManagerId),
+        studentId: parseInt(studentId),
         subjectId: parseInt(subjectSelected),
-        situationReport:
-          data.situationReport === undefined
-            ? false
-            : data.situationReport === '동의'
-            ? true
-            : false,
-        paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
+        processingManagerId: parseInt(data.processingManagerId),
+        paymentDate: data.paymentDate,
+        amountReceived: 0,
+        situationReport: data.situationReport === '동의' ? true : false,
         actualAmount:
           data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-        discountAmount:
-          data.discountAmount === '' ? null : String(discount) + disCountType,
+        discountAmount: discount === 0 ? null : String(discount) + disCountType,
         unCollectedAmount:
           data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
       },
-      onCompleted: () => {
+      onCompleted: rr => {
         updateStudentDuedate({
           variables: {
             editStudentId: parseInt(studentId),
@@ -259,6 +254,7 @@ export default function StudentsWriteCourse() {
           },
           onCompleted: () => {
             alert('등록되었습니다.')
+            router.push(`/students/detail/${studentId}`)
           },
         })
       },
@@ -388,35 +384,31 @@ export default function StudentsWriteCourse() {
                     />
                   </AreaSmallBox>
                   <AreaBox>
-                    <Controller
-                      control={control}
-                      name="subject"
-                      rules={{
+                    <Textarea
+                      readOnly
+                      value={subjectSelectedData?.subjectName || ''}
+                      label={
+                        <FilterLabel>
+                          과정 선택<span>*</span>
+                        </FilterLabel>
+                      }
+                      labelPlacement="outside"
+                      className="max-w-full"
+                      variant="bordered"
+                      minRows={1}
+                      onClick={sbjOpen}
+                      {...register('subject', {
                         required: {
                           value: true,
-                          message: '수강 과정을 선택해주세요.',
+                          message: '과정을 선택해 주세요.',
                         },
-                      }}
-                      render={({ field }) => (
-                        <>
-                          <Textarea
-                            readOnly
-                            value={subjectSelectedData?.subjectName || ''}
-                            label={
-                              <FilterLabel>
-                                과정 선택<span>*</span>
-                              </FilterLabel>
-                            }
-                            labelPlacement="outside"
-                            className="max-w-full"
-                            variant="bordered"
-                            minRows={1}
-                            onClick={sbjOpen}
-                            {...register('subject')}
-                          />
-                        </>
-                      )}
+                      })}
                     />
+                    {errors.subject && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.subject.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaSmallBox>
                     <RadioBox>
@@ -455,9 +447,17 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="number"
                       endContent={<InputText>/ 100</InputText>}
-                      label="선별테스트 점수"
+                      label={
+                        <FilterLabel>
+                          선별테스트 점수<span>*</span>
+                        </FilterLabel>
+                      }
                       className="w-full"
                       {...register('seScore', {
+                        required: {
+                          value: true,
+                          message: '선별테스트 점수를 작성해주세요.',
+                        },
                         min: {
                           value: 0,
                           message: '0 이상의 숫자를 작성해주세요.',
@@ -468,9 +468,9 @@ export default function StudentsWriteCourse() {
                         },
                       })}
                     />
-                    {errors.phoneNum2 && (
+                    {errors.seScore && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.phoneNum2.message)}
+                        {String(errors.seScore.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -480,7 +480,8 @@ export default function StudentsWriteCourse() {
                       labelPlacement="outside"
                       placeholder="수강 구분"
                       value={
-                        subjectSelectedData !== undefined
+                        subjectSelectedData !== null &&
+                        subjectSelectedData?.subDiv !== null
                           ? subjectSelectedData?.subDiv
                           : ''
                       }
@@ -497,7 +498,8 @@ export default function StudentsWriteCourse() {
                       labelPlacement="outside"
                       placeholder="수강료"
                       value={
-                        subjectSelectedData?.fee !== undefined
+                        subjectSelectedData !== null &&
+                        subjectSelectedData?.fee !== null
                           ? feeFormet(subjectSelectedData?.fee)
                           : ''
                       }
@@ -520,7 +522,6 @@ export default function StudentsWriteCourse() {
                       type="text"
                       label="할인"
                       onChange={e => {
-                        register('discountAmount').onChange(e)
                         setDiscount(parseInt(e.target.value))
                       }}
                       endContent={
@@ -562,7 +563,6 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="수납액"
-                      {...register('amountReceived')}
                     />
                   </AreaBox>
                 </FlexBox>
@@ -576,7 +576,6 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="현금결제액"
-                      {...register('cashAmount')}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -588,7 +587,6 @@ export default function StudentsWriteCourse() {
                       radius="md"
                       type="text"
                       label="카드 결제액"
-                      {...register('cardAmount')}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -655,10 +653,10 @@ export default function StudentsWriteCourse() {
                               field.onChange(date)
                               setPaymentDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
+                                ref={field.ref}
                                 label={
                                   <FilterLabel>
                                     결제일자<span>*</span>
@@ -674,6 +672,11 @@ export default function StudentsWriteCourse() {
                           />
                         )}
                       />
+                      {errors.paymentDate && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.paymentDate.message)}
+                        </p>
+                      )}
                     </DatePickerBox>
                   </AreaBox>
                   <AreaBox>
@@ -739,10 +742,20 @@ export default function StudentsWriteCourse() {
                     <Controller
                       control={control}
                       name="processingManagerId"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '수강담당자를 선택해주세요.',
+                        },
+                      }}
                       render={({ field, fieldState }) => (
                         <Select
                           labelPlacement="outside"
-                          label="수강 담당자"
+                          label={
+                            <FilterLabel>
+                              수강 담당자<span>*</span>
+                            </FilterLabel>
+                          }
                           placeholder=" "
                           className="w-full"
                           variant="bordered"
@@ -771,6 +784,11 @@ export default function StudentsWriteCourse() {
                         </Select>
                       )}
                     />
+                    {errors.processingManagerId && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.processingManagerId.message)}
+                      </p>
+                    )}
                   </AreaBox>
                 </FlexBox>
               </DetailDiv>

@@ -343,10 +343,10 @@ export default function StudentsWrite() {
                               field.onChange(date)
                               setBirthdayDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
+                                ref={field.ref}
                                 label={
                                   <FilterLabel>
                                     생년월일<span>*</span>

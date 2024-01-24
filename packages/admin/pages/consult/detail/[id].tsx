@@ -767,7 +767,6 @@ export default function ConsultDetail() {
                             setStVisitDate(date)
                           }}
                           showTimeSelect
-                          ref={field.ref}
                           dateFormat="yyyy/MM/dd HH:mm"
                           customInput={
                             <Input
@@ -823,7 +822,6 @@ export default function ConsultDetail() {
                             field.onChange(date)
                             setExpEnrollDate(date)
                           }}
-                          ref={field.ref}
                           dateFormat="yyyy/MM/dd"
                           customInput={
                             <Input

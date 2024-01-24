@@ -569,7 +569,6 @@ export default function ConsultWirte() {
                           setStVisitDate(date)
                         }}
                         showTimeSelect
-                        ref={field.ref}
                         dateFormat="yyyy/MM/dd HH:mm"
                         customInput={
                           <Input
@@ -624,7 +623,6 @@ export default function ConsultWirte() {
                           field.onChange(date)
                           setExpEnrollDate(date)
                         }}
-                        ref={field.ref}
                         dateFormat="yyyy/MM/dd"
                         customInput={
                           <Input

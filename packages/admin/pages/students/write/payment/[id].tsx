@@ -223,7 +223,6 @@ export default function StudentsWritePayment() {
   }
 
   const onPaymentDetailSubmit = data => {
-    console.log(data)
     if (paymentType === '카드') {
       createPaymentDetail({
         variables: {
@@ -637,10 +636,10 @@ export default function StudentsWritePayment() {
                                   field.onChange(date)
                                   setCardPaymentDate(date)
                                 }}
-                                ref={field.ref}
                                 dateFormat="yyyy/MM/dd"
                                 customInput={
                                   <Input
+                                    ref={field.ref}
                                     label={<FilterLabel>결제일자</FilterLabel>}
                                     labelPlacement="outside"
                                     type="text"
@@ -755,10 +754,10 @@ export default function StudentsWritePayment() {
                                 field.onChange(date)
                                 setCashDepositDate(date)
                               }}
-                              ref={field.ref}
                               dateFormat="yyyy/MM/dd"
                               customInput={
                                 <Input
+                                  ref={field.ref}
                                   label={<FilterLabel>입금일자</FilterLabel>}
                                   labelPlacement="outside"
                                   type="text"

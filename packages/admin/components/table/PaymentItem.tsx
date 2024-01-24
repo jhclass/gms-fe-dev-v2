@@ -172,9 +172,7 @@ export default function StudentsItem(props) {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-  // console.log(student)
-  // console.log(studentSubject)
-  // console.log(studentPayment)
+
   return (
     <>
       <TableItem>
