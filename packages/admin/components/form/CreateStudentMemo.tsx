@@ -86,7 +86,7 @@ export default function CreateMemo(props) {
           content: data.content.trim(),
           studentId: studentId,
         },
-        onCompleted: () => {
+        onCompleted: data => {
           props.setMemoList([])
           searchStudentMutation({
             variables: {

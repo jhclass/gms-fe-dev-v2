@@ -252,7 +252,8 @@ export default function SubjectDetail() {
           variables: {
             updateSubjectId: subjectState.id,
             subjectName: data.subjectName.trim(),
-            subjectCode: data.roomNum === '' ? null : data.subjectCode.trim(),
+            subjectCode:
+              data.subjectCode === '' ? null : data.subjectCode.trim(),
             fee: parseInt(data.fee.trim()),
             subDiv: data.subDiv,
             startDate:
@@ -610,7 +611,6 @@ export default function SubjectDetail() {
                                 field.onChange(date)
                                 setExpStartDate(date)
                               }}
-                              ref={field.ref}
                               dateFormat="yyyy/MM/dd"
                               customInput={
                                 <Input
@@ -691,7 +691,6 @@ export default function SubjectDetail() {
                                 field.onChange(date)
                                 setExpEndDate(date)
                               }}
-                              ref={field.ref}
                               dateFormat="yyyy/MM/dd"
                               customInput={
                                 <Input
@@ -842,7 +841,6 @@ export default function SubjectDetail() {
                               field.onChange(date)
                               setSjStartDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input
@@ -902,7 +900,6 @@ export default function SubjectDetail() {
                               field.onChange(date)
                               setSjEndDate(date)
                             }}
-                            ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             customInput={
                               <Input

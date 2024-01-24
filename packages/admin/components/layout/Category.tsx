@@ -46,8 +46,8 @@ export default function Category() {
         },
         {
           href: '/consult/registered',
-          alt: '상담완료 목록',
-          label: '상담완료 목록',
+          alt: '등록완료 목록',
+          label: '등록완료 목록',
         },
         {
           href: '/consult/reject',

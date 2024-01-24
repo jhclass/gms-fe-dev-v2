@@ -363,7 +363,6 @@ export default function SubjectWrite() {
                             field.onChange(date)
                             setExpStartDate(date)
                           }}
-                          ref={field.ref}
                           dateFormat="yyyy/MM/dd"
                           customInput={
                             <Input
@@ -418,7 +417,6 @@ export default function SubjectWrite() {
                             field.onChange(date)
                             setExpEndDate(date)
                           }}
-                          ref={field.ref}
                           dateFormat="yyyy/MM/dd"
                           customInput={
                             <Input
@@ -540,7 +538,6 @@ export default function SubjectWrite() {
                             field.onChange(date)
                             setSjStartDate(date)
                           }}
-                          ref={field.ref}
                           dateFormat="yyyy/MM/dd"
                           customInput={
                             <Input
@@ -595,7 +592,6 @@ export default function SubjectWrite() {
                             field.onChange(date)
                             setSjEndDate(date)
                           }}
-                          ref={field.ref}
                           dateFormat="yyyy/MM/dd"
                           customInput={
                             <Input

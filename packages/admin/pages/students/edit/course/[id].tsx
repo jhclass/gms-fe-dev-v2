@@ -183,6 +183,7 @@ export default function StudentsWriteCourse() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
+        console.log('1', data)
         setStudentData(data.searchStudent?.student[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
       },
