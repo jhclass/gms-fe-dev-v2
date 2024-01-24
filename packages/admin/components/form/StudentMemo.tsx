@@ -208,7 +208,6 @@ export default function ConsultMemo(props) {
     }
   }
 
-  console.log(props.item)
   return (
     <DetailForm onSubmit={handleSubmit(onSubmit)}>
       <Input
