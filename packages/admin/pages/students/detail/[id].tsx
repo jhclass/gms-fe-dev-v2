@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Radio, RadioGroup, Button, useDisclosure } from '@nextui-org/react'
+import {
+  Radio,
+  RadioGroup,
+  Button,
+  CheckboxGroup,
+  Checkbox,
+} from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -189,19 +195,13 @@ export default function StudentsWrite() {
   const [updateStudentCourseMutation] = useMutation(
     UPDATE_STUDENT_COURSE_MUTATION,
   )
-  const { register, control, setValue, handleSubmit, formState } = useForm()
-  const { errors } = formState
-  const {
-    isOpen: sbjIsOpen,
-    onOpen: sbjOpen,
-    onClose: sbjClose,
-  } = useDisclosure()
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState(null)
   const [memoList, setMemoList] = useState([])
 
+  console.log(studentPaymentData)
   useEffect(() => {
     searchStudentMutation({
       variables: {
@@ -209,8 +209,10 @@ export default function StudentsWrite() {
       },
       onCompleted: data => {
         setStudentData(data.searchStudent?.student[0])
-        setStudentSubjectData(data.searchStudent?.student[0].subject[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
+        setStudentSubjectData(
+          data.searchStudent?.student[0].studentPayment[0]?.subject,
+        )
         setStudentPaymentDetailData(
           data.searchStudent?.student[0].studentPayment[0],
         )
@@ -502,7 +504,7 @@ export default function StudentsWrite() {
                     </div>
                   </AreaBox>
                 </FlexBox>
-                {studentSubjectData === undefined && (
+                {studentPaymentData === undefined && (
                   <BtnBox>
                     <Button
                       size="md"
@@ -530,7 +532,7 @@ export default function StudentsWrite() {
                 )}
               </DetailDiv>
             </DetailBox>
-            {studentSubjectData !== undefined && (
+            {studentPaymentData !== undefined && (
               <>
                 <DetailBox>
                   <DetailDiv>
@@ -688,6 +690,25 @@ export default function StudentsWrite() {
                             }
                           </LineBox>
                         </div>
+                      </AreaBox>
+                    </FlexBox>
+                    <FlexBox>
+                      <AreaBox>
+                        <RadioBox>
+                          <CheckboxGroup
+                            isReadOnly
+                            label={<FilterLabel>영수구분</FilterLabel>}
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            value={studentPaymentData?.receiptClassification}
+                          >
+                            {Object.entries(Receipt).map(([key, item]) => (
+                              <Checkbox key={key} value={item}>
+                                {item}
+                              </Checkbox>
+                            ))}
+                          </CheckboxGroup>
+                        </RadioBox>
                       </AreaBox>
                     </FlexBox>
                     <BtnBox>

@@ -31,7 +31,10 @@ import {
   UPDATE_STUDENT_STATE_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
+import {
+  SEE_MANAGEUSER_QUERY,
+  SEE_STUDENT_STATE_QUERY,
+} from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
@@ -338,7 +341,7 @@ export default function ConsultDetail() {
         },
         refetchQueries: [
           {
-            query: SEE_STUDENT_QUERY,
+            query: SEE_STUDENT_STATE_QUERY,
             variables: { page: 1, limit: 10 },
           },
         ],

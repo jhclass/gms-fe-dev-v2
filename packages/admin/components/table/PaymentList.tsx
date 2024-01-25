@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY, SEE_STUDENT_QUERY } from '@/graphql/queries'
+import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 

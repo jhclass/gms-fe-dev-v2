@@ -29,6 +29,7 @@ import { ReceiptState } from '@/lib/recoilAtoms'
 import {
   CREATE_PAYMENT_DETAIL_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
+  UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
@@ -155,21 +156,20 @@ export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [searchStudentBasic] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
+  const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
   const [createPaymentDetail] = useMutation(CREATE_PAYMENT_DETAIL_MUTATION)
+  const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const {
     loading: managerLoading,
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
-  const Receipt = useRecoilValue(ReceiptState)
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
-  const [receiptSelected, setReceiptSelected] = useState([])
   const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
@@ -178,21 +178,19 @@ export default function StudentsWritePayment() {
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
-    searchStudentBasic({
+    searchStudentPayment({
       variables: {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
         setStudentData(data.searchStudent?.student[0])
-        setStudentSubjectData(data.searchStudent?.student[0].subject[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
+        setStudentSubjectData(
+          data.searchStudent?.student[0].studentPayment[0].subject,
+        )
       },
     })
   }, [router])
-
-  // console.log(studentData)
-  // console.log(studentSubjectData)
-  // console.log(studentPaymentData)
 
   const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -230,10 +228,10 @@ export default function StudentsWritePayment() {
           studentPaymentId: parseInt(studentPaymentData?.id),
           cardCompany: data.cardCompany,
           cardNum: data.cardNum.trim(),
+          amountPayment: parseInt(data.amountPayment),
           installment:
             data.installment === '' ? null : parseInt(data.installment),
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
-          amountPayment: parseInt(data.amountPayment),
           paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
           bankName: null,
           depositorName: null,
@@ -241,7 +239,30 @@ export default function StudentsWritePayment() {
           depositDate: null,
         },
         onCompleted: data => {
-          console.log(data)
+          updateReceived({
+            variables: {
+              actualAmount:
+                studentPaymentData.amountReceived +
+                parseInt(data.amountPayment),
+              editStudentPaymentId: parseInt(studentPaymentData?.id),
+            },
+            onCompleted: data => {
+              searchStudentPayment({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                  setStudentPaymentData(
+                    data.searchStudent?.student[0].studentPayment[0],
+                  )
+                  setStudentSubjectData(
+                    data.searchStudent?.student[0].studentPayment[0].subject,
+                  )
+                },
+              })
+            },
+          })
         },
       })
       // userLogs(`${studentName} 카드 결재 `)
@@ -262,15 +283,34 @@ export default function StudentsWritePayment() {
           depositDate: data.depositDate === undefined ? null : data.depositDate,
         },
         onCompleted: data => {
-          console.log(data)
+          updateReceived({
+            variables: {
+              actualAmount:
+                studentPaymentData.amountReceived +
+                parseInt(data.amountPayment),
+              editStudentPaymentId: parseInt(studentPaymentData?.id),
+            },
+            onCompleted: data => {
+              searchStudentPayment({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                  setStudentPaymentData(
+                    data.searchStudent?.student[0].studentPayment[0],
+                  )
+                  setStudentSubjectData(
+                    data.searchStudent?.student[0].studentPayment[0].subject,
+                  )
+                },
+              })
+            },
+          })
         },
       })
       // userLogs(`${studentName} 현금 결재 `)
     }
-  }
-  const handleReceiptChange = (value: string[]) => {
-    setValue('receiptClassification', value)
-    setReceiptSelected(value)
   }
 
   const handleCardChange = e => {
@@ -426,8 +466,8 @@ export default function StudentsWritePayment() {
                     <div>
                       <FilterLabel>카드 결제액</FilterLabel>
                       <LineBox>
-                        {studentPaymentData?.unCollectedAmount
-                          ? feeFormet(studentPaymentData?.unCollectedAmount)
+                        {studentPaymentData?.cardAmount
+                          ? feeFormet(studentPaymentData?.cardAmount)
                           : '0'}
                       </LineBox>
                     </div>
@@ -436,36 +476,11 @@ export default function StudentsWritePayment() {
                     <div>
                       <FilterLabel>현금 결제액</FilterLabel>
                       <LineBox>
-                        {studentPaymentData?.unCollectedAmount
-                          ? feeFormet(studentPaymentData?.unCollectedAmount)
+                        {studentPaymentData?.cashAmount
+                          ? feeFormet(studentPaymentData?.cashAmount)
                           : '0'}
                       </LineBox>
                     </div>
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="receiptClassification"
-                        render={({ field, fieldState }) => (
-                          <CheckboxGroup
-                            label={<FilterLabel>영수구분</FilterLabel>}
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            value={receiptSelected}
-                            onValueChange={handleReceiptChange}
-                          >
-                            {Object.entries(Receipt).map(([key, item]) => (
-                              <Checkbox key={key} value={item}>
-                                {item}
-                              </Checkbox>
-                            ))}
-                          </CheckboxGroup>
-                        )}
-                      />
-                    </RadioBox>
                   </AreaBox>
                 </FlexBox>
               </DetailDiv>

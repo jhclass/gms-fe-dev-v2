@@ -36,7 +36,7 @@ import {
   SEARCH_SUBJECT_BASIC_MUTATION,
   UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
-import PaymentDetail from '@/components/form/PaymentDetail'
+import PaymentDetail from '@/components/form/StudentPayment'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
@@ -177,6 +177,7 @@ export default function StudentsWriteCourse() {
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
+  const Receipt = useRecoilValue(ReceiptState)
   const { register, watch, control, setValue, handleSubmit, formState } =
     useForm()
   const { errors } = formState
@@ -197,6 +198,7 @@ export default function StudentsWriteCourse() {
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
+  const [receiptSelected, setReceiptSelected] = useState([])
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
@@ -245,8 +247,12 @@ export default function StudentsWriteCourse() {
         discountAmount: discount === 0 ? null : String(discount) + disCountType,
         unCollectedAmount:
           data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
+        receiptClassification:
+          data.receiptClassification.length === 0
+            ? []
+            : data.receiptClassification,
       },
-      onCompleted: rr => {
+      onCompleted: () => {
         updateStudentDuedate({
           variables: {
             editStudentId: parseInt(studentId),
@@ -295,6 +301,10 @@ export default function StudentsWriteCourse() {
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
+  }
+  const handleReceiptChange = (value: string[]) => {
+    setValue('receiptClassification', value)
+    setReceiptSelected(value)
   }
 
   return (
@@ -789,6 +799,31 @@ export default function StudentsWriteCourse() {
                         {String(errors.processingManagerId.message)}
                       </p>
                     )}
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="receiptClassification"
+                        render={({ field, fieldState }) => (
+                          <CheckboxGroup
+                            label={<FilterLabel>영수구분</FilterLabel>}
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            value={receiptSelected}
+                            onValueChange={handleReceiptChange}
+                          >
+                            {Object.entries(Receipt).map(([key, item]) => (
+                              <Checkbox key={key} value={item}>
+                                {item}
+                              </Checkbox>
+                            ))}
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </RadioBox>
                   </AreaBox>
                 </FlexBox>
               </DetailDiv>

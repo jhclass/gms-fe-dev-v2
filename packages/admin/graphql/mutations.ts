@@ -536,42 +536,43 @@ export const CREATE_STUDENT_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_MUTATION = gql`
-  mutation Mutation($searchStudentId: Int) {
+  mutation SearchStudent($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
       error
-      message
       ok
+      message
       student {
         birthday
-        courseComplete
-        createdAt
-        dueDate
-        id
-        lectureAssignment
-        name
-        phoneNum1
-        phoneNum2
-        smsAgreement
-        studentMemo {
-          manageUser {
-            id
-            mUserId
-            mUsername
-          }
-          manageUserId
-          createdAt
-          updatedAt
-          id
-          content
-        }
         studentPayment {
           actualAmount
-          amountReceived
-          cardAmount
-          cashAmount
-          discountAmount
-          id
+          unCollectedAmount
+          tuitionFee
+          subjectId
+          subject {
+            fee
+            id
+            subDiv
+            subjectCode
+            subjectName
+          }
+          situationReport
+          seScore
+          receiptClassification
+          processingManagerId
+          processingManager {
+            mUserId
+            mUsername
+            id
+            mGrade
+          }
           paymentDate
+          id
+          discountAmount
+          cashAmount
+          cardAmount
+          cancellation
+          amountReceived
+          studentId
           paymentDetail {
             ApprovalNum
             amountPayment
@@ -588,30 +589,37 @@ export const SEARCH_STUDENT_MUTATION = gql`
             receiver {
               mUserId
               mUsername
+              mRank
+              id
             }
-            studentPaymentId
             receiverId
+            studentPaymentId
           }
-          processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-          }
-          receiptClassification
-          seScore
-          situationReport
-          tuitionFee
-          unCollectedAmount
         }
+        courseComplete
+        createdAt
+        dueDate
+        id
+        lectureAssignment
         writer
         updatedAt
-        subject {
-          subjectCode
-          subjectName
-          subDiv
+        studentMemo {
+          content
+          createdAt
           id
-          fee
+          updatedAt
+          manageUserId
+          manageUser {
+            mUsername
+            mUserId
+            mGrade
+            id
+          }
         }
+        name
+        phoneNum1
+        phoneNum2
+        smsAgreement
       }
     }
   }
@@ -685,26 +693,12 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
-  mutation SearchStudent($searchStudentId: Int) {
+  mutation Mutation($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
       error
       message
       ok
       student {
-        studentPayment {
-          id
-          unCollectedAmount
-          tuitionFee
-          seScore
-          processingManagerId
-          actualAmount
-          amountReceived
-          cardAmount
-          cashAmount
-          discountAmount
-          situationReport
-          paymentDate
-        }
         birthday
         courseComplete
         createdAt
@@ -712,16 +706,41 @@ export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
         id
         lectureAssignment
         name
-        campus
-        writer
-        updatedAt
         phoneNum1
         phoneNum2
-        subject {
-          subDiv
-          subjectCode
-          subjectName
+        smsAgreement
+        updatedAt
+        writer
+        studentPayment {
+          actualAmount
+          amountReceived
+          campus
+          cancellation
+          cardAmount
+          cashAmount
+          discountAmount
           id
+          paymentDate
+          processingManager {
+            mUsername
+            mUserId
+            mRank
+            id
+          }
+          processingManagerId
+          receiptClassification
+          seScore
+          situationReport
+          unCollectedAmount
+          tuitionFee
+          subjectId
+          subject {
+            subjectName
+            subjectCode
+            subDiv
+            id
+            fee
+          }
         }
       }
     }
@@ -771,14 +790,14 @@ export const UPDATE_STUDENT_COURSE_MUTATION = gql`
 
 //StudentPayment
 export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
-  mutation Mutation(
+  mutation CreateStudentPayment(
     $campus: String!
     $seScore: Int!
-    $subject: String!
     $tuitionFee: Int!
     $studentId: Int!
     $processingManagerId: Int!
     $subjectId: Int!
+    $receiptClassification: [String]
     $discountAmount: String
     $actualAmount: Int
     $unCollectedAmount: Int
@@ -789,11 +808,11 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     createStudentPayment(
       campus: $campus
       seScore: $seScore
-      subject: $subject
       tuitionFee: $tuitionFee
       studentId: $studentId
       processingManagerId: $processingManagerId
       subjectId: $subjectId
+      receiptClassification: $receiptClassification
       discountAmount: $discountAmount
       actualAmount: $actualAmount
       unCollectedAmount: $unCollectedAmount
@@ -808,9 +827,8 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
   }
 `
 export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
-  mutation EditStudentPayment(
+  mutation Mutation(
     $editStudentPaymentId: Int!
-    $campus: String
     $seScore: Int
     $subject: String
     $tuitionFee: Int
@@ -818,7 +836,6 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
     $actualAmount: Int
     $unCollectedAmount: Int
     $paymentDate: String
-    $studentId: Int
     $processingManagerId: Int
     $subjectId: Int
     $situationReport: Boolean
@@ -826,7 +843,6 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
-      campus: $campus
       seScore: $seScore
       subject: $subject
       tuitionFee: $tuitionFee
@@ -834,7 +850,6 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
       actualAmount: $actualAmount
       unCollectedAmount: $unCollectedAmount
       paymentDate: $paymentDate
-      studentId: $studentId
       processingManagerId: $processingManagerId
       subjectId: $subjectId
       situationReport: $situationReport
@@ -848,33 +863,41 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
 `
 export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
   mutation Mutation(
-    $cashOrCard: String!
-    $studentPaymentId: Int!
-    $cardCompany: String
-    $cardNum: String
-    $installment: Int
-    $approvalNum: String
-    $amountPayment: Int
+    $editStudentPaymentId: Int!
+    $seScore: Int
+    $tuitionFee: Int
+    $discountAmount: String
+    $actualAmount: Int
+    $unCollectedAmount: Int
     $paymentDate: String
-    $bankName: String
-    $depositorName: String
-    $depositAmount: Int
-    $depositDate: String
+    $processingManagerId: Int
+    $subjectId: Int
+    $situationReport: Boolean
+    $amountReceived: Int
   ) {
-    createPaymentDetail(
-      cashOrCard: $cashOrCard
-      studentPaymentId: $studentPaymentId
-      cardCompany: $cardCompany
-      cardNum: $cardNum
-      installment: $installment
-      ApprovalNum: $approvalNum
-      amountPayment: $amountPayment
+    editStudentPayment(
+      id: $editStudentPaymentId
+      seScore: $seScore
+      tuitionFee: $tuitionFee
+      discountAmount: $discountAmount
+      actualAmount: $actualAmount
+      unCollectedAmount: $unCollectedAmount
       paymentDate: $paymentDate
-      bankName: $bankName
-      depositorName: $depositorName
-      depositAmount: $depositAmount
-      depositDate: $depositDate
+      processingManagerId: $processingManagerId
+      subjectId: $subjectId
+      situationReport: $situationReport
+      amountReceived: $amountReceived
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+
+export const UPDATE_STUDENT_RECEIVED_MUTATION = gql`
+  mutation Mutation($actualAmount: Int, $editStudentPaymentId: Int!) {
+    editStudentPayment(actualAmount: $actualAmount, id: $editStudentPaymentId) {
       error
       message
       ok

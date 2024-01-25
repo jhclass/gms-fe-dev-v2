@@ -3,38 +3,19 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import DatePicker, { registerLocale } from 'react-datepicker'
+import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Textarea,
-  Button,
-  useDisclosure,
-} from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
-import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
-import SubjectModal from '@/components/modal/SubjectModal'
 import {
-  CREATE_STUDENT_PAYMENT_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
-  UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
-import PaymentDetail from '@/components/form/PaymentDetail'
+import StudentPayment from '@/components/form/StudentPayment'
 
 const ConArea = styled.div`
   width: 100%;
@@ -183,17 +164,15 @@ export default function StudentsWriteCourse() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        console.log('1', data)
         setStudentData(data.searchStudent?.student[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
       },
     })
   }, [router])
-
   useEffect(() => {
     searchSubject({
       variables: {
-        searchSubjectId: studentData?.subject[0].id,
+        searchSubjectId: studentPaymentData?.subject.id,
       },
       onCompleted: resData => {
         const { result } = resData.searchSubject || {}
@@ -285,11 +264,11 @@ export default function StudentsWriteCourse() {
             </DetailDiv>
           </DetailBox>
 
-          <PaymentDetail
+          <StudentPayment
             studentData={studentData}
             managerList={managerList}
-            subjectData={studentSubjectData}
-            paymentData={studentPaymentData}
+            studentSubjectData={studentSubjectData}
+            studentPaymentData={studentPaymentData}
           />
         </ConArea>
       </MainWrap>

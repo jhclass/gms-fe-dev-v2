@@ -8,6 +8,8 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
+  Checkbox,
+  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
@@ -17,7 +19,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -28,6 +30,8 @@ import {
   UPDATE_STUDENT_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
+import { useRecoilValue } from 'recoil'
+import { ReceiptState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -132,46 +136,73 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function StudentsWriteCourse({
+const extractNumber = inputString => {
+  const regex = /(\d+(\.\d+)?)([^\d]+)/
+  const match = inputString.match(regex)
+  if (match) {
+    const number = parseFloat(match[1])
+    return String(number)
+  }
+}
+const extractUnit = inputString => {
+  const regex = /(\d+(\.\d+)?)([^\d]+)/
+  const match = inputString.match(regex)
+  if (match) {
+    const unit = match[3].trim()
+    return unit
+  }
+}
+
+export default function StudentPaymentForm({
   studentData,
   managerList,
-  subjectData,
-  paymentData,
+  studentSubjectData,
+  studentPaymentData,
 }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
   const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const { register, setValue, control, handleSubmit, formState } = useForm({
+  const {
+    register,
+    setValue,
+    getValues,
+    control,
+    handleSubmit,
+    getFieldState,
+    formState: { isDirty, dirtyFields, errors, isValid },
+  } = useForm({
+    mode: 'onChange',
     defaultValues: {
-      editStudentPaymentId: paymentData?.id,
-      seScore: paymentData?.seScore,
-      subject: subjectData?.subjectName,
-      tuitionFee: subjectData?.fee,
-      actualAmount: paymentData?.actualAmount,
-      unCollectedAmount: paymentData?.unCollectedAmount,
-      paymentDate: paymentData?.paymentDate,
-      processingManagerId: paymentData?.processingManagerId,
-      situationReport: paymentData?.situationReport,
-      subjectId: subjectData?.id,
-      amountReceived: paymentData?.amountReceived,
-      cashAmount: paymentData?.cashAmount,
-      cardAmount: paymentData?.cardAmount,
-      discountAmount: paymentData?.discountAmount,
+      editStudentPaymentId: studentPaymentData?.id,
+      seScore: studentPaymentData?.seScore,
+      subject: studentSubjectData?.subjectName,
+      tuitionFee: studentSubjectData?.fee,
+      actualAmount: studentPaymentData?.actualAmount,
+      unCollectedAmount: studentPaymentData?.unCollectedAmount,
+      paymentDate: studentPaymentData?.paymentDate,
+      processingManagerId: studentPaymentData?.processingManagerId,
+      situationReport: studentPaymentData?.situationReport,
+      subjectId: studentSubjectData?.id,
+      amountReceived: studentPaymentData?.amountReceived,
+      cashAmount: studentPaymentData?.cashAmount,
+      cardAmount: studentPaymentData?.cardAmount,
+      discountAmount: studentPaymentData?.discountAmount,
       dueDate: studentData?.dueDate,
+      receiptClassification: studentPaymentData?.receiptClassification,
+      discount: studentPaymentData?.discountAmount,
+      discountUnit: '%',
     },
   })
-
-  const { isDirty, dirtyFields, errors } = formState
+  const Receipt = useRecoilValue(ReceiptState)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
-  const [disCountType, setDisCountType] = useState(null)
-  const [discount, setDiscount] = useState(null)
+  const [disCountType, setDisCountType] = useState('%')
   const [paymentDateSelect, setPaymentDateSelect] = useState(null)
   const [dueDateSelect, setDueDateSelect] = useState(null)
-  const [actualAmountF, setActualAmountF] = useState(null)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
+  const [receiptSelected, setReceiptSelected] = useState([])
   const {
     isOpen: sbjIsOpen,
     onOpen: sbjOpen,
@@ -181,29 +212,20 @@ export default function StudentsWriteCourse({
 
   useEffect(() => {
     if (
-      paymentData?.processingManagerId === undefined ||
-      paymentData?.processingManagerId === null
+      studentPaymentData?.processingManagerId === undefined ||
+      studentPaymentData?.processingManagerId === null
     ) {
       setSubjectManager('담당자 지정필요')
     } else {
-      setSubjectManager(String(paymentData?.processingManagerId))
+      setSubjectManager(String(studentPaymentData?.processingManagerId))
     }
     if (
-      paymentData?.discountAmount === null ||
-      paymentData?.discountAmount === undefined
-    ) {
-      setDisCountType('%')
-    } else {
-      const discountUnit = extractUnit(paymentData?.discountAmount)
-      setDisCountType(discountUnit)
-    }
-    if (
-      paymentData?.paymentDate === null ||
-      paymentData?.paymentDate === undefined
+      studentPaymentData?.paymentDate === null ||
+      studentPaymentData?.paymentDate === undefined
     ) {
       setPaymentDateSelect(null)
     } else {
-      const date = parseInt(paymentData?.paymentDate)
+      const date = parseInt(studentPaymentData?.paymentDate)
       setPaymentDateSelect(date)
     }
     if (studentData?.dueDate === null || studentData?.dueDate === undefined) {
@@ -212,10 +234,18 @@ export default function StudentsWriteCourse({
       const date = parseInt(studentData?.dueDate)
       setDueDateSelect(date)
     }
-    setSubjectSelected(subjectData?.id)
-  }, [router, paymentData])
+    if (
+      studentPaymentData?.receiptClassification === null ||
+      studentPaymentData?.receiptClassification === undefined
+    ) {
+      setReceiptSelected([])
+    } else {
+      setReceiptSelected(studentPaymentData.receiptClassification)
+    }
+  }, [router, studentPaymentData])
 
   const disCountPrice = (disCountType, tuitionFee) => {
+    const discount = getValues('discount')
     if (disCountType === '%') {
       const disCountP = (tuitionFee * (100 - discount)) / 100
       return disCountP
@@ -224,61 +254,33 @@ export default function StudentsWriteCourse({
       return disCountP
     }
   }
+  const disCounCalculator = fee => {
+    const price = disCountPrice(getValues('discountUnit'), fee)
+    const total = price - parseInt(studentPaymentData?.amountReceived)
+    setValue('actualAmount', price, { shouldDirty: true })
+    setValue('unCollectedAmount', total, { shouldDirty: true })
+  }
+
   useEffect(() => {
     if (subjectSelectedData !== null) {
-      const price = disCountPrice(disCountType, subjectSelectedData?.fee)
-      const total = price - parseInt(paymentData.amountReceived)
-      setActualAmountF(price)
-      setValue('actualAmount', price, { shouldDirty: true })
-      setValue('unCollectedAmount', total, { shouldDirty: true })
-    } else if (discount !== null) {
-      if (isNaN(discount)) {
-        setDiscount(0)
-      }
-      const price = disCountPrice(disCountType, subjectData?.fee)
-      const total = price - parseInt(paymentData.amountReceived)
-      setActualAmountF(price)
-      setValue('actualAmount', price, { shouldDirty: true })
-      setValue('unCollectedAmount', total, { shouldDirty: true })
+      disCounCalculator(subjectSelectedData?.fee)
     }
-  }, [subjectSelectedData, discount, disCountType])
+  }, [subjectSelectedData])
 
-  const extractNumber = inputString => {
-    const regex = /(\d+(\.\d+)?)([^\d]+)/
-    const match = inputString.match(regex)
-    if (match) {
-      const number = parseFloat(match[1])
-      return String(number)
-    }
-  }
-  const extractUnit = inputString => {
-    const regex = /(\d+(\.\d+)?)([^\d]+)/
-    const match = inputString.match(regex)
-    if (match) {
-      const unit = match[3].trim()
-      return unit
-    }
-  }
   const onSubmit = data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
         updateStudentPayment({
           variables: {
-            editStudentPaymentId: parseInt(paymentData.id),
-            studentId: parseInt(studentData.id),
+            editStudentPaymentId: parseInt(studentPaymentData.id),
             subjectId: parseInt(subjectSelected),
-            campus: '신촌',
             seScore: parseInt(data.seScore),
-            subject:
-              subjectSelectedData === null
-                ? data.subject.trim()
-                : subjectSelectedData.subjectName.trim(),
             tuitionFee:
               subjectSelectedData === null
                 ? parseInt(data.tuitionFee.replace(/,/g, ''), 10)
                 : parseInt(subjectSelectedData.fee),
-            processingManagerId: parseInt(subjectManager),
+            // processingManagerId: parseInt(subjectManager),
             situationReport: data.situationReport === '동의' ? true : false,
             paymentDate:
               data.paymentDate === null
@@ -291,13 +293,18 @@ export default function StudentsWriteCourse({
                 ? parseInt(data.actualAmount.replace(/,/g, ''), 10)
                 : data.actualAmount,
             discountAmount:
-              discount === null
-                ? paymentData?.discountAmount
-                : String(discount) + disCountType,
+              data.discount === null
+                ? studentPaymentData?.discountAmount
+                : String(data.discount) + disCountType,
             unCollectedAmount:
               typeof data.unCollectedAmount === 'string'
                 ? parseInt(data.unCollectedAmount.replace(/,/g, ''), 10)
                 : data.unCollectedAmount,
+            amountReceived: parseInt(data.amountReceived.replace(/,/g, ''), 10),
+            // receiptClassification:
+            //   data.receiptClassification.length === 0
+            //     ? []
+            //     : data.receiptClassification,
           },
           onCompleted: () => {
             updateStudentDuedate({
@@ -332,17 +339,53 @@ export default function StudentsWriteCourse({
       return result
     }
   }
-
   const handleDisCountChange = e => {
     setDisCountType(e.target.value)
+    if (subjectSelectedData !== null) {
+      disCounCalculator(subjectSelectedData?.fee)
+    } else {
+      disCounCalculator(studentSubjectData?.fee)
+    }
   }
+
+  const discountChange = value => {
+    if (value === '') {
+      setValue('discount', 0)
+    } else {
+      setValue('discount', parseInt(value))
+    }
+    if (subjectSelectedData !== null) {
+      disCounCalculator(subjectSelectedData?.fee)
+    } else {
+      disCounCalculator(studentSubjectData?.fee)
+    }
+  }
+
+  const discountTotal = value => {
+    if (subjectSelectedData !== null) {
+      const discountPrice = subjectSelectedData?.fee - parseInt(value)
+      setValue('discount', discountPrice)
+      setDisCountType('원')
+      setValue('discountUnit', '원')
+    } else {
+      const discountPrice = studentSubjectData?.fee - parseInt(value)
+      setValue('discount', discountPrice)
+      setDisCountType('원')
+      setValue('discountUnit', '원')
+    }
+  }
+
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
   }
 
+  const handleReceiptChange = (value: string[]) => {
+    setValue('receiptClassification', value)
+    setReceiptSelected(value)
+  }
   return (
     <>
-      {paymentData !== null && (
+      {studentPaymentData !== null && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailBox>
             <DetailDiv>
@@ -358,8 +401,8 @@ export default function StudentsWriteCourse({
                     value={
                       subjectSelectedData?.subjectCode !== undefined
                         ? String(subjectSelectedData?.subjectCode)
-                        : subjectData?.subjectCode !== null
-                        ? subjectData?.subjectCode
+                        : studentSubjectData?.subjectCode !== null
+                        ? studentSubjectData?.subjectCode
                         : ''
                     }
                     variant="faded"
@@ -375,8 +418,8 @@ export default function StudentsWriteCourse({
                     value={
                       subjectSelectedData?.subjectName !== undefined
                         ? String(subjectSelectedData?.subjectName)
-                        : subjectData?.subjectName !== null
-                        ? subjectData?.subjectName
+                        : studentSubjectData?.subjectName !== null
+                        ? studentSubjectData?.subjectName
                         : ''
                     }
                     label={
@@ -413,9 +456,9 @@ export default function StudentsWriteCourse({
                           orientation="horizontal"
                           className="gap-[0.65rem]"
                           defaultValue={
-                            paymentData?.situationReport === null
+                            studentPaymentData?.situationReport === null
                               ? '비동의'
-                              : paymentData?.situationReport
+                              : studentPaymentData?.situationReport
                               ? '동의'
                               : '비동의'
                           }
@@ -443,7 +486,7 @@ export default function StudentsWriteCourse({
                     variant="bordered"
                     radius="md"
                     type="number"
-                    defaultValue={String(paymentData?.seScore)}
+                    defaultValue={String(studentPaymentData?.seScore)}
                     endContent={<InputText>/ 100</InputText>}
                     label={
                       <FilterLabel>
@@ -480,8 +523,8 @@ export default function StudentsWriteCourse({
                     value={
                       subjectSelectedData?.subDiv !== undefined
                         ? String(subjectSelectedData?.subDiv)
-                        : subjectData?.subDiv !== null
-                        ? subjectData?.subDiv
+                        : studentSubjectData?.subDiv !== null
+                        ? studentSubjectData?.subDiv
                         : ''
                     }
                     variant="faded"
@@ -499,8 +542,8 @@ export default function StudentsWriteCourse({
                     value={
                       subjectSelectedData?.fee !== undefined
                         ? feeFormet(subjectSelectedData?.fee)
-                        : subjectData?.fee !== null
-                        ? feeFormet(subjectData?.fee)
+                        : studentSubjectData?.fee !== null
+                        ? feeFormet(studentSubjectData?.fee)
                         : ''
                     }
                     variant="faded"
@@ -522,22 +565,51 @@ export default function StudentsWriteCourse({
                     type="text"
                     label="할인"
                     defaultValue={
-                      paymentData?.discountAmount !== null
-                        ? extractNumber(paymentData?.discountAmount)
+                      studentPaymentData?.discountAmount !== null
+                        ? extractNumber(studentPaymentData?.discountAmount)
                         : ''
                     }
-                    onChange={e => {
-                      register('discountAmount').onChange(e)
-                      setDiscount(parseInt(e.target.value))
+                    onValueChange={e => {
+                      discountChange(e)
                     }}
+                    {...register('discount')}
                     endContent={
-                      <SelectBox
-                        onChange={handleDisCountChange}
-                        value={disCountType}
-                      >
-                        <option value="%">%</option>
-                        <option value="원">원</option>
-                      </SelectBox>
+                      <Controller
+                        control={control}
+                        name="discountUnit"
+                        defaultValue={studentPaymentData?.processingManagerId}
+                        render={({ field, fieldState }) => (
+                          <Select
+                            labelPlacement="outside"
+                            label={<span style={{ display: 'none' }}></span>}
+                            placeholder=" "
+                            variant={'underlined'}
+                            defaultValue={extractUnit(
+                              studentPaymentData?.discountAmount !== null
+                                ? studentPaymentData?.discountAmount
+                                : '%',
+                            )}
+                            selectedKeys={[disCountType]}
+                            classNames={{
+                              base: 'w-[6rem]',
+                              label: 'hidden',
+                              trigger: 'h-unit-8 min-h-unit-8',
+                              value: 'text-center',
+                            }}
+                            onChange={value => {
+                              field.onChange(value)
+                              handleDisCountChange(value)
+                            }}
+                          >
+                            <SelectItem key={'%'} value={'%'}>
+                              %
+                            </SelectItem>
+                            <SelectItem key={'원'} value={'원'}>
+                              원
+                            </SelectItem>
+                          </Select>
+                        )}
+                      />
                     }
                   />
                 </AreaBox>
@@ -550,12 +622,11 @@ export default function StudentsWriteCourse({
                     type="text"
                     label="할인된 수강료"
                     defaultValue={
-                      actualAmountF !== null
-                        ? feeFormet(actualAmountF)
-                        : paymentData?.actualAmount !== undefined
-                        ? feeFormet(paymentData?.actualAmount)
+                      studentPaymentData?.actualAmount !== undefined
+                        ? feeFormet(studentPaymentData?.actualAmount)
                         : ''
                     }
+                    onValueChange={value => discountTotal(value)}
                     onChange={e => {
                       register('actualAmount').onChange(e)
                     }}
@@ -572,9 +643,9 @@ export default function StudentsWriteCourse({
                     type="text"
                     label="수납액"
                     defaultValue={
-                      paymentData?.amountReceived === null
+                      studentPaymentData?.amountReceived === null
                         ? '0'
-                        : feeFormet(paymentData?.amountReceived)
+                        : feeFormet(studentPaymentData?.amountReceived)
                     }
                     {...register('amountReceived')}
                   />
@@ -591,9 +662,9 @@ export default function StudentsWriteCourse({
                     type="text"
                     label="현금결제액"
                     defaultValue={
-                      paymentData?.cashAmount === null
+                      studentPaymentData?.cashAmount === null
                         ? '0'
-                        : feeFormet(paymentData?.cashAmount)
+                        : feeFormet(studentPaymentData?.cashAmount)
                     }
                     {...register('cashAmount')}
                   />
@@ -608,9 +679,9 @@ export default function StudentsWriteCourse({
                     type="text"
                     label="카드 결제액"
                     defaultValue={
-                      paymentData?.cardAmount === null
+                      studentPaymentData?.cardAmount === null
                         ? '0'
-                        : feeFormet(paymentData?.cardAmount)
+                        : feeFormet(studentPaymentData?.cardAmount)
                     }
                     {...register('cardAmount')}
                   />
@@ -625,9 +696,9 @@ export default function StudentsWriteCourse({
                     type="text"
                     label="미수납액"
                     defaultValue={
-                      paymentData?.unCollectedAmount === null
+                      studentPaymentData?.unCollectedAmount === null
                         ? '0'
-                        : feeFormet(paymentData?.unCollectedAmount)
+                        : feeFormet(studentPaymentData?.unCollectedAmount)
                     }
                     {...register('unCollectedAmount')}
                   />
@@ -639,7 +710,7 @@ export default function StudentsWriteCourse({
                     <Controller
                       control={control}
                       name="paymentDate"
-                      defaultValue={paymentData?.paymentDate}
+                      defaultValue={studentPaymentData?.paymentDate}
                       rules={{
                         required: {
                           value: true,
@@ -767,7 +838,7 @@ export default function StudentsWriteCourse({
                   <Controller
                     control={control}
                     name="processingManagerId"
-                    defaultValue={paymentData?.processingManagerId}
+                    defaultValue={studentPaymentData?.processingManagerId}
                     rules={{
                       required: {
                         value: true,
@@ -781,7 +852,7 @@ export default function StudentsWriteCourse({
                         placeholder=" "
                         className="w-full"
                         variant="bordered"
-                        defaultValue={paymentData?.processingManagerId}
+                        defaultValue={studentPaymentData?.processingManagerId}
                         selectedKeys={[subjectManager]}
                         onChange={value => {
                           field.onChange(value)
@@ -811,6 +882,31 @@ export default function StudentsWriteCourse({
                       {String(errors.processingManagerId.message)}
                     </p>
                   )}
+                </AreaBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <RadioBox>
+                    <Controller
+                      control={control}
+                      name="receiptClassification"
+                      render={({ field, fieldState }) => (
+                        <CheckboxGroup
+                          label={<FilterLabel>영수구분</FilterLabel>}
+                          orientation="horizontal"
+                          className="gap-[0.65rem]"
+                          value={receiptSelected}
+                          onValueChange={handleReceiptChange}
+                        >
+                          {Object.entries(Receipt).map(([key, item]) => (
+                            <Checkbox key={key} value={item}>
+                              {item}
+                            </Checkbox>
+                          ))}
+                        </CheckboxGroup>
+                      )}
+                    />
+                  </RadioBox>
                 </AreaBox>
               </FlexBox>
             </DetailDiv>
@@ -845,8 +941,8 @@ export default function StudentsWriteCourse({
           </DetailBox>
         </form>
       )}
-
       <SubjectModal
+        subjectSelectedID={studentSubjectData?.id}
         subjectSelected={subjectSelected}
         setSubjectSelected={setSubjectSelected}
         setSubjectSelectedData={setSubjectSelectedData}
@@ -858,4 +954,4 @@ export default function StudentsWriteCourse({
     </>
   )
 }
-StudentsWriteCourse.getLayout = page => <Layout>{page}</Layout>
+StudentPaymentForm.getLayout = page => <Layout>{page}</Layout>

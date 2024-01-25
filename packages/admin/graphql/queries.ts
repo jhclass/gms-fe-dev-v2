@@ -210,7 +210,7 @@ export const SEE_SUBJECT_QUERY = gql`
 
 //student
 export const SEE_STUDENT_QUERY = gql`
-  query SeeStudent($page: Int, $limit: Int) {
+  query Query($page: Int, $limit: Int) {
     seeStudent(page: $page, limit: $limit) {
       error
       message
@@ -218,19 +218,20 @@ export const SEE_STUDENT_QUERY = gql`
       totalCount
       student {
         birthday
+        courseComplete
+        createdAt
         id
         lectureAssignment
         name
         phoneNum1
-        subject {
-          fee
-          id
-          subjectName
-          subDiv
-        }
         writer
-        courseComplete
-        createdAt
+        studentPayment {
+          subject {
+            subDiv
+            subjectName
+            id
+          }
+        }
       }
     }
   }
