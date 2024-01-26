@@ -901,7 +901,6 @@ export default function StudentsWriteCourse({
         </form>
       )}
       <SubjectModal
-        subjectSelectedID={studentSubjectData?.id}
         subjectSelected={subjectSelected}
         setSubjectSelected={setSubjectSelected}
         setSubjectSelectedData={setSubjectSelectedData}
