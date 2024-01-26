@@ -574,26 +574,30 @@ export const SEARCH_STUDENT_MUTATION = gql`
           amountReceived
           studentId
           paymentDetail {
-            ApprovalNum
-            amountPayment
-            bankName
-            cardCompany
-            cardNum
-            cashOrCard
-            depositAmount
-            depositDate
-            depositorName
-            id
-            installment
-            paymentDate
-            receiver {
-              mUserId
-              mUsername
-              mRank
-              id
-            }
+            refundManager
+            refundApproval
+            reqRefundManager
+            reqRefund
             receiverId
+            receiver {
+              id
+              mUsername
+              mUserId
+              mGrade
+            }
             studentPaymentId
+            depositDate
+            depositAmount
+            depositorName
+            bankName
+            paymentDate
+            amountPayment
+            ApprovalNum
+            installment
+            cardNum
+            cardCompany
+            cashOrCard
+            id
           }
         }
         courseComplete
@@ -830,77 +834,129 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
   mutation Mutation(
     $editStudentPaymentId: Int!
     $seScore: Int
+    $subjectId: Int
+    $processingManagerId: Int
+    $receiptClassification: [String]
     $subject: String
     $tuitionFee: Int
     $discountAmount: String
     $actualAmount: Int
     $unCollectedAmount: Int
     $paymentDate: String
-    $processingManagerId: Int
-    $subjectId: Int
     $situationReport: Boolean
     $amountReceived: Int
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
       seScore: $seScore
+      subjectId: $subjectId
+      processingManagerId: $processingManagerId
+      receiptClassification: $receiptClassification
       subject: $subject
       tuitionFee: $tuitionFee
       discountAmount: $discountAmount
       actualAmount: $actualAmount
       unCollectedAmount: $unCollectedAmount
       paymentDate: $paymentDate
-      processingManagerId: $processingManagerId
-      subjectId: $subjectId
       situationReport: $situationReport
       amountReceived: $amountReceived
     ) {
+      ok
       error
       message
-      ok
     }
   }
 `
 export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
   mutation Mutation(
-    $editStudentPaymentId: Int!
-    $seScore: Int
-    $tuitionFee: Int
-    $discountAmount: String
-    $actualAmount: Int
-    $unCollectedAmount: Int
+    $cashOrCard: String!
+    $studentPaymentId: Int!
+    $cardCompany: String
+    $cardNum: String
+    $installment: Int
+    $approvalNum: String
+    $amountPayment: Int
     $paymentDate: String
-    $processingManagerId: Int
-    $subjectId: Int
-    $situationReport: Boolean
-    $amountReceived: Int
+    $depositDate: String
+    $depositAmount: Int
+    $depositorName: String
+    $bankName: String
   ) {
-    editStudentPayment(
-      id: $editStudentPaymentId
-      seScore: $seScore
-      tuitionFee: $tuitionFee
-      discountAmount: $discountAmount
-      actualAmount: $actualAmount
-      unCollectedAmount: $unCollectedAmount
+    createPaymentDetail(
+      cashOrCard: $cashOrCard
+      studentPaymentId: $studentPaymentId
+      cardCompany: $cardCompany
+      cardNum: $cardNum
+      installment: $installment
+      ApprovalNum: $approvalNum
+      amountPayment: $amountPayment
       paymentDate: $paymentDate
-      processingManagerId: $processingManagerId
-      subjectId: $subjectId
-      situationReport: $situationReport
-      amountReceived: $amountReceived
+      depositDate: $depositDate
+      depositAmount: $depositAmount
+      depositorName: $depositorName
+      bankName: $bankName
     ) {
+      ok
       error
       message
+    }
+  }
+`
+
+export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
+  mutation EditPaymentDetail(
+    $editPaymentDetailId: Int!
+    $cashOrCard: String!
+    $studentPaymentId: Int!
+    $cardCompany: String
+    $cardNum: String
+    $installment: Int
+    $approvalNum: String
+    $amountPayment: Int
+    $paymentDate: String
+    $bankName: String
+    $depositorName: String
+    $depositAmount: Int
+    $depositDate: String
+  ) {
+    editPaymentDetail(
+      id: $editPaymentDetailId
+      cashOrCard: $cashOrCard
+      studentPaymentId: $studentPaymentId
+      cardCompany: $cardCompany
+      cardNum: $cardNum
+      installment: $installment
+      ApprovalNum: $approvalNum
+      amountPayment: $amountPayment
+      paymentDate: $paymentDate
+      bankName: $bankName
+      depositorName: $depositorName
+      depositAmount: $depositAmount
+      depositDate: $depositDate
+    ) {
       ok
+      error
+      message
     }
   }
 `
 
 export const UPDATE_STUDENT_RECEIVED_MUTATION = gql`
-  mutation Mutation($actualAmount: Int, $editStudentPaymentId: Int!) {
-    editStudentPayment(actualAmount: $actualAmount, id: $editStudentPaymentId) {
+  mutation Mutation(
+    $editStudentPaymentId: Int!
+    $amountReceived: Int
+    $subjectId: Int
+    $processingManagerId: Int
+  ) {
+    editStudentPayment(
+      id: $editStudentPaymentId
+      amountReceived: $amountReceived
+      subjectId: $subjectId
+      processingManagerId: $processingManagerId
+    ) {
+      ok
       error
       message
-      ok
     }
   }
 `
@@ -939,6 +995,38 @@ export const DELETE_STUDENT_MEMO_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+//refund
+export const REQ_REFUND_MUTATION = gql`
+  mutation ReqRefund($reqRefundId: Int!, $reqRefund: Boolean!) {
+    reqRefund(id: $reqRefundId, reqRefund: $reqRefund) {
+      ok
+      error
+      message
+    }
+  }
+`
+export const APPROVAL_REFUND_MUTATION = gql`
+  mutation RefundApproval($refundApprovalId: Int!, $refundApproval: Boolean!) {
+    refundApproval(id: $refundApprovalId, refundApproval: $refundApproval) {
+      ok
+      error
+      message
+    }
+  }
+`
+export const CLASS_CANCEL_MUTATION = gql`
+  mutation ClassCancellation(
+    $classCancellationId: Int!
+    $cancellation: Boolean!
+  ) {
+    classCancellation(id: $classCancellationId, cancellation: $cancellation) {
+      ok
+      error
+      message
     }
   }
 `

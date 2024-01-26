@@ -242,7 +242,8 @@ export default function StudentPaymentForm({
     } else {
       setReceiptSelected(studentPaymentData.receiptClassification)
     }
-  }, [router, studentPaymentData])
+    setSubjectSelected(studentSubjectData?.id)
+  }, [router, studentPaymentData, studentSubjectData])
 
   const disCountPrice = (disCountType, tuitionFee) => {
     const discount = getValues('discount')
@@ -274,13 +275,16 @@ export default function StudentPaymentForm({
         updateStudentPayment({
           variables: {
             editStudentPaymentId: parseInt(studentPaymentData.id),
-            subjectId: parseInt(subjectSelected),
+            subjectId:
+              subjectSelected === null
+                ? parseInt(studentPaymentData.subject.id)
+                : parseInt(subjectSelected),
             seScore: parseInt(data.seScore),
             tuitionFee:
               subjectSelectedData === null
                 ? parseInt(data.tuitionFee.replace(/,/g, ''), 10)
                 : parseInt(subjectSelectedData.fee),
-            // processingManagerId: parseInt(subjectManager),
+            processingManagerId: parseInt(subjectManager),
             situationReport: data.situationReport === '동의' ? true : false,
             paymentDate:
               data.paymentDate === null
@@ -301,10 +305,7 @@ export default function StudentPaymentForm({
                 ? parseInt(data.unCollectedAmount.replace(/,/g, ''), 10)
                 : data.unCollectedAmount,
             amountReceived: parseInt(data.amountReceived.replace(/,/g, ''), 10),
-            // receiptClassification:
-            //   data.receiptClassification.length === 0
-            //     ? []
-            //     : data.receiptClassification,
+            receiptClassification: receiptSelected,
           },
           onCompleted: () => {
             updateStudentDuedate({
@@ -331,6 +332,7 @@ export default function StudentPaymentForm({
       }
     }
   }
+
   const feeFormet = fee => {
     if (fee !== null && fee !== undefined) {
       const result = fee
@@ -339,6 +341,7 @@ export default function StudentPaymentForm({
       return result
     }
   }
+
   const handleDisCountChange = e => {
     setDisCountType(e.target.value)
     if (subjectSelectedData !== null) {
@@ -380,7 +383,7 @@ export default function StudentPaymentForm({
   }
 
   const handleReceiptChange = (value: string[]) => {
-    setValue('receiptClassification', value)
+    setValue('receiptClassification', value, { shouldDirty: true })
     setReceiptSelected(value)
   }
   return (
@@ -942,7 +945,6 @@ export default function StudentPaymentForm({
         </form>
       )}
       <SubjectModal
-        subjectSelectedID={studentSubjectData?.id}
         subjectSelected={subjectSelected}
         setSubjectSelected={setSubjectSelected}
         setSubjectSelectedData={setSubjectSelectedData}

@@ -209,3 +209,9 @@ export const studentSearchState = atom({
     createdAt: string
   },
 })
+
+//select
+export const selectedPaymentDetailState = atom({
+  key: 'selectedPaymentDetail',
+  default: null,
+})
