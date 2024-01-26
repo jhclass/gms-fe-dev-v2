@@ -178,7 +178,7 @@ export default function StudentPaymentForm({
       editStudentPaymentId: studentPaymentData?.id,
       seScore: studentPaymentData?.seScore,
       subject: studentSubjectData?.subjectName,
-      tuitionFee: studentSubjectData?.fee,
+      tuitionFee: studentPaymentData?.tuitionFee,
       actualAmount: studentPaymentData?.actualAmount,
       unCollectedAmount: studentPaymentData?.unCollectedAmount,
       paymentDate: studentPaymentData?.paymentDate,
@@ -267,7 +267,6 @@ export default function StudentPaymentForm({
       disCounCalculator(subjectSelectedData?.fee)
     }
   }, [subjectSelectedData])
-
   const onSubmit = data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
@@ -545,8 +544,8 @@ export default function StudentPaymentForm({
                     value={
                       subjectSelectedData?.fee !== undefined
                         ? feeFormet(subjectSelectedData?.fee)
-                        : studentSubjectData?.fee !== null
-                        ? feeFormet(studentSubjectData?.fee)
+                        : studentPaymentData?.tuitionFee !== null
+                        ? feeFormet(studentPaymentData?.tuitionFee)
                         : ''
                     }
                     variant="faded"

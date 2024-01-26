@@ -629,27 +629,42 @@ export const SEARCH_STUDENT_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_FILTER_MUTATION = gql`
-  mutation Mutation($searchStudentId: Int) {
-    searchStudent(id: $searchStudentId) {
-      error
-      message
+  mutation SearchStudent(
+    $studentName: String
+    $createdAt: [String]
+    $birthday: [String]
+    $phoneNum: String
+    $page: Int
+    $limit: Int
+  ) {
+    searchStudent(
+      studentName: $studentName
+      createdAt: $createdAt
+      birthday: $birthday
+      phoneNum: $phoneNum
+      page: $page
+      limit: $limit
+    ) {
       ok
+      message
+      error
       student {
-        birthday
-        courseComplete
-        createdAt
+        studentPayment {
+          subject {
+            subjectName
+            subDiv
+          }
+        }
         id
-        lectureAssignment
         name
         phoneNum1
         writer
-        updatedAt
-        subject {
-          subjectName
-          subDiv
-          id
-        }
+        createdAt
+        birthday
+        lectureAssignment
+        courseComplete
       }
+      totalCount
     }
   }
 `

@@ -411,6 +411,8 @@ export default function StudentsWrite() {
     return result
   }
 
+  console.log(studentPaymentData)
+
   return (
     <>
       {studentData !== null && (
