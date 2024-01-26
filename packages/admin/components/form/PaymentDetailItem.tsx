@@ -1,0 +1,377 @@
+import { Button } from '@nextui-org/react'
+import { useRouter } from 'next/router'
+import { styled } from 'styled-components'
+import Layout from '@/pages/students/layout'
+import { useRecoilState } from 'recoil'
+import { selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import { useMutation } from '@apollo/client'
+import {
+  REQ_REFUND_MUTATION,
+  SEARCH_STUDENT_MUTATION,
+} from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
+
+const FlexCardBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 2px solid hsl(240 6% 90%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+`
+const FlexBox = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+const AreaBox = styled.div`
+  flex: 1;
+  width: 100%;
+`
+const FilterLabel = styled.label`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #11181c;
+  display: block;
+  padding-bottom: 0.375rem;
+  span {
+    color: red;
+  }
+`
+const BtnBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+`
+const LineBox = styled.div`
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-bottom: 2px solid hsl(240 6% 90%);
+  height: 40px;
+  line-height: 40px;
+  font-size: 0.875rem;
+`
+const FlatBox = styled.div`
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background: hsl(240 5% 96%);
+  height: 40px;
+  line-height: 40px;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+`
+
+export default function StudentPaymentDetailItem({
+  detailtData,
+  studentId,
+  setStudentPaymentDetailData,
+}) {
+  const router = useRouter()
+  const { userLogs } = useUserLogsMutation()
+  const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
+  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
+  const [selectedPaymentDate, setSelectedPaymentDate] = useRecoilState(
+    selectedPaymentDetailState,
+  )
+
+  const clickReqRefund = () => {
+    if (detailtData.reqRefund) {
+      const isAssignment = confirm('결제를 취소요청을 철회 하시겠습니까?')
+      if (isAssignment) {
+        reqRefoundMutation({
+          variables: {
+            reqRefundId: detailtData.id,
+            reqRefund: false,
+          },
+          onCompleted: () => {
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(studentId),
+              },
+              onCompleted: data => {
+                searchStudentMutation({
+                  variables: {
+                    searchStudentId: parseInt(studentId),
+                  },
+                  onCompleted: data => {
+                    setStudentPaymentDetailData(
+                      data.searchStudent?.student[0].studentPayment[0]
+                        ?.paymentDetail,
+                    )
+                  },
+                })
+              },
+            })
+            alert('결제 취소요청이 철회 되었습니다.')
+            userLogs(`paymentDetail ID : ${detailtData.id} / 결제취소 철회`)
+          },
+        })
+      }
+    } else {
+      const isAssignment = confirm('결제를 취소 요청 하시겠습니까?')
+      if (isAssignment) {
+        reqRefoundMutation({
+          variables: {
+            reqRefundId: detailtData.id,
+            reqRefund: true,
+          },
+          onCompleted: () => {
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(studentId),
+              },
+              onCompleted: data => {
+                searchStudentMutation({
+                  variables: {
+                    searchStudentId: parseInt(studentId),
+                  },
+                  onCompleted: data => {
+                    setStudentPaymentDetailData(
+                      data.searchStudent?.student[0].studentPayment[0]
+                        ?.paymentDetail,
+                    )
+                  },
+                })
+              },
+            })
+            alert('결제 취소요청 되었습니다.')
+            userLogs(`paymentDetail ID : ${detailtData.id} / 결제취소 요청`)
+          },
+        })
+      }
+    }
+  }
+
+  const fametDate = (data, isTime) => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    if (isTime) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}:` +
+        `${date.getSeconds().toString().padStart(2, '0')}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
+  }
+
+  const feeFormet = fee => {
+    const result = fee
+      .toString()
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    return result
+  }
+
+  const editBtn = item => {
+    setSelectedPaymentDate(item)
+    router.push(`/students/edit/payment/${studentId}`)
+  }
+
+  return (
+    <>
+      {detailtData?.cashOrCard === '현금' && (
+        <>
+          <FlexCardBox>
+            <FlexBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>결제일자</FilterLabel>
+                  <FlatBox>
+                    {fametDate(detailtData?.depositDate, false)}
+                  </FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>은행명</FilterLabel>
+                  <FlatBox>{detailtData?.bankName}</FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>입금자명</FilterLabel>
+                  <FlatBox>{detailtData?.depositorName}</FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>결제금액</FilterLabel>
+                  <FlatBox>
+                    {' '}
+                    {detailtData?.depositAmount === null
+                      ? ''
+                      : feeFormet(detailtData?.depositAmount)}
+                    원
+                  </FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>수납자</FilterLabel>
+                  <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
+                </div>
+              </AreaBox>
+            </FlexBox>
+            <BtnBox>
+              {/* <Button
+                        size="md"
+                        radius="md"
+                        variant="bordered"
+                        color="primary"
+                        className="w-full"
+                      >
+                        영수증 인쇄
+                      </Button> */}
+              <Button
+                isDisabled={detailtData.reqRefund ? true : false}
+                size="md"
+                radius="md"
+                variant="solid"
+                color="primary"
+                className="w-full text-white"
+                onClick={() => editBtn(detailtData)}
+              >
+                결제 변경
+              </Button>
+              {detailtData.reqRefund ? (
+                <>
+                  <Button
+                    isDisabled={detailtData.refundApproval ? true : false}
+                    size="md"
+                    radius="md"
+                    className="w-full text-white bg-flag1"
+                    onClick={() => clickReqRefund()}
+                  >
+                    결제 취소요청 철회
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  size="md"
+                  radius="md"
+                  variant="bordered"
+                  className="w-full text-flag1 border-flag1"
+                  onClick={() => clickReqRefund()}
+                >
+                  결제 취소 요청
+                </Button>
+              )}
+            </BtnBox>
+          </FlexCardBox>
+        </>
+      )}
+      {detailtData?.cashOrCard === '카드' && (
+        <>
+          <FlexCardBox>
+            <FlexBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>결제일자</FilterLabel>
+                  <FlatBox>
+                    {fametDate(detailtData?.paymentDate, false)}
+                  </FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>카드회사명</FilterLabel>
+                  <FlatBox>{detailtData?.cardCompany}</FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>할부개월</FilterLabel>
+                  <FlatBox>
+                    {detailtData?.installment === 0
+                      ? '1'
+                      : detailtData?.installment}
+                    개월
+                  </FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>결제금액</FilterLabel>
+                  <FlatBox>
+                    {detailtData?.amountPayment === null
+                      ? ''
+                      : feeFormet(detailtData?.amountPayment)}
+                    원
+                  </FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>수납자</FilterLabel>
+                  <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
+                </div>
+              </AreaBox>
+              {/* <AreaBox>
+                <div>
+                  <FilterLabel>영수구분</FilterLabel>
+                  <FlatBox>{detailtData?.ReceiptClassification}</FlatBox>
+                </div>
+              </AreaBox> */}
+            </FlexBox>
+            <BtnBox>
+              {/* <Button
+                size="md"
+                radius="md"
+                variant="bordered"
+                color="primary"
+                className="w-full"
+              >
+                영수증 인쇄
+              </Button> */}
+              <Button
+                isDisabled={detailtData.reqRefund ? true : false}
+                size="md"
+                radius="md"
+                variant="solid"
+                color="primary"
+                className="w-full text-white"
+                onClick={() => editBtn(detailtData)}
+              >
+                결제 변경
+              </Button>
+              {detailtData.reqRefund ? (
+                <Button
+                  isDisabled={detailtData.refundApproval ? true : false}
+                  size="md"
+                  radius="md"
+                  className="w-full text-white bg-flag1"
+                  onClick={() => clickReqRefund()}
+                >
+                  결제 취소요청 철회
+                </Button>
+              ) : (
+                <Button
+                  size="md"
+                  radius="md"
+                  variant="bordered"
+                  className="w-full text-flag1 border-flag1"
+                  onClick={() => clickReqRefund()}
+                >
+                  결제 취소 요청
+                </Button>
+              )}
+            </BtnBox>
+          </FlexCardBox>
+        </>
+      )}
+    </>
+  )
+}
+StudentPaymentDetailItem.getLayout = page => <Layout>{page}</Layout>

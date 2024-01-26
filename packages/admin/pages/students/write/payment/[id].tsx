@@ -32,6 +32,7 @@ import {
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import Button2 from '@/components/common/Button'
 
 const ConArea = styled.div`
   width: 100%;
@@ -75,7 +76,7 @@ const DetailDiv = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -165,7 +166,15 @@ export default function StudentsWritePayment() {
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
-  const { register, control, setValue, handleSubmit, formState } = useForm()
+  const {
+    register,
+    control,
+    reset,
+    setValue,
+    clearErrors,
+    handleSubmit,
+    formState,
+  } = useForm()
   const { errors } = formState
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
@@ -225,28 +234,25 @@ export default function StudentsWritePayment() {
       createPaymentDetail({
         variables: {
           cashOrCard: '카드',
-          studentPaymentId: parseInt(studentPaymentData?.id),
+          studentPaymentId: studentPaymentData?.id,
           cardCompany: data.cardCompany,
           cardNum: data.cardNum.trim(),
           amountPayment: parseInt(data.amountPayment),
-          installment:
-            data.installment === '' ? null : parseInt(data.installment),
+          installment: data.installment === '' ? 0 : parseInt(data.installment),
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
           paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
-          bankName: null,
-          depositorName: null,
-          depositAmount: null,
-          depositDate: null,
         },
-        onCompleted: data => {
+        onCompleted: () => {
           updateReceived({
             variables: {
-              actualAmount:
-                studentPaymentData.amountReceived +
+              amountReceived:
+                studentPaymentData?.amountReceived +
                 parseInt(data.amountPayment),
               editStudentPaymentId: parseInt(studentPaymentData?.id),
+              subjectId: studentSubjectData.id,
+              processingManagerId: studentPaymentData?.processingManagerId,
             },
-            onCompleted: data => {
+            onCompleted: () => {
               searchStudentPayment({
                 variables: {
                   searchStudentId: parseInt(studentId),
@@ -265,32 +271,28 @@ export default function StudentsWritePayment() {
           })
         },
       })
-      // userLogs(`${studentName} 카드 결재 `)
+      userLogs(`${studentData?.name} 카드 결제 `)
     } else {
       createPaymentDetail({
         variables: {
           cashOrCard: '현금',
           studentPaymentId: parseInt(studentPaymentData?.id),
-          cardCompany: null,
-          cardNum: null,
-          installment: null,
-          approvalNum: null,
-          amountPayment: null,
-          paymentDate: null,
           bankName: data.bankName,
           depositorName: data.depositorName.trim(),
           depositAmount: parseInt(data.depositAmount),
           depositDate: data.depositDate === undefined ? null : data.depositDate,
         },
-        onCompleted: data => {
+        onCompleted: () => {
           updateReceived({
             variables: {
-              actualAmount:
-                studentPaymentData.amountReceived +
-                parseInt(data.amountPayment),
+              amountReceived:
+                studentPaymentData?.amountReceived +
+                parseInt(data.depositAmount),
               editStudentPaymentId: parseInt(studentPaymentData?.id),
+              subjectId: studentSubjectData.id,
+              processingManagerId: studentPaymentData?.processingManagerId,
             },
-            onCompleted: data => {
+            onCompleted: () => {
               searchStudentPayment({
                 variables: {
                   searchStudentId: parseInt(studentId),
@@ -309,10 +311,22 @@ export default function StudentsWritePayment() {
           })
         },
       })
-      // userLogs(`${studentName} 현금 결재 `)
+      userLogs(`${studentData?.name} 현금 결제 `)
     }
+
+    reset()
+    clearErrors()
+    setCardName('카드사 선택')
+    setBankName('은행 선택')
+    setCardPaymentDate(null)
+    setCashDepositDate(null)
+    setPaymentType(paymentType)
   }
 
+  const received = (actual, unCollected) => {
+    const result = feeFormet(parseInt(actual) - parseInt(unCollected))
+    return result
+  }
   const handleCardChange = e => {
     setCardName(e.target.value)
   }
@@ -367,94 +381,103 @@ export default function StudentsWritePayment() {
               </FlexBox>
             </DetailDiv>
           </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>수강 정보</h4>
-              </AreaTitle>
-              <FlexBox>
-                <AreaSmallBox style={{ minWidth: '20%' }}>
-                  <div>
-                    <FilterLabel>수강 구분</FilterLabel>
-                    <LineBox>{studentSubjectData?.subDiv}</LineBox>
-                  </div>
-                </AreaSmallBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>과정명</FilterLabel>
-                    <LineBox>{studentSubjectData?.subjectName}</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaSmallBox style={{ width: '20%' }}>
-                  <div>
-                    <FilterLabel>수강당담자</FilterLabel>
-                    <LineBox>
-                      {
-                        managerList.find(
-                          user =>
-                            user.id === studentPaymentData?.processingManagerId,
-                        )?.mUsername
-                      }
-                    </LineBox>
-                  </div>
-                </AreaSmallBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>수강료</FilterLabel>
-                    <LineBox>
-                      {studentPaymentData?.tuitionFee
-                        ? feeFormet(studentPaymentData?.tuitionFee)
-                        : '0'}
-                    </LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>할인금액</FilterLabel>
-                    <LineBox>
-                      {studentPaymentData?.discountAmount
-                        ? feeFormet(studentPaymentData?.discountAmount)
-                        : '0'}
-                    </LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>실 수강료</FilterLabel>
-                    <LineBox>
-                      {studentPaymentData?.actualAmount
-                        ? feeFormet(studentPaymentData?.actualAmount)
-                        : '0'}
-                    </LineBox>
-                  </div>
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>수납액</FilterLabel>
-                    <LineBox>
-                      {studentPaymentData?.amountReceived
-                        ? feeFormet(studentPaymentData?.amountReceived)
-                        : '0'}
-                    </LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>미 수납액</FilterLabel>
-                    <LineBox>
-                      {studentPaymentData?.unCollectedAmount
-                        ? feeFormet(studentPaymentData?.unCollectedAmount)
-                        : '0'}
-                    </LineBox>
-                  </div>
-                </AreaBox>
-              </FlexBox>
-            </DetailDiv>
-          </DetailBox>
+          {studentPaymentData !== null && (
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>수강 정보</h4>
+                </AreaTitle>
+                <FlexBox>
+                  <AreaSmallBox style={{ minWidth: '20%' }}>
+                    <div>
+                      <FilterLabel>수강 구분</FilterLabel>
+                      <LineBox>{studentSubjectData?.subDiv}</LineBox>
+                    </div>
+                  </AreaSmallBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>과정명</FilterLabel>
+                      <LineBox>{studentSubjectData?.subjectName}</LineBox>
+                    </div>
+                  </AreaBox>
+                  <AreaSmallBox style={{ width: '20%' }}>
+                    <div>
+                      <FilterLabel>수강당담자</FilterLabel>
+                      <LineBox>
+                        {
+                          managerList.find(
+                            user =>
+                              user.id ===
+                              studentPaymentData?.processingManagerId,
+                          )?.mUsername
+                        }
+                      </LineBox>
+                    </div>
+                  </AreaSmallBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>수강료</FilterLabel>
+                      <LineBox>
+                        {studentPaymentData?.tuitionFee
+                          ? feeFormet(studentPaymentData?.tuitionFee)
+                          : '0'}
+                      </LineBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>할인금액</FilterLabel>
+                      <LineBox>
+                        {studentPaymentData?.discountAmount
+                          ? feeFormet(studentPaymentData?.discountAmount)
+                          : '0'}
+                      </LineBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>실 수강료</FilterLabel>
+                      <LineBox>
+                        {studentPaymentData?.actualAmount
+                          ? feeFormet(studentPaymentData?.actualAmount)
+                          : '0'}
+                      </LineBox>
+                    </div>
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>수납액</FilterLabel>
+                      <LineBox>
+                        {/* {studentPaymentData?.actualAmount
+                          ? received(
+                              studentPaymentData?.actualAmount,
+                              studentPaymentData?.unCollectedAmount,
+                            )
+                          : '0'} */}
+                        {studentPaymentData?.amountReceived
+                          ? feeFormet(studentPaymentData?.amountReceived)
+                          : '0'}
+                      </LineBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>미 수납액</FilterLabel>
+                      <LineBox>
+                        {studentPaymentData?.unCollectedAmount
+                          ? feeFormet(studentPaymentData?.unCollectedAmount)
+                          : '0'}
+                      </LineBox>
+                    </div>
+                  </AreaBox>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+          )}
           <form onSubmit={handleSubmit(onPaymentDetailSubmit)}>
             <DetailBox>
               <DetailDiv>
@@ -487,42 +510,35 @@ export default function StudentsWritePayment() {
               <DetailDiv style={{ marginTop: '2rem' }}>
                 <AreaTitle>
                   <h4>결제 상세 정보</h4>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    className="text-white bg-flag1"
-                  >
-                    추가
-                  </Button>
                 </AreaTitle>
                 <FlexBox>
-                  <RadioBox>
-                    <Controller
-                      control={control}
-                      name="cashOrCard"
-                      render={({ field }) => (
-                        <RadioGroup
-                          label={<FilterLabel>결제 방식</FilterLabel>}
-                          orientation="horizontal"
-                          className="gap-[0.65rem]"
-                          value={paymentType}
-                          onValueChange={value => {
-                            field.onChange(value)
-                            setPaymentType(value)
-                          }}
-                        >
-                          <Radio key={'카드'} value={'카드'}>
-                            카드
-                          </Radio>
-                          <Radio key={'현금'} value={'현금'}>
-                            현금
-                          </Radio>
-                        </RadioGroup>
-                      )}
-                    />
-                  </RadioBox>
+                  <AreaBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="cashOrCard"
+                        render={({ field }) => (
+                          <RadioGroup
+                            label={<FilterLabel>결제 방식</FilterLabel>}
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            value={paymentType}
+                            onValueChange={value => {
+                              field.onChange(value)
+                              setPaymentType(value)
+                            }}
+                          >
+                            <Radio key={'카드'} value={'카드'}>
+                              카드
+                            </Radio>
+                            <Radio key={'현금'} value={'현금'}>
+                              현금
+                            </Radio>
+                          </RadioGroup>
+                        )}
+                      />
+                    </RadioBox>
+                  </AreaBox>
                 </FlexBox>
                 {paymentType === '카드' && (
                   <>
@@ -531,6 +547,7 @@ export default function StudentsWritePayment() {
                         <Controller
                           control={control}
                           name="cardCompany"
+                          rules={{ required: '카드사를 선택해주세요.' }}
                           render={({ field, fieldState }) => (
                             <Select
                               labelPlacement="outside"
@@ -559,6 +576,11 @@ export default function StudentsWritePayment() {
                             </Select>
                           )}
                         />
+                        {errors.cardCompany && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.cardCompany.message)}
+                          </p>
+                        )}
                       </AreaBox>
                       <AreaBox>
                         <Input
@@ -568,8 +590,15 @@ export default function StudentsWritePayment() {
                           radius="md"
                           type="text"
                           label="카드번호"
-                          {...register('cardNum')}
+                          {...register('cardNum', {
+                            required: '카드반호를 작성해주세요.',
+                          })}
                         />
+                        {errors.cardNum && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.cardNum.message)}
+                          </p>
+                        )}
                       </AreaBox>
                       <AreaSmallBox>
                         <Input
@@ -591,8 +620,15 @@ export default function StudentsWritePayment() {
                           radius="md"
                           type="text"
                           label="결제금액"
-                          {...register('amountPayment')}
+                          {...register('amountPayment', {
+                            required: '결제금액을 작성해주세요.',
+                          })}
                         />
+                        {errors.amountPayment && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.amountPayment.message)}
+                          </p>
+                        )}
                       </AreaBox>
                     </FlexBox>
                     <FlexBox>
@@ -604,14 +640,22 @@ export default function StudentsWritePayment() {
                           radius="md"
                           type="text"
                           label="승인번호"
-                          {...register('approvalNum')}
+                          {...register('approvalNum', {
+                            required: '승인번호를 작성해주세요.',
+                          })}
                         />
+                        {errors.approvalNum && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.approvalNum.message)}
+                          </p>
+                        )}
                       </AreaBox>
                       <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
                             name="paymentDate"
+                            rules={{ required: '결제일자를 선택해주세요.' }}
                             render={({ field }) => (
                               <DatePicker
                                 renderCustomHeader={({
@@ -667,6 +711,11 @@ export default function StudentsWritePayment() {
                             )}
                           />
                         </DatePickerBox>
+                        {errors.paymentDate && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.paymentDate.message)}
+                          </p>
+                        )}
                       </AreaBox>
                     </FlexBox>
                   </>
@@ -677,6 +726,7 @@ export default function StudentsWritePayment() {
                       <Controller
                         control={control}
                         name="bankName"
+                        rules={{ required: '입금은행을 선택해주세요.' }}
                         render={({ field, fieldState }) => (
                           <Select
                             labelPlacement="outside"
@@ -702,6 +752,11 @@ export default function StudentsWritePayment() {
                           </Select>
                         )}
                       />
+                      {errors.bankName && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.bankName.message)}
+                        </p>
+                      )}
                     </AreaBox>
                     <AreaBox>
                       <Input
@@ -711,8 +766,15 @@ export default function StudentsWritePayment() {
                         radius="md"
                         type="text"
                         label="입금자명"
-                        {...register('depositorName')}
+                        {...register('depositorName', {
+                          required: '입금자를 작성해주세요.',
+                        })}
                       />
+                      {errors.depositorName && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.depositorName.message)}
+                        </p>
+                      )}
                     </AreaBox>
                     <AreaBox>
                       <Input
@@ -722,13 +784,21 @@ export default function StudentsWritePayment() {
                         radius="md"
                         type="text"
                         label="입금금액"
-                        {...register('depositAmount')}
+                        {...register('depositAmount', {
+                          required: '입금 금액을 작성해주세요.',
+                        })}
                       />
+                      {errors.depositAmount && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.depositAmount.message)}
+                        </p>
+                      )}
                     </AreaBox>
                     <AreaBox>
                       <DatePickerBox>
                         <Controller
                           control={control}
+                          rules={{ required: '입금일자를 선택해주세요.' }}
                           name="depositDate"
                           render={({ field }) => (
                             <DatePicker
@@ -785,9 +855,38 @@ export default function StudentsWritePayment() {
                           )}
                         />
                       </DatePickerBox>
+                      {errors.depositDate && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.depositDate.message)}
+                        </p>
+                      )}
                     </AreaBox>
                   </FlexBox>
                 )}
+                <BtnBox>
+                  <Button2
+                    buttonType="submit"
+                    width="100%"
+                    height="2.5rem"
+                    typeBorder={true}
+                    fontColor="#fff"
+                    bgColor="#007de9"
+                  >
+                    결제 추가
+                  </Button2>
+                  <Button2
+                    buttonType="button"
+                    width="100%"
+                    height="2.5rem"
+                    fontColor="#007de9"
+                    bgColor="#fff"
+                    borderColor="#007de9"
+                    typeBorder={true}
+                    onClick={() => router.back()}
+                  >
+                    뒤로가기
+                  </Button2>
+                </BtnBox>
               </DetailDiv>
             </DetailBox>
           </form>
@@ -796,4 +895,3 @@ export default function StudentsWritePayment() {
     </>
   )
 }
-StudentsWritePayment.getLayout = page => <Layout>{page}</Layout>

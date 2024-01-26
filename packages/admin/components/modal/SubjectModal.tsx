@@ -147,7 +147,6 @@ export default function SubjectModal({
   setSubjectSelected,
   radio = false,
   setSubjectSelectedData = null,
-  subjectSelectedID = null,
 }) {
   const router = useRouter()
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
@@ -160,14 +159,10 @@ export default function SubjectModal({
       subjectName: '',
     },
   })
+
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-  useEffect(() => {
-    if (subjectSelectedID !== null) {
-      setSubjectSelected(String(subjectSelectedID))
-    }
-  }, [sbjIsOpen])
 
   useEffect(() => {
     searchSubjectMutation({
@@ -276,7 +271,7 @@ export default function SubjectModal({
                 <ScrollShadow orientation="horizontal" className="scrollbar">
                   {radio ? (
                     <RadioGroup
-                      value={subjectSelected || ''}
+                      value={String(subjectSelected) || ''}
                       onValueChange={handleSbjChange}
                       classNames={{
                         wrapper: 'gap-0',

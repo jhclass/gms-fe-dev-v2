@@ -17,20 +17,23 @@ import {
   RadioGroup,
   Select,
   SelectItem,
-  Textarea,
   Button,
-  useDisclosure,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
-import { SEARCH_SUBJECT_BASIC_MUTATION } from '@/graphql/mutations'
+import { ReceiptState, selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import {
+  CREATE_PAYMENT_DETAIL_MUTATION,
+  SEARCH_STUDENT_PAYMENT_MUTATION,
+  UPDATE_PAYMENT_DETAIL_MUTATION,
+  UPDATE_STUDENT_RECEIVED_MUTATION,
+} from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import Button2 from '@/components/common/Button'
 
 const ConArea = styled.div`
   width: 100%;
@@ -74,7 +77,7 @@ const DetailDiv = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -88,6 +91,9 @@ const AreaTitle = styled.div`
   h4 {
     font-size: 1.2rem;
     font-weight: 600;
+  }
+  @media (max-width: 768px) {
+    align-items: flex-start;
   }
 `
 const AreaBox = styled.div`
@@ -148,86 +154,88 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function StudentsEditPayment() {
+export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
+  const [updatePaymentDetail] = useMutation(UPDATE_PAYMENT_DETAIL_MUTATION)
+  const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
+  const selectedPaymentDeta = useRecoilValue(selectedPaymentDetailState)
   const {
     loading: managerLoading,
     error: managerError,
     data: managerData,
   } = useQuery(SEE_MANAGEUSER_QUERY)
-  const [searchSubject] = useMutation(SEARCH_SUBJECT_BASIC_MUTATION)
-
-  const Receipt = useRecoilValue(ReceiptState)
   const managerList = managerData?.seeManageUser || []
-  const { register, control, setValue, handleSubmit, formState } = useForm()
-  const { errors } = formState
   const {
-    isOpen: sbjIsOpen,
-    onOpen: sbjOpen,
-    onClose: sbjClose,
-  } = useDisclosure()
-  const [subjectSelected, setSubjectSelected] = useState(null)
-  const [subjectInfo, setSubjectInfo] = useState()
-  const [birthdayDate, setBirthdayDate] = useState(null)
-  const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
-  const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
+    register,
+    control,
+    reset,
+    setValue,
+    clearErrors,
+    handleSubmit,
+    formState: { isDirty, dirtyFields, errors, isValid },
+  } = useForm()
+  const [studentData, setStudentData] = useState(null)
+  const [studentSubjectData, setStudentSubjectData] = useState(null)
+  const [studentPaymentData, setStudentPaymentData] = useState(null)
+  const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
+  const [cardPaymentDate, setCardPaymentDate] = useState(null)
+  const [cashDepositDate, setCashDepositDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
-  const onSubmit = data => {
-    console.log(data)
-    // createStudent({
-    //   variables: {
-    //     stName: data.stName.trim(),
-    //     agreement: '동의',
-    //     subject: data.subject,
-    //     campus: '신촌',
-    //     detail: data.detail === '' ? null : data.detail.trim(),
-    //     category: null,
-    //     phoneNum1: data.phoneNum1.trim(),
-    //     phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
-    //     phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
-    //     stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
-    //     stAddr: null,
-    //     subDiv: data.subDiv === undefined ? null : data.subDiv,
-    //     stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
-    //     expEnrollDate:
-    //       data.expEnrollDate === undefined
-    //         ? null
-    //         : new Date(data.expEnrollDate),
-    //     perchase: null,
-    //     birthday: null,
-    //     receiptDiv: data.subDiv === undefined ? '' : data.receiptDiv,
-    //     pic: data.subDiv === undefined ? null : data.pic,
-    //     // progress: 0,
-    //   },
-    //   refetchQueries: [
-    //     {
-    //       query: SEE_STUDENT_QUERY,
-    //       variables: { page: 1, limit: 10 },
-    //     },
-    //   ],
-    //   onCompleted: data => {
-    //     alert('등록되었습니다.')
-    //     router.push('/consult')
-    //   },
-    // })
-    // userLogs(`${data.stName}의 상담 등록`)
-  }
-  const fametDate = data => {
+  useEffect(() => {
+    searchStudentPayment({
+      variables: {
+        searchStudentId: parseInt(studentId),
+      },
+      onCompleted: data => {
+        setStudentData(data.searchStudent?.student[0])
+        setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
+        setStudentSubjectData(
+          data.searchStudent?.student[0].studentPayment[0].subject,
+        )
+      },
+    })
+
+    if (selectedPaymentDeta !== null) {
+      setPaymentType(selectedPaymentDeta.cashOrCard)
+      if (selectedPaymentDeta.cashOrCard === '카드') {
+        setCardName(selectedPaymentDeta.cardCompany)
+        const date = parseInt(selectedPaymentDeta?.paymentDate)
+        setCardPaymentDate(date)
+        setValue('paymentDate', date)
+      } else {
+        setBankName(selectedPaymentDeta.bankName)
+        const date = parseInt(selectedPaymentDeta?.depositDate)
+        setCashDepositDate(date)
+        setValue('depositDate', date)
+      }
+    }
+  }, [router])
+
+  const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
-    return formatted
+    if (isTime) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}:` +
+        `${date.getSeconds().toString().padStart(2, '0')}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
   }
 
   const feeFormet = fee => {
@@ -237,12 +245,116 @@ export default function StudentsEditPayment() {
     return result
   }
 
-  const handleManagerChange = e => {
-    setManager(e.target.value)
+  const onPaymentDetailSubmit = data => {
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        if (paymentType === '카드') {
+          updatePaymentDetail({
+            variables: {
+              editPaymentDetailId: selectedPaymentDeta?.id,
+              cashOrCard: '카드',
+              studentPaymentId: studentPaymentData?.id,
+              cardCompany: data.cardCompany,
+              cardNum: data.cardNum.trim(),
+              amountPayment: parseInt(data.amountPayment),
+              installment: parseInt(data.installment),
+              approvalNum: data.approvalNum.trim(),
+              paymentDate:
+                data.paymentDate === null
+                  ? null
+                  : typeof data.paymentDate === 'string'
+                  ? new Date(parseInt(data.paymentDate))
+                  : new Date(data.paymentDate),
+            },
+            onCompleted: () => {
+              updateReceived({
+                variables: {
+                  amountReceived:
+                    studentPaymentData?.amountReceived -
+                    selectedPaymentDeta.amountPayment +
+                    parseInt(data.amountPayment),
+                  editStudentPaymentId: parseInt(studentPaymentData?.id),
+                  subjectId: studentSubjectData.id,
+                  processingManagerId: studentPaymentData?.processingManagerId,
+                },
+                onCompleted: () => {
+                  searchStudentPayment({
+                    variables: {
+                      searchStudentId: parseInt(studentId),
+                    },
+                    onCompleted: data => {
+                      setStudentData(data.searchStudent?.student[0])
+                      setStudentPaymentData(
+                        data.searchStudent?.student[0].studentPayment[0],
+                      )
+                      setStudentSubjectData(
+                        data.searchStudent?.student[0].studentPayment[0]
+                          .subject,
+                      )
+                    },
+                  })
+                },
+              })
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${studentData?.name} 카드 결제 수정`,
+            dirtyFieldsArray.join(', '),
+          )
+        } else {
+          updatePaymentDetail({
+            variables: {
+              editPaymentDetailId: selectedPaymentDeta?.id,
+              cashOrCard: '현금',
+              studentPaymentId: parseInt(studentPaymentData?.id),
+              bankName: data.bankName,
+              depositorName: data.depositorName.trim(),
+              depositAmount: parseInt(data.depositAmount),
+              depositDate: new Date(data.depositDate),
+            },
+            onCompleted: data => {
+              updateReceived({
+                variables: {
+                  amountReceived:
+                    studentPaymentData?.amountReceived -
+                    selectedPaymentDeta.depositAmount +
+                    parseInt(data.depositAmount),
+                  editStudentPaymentId: parseInt(studentPaymentData?.id),
+                  subjectId: studentSubjectData.id,
+                  processingManagerId: studentPaymentData?.processingManagerId,
+                },
+                onCompleted: data => {
+                  searchStudentPayment({
+                    variables: {
+                      searchStudentId: parseInt(studentId),
+                    },
+                    onCompleted: data => {
+                      setStudentData(data.searchStudent?.student[0])
+                      setStudentPaymentData(
+                        data.searchStudent?.student[0].studentPayment[0],
+                      )
+                      setStudentSubjectData(
+                        data.searchStudent?.student[0].studentPayment[0]
+                          .subject,
+                      )
+                    },
+                  })
+                },
+              })
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${studentData?.name} 현금 결제 수정 `,
+            dirtyFieldsArray.join(', '),
+          )
+        }
+      }
+    }
   }
-  const handleSubManagerChange = e => {
-    setSubjectManager(e.target.value)
-  }
+
   const handleCardChange = e => {
     setCardName(e.target.value)
   }
@@ -262,7 +374,7 @@ export default function StudentsEditPayment() {
               </Noti>
               <UpdateTime>
                 <span>최근 업데이트 일시 :</span>
-                {fametDate('2023.01.04')}
+                {fametDate(studentData?.updatedAt, true)}
               </UpdateTime>
             </TopInfo>
             <DetailDiv>
@@ -275,7 +387,7 @@ export default function StudentsEditPayment() {
                     <FilterLabel>
                       이름<span>*</span>
                     </FilterLabel>
-                    <LineBox>홍길동</LineBox>
+                    <LineBox>{studentData?.name}</LineBox>
                   </div>
                 </AreaBox>
                 <AreaBox>
@@ -283,7 +395,7 @@ export default function StudentsEditPayment() {
                     <FilterLabel>
                       생년월일<span>*</span>
                     </FilterLabel>
-                    <LineBox>1993.05.10</LineBox>
+                    <LineBox>{fametDate(studentData?.birthday, false)}</LineBox>
                   </div>
                 </AreaBox>
                 <AreaBox>
@@ -291,466 +403,535 @@ export default function StudentsEditPayment() {
                     <FilterLabel>
                       연락처<span>*</span>
                     </FilterLabel>
-                    <LineBox>01022224444</LineBox>
+                    <LineBox>{studentData?.phoneNum1}</LineBox>
                   </div>
                 </AreaBox>
               </FlexBox>
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>수강 정보</h4>
+              </AreaTitle>
               <FlexBox>
                 <AreaSmallBox style={{ minWidth: '20%' }}>
                   <div>
-                    <FilterLabel>
-                      수강구분<span></span>
-                    </FilterLabel>
-                    <LineBox>국가기간</LineBox>
+                    <FilterLabel>수강 구분</FilterLabel>
+                    <LineBox>{studentSubjectData?.subDiv}</LineBox>
                   </div>
                 </AreaSmallBox>
                 <AreaBox>
                   <div>
                     <FilterLabel>과정명</FilterLabel>
-                    <LineBox>
-                      멀티미디어 영상콘텐츠제작(프리미어,에펙,영상편집) A
-                    </LineBox>
+                    <LineBox>{studentSubjectData?.subjectName}</LineBox>
                   </div>
                 </AreaBox>
-                <AreaSmallBox style={{ minWidth: '20%' }}>
+                <AreaSmallBox style={{ width: '20%' }}>
                   <div>
-                    <FilterLabel>수강담당자</FilterLabel>
-                    <LineBox>김사원</LineBox>
+                    <FilterLabel>수강당담자</FilterLabel>
+                    <LineBox>
+                      {
+                        managerList.find(
+                          user =>
+                            user.id === studentPaymentData?.processingManagerId,
+                        )?.mUsername
+                      }
+                    </LineBox>
                   </div>
                 </AreaSmallBox>
               </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>수강료</FilterLabel>
+                    <LineBox>
+                      {studentPaymentData?.tuitionFee
+                        ? feeFormet(studentPaymentData?.tuitionFee)
+                        : '0'}
+                    </LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>할인금액</FilterLabel>
+                    <LineBox>
+                      {studentPaymentData?.discountAmount
+                        ? feeFormet(studentPaymentData?.discountAmount)
+                        : '0'}
+                    </LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>실 수강료</FilterLabel>
+                    <LineBox>
+                      {studentPaymentData?.actualAmount
+                        ? feeFormet(studentPaymentData?.actualAmount)
+                        : '0'}
+                    </LineBox>
+                  </div>
+                </AreaBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>수납액</FilterLabel>
+                    <LineBox>
+                      {studentPaymentData?.amountReceived
+                        ? feeFormet(studentPaymentData?.amountReceived)
+                        : '0'}
+                    </LineBox>
+                  </div>
+                </AreaBox>
+                <AreaBox>
+                  <div>
+                    <FilterLabel>미 수납액</FilterLabel>
+                    <LineBox>
+                      {studentPaymentData?.unCollectedAmount
+                        ? feeFormet(studentPaymentData?.unCollectedAmount)
+                        : '0'}
+                    </LineBox>
+                  </div>
+                </AreaBox>
+              </FlexBox>
             </DetailDiv>
           </DetailBox>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>결제 정보</h4>
-                </AreaTitle>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="현금결제액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="현금결제액"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="카드 결제액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="카드 결제액"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <DatePickerBox>
-                      <Controller
-                        control={control}
-                        name="stVisit"
-                        render={({ field }) => (
-                          <DatePicker
-                            renderCustomHeader={({
-                              date,
-                              changeYear,
-                              changeMonth,
-                              decreaseMonth,
-                              increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
-                            }) => (
-                              <DatePickerHeader
-                                rangeYears={years}
-                                clickDate={date}
-                                changeYear={changeYear}
-                                changeMonth={changeMonth}
-                                decreaseMonth={decreaseMonth}
-                                increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
-                              />
-                            )}
-                            locale="ko"
-                            showYearDropdown
-                            selected={
-                              birthdayDate === null
-                                ? null
-                                : new Date(birthdayDate)
-                            }
-                            placeholderText="날짜를 선택해주세요."
-                            isClearable
-                            onChange={date => {
-                              field.onChange(date)
-                              setBirthdayDate(date)
-                            }}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={
-                              <Input
-                                label={
-                                  <FilterLabel>
-                                    결제일자<span>*</span>
-                                  </FilterLabel>
-                                }
+          {selectedPaymentDeta !== null && (
+            <form onSubmit={handleSubmit(onPaymentDetailSubmit)}>
+              <DetailBox>
+                <DetailDiv>
+                  <AreaTitle>
+                    <h4>결제 정보</h4>
+                  </AreaTitle>
+                  <FlexBox>
+                    <AreaBox>
+                      <div>
+                        <FilterLabel>카드 결제액</FilterLabel>
+                        <LineBox>
+                          {studentPaymentData?.cardAmount
+                            ? feeFormet(studentPaymentData?.cardAmount)
+                            : '0'}
+                        </LineBox>
+                      </div>
+                    </AreaBox>
+                    <AreaBox>
+                      <div>
+                        <FilterLabel>현금 결제액</FilterLabel>
+                        <LineBox>
+                          {studentPaymentData?.cashAmount
+                            ? feeFormet(studentPaymentData?.cashAmount)
+                            : '0'}
+                        </LineBox>
+                      </div>
+                    </AreaBox>
+                  </FlexBox>
+                </DetailDiv>
+                <DetailDiv style={{ marginTop: '2rem' }}>
+                  <AreaTitle>
+                    <h4>결제 상세 정보</h4>
+                  </AreaTitle>
+                  <FlexBox>
+                    <AreaBox>
+                      <RadioBox>
+                        <Controller
+                          control={control}
+                          name="cashOrCard"
+                          render={({ field }) => (
+                            <RadioGroup
+                              isReadOnly
+                              label={<FilterLabel>결제 방식</FilterLabel>}
+                              orientation="horizontal"
+                              className="gap-[0.65rem]"
+                              value={paymentType}
+                              onValueChange={value => {
+                                field.onChange(value)
+                                setPaymentType(value)
+                              }}
+                            >
+                              <Radio key={'카드'} value={'카드'}>
+                                카드
+                              </Radio>
+                              <Radio key={'현금'} value={'현금'}>
+                                현금
+                              </Radio>
+                            </RadioGroup>
+                          )}
+                        />
+                      </RadioBox>
+                    </AreaBox>
+                  </FlexBox>
+                  {paymentType === '카드' && (
+                    <>
+                      <FlexBox>
+                        <AreaBox>
+                          <Controller
+                            control={control}
+                            name="cardCompany"
+                            rules={{ required: '카드사를 선택해주세요.' }}
+                            defaultValue={selectedPaymentDeta.cardCompany}
+                            render={({ field, fieldState }) => (
+                              <Select
                                 labelPlacement="outside"
-                                type="text"
+                                label="카드사"
+                                placeholder=" "
+                                className="w-full"
                                 variant="bordered"
-                                id="date"
-                                startContent={<i className="xi-calendar" />}
-                              />
-                            }
+                                defaultSelectedKeys={[
+                                  selectedPaymentDeta.cardCompany,
+                                ]}
+                                selectedKeys={[cardName]}
+                                onChange={value => {
+                                  field.onChange(value)
+                                  handleCardChange(value)
+                                }}
+                              >
+                                <SelectItem
+                                  key={'카드사 선택'}
+                                  value={'카드사 선택'}
+                                >
+                                  {'카드사 선택'}
+                                </SelectItem>
+                                <SelectItem key={'현대카드'} value={'현대카드'}>
+                                  {'현대카드'}
+                                </SelectItem>
+                                <SelectItem key={'KB카드'} value={'KB카드'}>
+                                  {'KB카드'}
+                                </SelectItem>
+                              </Select>
+                            )}
                           />
+                          {errors.cardCompany && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cardCompany.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="카드번호"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label="카드번호"
+                            defaultValue={selectedPaymentDeta.cardNum}
+                            {...register('cardNum', {
+                              required: '카드반호를 작성해주세요.',
+                            })}
+                          />
+                          {errors.cardNum && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cardNum.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        <AreaSmallBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="할부기간"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label="할부기간"
+                            defaultValue={selectedPaymentDeta.installment}
+                            endContent={<InputText>개월</InputText>}
+                            {...register('installment')}
+                          />
+                        </AreaSmallBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="결제금액"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label="결제금액"
+                            defaultValue={selectedPaymentDeta.amountPayment}
+                            {...register('amountPayment', {
+                              required: '결제금액을 작성해주세요.',
+                            })}
+                          />
+                          {errors.amountPayment && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.amountPayment.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                      </FlexBox>
+                      <FlexBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="승인번호"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label="승인번호"
+                            defaultValue={selectedPaymentDeta.ApprovalNum}
+                            {...register('approvalNum', {
+                              required: '승인번호를 작성해주세요.',
+                            })}
+                          />
+                          {errors.approvalNum && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.approvalNum.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        <AreaBox>
+                          <DatePickerBox>
+                            <Controller
+                              control={control}
+                              name="paymentDate"
+                              rules={{ required: '결제일자를 선택해주세요.' }}
+                              render={({ field }) => (
+                                <DatePicker
+                                  renderCustomHeader={({
+                                    date,
+                                    changeYear,
+                                    changeMonth,
+                                    decreaseMonth,
+                                    increaseMonth,
+                                    prevMonthButtonDisabled,
+                                    nextMonthButtonDisabled,
+                                  }) => (
+                                    <DatePickerHeader
+                                      rangeYears={years}
+                                      clickDate={date}
+                                      changeYear={changeYear}
+                                      changeMonth={changeMonth}
+                                      decreaseMonth={decreaseMonth}
+                                      increaseMonth={increaseMonth}
+                                      prevMonthButtonDisabled={
+                                        prevMonthButtonDisabled
+                                      }
+                                      nextMonthButtonDisabled={
+                                        nextMonthButtonDisabled
+                                      }
+                                    />
+                                  )}
+                                  locale="ko"
+                                  showYearDropdown
+                                  selected={
+                                    cardPaymentDate === null
+                                      ? null
+                                      : new Date(cardPaymentDate)
+                                  }
+                                  placeholderText="날짜를 선택해주세요."
+                                  isClearable
+                                  onChange={date => {
+                                    field.onChange(date)
+                                    setCardPaymentDate(date)
+                                  }}
+                                  dateFormat="yyyy/MM/dd"
+                                  customInput={
+                                    <Input
+                                      ref={field.ref}
+                                      label={
+                                        <FilterLabel>결제일자</FilterLabel>
+                                      }
+                                      labelPlacement="outside"
+                                      type="text"
+                                      variant="bordered"
+                                      id="date"
+                                      startContent={
+                                        <i className="xi-calendar" />
+                                      }
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </DatePickerBox>
+                          {errors.paymentDate && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.paymentDate.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                      </FlexBox>
+                    </>
+                  )}
+                  {paymentType === '현금' && (
+                    <FlexBox>
+                      <AreaBox>
+                        <Controller
+                          control={control}
+                          name="bankName"
+                          rules={{ required: '입금은행을 선택해주세요.' }}
+                          defaultValue={selectedPaymentDeta.bankName}
+                          render={({ field, fieldState }) => (
+                            <Select
+                              labelPlacement="outside"
+                              label="은행명"
+                              placeholder=" "
+                              className="w-full"
+                              variant="bordered"
+                              defaultSelectedKeys={[
+                                selectedPaymentDeta.bankName,
+                              ]}
+                              selectedKeys={[bankName]}
+                              onChange={value => {
+                                field.onChange(value)
+                                handleBankChange(value)
+                              }}
+                            >
+                              <SelectItem key={'은행 선택'} value={'은행 선택'}>
+                                {'은행 선택'}
+                              </SelectItem>
+                              <SelectItem key={'우리은행'} value={'우리은행'}>
+                                {'우리은행'}
+                              </SelectItem>
+                              <SelectItem key={'KB은행'} value={'KB은행'}>
+                                {'KB은행'}
+                              </SelectItem>
+                            </Select>
+                          )}
+                        />
+                        {errors.bankName && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.bankName.message)}
+                          </p>
                         )}
-                      />
-                    </DatePickerBox>
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="progress"
-                        defaultValue={''}
-                        render={({ field, fieldState }) => (
-                          <CheckboxGroup
-                            label={<FilterLabel>영수구분</FilterLabel>}
-                            orientation="horizontal"
-                            className="gap-1"
-                            onChange={value => {
-                              field.onChange(value)
-                            }}
-                          >
-                            {Object.entries(Receipt).map(([key, item]) => (
-                              <Checkbox key={key} value={item}>
-                                {item}
-                              </Checkbox>
-                            ))}
-                          </CheckboxGroup>
-                        )}
-                      />
-                    </RadioBox>
-                  </AreaBox>
-                </FlexBox>
-              </DetailDiv>
-            </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>카드 결제 정보</h4>
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    className="text-white bg-flag1"
-                  >
-                    추가
-                  </Button>
-                </AreaTitle>
-                <FlexBox>
-                  <AreaBox>
-                    <Controller
-                      control={control}
-                      name="pic"
-                      render={({ field, fieldState }) => (
-                        <Select
+                      </AreaBox>
+                      <AreaBox>
+                        <Input
                           labelPlacement="outside"
-                          label="카드사"
-                          placeholder=" "
-                          className="w-full"
+                          placeholder="입금자명"
                           variant="bordered"
-                          selectedKeys={[cardName]}
-                          onChange={value => {
-                            field.onChange(value)
-                            handleCardChange(value)
-                          }}
-                        >
-                          <SelectItem key={'카드사 선택'} value={'카드사 선택'}>
-                            {'카드사 선택'}
-                          </SelectItem>
-                          <SelectItem key={'현대카드'} value={'현대카드'}>
-                            {'현대카드'}
-                          </SelectItem>
-                          <SelectItem key={'KB카드'} value={'KB카드'}>
-                            {'KB카드'}
-                          </SelectItem>
-                        </Select>
-                      )}
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="카드번호"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="카드번호"
-                    />
-                  </AreaBox>
-                  <AreaSmallBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="할부기간"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="할부기간"
-                      endContent={<InputText>개월</InputText>}
-                    />
-                  </AreaSmallBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="결제금액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="결제금액"
-                    />
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="승인번호"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="승인번호"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <DatePickerBox>
-                      <Controller
-                        control={control}
-                        name="stVisit"
-                        render={({ field }) => (
-                          <DatePicker
-                            renderCustomHeader={({
-                              date,
-                              changeYear,
-                              changeMonth,
-                              decreaseMonth,
-                              increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
-                            }) => (
-                              <DatePickerHeader
-                                rangeYears={years}
-                                clickDate={date}
-                                changeYear={changeYear}
-                                changeMonth={changeMonth}
-                                decreaseMonth={decreaseMonth}
-                                increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
-                              />
-                            )}
-                            locale="ko"
-                            showYearDropdown
-                            selected={
-                              birthdayDate === null
-                                ? null
-                                : new Date(birthdayDate)
-                            }
-                            placeholderText="날짜를 선택해주세요."
-                            isClearable
-                            onChange={date => {
-                              field.onChange(date)
-                              setBirthdayDate(date)
-                            }}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={
-                              <Input
-                                label={<FilterLabel>결제일자</FilterLabel>}
-                                labelPlacement="outside"
-                                type="text"
-                                variant="bordered"
-                                id="date"
-                                startContent={<i className="xi-calendar" />}
-                              />
-                            }
-                          />
+                          radius="md"
+                          type="text"
+                          label="입금자명"
+                          defaultValue={selectedPaymentDeta.depositorName}
+                          {...register('depositorName', {
+                            required: '입금자를 작성해주세요.',
+                          })}
+                        />
+                        {errors.depositorName && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.depositorName.message)}
+                          </p>
                         )}
-                      />
-                    </DatePickerBox>
-                  </AreaBox>
-                </FlexBox>
-              </DetailDiv>
-            </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>입금 결제 정보</h4>
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    className="text-white bg-flag1"
-                  >
-                    추가
-                  </Button>
-                </AreaTitle>
-                <FlexBox>
-                  <AreaBox>
-                    <Controller
-                      control={control}
-                      name="pic"
-                      render={({ field, fieldState }) => (
-                        <Select
+                      </AreaBox>
+                      <AreaBox>
+                        <Input
                           labelPlacement="outside"
-                          label="은행명"
-                          placeholder=" "
-                          className="w-full"
+                          placeholder="입금금액"
                           variant="bordered"
-                          selectedKeys={[bankName]}
-                          onChange={value => {
-                            field.onChange(value)
-                            handleBankChange(value)
-                          }}
-                        >
-                          <SelectItem key={'은행 선택'} value={'은행 선택'}>
-                            {'은행 선택'}
-                          </SelectItem>
-                          <SelectItem key={'우리은행'} value={'우리은행'}>
-                            {'우리은행'}
-                          </SelectItem>
-                          <SelectItem key={'KB은행'} value={'KB은행'}>
-                            {'KB은행'}
-                          </SelectItem>
-                        </Select>
-                      )}
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="입금자명"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="입금자명"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="입금금액"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="입금금액"
-                    />
-                  </AreaBox>
-                  <AreaBox>
-                    <DatePickerBox>
-                      <Controller
-                        control={control}
-                        name="stVisit"
-                        render={({ field }) => (
-                          <DatePicker
-                            renderCustomHeader={({
-                              date,
-                              changeYear,
-                              changeMonth,
-                              decreaseMonth,
-                              increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
-                            }) => (
-                              <DatePickerHeader
-                                rangeYears={years}
-                                clickDate={date}
-                                changeYear={changeYear}
-                                changeMonth={changeMonth}
-                                decreaseMonth={decreaseMonth}
-                                increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
+                          radius="md"
+                          type="text"
+                          label="입금금액"
+                          defaultValue={selectedPaymentDeta.depositAmount}
+                          {...register('depositAmount', {
+                            required: '입금 금액을 작성해주세요.',
+                          })}
+                        />
+                        {errors.depositAmount && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.depositAmount.message)}
+                          </p>
+                        )}
+                      </AreaBox>
+                      <AreaBox>
+                        <DatePickerBox>
+                          <Controller
+                            control={control}
+                            rules={{ required: '입금일자를 선택해주세요.' }}
+                            name="depositDate"
+                            render={({ field }) => (
+                              <DatePicker
+                                renderCustomHeader={({
+                                  date,
+                                  changeYear,
+                                  changeMonth,
+                                  decreaseMonth,
+                                  increaseMonth,
+                                  prevMonthButtonDisabled,
+                                  nextMonthButtonDisabled,
+                                }) => (
+                                  <DatePickerHeader
+                                    rangeYears={years}
+                                    clickDate={date}
+                                    changeYear={changeYear}
+                                    changeMonth={changeMonth}
+                                    decreaseMonth={decreaseMonth}
+                                    increaseMonth={increaseMonth}
+                                    prevMonthButtonDisabled={
+                                      prevMonthButtonDisabled
+                                    }
+                                    nextMonthButtonDisabled={
+                                      nextMonthButtonDisabled
+                                    }
+                                  />
+                                )}
+                                locale="ko"
+                                showYearDropdown
+                                selected={
+                                  cashDepositDate === null
+                                    ? null
+                                    : new Date(cashDepositDate)
                                 }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
+                                placeholderText="날짜를 선택해주세요."
+                                isClearable
+                                onChange={date => {
+                                  field.onChange(date)
+                                  setCashDepositDate(date)
+                                }}
+                                dateFormat="yyyy/MM/dd"
+                                customInput={
+                                  <Input
+                                    ref={field.ref}
+                                    label={<FilterLabel>입금일자</FilterLabel>}
+                                    labelPlacement="outside"
+                                    type="text"
+                                    variant="bordered"
+                                    id="date"
+                                    startContent={<i className="xi-calendar" />}
+                                  />
                                 }
                               />
                             )}
-                            locale="ko"
-                            showYearDropdown
-                            selected={
-                              birthdayDate === null
-                                ? null
-                                : new Date(birthdayDate)
-                            }
-                            placeholderText="날짜를 선택해주세요."
-                            isClearable
-                            onChange={date => {
-                              field.onChange(date)
-                              setBirthdayDate(date)
-                            }}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={
-                              <Input
-                                label={<FilterLabel>결제일자</FilterLabel>}
-                                labelPlacement="outside"
-                                type="text"
-                                variant="bordered"
-                                id="date"
-                                startContent={<i className="xi-calendar" />}
-                              />
-                            }
                           />
+                        </DatePickerBox>
+                        {errors.depositDate && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.depositDate.message)}
+                          </p>
                         )}
-                      />
-                    </DatePickerBox>
-                  </AreaBox>
-                </FlexBox>
-              </DetailDiv>
-            </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
-                  >
-                    결제등록
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
-                    onClick={() => router.back()}
-                  >
-                    뒤로가기
-                  </Button2>
-                </BtnBox>
-              </DetailDiv>
-            </DetailBox>
-          </form>
+                      </AreaBox>
+                    </FlexBox>
+                  )}
+                  <BtnBox>
+                    <Button2
+                      buttonType="submit"
+                      width="100%"
+                      height="2.5rem"
+                      typeBorder={true}
+                      fontColor="#fff"
+                      bgColor="#007de9"
+                    >
+                      결제 수정
+                    </Button2>
+                    <Button2
+                      buttonType="button"
+                      width="100%"
+                      height="2.5rem"
+                      fontColor="#007de9"
+                      bgColor="#fff"
+                      borderColor="#007de9"
+                      typeBorder={true}
+                      onClick={() => router.back()}
+                    >
+                      뒤로가기
+                    </Button2>
+                  </BtnBox>
+                </DetailDiv>
+              </DetailBox>
+            </form>
+          )}
         </ConArea>
       </MainWrap>
     </>
   )
 }
-StudentsEditPayment.getLayout = page => <Layout>{page}</Layout>

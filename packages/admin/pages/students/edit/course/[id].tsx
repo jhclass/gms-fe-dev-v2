@@ -169,17 +169,18 @@ export default function StudentsWriteCourse() {
       },
     })
   }, [router])
+
   useEffect(() => {
     searchSubject({
       variables: {
-        searchSubjectId: studentPaymentData?.subject.id,
+        searchSubjectId: studentPaymentData?.subjectId,
       },
       onCompleted: resData => {
         const { result } = resData.searchSubject || {}
         setStudentSubjectData(result[0])
       },
     })
-  }, [studentData])
+  }, [studentPaymentData])
 
   const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
