@@ -162,7 +162,7 @@ export default function StudentsItem(props) {
   const conIndex = props.itemIndex
   const student = props.tableData
   const studentPayment = student.studentPayment[0]
-  const studentSubject = student.studentPayment[0].subject
+  const studentSubject = student.studentPayment[0]?.subject
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
