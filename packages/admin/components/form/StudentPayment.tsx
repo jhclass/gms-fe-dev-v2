@@ -66,7 +66,7 @@ const DetailDiv = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -169,6 +169,8 @@ export default function StudentPaymentForm({
     setValue,
     getValues,
     control,
+    setError,
+    clearErrors,
     handleSubmit,
     formState: { isDirty, dirtyFields, errors, isValid },
   } = useForm({
@@ -241,6 +243,16 @@ export default function StudentPaymentForm({
     } else {
       setReceiptSelected(studentPaymentData.receiptClassification)
     }
+    if (
+      studentPaymentData?.discountAmount === null ||
+      studentPaymentData?.discountAmount === undefined
+    ) {
+      setDisCountType('%')
+    } else {
+      const discoutUnit = extractUnit(studentPaymentData?.discountAmount)
+      setDisCountType(discoutUnit)
+      setValue('discountUnit', discoutUnit)
+    }
     setSubjectSelected(studentSubjectData?.id)
   }, [router, studentPaymentData, studentSubjectData])
 
@@ -257,8 +269,18 @@ export default function StudentPaymentForm({
   const disCounCalculator = fee => {
     const price = disCountPrice(getValues('discountUnit'), fee)
     const total = price - parseInt(studentPaymentData?.amountReceived)
-    setValue('actualAmount', price, { shouldDirty: true })
-    setValue('unCollectedAmount', total, { shouldDirty: true })
+    if (price < 0) {
+      setError('actualAmount', {
+        type: 'custom',
+        message: '할인 금액이 너무 많습니다.',
+      })
+      setValue('actualAmount', price, { shouldDirty: true })
+      setValue('unCollectedAmount', total, { shouldDirty: true })
+    } else {
+      clearErrors('actualAmount')
+      setValue('actualAmount', price, { shouldDirty: true })
+      setValue('unCollectedAmount', total, { shouldDirty: true })
+    }
   }
 
   useEffect(() => {
@@ -271,63 +293,71 @@ export default function StudentPaymentForm({
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
-        updateStudentPayment({
-          variables: {
-            editStudentPaymentId: parseInt(studentPaymentData.id),
-            subjectId:
-              subjectSelected === null
-                ? parseInt(studentPaymentData.subject.id)
-                : parseInt(subjectSelected),
-            seScore: parseInt(data.seScore),
-            tuitionFee:
-              subjectSelectedData === null
-                ? parseInt(data.tuitionFee.replace(/,/g, ''), 10)
-                : parseInt(subjectSelectedData.fee),
-            processingManagerId: parseInt(subjectManager),
-            situationReport: data.situationReport === '동의' ? true : false,
-            paymentDate:
-              data.paymentDate === null
-                ? null
-                : typeof data.paymentDate === 'string'
-                ? new Date(parseInt(data.paymentDate))
-                : new Date(data.paymentDate),
-            actualAmount:
-              typeof data.actualAmount === 'string'
-                ? parseInt(data.actualAmount)
-                : data.actualAmount,
-            discountAmount:
-              data.discount === null
-                ? studentPaymentData?.discountAmount
-                : String(data.discount) + disCountType,
-            unCollectedAmount:
-              typeof data.unCollectedAmount === 'string'
-                ? parseInt(data.unCollectedAmount)
-                : data.unCollectedAmount,
-            amountReceived: parseInt(data.amountReceived),
-            receiptClassification: receiptSelected,
-          },
-          onCompleted: () => {
-            updateStudentDuedate({
-              variables: {
-                editStudentId: parseInt(studentData.id),
-                dueDate:
-                  data.dueDate === null
-                    ? null
-                    : typeof data.dueDate === 'string'
-                    ? new Date(parseInt(data.dueDate))
-                    : new Date(data.dueDate),
-              },
-              onCompleted: () => {
-                alert('수정되었습니다.')
-              },
-            })
-          },
-        })
-        const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-        userLogs(
-          `${studentData.name} 수강신청 수정`,
-          dirtyFieldsArray.join(', '),
-        )
+        if (data.actualAmount > 0) {
+          updateStudentPayment({
+            variables: {
+              editStudentPaymentId: parseInt(studentPaymentData.id),
+              subjectId:
+                subjectSelected === null
+                  ? parseInt(studentPaymentData.subject.id)
+                  : parseInt(subjectSelected),
+              seScore: parseInt(data.seScore),
+              tuitionFee:
+                subjectSelectedData === null
+                  ? parseInt(data.tuitionFee.replace(/,/g, ''), 10)
+                  : parseInt(subjectSelectedData.fee),
+              processingManagerId: parseInt(subjectManager),
+              situationReport: data.situationReport === '동의' ? true : false,
+              paymentDate:
+                data.paymentDate === null
+                  ? null
+                  : typeof data.paymentDate === 'string'
+                  ? new Date(parseInt(data.paymentDate))
+                  : new Date(data.paymentDate),
+              actualAmount: data.actualAmount,
+              discountAmount:
+                data.discount === null
+                  ? studentPaymentData?.discountAmount
+                  : data.discount + disCountType,
+              unCollectedAmount:
+                typeof data.unCollectedAmount === 'string'
+                  ? parseInt(data.unCollectedAmount)
+                  : data.unCollectedAmount,
+              amountReceived: parseInt(data.amountReceived),
+              receiptClassification: receiptSelected,
+            },
+            onCompleted: () => {
+              updateStudentDuedate({
+                variables: {
+                  editStudentId: parseInt(studentData.id),
+                  dueDate:
+                    data.dueDate === null
+                      ? null
+                      : typeof data.dueDate === 'string'
+                      ? new Date(parseInt(data.dueDate))
+                      : new Date(data.dueDate),
+                },
+                onCompleted: () => {
+                  alert('수정되었습니다.')
+                },
+              })
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${studentData.name} 수강신청 수정`,
+            dirtyFieldsArray.join(', '),
+          )
+        } else {
+          setError(
+            'actualAmount',
+            {
+              type: 'custom',
+              message: '실 수강료가 0보다 작습니다.',
+            },
+            { shouldFocus: true },
+          )
+        }
       }
     }
   }
@@ -354,7 +384,7 @@ export default function StudentPaymentForm({
     if (value === '') {
       setValue('discount', 0)
     } else {
-      setValue('discount', parseInt(value))
+      setValue('discount', value)
     }
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)
@@ -564,7 +594,7 @@ export default function StudentPaymentForm({
                     placeholder="할인"
                     variant="bordered"
                     radius="md"
-                    type="text"
+                    type="number"
                     label="할인"
                     defaultValue={
                       studentPaymentData?.discountAmount !== null
@@ -620,7 +650,7 @@ export default function StudentPaymentForm({
                     placeholder="할인된 수강료"
                     variant="bordered"
                     radius="md"
-                    type="text"
+                    type="number"
                     label="할인된 수강료"
                     defaultValue={
                       studentPaymentData?.actualAmount !== undefined
@@ -633,6 +663,11 @@ export default function StudentPaymentForm({
                     }}
                     {...register('actualAmount')}
                   />
+                  {errors.actualAmount && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.actualAmount.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <Input

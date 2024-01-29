@@ -178,30 +178,38 @@ export default function StudentsWriteCourse() {
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const Receipt = useRecoilValue(ReceiptState)
-  const { register, getValues, control, setValue, handleSubmit, formState } =
-    useForm({
-      mode: 'onChange',
-      defaultValues: {
-        editStudentPaymentId: studentId,
-        seScore: null,
-        subject: null,
-        tuitionFee: null,
-        actualAmount: null,
-        unCollectedAmount: null,
-        paymentDate: null,
-        processingManagerId: null,
-        situationReport: null,
-        subjectId: null,
-        amountReceived: null,
-        cashAmount: null,
-        cardAmount: null,
-        discountAmount: null,
-        dueDate: null,
-        receiptClassification: null,
-        discount: 0,
-        discountUnit: '%',
-      },
-    })
+  const {
+    register,
+    getValues,
+    control,
+    setError,
+    setValue,
+    handleSubmit,
+    clearErrors,
+    formState,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      editStudentPaymentId: studentId,
+      seScore: null,
+      subject: null,
+      tuitionFee: null,
+      actualAmount: null,
+      unCollectedAmount: null,
+      paymentDate: null,
+      processingManagerId: null,
+      situationReport: null,
+      subjectId: null,
+      amountReceived: null,
+      cashAmount: null,
+      cardAmount: null,
+      discountAmount: null,
+      dueDate: null,
+      receiptClassification: null,
+      discount: 0,
+      discountUnit: '%',
+    },
+  })
   const { errors } = formState
   const {
     isOpen: sbjIsOpen,
@@ -241,8 +249,17 @@ export default function StudentsWriteCourse() {
   }
   const disCounCalculator = fee => {
     const price = disCountPrice(getValues('discountUnit'), fee)
-    setValue('actualAmount', price, { shouldDirty: true })
-    setValue('unCollectedAmount', price, { shouldDirty: true })
+    if (price < 0) {
+      setError('actualAmount', {
+        type: 'custom',
+        message: '할인 금액이 너무 큽니다.',
+      })
+      setValue('actualAmount', price, { shouldDirty: true })
+      setValue('unCollectedAmount', price, { shouldDirty: true })
+    } else {
+      setValue('actualAmount', price, { shouldDirty: true })
+      setValue('unCollectedAmount', price, { shouldDirty: true })
+    }
   }
 
   useEffect(() => {
@@ -252,44 +269,53 @@ export default function StudentsWriteCourse() {
   }, [subjectSelectedData])
 
   const onSubmit = data => {
-    createStudentPayment({
-      variables: {
-        campus: '신촌',
-        seScore: parseInt(data.seScore),
-        subject: data.subject.trim(),
-        tuitionFee: parseInt(subjectSelectedData.fee),
-        studentId: parseInt(studentId),
-        subjectId: parseInt(subjectSelected),
-        processingManagerId: parseInt(data.processingManagerId),
-        paymentDate: data.paymentDate,
-        amountReceived: 0,
-        situationReport: data.situationReport === '동의' ? true : false,
-        actualAmount:
-          data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-        discountAmount:
-          data.discount === 0 ? null : String(data.discount) + disCountType,
-        unCollectedAmount:
-          data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-        receiptClassification:
-          data.receiptClassification.length === 0
-            ? []
-            : data.receiptClassification,
-      },
-      onCompleted: () => {
-        updateStudentDuedate({
-          variables: {
-            editStudentId: parseInt(studentId),
-            dueDate: data.dueDate === undefined ? null : data.dueDate,
-          },
-          onCompleted: () => {
-            alert('등록되었습니다.')
-            router.push(`/students/detail/${studentId}`)
-          },
-        })
-      },
-    })
+    if (data.actualAmount > 0) {
+      createStudentPayment({
+        variables: {
+          campus: '신촌',
+          seScore: parseInt(data.seScore),
+          subject: data.subject.trim(),
+          tuitionFee: parseInt(subjectSelectedData.fee),
+          studentId: parseInt(studentId),
+          subjectId: parseInt(subjectSelected),
+          processingManagerId: parseInt(data.processingManagerId),
+          paymentDate: data.paymentDate,
+          amountReceived: 0,
+          situationReport: data.situationReport === '동의' ? true : false,
+          actualAmount: data.actualAmount === '' ? 0 : data.actualAmount,
+          discountAmount:
+            data.discount === 0 ? null : data.discount + disCountType,
+          unCollectedAmount: data.actualAmount === '' ? 0 : data.actualAmount,
+          receiptClassification:
+            data.receiptClassification === null
+              ? []
+              : data.receiptClassification,
+        },
+        onCompleted: () => {
+          updateStudentDuedate({
+            variables: {
+              editStudentId: parseInt(studentId),
+              dueDate: data.dueDate === undefined ? null : data.dueDate,
+            },
+            onCompleted: () => {
+              alert('등록되었습니다.')
+              router.push(`/students/detail/${studentId}`)
+            },
+          })
+        },
+      })
 
-    userLogs(`${studentData.name} 수강신청`)
+      userLogs(`${studentData.name} 수강신청`)
+    } else {
+      setError(
+        'actualAmount',
+        {
+          type: 'custom',
+          message: '실 수강료가 0보다 작습니다.',
+        },
+        { shouldFocus: true },
+      )
+    }
   }
   const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -571,11 +597,12 @@ export default function StudentsWriteCourse() {
                 <FlexBox>
                   <AreaBox>
                     <Input
+                      isDisabled={subjectSelectedData === null ? true : false}
                       labelPlacement="outside"
                       placeholder="할인"
                       variant="bordered"
                       radius="md"
-                      type="text"
+                      type="number"
                       label="할인"
                       onValueChange={e => {
                         discountChange(e)
@@ -617,11 +644,12 @@ export default function StudentsWriteCourse() {
                   </AreaBox>
                   <AreaBox>
                     <Input
+                      isDisabled={subjectSelectedData === null ? true : false}
                       labelPlacement="outside"
                       placeholder="할인된 수강료"
                       variant="bordered"
                       radius="md"
-                      type="text"
+                      type="number"
                       label="할인된 수강료"
                       defaultValue={
                         subjectSelectedData?.fee !== undefined
@@ -634,6 +662,11 @@ export default function StudentsWriteCourse() {
                       }}
                       {...register('actualAmount')}
                     />
+                    {errors.actualAmount && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.actualAmount.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input
