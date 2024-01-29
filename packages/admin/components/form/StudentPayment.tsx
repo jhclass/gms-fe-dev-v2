@@ -170,7 +170,6 @@ export default function StudentPaymentForm({
     getValues,
     control,
     handleSubmit,
-    getFieldState,
     formState: { isDirty, dirtyFields, errors, isValid },
   } = useForm({
     mode: 'onChange',
@@ -267,6 +266,7 @@ export default function StudentPaymentForm({
       disCounCalculator(subjectSelectedData?.fee)
     }
   }, [subjectSelectedData])
+
   const onSubmit = data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
@@ -293,7 +293,7 @@ export default function StudentPaymentForm({
                 : new Date(data.paymentDate),
             actualAmount:
               typeof data.actualAmount === 'string'
-                ? parseInt(data.actualAmount.replace(/,/g, ''), 10)
+                ? parseInt(data.actualAmount)
                 : data.actualAmount,
             discountAmount:
               data.discount === null
@@ -301,7 +301,7 @@ export default function StudentPaymentForm({
                 : String(data.discount) + disCountType,
             unCollectedAmount:
               typeof data.unCollectedAmount === 'string'
-                ? parseInt(data.unCollectedAmount.replace(/,/g, ''), 10)
+                ? parseInt(data.unCollectedAmount)
                 : data.unCollectedAmount,
             amountReceived: parseInt(data.amountReceived.replace(/,/g, ''), 10),
             receiptClassification: receiptSelected,
@@ -579,7 +579,6 @@ export default function StudentPaymentForm({
                       <Controller
                         control={control}
                         name="discountUnit"
-                        defaultValue={studentPaymentData?.processingManagerId}
                         render={({ field, fieldState }) => (
                           <Select
                             labelPlacement="outside"
