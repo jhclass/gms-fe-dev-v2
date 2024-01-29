@@ -108,7 +108,6 @@ export default function StudentsFillter({
 }) {
   const router = useRouter()
   const subStatus = useRecoilValue(subStatusState)
-  const [sub, setSub] = useState('-')
   const [birthdayRange, setBirthdayRange] = useState([null, null])
   const [startBirthday, endBirthday] = birthdayRange
   const [creatDateRange, setCreatDateRange] = useState([null, null])
@@ -131,10 +130,6 @@ export default function StudentsFillter({
     },
   })
 
-  const handleSubChange = e => {
-    setSub(e.target.value)
-  }
-
   const onSubmit = data => {
     if (isDirty || data.progress !== undefined) {
       const validateDateRange = (dateRange, message) => {
@@ -153,11 +148,11 @@ export default function StudentsFillter({
         data.birthday,
         '생년월일의 마지막날을 선택해주세요.',
       )
-      const visitDate = validateDateRange(
-        data.stVisit,
+      const createDate = validateDateRange(
+        data.createdAt,
         '방문예정일의 마지막날을 선택해주세요.',
       )
-      if (birthdayDate && visitDate) {
+      if (birthdayDate && createDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
           phoneNum: data.phoneNum === '' ? null : data.phoneNum,
