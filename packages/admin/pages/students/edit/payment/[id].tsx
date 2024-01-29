@@ -314,7 +314,7 @@ export default function StudentsWritePayment() {
               depositAmount: parseInt(data.depositAmount),
               depositDate: new Date(data.depositDate),
             },
-            onCompleted: data => {
+            onCompleted: () => {
               updateReceived({
                 variables: {
                   amountReceived:
@@ -325,7 +325,7 @@ export default function StudentsWritePayment() {
                   subjectId: studentSubjectData.id,
                   processingManagerId: studentPaymentData?.processingManagerId,
                 },
-                onCompleted: data => {
+                onCompleted: () => {
                   searchStudentPayment({
                     variables: {
                       searchStudentId: parseInt(studentId),

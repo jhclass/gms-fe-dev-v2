@@ -303,7 +303,7 @@ export default function StudentPaymentForm({
               typeof data.unCollectedAmount === 'string'
                 ? parseInt(data.unCollectedAmount)
                 : data.unCollectedAmount,
-            amountReceived: parseInt(data.amountReceived.replace(/,/g, ''), 10),
+            amountReceived: parseInt(data.amountReceived),
             receiptClassification: receiptSelected,
           },
           onCompleted: () => {
@@ -646,7 +646,7 @@ export default function StudentPaymentForm({
                     defaultValue={
                       studentPaymentData?.amountReceived === null
                         ? '0'
-                        : feeFormet(studentPaymentData?.amountReceived)
+                        : studentPaymentData?.amountReceived
                     }
                     {...register('amountReceived')}
                   />
@@ -699,7 +699,7 @@ export default function StudentPaymentForm({
                     defaultValue={
                       studentPaymentData?.unCollectedAmount === null
                         ? '0'
-                        : feeFormet(studentPaymentData?.unCollectedAmount)
+                        : studentPaymentData?.unCollectedAmount
                     }
                     {...register('unCollectedAmount')}
                   />
