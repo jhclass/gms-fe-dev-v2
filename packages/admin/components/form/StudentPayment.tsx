@@ -428,7 +428,7 @@ export default function StudentPaymentForm({
       sbjOpen
     }
   }
-  console.log(studentData?.lectureAssignment)
+
   return (
     <>
       {studentPaymentData !== null && (

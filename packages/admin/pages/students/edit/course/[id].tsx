@@ -202,7 +202,7 @@ export default function StudentsWriteCourse() {
       return formatted
     }
   }
-  console.log(studentData)
+
   return (
     <>
       <MainWrap>
