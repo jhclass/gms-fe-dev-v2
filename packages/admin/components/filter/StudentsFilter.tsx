@@ -23,6 +23,7 @@ const FilterBox = styled(motion.div)`
   overflow: hidden;
 `
 const FilterForm = styled.form`
+  position: relative;
   display: flex;
   width: 100%;
   gap: 1.5rem;
@@ -31,6 +32,7 @@ const FilterForm = styled.form`
   border-radius: 0.5rem;
   margin-top: 1rem;
   flex-direction: column;
+  z-index: 2;
 
   @media (max-width: 768px) {
     gap: 1rem;

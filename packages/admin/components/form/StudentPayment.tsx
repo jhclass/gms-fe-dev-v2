@@ -85,6 +85,16 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 const AreaSmallBox = styled.div`
   @media (max-width: 768px) {
@@ -386,7 +396,7 @@ export default function StudentPaymentForm({
   }
 
   const discountChange = value => {
-    if (value === '') {
+    if (value === '' || value < 0) {
       setValue('discount', 0)
     } else {
       setValue('discount', parseInt(value))
@@ -420,12 +430,14 @@ export default function StudentPaymentForm({
     setValue('receiptClassification', value, { shouldDirty: true })
     setReceiptSelected(value)
   }
-
   const clickSubject = () => {
-    if (studentData.lectureAssignment) {
+    if (
+      studentData.lectureAssignment ||
+      studentPaymentData.paymentDetail.length > 0
+    ) {
       alert('과정 변경이 불가능합니다.')
     } else {
-      sbjOpen
+      sbjOpen()
     }
   }
 
@@ -476,10 +488,13 @@ export default function StudentPaymentForm({
                     labelPlacement="outside"
                     className="max-w-full"
                     variant={
-                      studentData.lectureAssignment ? 'faded' : 'bordered'
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? 'faded'
+                        : 'bordered'
                     }
                     minRows={1}
-                    onClick={clickSubject}
+                    onClick={() => clickSubject()}
                     {...register('subject', {
                       required: {
                         value: true,
@@ -606,9 +621,20 @@ export default function StudentPaymentForm({
               <FlexBox>
                 <AreaBox>
                   <Input
+                    isReadOnly={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? true
+                        : false
+                    }
                     labelPlacement="outside"
                     placeholder="할인"
-                    variant="bordered"
+                    variant={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? 'faded'
+                        : 'bordered'
+                    }
                     radius="md"
                     type="number"
                     label="할인"
@@ -627,6 +653,12 @@ export default function StudentPaymentForm({
                         name="discountUnit"
                         render={({ field, fieldState }) => (
                           <Select
+                            isDisabled={
+                              studentData.lectureAssignment ||
+                              studentPaymentData.paymentDetail.length > 0
+                                ? true
+                                : false
+                            }
                             labelPlacement="outside"
                             label={<span style={{ display: 'none' }}></span>}
                             placeholder=" "
@@ -662,9 +694,20 @@ export default function StudentPaymentForm({
                 </AreaBox>
                 <AreaBox>
                   <Input
+                    isReadOnly={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? true
+                        : false
+                    }
                     labelPlacement="outside"
                     placeholder="할인된 수강료"
-                    variant="bordered"
+                    variant={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? 'faded'
+                        : 'bordered'
+                    }
                     radius="md"
                     type="number"
                     label="할인된 수강료"

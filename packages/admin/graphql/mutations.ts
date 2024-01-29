@@ -598,6 +598,8 @@ export const SEARCH_STUDENT_MUTATION = gql`
             cardCompany
             cashOrCard
             id
+            createdAt
+            updatedAt
           }
         }
         courseComplete
@@ -741,6 +743,9 @@ export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
           discountAmount
           id
           paymentDate
+          paymentDetail {
+            id
+          }
           processingManager {
             mUsername
             mUserId

@@ -28,7 +28,7 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
@@ -100,6 +100,16 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 const AreaSmallBox = styled.div`
   @media (max-width: 768px) {
@@ -216,12 +226,14 @@ export default function StudentsWriteCourse() {
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
+  const subStatus = useRecoilValue(subStatusState)
   const [studentData, setStudentData] = useState(null)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [disCountType, setDisCountType] = useState('%')
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
+  const [sub, setSub] = useState('없음')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [receiptSelected, setReceiptSelected] = useState([])
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -355,7 +367,7 @@ export default function StudentsWriteCourse() {
   }
 
   const discountChange = value => {
-    if (value === '') {
+    if (value === '' || value < 0) {
       setValue('discount', 0)
     } else {
       setValue('discount', parseInt(value))
@@ -372,6 +384,9 @@ export default function StudentsWriteCourse() {
       setDisCountType('원')
       setValue('discountUnit', '원')
     }
+  }
+  const handleSubChange = e => {
+    setSub(e.target.value)
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
@@ -559,6 +574,30 @@ export default function StudentsWriteCourse() {
                     )}
                   </AreaBox>
                   <AreaBox>
+                    {/* <Controller
+                      control={control}
+                      name="subDiv"
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label={<FilterLabel>수강구분</FilterLabel>}
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[sub]}
+                          onChange={value => {
+                            field.onChange(value)
+                            handleSubChange(value)
+                          }}
+                        >
+                          {Object.entries(subStatus).map(([key, item]) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      )}
+                    /> */}
                     <Input
                       isReadOnly
                       labelPlacement="outside"

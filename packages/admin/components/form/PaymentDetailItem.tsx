@@ -188,9 +188,7 @@ export default function StudentPaymentDetailItem({
               <AreaBox>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>
-                    {fametDate(detailtData?.depositDate, false)}
-                  </FlatBox>
+                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
               </AreaBox>
               <AreaBox>
@@ -209,7 +207,6 @@ export default function StudentPaymentDetailItem({
                 <div>
                   <FilterLabel>결제금액</FilterLabel>
                   <FlatBox>
-                    {' '}
                     {detailtData?.depositAmount === null
                       ? ''
                       : feeFormet(detailtData?.depositAmount)}
@@ -279,9 +276,7 @@ export default function StudentPaymentDetailItem({
               <AreaBox>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>
-                    {fametDate(detailtData?.paymentDate, false)}
-                  </FlatBox>
+                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
               </AreaBox>
               <AreaBox>
@@ -335,23 +330,12 @@ export default function StudentPaymentDetailItem({
               >
                 영수증 인쇄
               </Button> */}
-              <Button
-                isDisabled={detailtData.reqRefund ? true : false}
-                size="md"
-                radius="md"
-                variant="solid"
-                color="primary"
-                className="w-full text-white"
-                onClick={() => editBtn(detailtData)}
-              >
-                결제 변경
-              </Button>
               {detailtData.reqRefund ? (
                 <Button
                   isDisabled={detailtData.refundApproval ? true : false}
                   size="md"
                   radius="md"
-                  className="w-full text-white bg-flag1"
+                  className="lg:w-[50%] w-full text-white bg-flag1"
                   onClick={() => clickReqRefund()}
                 >
                   결제 취소요청 철회
@@ -361,7 +345,7 @@ export default function StudentPaymentDetailItem({
                   size="md"
                   radius="md"
                   variant="bordered"
-                  className="w-full text-flag1 border-flag1"
+                  className="lg:w-[50%] w-full text-flag1 border-flag1"
                   onClick={() => clickReqRefund()}
                 >
                   결제 취소 요청

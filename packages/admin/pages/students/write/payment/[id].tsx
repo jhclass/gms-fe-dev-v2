@@ -170,7 +170,7 @@ export default function StudentsWritePayment() {
     register,
     control,
     reset,
-    setValue,
+    setFocus,
     clearErrors,
     handleSubmit,
     formState,
@@ -326,6 +326,14 @@ export default function StudentsWritePayment() {
   const received = (actual, unCollected) => {
     const result = feeFormet(parseInt(actual) - parseInt(unCollected))
     return result
+  }
+  const handleTypeChange = value => {
+    setPaymentType(value)
+    if (value === '현금') {
+      setFocus('bankName')
+    } else {
+      setFocus('cardCompany')
+    }
   }
   const handleCardChange = e => {
     setCardName(e.target.value)
@@ -529,7 +537,7 @@ export default function StudentsWritePayment() {
                             value={paymentType}
                             onValueChange={value => {
                               field.onChange(value)
-                              setPaymentType(value)
+                              handleTypeChange(value)
                             }}
                           >
                             <Radio key={'카드'} value={'카드'}>
@@ -604,7 +612,7 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      <AreaSmallBox>
+                      <AreaBox>
                         <Input
                           labelPlacement="outside"
                           placeholder="할부기간"
@@ -615,24 +623,6 @@ export default function StudentsWritePayment() {
                           endContent={<InputText>개월</InputText>}
                           {...register('installment')}
                         />
-                      </AreaSmallBox>
-                      <AreaBox>
-                        <Input
-                          labelPlacement="outside"
-                          placeholder="결제금액"
-                          variant="bordered"
-                          radius="md"
-                          type="text"
-                          label="결제금액"
-                          {...register('amountPayment', {
-                            required: '결제금액을 작성해주세요.',
-                          })}
-                        />
-                        {errors.amountPayment && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
-                            {String(errors.amountPayment.message)}
-                          </p>
-                        )}
                       </AreaBox>
                     </FlexBox>
                     <FlexBox>
@@ -655,11 +645,31 @@ export default function StudentsWritePayment() {
                         )}
                       </AreaBox>
                       <AreaBox>
+                        <Input
+                          labelPlacement="outside"
+                          placeholder="결제금액"
+                          variant="bordered"
+                          radius="md"
+                          type="text"
+                          label="결제금액"
+                          {...register('amountPayment', {
+                            required: '결제금액을 작성해주세요.',
+                          })}
+                        />
+                        {errors.amountPayment && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.amountPayment.message)}
+                          </p>
+                        )}
+                      </AreaBox>
+                      {/* <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
                             name="paymentDate"
-                            rules={{ required: '결제일자를 선택해주세요.' }}
+                            rules={{
+                              required: '결제 요청 일자를 선택해주세요.',
+                            }}
                             render={({ field }) => (
                               <DatePicker
                                 renderCustomHeader={({
@@ -720,7 +730,7 @@ export default function StudentsWritePayment() {
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
-                      </AreaBox>
+                      </AreaBox> */}
                     </FlexBox>
                   </>
                 )}
@@ -733,6 +743,7 @@ export default function StudentsWritePayment() {
                         rules={{ required: '입금은행을 선택해주세요.' }}
                         render={({ field, fieldState }) => (
                           <Select
+                            ref={register('bankName').ref}
                             labelPlacement="outside"
                             label="은행명"
                             placeholder=" "
@@ -798,11 +809,11 @@ export default function StudentsWritePayment() {
                         </p>
                       )}
                     </AreaBox>
-                    <AreaBox>
+                    {/* <AreaBox>
                       <DatePickerBox>
                         <Controller
                           control={control}
-                          rules={{ required: '입금일자를 선택해주세요.' }}
+                          rules={{ required: '입금 요청 일자를 선택해주세요.' }}
                           name="depositDate"
                           render={({ field }) => (
                             <DatePicker
@@ -864,7 +875,7 @@ export default function StudentsWritePayment() {
                           {String(errors.depositDate.message)}
                         </p>
                       )}
-                    </AreaBox>
+                    </AreaBox> */}
                   </FlexBox>
                 )}
                 <BtnBox>
