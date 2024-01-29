@@ -607,7 +607,7 @@ export default function StudentsWriteCourse({
                     label="할인된 수강료"
                     defaultValue={
                       studentPaymentData?.actualAmount !== undefined
-                        ? feeFormet(studentPaymentData?.actualAmount)
+                        ? studentPaymentData?.actualAmount
                         : ''
                     }
                     onValueChange={value => discountTotal(value)}

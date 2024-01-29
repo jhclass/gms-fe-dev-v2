@@ -654,7 +654,9 @@ export default function StudentsWrite() {
                       </AreaBox>
                       <AreaBox>
                         <div>
-                          <FilterLabel>실 수강료</FilterLabel>
+                          <FilterLabel>
+                            <b>실 수강료</b>
+                          </FilterLabel>
                           <LineBox>
                             {studentPaymentData?.actualAmount
                               ? feeFormet(studentPaymentData?.actualAmount)
@@ -676,7 +678,9 @@ export default function StudentsWrite() {
                       </AreaBox>
                       <AreaBox>
                         <div>
-                          <FilterLabel>미 수납액</FilterLabel>
+                          <FilterLabel>
+                            <b>미 수납액</b>
+                          </FilterLabel>
                           <LineBox>
                             {studentPaymentData?.unCollectedAmount
                               ? feeFormet(studentPaymentData?.unCollectedAmount)

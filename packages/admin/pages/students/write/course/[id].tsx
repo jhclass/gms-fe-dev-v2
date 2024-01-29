@@ -555,7 +555,7 @@ export default function StudentsWriteCourse() {
                       label="할인된 수강료"
                       defaultValue={
                         subjectSelectedData?.fee !== undefined
-                          ? feeFormet(subjectSelectedData?.fee)
+                          ? subjectSelectedData?.fee
                           : ''
                       }
                       {...register('actualAmount')}
