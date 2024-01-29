@@ -257,7 +257,11 @@ export default function ConsolutationFilterTable({
       <TTopic>
         <TopBox>
           <Ttotal>
-            총 <span>{searchResult?.totalCount}</span>건이 검색되었습니다.
+            총
+            <span>
+              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
+            </span>
+            건이 검색되었습니다.
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>
             전체보기

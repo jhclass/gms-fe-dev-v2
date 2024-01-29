@@ -545,7 +545,10 @@ export default function StudentsWrite() {
                       <h4>수강 정보</h4>
                       <Button
                         isDisabled={
-                          studentData?.lectureAssignment ? true : false
+                          studentData?.courseComplete ||
+                          studentPaymentData.cancellation
+                            ? true
+                            : false
                         }
                         size="sm"
                         radius="sm"
@@ -652,7 +655,9 @@ export default function StudentsWrite() {
                       </AreaBox>
                       <AreaBox>
                         <div>
-                          <FilterLabel>실 수강료</FilterLabel>
+                          <FilterLabel>
+                            <b>실 수강료</b>
+                          </FilterLabel>
                           <LineBox>
                             {studentPaymentData?.actualAmount
                               ? feeFormet(studentPaymentData?.actualAmount)
@@ -674,7 +679,9 @@ export default function StudentsWrite() {
                       </AreaBox>
                       <AreaBox>
                         <div>
-                          <FilterLabel>미 수납액</FilterLabel>
+                          <FilterLabel>
+                            <b>미 수납액</b>
+                          </FilterLabel>
                           <LineBox>
                             {studentPaymentData?.unCollectedAmount
                               ? feeFormet(studentPaymentData?.unCollectedAmount)

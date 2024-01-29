@@ -245,11 +245,6 @@ export const SEE_AMOUNT_STUDENT_QUERY = gql`
       ok
       totalCount
       student {
-        subject {
-          subjectName
-          subDiv
-          id
-        }
         studentPayment {
           amountReceived
           cardAmount
@@ -264,6 +259,11 @@ export const SEE_AMOUNT_STUDENT_QUERY = gql`
           paymentDate
           tuitionFee
           unCollectedAmount
+          subject {
+            subjectName
+            subDiv
+            id
+          }
         }
         phoneNum1
         name

@@ -178,8 +178,38 @@ export default function StudentsWriteCourse() {
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const Receipt = useRecoilValue(ReceiptState)
-  const { register, watch, control, setValue, handleSubmit, formState } =
-    useForm()
+  const {
+    register,
+    getValues,
+    control,
+    setError,
+    setValue,
+    handleSubmit,
+    clearErrors,
+    formState,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      editStudentPaymentId: studentId,
+      seScore: null,
+      subject: null,
+      tuitionFee: null,
+      actualAmount: null,
+      unCollectedAmount: null,
+      paymentDate: null,
+      processingManagerId: null,
+      situationReport: null,
+      subjectId: null,
+      amountReceived: null,
+      cashAmount: null,
+      cardAmount: null,
+      discountAmount: null,
+      dueDate: null,
+      receiptClassification: null,
+      discount: 0,
+      discountUnit: '%',
+    },
+  })
   const { errors } = formState
   const {
     isOpen: sbjIsOpen,
@@ -187,14 +217,9 @@ export default function StudentsWriteCourse() {
     onClose: sbjClose,
   } = useDisclosure()
   const [studentData, setStudentData] = useState(null)
-  const [birthdayDate, setBirthdayDate] = useState(null)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
-  const [subjectInfo, setSubjectInfo] = useState()
   const [disCountType, setDisCountType] = useState('%')
-  const [discount, setDiscount] = useState(0)
-  const [actualAmount, setActualAmount] = useState(0)
-  const [manager, setManager] = useState('담당자 지정필요')
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
@@ -212,61 +237,87 @@ export default function StudentsWriteCourse() {
     })
   }, [router])
 
-  useEffect(() => {
-    const tuitionFee = subjectSelectedData?.fee
-    if (subjectSelectedData !== null) {
-      if (disCountType === '%') {
-        const disCountP = (tuitionFee * (100 - discount)) / 100
-        setActualAmount(disCountP)
-        setValue('actualAmount', disCountP)
-      } else {
-        const disCountP = tuitionFee - discount
-        setActualAmount(disCountP)
-        setValue('actualAmount', disCountP)
-      }
+  const disCountPrice = (disCountType, tuitionFee) => {
+    const discount = getValues('discount')
+    if (disCountType === '%') {
+      const disCountP = (tuitionFee * (100 - discount)) / 100
+      return disCountP
     } else {
-      setValue('actualAmount', 0)
+      const disCountP = tuitionFee - discount
+      return disCountP
     }
-  }, [subjectSelectedData, discount, disCountType])
+  }
+  const disCounCalculator = fee => {
+    const price = disCountPrice(getValues('discountUnit'), fee)
+    if (price < 0) {
+      setError('actualAmount', {
+        type: 'custom',
+        message: '할인 금액이 너무 큽니다.',
+      })
+      setValue('actualAmount', price, { shouldDirty: true })
+      setValue('unCollectedAmount', price, { shouldDirty: true })
+    } else {
+      setValue('actualAmount', price, { shouldDirty: true })
+      setValue('unCollectedAmount', price, { shouldDirty: true })
+    }
+  }
+
+  useEffect(() => {
+    if (subjectSelectedData !== null) {
+      disCounCalculator(subjectSelectedData?.fee)
+    }
+  }, [subjectSelectedData])
 
   const onSubmit = data => {
-    createStudentPayment({
-      variables: {
-        campus: '신촌',
-        seScore: parseInt(data.seScore),
-        subject: data.subject.trim(),
-        tuitionFee: parseInt(subjectSelectedData.fee),
-        studentId: parseInt(studentId),
-        subjectId: parseInt(subjectSelected),
-        processingManagerId: parseInt(data.processingManagerId),
-        paymentDate: data.paymentDate,
-        amountReceived: 0,
-        situationReport: data.situationReport === '동의' ? true : false,
-        actualAmount:
-          data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-        discountAmount: discount === 0 ? null : String(discount) + disCountType,
-        unCollectedAmount:
-          data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-        receiptClassification:
-          data.receiptClassification.length === 0
-            ? []
-            : data.receiptClassification,
-      },
-      onCompleted: () => {
-        updateStudentDuedate({
-          variables: {
-            editStudentId: parseInt(studentId),
-            dueDate: data.dueDate === undefined ? null : data.dueDate,
-          },
-          onCompleted: () => {
-            alert('등록되었습니다.')
-            router.push(`/students/detail/${studentId}`)
-          },
-        })
-      },
-    })
+    if (data.actualAmount > 0) {
+      createStudentPayment({
+        variables: {
+          campus: '신촌',
+          seScore: parseInt(data.seScore),
+          subject: data.subject.trim(),
+          tuitionFee: parseInt(subjectSelectedData.fee),
+          studentId: parseInt(studentId),
+          subjectId: parseInt(subjectSelected),
+          processingManagerId: parseInt(data.processingManagerId),
+          paymentDate: data.paymentDate,
+          amountReceived: 0,
+          situationReport: data.situationReport === '동의' ? true : false,
+          actualAmount:
+            data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
+          discountAmount:
+            data.discount === 0 ? null : data.discount + disCountType,
+          unCollectedAmount:
+            data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
+          receiptClassification:
+            data.receiptClassification === null
+              ? []
+              : data.receiptClassification,
+        },
+        onCompleted: () => {
+          updateStudentDuedate({
+            variables: {
+              editStudentId: parseInt(studentId),
+              dueDate: data.dueDate === undefined ? null : data.dueDate,
+            },
+            onCompleted: () => {
+              alert('등록되었습니다.')
+              router.push(`/students/detail/${studentId}`)
+            },
+          })
+        },
+      })
 
-    userLogs(`${studentData.name} 수강신청`)
+      userLogs(`${studentData.name} 수강신청`)
+    } else {
+      setError(
+        'actualAmount',
+        {
+          type: 'custom',
+          message: '실 수강료가 0보다 작습니다.',
+        },
+        { shouldFocus: true },
+      )
+    }
   }
   const fametDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -298,6 +349,29 @@ export default function StudentsWriteCourse() {
 
   const handleDisCountChange = e => {
     setDisCountType(e.target.value)
+    if (subjectSelectedData !== null) {
+      disCounCalculator(subjectSelectedData?.fee)
+    }
+  }
+
+  const discountChange = value => {
+    if (value === '') {
+      setValue('discount', 0)
+    } else {
+      setValue('discount', parseInt(value))
+    }
+    if (subjectSelectedData !== null) {
+      disCounCalculator(subjectSelectedData?.fee)
+    }
+  }
+
+  const discountTotal = value => {
+    if (subjectSelectedData !== null) {
+      const discountPrice = subjectSelectedData?.fee - parseInt(value)
+      setValue('discount', discountPrice)
+      setDisCountType('원')
+      setValue('discountUnit', '원')
+    }
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
@@ -525,44 +599,76 @@ export default function StudentsWriteCourse() {
                 <FlexBox>
                   <AreaBox>
                     <Input
+                      isDisabled={subjectSelectedData === null ? true : false}
                       labelPlacement="outside"
                       placeholder="할인"
                       variant="bordered"
                       radius="md"
-                      type="text"
+                      type="number"
                       label="할인"
-                      onChange={e => {
-                        setDiscount(parseInt(e.target.value))
+                      onValueChange={e => {
+                        discountChange(e)
                       }}
+                      {...register('discount')}
                       endContent={
-                        <SelectBox
-                          onChange={handleDisCountChange}
-                          value={disCountType}
-                        >
-                          <option value="%">%</option>
-                          <option value="원">원</option>
-                        </SelectBox>
+                        <Controller
+                          control={control}
+                          name="discountUnit"
+                          render={({ field, fieldState }) => (
+                            <Select
+                              labelPlacement="outside"
+                              label={<span style={{ display: 'none' }}></span>}
+                              placeholder=" "
+                              variant={'underlined'}
+                              selectedKeys={[disCountType]}
+                              classNames={{
+                                base: 'w-[6rem]',
+                                label: 'hidden',
+                                trigger: 'h-unit-8 min-h-unit-8',
+                                value: 'text-center',
+                              }}
+                              onChange={value => {
+                                field.onChange(value)
+                                handleDisCountChange(value)
+                              }}
+                            >
+                              <SelectItem key={'%'} value={'%'}>
+                                %
+                              </SelectItem>
+                              <SelectItem key={'원'} value={'원'}>
+                                원
+                              </SelectItem>
+                            </Select>
+                          )}
+                        />
                       }
                     />
                   </AreaBox>
                   <AreaBox>
                     <Input
+                      isDisabled={subjectSelectedData === null ? true : false}
                       labelPlacement="outside"
                       placeholder="할인된 수강료"
                       variant="bordered"
                       radius="md"
-                      type="text"
+                      type="number"
                       label="할인된 수강료"
                       defaultValue={
                         subjectSelectedData?.fee !== undefined
-                          ? feeFormet(subjectSelectedData?.fee)
+                          ? subjectSelectedData?.fee
                           : ''
                       }
-                      {...register('actualAmount')}
+                      onValueChange={value => discountTotal(value)}
                       onChange={e => {
                         register('actualAmount').onChange(e)
                       }}
+                      {...register('actualAmount')}
                     />
+                    {errors.actualAmount && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.actualAmount.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input
