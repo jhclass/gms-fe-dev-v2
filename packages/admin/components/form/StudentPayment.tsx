@@ -314,11 +314,11 @@ export default function StudentPaymentForm({
                   : typeof data.paymentDate === 'string'
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
-              actualAmount: data.actualAmount,
+              actualAmount: parseInt(data.actualAmount),
               discountAmount:
                 data.discount === null
                   ? studentPaymentData?.discountAmount
-                  : data.discount + disCountType,
+                  : String(data.discount) + disCountType,
               unCollectedAmount:
                 typeof data.unCollectedAmount === 'string'
                   ? parseInt(data.unCollectedAmount)
@@ -384,7 +384,7 @@ export default function StudentPaymentForm({
     if (value === '') {
       setValue('discount', 0)
     } else {
-      setValue('discount', value)
+      setValue('discount', parseInt(value))
     }
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)

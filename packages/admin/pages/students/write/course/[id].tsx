@@ -282,10 +282,12 @@ export default function StudentsWriteCourse() {
           paymentDate: data.paymentDate,
           amountReceived: 0,
           situationReport: data.situationReport === '동의' ? true : false,
-          actualAmount: data.actualAmount === '' ? 0 : data.actualAmount,
+          actualAmount:
+            data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
           discountAmount:
             data.discount === 0 ? null : data.discount + disCountType,
-          unCollectedAmount: data.actualAmount === '' ? 0 : data.actualAmount,
+          unCollectedAmount:
+            data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
           receiptClassification:
             data.receiptClassification === null
               ? []
