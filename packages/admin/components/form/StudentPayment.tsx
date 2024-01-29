@@ -420,6 +420,15 @@ export default function StudentPaymentForm({
     setValue('receiptClassification', value, { shouldDirty: true })
     setReceiptSelected(value)
   }
+
+  const clickSubject = () => {
+    if (studentData.lectureAssignment) {
+      alert('과정 변경이 불가능합니다.')
+    } else {
+      sbjOpen
+    }
+  }
+  console.log(studentData?.lectureAssignment)
   return (
     <>
       {studentPaymentData !== null && (
@@ -466,9 +475,11 @@ export default function StudentPaymentForm({
                     }
                     labelPlacement="outside"
                     className="max-w-full"
-                    variant="bordered"
+                    variant={
+                      studentData.lectureAssignment ? 'faded' : 'bordered'
+                    }
                     minRows={1}
-                    onClick={sbjOpen}
+                    onClick={clickSubject}
                     {...register('subject', {
                       required: {
                         value: true,

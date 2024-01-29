@@ -732,6 +732,7 @@ export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
         writer
         studentPayment {
           actualAmount
+          cancellation
           amountReceived
           campus
           cancellation
