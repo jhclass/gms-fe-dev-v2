@@ -383,6 +383,7 @@ export default function StudentsWriteCourse() {
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
+      disCounCalculator(subjectSelectedData?.fee)
     }
   }
   const handleSubChange = e => {
@@ -390,7 +391,6 @@ export default function StudentsWriteCourse() {
     setValue('subDiv', e.target.value)
   }
   const handleSubManagerChange = e => {
-    // setSubjectManager(e.target.value)
     setSubjectManager(e.target.value)
   }
   const handleReceiptChange = (value: string[]) => {
@@ -688,7 +688,13 @@ export default function StudentsWriteCourse() {
                           ? subjectSelectedData?.fee
                           : ''
                       }
-                      onValueChange={value => discountTotal(value)}
+                      onValueChange={value => {
+                        if (value !== '') {
+                          discountTotal(value)
+                        } else {
+                          discountTotal(0)
+                        }
+                      }}
                       onChange={e => {
                         register('actualAmount').onChange(e)
                       }}

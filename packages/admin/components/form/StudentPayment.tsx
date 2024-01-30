@@ -406,11 +406,13 @@ export default function StudentPaymentForm({
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
+      disCounCalculator(subjectSelectedData?.fee)
     } else {
       const discountPrice = studentSubjectData?.fee - parseInt(value)
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
+      disCounCalculator(studentSubjectData?.fee)
     }
   }
 
@@ -724,7 +726,13 @@ export default function StudentPaymentForm({
                         ? studentPaymentData?.actualAmount
                         : ''
                     }
-                    onValueChange={value => discountTotal(value)}
+                    onValueChange={value => {
+                      if (value !== '') {
+                        discountTotal(value)
+                      } else {
+                        discountTotal(0)
+                      }
+                    }}
                     onChange={e => {
                       register('actualAmount').onChange(e)
                     }}
