@@ -31,6 +31,9 @@ const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
+const AreaBoxL = styled.div`
+  min-width: 23%;
+`
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -46,14 +49,6 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
-`
-const LineBox = styled.div`
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  border-bottom: 2px solid hsl(240 6% 90%);
-  height: 40px;
-  line-height: 40px;
-  font-size: 0.875rem;
 `
 const FlatBox = styled.div`
   padding-left: 0.5rem;
@@ -185,12 +180,12 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox>
             <FlexBox>
-              <AreaBox>
+              <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
                   <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
-              </AreaBox>
+              </AreaBoxL>
               <AreaBox>
                 <div>
                   <FilterLabel>은행명</FilterLabel>
@@ -273,12 +268,12 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox>
             <FlexBox>
-              <AreaBox>
+              <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
                   <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
-              </AreaBox>
+              </AreaBoxL>
               <AreaBox>
                 <div>
                   <FilterLabel>카드회사명</FilterLabel>
