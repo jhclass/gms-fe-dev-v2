@@ -114,6 +114,18 @@ const BtnBox = styled.div`
   gap: 0.5rem;
   justify-content: center;
 `
+
+const BtnBox4 = styled.div<{ $isPayment: boolean }>`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  @media (max-width: 768px) {
+    ${props => props.$isPayment && 'flex-wrap:wrap;'}
+    button {
+      ${props => props.$isPayment && ' width: calc(50% - 0.5rem);'}
+    }
+  }
+`
 const LineBox = styled.div`
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -722,7 +734,9 @@ export default function StudentsWrite() {
                         </RadioBox>
                       </AreaBox>
                     </FlexBox>
-                    <BtnBox>
+                    <BtnBox4
+                      $isPayment={studentPaymentDetailData?.length === 0}
+                    >
                       {studentPaymentDetailData?.length === 0 && (
                         <Button
                           size="md"
@@ -791,7 +805,7 @@ export default function StudentsWrite() {
                           ? '중도포기 철회'
                           : '중도포기'}
                       </Button>
-                    </BtnBox>
+                    </BtnBox4>
                   </DetailDiv>
                 </DetailBox>
                 {/* <DetailBox>
