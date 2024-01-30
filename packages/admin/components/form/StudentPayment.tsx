@@ -322,7 +322,7 @@ export default function StudentPaymentForm({
               discountAmount:
                 data.discount === null
                   ? studentPaymentData?.discountAmount
-                  : data.discount === '0'
+                  : data.discount === '0' || data.discount === ''
                   ? '0'
                   : data.discount + disCountType,
               unCollectedAmount:
