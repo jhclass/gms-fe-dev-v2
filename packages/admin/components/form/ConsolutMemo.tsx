@@ -22,60 +22,6 @@ const DetailForm = styled.form`
     gap: 0.3rem;
   }
 `
-
-const MemoBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex: 1 3;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
-const MemoList = styled.ul`
-  margin-top: 1.5rem;
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
-`
-const MemoItem = styled.li`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
-const MemoBtn = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 1.75rem;
-  width: 5rem;
-
-  @media (max-width: 768px) {
-    padding-top: 0;
-    width: 100%;
-  }
-`
-
 const MemoListBtn = styled.p`
   display: flex;
   gap: 0.5rem;
@@ -94,7 +40,6 @@ const MemoListBtn = styled.p`
     }
   }
 `
-
 const MemoInfo = styled.label`
   display: flex;
   gap: 0.3rem;
@@ -136,9 +81,7 @@ export default function ConsultMemo(props) {
   const { userLogs } = useUserLogsMutation()
   const [deleteMemo] = useMutation(DELETE_CONSULTATION_MEMO_MUTATION)
   const [updateMemo] = useMutation(UPDATE_CONSULTATION_MEMO_MUTATION)
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-  )
+  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const { register, handleSubmit, control, formState } = useForm({})
   const { isDirty } = formState
   const onDelete = data => {
@@ -240,7 +183,7 @@ export default function ConsultMemo(props) {
                     {gradeStr(props.item.manageUser?.mUserId)}
                   </MemoGrade>
                   <MemoName>{props.item.manageUser?.mUsername}</MemoName>
-                  <MemoTime>{fametDate(props.item.createdAt)}</MemoTime>
+                  <MemoTime>{fametDate(props.item.updatedAt)}</MemoTime>
                 </MemoInfo>
               }
               ref={field.ref}

@@ -9,25 +9,14 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Button,
-} from '@nextui-org/react'
+import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { ReceiptState, selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { selectedPaymentDetailState } from '@/lib/recoilAtoms'
 import {
-  CREATE_PAYMENT_DETAIL_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_PAYMENT_DETAIL_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
@@ -161,7 +150,9 @@ export default function StudentsWritePayment() {
   const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
   const [updatePaymentDetail] = useMutation(UPDATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
-  const selectedPaymentDeta = useRecoilValue(selectedPaymentDetailState)
+  const [selectedPaymentDeta, setSelectedPaymentDeta] = useRecoilState(
+    selectedPaymentDetailState,
+  )
   const {
     loading: managerLoading,
     error: managerError,
@@ -171,11 +162,9 @@ export default function StudentsWritePayment() {
   const {
     register,
     control,
-    reset,
     setValue,
-    clearErrors,
     handleSubmit,
-    formState: { isDirty, dirtyFields, errors, isValid },
+    formState: { isDirty, dirtyFields, errors },
   } = useForm()
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
@@ -279,30 +268,16 @@ export default function StudentsWritePayment() {
                   processingManagerId: studentPaymentData?.processingManagerId,
                 },
                 onCompleted: () => {
-                  searchStudentPayment({
-                    variables: {
-                      searchStudentId: parseInt(studentId),
-                    },
-                    onCompleted: data => {
-                      setStudentData(data.searchStudent?.student[0])
-                      setStudentPaymentData(
-                        data.searchStudent?.student[0].studentPayment[0],
-                      )
-                      setStudentSubjectData(
-                        data.searchStudent?.student[0].studentPayment[0]
-                          .subject,
-                      )
-                    },
-                  })
+                  const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                  userLogs(
+                    `${studentData?.name} 카드 결제 수정`,
+                    dirtyFieldsArray.join(', '),
+                  )
+                  router.back()
                 },
               })
             },
           })
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            `${studentData?.name} 카드 결제 수정`,
-            dirtyFieldsArray.join(', '),
-          )
         } else {
           updatePaymentDetail({
             variables: {
@@ -326,30 +301,16 @@ export default function StudentsWritePayment() {
                   processingManagerId: studentPaymentData?.processingManagerId,
                 },
                 onCompleted: () => {
-                  searchStudentPayment({
-                    variables: {
-                      searchStudentId: parseInt(studentId),
-                    },
-                    onCompleted: data => {
-                      setStudentData(data.searchStudent?.student[0])
-                      setStudentPaymentData(
-                        data.searchStudent?.student[0].studentPayment[0],
-                      )
-                      setStudentSubjectData(
-                        data.searchStudent?.student[0].studentPayment[0]
-                          .subject,
-                      )
-                    },
-                  })
+                  const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                  userLogs(
+                    `${studentData?.name} 현금 결제 수정 `,
+                    dirtyFieldsArray.join(', '),
+                  )
+                  router.back()
                 },
               })
             },
           })
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            `${studentData?.name} 현금 결제 수정 `,
-            dirtyFieldsArray.join(', '),
-          )
         }
       }
     }
@@ -683,7 +644,7 @@ export default function StudentsWritePayment() {
                             </p>
                           )}
                         </AreaBox>
-                        <AreaBox>
+                        {/* <AreaBox>
                           <DatePickerBox>
                             <Controller
                               control={control}
@@ -697,8 +658,6 @@ export default function StudentsWritePayment() {
                                     changeMonth,
                                     decreaseMonth,
                                     increaseMonth,
-                                    prevMonthButtonDisabled,
-                                    nextMonthButtonDisabled,
                                   }) => (
                                     <DatePickerHeader
                                       rangeYears={years}
@@ -707,12 +666,6 @@ export default function StudentsWritePayment() {
                                       changeMonth={changeMonth}
                                       decreaseMonth={decreaseMonth}
                                       increaseMonth={increaseMonth}
-                                      prevMonthButtonDisabled={
-                                        prevMonthButtonDisabled
-                                      }
-                                      nextMonthButtonDisabled={
-                                        nextMonthButtonDisabled
-                                      }
                                     />
                                   )}
                                   locale="ko"
@@ -753,7 +706,7 @@ export default function StudentsWritePayment() {
                               {String(errors.paymentDate.message)}
                             </p>
                           )}
-                        </AreaBox>
+                        </AreaBox> */}
                       </FlexBox>
                     </>
                   )}
@@ -837,7 +790,7 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      <AreaBox>
+                      {/* <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
@@ -851,8 +804,6 @@ export default function StudentsWritePayment() {
                                   changeMonth,
                                   decreaseMonth,
                                   increaseMonth,
-                                  prevMonthButtonDisabled,
-                                  nextMonthButtonDisabled,
                                 }) => (
                                   <DatePickerHeader
                                     rangeYears={years}
@@ -861,12 +812,6 @@ export default function StudentsWritePayment() {
                                     changeMonth={changeMonth}
                                     decreaseMonth={decreaseMonth}
                                     increaseMonth={increaseMonth}
-                                    prevMonthButtonDisabled={
-                                      prevMonthButtonDisabled
-                                    }
-                                    nextMonthButtonDisabled={
-                                      nextMonthButtonDisabled
-                                    }
                                   />
                                 )}
                                 locale="ko"
@@ -903,7 +848,7 @@ export default function StudentsWritePayment() {
                             {String(errors.depositDate.message)}
                           </p>
                         )}
-                      </AreaBox>
+                      </AreaBox> */}
                     </FlexBox>
                   )}
                   <BtnBox>

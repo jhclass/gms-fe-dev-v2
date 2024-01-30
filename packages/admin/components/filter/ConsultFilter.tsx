@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
 import {
+  consultPageState,
   progressStatusState,
   receiptStatusState,
   subStatusState,
@@ -126,7 +127,7 @@ export default function ConsultFillter({
     data: adviceData,
   } = useQuery(SEE_ADVICE_TYPE_QUERY)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-
+  const consultPage = useResetRecoilState(consultPageState)
   const managerList = seeManageUserData?.seeManageUser || []
   const adviceList = adviceData?.seeAdviceType.adviceType || []
   const receiptStatus = useRecoilValue(receiptStatusState)
@@ -300,6 +301,7 @@ export default function ConsultFillter({
         }
         setStudentFilter(filter)
         onFilterSearch(true)
+        consultPage()
       }
     }
   }
@@ -471,8 +473,6 @@ export default function ConsultFillter({
                       changeMonth,
                       decreaseMonth,
                       increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
                     }) => (
                       <DatePickerHeader
                         rangeYears={years}
@@ -481,8 +481,6 @@ export default function ConsultFillter({
                         changeMonth={changeMonth}
                         decreaseMonth={decreaseMonth}
                         increaseMonth={increaseMonth}
-                        prevMonthButtonDisabled={prevMonthButtonDisabled}
-                        nextMonthButtonDisabled={nextMonthButtonDisabled}
                       />
                     )}
                     selectsRange={true}
@@ -530,8 +528,6 @@ export default function ConsultFillter({
                       changeMonth,
                       decreaseMonth,
                       increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
                     }) => (
                       <DatePickerHeader
                         rangeYears={years}
@@ -540,8 +536,6 @@ export default function ConsultFillter({
                         changeMonth={changeMonth}
                         decreaseMonth={decreaseMonth}
                         increaseMonth={increaseMonth}
-                        prevMonthButtonDisabled={prevMonthButtonDisabled}
-                        nextMonthButtonDisabled={nextMonthButtonDisabled}
                       />
                     )}
                     locale="ko"

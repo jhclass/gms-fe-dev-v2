@@ -18,7 +18,6 @@ import {
   Select,
   SelectItem,
   Textarea,
-  Button,
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -28,15 +27,13 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
   SEARCH_STUDENT_BASIC_MUTATION,
-  SEARCH_SUBJECT_BASIC_MUTATION,
   UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
-import PaymentDetail from '@/components/form/StudentPayment'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
@@ -100,6 +97,16 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 const AreaSmallBox = styled.div`
   @media (max-width: 768px) {
@@ -208,6 +215,7 @@ export default function StudentsWriteCourse() {
       receiptClassification: null,
       discount: 0,
       discountUnit: '%',
+      subDiv: null,
     },
   })
   const { errors } = formState
@@ -216,12 +224,14 @@ export default function StudentsWriteCourse() {
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
+  const subStatus = useRecoilValue(subStatusState)
   const [studentData, setStudentData] = useState(null)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [disCountType, setDisCountType] = useState('%')
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
+  const [sub, setSub] = useState('없음')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [receiptSelected, setReceiptSelected] = useState([])
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -265,6 +275,8 @@ export default function StudentsWriteCourse() {
   useEffect(() => {
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)
+      setSub(subjectSelectedData?.subDiv)
+      setValue('subDiv', subjectSelectedData?.subDiv)
     }
   }, [subjectSelectedData])
 
@@ -292,6 +304,7 @@ export default function StudentsWriteCourse() {
             data.receiptClassification === null
               ? []
               : data.receiptClassification,
+          subDiv: data.subDiv,
         },
         onCompleted: () => {
           updateStudentDuedate({
@@ -306,7 +319,6 @@ export default function StudentsWriteCourse() {
           })
         },
       })
-
       userLogs(`${studentData.name} 수강신청`)
     } else {
       setError(
@@ -355,7 +367,7 @@ export default function StudentsWriteCourse() {
   }
 
   const discountChange = value => {
-    if (value === '') {
+    if (value === '' || value < 0) {
       setValue('discount', 0)
     } else {
       setValue('discount', parseInt(value))
@@ -372,6 +384,10 @@ export default function StudentsWriteCourse() {
       setDisCountType('원')
       setValue('discountUnit', '원')
     }
+  }
+  const handleSubChange = e => {
+    setSub(e.target.value)
+    setValue('subDiv', e.target.value)
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
@@ -559,21 +575,29 @@ export default function StudentsWriteCourse() {
                     )}
                   </AreaBox>
                   <AreaBox>
-                    <Input
-                      isReadOnly
-                      labelPlacement="outside"
-                      placeholder="수강 구분"
-                      value={
-                        subjectSelectedData !== null &&
-                        subjectSelectedData?.subDiv !== null
-                          ? subjectSelectedData?.subDiv
-                          : ''
-                      }
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label="수강 구분"
-                      className="w-full"
+                    <Controller
+                      control={control}
+                      name="subDiv"
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label={<FilterLabel>수강구분</FilterLabel>}
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[sub]}
+                          onChange={value => {
+                            field.onChange(value)
+                            handleSubChange(value)
+                          }}
+                        >
+                          {Object.entries(subStatus).map(([key, item]) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      )}
                     />
                   </AreaBox>
                   <AreaBox>
@@ -738,8 +762,6 @@ export default function StudentsWriteCourse() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -748,12 +770,6 @@ export default function StudentsWriteCourse() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"
@@ -808,8 +824,6 @@ export default function StudentsWriteCourse() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -818,12 +832,6 @@ export default function StudentsWriteCourse() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"

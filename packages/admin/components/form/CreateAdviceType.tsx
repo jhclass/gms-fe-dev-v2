@@ -1,15 +1,12 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { subStatusState } from '@/lib/recoilAtoms'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import { Chip, Input, Select, SelectItem } from '@nextui-org/react'
+import { Chip, Input } from '@nextui-org/react'
 import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import {
   CREATE_ADVICE_TYPE_MUTATION,

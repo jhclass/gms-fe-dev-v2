@@ -31,6 +31,9 @@ const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
+const AreaBoxL = styled.div`
+  min-width: 23%;
+`
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -46,14 +49,6 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
-`
-const LineBox = styled.div`
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  border-bottom: 2px solid hsl(240 6% 90%);
-  height: 40px;
-  line-height: 40px;
-  font-size: 0.875rem;
 `
 const FlatBox = styled.div`
   padding-left: 0.5rem;
@@ -185,14 +180,12 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox>
             <FlexBox>
-              <AreaBox>
+              <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>
-                    {fametDate(detailtData?.depositDate, false)}
-                  </FlatBox>
+                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
-              </AreaBox>
+              </AreaBoxL>
               <AreaBox>
                 <div>
                   <FilterLabel>은행명</FilterLabel>
@@ -209,7 +202,6 @@ export default function StudentPaymentDetailItem({
                 <div>
                   <FilterLabel>결제금액</FilterLabel>
                   <FlatBox>
-                    {' '}
                     {detailtData?.depositAmount === null
                       ? ''
                       : feeFormet(detailtData?.depositAmount)}
@@ -276,14 +268,12 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox>
             <FlexBox>
-              <AreaBox>
+              <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>
-                    {fametDate(detailtData?.paymentDate, false)}
-                  </FlatBox>
+                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
-              </AreaBox>
+              </AreaBoxL>
               <AreaBox>
                 <div>
                   <FilterLabel>카드회사명</FilterLabel>
@@ -335,23 +325,12 @@ export default function StudentPaymentDetailItem({
               >
                 영수증 인쇄
               </Button> */}
-              <Button
-                isDisabled={detailtData.reqRefund ? true : false}
-                size="md"
-                radius="md"
-                variant="solid"
-                color="primary"
-                className="w-full text-white"
-                onClick={() => editBtn(detailtData)}
-              >
-                결제 변경
-              </Button>
               {detailtData.reqRefund ? (
                 <Button
                   isDisabled={detailtData.refundApproval ? true : false}
                   size="md"
                   radius="md"
-                  className="w-full text-white bg-flag1"
+                  className="lg:w-[50%] w-full text-white bg-flag1"
                   onClick={() => clickReqRefund()}
                 >
                   결제 취소요청 철회
@@ -361,7 +340,7 @@ export default function StudentPaymentDetailItem({
                   size="md"
                   radius="md"
                   variant="bordered"
-                  className="w-full text-flag1 border-flag1"
+                  className="lg:w-[50%] w-full text-flag1 border-flag1"
                   onClick={() => clickReqRefund()}
                 >
                   결제 취소 요청

@@ -1,17 +1,19 @@
 import { motion } from 'framer-motion'
-import { useRecoilCallback, useRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState } from 'recoil'
 import {
   activeCategoryState,
   consultFilterActiveState,
   consultFilterState,
   consultPageState,
   consultSearchState,
+  studentFilterActiveState,
   studentFilterState,
   studentPageState,
+  subjectFilterActiveState,
   subjectFilterState,
   subjectPageState,
+  subjectSearchState,
 } from '@/lib/recoilAtoms'
-import useUserLogsMutation from '@/utils/userLogs'
 import CategoryItem from './CategoryItem'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
@@ -56,10 +58,10 @@ export default function Category() {
         },
       ],
       reset: () => {
-        resetFilterActive()
-        resetFilterSearch()
-        resetStudentFilter()
         consultPage()
+        resetConsultFilterActive()
+        resetConsultFilterSearch()
+        resetConsultFilter()
       },
     },
     {
@@ -68,7 +70,12 @@ export default function Category() {
       iconSrc: 'ico_work',
       alt: '과정관리',
       label: '과정관리',
-      reset: () => {},
+      reset: () => {
+        subjectPage()
+        resetSubjectFilterActive()
+        resetSubjectFilterSearch()
+        resetSubjectFilter()
+      },
     },
     {
       id: 3,
@@ -76,7 +83,12 @@ export default function Category() {
       iconSrc: 'ico_regist',
       alt: '수강생관리',
       label: '수강생관리',
-      reset: () => {},
+      reset: () => {
+        studentPage()
+        resetStudentFilterActive()
+        resetStudentFilterSearch()
+        resetStudentFilter()
+      },
     },
     {
       id: 4,
@@ -122,13 +134,18 @@ export default function Category() {
 
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
-  // const [active, setActive] = useState<boolean>(false)
-  const resetFilterActive = useResetRecoilState(consultFilterActiveState)
-  const resetFilterSearch = useResetRecoilState(consultFilterState)
-  const resetStudentFilter = useResetRecoilState(consultSearchState)
   const consultPage = useResetRecoilState(consultPageState)
+  const resetConsultFilterActive = useResetRecoilState(consultFilterActiveState)
+  const resetConsultFilterSearch = useResetRecoilState(consultFilterState)
+  const resetConsultFilter = useResetRecoilState(consultSearchState)
   const subjectPage = useResetRecoilState(subjectPageState)
+  const resetSubjectFilterActive = useResetRecoilState(subjectFilterActiveState)
+  const resetSubjectFilterSearch = useResetRecoilState(subjectFilterState)
+  const resetSubjectFilter = useResetRecoilState(subjectSearchState)
   const studentPage = useResetRecoilState(studentPageState)
+  const resetStudentFilterActive = useResetRecoilState(studentFilterActiveState)
+  const resetStudentFilterSearch = useResetRecoilState(studentFilterState)
+  const resetStudentFilter = useResetRecoilState(studentFilterState)
 
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)

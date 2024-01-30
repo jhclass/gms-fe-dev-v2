@@ -8,18 +8,6 @@ import AdviceType from '@/components/dashboard/AdviceType'
 import ReceiptDiv from '@/components/dashboard/ReceiptDiv'
 import useMmeQuery from '@/utils/mMe'
 
-const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: ${props => (props.$navOpen ? '4rem 0 0 18rem;' : '4rem 0 0 5rem;')};
-  background-color: #d6e4f1;
-
-  @media screen and (max-width: 1024px) {
-    padding: 4rem 0 0 0;
-  }
-`
 const HomeArea = styled.div`
   max-width: 1400px;
   width: 100%;

@@ -1,16 +1,15 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { subStatusState } from '@/lib/recoilAtoms'
+import { useResetRecoilState } from 'recoil'
+import { studentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import { Input, Select, SelectItem } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { Input } from '@nextui-org/react'
+import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
-import { useRouter } from 'next/router'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
@@ -55,16 +54,6 @@ const BoxMiddle = styled.div`
     flex-direction: column;
   }
 `
-const BoxBottom = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
 const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,15 +65,6 @@ const BtnBox = styled.div`
   gap: 1rem;
   flex: 1;
 `
-const FilterLabel = styled.label`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #11181c;
-  padding-bottom: 0.1rem;
-  display: block;
-`
-
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -106,8 +86,7 @@ export default function StudentsFillter({
   onFilterSearch,
   setStudentFilter,
 }) {
-  const router = useRouter()
-  const subStatus = useRecoilValue(subStatusState)
+  const studentPage = useResetRecoilState(studentPageState)
   const [birthdayRange, setBirthdayRange] = useState([null, null])
   const [startBirthday, endBirthday] = birthdayRange
   const [creatDateRange, setCreatDateRange] = useState([null, null])
@@ -161,6 +140,7 @@ export default function StudentsFillter({
         }
         setStudentFilter(filter)
         onFilterSearch(true)
+        studentPage()
       }
     }
   }
@@ -230,8 +210,6 @@ export default function StudentsFillter({
                       changeMonth,
                       decreaseMonth,
                       increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
                     }) => (
                       <DatePickerHeader
                         rangeYears={years}
@@ -240,8 +218,6 @@ export default function StudentsFillter({
                         changeMonth={changeMonth}
                         decreaseMonth={decreaseMonth}
                         increaseMonth={increaseMonth}
-                        prevMonthButtonDisabled={prevMonthButtonDisabled}
-                        nextMonthButtonDisabled={nextMonthButtonDisabled}
                       />
                     )}
                     selectsRange={true}
@@ -288,8 +264,6 @@ export default function StudentsFillter({
                       changeMonth,
                       decreaseMonth,
                       increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
                     }) => (
                       <DatePickerHeader
                         rangeYears={years}
@@ -298,8 +272,6 @@ export default function StudentsFillter({
                         changeMonth={changeMonth}
                         decreaseMonth={decreaseMonth}
                         increaseMonth={increaseMonth}
-                        prevMonthButtonDisabled={prevMonthButtonDisabled}
-                        nextMonthButtonDisabled={nextMonthButtonDisabled}
                       />
                     )}
                     selectsRange={true}

@@ -226,8 +226,8 @@ export const SEE_STUDENT_QUERY = gql`
         phoneNum1
         writer
         studentPayment {
+          subDiv
           subject {
-            subDiv
             subjectName
             id
           }

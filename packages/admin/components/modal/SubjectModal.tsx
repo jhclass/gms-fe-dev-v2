@@ -337,6 +337,7 @@ export default function SubjectModal({
                       variant="light"
                       showControls
                       initialPage={currentSubjectPage}
+                      page={currentSubjectPage}
                       total={Math.ceil(
                         subjectList?.totalCount / currentSubjectLimit,
                       )}

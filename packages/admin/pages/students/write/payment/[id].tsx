@@ -9,23 +9,12 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Button,
-} from '@nextui-org/react'
+import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+
 import {
   CREATE_PAYMENT_DETAIL_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
@@ -170,7 +159,7 @@ export default function StudentsWritePayment() {
     register,
     control,
     reset,
-    setValue,
+    setFocus,
     clearErrors,
     handleSubmit,
     formState,
@@ -184,7 +173,6 @@ export default function StudentsWritePayment() {
   const [bankName, setBankName] = useState('은행 선택')
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
     searchStudentPayment({
@@ -323,9 +311,8 @@ export default function StudentsWritePayment() {
     setPaymentType(paymentType)
   }
 
-  const received = (actual, unCollected) => {
-    const result = feeFormet(parseInt(actual) - parseInt(unCollected))
-    return result
+  const handleTypeChange = value => {
+    setPaymentType(value)
   }
   const handleCardChange = e => {
     setCardName(e.target.value)
@@ -529,7 +516,7 @@ export default function StudentsWritePayment() {
                             value={paymentType}
                             onValueChange={value => {
                               field.onChange(value)
-                              setPaymentType(value)
+                              handleTypeChange(value)
                             }}
                           >
                             <Radio key={'카드'} value={'카드'}>
@@ -554,6 +541,8 @@ export default function StudentsWritePayment() {
                           rules={{ required: '카드사를 선택해주세요.' }}
                           render={({ field, fieldState }) => (
                             <Select
+                              ref={field.ref}
+                              autoFocus={true}
                               labelPlacement="outside"
                               label="카드사"
                               placeholder=" "
@@ -604,7 +593,7 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      <AreaSmallBox>
+                      <AreaBox>
                         <Input
                           labelPlacement="outside"
                           placeholder="할부기간"
@@ -615,24 +604,6 @@ export default function StudentsWritePayment() {
                           endContent={<InputText>개월</InputText>}
                           {...register('installment')}
                         />
-                      </AreaSmallBox>
-                      <AreaBox>
-                        <Input
-                          labelPlacement="outside"
-                          placeholder="결제금액"
-                          variant="bordered"
-                          radius="md"
-                          type="text"
-                          label="결제금액"
-                          {...register('amountPayment', {
-                            required: '결제금액을 작성해주세요.',
-                          })}
-                        />
-                        {errors.amountPayment && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
-                            {String(errors.amountPayment.message)}
-                          </p>
-                        )}
                       </AreaBox>
                     </FlexBox>
                     <FlexBox>
@@ -655,11 +626,31 @@ export default function StudentsWritePayment() {
                         )}
                       </AreaBox>
                       <AreaBox>
+                        <Input
+                          labelPlacement="outside"
+                          placeholder="결제금액"
+                          variant="bordered"
+                          radius="md"
+                          type="text"
+                          label="결제금액"
+                          {...register('amountPayment', {
+                            required: '결제금액을 작성해주세요.',
+                          })}
+                        />
+                        {errors.amountPayment && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.amountPayment.message)}
+                          </p>
+                        )}
+                      </AreaBox>
+                      {/* <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
                             name="paymentDate"
-                            rules={{ required: '결제일자를 선택해주세요.' }}
+                            rules={{
+                              required: '결제 요청 일자를 선택해주세요.',
+                            }}
                             render={({ field }) => (
                               <DatePicker
                                 renderCustomHeader={({
@@ -668,8 +659,6 @@ export default function StudentsWritePayment() {
                                   changeMonth,
                                   decreaseMonth,
                                   increaseMonth,
-                                  prevMonthButtonDisabled,
-                                  nextMonthButtonDisabled,
                                 }) => (
                                   <DatePickerHeader
                                     rangeYears={years}
@@ -678,12 +667,6 @@ export default function StudentsWritePayment() {
                                     changeMonth={changeMonth}
                                     decreaseMonth={decreaseMonth}
                                     increaseMonth={increaseMonth}
-                                    prevMonthButtonDisabled={
-                                      prevMonthButtonDisabled
-                                    }
-                                    nextMonthButtonDisabled={
-                                      nextMonthButtonDisabled
-                                    }
                                   />
                                 )}
                                 locale="ko"
@@ -720,7 +703,7 @@ export default function StudentsWritePayment() {
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
-                      </AreaBox>
+                      </AreaBox> */}
                     </FlexBox>
                   </>
                 )}
@@ -733,6 +716,8 @@ export default function StudentsWritePayment() {
                         rules={{ required: '입금은행을 선택해주세요.' }}
                         render={({ field, fieldState }) => (
                           <Select
+                            autoFocus={true}
+                            ref={field.ref}
                             labelPlacement="outside"
                             label="은행명"
                             placeholder=" "
@@ -798,11 +783,11 @@ export default function StudentsWritePayment() {
                         </p>
                       )}
                     </AreaBox>
-                    <AreaBox>
+                    {/* <AreaBox>
                       <DatePickerBox>
                         <Controller
                           control={control}
-                          rules={{ required: '입금일자를 선택해주세요.' }}
+                          rules={{ required: '입금 요청 일자를 선택해주세요.' }}
                           name="depositDate"
                           render={({ field }) => (
                             <DatePicker
@@ -812,8 +797,6 @@ export default function StudentsWritePayment() {
                                 changeMonth,
                                 decreaseMonth,
                                 increaseMonth,
-                                prevMonthButtonDisabled,
-                                nextMonthButtonDisabled,
                               }) => (
                                 <DatePickerHeader
                                   rangeYears={years}
@@ -822,12 +805,6 @@ export default function StudentsWritePayment() {
                                   changeMonth={changeMonth}
                                   decreaseMonth={decreaseMonth}
                                   increaseMonth={increaseMonth}
-                                  prevMonthButtonDisabled={
-                                    prevMonthButtonDisabled
-                                  }
-                                  nextMonthButtonDisabled={
-                                    nextMonthButtonDisabled
-                                  }
                                 />
                               )}
                               locale="ko"
@@ -864,7 +841,7 @@ export default function StudentsWritePayment() {
                           {String(errors.depositDate.message)}
                         </p>
                       )}
-                    </AreaBox>
+                    </AreaBox> */}
                   </FlexBox>
                 )}
                 <BtnBox>

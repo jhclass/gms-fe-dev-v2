@@ -212,8 +212,7 @@ export default function StudentsWrite() {
         setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
-  }, [router])
-
+  }, [router, studentPaymentData])
   const clickLectureAssignment = () => {
     if (studentData.lectureAssignment) {
       const isAssignment = confirm(
@@ -324,7 +323,7 @@ export default function StudentsWrite() {
   const clickClassCancel = () => {
     if (studentPaymentData.cancellation) {
       const isAssignment = confirm(
-        `${studentData.name}학생의 ${studentSubjectData.subjectName} 수강철회를 취소 하시겠습니까?`,
+        `${studentData.name}학생의 ${studentSubjectData.subjectName} 중도포기 철회 하시겠습니까?`,
       )
       if (isAssignment) {
         classCancelMutation({
@@ -344,16 +343,16 @@ export default function StudentsWrite() {
                 )
               },
             })
-            alert('수강철회 취소 되었습니다.')
+            alert('중도포기 철회 되었습니다.')
             userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
+              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
             )
           },
         })
       }
     } else {
       const isAssignment = confirm(
-        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 수강 철회 하시겠습니까?`,
+        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 중도포기 하시겠습니까?`,
       )
       if (isAssignment) {
         classCancelMutation({
@@ -373,9 +372,9 @@ export default function StudentsWrite() {
                 )
               },
             })
-            alert('수강 철회 되었습니다.')
+            alert('중도포기 되었습니다.')
             userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 수강 철회 `,
+              `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
             )
           },
         })
@@ -526,7 +525,7 @@ export default function StudentsWrite() {
                       radius="md"
                       variant="solid"
                       color="primary"
-                      className="w-full text-white"
+                      className="lg:w-[50%] w-full text-white"
                       onClick={() => {
                         router.push(`/students/write/course/${studentData?.id}`)
                       }}
@@ -618,7 +617,7 @@ export default function StudentsWrite() {
                       <AreaBox>
                         <div>
                           <FilterLabel>수강 구분</FilterLabel>
-                          <LineBox>{studentSubjectData?.subDiv}</LineBox>
+                          <LineBox>{studentPaymentData?.subDiv}</LineBox>
                         </div>
                       </AreaBox>
                       <AreaBox>
@@ -789,8 +788,8 @@ export default function StudentsWrite() {
                         onClick={clickClassCancel}
                       >
                         {studentPaymentData.cancellation
-                          ? '수강철회 취소'
-                          : '수강철회'}
+                          ? '중도포기 철회'
+                          : '중도포기'}
                       </Button>
                     </BtnBox>
                   </DetailDiv>

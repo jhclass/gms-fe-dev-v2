@@ -5,6 +5,8 @@ import { styled } from 'styled-components'
 import router from 'next/router'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
 import SubjectItem from '@/components/table/SubjectItem'
+import { useRecoilState } from 'recoil'
+import { subjectPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -226,7 +228,7 @@ export default function SubjectFilterTable({
   subjectFilter,
   setSubjectFilter,
 }) {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useRecoilState(subjectPageState)
   const [currentLimit] = useState(10)
   const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
@@ -364,6 +366,7 @@ export default function SubjectFilterTable({
               variant="light"
               showControls
               initialPage={currentPage}
+              page={currentPage}
               total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)

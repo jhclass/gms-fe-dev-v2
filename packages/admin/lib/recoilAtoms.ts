@@ -192,14 +192,20 @@ export const subjectSearchState = atom({
     exposure: boolean
   },
 })
-export const studentFilterState = atom<boolean>({
-  key: 'studentFilter',
+
+export const studentFilterActiveState = atom<boolean>({
+  key: 'subjectFilterActive',
   default: false,
 })
 export const studentPageState = atom<number>({
   key: 'studentPage',
   default: 1,
 })
+export const studentFilterState = atom<boolean>({
+  key: 'studentFilter',
+  default: false,
+})
+
 export const studentSearchState = atom({
   key: 'studentSearch',
   default: {} as {

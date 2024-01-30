@@ -33,30 +33,6 @@ const MemoBox = styled.div`
     gap: 0.3rem;
   }
 `
-const MemoList = styled.ul`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
-`
-const MemoItem = styled.li`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  textarea {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-`
 const MemoBtn = styled.div`
   display: flex;
   align-items: center;

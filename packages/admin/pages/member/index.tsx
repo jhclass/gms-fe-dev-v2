@@ -1,5 +1,4 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'

@@ -302,6 +302,7 @@ export default function ConsolutationTable() {
               variant="light"
               showControls
               initialPage={currentPage}
+              page={currentPage}
               total={Math.ceil(totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)

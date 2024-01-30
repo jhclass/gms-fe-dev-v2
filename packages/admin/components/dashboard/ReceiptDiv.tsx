@@ -17,7 +17,6 @@ const ItemBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `
-
 const Title = styled.div`
   width: 100%;
   display: flex;

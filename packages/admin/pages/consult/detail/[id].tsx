@@ -744,8 +744,6 @@ export default function ConsultDetail() {
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -754,8 +752,6 @@ export default function ConsultDetail() {
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"
@@ -798,8 +794,6 @@ export default function ConsultDetail() {
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -808,8 +802,6 @@ export default function ConsultDetail() {
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"

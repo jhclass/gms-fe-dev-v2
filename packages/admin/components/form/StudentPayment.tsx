@@ -31,30 +31,14 @@ import {
 } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
 
-const ConArea = styled.div`
-  width: 100%;
-  max-width: 1400px;
-`
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,6 +69,16 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 const AreaSmallBox = styled.div`
   @media (max-width: 768px) {
@@ -104,15 +98,6 @@ const DatePickerBox = styled.div`
     height: 2.5rem;
     top: auto;
     bottom: 0;
-  }
-`
-const SelectBox = styled.select`
-  padding: 0 0.2rem;
-  font-size: 0.825rem;
-  height: 100%;
-
-  option {
-    font-size: 0.825rem;
   }
 `
 const RadioBox = styled.div`
@@ -168,7 +153,6 @@ export default function StudentPaymentForm({
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
   const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
-  const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
   const {
     register,
     setValue,
@@ -177,7 +161,7 @@ export default function StudentPaymentForm({
     setError,
     clearErrors,
     handleSubmit,
-    formState: { isDirty, dirtyFields, errors, isValid },
+    formState: { isDirty, dirtyFields, errors },
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -197,16 +181,19 @@ export default function StudentPaymentForm({
       discountAmount: studentPaymentData?.discountAmount,
       dueDate: studentData?.dueDate,
       receiptClassification: studentPaymentData?.receiptClassification,
+      subDiv: studentPaymentData?.subDiv,
       discount: studentPaymentData?.discountAmount,
       discountUnit: '%',
     },
   })
   const Receipt = useRecoilValue(ReceiptState)
+  const subStatus = useRecoilValue(subStatusState)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [disCountType, setDisCountType] = useState('%')
   const [paymentDateSelect, setPaymentDateSelect] = useState(null)
   const [dueDateSelect, setDueDateSelect] = useState(null)
+  const [sub, setSub] = useState('없음')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [receiptSelected, setReceiptSelected] = useState([])
   const {
@@ -224,6 +211,14 @@ export default function StudentPaymentForm({
       setSubjectManager('담당자 지정필요')
     } else {
       setSubjectManager(String(studentPaymentData?.processingManagerId))
+    }
+    if (
+      studentPaymentData?.subDiv === undefined ||
+      studentPaymentData?.subDiv === null
+    ) {
+      setSub('없음')
+    } else {
+      setSub(studentPaymentData?.subDiv)
     }
     if (
       studentPaymentData?.paymentDate === null ||
@@ -254,7 +249,10 @@ export default function StudentPaymentForm({
     ) {
       setDisCountType('%')
     } else {
-      const discoutUnit = extractUnit(studentPaymentData?.discountAmount)
+      const discoutUnit =
+        extractUnit(studentPaymentData?.discountAmount) === undefined
+          ? '%'
+          : extractUnit(studentPaymentData?.discountAmount)
       setDisCountType(discoutUnit)
       setValue('discountUnit', discoutUnit)
     }
@@ -291,6 +289,7 @@ export default function StudentPaymentForm({
   useEffect(() => {
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)
+      setSub(subjectSelectedData?.subDiv)
     }
   }, [subjectSelectedData])
 
@@ -323,13 +322,16 @@ export default function StudentPaymentForm({
               discountAmount:
                 data.discount === null
                   ? studentPaymentData?.discountAmount
-                  : String(data.discount) + disCountType,
+                  : data.discount === '0' || data.discount === ''
+                  ? '0'
+                  : data.discount + disCountType,
               unCollectedAmount:
                 typeof data.unCollectedAmount === 'string'
                   ? parseInt(data.unCollectedAmount)
                   : data.unCollectedAmount,
-              amountReceived: parseInt(data.amountReceived),
+              amountReceived: parseInt(data.amountReceived.replace(/,/g, '')),
               receiptClassification: receiptSelected,
+              subDiv: data.subDiv,
             },
             onCompleted: () => {
               updateStudentDuedate({
@@ -386,7 +388,7 @@ export default function StudentPaymentForm({
   }
 
   const discountChange = value => {
-    if (value === '') {
+    if (value === '' || value < 0) {
       setValue('discount', 0)
     } else {
       setValue('discount', parseInt(value))
@@ -420,18 +422,23 @@ export default function StudentPaymentForm({
     setValue('receiptClassification', value, { shouldDirty: true })
     setReceiptSelected(value)
   }
-
   const clickSubject = () => {
-    if (studentData.lectureAssignment) {
+    if (
+      studentData.lectureAssignment ||
+      studentPaymentData.paymentDetail.length > 0
+    ) {
       alert('과정 변경이 불가능합니다.')
     } else {
-      sbjOpen
+      sbjOpen()
     }
+  }
+  const handleSubChange = e => {
+    setSub(e.target.value)
   }
 
   return (
     <>
-      {studentPaymentData !== null && (
+      {studentPaymentData !== null && studentSubjectData !== null && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailBox>
             <DetailDiv>
@@ -476,10 +483,13 @@ export default function StudentPaymentForm({
                     labelPlacement="outside"
                     className="max-w-full"
                     variant={
-                      studentData.lectureAssignment ? 'faded' : 'bordered'
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? 'faded'
+                        : 'bordered'
                     }
                     minRows={1}
-                    onClick={clickSubject}
+                    onClick={() => clickSubject()}
                     {...register('subject', {
                       required: {
                         value: true,
@@ -564,22 +574,30 @@ export default function StudentPaymentForm({
                   )}
                 </AreaBox>
                 <AreaBox>
-                  <Input
-                    isReadOnly
-                    labelPlacement="outside"
-                    placeholder="수강 구분"
-                    value={
-                      subjectSelectedData?.subDiv !== undefined
-                        ? String(subjectSelectedData?.subDiv)
-                        : studentSubjectData?.subDiv !== null
-                        ? studentSubjectData?.subDiv
-                        : ''
-                    }
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="수강 구분"
-                    className="w-full"
+                  <Controller
+                    control={control}
+                    name="subDiv"
+                    defaultValue={studentPaymentData?.subDiv}
+                    render={({ field }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label={<FilterLabel>수강구분</FilterLabel>}
+                        placeholder=" "
+                        className="w-full"
+                        variant="bordered"
+                        selectedKeys={[sub]}
+                        onChange={value => {
+                          field.onChange(value)
+                          handleSubChange(value)
+                        }}
+                      >
+                        {Object.entries(subStatus).map(([key, item]) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    )}
                   />
                 </AreaBox>
                 <AreaBox>
@@ -606,9 +624,20 @@ export default function StudentPaymentForm({
               <FlexBox>
                 <AreaBox>
                   <Input
+                    isReadOnly={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? true
+                        : false
+                    }
                     labelPlacement="outside"
                     placeholder="할인"
-                    variant="bordered"
+                    variant={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? 'faded'
+                        : 'bordered'
+                    }
                     radius="md"
                     type="number"
                     label="할인"
@@ -627,6 +656,12 @@ export default function StudentPaymentForm({
                         name="discountUnit"
                         render={({ field, fieldState }) => (
                           <Select
+                            isDisabled={
+                              studentData.lectureAssignment ||
+                              studentPaymentData.paymentDetail.length > 0
+                                ? true
+                                : false
+                            }
                             labelPlacement="outside"
                             label={<span style={{ display: 'none' }}></span>}
                             placeholder=" "
@@ -662,9 +697,20 @@ export default function StudentPaymentForm({
                 </AreaBox>
                 <AreaBox>
                   <Input
+                    isReadOnly={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? true
+                        : false
+                    }
                     labelPlacement="outside"
                     placeholder="할인된 수강료"
-                    variant="bordered"
+                    variant={
+                      studentData.lectureAssignment ||
+                      studentPaymentData.paymentDetail.length > 0
+                        ? 'faded'
+                        : 'bordered'
+                    }
                     radius="md"
                     type="number"
                     label="할인된 수강료"
@@ -697,7 +743,7 @@ export default function StudentPaymentForm({
                     defaultValue={
                       studentPaymentData?.amountReceived === null
                         ? '0'
-                        : studentPaymentData?.amountReceived
+                        : feeFormet(studentPaymentData?.amountReceived)
                     }
                     {...register('amountReceived')}
                   />
@@ -777,8 +823,6 @@ export default function StudentPaymentForm({
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -787,8 +831,6 @@ export default function StudentPaymentForm({
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"
@@ -843,8 +885,6 @@ export default function StudentPaymentForm({
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -853,8 +893,6 @@ export default function StudentPaymentForm({
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"

@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useReactiveVar } from '@apollo/client'
-import { isLoggedInVar } from '@/lib/apolloClient'
 import useMmeQuery from '@/utils/mMe'
 import MainWrap from '@/components/wrappers/MainWrap'
 

@@ -15,6 +15,8 @@ import { useRouter } from 'next/router'
 
 const ConBox = styled.div`
   margin: 2rem 0;
+  z-index: 0;
+  position: relative;
 `
 
 export default function Consult() {

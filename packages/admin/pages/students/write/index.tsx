@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -9,30 +9,15 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Textarea,
-  Button,
-  useDisclosure,
-} from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { Input, Radio, RadioGroup, Select } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
-import {
-  CREATE_STUDENT_MUTATION,
-  SEARCH_SUBJECT_BASIC_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_STUDENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
@@ -312,8 +297,6 @@ export default function StudentsWrite() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -322,12 +305,6 @@ export default function StudentsWrite() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"
