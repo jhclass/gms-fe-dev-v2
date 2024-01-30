@@ -653,9 +653,9 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
       error
       student {
         studentPayment {
+          subDiv
           subject {
             subjectName
-            subDiv
           }
         }
         id

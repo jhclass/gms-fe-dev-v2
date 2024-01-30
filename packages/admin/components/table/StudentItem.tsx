@@ -230,8 +230,8 @@ export default function StudentsItem(props) {
               </Tprogress>
               <TsubDiv>
                 <EllipsisBox>
-                  {student.studentPayment[0]?.subject?.subDiv
-                    ? student.studentPayment[0]?.subject?.subDiv
+                  {student.studentPayment[0]?.subDiv
+                    ? student.studentPayment[0]?.subDiv
                     : '-'}
                 </EllipsisBox>
               </TsubDiv>

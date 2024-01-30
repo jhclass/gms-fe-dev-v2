@@ -249,7 +249,10 @@ export default function StudentPaymentForm({
     ) {
       setDisCountType('%')
     } else {
-      const discoutUnit = extractUnit(studentPaymentData?.discountAmount)
+      const discoutUnit =
+        extractUnit(studentPaymentData?.discountAmount) === undefined
+          ? '%'
+          : extractUnit(studentPaymentData?.discountAmount)
       setDisCountType(discoutUnit)
       setValue('discountUnit', discoutUnit)
     }
@@ -319,7 +322,9 @@ export default function StudentPaymentForm({
               discountAmount:
                 data.discount === null
                   ? studentPaymentData?.discountAmount
-                  : String(data.discount) + disCountType,
+                  : data.discount === '0'
+                  ? '0'
+                  : data.discount + disCountType,
               unCollectedAmount:
                 typeof data.unCollectedAmount === 'string'
                   ? parseInt(data.unCollectedAmount)
@@ -433,7 +438,7 @@ export default function StudentPaymentForm({
 
   return (
     <>
-      {studentPaymentData !== null && (
+      {studentPaymentData !== null && studentSubjectData !== null && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailBox>
             <DetailDiv>
