@@ -9,23 +9,12 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Button,
-} from '@nextui-org/react'
+import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+
 import {
   CREATE_PAYMENT_DETAIL_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
@@ -184,7 +173,6 @@ export default function StudentsWritePayment() {
   const [bankName, setBankName] = useState('은행 선택')
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
     searchStudentPayment({
@@ -323,10 +311,6 @@ export default function StudentsWritePayment() {
     setPaymentType(paymentType)
   }
 
-  const received = (actual, unCollected) => {
-    const result = feeFormet(parseInt(actual) - parseInt(unCollected))
-    return result
-  }
   const handleTypeChange = value => {
     setPaymentType(value)
   }
@@ -675,8 +659,6 @@ export default function StudentsWritePayment() {
                                   changeMonth,
                                   decreaseMonth,
                                   increaseMonth,
-                                  prevMonthButtonDisabled,
-                                  nextMonthButtonDisabled,
                                 }) => (
                                   <DatePickerHeader
                                     rangeYears={years}
@@ -685,12 +667,6 @@ export default function StudentsWritePayment() {
                                     changeMonth={changeMonth}
                                     decreaseMonth={decreaseMonth}
                                     increaseMonth={increaseMonth}
-                                    prevMonthButtonDisabled={
-                                      prevMonthButtonDisabled
-                                    }
-                                    nextMonthButtonDisabled={
-                                      nextMonthButtonDisabled
-                                    }
                                   />
                                 )}
                                 locale="ko"
@@ -821,8 +797,6 @@ export default function StudentsWritePayment() {
                                 changeMonth,
                                 decreaseMonth,
                                 increaseMonth,
-                                prevMonthButtonDisabled,
-                                nextMonthButtonDisabled,
                               }) => (
                                 <DatePickerHeader
                                   rangeYears={years}
@@ -831,12 +805,6 @@ export default function StudentsWritePayment() {
                                   changeMonth={changeMonth}
                                   decreaseMonth={decreaseMonth}
                                   increaseMonth={increaseMonth}
-                                  prevMonthButtonDisabled={
-                                    prevMonthButtonDisabled
-                                  }
-                                  nextMonthButtonDisabled={
-                                    nextMonthButtonDisabled
-                                  }
                                 />
                               )}
                               locale="ko"

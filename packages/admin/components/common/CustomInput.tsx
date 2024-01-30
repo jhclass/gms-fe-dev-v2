@@ -9,7 +9,6 @@ type CustomInputProps = {
   label?: string
   errorMessage?: any
 }
-
 const InputBox = styled(motion.div)`
   margin-top: 0.7rem;
   position: relative;
@@ -44,21 +43,12 @@ const Input = styled(motion.input)`
     -webkit-text-fill-color: #fff !important;
   }
 `
-
 const Label = styled(motion.label)`
   position: absolute;
   left: 0.75rem;
   font-weight: 200;
   color: #fafafa;
 `
-
-const ErrorMessage = styled.p`
-  padding: 0.5rem 0.5rem 0;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: tomato;
-`
-
 const InputVariants = {
   initial: {
     top: '1rem',
@@ -81,10 +71,9 @@ export default function CustomRippleButton({
   type,
   id,
   label,
-  errorMessage,
 }: CustomInputProps) {
   const [isFocused, setIsFocused] = useState(false)
-  const { register, control } = useForm()
+  const { control } = useForm()
 
   const value = useWatch({
     control,

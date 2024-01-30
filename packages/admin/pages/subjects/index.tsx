@@ -9,9 +9,17 @@ import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import useMmeQuery from '@/utils/mMe'
+import { useRecoilState } from 'recoil'
+import {
+  subjectFilterActiveState,
+  subjectFilterState,
+  subjectSearchState,
+} from '@/lib/recoilAtoms'
 
 const ConBox = styled.div`
   margin: 2rem 0;
+  z-index: 0;
+  position: relative;
 `
 const ActiveIcon = styled(motion.i)`
   color: #fff;
@@ -31,9 +39,11 @@ const IconVariants = {
 export default function Subjects() {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const [filterActive, setFilterActive] = useState(false)
-  const [filterSearch, setFilterSearch] = useState(false)
-  const [subjectFilter, setSubjectFilter] = useState()
+  const [filterActive, setFilterActive] = useRecoilState(
+    subjectFilterActiveState,
+  )
+  const [filterSearch, setFilterSearch] = useRecoilState(subjectFilterState)
+  const [subjectFilter, setSubjectFilter] = useRecoilState(subjectSearchState)
   const [createActive, setCreateActive] = useState(false)
 
   return (

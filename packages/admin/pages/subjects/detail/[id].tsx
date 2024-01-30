@@ -398,14 +398,6 @@ export default function SubjectDetail() {
       return formatted
     }
   }
-  const feeDate = fee => {
-    const result = Number(fee.replaceAll(',', ''))
-    return result
-  }
-  const feeFormet = fee => {
-    const result = parseInt(fee).toLocaleString()
-    return result
-  }
   const handleSubChange = e => {
     setSub(e.target.value)
   }
@@ -580,8 +572,6 @@ export default function SubjectDetail() {
                                 changeMonth,
                                 decreaseMonth,
                                 increaseMonth,
-                                prevMonthButtonDisabled,
-                                nextMonthButtonDisabled,
                               }) => (
                                 <DatePickerHeader
                                   rangeYears={years}
@@ -590,12 +580,6 @@ export default function SubjectDetail() {
                                   changeMonth={changeMonth}
                                   decreaseMonth={decreaseMonth}
                                   increaseMonth={increaseMonth}
-                                  prevMonthButtonDisabled={
-                                    prevMonthButtonDisabled
-                                  }
-                                  nextMonthButtonDisabled={
-                                    nextMonthButtonDisabled
-                                  }
                                 />
                               )}
                               locale="ko"
@@ -660,8 +644,6 @@ export default function SubjectDetail() {
                                 changeMonth,
                                 decreaseMonth,
                                 increaseMonth,
-                                prevMonthButtonDisabled,
-                                nextMonthButtonDisabled,
                               }) => (
                                 <DatePickerHeader
                                   rangeYears={years}
@@ -670,12 +652,6 @@ export default function SubjectDetail() {
                                   changeMonth={changeMonth}
                                   decreaseMonth={decreaseMonth}
                                   increaseMonth={increaseMonth}
-                                  prevMonthButtonDisabled={
-                                    prevMonthButtonDisabled
-                                  }
-                                  nextMonthButtonDisabled={
-                                    nextMonthButtonDisabled
-                                  }
                                 />
                               )}
                               locale="ko"
@@ -810,8 +786,6 @@ export default function SubjectDetail() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -820,12 +794,6 @@ export default function SubjectDetail() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"
@@ -871,8 +839,6 @@ export default function SubjectDetail() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -881,12 +847,6 @@ export default function SubjectDetail() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"

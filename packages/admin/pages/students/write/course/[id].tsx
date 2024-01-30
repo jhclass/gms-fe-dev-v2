@@ -18,7 +18,6 @@ import {
   Select,
   SelectItem,
   Textarea,
-  Button,
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -33,10 +32,8 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
   SEARCH_STUDENT_BASIC_MUTATION,
-  SEARCH_SUBJECT_BASIC_MUTATION,
   UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
-import PaymentDetail from '@/components/form/StudentPayment'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
@@ -765,8 +762,6 @@ export default function StudentsWriteCourse() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -775,12 +770,6 @@ export default function StudentsWriteCourse() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"
@@ -835,8 +824,6 @@ export default function StudentsWriteCourse() {
                               changeMonth,
                               decreaseMonth,
                               increaseMonth,
-                              prevMonthButtonDisabled,
-                              nextMonthButtonDisabled,
                             }) => (
                               <DatePickerHeader
                                 rangeYears={years}
@@ -845,12 +832,6 @@ export default function StudentsWriteCourse() {
                                 changeMonth={changeMonth}
                                 decreaseMonth={decreaseMonth}
                                 increaseMonth={increaseMonth}
-                                prevMonthButtonDisabled={
-                                  prevMonthButtonDisabled
-                                }
-                                nextMonthButtonDisabled={
-                                  nextMonthButtonDisabled
-                                }
                               />
                             )}
                             locale="ko"

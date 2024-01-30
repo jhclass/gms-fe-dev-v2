@@ -5,6 +5,8 @@ import { styled } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import SubjectItem from '@/components/table/SubjectItem'
+import { useRecoilState } from 'recoil'
+import { subjectPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -217,7 +219,7 @@ const Nolist = styled.div`
 `
 
 export default function SubjectTable() {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useRecoilState(subjectPageState)
   const [currentLimit] = useState(10)
   const { loading, error, data, refetch } = useQuery(SEE_SUBJECT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },

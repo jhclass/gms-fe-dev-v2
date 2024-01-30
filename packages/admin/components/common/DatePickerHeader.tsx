@@ -1,6 +1,5 @@
 import { Select, SelectItem } from '@nextui-org/react'
 import { getMonth, getYear } from 'date-fns'
-import { useEffect } from 'react'
 const _ = require('lodash')
 
 export default function DatePickerHeader({
@@ -9,8 +8,6 @@ export default function DatePickerHeader({
   changeMonth,
   decreaseMonth,
   increaseMonth,
-  prevMonthButtonDisabled,
-  nextMonthButtonDisabled,
   rangeYears,
 }) {
   const months = [

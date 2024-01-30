@@ -201,6 +201,7 @@ export default function StudentsWrite() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
+        console.log(data)
         setStudentData(data.searchStudent?.student[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
         setStudentSubjectData(
@@ -212,8 +213,7 @@ export default function StudentsWrite() {
         setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
-  }, [router])
-
+  }, [router, studentPaymentData])
   const clickLectureAssignment = () => {
     if (studentData.lectureAssignment) {
       const isAssignment = confirm(

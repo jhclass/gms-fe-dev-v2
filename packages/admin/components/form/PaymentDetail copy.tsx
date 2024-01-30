@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -709,8 +709,6 @@ export default function StudentsWriteCourse({
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -719,8 +717,6 @@ export default function StudentsWriteCourse({
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"
@@ -775,8 +771,6 @@ export default function StudentsWriteCourse({
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -785,8 +779,6 @@ export default function StudentsWriteCourse({
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"

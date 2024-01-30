@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { subStatusState } from '@/lib/recoilAtoms'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { subStatusState, subjectPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
 import { Input, Select, SelectItem } from '@nextui-org/react'
@@ -37,25 +37,6 @@ const BoxTop = styled.div`
   flex: 1;
   gap: 2rem;
 
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
-const BoxMiddle = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
-const BoxBottom = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  justify-content: space-between;
   @media (max-width: 768px) {
     gap: 1rem;
     flex-direction: column;
@@ -103,6 +84,7 @@ export default function SubjectsFillter({
   setSubjectFilter,
 }) {
   const subStatus = useRecoilValue(subStatusState)
+  const subjectPage = useResetRecoilState(subjectPageState)
   const [sub, setSub] = useState('-')
   const [exposure, setExposure] = useState('-')
   const {
@@ -140,6 +122,7 @@ export default function SubjectsFillter({
       }
       setSubjectFilter(filter)
       onFilterSearch(true)
+      subjectPage()
     }
   }
 

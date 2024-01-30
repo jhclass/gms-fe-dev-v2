@@ -15,7 +15,6 @@ const ItemBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `
-
 const Title = styled.div`
   width: 100%;
   display: flex;
@@ -58,17 +57,6 @@ const Total = styled.div`
   font-size: 2rem;
   line-height: 2.25rem;
   color: #ff5900;
-`
-const MoM = styled.div`
-  align-items: baseline;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  display: flex;
-  margin-left: 0.5rem;
-  color: #ff5900;
-`
-const MoMIcon = styled.p`
-  height: 1.25rem;
 `
 
 export default function ConsultNum() {

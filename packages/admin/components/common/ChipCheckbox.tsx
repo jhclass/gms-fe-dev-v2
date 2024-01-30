@@ -5,7 +5,6 @@ import { styled } from 'styled-components'
 const CheckIcon = styled.i`
   color: #fff;
 `
-
 const checkbox = tv({
   slots: {
     base: 'border-default hover:bg-default-200',

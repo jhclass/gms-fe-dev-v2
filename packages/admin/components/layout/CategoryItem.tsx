@@ -1,9 +1,9 @@
 import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
 import { Tooltip } from '@nextui-org/react'
-import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
+import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 

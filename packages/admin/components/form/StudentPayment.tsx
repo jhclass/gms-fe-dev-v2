@@ -33,28 +33,12 @@ import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
 
-const ConArea = styled.div`
-  width: 100%;
-  max-width: 1400px;
-`
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,15 +100,6 @@ const DatePickerBox = styled.div`
     bottom: 0;
   }
 `
-const SelectBox = styled.select`
-  padding: 0 0.2rem;
-  font-size: 0.825rem;
-  height: 100%;
-
-  option {
-    font-size: 0.825rem;
-  }
-`
 const RadioBox = styled.div`
   display: flex;
   width: 100%;
@@ -178,7 +153,6 @@ export default function StudentPaymentForm({
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
   const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
-  const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
   const {
     register,
     setValue,
@@ -187,7 +161,7 @@ export default function StudentPaymentForm({
     setError,
     clearErrors,
     handleSubmit,
-    formState: { isDirty, dirtyFields, errors, isValid },
+    formState: { isDirty, dirtyFields, errors },
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -844,8 +818,6 @@ export default function StudentPaymentForm({
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -854,8 +826,6 @@ export default function StudentPaymentForm({
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"
@@ -910,8 +880,6 @@ export default function StudentPaymentForm({
                             changeMonth,
                             decreaseMonth,
                             increaseMonth,
-                            prevMonthButtonDisabled,
-                            nextMonthButtonDisabled,
                           }) => (
                             <DatePickerHeader
                               rangeYears={years}
@@ -920,8 +888,6 @@ export default function StudentPaymentForm({
                               changeMonth={changeMonth}
                               decreaseMonth={decreaseMonth}
                               increaseMonth={increaseMonth}
-                              prevMonthButtonDisabled={prevMonthButtonDisabled}
-                              nextMonthButtonDisabled={nextMonthButtonDisabled}
                             />
                           )}
                           locale="ko"

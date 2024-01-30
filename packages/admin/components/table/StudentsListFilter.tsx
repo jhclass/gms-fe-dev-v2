@@ -13,6 +13,8 @@ import router from 'next/router'
 
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 import StudentItem from './StudentItem'
+import { useRecoilState } from 'recoil'
+import { studentPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -192,7 +194,7 @@ export default function StudentsTable({
   studentFilter,
   setStudentFilter,
 }) {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useRecoilState(studentPageState)
   const [currentLimit] = useState(10)
   const [searchStudentFilterMutation] = useMutation(
     SEARCH_STUDENT_FILTER_MUTATION,
