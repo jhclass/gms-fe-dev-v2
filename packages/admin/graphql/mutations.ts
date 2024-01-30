@@ -572,6 +572,7 @@ export const SEARCH_STUDENT_MUTATION = gql`
           cardAmount
           cancellation
           amountReceived
+          subDiv
           studentId
           paymentDetail {
             refundManager
@@ -759,6 +760,7 @@ export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
           unCollectedAmount
           tuitionFee
           subjectId
+          subDiv
           subject {
             subjectName
             subjectCode
@@ -829,6 +831,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     $paymentDate: String
     $situationReport: Boolean
     $amountReceived: Int
+    $subDiv: String
   ) {
     createStudentPayment(
       campus: $campus
@@ -844,6 +847,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       paymentDate: $paymentDate
       situationReport: $situationReport
       amountReceived: $amountReceived
+      subDiv: $subDiv
     ) {
       error
       message
@@ -852,7 +856,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
   }
 `
 export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
-  mutation Mutation(
+  mutation EditStudentPayment(
     $editStudentPaymentId: Int!
     $seScore: Int
     $subjectId: Int
@@ -866,6 +870,7 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
     $paymentDate: String
     $situationReport: Boolean
     $amountReceived: Int
+    $subDiv: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
@@ -881,10 +886,11 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
       paymentDate: $paymentDate
       situationReport: $situationReport
       amountReceived: $amountReceived
+      subDiv: $subDiv
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `

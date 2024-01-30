@@ -31,7 +31,7 @@ import {
 } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -207,16 +207,19 @@ export default function StudentPaymentForm({
       discountAmount: studentPaymentData?.discountAmount,
       dueDate: studentData?.dueDate,
       receiptClassification: studentPaymentData?.receiptClassification,
+      subDiv: studentPaymentData?.subDiv,
       discount: studentPaymentData?.discountAmount,
       discountUnit: '%',
     },
   })
   const Receipt = useRecoilValue(ReceiptState)
+  const subStatus = useRecoilValue(subStatusState)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [disCountType, setDisCountType] = useState('%')
   const [paymentDateSelect, setPaymentDateSelect] = useState(null)
   const [dueDateSelect, setDueDateSelect] = useState(null)
+  const [sub, setSub] = useState('없음')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [receiptSelected, setReceiptSelected] = useState([])
   const {
@@ -234,6 +237,14 @@ export default function StudentPaymentForm({
       setSubjectManager('담당자 지정필요')
     } else {
       setSubjectManager(String(studentPaymentData?.processingManagerId))
+    }
+    if (
+      studentPaymentData?.subDiv === undefined ||
+      studentPaymentData?.subDiv === null
+    ) {
+      setSub('없음')
+    } else {
+      setSub(studentPaymentData?.subDiv)
     }
     if (
       studentPaymentData?.paymentDate === null ||
@@ -301,6 +312,7 @@ export default function StudentPaymentForm({
   useEffect(() => {
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)
+      setSub(subjectSelectedData?.subDiv)
     }
   }, [subjectSelectedData])
 
@@ -340,6 +352,7 @@ export default function StudentPaymentForm({
                   : data.unCollectedAmount,
               amountReceived: parseInt(data.amountReceived),
               receiptClassification: receiptSelected,
+              subDiv: data.subDiv,
             },
             onCompleted: () => {
               updateStudentDuedate({
@@ -439,6 +452,9 @@ export default function StudentPaymentForm({
     } else {
       sbjOpen()
     }
+  }
+  const handleSubChange = e => {
+    setSub(e.target.value)
   }
 
   return (
@@ -579,22 +595,30 @@ export default function StudentPaymentForm({
                   )}
                 </AreaBox>
                 <AreaBox>
-                  <Input
-                    isReadOnly
-                    labelPlacement="outside"
-                    placeholder="수강 구분"
-                    value={
-                      subjectSelectedData?.subDiv !== undefined
-                        ? String(subjectSelectedData?.subDiv)
-                        : studentSubjectData?.subDiv !== null
-                        ? studentSubjectData?.subDiv
-                        : ''
-                    }
-                    variant="faded"
-                    radius="md"
-                    type="text"
-                    label="수강 구분"
-                    className="w-full"
+                  <Controller
+                    control={control}
+                    name="subDiv"
+                    defaultValue={studentPaymentData?.subDiv}
+                    render={({ field }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label={<FilterLabel>수강구분</FilterLabel>}
+                        placeholder=" "
+                        className="w-full"
+                        variant="bordered"
+                        selectedKeys={[sub]}
+                        onChange={value => {
+                          field.onChange(value)
+                          handleSubChange(value)
+                        }}
+                      >
+                        {Object.entries(subStatus).map(([key, item]) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    )}
                   />
                 </AreaBox>
                 <AreaBox>

@@ -329,11 +329,6 @@ export default function StudentsWritePayment() {
   }
   const handleTypeChange = value => {
     setPaymentType(value)
-    if (value === '현금') {
-      setFocus('bankName')
-    } else {
-      setFocus('cardCompany')
-    }
   }
   const handleCardChange = e => {
     setCardName(e.target.value)
@@ -562,6 +557,8 @@ export default function StudentsWritePayment() {
                           rules={{ required: '카드사를 선택해주세요.' }}
                           render={({ field, fieldState }) => (
                             <Select
+                              ref={field.ref}
+                              autoFocus={true}
                               labelPlacement="outside"
                               label="카드사"
                               placeholder=" "
@@ -743,7 +740,8 @@ export default function StudentsWritePayment() {
                         rules={{ required: '입금은행을 선택해주세요.' }}
                         render={({ field, fieldState }) => (
                           <Select
-                            ref={register('bankName').ref}
+                            autoFocus={true}
+                            ref={field.ref}
                             labelPlacement="outside"
                             label="은행명"
                             placeholder=" "

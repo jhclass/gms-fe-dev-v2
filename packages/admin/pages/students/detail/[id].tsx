@@ -618,7 +618,7 @@ export default function StudentsWrite() {
                       <AreaBox>
                         <div>
                           <FilterLabel>수강 구분</FilterLabel>
-                          <LineBox>{studentSubjectData?.subDiv}</LineBox>
+                          <LineBox>{studentPaymentData?.subDiv}</LineBox>
                         </div>
                       </AreaBox>
                       <AreaBox>

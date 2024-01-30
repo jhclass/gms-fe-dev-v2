@@ -218,6 +218,7 @@ export default function StudentsWriteCourse() {
       receiptClassification: null,
       discount: 0,
       discountUnit: '%',
+      subDiv: null,
     },
   })
   const { errors } = formState
@@ -277,6 +278,8 @@ export default function StudentsWriteCourse() {
   useEffect(() => {
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)
+      setSub(subjectSelectedData?.subDiv)
+      setValue('subDiv', subjectSelectedData?.subDiv)
     }
   }, [subjectSelectedData])
 
@@ -304,8 +307,10 @@ export default function StudentsWriteCourse() {
             data.receiptClassification === null
               ? []
               : data.receiptClassification,
+          subDiv: data.subDiv,
         },
-        onCompleted: () => {
+        onCompleted: rr => {
+          console.log(rr)
           updateStudentDuedate({
             variables: {
               editStudentId: parseInt(studentId),
@@ -318,7 +323,6 @@ export default function StudentsWriteCourse() {
           })
         },
       })
-
       userLogs(`${studentData.name} 수강신청`)
     } else {
       setError(
@@ -387,6 +391,7 @@ export default function StudentsWriteCourse() {
   }
   const handleSubChange = e => {
     setSub(e.target.value)
+    setValue('subDiv', e.target.value)
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
@@ -574,7 +579,7 @@ export default function StudentsWriteCourse() {
                     )}
                   </AreaBox>
                   <AreaBox>
-                    {/* <Controller
+                    <Controller
                       control={control}
                       name="subDiv"
                       render={({ field, fieldState }) => (
@@ -597,22 +602,6 @@ export default function StudentsWriteCourse() {
                           ))}
                         </Select>
                       )}
-                    /> */}
-                    <Input
-                      isReadOnly
-                      labelPlacement="outside"
-                      placeholder="수강 구분"
-                      value={
-                        subjectSelectedData !== null &&
-                        subjectSelectedData?.subDiv !== null
-                          ? subjectSelectedData?.subDiv
-                          : ''
-                      }
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label="수강 구분"
-                      className="w-full"
                     />
                   </AreaBox>
                   <AreaBox>
