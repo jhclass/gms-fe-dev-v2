@@ -163,6 +163,8 @@ export default function StudentsWritePayment() {
     register,
     control,
     setValue,
+    setFocus,
+    setError,
     handleSubmit,
     formState: { isDirty, dirtyFields, errors },
   } = useForm()
@@ -256,26 +258,35 @@ export default function StudentsWritePayment() {
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
             },
-            onCompleted: () => {
-              updateReceived({
-                variables: {
-                  amountReceived:
-                    studentPaymentData?.amountReceived -
-                    selectedPaymentDeta.amountPayment +
-                    parseInt(data.amountPayment),
-                  editStudentPaymentId: parseInt(studentPaymentData?.id),
-                  subjectId: studentSubjectData.id,
-                  processingManagerId: studentPaymentData?.processingManagerId,
-                },
-                onCompleted: () => {
-                  const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                  userLogs(
-                    `${studentData?.name} 카드 결제 수정`,
-                    dirtyFieldsArray.join(', '),
-                  )
-                  router.back()
-                },
-              })
+            onCompleted: reault => {
+              if (!reault.editPaymentDetail.ok) {
+                setFocus('amountPayment')
+                setError('amountPayment', {
+                  type: 'custom',
+                  message: '미 수납액보다 큽니다.',
+                })
+              } else {
+                updateReceived({
+                  variables: {
+                    amountReceived:
+                      studentPaymentData?.amountReceived -
+                      selectedPaymentDeta.amountPayment +
+                      parseInt(data.amountPayment),
+                    editStudentPaymentId: parseInt(studentPaymentData?.id),
+                    subjectId: studentSubjectData.id,
+                    processingManagerId:
+                      studentPaymentData?.processingManagerId,
+                  },
+                  onCompleted: () => {
+                    const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                    userLogs(
+                      `${studentData?.name} 카드 결제 수정`,
+                      dirtyFieldsArray.join(', '),
+                    )
+                    router.back()
+                  },
+                })
+              }
             },
           })
         } else {
@@ -289,26 +300,35 @@ export default function StudentsWritePayment() {
               depositAmount: parseInt(data.depositAmount),
               depositDate: new Date(data.depositDate),
             },
-            onCompleted: () => {
-              updateReceived({
-                variables: {
-                  amountReceived:
-                    studentPaymentData?.amountReceived -
-                    selectedPaymentDeta.depositAmount +
-                    parseInt(data.depositAmount),
-                  editStudentPaymentId: parseInt(studentPaymentData?.id),
-                  subjectId: studentSubjectData.id,
-                  processingManagerId: studentPaymentData?.processingManagerId,
-                },
-                onCompleted: () => {
-                  const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                  userLogs(
-                    `${studentData?.name} 현금 결제 수정 `,
-                    dirtyFieldsArray.join(', '),
-                  )
-                  router.back()
-                },
-              })
+            onCompleted: reault => {
+              if (!reault.editPaymentDetail.ok) {
+                setFocus('depositAmount')
+                setError('depositAmount', {
+                  type: 'custom',
+                  message: '미 수납액보다 큽니다.',
+                })
+              } else {
+                updateReceived({
+                  variables: {
+                    amountReceived:
+                      studentPaymentData?.amountReceived -
+                      selectedPaymentDeta.depositAmount +
+                      parseInt(data.depositAmount),
+                    editStudentPaymentId: parseInt(studentPaymentData?.id),
+                    subjectId: studentSubjectData.id,
+                    processingManagerId:
+                      studentPaymentData?.processingManagerId,
+                  },
+                  onCompleted: () => {
+                    const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                    userLogs(
+                      `${studentData?.name} 현금 결제 수정 `,
+                      dirtyFieldsArray.join(', '),
+                    )
+                    router.back()
+                  },
+                })
+              }
             },
           })
         }
