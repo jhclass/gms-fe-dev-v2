@@ -290,6 +290,7 @@ export default function StudentPaymentForm({
     if (subjectSelectedData !== null) {
       disCounCalculator(subjectSelectedData?.fee)
       setSub(subjectSelectedData?.subDiv)
+      setValue('subDiv', subjectSelectedData?.subDiv)
     }
   }, [subjectSelectedData])
 
@@ -434,6 +435,7 @@ export default function StudentPaymentForm({
   }
   const handleSubChange = e => {
     setSub(e.target.value)
+    setValue('subDiv', e.target.value)
   }
 
   return (
