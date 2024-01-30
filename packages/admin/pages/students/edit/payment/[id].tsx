@@ -175,8 +175,7 @@ export default function StudentsWritePayment() {
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  console.log(studentSubjectData)
-  console.log(studentPaymentData)
+
   useEffect(() => {
     searchStudentPayment({
       variables: {
@@ -234,7 +233,7 @@ export default function StudentsWritePayment() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-  console.log(selectedPaymentDeta)
+
   const onPaymentDetailSubmit = data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')

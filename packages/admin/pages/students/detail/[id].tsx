@@ -201,7 +201,6 @@ export default function StudentsWrite() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        console.log(data)
         setStudentData(data.searchStudent?.student[0])
         setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
         setStudentSubjectData(
