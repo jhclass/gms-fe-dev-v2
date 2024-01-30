@@ -550,8 +550,10 @@ export default function StudentsWritePayment() {
                               variant="bordered"
                               selectedKeys={[cardName]}
                               onChange={value => {
-                                field.onChange(value)
-                                handleCardChange(value)
+                                if (value.target.value !== '') {
+                                  field.onChange(value)
+                                  handleCardChange(value)
+                                }
                               }}
                             >
                               <SelectItem
@@ -725,8 +727,10 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             selectedKeys={[bankName]}
                             onChange={value => {
-                              field.onChange(value)
-                              handleBankChange(value)
+                              if (value.target.value !== '') {
+                                field.onChange(value)
+                                handleBankChange(value)
+                              }
                             }}
                           >
                             <SelectItem key={'은행 선택'} value={'은행 선택'}>

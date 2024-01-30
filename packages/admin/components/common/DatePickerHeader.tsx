@@ -53,9 +53,13 @@ export default function DatePickerHeader({
           ></span>
         }
         labelPlacement="outside"
-        defaultSelectedKeys={[String(getYear(clickDate))]}
+        selectedKeys={[String(getYear(clickDate))]}
         variant="underlined"
-        onChange={({ target: { value } }) => changeYear(Number(value))}
+        onChange={({ target: { value } }) => {
+          if (value !== '') {
+            changeYear(Number(value))
+          }
+        }}
         style={{
           borderBottom: '1px solid #71717a',
           width: '6rem',
@@ -79,7 +83,11 @@ export default function DatePickerHeader({
         labelPlacement="outside"
         selectedKeys={[months[getMonth(clickDate)]]}
         variant="underlined"
-        onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+        onChange={({ target: { value } }) => {
+          if (value !== '') {
+            changeMonth(months.indexOf(value))
+          }
+        }}
         style={{
           borderBottom: '1px solid #71717a',
           width: '6rem',

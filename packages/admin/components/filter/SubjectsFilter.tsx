@@ -156,8 +156,10 @@ export default function SubjectsFillter({
                     variant="bordered"
                     selectedKeys={[sub]}
                     onChange={value => {
-                      field.onChange(value)
-                      handleSubChange(value)
+                      if (value.target.value !== '') {
+                        field.onChange(value)
+                        handleSubChange(value)
+                      }
                     }}
                   >
                     {Object.entries(subStatus).map(([key, item]) =>
@@ -190,8 +192,10 @@ export default function SubjectsFillter({
                     variant="bordered"
                     selectedKeys={[exposure]}
                     onChange={value => {
-                      field.onChange(value)
-                      handleExposureChange(value)
+                      if (value.target.value !== '') {
+                        field.onChange(value)
+                        handleExposureChange(value)
+                      }
                     }}
                   >
                     <SelectItem value="-" key={'-'}>

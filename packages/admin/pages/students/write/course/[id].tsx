@@ -390,6 +390,7 @@ export default function StudentsWriteCourse() {
     setValue('subDiv', e.target.value)
   }
   const handleSubManagerChange = e => {
+    // setSubjectManager(e.target.value)
     setSubjectManager(e.target.value)
   }
   const handleReceiptChange = (value: string[]) => {
@@ -580,6 +581,7 @@ export default function StudentsWriteCourse() {
                       name="subDiv"
                       render={({ field, fieldState }) => (
                         <Select
+                          selectionMode="single"
                           labelPlacement="outside"
                           label={<FilterLabel>수강구분</FilterLabel>}
                           placeholder=" "
@@ -587,8 +589,10 @@ export default function StudentsWriteCourse() {
                           variant="bordered"
                           selectedKeys={[sub]}
                           onChange={value => {
-                            field.onChange(value)
-                            handleSubChange(value)
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubChange(value)
+                            }
                           }}
                         >
                           {Object.entries(subStatus).map(([key, item]) => (
@@ -652,8 +656,10 @@ export default function StudentsWriteCourse() {
                                 value: 'text-center',
                               }}
                               onChange={value => {
-                                field.onChange(value)
-                                handleDisCountChange(value)
+                                if (value.target.value !== '') {
+                                  field.onChange(value)
+                                  handleDisCountChange(value)
+                                }
                               }}
                             >
                               <SelectItem key={'%'} value={'%'}>
@@ -885,8 +891,10 @@ export default function StudentsWriteCourse() {
                           variant="bordered"
                           selectedKeys={[subjectManager]}
                           onChange={value => {
-                            field.onChange(value)
-                            handleSubManagerChange(value)
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubManagerChange(value)
+                            }
                           }}
                         >
                           <SelectItem

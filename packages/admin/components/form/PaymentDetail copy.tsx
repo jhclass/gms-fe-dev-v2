@@ -581,8 +581,10 @@ export default function StudentsWriteCourse({
                               value: 'text-center',
                             }}
                             onChange={value => {
-                              field.onChange(value)
-                              handleDisCountChange(value)
+                              if (value.target.value !== '') {
+                                field.onChange(value)
+                                handleDisCountChange(value)
+                              }
                             }}
                           >
                             <SelectItem key={'%'} value={'%'}>
@@ -831,8 +833,10 @@ export default function StudentsWriteCourse({
                         defaultValue={studentPaymentData?.processingManagerId}
                         selectedKeys={[subjectManager]}
                         onChange={value => {
-                          field.onChange(value)
-                          handleSubManagerChange(value)
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleSubManagerChange(value)
+                          }
                         }}
                       >
                         <SelectItem
