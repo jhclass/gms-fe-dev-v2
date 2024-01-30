@@ -383,6 +383,7 @@ export default function StudentsWriteCourse() {
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
+      disCounCalculator(subjectSelectedData?.fee)
     }
   }
   const handleSubChange = e => {
@@ -580,6 +581,7 @@ export default function StudentsWriteCourse() {
                       name="subDiv"
                       render={({ field, fieldState }) => (
                         <Select
+                          selectionMode="single"
                           labelPlacement="outside"
                           label={<FilterLabel>수강구분</FilterLabel>}
                           placeholder=" "
@@ -587,8 +589,10 @@ export default function StudentsWriteCourse() {
                           variant="bordered"
                           selectedKeys={[sub]}
                           onChange={value => {
-                            field.onChange(value)
-                            handleSubChange(value)
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubChange(value)
+                            }
                           }}
                         >
                           {Object.entries(subStatus).map(([key, item]) => (
@@ -652,8 +656,10 @@ export default function StudentsWriteCourse() {
                                 value: 'text-center',
                               }}
                               onChange={value => {
-                                field.onChange(value)
-                                handleDisCountChange(value)
+                                if (value.target.value !== '') {
+                                  field.onChange(value)
+                                  handleDisCountChange(value)
+                                }
                               }}
                             >
                               <SelectItem key={'%'} value={'%'}>
@@ -682,7 +688,13 @@ export default function StudentsWriteCourse() {
                           ? subjectSelectedData?.fee
                           : ''
                       }
-                      onValueChange={value => discountTotal(value)}
+                      onValueChange={value => {
+                        if (value !== '') {
+                          discountTotal(value)
+                        } else {
+                          discountTotal(0)
+                        }
+                      }}
                       onChange={e => {
                         register('actualAmount').onChange(e)
                       }}
@@ -885,8 +897,10 @@ export default function StudentsWriteCourse() {
                           variant="bordered"
                           selectedKeys={[subjectManager]}
                           onChange={value => {
-                            field.onChange(value)
-                            handleSubManagerChange(value)
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubManagerChange(value)
+                            }
                           }}
                         >
                           <SelectItem

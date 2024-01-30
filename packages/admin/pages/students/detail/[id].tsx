@@ -839,6 +839,11 @@ export default function StudentsWrite() {
                     <AreaTitle>
                       <h4>결제 정보</h4>
                       <Button
+                        isDisabled={
+                          studentPaymentData?.unCollectedAmount === 0
+                            ? true
+                            : false
+                        }
                         size="sm"
                         radius="sm"
                         variant="solid"

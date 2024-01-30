@@ -25,7 +25,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
-  SEARCH_SUBJECT_MUTATION,
   UPDATE_STUDENT_DUEDATE_MUTATION,
   UPDATE_STUDENT_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
@@ -407,11 +406,13 @@ export default function StudentPaymentForm({
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
+      disCounCalculator(subjectSelectedData?.fee)
     } else {
       const discountPrice = studentSubjectData?.fee - parseInt(value)
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
+      disCounCalculator(studentSubjectData?.fee)
     }
   }
 
@@ -589,8 +590,10 @@ export default function StudentPaymentForm({
                         variant="bordered"
                         selectedKeys={[sub]}
                         onChange={value => {
-                          field.onChange(value)
-                          handleSubChange(value)
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleSubChange(value)
+                          }
                         }}
                       >
                         {Object.entries(subStatus).map(([key, item]) => (
@@ -681,8 +684,10 @@ export default function StudentPaymentForm({
                               value: 'text-center',
                             }}
                             onChange={value => {
-                              field.onChange(value)
-                              handleDisCountChange(value)
+                              if (value.target.value !== '') {
+                                field.onChange(value)
+                                handleDisCountChange(value)
+                              }
                             }}
                           >
                             <SelectItem key={'%'} value={'%'}>
@@ -721,7 +726,13 @@ export default function StudentPaymentForm({
                         ? studentPaymentData?.actualAmount
                         : ''
                     }
-                    onValueChange={value => discountTotal(value)}
+                    onValueChange={value => {
+                      if (value !== '') {
+                        discountTotal(value)
+                      } else {
+                        discountTotal(0)
+                      }
+                    }}
                     onChange={e => {
                       register('actualAmount').onChange(e)
                     }}
@@ -947,8 +958,10 @@ export default function StudentPaymentForm({
                         defaultValue={studentPaymentData?.processingManagerId}
                         selectedKeys={[subjectManager]}
                         onChange={value => {
-                          field.onChange(value)
-                          handleSubManagerChange(value)
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleSubManagerChange(value)
+                          }
                         }}
                       >
                         <SelectItem

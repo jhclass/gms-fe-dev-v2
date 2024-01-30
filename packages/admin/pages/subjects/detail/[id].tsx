@@ -537,8 +537,10 @@ export default function SubjectDetail() {
                           variant="bordered"
                           selectedKeys={[sub]}
                           onChange={value => {
-                            field.onChange(value)
-                            handleSubChange(value)
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubChange(value)
+                            }
                           }}
                         >
                           {Object.entries(subStatus).map(([key, item]) => (
@@ -732,8 +734,11 @@ export default function SubjectDetail() {
                           defaultValue={subjectState?.teacherName}
                           selectedKeys={[teacher]}
                           onChange={value => {
-                            field.onChange(value)
+                              if (value.target.value !== '') {
+                                field.onChange(value)
                             handleTeacherChange(value)
+                            }
+                         
                           }}
                         >
                           <SelectItem key={'강사명 없음'} value={'강사명 없음'}>

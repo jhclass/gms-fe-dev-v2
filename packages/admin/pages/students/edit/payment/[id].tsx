@@ -163,6 +163,8 @@ export default function StudentsWritePayment() {
     register,
     control,
     setValue,
+    setFocus,
+    setError,
     handleSubmit,
     formState: { isDirty, dirtyFields, errors },
   } = useForm()
@@ -256,26 +258,35 @@ export default function StudentsWritePayment() {
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
             },
-            onCompleted: () => {
-              updateReceived({
-                variables: {
-                  amountReceived:
-                    studentPaymentData?.amountReceived -
-                    selectedPaymentDeta.amountPayment +
-                    parseInt(data.amountPayment),
-                  editStudentPaymentId: parseInt(studentPaymentData?.id),
-                  subjectId: studentSubjectData.id,
-                  processingManagerId: studentPaymentData?.processingManagerId,
-                },
-                onCompleted: () => {
-                  const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                  userLogs(
-                    `${studentData?.name} 카드 결제 수정`,
-                    dirtyFieldsArray.join(', '),
-                  )
-                  router.back()
-                },
-              })
+            onCompleted: result => {
+              if (!result.editPaymentDetail.ok) {
+                setFocus('amountPayment')
+                setError('amountPayment', {
+                  type: 'custom',
+                  message: '미 수납액보다 큽니다.',
+                })
+              } else {
+                updateReceived({
+                  variables: {
+                    amountReceived:
+                      studentPaymentData?.amountReceived -
+                      selectedPaymentDeta.amountPayment +
+                      parseInt(data.amountPayment),
+                    editStudentPaymentId: parseInt(studentPaymentData?.id),
+                    subjectId: studentSubjectData.id,
+                    processingManagerId:
+                      studentPaymentData?.processingManagerId,
+                  },
+                  onCompleted: () => {
+                    const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                    userLogs(
+                      `${studentData?.name} 카드 결제 수정`,
+                      dirtyFieldsArray.join(', '),
+                    )
+                    router.back()
+                  },
+                })
+              }
             },
           })
         } else {
@@ -289,26 +300,35 @@ export default function StudentsWritePayment() {
               depositAmount: parseInt(data.depositAmount),
               depositDate: new Date(data.depositDate),
             },
-            onCompleted: () => {
-              updateReceived({
-                variables: {
-                  amountReceived:
-                    studentPaymentData?.amountReceived -
-                    selectedPaymentDeta.depositAmount +
-                    parseInt(data.depositAmount),
-                  editStudentPaymentId: parseInt(studentPaymentData?.id),
-                  subjectId: studentSubjectData.id,
-                  processingManagerId: studentPaymentData?.processingManagerId,
-                },
-                onCompleted: () => {
-                  const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                  userLogs(
-                    `${studentData?.name} 현금 결제 수정 `,
-                    dirtyFieldsArray.join(', '),
-                  )
-                  router.back()
-                },
-              })
+            onCompleted: result => {
+              if (!result.editPaymentDetail.ok) {
+                setFocus('depositAmount')
+                setError('depositAmount', {
+                  type: 'custom',
+                  message: '미 수납액보다 큽니다.',
+                })
+              } else {
+                updateReceived({
+                  variables: {
+                    amountReceived:
+                      studentPaymentData?.amountReceived -
+                      selectedPaymentDeta.depositAmount +
+                      parseInt(data.depositAmount),
+                    editStudentPaymentId: parseInt(studentPaymentData?.id),
+                    subjectId: studentSubjectData.id,
+                    processingManagerId:
+                      studentPaymentData?.processingManagerId,
+                  },
+                  onCompleted: () => {
+                    const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                    userLogs(
+                      `${studentData?.name} 현금 결제 수정 `,
+                      dirtyFieldsArray.join(', '),
+                    )
+                    router.back()
+                  },
+                })
+              }
             },
           })
         }
@@ -505,7 +525,11 @@ export default function StudentsWritePayment() {
                           render={({ field }) => (
                             <RadioGroup
                               isReadOnly
-                              label={<FilterLabel>결제 방식</FilterLabel>}
+                              label={
+                                <FilterLabel>
+                                  결제 방식<span>*</span>
+                                </FilterLabel>
+                              }
                               orientation="horizontal"
                               className="gap-[0.65rem]"
                               value={paymentType}
@@ -538,7 +562,11 @@ export default function StudentsWritePayment() {
                             render={({ field, fieldState }) => (
                               <Select
                                 labelPlacement="outside"
-                                label="카드사"
+                                label={
+                                  <FilterLabel>
+                                    카드사<span>*</span>
+                                  </FilterLabel>
+                                }
                                 placeholder=" "
                                 className="w-full"
                                 variant="bordered"
@@ -547,8 +575,10 @@ export default function StudentsWritePayment() {
                                 ]}
                                 selectedKeys={[cardName]}
                                 onChange={value => {
-                                  field.onChange(value)
-                                  handleCardChange(value)
+                                  if (value.target.value !== '') {
+                                    field.onChange(value)
+                                    handleCardChange(value)
+                                  }
                                 }}
                               >
                                 <SelectItem
@@ -579,7 +609,11 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
-                            label="카드번호"
+                            label={
+                              <FilterLabel>
+                                카드번호<span>*</span>
+                              </FilterLabel>
+                            }
                             defaultValue={selectedPaymentDeta.cardNum}
                             {...register('cardNum', {
                               required: '카드반호를 작성해주세요.',
@@ -598,7 +632,11 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
-                            label="할부기간"
+                            label={
+                              <FilterLabel>
+                                할부기간<span>*</span>
+                              </FilterLabel>
+                            }
                             defaultValue={selectedPaymentDeta.installment}
                             endContent={<InputText>개월</InputText>}
                             {...register('installment')}
@@ -611,7 +649,11 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
-                            label="결제금액"
+                            label={
+                              <FilterLabel>
+                                결제금액<span>*</span>
+                              </FilterLabel>
+                            }
                             defaultValue={selectedPaymentDeta.amountPayment}
                             {...register('amountPayment', {
                               required: '결제금액을 작성해주세요.',
@@ -632,7 +674,11 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
-                            label="승인번호"
+                            label={
+                              <FilterLabel>
+                                승인번호<span>*</span>
+                              </FilterLabel>
+                            }
                             defaultValue={selectedPaymentDeta.ApprovalNum}
                             {...register('approvalNum', {
                               required: '승인번호를 작성해주세요.',
@@ -686,7 +732,7 @@ export default function StudentsWritePayment() {
                                     <Input
                                       ref={field.ref}
                                       label={
-                                        <FilterLabel>결제일자</FilterLabel>
+                                        <FilterLabel>결제일자<span>*</span></FilterLabel>
                                       }
                                       labelPlacement="outside"
                                       type="text"
@@ -721,7 +767,11 @@ export default function StudentsWritePayment() {
                           render={({ field, fieldState }) => (
                             <Select
                               labelPlacement="outside"
-                              label="은행명"
+                              label={
+                                <FilterLabel>
+                                  은행명<span>*</span>
+                                </FilterLabel>
+                              }
                               placeholder=" "
                               className="w-full"
                               variant="bordered"
@@ -730,8 +780,10 @@ export default function StudentsWritePayment() {
                               ]}
                               selectedKeys={[bankName]}
                               onChange={value => {
-                                field.onChange(value)
-                                handleBankChange(value)
+                                if (value.target.value !== '') {
+                                  field.onChange(value)
+                                  handleBankChange(value)
+                                }
                               }}
                             >
                               <SelectItem key={'은행 선택'} value={'은행 선택'}>
@@ -759,7 +811,11 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
-                          label="입금자명"
+                          label={
+                            <FilterLabel>
+                              입금자명<span>*</span>
+                            </FilterLabel>
+                          }
                           defaultValue={selectedPaymentDeta.depositorName}
                           {...register('depositorName', {
                             required: '입금자를 작성해주세요.',
@@ -778,7 +834,11 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
-                          label="입금금액"
+                          label={
+                            <FilterLabel>
+                              입금금액<span>*</span>
+                            </FilterLabel>
+                          }
                           defaultValue={selectedPaymentDeta.depositAmount}
                           {...register('depositAmount', {
                             required: '입금 금액을 작성해주세요.',
@@ -831,7 +891,7 @@ export default function StudentsWritePayment() {
                                 customInput={
                                   <Input
                                     ref={field.ref}
-                                    label={<FilterLabel>입금일자</FilterLabel>}
+                                    label={<FilterLabel>입금일자<span>*</span></FilterLabel>}
                                     labelPlacement="outside"
                                     type="text"
                                     variant="bordered"

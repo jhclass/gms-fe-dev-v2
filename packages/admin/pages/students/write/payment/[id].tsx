@@ -159,6 +159,7 @@ export default function StudentsWritePayment() {
     register,
     control,
     reset,
+    setError,
     setFocus,
     clearErrors,
     handleSubmit,
@@ -230,36 +231,49 @@ export default function StudentsWritePayment() {
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
           paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
         },
-        onCompleted: () => {
-          updateReceived({
-            variables: {
-              amountReceived:
-                studentPaymentData?.amountReceived +
-                parseInt(data.amountPayment),
-              editStudentPaymentId: parseInt(studentPaymentData?.id),
-              subjectId: studentSubjectData.id,
-              processingManagerId: studentPaymentData?.processingManagerId,
-            },
-            onCompleted: () => {
-              searchStudentPayment({
-                variables: {
-                  searchStudentId: parseInt(studentId),
-                },
-                onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
-                  setStudentPaymentData(
-                    data.searchStudent?.student[0].studentPayment[0],
-                  )
-                  setStudentSubjectData(
-                    data.searchStudent?.student[0].studentPayment[0].subject,
-                  )
-                },
-              })
-            },
-          })
+        onCompleted: result => {
+          if (!result.createPaymentDetail.ok) {
+            setFocus('amountPayment')
+            setError('amountPayment', {
+              type: 'custom',
+              message: '미 수납액보다 큽니다.',
+            })
+          } else {
+            updateReceived({
+              variables: {
+                amountReceived:
+                  studentPaymentData?.amountReceived +
+                  parseInt(data.amountPayment),
+                editStudentPaymentId: parseInt(studentPaymentData?.id),
+                subjectId: studentSubjectData.id,
+                processingManagerId: studentPaymentData?.processingManagerId,
+              },
+              onCompleted: () => {
+                searchStudentPayment({
+                  variables: {
+                    searchStudentId: parseInt(studentId),
+                  },
+                  onCompleted: data => {
+                    setStudentData(data.searchStudent?.student[0])
+                    setStudentPaymentData(
+                      data.searchStudent?.student[0].studentPayment[0],
+                    )
+                    setStudentSubjectData(
+                      data.searchStudent?.student[0].studentPayment[0].subject,
+                    )
+                  },
+                })
+                userLogs(`${studentData?.name} 카드 결제 `)
+                reset()
+                clearErrors()
+                setCardName('카드사 선택')
+                setCardPaymentDate(null)
+                setPaymentType(paymentType)
+              },
+            })
+          }
         },
       })
-      userLogs(`${studentData?.name} 카드 결제 `)
     } else {
       createPaymentDetail({
         variables: {
@@ -270,45 +284,50 @@ export default function StudentsWritePayment() {
           depositAmount: parseInt(data.depositAmount),
           depositDate: data.depositDate === undefined ? null : data.depositDate,
         },
-        onCompleted: () => {
-          updateReceived({
-            variables: {
-              amountReceived:
-                studentPaymentData?.amountReceived +
-                parseInt(data.depositAmount),
-              editStudentPaymentId: parseInt(studentPaymentData?.id),
-              subjectId: studentSubjectData.id,
-              processingManagerId: studentPaymentData?.processingManagerId,
-            },
-            onCompleted: () => {
-              searchStudentPayment({
-                variables: {
-                  searchStudentId: parseInt(studentId),
-                },
-                onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
-                  setStudentPaymentData(
-                    data.searchStudent?.student[0].studentPayment[0],
-                  )
-                  setStudentSubjectData(
-                    data.searchStudent?.student[0].studentPayment[0].subject,
-                  )
-                },
-              })
-            },
-          })
+        onCompleted: result => {
+          if (!result.createPaymentDetail.ok) {
+            setFocus('depositAmount')
+            setError('depositAmount', {
+              type: 'custom',
+              message: '미 수납액보다 큽니다.',
+            })
+          } else {
+            updateReceived({
+              variables: {
+                amountReceived:
+                  studentPaymentData?.amountReceived +
+                  parseInt(data.depositAmount),
+                editStudentPaymentId: parseInt(studentPaymentData?.id),
+                subjectId: studentSubjectData.id,
+                processingManagerId: studentPaymentData?.processingManagerId,
+              },
+              onCompleted: () => {
+                searchStudentPayment({
+                  variables: {
+                    searchStudentId: parseInt(studentId),
+                  },
+                  onCompleted: data => {
+                    setStudentData(data.searchStudent?.student[0])
+                    setStudentPaymentData(
+                      data.searchStudent?.student[0].studentPayment[0],
+                    )
+                    setStudentSubjectData(
+                      data.searchStudent?.student[0].studentPayment[0].subject,
+                    )
+                  },
+                })
+                userLogs(`${studentData?.name} 현금 결제 `)
+                reset()
+                clearErrors()
+                setBankName('은행 선택')
+                setCashDepositDate(null)
+                setPaymentType(paymentType)
+              },
+            })
+          }
         },
       })
-      userLogs(`${studentData?.name} 현금 결제 `)
     }
-
-    reset()
-    clearErrors()
-    setCardName('카드사 선택')
-    setBankName('은행 선택')
-    setCardPaymentDate(null)
-    setCashDepositDate(null)
-    setPaymentType(paymentType)
   }
 
   const handleTypeChange = value => {
@@ -510,7 +529,11 @@ export default function StudentsWritePayment() {
                         name="cashOrCard"
                         render={({ field }) => (
                           <RadioGroup
-                            label={<FilterLabel>결제 방식</FilterLabel>}
+                            label={
+                              <FilterLabel>
+                                결제 방식<span>*</span>
+                              </FilterLabel>
+                            }
                             orientation="horizontal"
                             className="gap-[0.65rem]"
                             value={paymentType}
@@ -544,14 +567,20 @@ export default function StudentsWritePayment() {
                               ref={field.ref}
                               autoFocus={true}
                               labelPlacement="outside"
-                              label="카드사"
+                              label={
+                                <FilterLabel>
+                                  카드사<span>*</span>
+                                </FilterLabel>
+                              }
                               placeholder=" "
                               className="w-full"
                               variant="bordered"
                               selectedKeys={[cardName]}
                               onChange={value => {
-                                field.onChange(value)
-                                handleCardChange(value)
+                                if (value.target.value !== '') {
+                                  field.onChange(value)
+                                  handleCardChange(value)
+                                }
                               }}
                             >
                               <SelectItem
@@ -582,7 +611,11 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
-                          label="카드번호"
+                          label={
+                            <FilterLabel>
+                              카드번호<span>*</span>
+                            </FilterLabel>
+                          }
                           {...register('cardNum', {
                             required: '카드반호를 작성해주세요.',
                           })}
@@ -600,7 +633,11 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
-                          label="할부기간"
+                          label={
+                            <FilterLabel>
+                              할부기간<span>*</span>
+                            </FilterLabel>
+                          }
                           endContent={<InputText>개월</InputText>}
                           {...register('installment')}
                         />
@@ -614,7 +651,11 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
-                          label="승인번호"
+                          label={
+                            <FilterLabel>
+                              승인번호<span>*</span>
+                            </FilterLabel>
+                          }
                           {...register('approvalNum', {
                             required: '승인번호를 작성해주세요.',
                           })}
@@ -632,7 +673,11 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
-                          label="결제금액"
+                          label={
+                            <FilterLabel>
+                              결제금액<span>*</span>
+                            </FilterLabel>
+                          }
                           {...register('amountPayment', {
                             required: '결제금액을 작성해주세요.',
                           })}
@@ -686,7 +731,7 @@ export default function StudentsWritePayment() {
                                 customInput={
                                   <Input
                                     ref={field.ref}
-                                    label={<FilterLabel>결제일자</FilterLabel>}
+                                    label={<FilterLabel>결제일자<span>*</span></FilterLabel>}
                                     labelPlacement="outside"
                                     type="text"
                                     variant="bordered"
@@ -719,14 +764,20 @@ export default function StudentsWritePayment() {
                             autoFocus={true}
                             ref={field.ref}
                             labelPlacement="outside"
-                            label="은행명"
+                            label={
+                              <FilterLabel>
+                                은행명<span>*</span>
+                              </FilterLabel>
+                            }
                             placeholder=" "
                             className="w-full"
                             variant="bordered"
                             selectedKeys={[bankName]}
                             onChange={value => {
-                              field.onChange(value)
-                              handleBankChange(value)
+                              if (value.target.value !== '') {
+                                field.onChange(value)
+                                handleBankChange(value)
+                              }
                             }}
                           >
                             <SelectItem key={'은행 선택'} value={'은행 선택'}>
@@ -754,7 +805,11 @@ export default function StudentsWritePayment() {
                         variant="bordered"
                         radius="md"
                         type="text"
-                        label="입금자명"
+                        label={
+                          <FilterLabel>
+                            입금자명<span>*</span>
+                          </FilterLabel>
+                        }
                         {...register('depositorName', {
                           required: '입금자를 작성해주세요.',
                         })}
@@ -772,7 +827,11 @@ export default function StudentsWritePayment() {
                         variant="bordered"
                         radius="md"
                         type="text"
-                        label="입금금액"
+                        label={
+                          <FilterLabel>
+                            입금금액<span>*</span>
+                          </FilterLabel>
+                        }
                         {...register('depositAmount', {
                           required: '입금 금액을 작성해주세요.',
                         })}
@@ -824,7 +883,7 @@ export default function StudentsWritePayment() {
                               customInput={
                                 <Input
                                   ref={field.ref}
-                                  label={<FilterLabel>입금일자</FilterLabel>}
+                                  label={<FilterLabel>입금일자<span>*</span></FilterLabel>}
                                   labelPlacement="outside"
                                   type="text"
                                   variant="bordered"

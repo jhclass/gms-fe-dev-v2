@@ -422,8 +422,10 @@ export default function ConsultWirte() {
                       variant="bordered"
                       selectedKeys={[receipt]}
                       onChange={value => {
-                        field.onChange(value)
-                        handleReceiptChange(value)
+                        if (value.target.value !== '') {
+                          field.onChange(value)
+                          handleReceiptChange(value)
+                        }
                       }}
                     >
                       {Object.entries(receiptStatus).map(([key, item]) => (
@@ -446,8 +448,10 @@ export default function ConsultWirte() {
                       variant="bordered"
                       selectedKeys={[sub]}
                       onChange={value => {
-                        field.onChange(value)
-                        handleSubChange(value)
+                        if (value.target.value !== '') {
+                          field.onChange(value)
+                          handleSubChange(value)
+                        }
                       }}
                     >
                       {Object.entries(subStatus).map(([key, item]) => (
@@ -472,8 +476,10 @@ export default function ConsultWirte() {
                       variant="bordered"
                       selectedKeys={[manager]}
                       onChange={value => {
-                        field.onChange(value)
-                        handleManagerChange(value)
+                        if (value.target.value !== '') {
+                          field.onChange(value)
+                          handleManagerChange(value)
+                        }
                       }}
                     >
                       <SelectItem
