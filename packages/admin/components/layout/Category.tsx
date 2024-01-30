@@ -58,10 +58,10 @@ export default function Category() {
         },
       ],
       reset: () => {
+        consultPage()
         resetConsultFilterActive()
         resetConsultFilterSearch()
         resetConsultFilter()
-        consultPage()
       },
     },
     {
@@ -71,10 +71,10 @@ export default function Category() {
       alt: '과정관리',
       label: '과정관리',
       reset: () => {
+        subjectPage()
         resetSubjectFilterActive()
         resetSubjectFilterSearch()
         resetSubjectFilter()
-        subjectPage()
       },
     },
     {
@@ -84,10 +84,10 @@ export default function Category() {
       alt: '수강생관리',
       label: '수강생관리',
       reset: () => {
+        studentPage()
         resetStudentFilterActive()
         resetStudentFilterSearch()
         resetStudentFilter()
-        studentPage()
       },
     },
     {

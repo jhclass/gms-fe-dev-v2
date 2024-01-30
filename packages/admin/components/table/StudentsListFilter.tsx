@@ -282,6 +282,7 @@ export default function StudentsTable({
               variant="light"
               showControls
               initialPage={currentPage}
+              page={currentPage}
               total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)

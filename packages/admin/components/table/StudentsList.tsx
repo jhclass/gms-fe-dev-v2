@@ -251,6 +251,7 @@ export default function StudentsTable() {
               variant="light"
               showControls
               initialPage={currentPage}
+              page={currentPage}
               total={Math.ceil(totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)

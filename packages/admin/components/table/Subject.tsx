@@ -339,6 +339,7 @@ export default function SubjectTable() {
               variant="light"
               showControls
               initialPage={currentPage}
+              page={currentPage}
               total={Math.ceil(subjectTotal / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
