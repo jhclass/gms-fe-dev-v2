@@ -146,7 +146,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function PaymentTable() {
+export default function RequestRefundTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
@@ -177,10 +177,10 @@ export default function PaymentTable() {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
+            <span style={{ background: '#007de9' }}></span> : 현금
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미배정
+            <span style={{ background: '#FF5900' }}></span> : 카드
           </ColorCip>
         </ColorHelp>
       </TTopic>
@@ -189,17 +189,14 @@ export default function PaymentTable() {
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <TcreatedAt>결제일시</TcreatedAt>
-                <Tname>이름</Tname>
-                <Tmanager>수납 담당자</Tmanager>
+                <TcreatedAt>신청일</TcreatedAt>
+                <Tmanager>신청담당자</Tmanager>
+                <Tname>수강생명</Tname>
                 <Tsubject>수강과정</Tsubject>
-                <Tamount className="fee">수강료</Tamount>
-                <Tamount className="discount">할인금액</Tamount>
-                <Tamount className="actual">실 수강료</Tamount>
-                <Tamount className="unpaid">미수납액</Tamount>
-                <Tamount className="amount">카드결제액</Tamount>
-                <Tamount className="amount">현금결제액</Tamount>
-                <Tamount className="amount">결제합계</Tamount>
+                <Tname>결제구분</Tname>
+                <Tname>은행/카드사</Tname>
+                <Tamount className="fee">환불금액</Tamount>
+                <div></div>
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&

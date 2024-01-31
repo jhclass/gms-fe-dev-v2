@@ -3,7 +3,7 @@ import { Tooltip } from '@nextui-org/react'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 
@@ -117,10 +117,24 @@ export default function CategoryItem<CategoryItemProps>({
   const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const arrowRef = useRef(null)
 
   useEffect(() => {
-    animate('.cateArrow', { rotate: isOpen ? 0 : 180 }, { duration: 0.2 })
+    if (arrowRef.current) {
+      animate(
+        arrowRef.current,
+        { rotate: isOpen[label] ? 0 : 180 },
+        { duration: 0.2 },
+      )
+    }
   }, [isOpen])
+
+  const handleClick = name => {
+    setIsOpen(prevState => ({
+      ...prevState,
+      [name]: !prevState[name],
+    }))
+  }
 
   return (
     <>
@@ -166,20 +180,21 @@ export default function CategoryItem<CategoryItemProps>({
             <MenuBtn
               $navOpen={navOpen}
               onClick={() => {
-                setIsOpen(!isOpen)
+                handleClick(label)
               }}
             >
               <i
+                ref={arrowRef}
                 className={`${
                   isActive ? 'color-white' : 'color-[#0007de9]'
-                } cateArrow xi-angle-up-min`}
+                } xi-angle-up-min`}
               />
             </MenuBtn>
 
             <CateLink
               $navOpen={navOpen}
               onClick={() => {
-                setIsOpen(!isOpen)
+                handleClick(label)
               }}
             >
               <Tooltip
@@ -212,7 +227,7 @@ export default function CategoryItem<CategoryItemProps>({
             </CateLink>
 
             {navOpen && (
-              <Menu $isOpen={isOpen}>
+              <Menu $isOpen={isOpen[label]}>
                 {children.map((item, index) => (
                   <MenuItem
                     key={index}

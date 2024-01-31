@@ -9,6 +9,7 @@ import {
   studentFilterActiveState,
   studentFilterState,
   studentPageState,
+  studentSearchState,
   subjectFilterActiveState,
   subjectFilterState,
   subjectPageState,
@@ -18,12 +19,26 @@ import CategoryItem from './CategoryItem'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+// import categories from '@/lib/category'
 
 const CateWrap = styled(motion.ul)``
 
 export default function Category() {
   const [activeCategory, setActiveCategory] =
     useRecoilState(activeCategoryState)
+
+  const consultPage = useResetRecoilState(consultPageState)
+  const resetConsultFilterActive = useResetRecoilState(consultFilterActiveState)
+  const resetConsultFilterSearch = useResetRecoilState(consultFilterState)
+  const resetConsultFilter = useResetRecoilState(consultSearchState)
+  const subjectPage = useResetRecoilState(subjectPageState)
+  const resetSubjectFilterActive = useResetRecoilState(subjectFilterActiveState)
+  const resetSubjectFilterSearch = useResetRecoilState(subjectFilterState)
+  const resetSubjectFilter = useResetRecoilState(subjectSearchState)
+  const studentPage = useResetRecoilState(studentPageState)
+  const resetStudentFilterActive = useResetRecoilState(studentFilterActiveState)
+  const resetStudentFilterSearch = useResetRecoilState(studentFilterState)
+  const resetStudentFilter = useResetRecoilState(studentSearchState)
 
   const categories = [
     {
@@ -97,55 +112,33 @@ export default function Category() {
       alt: '회계관리',
       label: '회계관리',
       reset: () => {},
-      // children: [
-      //   {
-      //     href: '/accounting',
-      //     alt: '결제내역',
-      //     label: '결제내역',
-      //   },
-      //   {
-      //     href: '/accounting/reject',
-      //     alt: '미수납내역',
-      //     label: '미수납내역',
-      //   },
-      //   {
-      //     href: '/accounting/reject',
-      //     alt: '환불내역',
-      //     label: '환불내역',
-      //   },
-      //   {
-      //     href: '/accounting/reject',
-      //     alt: '환불신청내역',
-      //     label: '환불신청내역',
-      //   },
-      //   {
-      //     href: '/accounting/reject',
-      //     alt: '카드결제내역',
-      //     label: '카드결제내역',
-      //   },
-      //   {
-      //     href: '/accounting/reject',
-      //     alt: '입금내역',
-      //     label: '입금내역',
-      //   },
-      // ],
+      children: [
+        {
+          href: '/accounting',
+          alt: '결제내역',
+          label: '결제내역',
+        },
+        {
+          href: '/accounting/request',
+          alt: '환불신청내역',
+          label: '환불신청내역',
+        },
+        {
+          href: '/accounting/refund',
+          alt: '환불완료내역',
+          label: '환불완료내역',
+        },
+        {
+          href: '/accounting/sales',
+          alt: '매출내역',
+          label: '매출내역',
+        },
+      ],
     },
   ]
 
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
-  const consultPage = useResetRecoilState(consultPageState)
-  const resetConsultFilterActive = useResetRecoilState(consultFilterActiveState)
-  const resetConsultFilterSearch = useResetRecoilState(consultFilterState)
-  const resetConsultFilter = useResetRecoilState(consultSearchState)
-  const subjectPage = useResetRecoilState(subjectPageState)
-  const resetSubjectFilterActive = useResetRecoilState(subjectFilterActiveState)
-  const resetSubjectFilterSearch = useResetRecoilState(subjectFilterState)
-  const resetSubjectFilter = useResetRecoilState(subjectSearchState)
-  const studentPage = useResetRecoilState(studentPageState)
-  const resetStudentFilterActive = useResetRecoilState(studentFilterActiveState)
-  const resetStudentFilterSearch = useResetRecoilState(studentFilterState)
-  const resetStudentFilter = useResetRecoilState(studentFilterState)
 
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)

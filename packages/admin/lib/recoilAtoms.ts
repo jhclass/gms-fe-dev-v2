@@ -6,16 +6,18 @@ export const isScreenState = atom<boolean>({
   default: false,
 })
 
-// header
-export const categoryMenuState = atom<boolean>({
-  key: 'categoryMenuState',
-  default: true,
-})
-
-// nav
+// GNB
 export const navOpenState = atom<boolean>({
   key: 'navOpenState',
   default: true,
+})
+
+export const categoryMenuState = atom<{}>({
+  key: 'categoryMenuState',
+  default: {
+    상담관리: true,
+    회계관리: true,
+  },
 })
 
 export const activeCategoryState = atom<number>({
