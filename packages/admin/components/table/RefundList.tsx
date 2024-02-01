@@ -64,7 +64,7 @@ const TheaderBox = styled.div`
 `
 const TheaderListBox = styled.div`
   display: flex;
-  width: 86%;
+  width: 76%;
 `
 const TableItem = styled.div`
   position: relative;
@@ -93,6 +93,26 @@ const TableRow = styled.div`
   /* display: grid;
   width: 100%;
   grid-template-columns: 0.5rem auto; */
+`
+const ThRequestAt = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 9%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.09}px;
+`
+const ThManager = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 8%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.08}px;
 `
 const TrequestAt = styled.div<{ $width: number }>`
   display: table-cell;
@@ -172,25 +192,31 @@ const Tamount = styled.div<{ $width: number }>`
     color: #ff5900;
   }
 `
+const EllipsisBox = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`
 const Tlist = styled.div`
   display: table-cell;
-  width: 86%;
-  min-width: ${1200 * 0.86}px;
+  width: 76%;
+  min-width: ${1200 * 0.76}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 14%;
+  width: 7%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.07}px;
 `
 const BtnBox = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -229,6 +255,11 @@ export default function RequestRefundTable() {
     handleScrollTop()
   }, [router, refetch, currentPage])
 
+  const getDate = (DataDate: string): string => {
+    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    return LocalDdate
+  }
+
   return (
     <>
       <TTopic>
@@ -249,14 +280,16 @@ export default function RequestRefundTable() {
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <ThRequestAt>승인일</ThRequestAt>
+                <ThManager>승인담당자</ThManager>
                 <TheaderListBox>
-                  <TrequestAt $width={1032}>신청일</TrequestAt>
-                  <Tmanager $width={1032}>신청담당자</Tmanager>
-                  <Tname $width={1032}>수강생명</Tname>
-                  <Tsubject $width={1032}>수강과정</Tsubject>
-                  <Tpayment $width={1032}>결제구분</Tpayment>
-                  <TpaymentName $width={1032}>은행/카드사</TpaymentName>
-                  <Tamount $width={1032}>환불금액</Tamount>
+                  <TrequestAt $width={912}>신청일</TrequestAt>
+                  <Tmanager $width={912}>신청담당자</Tmanager>
+                  <Tname $width={912}>수강생명</Tname>
+                  <Tsubject $width={912}>수강과정</Tsubject>
+                  <Tpayment $width={912}>결제구분</Tpayment>
+                  <TpaymentName $width={912}>은행/카드사</TpaymentName>
+                  <Tamount $width={912}>환불금액</Tamount>
                 </TheaderListBox>
                 <Tbtn></Tbtn>
               </TheaderBox>
@@ -265,13 +298,25 @@ export default function RequestRefundTable() {
               students?.map((item, index) => (
                 <TableItem key={index}>
                   <TableRow>
+                    <ThRequestAt>
+                      <EllipsisBox>
+                        {item?.studentPayment[0].paymentDate
+                          ? getDate(item?.studentPayment[0].paymentDate)
+                          : '-'}
+                      </EllipsisBox>
+                    </ThRequestAt>
+                    <ThManager>
+                      <EllipsisBox>
+                        {item?.studentPayment[0].processingManager?.mUsername}
+                      </EllipsisBox>
+                    </ThManager>
                     <Tlist>
                       <RefundItem
                         tableData={item}
                         itemIndex={index}
                         currentPage={currentPage}
                         limit={currentLimit}
-                        width={1032}
+                        width={912}
                       />
                     </Tlist>
                     <Tbtn>
@@ -280,19 +325,10 @@ export default function RequestRefundTable() {
                           size="sm"
                           variant="solid"
                           color="primary"
-                          className="w-full text-white"
+                          className="w-full text-white bg-flag1"
                           onClick={() => console.log('환불 승인')}
                         >
-                          환불 승인
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="bordered"
-                          color="primary"
-                          className="w-full"
-                          onClick={() => console.log('환불 거부')}
-                        >
-                          환불 거부
+                          환불 취소
                         </Button>
                       </BtnBox>
                     </Tbtn>

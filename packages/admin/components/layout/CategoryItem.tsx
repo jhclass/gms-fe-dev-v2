@@ -136,6 +136,7 @@ export default function CategoryItem<CategoryItemProps>({
     }))
   }
 
+  const subCate = children?.filter(category => category.exposure)
   return (
     <>
       <CateItem
@@ -145,7 +146,7 @@ export default function CategoryItem<CategoryItemProps>({
           transition: { duration: 0.3 },
         }}
       >
-        {!children ? (
+        {!children || subCate.length === 0 ? (
           <Link href={href}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
@@ -228,12 +229,12 @@ export default function CategoryItem<CategoryItemProps>({
 
             {navOpen && (
               <Menu $isOpen={isOpen[label]}>
-                {children.map((item, index) => (
+                {subCate.map((item, index) => (
                   <MenuItem
                     key={index}
                     $isActive={router.pathname == item.href}
                   >
-                    <Link href={item.href}>{item.label}</Link>
+                    <Link href={href + item.href}>{item.label}</Link>
                   </MenuItem>
                 ))}
               </Menu>

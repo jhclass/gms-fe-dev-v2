@@ -45,7 +45,7 @@ const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
 const Logo = styled(motion.h1)<{ $navOpen: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: ${props => (props.$navOpen ? 'start' : 'center')};
   width: 100%;
   height: 4rem;
   flex-shrink: 0;
