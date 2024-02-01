@@ -108,8 +108,7 @@ const cateName = {
 export default function CategoryItem<CategoryItemProps>({
   href,
   iconSrc,
-  alt,
-  label,
+  name,
   isActive,
   onClick,
   children,
@@ -123,16 +122,16 @@ export default function CategoryItem<CategoryItemProps>({
     if (arrowRef.current) {
       animate(
         arrowRef.current,
-        { rotate: isOpen[label] ? 0 : 180 },
+        { rotate: isOpen[name] ? 0 : 180 },
         { duration: 0.2 },
       )
     }
   }, [isOpen])
 
-  const handleClick = name => {
+  const handleClick = cate => {
     setIsOpen(prevState => ({
       ...prevState,
-      [name]: !prevState[name],
+      [cate]: !prevState[cate],
     }))
   }
 
@@ -150,7 +149,7 @@ export default function CategoryItem<CategoryItemProps>({
           <Link href={href}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
-                content={label}
+                content={name}
                 placement="right"
                 isDisabled={navOpen ? true : false}
               >
@@ -163,17 +162,17 @@ export default function CategoryItem<CategoryItemProps>({
                   {isActive ? (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   ) : (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   )}
                 </CateIcon>
               </Tooltip>
-              <CateTitle $navOpen={navOpen}>{label}</CateTitle>
+              <CateTitle $navOpen={navOpen}>{name}</CateTitle>
             </CateLink>
           </Link>
         ) : (
@@ -181,7 +180,7 @@ export default function CategoryItem<CategoryItemProps>({
             <MenuBtn
               $navOpen={navOpen}
               onClick={() => {
-                handleClick(label)
+                handleClick(name)
               }}
             >
               <i
@@ -195,11 +194,11 @@ export default function CategoryItem<CategoryItemProps>({
             <CateLink
               $navOpen={navOpen}
               onClick={() => {
-                handleClick(label)
+                handleClick(name)
               }}
             >
               <Tooltip
-                content={label}
+                content={name}
                 placement="right"
                 isDisabled={navOpen ? true : false}
               >
@@ -212,29 +211,29 @@ export default function CategoryItem<CategoryItemProps>({
                   {isActive ? (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   ) : (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   )}
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
-                <Link href={href}>{label}</Link>
+                <Link href={href}>{name}</Link>
               </CateTitle>
             </CateLink>
 
             {navOpen && (
-              <Menu $isOpen={isOpen[label]}>
+              <Menu $isOpen={isOpen[name]}>
                 {subCate.map((item, index) => (
                   <MenuItem
                     key={index}
                     $isActive={router.pathname == item.href}
                   >
-                    <Link href={href + item.href}>{item.label}</Link>
+                    <Link href={href + item.href}>{item.name}</Link>
                   </MenuItem>
                 ))}
               </Menu>

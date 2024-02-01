@@ -87,8 +87,7 @@ export default function Category() {
               key={index}
               href={category.href}
               iconSrc={category.iconSrc}
-              alt={category.alt}
-              label={category.label}
+              name={category.name}
               isActive={active === category.href}
               onClick={() => {
                 handleCategoryClick(category.id, category.resetItems)

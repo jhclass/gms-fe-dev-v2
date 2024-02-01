@@ -2,14 +2,22 @@ interface Category {
   id?: number
   href: string
   iconSrc?: string
-  alt: string
-  label: string
+  name: string
+  children: Children[]
   resetItems?: string[]
-  children?: Category[]
-  exposure?: boolean
+  exposure: boolean
   isBreadcrumb?: boolean
   isFilter?: boolean
   isWrite?: string
+}
+
+interface Children {
+  href: string
+  name: string
+  exposure: boolean
+  isBreadcrumb: boolean
+  isFilter: boolean
+  isWrite: string
 }
 
 const category: Category[] = [
@@ -17,8 +25,7 @@ const category: Category[] = [
     id: 0,
     href: '/',
     iconSrc: 'ico_home',
-    alt: '대시보드',
-    label: '대시보드',
+    name: '대시보드',
     exposure: true,
     isBreadcrumb: false,
     isFilter: false,
@@ -29,8 +36,7 @@ const category: Category[] = [
     id: 1,
     href: '/consult',
     iconSrc: 'ico_consult',
-    alt: '상담관리',
-    label: '상담관리',
+    name: '상담관리',
     resetItems: [
       'consultPage',
       'resetConsultFilterActive',
@@ -41,8 +47,7 @@ const category: Category[] = [
     children: [
       {
         href: '/',
-        alt: '상담 목록',
-        label: '상담 목록',
+        name: '상담 목록',
         exposure: true,
         isBreadcrumb: true,
         isFilter: true,
@@ -50,9 +55,7 @@ const category: Category[] = [
       },
       {
         href: '/detail',
-        iconSrc: 'ico_consult',
-        alt: '상담 상세',
-        label: '상담 상세',
+        name: '상담 상세',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -60,9 +63,7 @@ const category: Category[] = [
       },
       {
         href: '/write',
-        iconSrc: 'ico_consult',
-        alt: '상담 등록',
-        label: '상담 등록',
+        name: '상담 등록',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -70,8 +71,7 @@ const category: Category[] = [
       },
       {
         href: '/registered',
-        alt: '등록완료 목록',
-        label: '등록완료 목록',
+        name: '등록완료 목록',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,
@@ -79,8 +79,7 @@ const category: Category[] = [
       },
       {
         href: '/reject',
-        alt: '오류/거부 목록',
-        label: '오류/거부 목록',
+        name: '오류/거부 목록',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,
@@ -92,8 +91,7 @@ const category: Category[] = [
     id: 2,
     href: '/subjects',
     iconSrc: 'ico_work',
-    alt: '과정관리',
-    label: '과정관리',
+    name: '과정관리',
     resetItems: [
       'subjectPage',
       'resetSubjectFilterActive',
@@ -107,9 +105,7 @@ const category: Category[] = [
     children: [
       {
         href: '/detail',
-        iconSrc: 'ico_work',
-        alt: '과정 상세',
-        label: '과정 상세',
+        name: '과정 상세',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -117,9 +113,7 @@ const category: Category[] = [
       },
       {
         href: '/write',
-        iconSrc: 'ico_work',
-        alt: '과정 등록',
-        label: '과정 등록',
+        name: '과정 등록',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -131,8 +125,7 @@ const category: Category[] = [
     id: 3,
     href: '/students',
     iconSrc: 'ico_regist',
-    alt: '수강생관리',
-    label: '수강생관리',
+    name: '수강생관리',
     resetItems: [
       'studentPage',
       'resetStudentFilterActive',
@@ -146,9 +139,7 @@ const category: Category[] = [
     children: [
       {
         href: '/detail',
-        iconSrc: 'ico_consult',
-        alt: '수강생 상세',
-        label: '수강생 상세',
+        name: '수강생 상세',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -156,9 +147,7 @@ const category: Category[] = [
       },
       {
         href: '/write',
-        iconSrc: 'ico_consult',
-        alt: '수강생 등록',
-        label: '수강생 등록',
+        name: '수강생 등록',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -166,9 +155,7 @@ const category: Category[] = [
       },
       {
         href: '/edit',
-        iconSrc: 'ico_consult',
-        alt: '수강생 수정',
-        label: '수강생 수정',
+        name: '수강생 수정',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -180,14 +167,12 @@ const category: Category[] = [
     id: 4,
     href: '/accounting',
     iconSrc: 'ico_accounting',
-    alt: '회계관리',
-    label: '회계관리',
+    name: '회계관리',
     exposure: true,
     children: [
       {
         href: '/',
-        alt: '결제 내역',
-        label: '결제 내역',
+        name: '결제 내역',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,
@@ -195,8 +180,7 @@ const category: Category[] = [
       },
       {
         href: '/request',
-        alt: '환불 신청 내역',
-        label: '환불 신청 내역',
+        name: '환불 신청 내역',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,
@@ -204,8 +188,7 @@ const category: Category[] = [
       },
       {
         href: '/refund',
-        alt: '환불 완료 내역',
-        label: '환불 완료 내역',
+        name: '환불 완료 내역',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,
@@ -213,8 +196,7 @@ const category: Category[] = [
       },
       {
         href: '/sales',
-        alt: '매출 내역',
-        label: '매출 내역',
+        name: '매출 내역',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,
@@ -225,8 +207,7 @@ const category: Category[] = [
   {
     href: '/member',
     iconSrc: '',
-    alt: '',
-    label: '프로필',
+    name: '프로필',
     exposure: false,
     isBreadcrumb: true,
     isFilter: false,
