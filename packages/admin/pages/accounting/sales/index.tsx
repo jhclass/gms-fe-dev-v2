@@ -20,9 +20,7 @@ export default function Sales() {
           isActive={filterActive}
           rightArea={false}
         />
-        <ConBox>
-          <PaymentTable />
-        </ConBox>
+        <ConBox></ConBox>
       </MainWrap>
     </>
   )

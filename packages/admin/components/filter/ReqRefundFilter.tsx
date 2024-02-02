@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
-import { studentPageState } from '@/lib/recoilAtoms'
+import { reqRefundPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '@/components/common/Button'
-import { Input } from '@nextui-org/react'
+import Button2 from '@/components/common/Button'
+import { Button, Input } from '@nextui-org/react'
 import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -13,8 +13,9 @@ import { getYear } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
+import { subMonths, subDays } from 'date-fns'
 
-type StudentsFilterProps = {
+type ReqRefundFilterProps = {
   isActive: boolean
 }
 
@@ -45,21 +46,22 @@ const BoxTop = styled.div`
     flex-direction: column;
   }
 `
-const BoxMiddle = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
 const ItemBox = styled.div`
   display: flex;
-  flex-direction: column;
   flex: 1;
-`
+  flex-direction: column;
 
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+`
+const DateBtn = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+`
 const BtnBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -81,16 +83,14 @@ const FilterVariants = {
   },
 }
 
-export default function StudentsFilter({
+export default function ReqRefundFilter({
   isActive,
   onFilterSearch,
   setStudentFilter,
 }) {
-  const studentPage = useResetRecoilState(studentPageState)
-  const [birthdayRange, setBirthdayRange] = useState([null, null])
-  const [startBirthday, endBirthday] = birthdayRange
-  const [creatDateRange, setCreatDateRange] = useState([null, null])
-  const [startCreatDate, endCreatDate] = creatDateRange
+  const reqRefund = useResetRecoilState(reqRefundPageState)
+  const [paymentDateRange, setPaymentDateRange] = useState([null, null])
+  const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
@@ -103,8 +103,6 @@ export default function StudentsFilter({
   } = useForm({
     defaultValues: {
       studentName: '',
-      phoneNum: '',
-      birthday: undefined,
       createdAt: undefined,
     },
   })
@@ -123,31 +121,56 @@ export default function StudentsFilter({
           return true
         }
       }
-      const birthdayDate = validateDateRange(
-        data.birthday,
-        '생년월일의 마지막날을 선택해주세요.',
-      )
-      const createDate = validateDateRange(
+      const paymentDate = validateDateRange(
         data.createdAt,
-        '방문예정일의 마지막날을 선택해주세요.',
+        '승인일시의 마지막날을 선택해주세요.',
       )
-      if (birthdayDate && createDate) {
+      if (paymentDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
-          phoneNum: data.phoneNum === '' ? null : data.phoneNum,
-          birthday: data.birthday === undefined ? null : data.birthday,
           createdAt: data.createdAt === undefined ? null : data.createdAt,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
-        studentPage()
+        reqRefund()
       }
     }
   }
+  const setDates = (start, end) => {
+    setPaymentDateRange([start, end])
+    setValue('createdAt', [start, end])
+  }
+
+  const handleYesterdayClick = () => {
+    const yesterday = subDays(new Date(), 1)
+    setDates(yesterday, yesterday)
+  }
+
+  const handleTodayClick = () => {
+    const today = new Date()
+    setDates(today, today)
+  }
+
+  const handleLastMonthClick = () => {
+    const today = new Date()
+    const lastMonth = subMonths(new Date(), 1)
+    setDates(lastMonth, today)
+  }
+
+  const handleLastThreeMonthsClick = () => {
+    const today = new Date()
+    const lastThreeMonths = subMonths(new Date(), 3)
+    setDates(lastThreeMonths, today)
+  }
+
+  const handleLastSixMonthsClick = () => {
+    const today = new Date()
+    const lastSixMonths = subMonths(new Date(), 6)
+    setDates(lastSixMonths, today)
+  }
 
   const handleReset = () => {
-    setCreatDateRange([null, null])
-    setBirthdayRange([null, null])
+    setPaymentDateRange([null, null])
     reset()
   }
 
@@ -160,98 +183,6 @@ export default function StudentsFilter({
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder="'-'없이 작성해주세요"
-                type="text"
-                variant="bordered"
-                label="연락처"
-                id="phoneNum"
-                {...register('phoneNum', {
-                  maxLength: {
-                    value: 11,
-                    message: '최대 11자리까지 입력 가능합니다.',
-                  },
-                  pattern: {
-                    value: /^[0-9]+$/,
-                    message: '숫자만 사용가능합니다.',
-                  },
-                })}
-              />
-              {errors.phoneNum && (
-                <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.phoneNum.message)}
-                </p>
-              )}
-            </ItemBox>
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="수강생이름"
-                id="studentName"
-                {...register('studentName')}
-              />
-            </ItemBox>
-          </BoxTop>
-          <BoxMiddle>
-            <ItemBox>
-              <Controller
-                control={control}
-                name="birthday"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    selectsRange={true}
-                    locale="ko"
-                    startDate={startBirthday}
-                    endDate={endBirthday}
-                    onChange={e => {
-                      setBirthdayRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
-                      } else {
-                        date = [e[0], null]
-                      }
-
-                      field.onChange(date)
-                    }}
-                    placeholderText="기간을 선택해주세요."
-                    dateFormat="yyyy/MM/dd"
-                    customInput={
-                      <Input
-                        label="생년월일"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        startContent={<i className="xi-calendar" />}
-                        {...register('birthday')}
-                      />
-                    }
-                  />
-                )}
-              />
-            </ItemBox>
             <ItemBox>
               <Controller
                 control={control}
@@ -276,10 +207,10 @@ export default function StudentsFilter({
                     )}
                     selectsRange={true}
                     locale="ko"
-                    startDate={startCreatDate}
-                    endDate={endCreatDate}
+                    startDate={startPaymentDate}
+                    endDate={endPaymentDate}
                     onChange={e => {
-                      setCreatDateRange(e)
+                      setPaymentDateRange(e)
                       let date
                       if (e[1] !== null) {
                         date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
@@ -293,7 +224,7 @@ export default function StudentsFilter({
                     dateFormat="yyyy/MM/dd"
                     customInput={
                       <Input
-                        label="등록일시"
+                        label="승일 일시"
                         labelPlacement="outside"
                         type="text"
                         variant="bordered"
@@ -305,10 +236,29 @@ export default function StudentsFilter({
                   />
                 )}
               />
+              <DateBtn>
+                <Button onClick={handleYesterdayClick}>어제</Button>
+                <Button onClick={handleTodayClick}>오늘</Button>
+                <Button onClick={handleLastMonthClick}>1개월</Button>
+                <Button onClick={handleLastThreeMonthsClick}>3개월</Button>
+                <Button onClick={handleLastSixMonthsClick}>6개월</Button>
+              </DateBtn>
             </ItemBox>
-          </BoxMiddle>
+
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
+                placeholder=" "
+                type="text"
+                variant="bordered"
+                label="수강생이름"
+                id="studentName"
+                {...register('studentName')}
+              />
+            </ItemBox>
+          </BoxTop>
           <BtnBox>
-            <Button
+            <Button2
               buttonType="submit"
               width="calc(50% - 0.5rem)"
               height="2.5rem"
@@ -317,8 +267,8 @@ export default function StudentsFilter({
               bgColor="#007de9"
             >
               검색
-            </Button>
-            <Button
+            </Button2>
+            <Button2
               buttonType="reset"
               width="calc(50% - 0.5rem)"
               height="2.5rem"
@@ -329,7 +279,7 @@ export default function StudentsFilter({
               onClick={handleReset}
             >
               초기화
-            </Button>
+            </Button2>
           </BtnBox>
         </FilterForm>
       </FilterBox>

@@ -157,7 +157,7 @@ export const consultPageState = atom<number>({
   default: 1,
 })
 export const consultFilterState = atom<boolean>({
-  key: 'onsultFilter',
+  key: 'consultFilter',
   default: false,
 })
 export const consultSearchState = atom({
@@ -215,6 +215,63 @@ export const studentSearchState = atom({
     phoneNum: string
     birthday: string
     createdAt: string
+  },
+})
+export const paymentFilterActiveState = atom<boolean>({
+  key: 'paymentFilterActive',
+  default: false,
+})
+export const paymentPageState = atom<number>({
+  key: 'paymentPage',
+  default: 1,
+})
+export const paymentFilterState = atom<boolean>({
+  key: 'paymentFilter',
+  default: false,
+})
+export const paymentSearchState = atom({
+  key: 'paymentSearch',
+  default: {} as {
+    createdAt: []
+    stName: string
+  },
+})
+export const refundFilterActiveState = atom<boolean>({
+  key: 'refundFilterActive',
+  default: false,
+})
+export const refundPageState = atom<number>({
+  key: 'refundPage',
+  default: 1,
+})
+export const refundFilterState = atom<boolean>({
+  key: 'refundFilter',
+  default: false,
+})
+export const refundSearchState = atom({
+  key: 'refundSearch',
+  default: {} as {
+    createdAt: []
+    stName: string
+  },
+})
+export const reqRefundFilterActiveState = atom<boolean>({
+  key: 'reqRefundFilterActive',
+  default: false,
+})
+export const reqRefundPageState = atom<number>({
+  key: 'reqRefundPage',
+  default: 1,
+})
+export const reqRefundFilterState = atom<boolean>({
+  key: 'reqRefundFilter',
+  default: false,
+})
+export const reqRefundSearchState = atom({
+  key: 'reqRefundSearch',
+  default: {} as {
+    createdAt: []
+    stName: string
   },
 })
 

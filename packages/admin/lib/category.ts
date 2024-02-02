@@ -38,7 +38,7 @@ const category: Category[] = [
     iconSrc: 'ico_consult',
     name: '상담관리',
     resetItems: [
-      'consultPage',
+      'resetConsultPage',
       'resetConsultFilterActive',
       'resetConsultFilterSearch',
       'resetConsultFilter',
@@ -93,7 +93,7 @@ const category: Category[] = [
     iconSrc: 'ico_work',
     name: '과정관리',
     resetItems: [
-      'subjectPage',
+      'resetSubjectPage',
       'resetSubjectFilterActive',
       'resetSubjectFilterSearch',
       'resetSubjectFilter',
@@ -127,7 +127,7 @@ const category: Category[] = [
     iconSrc: 'ico_regist',
     name: '수강생관리',
     resetItems: [
-      'studentPage',
+      'resetStudentPage',
       'resetStudentFilterActive',
       'resetStudentFilterSearch',
       'resetStudentFilter',
@@ -169,13 +169,27 @@ const category: Category[] = [
     iconSrc: 'ico_accounting',
     name: '회계관리',
     exposure: true,
+    resetItems: [
+      'resetPaymentPage',
+      'resetPaymentFilterActive',
+      'resetPaymentFilterSearch',
+      'resetPaymentFilter',
+      'resetRefundPage',
+      'resetRefundFilterActive',
+      'resetRefundFilterSearch',
+      'resetRefundFilter',
+      'resetReqRefundPage',
+      'resetReqRefundFilterActive',
+      'resetReqRefundFilterSearch',
+      'resetReqRefundFilter',
+    ],
     children: [
       {
         href: '/',
         name: '결제 내역',
         exposure: true,
         isBreadcrumb: true,
-        isFilter: false,
+        isFilter: true,
         isWrite: '',
       },
       {
@@ -183,7 +197,7 @@ const category: Category[] = [
         name: '환불 신청 내역',
         exposure: true,
         isBreadcrumb: true,
-        isFilter: false,
+        isFilter: true,
         isWrite: '',
       },
       {
@@ -191,7 +205,7 @@ const category: Category[] = [
         name: '환불 완료 내역',
         exposure: true,
         isBreadcrumb: true,
-        isFilter: false,
+        isFilter: true,
         isWrite: '',
       },
       {

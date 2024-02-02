@@ -189,7 +189,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function StudentsTable({
+export default function StudentsFilterTable({
   onFilterSearch,
   studentFilter,
   setStudentFilter,

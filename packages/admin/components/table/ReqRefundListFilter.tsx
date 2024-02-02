@@ -1,12 +1,12 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
-import { refundPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
+import { reqRefundPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -25,10 +25,19 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
 const ColorHelp = styled.div`
   display: flex;
 `
-
 const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
@@ -66,7 +75,7 @@ const TheaderBox = styled.div`
 `
 const TheaderListBox = styled.div`
   display: flex;
-  width: 76%;
+  width: 86%;
 `
 const TableItem = styled.div`
   position: relative;
@@ -95,26 +104,6 @@ const TableRow = styled.div`
   /* display: grid;
   width: 100%;
   grid-template-columns: 0.5rem auto; */
-`
-const ThRequestAt = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 9%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.09}px;
-`
-const ThManager = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
 `
 const TrequestAt = styled.div<{ $width: number }>`
   display: table-cell;
@@ -194,31 +183,25 @@ const Tamount = styled.div<{ $width: number }>`
     color: #ff5900;
   }
 `
-const EllipsisBox = styled.p`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-`
 const Tlist = styled.div`
   display: table-cell;
-  width: 76%;
-  min-width: ${1200 * 0.76}px;
+  width: 86%;
+  min-width: ${1200 * 0.86}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 14%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.14}px;
 `
 const BtnBox = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 0.5rem;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -234,46 +217,58 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function RefundTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
+export default function ReqRefundFilterTable({
+  onFilterSearch,
+  studentFilter,
+  setStudentFilter,
+}) {
+  const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  // const [searchStudentFilterMutation] = useMutation(
+  //   SEARCH_STUDENT_FILTER_MUTATION,
+  // )
+  const [searchResult, setSearchResult] = useState(null)
 
   useEffect(() => {
-    setTotalCount(studentsData.totalCount)
-  }, [studentsData, totalCount])
+    // searchStudentFilterMutation({
+    //   variables: {
+    //     ...studentFilter,
+    //     page: currentPage,
+    //     perPage: currentLimit,
+    //   },
+    //   onCompleted: resData => {
+    //     const { student, totalCount } = resData.searchStudent || {}
+    //     setSearchResult({ student, totalCount })
+    //   },
+    // })
+  }, [studentFilter, currentPage])
 
-  useEffect(() => {
-    refetch()
-    handleScrollTop()
-  }, [router, refetch, currentPage])
-
-  const getDate = (DataDate: string): string => {
-    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
-    return LocalDdate
+  const resetList = () => {
+    setStudentFilter({})
+    onFilterSearch(false)
   }
 
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
+        <TopBox>
+          <Ttotal>
+            총
+            <span>
+              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
+            </span>
+            건이 검색되었습니다.
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 현금
+            <span style={{ background: '#007de9' }}></span> : 신규
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 카드
+            <span style={{ background: '#FF5900' }}></span> : 미배정
           </ColorCip>
         </ColorHelp>
       </TTopic>
@@ -282,43 +277,29 @@ export default function RefundTable() {
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <ThRequestAt>승인일</ThRequestAt>
-                <ThManager>승인담당자</ThManager>
                 <TheaderListBox>
-                  <TrequestAt $width={912}>신청일</TrequestAt>
-                  <Tmanager $width={912}>신청담당자</Tmanager>
-                  <Tname $width={912}>수강생명</Tname>
-                  <Tsubject $width={912}>수강과정</Tsubject>
-                  <Tpayment $width={912}>결제구분</Tpayment>
-                  <TpaymentName $width={912}>은행/카드사</TpaymentName>
-                  <Tamount $width={912}>환불금액</Tamount>
+                  <TrequestAt $width={1032}>신청일</TrequestAt>
+                  <Tmanager $width={1032}>신청담당자</Tmanager>
+                  <Tname $width={1032}>수강생명</Tname>
+                  <Tsubject $width={1032}>수강과정</Tsubject>
+                  <Tpayment $width={1032}>결제구분</Tpayment>
+                  <TpaymentName $width={1032}>은행/카드사</TpaymentName>
+                  <Tamount $width={1032}>환불금액</Tamount>
                 </TheaderListBox>
                 <Tbtn></Tbtn>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              students?.map((item, index) => (
+            {searchResult?.totalCount > 0 &&
+              searchResult?.student.map((item, index) => (
                 <TableItem key={index}>
                   <TableRow>
-                    <ThRequestAt>
-                      <EllipsisBox>
-                        {item?.studentPayment[0]?.paymentDate
-                          ? getDate(item?.studentPayment[0]?.paymentDate)
-                          : '-'}
-                      </EllipsisBox>
-                    </ThRequestAt>
-                    <ThManager>
-                      <EllipsisBox>
-                        {item?.studentPayment[0]?.processingManager?.mUsername}
-                      </EllipsisBox>
-                    </ThManager>
                     <Tlist>
                       <RefundItem
                         tableData={item}
                         itemIndex={index}
                         currentPage={currentPage}
                         limit={currentLimit}
-                        width={912}
+                        width={1032}
                       />
                     </Tlist>
                     <Tbtn>
@@ -327,27 +308,38 @@ export default function RefundTable() {
                           size="sm"
                           variant="solid"
                           color="primary"
-                          className="w-full text-white bg-flag1"
+                          className="w-full text-white"
                           onClick={() => console.log('환불 승인')}
                         >
-                          환불 취소
+                          환불 승인
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="bordered"
+                          color="primary"
+                          className="w-full"
+                          onClick={() => console.log('환불 거부')}
+                        >
+                          환불 거부
                         </Button>
                       </BtnBox>
                     </Tbtn>
                   </TableRow>
                 </TableItem>
               ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
+            {searchResult?.totalCount === 0 && (
+              <Nolist>검색결과가 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        {searchResult?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
+              total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

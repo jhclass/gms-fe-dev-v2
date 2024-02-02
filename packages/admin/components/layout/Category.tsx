@@ -6,6 +6,18 @@ import {
   consultFilterState,
   consultPageState,
   consultSearchState,
+  paymentFilterActiveState,
+  paymentFilterState,
+  paymentPageState,
+  paymentSearchState,
+  refundFilterActiveState,
+  refundFilterState,
+  refundPageState,
+  refundSearchState,
+  reqRefundFilterActiveState,
+  reqRefundFilterState,
+  reqRefundPageState,
+  reqRefundSearchState,
   studentFilterActiveState,
   studentFilterState,
   studentPageState,
@@ -27,32 +39,58 @@ export default function Category() {
   const [activeCategory, setActiveCategory] =
     useRecoilState(activeCategoryState)
 
-  const consultPage = useResetRecoilState(consultPageState)
+  const resetConsultPage = useResetRecoilState(consultPageState)
   const resetConsultFilterActive = useResetRecoilState(consultFilterActiveState)
   const resetConsultFilterSearch = useResetRecoilState(consultFilterState)
   const resetConsultFilter = useResetRecoilState(consultSearchState)
-  const subjectPage = useResetRecoilState(subjectPageState)
+  const resetSubjectPage = useResetRecoilState(subjectPageState)
   const resetSubjectFilterActive = useResetRecoilState(subjectFilterActiveState)
   const resetSubjectFilterSearch = useResetRecoilState(subjectFilterState)
   const resetSubjectFilter = useResetRecoilState(subjectSearchState)
-  const studentPage = useResetRecoilState(studentPageState)
+  const resetStudentPage = useResetRecoilState(studentPageState)
   const resetStudentFilterActive = useResetRecoilState(studentFilterActiveState)
   const resetStudentFilterSearch = useResetRecoilState(studentFilterState)
   const resetStudentFilter = useResetRecoilState(studentSearchState)
+  const resetPaymentPage = useResetRecoilState(paymentPageState)
+  const resetPaymentFilterActive = useResetRecoilState(paymentFilterActiveState)
+  const resetPaymentFilterSearch = useResetRecoilState(paymentFilterState)
+  const resetPaymentFilter = useResetRecoilState(paymentSearchState)
+  const resetRefundPage = useResetRecoilState(refundPageState)
+  const resetRefundFilterActive = useResetRecoilState(refundFilterActiveState)
+  const resetRefundFilterSearch = useResetRecoilState(refundFilterState)
+  const resetRefundFilter = useResetRecoilState(refundSearchState)
+  const resetReqRefundPage = useResetRecoilState(reqRefundPageState)
+  const resetReqRefundFilterActive = useResetRecoilState(
+    reqRefundFilterActiveState,
+  )
+  const resetReqRefundFilterSearch = useResetRecoilState(reqRefundFilterState)
+  const resetReqRefundFilter = useResetRecoilState(reqRefundSearchState)
 
   const resetFunctions = {
-    consultPage,
+    resetConsultPage,
     resetConsultFilterActive,
     resetConsultFilterSearch,
     resetConsultFilter,
-    subjectPage,
+    resetSubjectPage,
     resetSubjectFilterActive,
     resetSubjectFilterSearch,
     resetSubjectFilter,
-    studentPage,
+    resetStudentPage,
     resetStudentFilterActive,
     resetStudentFilterSearch,
     resetStudentFilter,
+    resetPaymentPage,
+    resetPaymentFilterActive,
+    resetPaymentFilterSearch,
+    resetPaymentFilter,
+    resetRefundPage,
+    resetRefundFilterActive,
+    resetRefundFilterSearch,
+    resetRefundFilter,
+    resetReqRefundPage,
+    resetReqRefundFilterActive,
+    resetReqRefundFilterSearch,
+    resetReqRefundFilter,
   }
 
   const router = useRouter()

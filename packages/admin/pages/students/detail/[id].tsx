@@ -544,6 +544,18 @@ export default function StudentsWrite() {
                     >
                       수강신청
                     </Button>
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="bordered"
+                      color="primary"
+                      className="lg:w-[50%] w-full"
+                      onClick={() => {
+                        router.back()
+                      }}
+                    >
+                      이전으로
+                    </Button>
                   </BtnBox>
                 )}
               </DetailDiv>
@@ -872,6 +884,24 @@ export default function StudentsWrite() {
                   </DetailDiv>
                 </DetailBox>
               </>
+            )}
+            {studentPaymentData !== undefined && (
+              <DetailBox>
+                <BtnBox>
+                  <Button
+                    size="md"
+                    radius="md"
+                    variant="bordered"
+                    color="primary"
+                    className="lg:w-[50%] w-full"
+                    onClick={() => {
+                      router.back()
+                    }}
+                  >
+                    이전으로
+                  </Button>
+                </BtnBox>
+              </DetailBox>
             )}
 
             <DetailBox>

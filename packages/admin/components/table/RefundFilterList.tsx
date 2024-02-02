@@ -25,10 +25,19 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
 const ColorHelp = styled.div`
   display: flex;
 `
-
 const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
@@ -60,7 +69,6 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
-
 const TheaderBox = styled.div`
   display: flex;
 `
@@ -234,28 +242,36 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function RefundTable() {
+export default function RefundFilterTable({
+  onFilterSearch,
+  studentFilter,
+  setStudentFilter,
+}) {
   const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  // const [searchStudentFilterMutation] = useMutation(
+  //   SEARCH_STUDENT_FILTER_MUTATION,
+  // )
+  const [searchResult, setSearchResult] = useState(null)
 
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+  useEffect(() => {
+    // searchStudentFilterMutation({
+    //   variables: {
+    //     ...studentFilter,
+    //     page: currentPage,
+    //     perPage: currentLimit,
+    //   },
+    //   onCompleted: resData => {
+    //     const { student, totalCount } = resData.searchStudent || {}
+    //     setSearchResult({ student, totalCount })
+    //   },
+    // })
+  }, [studentFilter, currentPage])
+
+  const resetList = () => {
+    setStudentFilter({})
+    onFilterSearch(false)
   }
-
-  useEffect(() => {
-    setTotalCount(studentsData.totalCount)
-  }, [studentsData, totalCount])
-
-  useEffect(() => {
-    refetch()
-    handleScrollTop()
-  }, [router, refetch, currentPage])
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -265,9 +281,18 @@ export default function RefundTable() {
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
+        <TopBox>
+          <Ttotal>
+            총
+            <span>
+              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
+            </span>
+            건이 검색되었습니다.
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
         <ColorHelp>
           <ColorCip>
             <span style={{ background: '#007de9' }}></span> : 현금
@@ -296,20 +321,20 @@ export default function RefundTable() {
                 <Tbtn></Tbtn>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              students?.map((item, index) => (
+            {searchResult?.totalCount > 0 &&
+              searchResult?.student.map((item, index) => (
                 <TableItem key={index}>
                   <TableRow>
                     <ThRequestAt>
                       <EllipsisBox>
-                        {item?.studentPayment[0]?.paymentDate
-                          ? getDate(item?.studentPayment[0]?.paymentDate)
+                        {item?.studentPayment[0].paymentDate
+                          ? getDate(item?.studentPayment[0].paymentDate)
                           : '-'}
                       </EllipsisBox>
                     </ThRequestAt>
                     <ThManager>
                       <EllipsisBox>
-                        {item?.studentPayment[0]?.processingManager?.mUsername}
+                        {item?.studentPayment[0].processingManager?.mUsername}
                       </EllipsisBox>
                     </ThManager>
                     <Tlist>
@@ -337,17 +362,19 @@ export default function RefundTable() {
                   </TableRow>
                 </TableItem>
               ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
+            {searchResult?.totalCount === 0 && (
+              <Nolist>검색결과가 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        {searchResult?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
+              total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}
