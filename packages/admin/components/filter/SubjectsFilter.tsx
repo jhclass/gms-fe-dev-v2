@@ -11,7 +11,7 @@ import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useState } from 'react'
 
-type ConsultFilterProps = {
+type SubjectsFilterProps = {
   isActive: boolean
 }
 
@@ -78,7 +78,7 @@ const FilterVariants = {
   },
 }
 
-export default function SubjectsFillter({
+export default function SubjectsFilter({
   isActive,
   onFilterSearch,
   setSubjectFilter,

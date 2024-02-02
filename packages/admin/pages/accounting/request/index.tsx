@@ -3,26 +3,26 @@ import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/accounting/layout'
 import { styled } from 'styled-components'
-import PaymentTable from '@/components/table/PaymentList'
-import PaymentFilter from '@/components/filter/PaymentFilter'
+import ReqRefundTable from '@/components/table/ReqRefundList'
+import ReqRefundFilter from '@/components/filter/ReqRefundFilter'
 import { useRecoilState } from 'recoil'
 import {
-  paymentFilterActiveState,
-  paymentFilterState,
-  paymentSearchState,
+  reqRefundFilterActiveState,
+  reqRefundFilterState,
+  reqRefundSearchState,
 } from '@/lib/recoilAtoms'
-import PaymentFilterTable from '@/components/table/PaymentListFilter'
+import ReqRefundFilterTable from '@/components/table/ReqRefundListFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
 `
 
-export default function Accounting() {
+export default function RequestRefund() {
   const [filterActive, setFilterActive] = useRecoilState(
-    paymentFilterActiveState,
+    reqRefundFilterActiveState,
   )
-  const [filterSearch, setFilterSearch] = useRecoilState(paymentFilterState)
-  const [studentFilter, setStudentFilter] = useRecoilState(paymentSearchState)
+  const [filterSearch, setFilterSearch] = useRecoilState(reqRefundFilterState)
+  const [studentFilter, setStudentFilter] = useRecoilState(reqRefundSearchState)
 
   return (
     <>
@@ -32,24 +32,24 @@ export default function Accounting() {
           isActive={filterActive}
           rightArea={true}
         />
-        <PaymentFilter
+        <ReqRefundFilter
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
         />
         <ConBox>
           {filterSearch ? (
-            <PaymentFilterTable
+            <ReqRefundFilterTable
               onFilterSearch={setFilterSearch}
               studentFilter={studentFilter}
               setStudentFilter={setStudentFilter}
             />
           ) : (
-            <PaymentTable />
+            <ReqRefundTable />
           )}
         </ConBox>
       </MainWrap>
     </>
   )
 }
-Accounting.getLayout = page => <Layout>{page}</Layout>
+RequestRefund.getLayout = page => <Layout>{page}</Layout>

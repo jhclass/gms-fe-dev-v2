@@ -109,7 +109,7 @@ const FilterVariants = {
   },
 }
 
-export default function ConsultFillter({
+export default function ConsultFilter({
   isActive,
   onFilterSearch,
   studentFilter,

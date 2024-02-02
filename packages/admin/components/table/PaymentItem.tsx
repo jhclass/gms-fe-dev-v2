@@ -177,11 +177,13 @@ export default function StudentsItem(props) {
         <TableRow>
           <Link href={`/students/detail/${student.id}`}>
             <ClickBox>
-              <Tnum>
+              <TcreatedAt>
                 <EllipsisBox>
-                  {(props.currentPage - 1) * conLimit + (conIndex + 1)}
+                  {studentPayment?.paymentDate
+                    ? getDate(studentPayment?.paymentDate)
+                    : '-'}
                 </EllipsisBox>
-              </Tnum>
+              </TcreatedAt>
               <Tname>
                 <EllipsisBox>{student.name}</EllipsisBox>
               </Tname>
@@ -190,9 +192,6 @@ export default function StudentsItem(props) {
                   {studentPayment?.processingManager?.mUsername}
                 </EllipsisBox>
               </Tmanager>
-              <Tphone>
-                <EllipsisBox>{student.phoneNum1}</EllipsisBox>
-              </Tphone>
               <Tsubject>
                 <EllipsisBox>{studentSubject?.subjectName}</EllipsisBox>
               </Tsubject>
@@ -237,13 +236,24 @@ export default function StudentsItem(props) {
                     : feeFormet(studentPayment?.actualAmount)}
                 </EllipsisBox>
               </Tamount>
-              <TcreatedAt>
+              <Tamount className="amount">
+                {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
-                  {studentPayment?.paymentDate
-                    ? getDate(studentPayment?.paymentDate)
-                    : '-'}
+                  {studentPayment?.actualAmount === undefined ||
+                  studentPayment?.actualAmount === null
+                    ? '-'
+                    : feeFormet(studentPayment?.actualAmount)}
                 </EllipsisBox>
-              </TcreatedAt>
+              </Tamount>
+              <Tamount className="amount">
+                {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
+                <EllipsisBox>
+                  {studentPayment?.actualAmount === undefined ||
+                  studentPayment?.actualAmount === null
+                    ? '-'
+                    : feeFormet(studentPayment?.actualAmount)}
+                </EllipsisBox>
+              </Tamount>
             </ClickBox>
           </Link>
         </TableRow>

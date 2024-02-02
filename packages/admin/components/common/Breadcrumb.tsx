@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
+import category from '@/lib/category'
 
 type propsTypes = {
   rightArea: boolean
@@ -11,7 +12,7 @@ type propsTypes = {
   addRender?: React.ReactNode
 }
 
-const BreadcrumbBox = styled.div<{ $isIndex: boolean }>`
+const BreadcrumbBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -115,144 +116,6 @@ const IconVariants = {
   },
 }
 
-const categories = [
-  {
-    href: '/',
-    iconSrc: 'ico_home',
-    alt: '대시보드',
-    label: '대시보드',
-    isBreadcrumb: false,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/consult',
-    iconSrc: 'ico_consult',
-    alt: '상담관리',
-    label: '상담관리',
-    isBreadcrumb: true,
-    isFilter: true,
-    isWrite: '/consult/write',
-  },
-  {
-    href: '/consult/detail',
-    iconSrc: 'ico_consult',
-    alt: '상담상세',
-    label: '상담상세',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/consult/write',
-    iconSrc: 'ico_consult',
-    alt: '상담등록',
-    label: '상담등록',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/consult/registered',
-    iconSrc: 'ico_consult',
-    alt: '등록완료 목록',
-    label: '등록완료 목록',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/consult/reject',
-    iconSrc: 'ico_consult',
-    alt: '오류/거부 목록',
-    label: '오류/거부 목록',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/subjects',
-    iconSrc: 'ico_work',
-    alt: '과정관리',
-    label: '과정관리',
-    isBreadcrumb: true,
-    isFilter: true,
-    isWrite: '/subjects/write',
-  },
-  {
-    href: '/subjects/detail',
-    iconSrc: 'ico_work',
-    alt: '과정상세',
-    label: '과정상세',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/subjects/write',
-    iconSrc: 'ico_work',
-    alt: '과정등록',
-    label: '과정등록',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/students',
-    iconSrc: 'ico_regist',
-    alt: '수강생관리',
-    label: '수강생관리',
-    isBreadcrumb: true,
-    isFilter: true,
-    isWrite: '/students/write',
-  },
-  {
-    href: '/students/detail',
-    iconSrc: 'ico_consult',
-    alt: '수강생상세',
-    label: '수강생상세',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/students/write',
-    iconSrc: 'ico_consult',
-    alt: '수강생등록',
-    label: '수강생등록',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/students/edit',
-    iconSrc: 'ico_consult',
-    alt: '수강생수정',
-    label: '수강생수정',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/accounting',
-    iconSrc: 'ico_accounting',
-    alt: '회계관리',
-    label: '회계관리',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-  {
-    href: '/member',
-    iconSrc: '',
-    alt: '',
-    label: '프로필',
-    isBreadcrumb: true,
-    isFilter: false,
-    isWrite: '',
-  },
-]
-
 export default function Breadcrumb(props) {
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
@@ -262,43 +125,46 @@ export default function Breadcrumb(props) {
     setBreadcrumb(pathnames)
   }, [router.pathname])
 
-  const currentItem =
+  const topCate = category.find(item => item.href === `/${breadcrumb[0]}`)
+  const subCate =
+    topCate?.children !== undefined &&
+    topCate.children.find(item =>
+      breadcrumb[1] ? item.href === `/${breadcrumb[1]}` : item.href === '/',
+    )
+  const currentCate =
     breadcrumb.length > 1
-      ? categories.find(
-          item => item.href === `/${breadcrumb[0]}/${breadcrumb[1]}`,
-        )
-      : categories.find(item => item.href === `/${breadcrumb[0]}`)
+      ? subCate
+      : topCate?.children.find(item => item.href === '/') === undefined
+      ? topCate
+      : subCate
 
-  const parentItem = categories.find(item => item.href === `/${breadcrumb[0]}`)
   return (
     <>
-      {currentItem?.isBreadcrumb && (
-        <BreadcrumbBox $isIndex={breadcrumb.length == 1 ? true : false}>
+      {currentCate?.isBreadcrumb && (
+        <BreadcrumbBox>
           <CateTitle>
-            {breadcrumb.length == 1 ? (
-              <Title1>{parentItem?.label}</Title1>
-            ) : (
-              <>
-                <TitleBox>
-                  <button onClick={() => router.back()}>
-                    <BackIcon>
-                      <i className="xi-arrow-left"></i>
-                    </BackIcon>
-                  </button>
-                  <Title1>{parentItem?.label}</Title1>
-                </TitleBox>
-                <TitleBox>
-                  <Title2>
-                    <i className="xi-angle-right-thin" />
-                  </Title2>
-                  <Title2>{currentItem?.label}</Title2>
-                </TitleBox>
-              </>
+            <TitleBox>
+              {!currentCate.exposure && (
+                <button onClick={() => router.back()}>
+                  <BackIcon>
+                    <i className="xi-arrow-left"></i>
+                  </BackIcon>
+                </button>
+              )}
+              <Title1>{topCate?.name}</Title1>
+            </TitleBox>
+            {subCate !== undefined && (
+              <TitleBox>
+                <Title2>
+                  <i className="xi-angle-right-thin" />
+                </Title2>
+                <Title2>{subCate?.name}</Title2>
+              </TitleBox>
             )}
           </CateTitle>
           {props.rightArea && (
             <BoxRt>
-              {currentItem.isFilter && (
+              {currentCate.isFilter && (
                 <FilterBtn
                   variants={FilterVariants}
                   initial="initial"
@@ -316,13 +182,13 @@ export default function Breadcrumb(props) {
                   Filter
                 </FilterBtn>
               )}
-              {currentItem.isWrite !== '' && (
+              {currentCate.isWrite !== '' && (
                 <Button
                   size="sm"
                   radius="sm"
                   variant="solid"
                   className="text-white bg-flag1"
-                  onClick={() => router.push(currentItem.isWrite)}
+                  onClick={() => router.push(currentCate.isWrite)}
                 >
                   등록
                 </Button>

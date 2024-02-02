@@ -3,7 +3,7 @@ import { Tooltip } from '@nextui-org/react'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 
@@ -108,8 +108,7 @@ const cateName = {
 export default function CategoryItem<CategoryItemProps>({
   href,
   iconSrc,
-  alt,
-  label,
+  name,
   isActive,
   onClick,
   children,
@@ -117,11 +116,26 @@ export default function CategoryItem<CategoryItemProps>({
   const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const arrowRef = useRef(null)
 
   useEffect(() => {
-    animate('.cateArrow', { rotate: isOpen ? 0 : 180 }, { duration: 0.2 })
+    if (arrowRef.current) {
+      animate(
+        arrowRef.current,
+        { rotate: isOpen[name] ? 0 : 180 },
+        { duration: 0.2 },
+      )
+    }
   }, [isOpen])
 
+  const handleClick = cate => {
+    setIsOpen(prevState => ({
+      ...prevState,
+      [cate]: !prevState[cate],
+    }))
+  }
+
+  const subCate = children?.filter(category => category.exposure)
   return (
     <>
       <CateItem
@@ -131,11 +145,11 @@ export default function CategoryItem<CategoryItemProps>({
           transition: { duration: 0.3 },
         }}
       >
-        {!children ? (
+        {!children || subCate.length === 0 ? (
           <Link href={href}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
-                content={label}
+                content={name}
                 placement="right"
                 isDisabled={navOpen ? true : false}
               >
@@ -148,17 +162,17 @@ export default function CategoryItem<CategoryItemProps>({
                   {isActive ? (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   ) : (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   )}
                 </CateIcon>
               </Tooltip>
-              <CateTitle $navOpen={navOpen}>{label}</CateTitle>
+              <CateTitle $navOpen={navOpen}>{name}</CateTitle>
             </CateLink>
           </Link>
         ) : (
@@ -166,24 +180,25 @@ export default function CategoryItem<CategoryItemProps>({
             <MenuBtn
               $navOpen={navOpen}
               onClick={() => {
-                setIsOpen(!isOpen)
+                handleClick(name)
               }}
             >
               <i
+                ref={arrowRef}
                 className={`${
                   isActive ? 'color-white' : 'color-[#0007de9]'
-                } cateArrow xi-angle-up-min`}
+                } xi-angle-up-min`}
               />
             </MenuBtn>
 
             <CateLink
               $navOpen={navOpen}
               onClick={() => {
-                setIsOpen(!isOpen)
+                handleClick(name)
               }}
             >
               <Tooltip
-                content={label}
+                content={name}
                 placement="right"
                 isDisabled={navOpen ? true : false}
               >
@@ -196,29 +211,29 @@ export default function CategoryItem<CategoryItemProps>({
                   {isActive ? (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   ) : (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
-                      alt={alt}
+                      alt={name}
                     />
                   )}
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
-                <Link href={href}>{label}</Link>
+                <Link href={href}>{name}</Link>
               </CateTitle>
             </CateLink>
 
             {navOpen && (
-              <Menu $isOpen={isOpen}>
-                {children.map((item, index) => (
+              <Menu $isOpen={isOpen[name]}>
+                {subCate.map((item, index) => (
                   <MenuItem
                     key={index}
                     $isActive={router.pathname == item.href}
                   >
-                    <Link href={item.href}>{item.label}</Link>
+                    <Link href={href + item.href}>{item.name}</Link>
                   </MenuItem>
                 ))}
               </Menu>

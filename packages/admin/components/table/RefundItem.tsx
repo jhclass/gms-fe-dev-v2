@@ -1,0 +1,177 @@
+import { styled } from 'styled-components'
+import Link from 'next/link'
+import { Button } from '@nextui-org/react'
+
+type ConsultItemProps = {
+  tableData: {
+    adviceTypes: any
+    id: number
+    stName: string
+    phoneNum1: string
+    progress: number
+    subDiv: string
+    stVisit: string
+    createdAt: string
+    receiptDiv: string
+    pic: string
+  }
+  forName?: string
+  itemIndex: number
+  currentPage: number
+  limit?: number
+  favorite?: boolean
+  favoTotal?: number
+  flagNum?: number
+  checkBtn?: boolean
+  checkItem?: number[]
+  setCheckItem?: (newItems: number[]) => void
+}
+
+const ClickBox = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`
+const TrequestAt = styled.div<{ $width: number }>`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 12%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${props => props.$width * 0.12}px;
+`
+const Tmanager = styled.div<{ $width: number }>`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 12%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${props => props.$width * 0.12}px;
+`
+const Tname = styled.div<{ $width: number }>`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${props => props.$width * 0.1}px;
+  font-weight: 600;
+`
+const Tsubject = styled.div<{ $width: number }>`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 31%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${props => props.$width * 0.31}px;
+`
+const Tpayment = styled.div<{ $width: number }>`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 9%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${props => props.$width * 0.09}px;
+`
+const TpaymentName = styled.div<{ $width: number }>`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 12%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${props => props.$width * 0.12}px;
+`
+const Tamount = styled.div<{ $width: number }>`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 14%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${props => props.$width * 0.14}px;
+  font-weight: 600;
+
+  &.card {
+    color: #007de9;
+  }
+  &.cash {
+    color: #ff5900;
+  }
+`
+const EllipsisBox = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`
+
+export default function StudentsItem(props) {
+  const conLimit = props.limit || 0
+  const conIndex = props.itemIndex
+  const student = props.tableData
+  const studentPayment = student.studentPayment[0]
+  const studentSubject = student.studentPayment[0]?.subject
+
+  const getDate = (DataDate: string): string => {
+    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    return LocalDdate
+  }
+  const feeFormet = fee => {
+    const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    return result
+  }
+
+  return (
+    <>
+      <Link href={`/students/detail/${student.id}`}>
+        <ClickBox>
+          <TrequestAt $width={props.width}>
+            <EllipsisBox>
+              {studentPayment?.paymentDate
+                ? getDate(studentPayment?.paymentDate)
+                : '-'}
+            </EllipsisBox>
+          </TrequestAt>
+          <Tmanager $width={props.width}>
+            <EllipsisBox>
+              {studentPayment?.processingManager?.mUsername}
+            </EllipsisBox>
+          </Tmanager>
+          <Tname $width={props.width}>
+            <EllipsisBox>{student.name}</EllipsisBox>
+          </Tname>
+          <Tsubject $width={props.width}>
+            <EllipsisBox>{studentSubject?.subjectName}</EllipsisBox>
+          </Tsubject>
+          <Tpayment $width={props.width}>
+            <EllipsisBox>{student.name}</EllipsisBox>
+          </Tpayment>
+          <TpaymentName $width={props.width}>
+            <EllipsisBox>{student.name}</EllipsisBox>
+          </TpaymentName>
+          <Tamount $width={props.width} className="card">
+            <EllipsisBox>
+              {studentPayment?.tuitionFee === undefined ||
+              studentPayment?.tuitionFee === null
+                ? '-'
+                : feeFormet(studentPayment?.tuitionFee)}
+            </EllipsisBox>
+          </Tamount>
+        </ClickBox>
+      </Link>
+    </>
+  )
+}

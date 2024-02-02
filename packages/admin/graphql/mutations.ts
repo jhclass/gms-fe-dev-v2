@@ -817,21 +817,21 @@ export const UPDATE_STUDENT_COURSE_MUTATION = gql`
 
 //StudentPayment
 export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
-  mutation CreateStudentPayment(
+  mutation Mutation(
     $campus: String!
     $seScore: Int!
     $tuitionFee: Int!
     $studentId: Int!
     $processingManagerId: Int!
     $subjectId: Int!
-    $receiptClassification: [String]
     $discountAmount: String
     $actualAmount: Int
     $unCollectedAmount: Int
+    $receiptClassification: [String]
     $paymentDate: String
     $situationReport: Boolean
-    $amountReceived: Int
     $subDiv: String
+    $amountReceived: Int
   ) {
     createStudentPayment(
       campus: $campus
@@ -840,18 +840,18 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       studentId: $studentId
       processingManagerId: $processingManagerId
       subjectId: $subjectId
-      receiptClassification: $receiptClassification
       discountAmount: $discountAmount
       actualAmount: $actualAmount
       unCollectedAmount: $unCollectedAmount
+      receiptClassification: $receiptClassification
       paymentDate: $paymentDate
       situationReport: $situationReport
-      amountReceived: $amountReceived
       subDiv: $subDiv
+      amountReceived: $amountReceived
     ) {
+      ok
       error
       message
-      ok
     }
   }
 `
