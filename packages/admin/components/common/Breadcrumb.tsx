@@ -151,14 +151,14 @@ export default function Breadcrumb(props) {
                   </BackIcon>
                 </button>
               )}
-              <Title1>{topCate?.label}</Title1>
+              <Title1>{topCate?.name}</Title1>
             </TitleBox>
             {subCate !== undefined && (
               <TitleBox>
                 <Title2>
                   <i className="xi-angle-right-thin" />
                 </Title2>
-                <Title2>{subCate?.label}</Title2>
+                <Title2>{subCate?.name}</Title2>
               </TitleBox>
             )}
           </CateTitle>
