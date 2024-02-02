@@ -306,8 +306,7 @@ export default function StudentsWriteCourse() {
               : data.receiptClassification,
           subDiv: data.subDiv,
         },
-        onCompleted: rr => {
-          console.log(rr)
+        onCompleted: () => {
           updateStudentDuedate({
             variables: {
               editStudentId: parseInt(studentId),
