@@ -17,9 +17,9 @@ const _ = require('lodash')
 type StudentsFilterProps = {
   isActive: boolean
 }
-
 const FilterBox = styled(motion.div)`
-  overflow: hidden;
+  z-index: 2;
+  position: relative;
 `
 const FilterForm = styled.form`
   display: flex;

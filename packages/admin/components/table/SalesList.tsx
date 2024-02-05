@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
-import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
+import SalesItem from '@/components/table/SalesItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -64,75 +64,26 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
-const Tnum = styled.div`
+const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 12%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.12}px;
 `
 const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const Tname = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.09}px;
-`
-const Tsubject = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 18%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.18}px;
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const TcreatedAt = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const Tmanager = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.11}px;
+  font-weight: 600;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -177,14 +128,6 @@ export default function PaymentTable() {
         <Ttotal>
           총 <span>{totalCount}</span>건
         </Ttotal>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미배정
-          </ColorCip>
-        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -192,45 +135,27 @@ export default function PaymentTable() {
             <Theader>
               <TheaderBox>
                 <TcreatedAt>결제일시</TcreatedAt>
-                <Tname>수강생명</Tname>
-                <Tmanager>수납 담당자</Tmanager>
-                <Tsubject>수강과정</Tsubject>
-                <Tamount className="fee">수강료</Tamount>
-                <Tamount className="discount">할인금액</Tamount>
-                <Tamount className="actual">실 수강료</Tamount>
-                <Tamount className="unpaid">미수납액</Tamount>
-                <Tamount className="amount">카드결제액</Tamount>
-                <Tamount className="amount">현금결제액</Tamount>
-                <Tamount className="amount">결제합계</Tamount>
+                <Tamount>카드 결제금액</Tamount>
+                <Tamount>현금 결제금액</Tamount>
+                <Tamount>결제 합계</Tamount>
+                <Tamount>카드 환불금액</Tamount>
+                <Tamount>현금 환불금액</Tamount>
+                <Tamount>환불 홥계</Tamount>
+                <Tamount>총 매출액</Tamount>
+                <Tamount>미수납액</Tamount>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              students?.map((item, index) => (
-                <PaymentItem
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                />
-              ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
+            {students?.map((item, index) => (
+              <SalesItem
+                key={index}
+                tableData={item}
+                itemIndex={index}
+                currentPage={currentPage}
+                limit={currentLimit}
+              />
+            ))}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
-          <PagerWrap>
-            <Pagination
-              variant="light"
-              showControls
-              initialPage={currentPage}
-              page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
-              onChange={newPage => {
-                setCurrentPage(newPage)
-              }}
-            />
-          </PagerWrap>
-        )}
       </TableArea>
     </>
   )

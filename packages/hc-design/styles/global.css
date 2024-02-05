@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 @layer components {
@@ -73,5 +73,19 @@
 html {
   @apply relative text-[13px] md:text-[14px] lg:text-[15px] xl:text-[15px] font-sans;
   line-height: 1.5;
-  font-family: 'Pretendard Variable', 'Roboto', sans-serif;
+  font-family:
+    /* 'Pretendard Variable', */
+    Pretendard,
+    /* -apple-system,
+    BlinkMacSystemFont,
+    system-ui, */ Roboto,
+    /* 'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol', */
+      sans-serif;
 }

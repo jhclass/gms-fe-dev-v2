@@ -20,7 +20,8 @@ type ConsultFilterProps = {
 }
 
 const FilterBox = styled(motion.div)`
-  overflow: hidden;
+  z-index: 2;
+  position: relative;
 `
 const BoxArea = styled.div`
   display: flex;
