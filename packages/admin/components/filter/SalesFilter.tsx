@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
-import { reqRefundPageState } from '@/lib/recoilAtoms'
+import { paymentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
-import { Button, Input } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
 import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -13,9 +13,9 @@ import { getYear } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { subMonths, subDays } from 'date-fns'
+import { subMonths, subDays, addMonths } from 'date-fns'
 
-type ReqRefundFilterProps = {
+type SalesFilterProps = {
   isActive: boolean
 }
 
@@ -47,6 +47,15 @@ const BoxTop = styled.div`
     flex-direction: column;
   }
 `
+const BoxMiddle = styled.div`
+  display: flex;
+  flex: 1;
+  gap: 2rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+    flex-direction: column;
+  }
+`
 const ItemBox = styled.div`
   display: flex;
   flex: 1;
@@ -67,6 +76,7 @@ const BtnBox = styled.div`
   display: flex;
   gap: 1rem;
   flex: 1;
+  align-items: flex-end;
 `
 const FilterVariants = {
   hidden: {
@@ -84,12 +94,12 @@ const FilterVariants = {
   },
 }
 
-export default function ReqRefundFilter({
+export default function SalesFilter({
   isActive,
   onFilterSearch,
   setStudentFilter,
 }) {
-  const reqRefund = useResetRecoilState(reqRefundPageState)
+  const paymentPage = useResetRecoilState(paymentPageState)
   const [paymentDateRange, setPaymentDateRange] = useState([null, null])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
@@ -109,70 +119,42 @@ export default function ReqRefundFilter({
   })
 
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
-      const validateDateRange = (dateRange, message) => {
-        if (dateRange !== undefined) {
-          if (dateRange[1] !== null) {
-            return true
-          } else {
-            alert(message)
-            return false
-          }
-        } else {
-          return true
-        }
-      }
-      const paymentDate = validateDateRange(
-        data.createdAt,
-        '승인일시의 마지막날을 선택해주세요.',
-      )
-      if (paymentDate) {
-        const filter = {
-          studentName: data.studentName === '' ? null : data.studentName,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
-        }
-        setStudentFilter(filter)
-        onFilterSearch(true)
-        reqRefund()
-      }
-    }
+    // console.log(
+    //   startPaymentDate.getYear() === endPaymentDate.getYear() &&
+    //     startPaymentDate.getMonth() === endPaymentDate.getMonth() &&
+    //     startPaymentDate.getDate() === endPaymentDate.getDate(),
+    // )
+    // if (isDirty || data.progress !== undefined) {
+    //   const validateDateRange = (dateRange, message) => {
+    //     if (dateRange !== undefined) {
+    //       if (dateRange[1] !== null) {
+    //         return true
+    //       } else {
+    //         alert(message)
+    //         return false
+    //       }
+    //     } else {
+    //       return true
+    //     }
+    //   }
+    //   const paymentDate = validateDateRange(
+    //     data.createdAt,
+    //     '결제일시의 마지막날을 선택해주세요.',
+    //   )
+    //   if (paymentDate) {
+    //     const filter = {
+    //       studentName: data.studentName === '' ? null : data.studentName,
+    //       createdAt: data.createdAt === undefined ? null : data.createdAt,
+    //     }
+    //     setStudentFilter(filter)
+    //     onFilterSearch(true)
+    //     paymentPage()
+    //   }
+    // }
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
     setValue('createdAt', [start, end])
-  }
-
-  const handleYesterdayClick = () => {
-    const yesterday = subDays(new Date(), 1)
-    setDates(yesterday, yesterday)
-  }
-
-  const handleTodayClick = () => {
-    const today = new Date()
-    setDates(today, today)
-  }
-
-  const handleLastMonthClick = () => {
-    const today = new Date()
-    const lastMonth = subMonths(new Date(), 1)
-    setDates(lastMonth, today)
-  }
-
-  const handleLastThreeMonthsClick = () => {
-    const today = new Date()
-    const lastThreeMonths = subMonths(new Date(), 3)
-    setDates(lastThreeMonths, today)
-  }
-
-  const handleLastSixMonthsClick = () => {
-    const today = new Date()
-    const lastSixMonths = subMonths(new Date(), 6)
-    setDates(lastSixMonths, today)
-  }
-
-  const handleReset = () => {
-    setPaymentDateRange([null, null])
-    reset()
   }
 
   return (
@@ -207,6 +189,7 @@ export default function ReqRefundFilter({
                       />
                     )}
                     selectsRange={true}
+                    maxDate={addMonths(startPaymentDate, 1)}
                     locale="ko"
                     startDate={startPaymentDate}
                     endDate={endPaymentDate}
@@ -225,7 +208,7 @@ export default function ReqRefundFilter({
                     dateFormat="yyyy/MM/dd"
                     customInput={
                       <Input
-                        label="승일 일시"
+                        label="검색 기간"
                         labelPlacement="outside"
                         type="text"
                         variant="bordered"
@@ -237,51 +220,27 @@ export default function ReqRefundFilter({
                   />
                 )}
               />
-              <DateBtn>
-                <Button onClick={handleYesterdayClick}>어제</Button>
-                <Button onClick={handleTodayClick}>오늘</Button>
-                <Button onClick={handleLastMonthClick}>1개월</Button>
-                <Button onClick={handleLastThreeMonthsClick}>3개월</Button>
-                <Button onClick={handleLastSixMonthsClick}>6개월</Button>
-              </DateBtn>
             </ItemBox>
-
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="수강생이름"
-                id="studentName"
-                {...register('studentName')}
-              />
-            </ItemBox>
+            <BtnBox>
+              <Button2
+                buttonType="submit"
+                width="100%"
+                height="2.5rem"
+                typeBorder={true}
+                fontColor="#fff"
+                bgColor="#007de9"
+              >
+                적용
+              </Button2>
+            </BtnBox>
           </BoxTop>
-          <BtnBox>
-            <Button2
-              buttonType="submit"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
-            >
-              검색
-            </Button2>
-            <Button2
-              buttonType="reset"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              fontColor="#007de9"
-              bgColor="#fff"
-              borderColor="#007de9"
-              typeBorder={true}
-              onClick={handleReset}
-            >
-              초기화
-            </Button2>
-          </BtnBox>
+          <BoxMiddle>
+            <ItemBox>
+              <p>검색 기간은 최대 1달 입니다.</p>
+              <p>기간검색은 일별로 검색됩니다.</p>
+              <p>일별 검색은 24시간으로 검색됩니다.</p>
+            </ItemBox>
+          </BoxMiddle>
         </FilterForm>
       </FilterBox>
     </>

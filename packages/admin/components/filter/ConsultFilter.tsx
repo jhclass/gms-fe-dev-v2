@@ -28,7 +28,8 @@ type ConsultFilterProps = {
 }
 
 const FilterBox = styled(motion.div)`
-  overflow: hidden;
+  z-index: 2;
+  position: relative;
 `
 const FilterForm = styled.form`
   display: flex;
@@ -613,7 +614,7 @@ export default function ConsultFilter({
                 placeholder=" "
                 type="text"
                 variant="bordered"
-                label="수강생이름"
+                label="이름"
                 value={name}
                 onValueChange={setName}
                 onChange={e => {
