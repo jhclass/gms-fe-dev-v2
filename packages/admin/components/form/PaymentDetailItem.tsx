@@ -73,7 +73,6 @@ export default function StudentPaymentDetailItem({
   const [selectedPaymentDate, setSelectedPaymentDate] = useRecoilState(
     selectedPaymentDetailState,
   )
-
   const clickReqRefund = () => {
     if (detailtData.reqRefund) {
       const isAssignment = confirm('결제를 취소요청을 철회 하시겠습니까?')
@@ -331,8 +330,21 @@ export default function StudentPaymentDetailItem({
                 </div>
               </AreaBox> */}
             </FlexBox>
-            <BtnBox>
-              {/* <Button
+            {detailtData.refundApproval ? (
+              <BtnBox>
+                <Button
+                  isDisabled={true}
+                  size="md"
+                  radius="md"
+                  variant="solid"
+                  className="w-full"
+                >
+                  환불 완료
+                </Button>
+              </BtnBox>
+            ) : (
+              <BtnBox>
+                {/* <Button
                 size="md"
                 radius="md"
                 variant="bordered"
@@ -341,28 +353,29 @@ export default function StudentPaymentDetailItem({
               >
                 영수증 인쇄
               </Button> */}
-              {detailtData.reqRefund ? (
-                <Button
-                  isDisabled={detailtData.refundApproval ? true : false}
-                  size="md"
-                  radius="md"
-                  className="lg:w-[50%] w-full text-white bg-flag1"
-                  onClick={() => clickReqRefund()}
-                >
-                  결제 취소요청 철회
-                </Button>
-              ) : (
-                <Button
-                  size="md"
-                  radius="md"
-                  variant="bordered"
-                  className="lg:w-[50%] w-full text-flag1 border-flag1"
-                  onClick={() => clickReqRefund()}
-                >
-                  결제 취소 요청
-                </Button>
-              )}
-            </BtnBox>
+                {detailtData.reqRefund ? (
+                  <Button
+                    isDisabled={detailtData.refundApproval ? true : false}
+                    size="md"
+                    radius="md"
+                    className="lg:w-[50%] w-full text-white bg-flag1"
+                    onClick={() => clickReqRefund()}
+                  >
+                    결제 취소요청 철회
+                  </Button>
+                ) : (
+                  <Button
+                    size="md"
+                    radius="md"
+                    variant="bordered"
+                    className="lg:w-[50%] w-full text-flag1 border-flag1"
+                    onClick={() => clickReqRefund()}
+                  >
+                    결제 취소 요청
+                  </Button>
+                )}
+              </BtnBox>
+            )}
           </FlexCardBox>
         </>
       )}
