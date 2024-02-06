@@ -59,7 +59,7 @@ const SemiTitle = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: #ff5900;
   padding-bottom: 0.375rem;
   display: block;
 `
@@ -923,7 +923,7 @@ export default function ConsultDetail() {
             </DetailBox>
             {consultation?.length > 1 && (
               <DetailBox>
-                <SemiTitle>이전 문의</SemiTitle>
+                <SemiTitle>중목 상담 문의 내역</SemiTitle>
                 <ColFlexBox>
                   {consultation
                     .filter(item => item.id !== studentState.id)
