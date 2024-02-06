@@ -118,7 +118,6 @@ export default function RefundFilter({
   })
 
   const onSubmit = data => {
-    console.log(data)
     if (isDirty || data.progress !== undefined) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {

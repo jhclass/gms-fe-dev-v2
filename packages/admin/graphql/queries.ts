@@ -231,6 +231,7 @@ export const SEE_STUDENT_QUERY = gql`
             subjectName
             id
           }
+          cancellation
         }
       }
     }
@@ -267,6 +268,80 @@ export const SEE_AMOUNT_STUDENT_QUERY = gql`
         }
         phoneNum1
         name
+      }
+    }
+  }
+`
+
+// 회계
+export const SEE_PAYMENT_DETAIL_QUERY = gql`
+  query SeePaymentDetail($page: Int, $limit: Int) {
+    seePaymentDetail(page: $page, limit: $limit) {
+      ok
+      error
+      message
+      totalCount
+      PaymentDetail {
+        amountPayment
+        cashOrCard
+        id
+        receiver {
+          mUsername
+        }
+        studentPaymentId
+        updatedAt
+        studentPayment {
+          tuitionFee
+          subject {
+            subjectName
+          }
+          subDiv
+          unCollectedAmount
+          student {
+            name
+          }
+          discountAmount
+          amountReceived
+          actualAmount
+        }
+        depositAmount
+      }
+    }
+  }
+`
+
+export const SEE_REFUND_QUERY = gql`
+  query SeePaymentDetail($page: Int, $limit: Int) {
+    seePaymentDetail(page: $page, limit: $limit) {
+      ok
+      error
+      message
+      totalCount
+      PaymentDetail {
+        amountPayment
+        cashOrCard
+        id
+        receiver {
+          mUsername
+        }
+        studentPaymentId
+        updatedAt
+        studentPayment {
+          subject {
+            subjectName
+          }
+          student {
+            name
+          }
+        }
+        depositAmount
+        reqRefund
+        reqRefundManager
+        bankName
+        cardCompany
+        receiverId
+        refundApproval
+        refundManager
       }
     }
   }

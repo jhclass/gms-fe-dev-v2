@@ -1,12 +1,17 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
+import { SEE_AMOUNT_STUDENT_QUERY, SEE_REFUND_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
+import {
+  APPROVAL_REFUND_MUTATION,
+  REQ_REFUND_MUTATION,
+} from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -212,24 +217,61 @@ export default function RequestRefundTable() {
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
+  const { userLogs } = useUserLogsMutation()
+  const { loading, error, data, refetch } = useQuery(SEE_REFUND_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
+  const [approvalRefoundMutation] = useMutation(APPROVAL_REFUND_MUTATION)
+  const studentsPayment = data?.seePaymentDetail || []
+  const students = studentsPayment?.PaymentDetail || []
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
-    setTotalCount(studentsData.totalCount)
-  }, [studentsData, totalCount])
+    setTotalCount(studentsPayment.totalCount)
+  }, [studentsPayment, totalCount])
 
   useEffect(() => {
     refetch()
     handleScrollTop()
   }, [router, refetch, currentPage])
+
+  const clickApprovalRefund = paymentId => {
+    const isAssignment = confirm('환불 승인 하시겠습니까?')
+    if (isAssignment) {
+      approvalRefoundMutation({
+        variables: {
+          refundApprovalId: paymentId,
+          refundApproval: true,
+        },
+        onCompleted: () => {
+          refetch()
+          alert('환불 승인 되었습니다.')
+          userLogs(`paymentDetail ID : ${paymentId} / 환불 승인`)
+        },
+      })
+    }
+  }
+
+  const clickCancelReq = paymentId => {
+    const isAssignment = confirm('환불 거부 하시겠습니까?')
+    if (isAssignment) {
+      reqRefoundMutation({
+        variables: {
+          reqRefundId: paymentId,
+          reqRefund: false,
+        },
+        onCompleted: () => {
+          refetch()
+          alert('결제 취소요청 되었습니다.')
+          userLogs(`paymentDetail ID : ${paymentId} / 환불 거부`)
+        },
+      })
+    }
+  }
 
   return (
     <>
@@ -264,43 +306,48 @@ export default function RequestRefundTable() {
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&
-              students?.map((item, index) => (
-                <TableItem key={index}>
-                  <TableRow>
-                    <Tlist>
-                      <RefundItem
-                        tableData={item}
-                        itemIndex={index}
-                        currentPage={currentPage}
-                        limit={currentLimit}
-                        width={1032}
-                      />
-                    </Tlist>
-                    <Tbtn>
-                      <BtnBox>
-                        <Button
-                          size="sm"
-                          variant="solid"
-                          color="primary"
-                          className="w-full text-white"
-                          onClick={() => console.log('환불 승인')}
-                        >
-                          환불 승인
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="bordered"
-                          color="primary"
-                          className="w-full"
-                          onClick={() => console.log('환불 거부')}
-                        >
-                          환불 거부
-                        </Button>
-                      </BtnBox>
-                    </Tbtn>
-                  </TableRow>
-                </TableItem>
-              ))}
+              students
+                ?.filter(
+                  item =>
+                    item.reqRefund === true && item.refundApproval === false,
+                )
+                .map((item, index) => (
+                  <TableItem key={index}>
+                    <TableRow>
+                      <Tlist>
+                        <RefundItem
+                          tableData={item}
+                          itemIndex={index}
+                          currentPage={currentPage}
+                          limit={currentLimit}
+                          width={1032}
+                        />
+                      </Tlist>
+                      <Tbtn>
+                        <BtnBox>
+                          <Button
+                            size="sm"
+                            variant="solid"
+                            color="primary"
+                            className="w-full text-white"
+                            onClick={() => clickApprovalRefund(item.id)}
+                          >
+                            환불 승인
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="bordered"
+                            color="primary"
+                            className="w-full"
+                            onClick={() => clickCancelReq(item.id)}
+                          >
+                            환불 거부
+                          </Button>
+                        </BtnBox>
+                      </Tbtn>
+                    </TableRow>
+                  </TableItem>
+                ))}
             {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>

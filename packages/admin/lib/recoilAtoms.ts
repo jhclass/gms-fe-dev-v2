@@ -114,6 +114,10 @@ export const studentProgressStatusState = atom({
       name: '이수자',
       color: '#0eacab',
     },
+    40: {
+      name: '중도포기',
+      color: '#7a0075',
+    },
   },
 })
 
