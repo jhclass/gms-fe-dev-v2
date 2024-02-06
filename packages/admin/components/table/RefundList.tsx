@@ -71,7 +71,7 @@ const TheaderBox = styled.div`
 `
 const TheaderListBox = styled.div`
   display: flex;
-  width: 76%;
+  width: 83%;
 `
 const TableItem = styled.div`
   position: relative;
@@ -208,22 +208,8 @@ const EllipsisBox = styled.p`
 `
 const Tlist = styled.div`
   display: table-cell;
-  width: 76%;
-  min-width: ${1200 * 0.76}px;
-`
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 7%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.07}px;
-`
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  width: 83%;
+  min-width: ${1200 * 0.83}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -270,31 +256,6 @@ export default function RefundTable() {
     return LocalDdate
   }
 
-  const clickCancelRefund = paymentId => {
-    const isAssignment = confirm('환불 승인을 취소 하시겠습니까?')
-    if (isAssignment) {
-      approvalRefoundMutation({
-        variables: {
-          refundApprovalId: paymentId,
-          refundApproval: false,
-        },
-        onCompleted: () => {
-          reqRefoundMutation({
-            variables: {
-              reqRefundId: paymentId,
-              reqRefund: false,
-            },
-            onCompleted: () => {
-              refetch()
-              alert('환불 승인 되었습니다.')
-              userLogs(`paymentDetail ID : ${paymentId} / 환불 승인 취소`)
-            },
-          })
-        },
-      })
-    }
-  }
-
   return (
     <>
       <TTopic>
@@ -326,7 +287,6 @@ export default function RefundTable() {
                   <TpaymentName $width={912}>은행/카드사</TpaymentName>
                   <Tamount $width={912}>환불금액</Tamount>
                 </TheaderListBox>
-                <Tbtn></Tbtn>
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&
@@ -352,19 +312,6 @@ export default function RefundTable() {
                           width={912}
                         />
                       </Tlist>
-                      <Tbtn>
-                        <BtnBox>
-                          <Button
-                            size="sm"
-                            variant="solid"
-                            color="primary"
-                            className="w-full text-white bg-flag1"
-                            onClick={() => clickCancelRefund(item.id)}
-                          >
-                            환불 취소
-                          </Button>
-                        </BtnBox>
-                      </Tbtn>
                     </TableRow>
                   </TableItem>
                 ))}

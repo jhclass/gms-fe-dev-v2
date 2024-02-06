@@ -148,7 +148,7 @@ export default function StudentsItem(props) {
             <EllipsisBox>{studentPayment?.reqRefundManager}</EllipsisBox>
           </Tmanager>
           <Tname $width={props.width}>
-            <EllipsisBox>{student?.student?.name}</EllipsisBox>
+            <EllipsisBox>{studentPayment?.stName}</EllipsisBox>
           </Tname>
           <Tsubject $width={props.width}>
             <EllipsisBox>{student?.subject?.subjectName}</EllipsisBox>

@@ -1028,20 +1028,38 @@ export const DELETE_STUDENT_MEMO_MUTATION = gql`
 
 //refund
 export const REQ_REFUND_MUTATION = gql`
-  mutation ReqRefund($reqRefundId: Int!, $reqRefund: Boolean!) {
-    reqRefund(id: $reqRefundId, reqRefund: $reqRefund) {
-      ok
+  mutation Mutation(
+    $reqRefundId: Int!
+    $reqRefund: Boolean!
+    $reqRefundDate: String!
+  ) {
+    reqRefund(
+      id: $reqRefundId
+      reqRefund: $reqRefund
+      reqRefundDate: $reqRefundDate
+    ) {
       error
       message
+      ok
     }
   }
 `
 export const APPROVAL_REFUND_MUTATION = gql`
-  mutation RefundApproval($refundApprovalId: Int!, $refundApproval: Boolean!) {
-    refundApproval(id: $refundApprovalId, refundApproval: $refundApproval) {
-      ok
+  mutation Mutation(
+    $refundApprovalId: Int!
+    $refundApproval: Boolean!
+    $refundApprovalDate: String!
+    $studentPaymentId: Int!
+  ) {
+    refundApproval(
+      id: $refundApprovalId
+      refundApproval: $refundApproval
+      refundApprovalDate: $refundApprovalDate
+      studentPaymentId: $studentPaymentId
+    ) {
       error
       message
+      ok
     }
   }
 `

@@ -1,15 +1,6 @@
-import { Button, Link } from '@nextui-org/react'
-import { useRouter } from 'next/router'
+import { Link } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
-import { useRecoilState } from 'recoil'
-import { selectedPaymentDetailState } from '@/lib/recoilAtoms'
-import { useMutation } from '@apollo/client'
-import {
-  REQ_REFUND_MUTATION,
-  SEARCH_STUDENT_MUTATION,
-} from '@/graphql/mutations'
-import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexCardBox = styled.div`
   display: flex;

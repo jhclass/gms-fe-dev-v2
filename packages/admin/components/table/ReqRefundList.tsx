@@ -10,6 +10,7 @@ import { reqRefundPageState } from '@/lib/recoilAtoms'
 import {
   APPROVAL_REFUND_MUTATION,
   REQ_REFUND_MUTATION,
+  UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
@@ -223,6 +224,7 @@ export default function RequestRefundTable() {
   })
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [approvalRefoundMutation] = useMutation(APPROVAL_REFUND_MUTATION)
+  const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const studentsPayment = data?.seePaymentDetail || []
   const students = studentsPayment?.PaymentDetail || []
 
@@ -239,35 +241,51 @@ export default function RequestRefundTable() {
     handleScrollTop()
   }, [router, refetch, currentPage])
 
-  const clickApprovalRefund = paymentId => {
-    const isAssignment = confirm('환불 승인 하시겠습니까?')
+  const clickApprovalRefund = item => {
+    const isAssignment = confirm(
+      '환불 승인 하시겠습니까? \n 한번 승인 시 취소 불가능',
+    )
     if (isAssignment) {
       approvalRefoundMutation({
         variables: {
-          refundApprovalId: paymentId,
+          refundApprovalId: item.id,
           refundApproval: true,
+          refundApprovalDate: new Date(),
+          studentPaymentId: item.studentPaymentId,
         },
         onCompleted: () => {
           refetch()
-          alert('환불 승인 되었습니다.')
-          userLogs(`paymentDetail ID : ${paymentId} / 환불 승인`)
+          updateReceived({
+            variables: {
+              amountReceived:
+                item.studentPayment.amountReceived - item.amountPayment,
+              editStudentPaymentId: item.studentPaymentId,
+              subjectId: item.studentPayment.subject.id,
+              processingManagerId: item.studentPayment.processingManagerId,
+            },
+            onCompleted: () => {
+              alert('환불 승인 되었습니다.')
+              userLogs(`paymentDetail ID : ${item.id} / 환불 승인`)
+            },
+          })
         },
       })
     }
   }
 
-  const clickCancelReq = paymentId => {
+  const clickCancelReq = item => {
     const isAssignment = confirm('환불 거부 하시겠습니까?')
     if (isAssignment) {
       reqRefoundMutation({
         variables: {
-          reqRefundId: paymentId,
+          reqRefundId: item.id,
           reqRefund: false,
+          reqRefundDate: '',
         },
         onCompleted: () => {
           refetch()
           alert('결제 취소요청 되었습니다.')
-          userLogs(`paymentDetail ID : ${paymentId} / 환불 거부`)
+          userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
         },
       })
     }
@@ -330,7 +348,7 @@ export default function RequestRefundTable() {
                             variant="solid"
                             color="primary"
                             className="w-full text-white"
-                            onClick={() => clickApprovalRefund(item.id)}
+                            onClick={() => clickApprovalRefund(item)}
                           >
                             환불 승인
                           </Button>
@@ -339,7 +357,7 @@ export default function RequestRefundTable() {
                             variant="bordered"
                             color="primary"
                             className="w-full"
-                            onClick={() => clickCancelReq(item.id)}
+                            onClick={() => clickCancelReq(item)}
                           >
                             환불 거부
                           </Button>

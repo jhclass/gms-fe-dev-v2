@@ -82,6 +82,7 @@ export default function StudentPaymentDetailItem({
           variables: {
             reqRefundId: detailtData.id,
             reqRefund: false,
+            reqRefundDate: '',
           },
           onCompleted: () => {
             searchStudentMutation({
@@ -114,13 +115,14 @@ export default function StudentPaymentDetailItem({
           variables: {
             reqRefundId: detailtData.id,
             reqRefund: true,
+            reqRefundDate: new Date(),
           },
           onCompleted: () => {
             searchStudentMutation({
               variables: {
                 searchStudentId: parseInt(studentId),
               },
-              onCompleted: data => {
+              onCompleted: () => {
                 searchStudentMutation({
                   variables: {
                     searchStudentId: parseInt(studentId),

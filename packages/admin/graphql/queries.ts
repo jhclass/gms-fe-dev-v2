@@ -327,11 +327,15 @@ export const SEE_REFUND_QUERY = gql`
         studentPaymentId
         updatedAt
         studentPayment {
+          processingManagerId
+          amountReceived
+          subjectId
           subject {
             subjectName
+            id
           }
-          student {
-            name
+          subject {
+            subjectName
           }
         }
         depositAmount
@@ -342,6 +346,7 @@ export const SEE_REFUND_QUERY = gql`
         receiverId
         refundApproval
         refundManager
+        stName
       }
     }
   }
