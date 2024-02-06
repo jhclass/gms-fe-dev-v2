@@ -394,7 +394,7 @@ export default function StudentsWrite() {
     }
   }
 
-  const fametDate = (data, isTime) => {
+  const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
@@ -435,7 +435,7 @@ export default function StudentsWrite() {
                 </Noti>
                 <UpdateTime>
                   <span>최근 업데이트 일시 :</span>
-                  {fametDate(studentData?.updatedAt, true)}
+                  {formatDate(studentData?.updatedAt, true)}
                 </UpdateTime>
               </TopInfo>
               <DetailDiv>
@@ -503,7 +503,7 @@ export default function StudentsWrite() {
                         생년월일<span>*</span>
                       </FilterLabel>
                       <LineBox>
-                        {fametDate(studentData?.birthday, false)}
+                        {formatDate(studentData?.birthday, false)}
                       </LineBox>
                     </div>
                   </AreaBox>
@@ -525,7 +525,7 @@ export default function StudentsWrite() {
                     <div>
                       <FilterLabel>등록일시</FilterLabel>
                       <LineBox>
-                        {fametDate(studentData?.createdAt, false)}
+                        {formatDate(studentData?.createdAt, false)}
                       </LineBox>
                     </div>
                   </AreaBox>
@@ -650,7 +650,7 @@ export default function StudentsWrite() {
                           <LineBox>
                             {studentData?.dueDate === null
                               ? ''
-                              : fametDate(studentData?.dueDate, false)}
+                              : formatDate(studentData?.dueDate, false)}
                           </LineBox>
                         </div>
                       </AreaBox>

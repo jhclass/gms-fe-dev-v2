@@ -622,7 +622,6 @@ export default function ConsultFilter({
                 }}
                 {...register('stName')}
               />
-              {name}
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>

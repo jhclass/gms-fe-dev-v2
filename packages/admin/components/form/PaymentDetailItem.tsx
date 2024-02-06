@@ -142,7 +142,7 @@ export default function StudentPaymentDetailItem({
     }
   }
 
-  const fametDate = (data, isTime) => {
+  const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
@@ -184,7 +184,7 @@ export default function StudentPaymentDetailItem({
               <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
+                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
               </AreaBoxL>
               <AreaBox>
@@ -285,7 +285,7 @@ export default function StudentPaymentDetailItem({
               <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
+                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
               </AreaBoxL>
               <AreaBox>
