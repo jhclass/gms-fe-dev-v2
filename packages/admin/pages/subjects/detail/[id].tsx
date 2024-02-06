@@ -378,7 +378,7 @@ export default function SubjectDetail() {
     }
   }
 
-  const fametDate = (data, isTime) => {
+  const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
@@ -430,7 +430,7 @@ export default function SubjectDetail() {
                 </Noti>
                 <UpdateTime>
                   <span>최근 업데이트 일시 :</span>
-                  {fametDate(subjectState?.updatedAt, true)}
+                  {formatDate(subjectState?.updatedAt, true)}
                 </UpdateTime>
               </TopInfo>
               <DetailDiv>
@@ -624,7 +624,7 @@ export default function SubjectDetail() {
                         value={
                           subjectState?.expiresDateStart === null
                             ? ''
-                            : fametDate(subjectState?.expiresDateStart, false)
+                            : formatDate(subjectState?.expiresDateStart, false)
                         }
                         startContent={<i className="xi-calendar" />}
                         className="w-full"
@@ -696,7 +696,7 @@ export default function SubjectDetail() {
                         value={
                           subjectState?.expiresDateEnd === null
                             ? ''
-                            : fametDate(subjectState?.expiresDateEnd, false)
+                            : formatDate(subjectState?.expiresDateEnd, false)
                         }
                         startContent={<i className="xi-calendar" />}
                         className="w-full"

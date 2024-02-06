@@ -2,7 +2,10 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
+import {
+  SEE_AMOUNT_STUDENT_QUERY,
+  SEE_PAYMENT_DETAIL_QUERY,
+} from '@/graphql/queries'
 import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
@@ -152,11 +155,11 @@ export default function PaymentTable() {
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SEE_PAYMENT_DETAIL_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  const studentsData = data?.seePaymentDetail || []
+  const students = studentsData?.PaymentDetail || []
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

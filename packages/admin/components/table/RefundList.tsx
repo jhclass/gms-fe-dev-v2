@@ -1,12 +1,17 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
+import { SEE_AMOUNT_STUDENT_QUERY, SEE_REFUND_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { refundPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
+import {
+  APPROVAL_REFUND_MUTATION,
+  REQ_REFUND_MUTATION,
+} from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -66,7 +71,7 @@ const TheaderBox = styled.div`
 `
 const TheaderListBox = styled.div`
   display: flex;
-  width: 76%;
+  width: 83%;
 `
 const TableItem = styled.div`
   position: relative;
@@ -203,22 +208,8 @@ const EllipsisBox = styled.p`
 `
 const Tlist = styled.div`
   display: table-cell;
-  width: 76%;
-  min-width: ${1200 * 0.76}px;
-`
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 7%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.07}px;
-`
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  width: 83%;
+  min-width: ${1200 * 0.83}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -238,19 +229,22 @@ export default function RefundTable() {
   const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
+  const { userLogs } = useUserLogsMutation()
+  const { loading, error, data, refetch } = useQuery(SEE_REFUND_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
+  const [approvalRefoundMutation] = useMutation(APPROVAL_REFUND_MUTATION)
+  const studentsPayment = data?.seePaymentDetail || []
+  const students = studentsPayment?.PaymentDetail || []
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
-    setTotalCount(studentsData.totalCount)
-  }, [studentsData, totalCount])
+    setTotalCount(studentsPayment.totalCount)
+  }, [studentsPayment, totalCount])
 
   useEffect(() => {
     refetch()
@@ -293,50 +287,34 @@ export default function RefundTable() {
                   <TpaymentName $width={912}>은행/카드사</TpaymentName>
                   <Tamount $width={912}>환불금액</Tamount>
                 </TheaderListBox>
-                <Tbtn></Tbtn>
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&
-              students?.map((item, index) => (
-                <TableItem key={index}>
-                  <TableRow>
-                    <ThRequestAt>
-                      <EllipsisBox>
-                        {item?.studentPayment[0]?.paymentDate
-                          ? getDate(item?.studentPayment[0]?.paymentDate)
-                          : '-'}
-                      </EllipsisBox>
-                    </ThRequestAt>
-                    <ThManager>
-                      <EllipsisBox>
-                        {item?.studentPayment[0]?.processingManager?.mUsername}
-                      </EllipsisBox>
-                    </ThManager>
-                    <Tlist>
-                      <RefundItem
-                        tableData={item}
-                        itemIndex={index}
-                        currentPage={currentPage}
-                        limit={currentLimit}
-                        width={912}
-                      />
-                    </Tlist>
-                    <Tbtn>
-                      <BtnBox>
-                        <Button
-                          size="sm"
-                          variant="solid"
-                          color="primary"
-                          className="w-full text-white bg-flag1"
-                          onClick={() => console.log('환불 승인')}
-                        >
-                          환불 취소
-                        </Button>
-                      </BtnBox>
-                    </Tbtn>
-                  </TableRow>
-                </TableItem>
-              ))}
+              students
+                ?.filter(item => item.refundApproval === true)
+                .map((item, index) => (
+                  <TableItem key={index}>
+                    <TableRow>
+                      <ThRequestAt>
+                        <EllipsisBox>
+                          {item?.updatedAt ? getDate(item?.updatedAt) : '-'}
+                        </EllipsisBox>
+                      </ThRequestAt>
+                      <ThManager>
+                        <EllipsisBox>{item?.refundManager}</EllipsisBox>
+                      </ThManager>
+                      <Tlist>
+                        <RefundItem
+                          tableData={item}
+                          itemIndex={index}
+                          currentPage={currentPage}
+                          limit={currentLimit}
+                          width={912}
+                        />
+                      </Tlist>
+                    </TableRow>
+                  </TableItem>
+                ))}
             {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>

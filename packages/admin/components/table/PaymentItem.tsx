@@ -159,8 +159,7 @@ export default function StudentsItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
-  const studentPayment = student.studentPayment[0]
-  const studentSubject = student.studentPayment[0]?.subject
+  const studentPayment = student.studentPayment || []
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -179,27 +178,25 @@ export default function StudentsItem(props) {
             <ClickBox>
               <TcreatedAt>
                 <EllipsisBox>
-                  {studentPayment?.paymentDate
-                    ? getDate(studentPayment?.paymentDate)
-                    : '-'}
+                  {student?.updatedAt ? getDate(student?.updatedAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tname>
-                <EllipsisBox>{student.name}</EllipsisBox>
+                <EllipsisBox>{studentPayment?.student?.name}</EllipsisBox>
               </Tname>
               <Tmanager>
-                <EllipsisBox>
-                  {studentPayment?.processingManager?.mUsername}
-                </EllipsisBox>
+                <EllipsisBox>{student?.receiver?.mUsername}</EllipsisBox>
               </Tmanager>
               <Tsubject>
-                <EllipsisBox>{studentSubject?.subjectName}</EllipsisBox>
+                <EllipsisBox>
+                  {studentPayment?.subject?.subjectName}
+                </EllipsisBox>
               </Tsubject>
               <Tamount className="fee">
                 <EllipsisBox>
                   {studentPayment?.tuitionFee === undefined ||
                   studentPayment?.tuitionFee === null
-                    ? '-'
+                    ? '0'
                     : feeFormet(studentPayment?.tuitionFee)}
                 </EllipsisBox>
               </Tamount>
@@ -207,7 +204,7 @@ export default function StudentsItem(props) {
                 <EllipsisBox>
                   {studentPayment?.discountAmount === undefined ||
                   studentPayment?.discountAmount === null
-                    ? '-'
+                    ? '0'
                     : feeFormet(studentPayment?.discountAmount)}
                 </EllipsisBox>
               </Tamount>
@@ -215,7 +212,7 @@ export default function StudentsItem(props) {
                 <EllipsisBox>
                   {studentPayment?.actualAmount === undefined ||
                   studentPayment?.actualAmount === null
-                    ? '-'
+                    ? '0'
                     : feeFormet(studentPayment?.actualAmount)}
                 </EllipsisBox>
               </Tamount>
@@ -223,35 +220,35 @@ export default function StudentsItem(props) {
                 <EllipsisBox>
                   {studentPayment?.unCollectedAmount === undefined ||
                   studentPayment?.unCollectedAmount === null
-                    ? '-'
+                    ? '0'
                     : feeFormet(studentPayment?.unCollectedAmount)}
                 </EllipsisBox>
               </Tamount>
               <Tamount className="amount">
                 {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
-                  {studentPayment?.actualAmount === undefined ||
-                  studentPayment?.actualAmount === null
-                    ? '-'
-                    : feeFormet(studentPayment?.actualAmount)}
+                  {student?.amountPayment === undefined ||
+                  student?.amountPayment === null
+                    ? '0'
+                    : feeFormet(student?.amountPayment)}
                 </EllipsisBox>
               </Tamount>
               <Tamount className="amount">
                 {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
-                  {studentPayment?.actualAmount === undefined ||
-                  studentPayment?.actualAmount === null
-                    ? '-'
-                    : feeFormet(studentPayment?.actualAmount)}
+                  {student?.depositAmount === undefined ||
+                  student?.depositAmount === null
+                    ? '0'
+                    : feeFormet(student?.depositAmount)}
                 </EllipsisBox>
               </Tamount>
               <Tamount className="amount">
                 {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
-                  {studentPayment?.actualAmount === undefined ||
-                  studentPayment?.actualAmount === null
-                    ? '-'
-                    : feeFormet(studentPayment?.actualAmount)}
+                  {studentPayment?.amountReceived === undefined ||
+                  studentPayment?.amountReceived === null
+                    ? '0'
+                    : feeFormet(studentPayment?.amountReceived)}
                 </EllipsisBox>
               </Tamount>
             </ClickBox>

@@ -218,7 +218,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
     })
   }
 
-  const fametDate = (data, isTime) => {
+  const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
@@ -282,7 +282,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
               <TcreatedAt>
                 <EllipsisBox>
                   {student.createdAt
-                    ? fametDate(student.createdAt, false)
+                    ? formatDate(student.createdAt, false)
                     : '-'}
                 </EllipsisBox>
               </TcreatedAt>
@@ -317,7 +317,7 @@ export default function FavoriteItem(props: ConsultItemProps) {
               </Tprogress>
               <TstVisit>
                 <EllipsisBox>
-                  {student.stVisit ? fametDate(student.stVisit, true) : '-'}
+                  {student.stVisit ? formatDate(student.stVisit, true) : '-'}
                 </EllipsisBox>
               </TstVisit>
               <Tmanager>

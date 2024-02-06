@@ -141,7 +141,7 @@ export default function ConsultMemo(props) {
     }
   }
 
-  const fametDate = data => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     const formatted =
@@ -191,7 +191,7 @@ export default function ConsultMemo(props) {
                     {gradeStr(props.item.manageUser?.mUserId)}
                   </MemoGrade>
                   <MemoName>{props.item.manageUser?.mUsername}</MemoName>
-                  <MemoTime>{fametDate(props.item.updatedAt)}</MemoTime>
+                  <MemoTime>{formatDate(props.item.updatedAt)}</MemoTime>
                 </MemoInfo>
               }
               ref={field.ref}

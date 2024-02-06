@@ -182,10 +182,12 @@ const isDisplayFlag = (date: string, step: boolean): string => {
   }
 }
 
-const displayPprogress = (assignment, complete) => {
+const displayPprogress = (assignment, complete, cancellation) => {
   if (assignment) {
     if (complete) {
       return 30
+    } else if (cancellation) {
+      return 40
     } else {
       return 20
     }
@@ -202,6 +204,7 @@ export default function StudentsItem(props) {
   const progressNum = displayPprogress(
     student.lectureAssignment,
     student.courseComplete,
+    student.studentPayment[0]?.cancellation,
   )
   const progressStatus = useRecoilValue(studentProgressStatusState)
   const getDate = (DataDate: string): string => {

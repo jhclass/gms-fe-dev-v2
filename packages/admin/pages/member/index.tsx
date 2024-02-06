@@ -99,7 +99,7 @@ export default function Profile() {
     }
   }
 
-  const fametDate = data => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     const formatted =
@@ -307,7 +307,7 @@ export default function Profile() {
                       defaultValue={
                         mMeData?.mJoiningDate === null
                           ? ''
-                          : fametDate(mMeData?.mJoiningDate)
+                          : formatDate(mMeData?.mJoiningDate)
                       }
                       labelPlacement="outside"
                       placeholder="입사일"

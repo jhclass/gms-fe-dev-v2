@@ -13,11 +13,11 @@ export default function StudentsLayout({ children }) {
   //   }
   // }, [mGrade])
 
-  // return <main>{children}</main>
+  return <main>{children}</main>
 
-  if (mGrade === 0) {
-    return <main>{children}</main>
-  } else {
-    return <MainWrap>준비중입니다.</MainWrap>
-  }
+  // if (mGrade === 0) {
+  //   return <main>{children}</main>
+  // } else {
+  //   return <MainWrap>준비중입니다.</MainWrap>
+  // }
 }

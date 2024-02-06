@@ -91,7 +91,7 @@ export default function StudentsItem(props) {
   const studentPayment = student.studentPayment[0]
   const studentSubject = student.studentPayment[0]?.subject
 
-  const fametDate = (data, isTime) => {
+  const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
@@ -121,7 +121,7 @@ export default function StudentsItem(props) {
           <TcreatedAt>
             <EllipsisBox>
               {studentPayment?.paymentDate
-                ? fametDate(studentPayment?.paymentDate, true)
+                ? formatDate(studentPayment?.paymentDate, true)
                 : '-'}
             </EllipsisBox>
           </TcreatedAt>

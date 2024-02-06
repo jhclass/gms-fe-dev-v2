@@ -43,6 +43,7 @@ import useMmeQuery from '@/utils/mMe'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import ConsolutRepeated from '@/components/form/ConsolutRepeated'
 
 const ConArea = styled.div`
   width: 100%;
@@ -53,6 +54,14 @@ const DetailBox = styled.div`
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
+`
+const SemiTitle = styled.p`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #11181c;
+  padding-bottom: 0.375rem;
+  display: block;
 `
 const TopInfo = styled.div`
   display: flex;
@@ -82,6 +91,11 @@ const DetailForm = styled.form`
   @media (max-width: 768px) {
     gap: 1rem;
   }
+`
+const ColFlexBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
 `
 const FlexBox = styled.div`
   display: flex;
@@ -170,29 +184,63 @@ export default function ConsultDetail() {
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-    {
-      variables: {
-        searchStudentStateId: parseInt(studentId),
-      },
-    },
-  )
+  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const managerList = managerData?.seeManageUser || []
-  const studentState = data?.searchStudentState.studentState[0] || []
-  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type) || []
-  const studentMethod = studentState?.classMethod || []
-  const addArr = [...studentAdvice, ...studentMethod]
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: sbjIsOpen,
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
+  const [subjectSelected, setSubjectSelected] = useState([])
+  const [adviceTypeSelected, setAdviceTypeSelected] = useState([])
+  const [stVisitDate, setStVisitDate] = useState(null)
+  const [expEnrollDate, setExpEnrollDate] = useState(null)
+  const [receipt, setReceipt] = useState('없음')
+  const [sub, setSub] = useState('없음')
+  const [manager, setManager] = useState('담당자 지정필요')
+  const [consultation, setConsultation] = useState(null)
+  const [memoList, setMemoList] = useState([])
+  const [studentState, setStudentState] = useState(null)
+  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type) || []
+  const studentMethod = studentState?.classMethod || []
+  const addArr = [...studentAdvice, ...studentMethod]
+  const years = _.range(2000, getYear(new Date()) + 5, 1)
+
+  useEffect(() => {
+    if (studentId !== null) {
+      searchStudentStateMutation({
+        variables: {
+          searchStudentStateId: parseInt(studentId),
+        },
+        onCompleted: resData => {
+          const {
+            searchStudentState: {
+              studentState: [StudentState],
+            },
+          } = resData
+          setStudentState(StudentState)
+          setMemoList(StudentState.consultationMemo)
+          searchStudentStateMutation({
+            variables: {
+              phoneNum1: StudentState?.phoneNum1,
+              stName: StudentState?.stName,
+            },
+            onCompleted: data => {
+              const {
+                searchStudentState: { studentState },
+              } = data
+              setConsultation(studentState)
+            },
+          })
+        },
+      })
+    }
+  }, [router])
 
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -218,64 +266,44 @@ export default function ConsultDetail() {
     },
   })
   const { isDirty, dirtyFields, errors } = formState
-  const [subjectSelected, setSubjectSelected] = useState([])
-  const [adviceTypeSelected, setAdviceTypeSelected] = useState([])
-  const [stVisitDate, setStVisitDate] = useState(null)
-  const [expEnrollDate, setExpEnrollDate] = useState(null)
-  const [receipt, setReceipt] = useState('없음')
-  const [sub, setSub] = useState('없음')
-  const [manager, setManager] = useState('담당자 지정필요')
-  const [memoList, setMemoList] = useState([])
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
-    searchStudentStateMutation({
-      variables: {
-        searchStudentStateId: parseInt(studentId),
-      },
-      onCompleted: data => {
-        setMemoList(data.searchStudentState.studentState[0].consultationMemo)
-      },
-    })
-  }, [router])
-
-  useEffect(() => {
-    if (studentState.subject === null) {
+    if (studentState?.subject !== null) {
       setSubjectSelected([])
     } else {
-      setSubjectSelected(studentState.subject)
+      setSubjectSelected(studentState?.subject)
     }
     if (
-      studentState.receiptDiv === '' ||
-      studentState.receiptDiv === undefined
+      studentState?.receiptDiv === '' ||
+      studentState?.receiptDiv === undefined
     ) {
       setReceipt('없음')
     } else {
-      setReceipt(studentState.receiptDiv)
+      setReceipt(studentState?.receiptDiv)
     }
-    if (studentState.subDiv === null || studentState.subDiv === undefined) {
+    if (studentState?.subDiv === null || studentState?.subDiv === undefined) {
       setSub('없음')
     } else {
-      setSub(studentState.subDiv)
+      setSub(studentState?.subDiv)
     }
-    if (studentState.pic === undefined || studentState.pic === null) {
+    if (studentState?.pic === undefined || studentState?.pic === null) {
       setManager('담당자 지정필요')
     } else {
-      setManager(studentState.pic)
+      setManager(studentState?.pic)
     }
-    if (studentState.stVisit === null || studentState.stVisit === undefined) {
+    if (studentState?.stVisit === null || studentState?.stVisit === undefined) {
       setStVisitDate(null)
     } else {
-      const date = parseInt(studentState.stVisit)
+      const date = parseInt(studentState?.stVisit)
       setStVisitDate(date)
     }
     if (
-      studentState.expEnrollDate === null ||
-      studentState.expEnrollDate === undefined
+      studentState?.expEnrollDate === null ||
+      studentState?.expEnrollDate === undefined
     ) {
       setExpEnrollDate(null)
     } else {
-      const date = parseInt(studentState.expEnrollDate)
+      const date = parseInt(studentState?.expEnrollDate)
       setExpEnrollDate(date)
     }
     if (studentAdvice.length > 0) {
@@ -354,7 +382,7 @@ export default function ConsultDetail() {
     }
   }
 
-  const fametDate = data => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     const formatted =
@@ -375,9 +403,10 @@ export default function ConsultDetail() {
   const handleManagerChange = e => {
     setManager(e.target.value)
   }
+
   return (
     <>
-      {data !== undefined && (
+      {studentState !== null && (
         <MainWrap>
           <ConArea>
             <Breadcrumb rightArea={false} />
@@ -388,7 +417,7 @@ export default function ConsultDetail() {
                 </Noti>
                 <UpdateTime>
                   <span>최근 업데이트 일시 :</span>
-                  {fametDate(studentState?.updatedAt)}
+                  {formatDate(studentState?.updatedAt)}
                 </UpdateTime>
               </TopInfo>
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
@@ -703,7 +732,7 @@ export default function ConsultDetail() {
                     radius="md"
                     type="text"
                     label="등록일시"
-                    value={fametDate(studentState?.createdAt) || ''}
+                    value={formatDate(studentState?.createdAt) || ''}
                     startContent={<i className="xi-calendar" />}
                     className="w-full"
                   />
@@ -892,6 +921,23 @@ export default function ConsultDetail() {
                 </BtnBox>
               </DetailForm>
             </DetailBox>
+            {consultation?.length > 1 && (
+              <DetailBox>
+                <SemiTitle>이전 문의</SemiTitle>
+                <ColFlexBox>
+                  {consultation
+                    .filter(item => item.id !== studentState.id)
+                    .map((item, index) => (
+                      <ConsolutRepeated
+                        key={index}
+                        index={index + 1}
+                        listData={item}
+                      />
+                    ))}
+                </ColFlexBox>
+              </DetailBox>
+            )}
+
             <DetailBox>
               <CreateMemo
                 setMemoList={setMemoList}

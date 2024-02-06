@@ -11,13 +11,14 @@ import {
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
-const FlexCardBox = styled.div`
+const FlexCardBox = styled.div<{ $IsRefund: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   border: 2px solid hsl(240 6% 90%);
   padding: 1rem;
   border-radius: 0.5rem;
+  background: ${props => (props.$IsRefund ? 'hsl(240 5% 96%)' : 'transparent')};
 `
 const FlexBox = styled.div`
   display: flex;
@@ -72,7 +73,6 @@ export default function StudentPaymentDetailItem({
   const [selectedPaymentDate, setSelectedPaymentDate] = useRecoilState(
     selectedPaymentDetailState,
   )
-
   const clickReqRefund = () => {
     if (detailtData.reqRefund) {
       const isAssignment = confirm('결제를 취소요청을 철회 하시겠습니까?')
@@ -81,6 +81,7 @@ export default function StudentPaymentDetailItem({
           variables: {
             reqRefundId: detailtData.id,
             reqRefund: false,
+            reqRefundDate: '',
           },
           onCompleted: () => {
             searchStudentMutation({
@@ -113,13 +114,14 @@ export default function StudentPaymentDetailItem({
           variables: {
             reqRefundId: detailtData.id,
             reqRefund: true,
+            reqRefundDate: new Date(),
           },
           onCompleted: () => {
             searchStudentMutation({
               variables: {
                 searchStudentId: parseInt(studentId),
               },
-              onCompleted: data => {
+              onCompleted: () => {
                 searchStudentMutation({
                   variables: {
                     searchStudentId: parseInt(studentId),
@@ -141,7 +143,7 @@ export default function StudentPaymentDetailItem({
     }
   }
 
-  const fametDate = (data, isTime) => {
+  const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     if (isTime) {
@@ -178,12 +180,12 @@ export default function StudentPaymentDetailItem({
     <>
       {detailtData?.cashOrCard === '현금' && (
         <>
-          <FlexCardBox>
+          <FlexCardBox $IsRefund={detailtData.reqRefund}>
             <FlexBox>
               <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
+                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
               </AreaBoxL>
               <AreaBox>
@@ -216,8 +218,21 @@ export default function StudentPaymentDetailItem({
                 </div>
               </AreaBox>
             </FlexBox>
-            <BtnBox>
-              {/* <Button
+            {detailtData.refundApproval ? (
+              <BtnBox>
+                <Button
+                  isDisabled={true}
+                  size="md"
+                  radius="md"
+                  variant="solid"
+                  className="w-full"
+                >
+                  환불 완료
+                </Button>
+              </BtnBox>
+            ) : (
+              <BtnBox>
+                {/* <Button
                         size="md"
                         radius="md"
                         variant="bordered"
@@ -226,52 +241,52 @@ export default function StudentPaymentDetailItem({
                       >
                         영수증 인쇄
                       </Button> */}
-              <Button
-                isDisabled={detailtData.reqRefund ? true : false}
-                size="md"
-                radius="md"
-                variant="solid"
-                color="primary"
-                className="w-full text-white"
-                onClick={() => editBtn(detailtData)}
-              >
-                결제 변경
-              </Button>
-              {detailtData.reqRefund ? (
-                <>
-                  <Button
-                    isDisabled={detailtData.refundApproval ? true : false}
-                    size="md"
-                    radius="md"
-                    className="w-full text-white bg-flag1"
-                    onClick={() => clickReqRefund()}
-                  >
-                    결제 취소요청 철회
-                  </Button>
-                </>
-              ) : (
                 <Button
+                  isDisabled={detailtData.reqRefund ? true : false}
                   size="md"
                   radius="md"
-                  variant="bordered"
-                  className="w-full text-flag1 border-flag1"
-                  onClick={() => clickReqRefund()}
+                  variant="solid"
+                  color="primary"
+                  className="w-full text-white"
+                  onClick={() => editBtn(detailtData)}
                 >
-                  결제 취소 요청
+                  결제 변경
                 </Button>
-              )}
-            </BtnBox>
+                {detailtData.reqRefund ? (
+                  <>
+                    <Button
+                      size="md"
+                      radius="md"
+                      className="w-full text-white bg-flag1"
+                      onClick={() => clickReqRefund()}
+                    >
+                      결제 취소요청 철회
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    size="md"
+                    radius="md"
+                    variant="bordered"
+                    className="w-full text-flag1 border-flag1"
+                    onClick={() => clickReqRefund()}
+                  >
+                    결제 취소 요청
+                  </Button>
+                )}
+              </BtnBox>
+            )}
           </FlexCardBox>
         </>
       )}
       {detailtData?.cashOrCard === '카드' && (
         <>
-          <FlexCardBox>
+          <FlexCardBox $IsRefund={detailtData.reqRefund}>
             <FlexBox>
               <AreaBoxL>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{fametDate(detailtData?.createdAt, true)}</FlatBox>
+                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
                 </div>
               </AreaBoxL>
               <AreaBox>
@@ -315,8 +330,21 @@ export default function StudentPaymentDetailItem({
                 </div>
               </AreaBox> */}
             </FlexBox>
-            <BtnBox>
-              {/* <Button
+            {detailtData.refundApproval ? (
+              <BtnBox>
+                <Button
+                  isDisabled={true}
+                  size="md"
+                  radius="md"
+                  variant="solid"
+                  className="w-full"
+                >
+                  환불 완료
+                </Button>
+              </BtnBox>
+            ) : (
+              <BtnBox>
+                {/* <Button
                 size="md"
                 radius="md"
                 variant="bordered"
@@ -325,28 +353,29 @@ export default function StudentPaymentDetailItem({
               >
                 영수증 인쇄
               </Button> */}
-              {detailtData.reqRefund ? (
-                <Button
-                  isDisabled={detailtData.refundApproval ? true : false}
-                  size="md"
-                  radius="md"
-                  className="lg:w-[50%] w-full text-white bg-flag1"
-                  onClick={() => clickReqRefund()}
-                >
-                  결제 취소요청 철회
-                </Button>
-              ) : (
-                <Button
-                  size="md"
-                  radius="md"
-                  variant="bordered"
-                  className="lg:w-[50%] w-full text-flag1 border-flag1"
-                  onClick={() => clickReqRefund()}
-                >
-                  결제 취소 요청
-                </Button>
-              )}
-            </BtnBox>
+                {detailtData.reqRefund ? (
+                  <Button
+                    isDisabled={detailtData.refundApproval ? true : false}
+                    size="md"
+                    radius="md"
+                    className="lg:w-[50%] w-full text-white bg-flag1"
+                    onClick={() => clickReqRefund()}
+                  >
+                    결제 취소요청 철회
+                  </Button>
+                ) : (
+                  <Button
+                    size="md"
+                    radius="md"
+                    variant="bordered"
+                    className="lg:w-[50%] w-full text-flag1 border-flag1"
+                    onClick={() => clickReqRefund()}
+                  >
+                    결제 취소 요청
+                  </Button>
+                )}
+              </BtnBox>
+            )}
           </FlexCardBox>
         </>
       )}
