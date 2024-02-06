@@ -124,4 +124,3 @@ export default function StudentPaymentDetailItem({ index, listData }) {
     </>
   )
 }
-StudentPaymentDetailItem.getLayout = page => <Layout>{page}</Layout>
