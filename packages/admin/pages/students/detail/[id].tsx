@@ -11,7 +11,6 @@ import {
   Checkbox,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
-import { useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -569,7 +568,7 @@ export default function StudentsWrite() {
                       <Button
                         isDisabled={
                           studentData?.courseComplete ||
-                          studentPaymentData.cancellation
+                          studentPaymentData?.cancellation
                             ? true
                             : false
                         }
@@ -813,7 +812,7 @@ export default function StudentsWrite() {
                         className="w-full text-white bg-flag1"
                         onClick={clickClassCancel}
                       >
-                        {studentPaymentData.cancellation
+                        {studentPaymentData?.cancellation
                           ? '중도포기 철회'
                           : '중도포기'}
                       </Button>

@@ -13,7 +13,7 @@ import { getYear } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { subMonths, subDays, addMonths } from 'date-fns'
+import { subDays, addMonths } from 'date-fns'
 
 type SalesFilterProps = {
   isActive: boolean
@@ -189,7 +189,7 @@ export default function SalesFilter({
                       />
                     )}
                     selectsRange={true}
-                    maxDate={addMonths(startPaymentDate, 1)}
+                    maxDate={subDays(addMonths(startPaymentDate, 1), 1)}
                     locale="ko"
                     startDate={startPaymentDate}
                     endDate={endPaymentDate}
