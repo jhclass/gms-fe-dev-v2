@@ -2,10 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  SEE_AMOUNT_STUDENT_QUERY,
-  SEE_PAYMENT_DETAIL_QUERY,
-} from '@/graphql/queries'
+import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
@@ -194,6 +191,7 @@ export default function PaymentTable() {
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tnum>No</Tnum>
                 <TcreatedAt>결제일시</TcreatedAt>
                 <Tname>수강생명</Tname>
                 <Tmanager>수납 담당자</Tmanager>
