@@ -241,6 +241,7 @@ export default function StudentsWrite() {
                       <Controller
                         control={control}
                         name="smsAgreement"
+                        defaultValue={'동의'}
                         rules={{
                           required: {
                             value: true,
@@ -256,6 +257,7 @@ export default function StudentsWrite() {
                             }
                             orientation="horizontal"
                             className="gap-[0.65rem]"
+                            defaultValue={'동의'}
                             onValueChange={value => {
                               field.onChange(value)
                             }}

@@ -179,7 +179,6 @@ export default function StudentPaymentForm({
       cardAmount: studentPaymentData?.cardAmount,
       discountAmount: studentPaymentData?.discountAmount,
       dueDate: studentData?.dueDate,
-      receiptClassification: studentPaymentData?.receiptClassification,
       subDiv: studentPaymentData?.subDiv,
       discount: studentPaymentData?.discountAmount,
       discountUnit: '%',
@@ -194,7 +193,7 @@ export default function StudentPaymentForm({
   const [dueDateSelect, setDueDateSelect] = useState(null)
   const [sub, setSub] = useState('없음')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
-  const [receiptSelected, setReceiptSelected] = useState([])
+
   const {
     isOpen: sbjIsOpen,
     onOpen: sbjOpen,
@@ -233,14 +232,6 @@ export default function StudentPaymentForm({
     } else {
       const date = parseInt(studentData?.dueDate)
       setDueDateSelect(date)
-    }
-    if (
-      studentPaymentData?.receiptClassification === null ||
-      studentPaymentData?.receiptClassification === undefined
-    ) {
-      setReceiptSelected([])
-    } else {
-      setReceiptSelected(studentPaymentData.receiptClassification)
     }
     if (
       studentPaymentData?.discountAmount === null ||
@@ -330,7 +321,6 @@ export default function StudentPaymentForm({
                   ? parseInt(data.unCollectedAmount)
                   : data.unCollectedAmount,
               amountReceived: parseInt(data.amountReceived.replace(/,/g, '')),
-              receiptClassification: receiptSelected,
               subDiv: data.subDiv,
             },
             onCompleted: () => {
@@ -420,10 +410,6 @@ export default function StudentPaymentForm({
     setSubjectManager(e.target.value)
   }
 
-  const handleReceiptChange = (value: string[]) => {
-    setValue('receiptClassification', value, { shouldDirty: true })
-    setReceiptSelected(value)
-  }
   const clickSubject = () => {
     if (
       studentData.lectureAssignment ||
@@ -987,31 +973,6 @@ export default function StudentPaymentForm({
                       {String(errors.processingManagerId.message)}
                     </p>
                   )}
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <RadioBox>
-                    <Controller
-                      control={control}
-                      name="receiptClassification"
-                      render={({ field, fieldState }) => (
-                        <CheckboxGroup
-                          label={<FilterLabel>영수구분</FilterLabel>}
-                          orientation="horizontal"
-                          className="gap-[0.65rem]"
-                          value={receiptSelected}
-                          onValueChange={handleReceiptChange}
-                        >
-                          {Object.entries(Receipt).map(([key, item]) => (
-                            <Checkbox key={key} value={item}>
-                              {item}
-                            </Checkbox>
-                          ))}
-                        </CheckboxGroup>
-                      )}
-                    />
-                  </RadioBox>
                 </AreaBox>
               </FlexBox>
             </DetailDiv>

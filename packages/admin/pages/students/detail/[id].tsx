@@ -632,7 +632,7 @@ export default function StudentsWrite() {
                       <AreaBox>
                         <div>
                           <FilterLabel>
-                            선별테스트점수<span>*</span>
+                            선발평가점수<span>*</span>
                           </FilterLabel>
                           <LineBox>{studentPaymentData?.seScore || 0}</LineBox>
                         </div>
@@ -713,7 +713,7 @@ export default function StudentsWrite() {
                       </AreaBox>
                       <AreaBox>
                         <div>
-                          <FilterLabel>수강당담자</FilterLabel>
+                          <FilterLabel>수강담당자</FilterLabel>
                           <LineBox>
                             {
                               managerList.find(
@@ -724,25 +724,6 @@ export default function StudentsWrite() {
                             }
                           </LineBox>
                         </div>
-                      </AreaBox>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <RadioBox>
-                          <CheckboxGroup
-                            isReadOnly
-                            label={<FilterLabel>영수구분</FilterLabel>}
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            value={studentPaymentData?.receiptClassification}
-                          >
-                            {Object.entries(Receipt).map(([key, item]) => (
-                              <Checkbox key={key} value={item}>
-                                {item}
-                              </Checkbox>
-                            ))}
-                          </CheckboxGroup>
-                        </RadioBox>
                       </AreaBox>
                     </FlexBox>
                     <BtnBox4

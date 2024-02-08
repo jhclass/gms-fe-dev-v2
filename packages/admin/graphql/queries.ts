@@ -218,20 +218,15 @@ export const SEE_STUDENT_QUERY = gql`
       totalCount
       student {
         birthday
-        courseComplete
         createdAt
-        id
-        lectureAssignment
         name
         phoneNum1
         writer
+        smsAgreement
+        id
+        updatedAt
         studentPayment {
-          subDiv
-          subject {
-            subjectName
-            id
-          }
-          cancellation
+          id
         }
       }
     }

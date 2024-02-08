@@ -536,103 +536,97 @@ export const CREATE_STUDENT_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_MUTATION = gql`
-  mutation SearchStudent($searchStudentId: Int) {
+  mutation Mutation($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
       error
-      ok
       message
+      ok
       student {
         birthday
-        studentPayment {
-          actualAmount
-          unCollectedAmount
-          tuitionFee
-          subjectId
-          subject {
-            fee
-            id
-            subDiv
-            subjectCode
-            subjectName
-          }
-          situationReport
-          seScore
-          receiptClassification
-          processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-            id
-            mGrade
-          }
-          paymentDate
-          id
-          discountAmount
-          cashAmount
-          cardAmount
-          cancellation
-          amountReceived
-          subDiv
-          studentId
-          paymentDetail {
-            refundManager
-            refundApproval
-            reqRefundManager
-            reqRefund
-            receiverId
-            receiver {
-              id
-              mUsername
-              mUserId
-              mGrade
-            }
-            studentPaymentId
-            depositDate
-            depositAmount
-            depositorName
-            bankName
-            paymentDate
-            amountPayment
-            ApprovalNum
-            installment
-            cardNum
-            cardCompany
-            cashOrCard
-            id
-            createdAt
-            updatedAt
-          }
-        }
-        courseComplete
         createdAt
-        dueDate
         id
-        lectureAssignment
-        writer
-        updatedAt
-        studentMemo {
-          content
-          createdAt
-          id
-          updatedAt
-          manageUserId
-          manageUser {
-            mUsername
-            mUserId
-            mGrade
-            id
-          }
-        }
         name
         phoneNum1
         phoneNum2
         smsAgreement
+        writer
+        updatedAt
+        studentMemo {
+          id
+          content
+          updatedAt
+          manageUser {
+            mUsername
+            mUserId
+          }
+        }
+        studentPayment {
+          actualAmount
+          amountReceived
+          campus
+          cardAmount
+          cashAmount
+          classCode
+          courseComplete
+          discountAmount
+          dueDate
+          employment
+          id
+          lectureAssignment
+          paymentDate
+          unCollectedAmount
+          tuitionFee
+          subjectId
+          subject {
+            subjectName
+            subjectCode
+          }
+          subDiv
+          situationReport
+          seScore
+          processingManagerId
+          processingManager {
+            mUserId
+            mUsername
+          }
+          paymentDetail {
+            ApprovalNum
+            amountPayment
+            bankName
+            cardCompany
+            cardNum
+            cashOrCard
+            createdAt
+            depositAmount
+            depositDate
+            depositorName
+            id
+            installment
+            paymentDate
+            receiver {
+              mUserId
+              mUsername
+            }
+            receiverId
+            refundApproval
+            refundApprovalDate
+            refundManager
+            reqRefund
+            reqRefundDate
+            reqRefundManager
+            stName
+            updatedAt
+            studentPaymentId
+            studentId
+          }
+        }
       }
     }
   }
 `
 export const SEARCH_STUDENT_FILTER_MUTATION = gql`
-  mutation SearchStudent(
+  mutation Mutation(
+    $searchStudentId: Int
     $studentName: String
     $createdAt: [String]
     $birthday: [String]
@@ -641,6 +635,7 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
     $limit: Int
   ) {
     searchStudent(
+      id: $searchStudentId
       studentName: $studentName
       createdAt: $createdAt
       birthday: $birthday
@@ -648,26 +643,23 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
       page: $page
       limit: $limit
     ) {
-      ok
-      message
       error
+      message
+      ok
+      totalCount
       student {
-        studentPayment {
-          subDiv
-          subject {
-            subjectName
-          }
-        }
+        birthday
+        createdAt
         id
         name
         phoneNum1
+        smsAgreement
         writer
-        createdAt
-        birthday
-        lectureAssignment
-        courseComplete
+        updatedAt
+        studentPayment {
+          id
+        }
       }
-      totalCount
     }
   }
 `
@@ -715,61 +707,80 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
   }
 `
 export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
-  mutation Mutation($searchStudentId: Int) {
+  mutation SearchStudent($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
-      error
-      message
-      ok
       student {
         birthday
-        courseComplete
         createdAt
-        dueDate
         id
-        lectureAssignment
         name
         phoneNum1
         phoneNum2
         smsAgreement
-        updatedAt
         writer
+        updatedAt
         studentPayment {
           actualAmount
-          cancellation
           amountReceived
           campus
-          cancellation
           cardAmount
           cashAmount
+          classCode
+          courseComplete
           discountAmount
+          dueDate
+          employment
           id
-          paymentDate
-          paymentDetail {
-            id
-          }
-          processingManager {
-            mUsername
-            mUserId
-            mRank
-            id
-          }
+          lectureAssignment
           processingManagerId
-          receiptClassification
+          processingManager {
+            mUserId
+            mUsername
+          }
           seScore
           situationReport
+          subDiv
           unCollectedAmount
           tuitionFee
           subjectId
-          subDiv
           subject {
             subjectName
-            subjectCode
-            subDiv
+          }
+          paymentDetail {
+            ApprovalNum
+            amountPayment
+            bankName
+            cardCompany
+            cardNum
+            cashOrCard
+            createdAt
+            depositAmount
+            depositDate
+            depositorName
             id
-            fee
+            installment
+            paymentDate
+            receiver {
+              mUserId
+              mUsername
+            }
+            receiverId
+            refundApproval
+            refundApprovalDate
+            refundManager
+            reqRefund
+            reqRefundDate
+            reqRefundManager
+            studentId
+            stName
+            studentPaymentId
+            updatedAt
           }
         }
       }
+      error
+      message
+      ok
     }
   }
 `
@@ -827,7 +838,6 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     $discountAmount: String
     $actualAmount: Int
     $unCollectedAmount: Int
-    $receiptClassification: [String]
     $paymentDate: String
     $situationReport: Boolean
     $subDiv: String
@@ -843,7 +853,6 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       discountAmount: $discountAmount
       actualAmount: $actualAmount
       unCollectedAmount: $unCollectedAmount
-      receiptClassification: $receiptClassification
       paymentDate: $paymentDate
       situationReport: $situationReport
       subDiv: $subDiv

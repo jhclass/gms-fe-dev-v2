@@ -10,8 +10,6 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
-  Checkbox,
-  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
@@ -212,7 +210,6 @@ export default function StudentsWriteCourse() {
       cardAmount: null,
       discountAmount: null,
       dueDate: null,
-      receiptClassification: null,
       discount: 0,
       discountUnit: '%',
       subDiv: null,
@@ -257,6 +254,7 @@ export default function StudentsWriteCourse() {
       return disCountP
     }
   }
+
   const disCounCalculator = fee => {
     const price = disCountPrice(getValues('discountUnit'), fee)
     if (price < 0) {
@@ -300,10 +298,6 @@ export default function StudentsWriteCourse() {
             data.discount === 0 ? null : data.discount + disCountType,
           unCollectedAmount:
             data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
-          receiptClassification:
-            data.receiptClassification === null
-              ? []
-              : data.receiptClassification,
           subDiv: data.subDiv,
         },
         onCompleted: () => {
@@ -392,10 +386,6 @@ export default function StudentsWriteCourse() {
   }
   const handleSubManagerChange = e => {
     setSubjectManager(e.target.value)
-  }
-  const handleReceiptChange = (value: string[]) => {
-    setValue('receiptClassification', value)
-    setReceiptSelected(value)
   }
 
   return (
@@ -547,20 +537,21 @@ export default function StudentsWriteCourse() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="선별테스트 점수"
+                      placeholder="선발 평가 점수"
                       variant="bordered"
                       radius="md"
                       type="number"
                       endContent={<InputText>/ 100</InputText>}
                       label={
                         <FilterLabel>
-                          선별테스트 점수<span>*</span>
+                          선발 평가 점수
+                          {sub === '국가기간' && <span>*</span>}
                         </FilterLabel>
                       }
                       className="w-full"
                       {...register('seScore', {
                         required: {
-                          value: true,
+                          value: sub === '국가기간' ? true : false,
                           message: '선별테스트 점수를 작성해주세요.',
                         },
                         min: {
@@ -931,31 +922,6 @@ export default function StudentsWriteCourse() {
                         {String(errors.processingManagerId.message)}
                       </p>
                     )}
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="receiptClassification"
-                        render={({ field, fieldState }) => (
-                          <CheckboxGroup
-                            label={<FilterLabel>영수구분</FilterLabel>}
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            value={receiptSelected}
-                            onValueChange={handleReceiptChange}
-                          >
-                            {Object.entries(Receipt).map(([key, item]) => (
-                              <Checkbox key={key} value={item}>
-                                {item}
-                              </Checkbox>
-                            ))}
-                          </CheckboxGroup>
-                        )}
-                      />
-                    </RadioBox>
                   </AreaBox>
                 </FlexBox>
               </DetailDiv>
