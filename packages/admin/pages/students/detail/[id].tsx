@@ -262,6 +262,7 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+
   return (
     <>
       {studentData !== null && (
@@ -370,70 +371,76 @@ export default function StudentsWrite() {
                     </div>
                   </AreaBox>
                 </FlexBox>
-                {studentPaymentData === undefined && (
-                  <BtnBox>
+                {studentPaymentData === null ||
+                  (studentPaymentData?.length === 0 && (
+                    <BtnBox>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        color="primary"
+                        className="lg:w-[50%] w-full text-white"
+                        onClick={() => {
+                          router.push(
+                            `/students/write/course/${studentData?.id}`,
+                          )
+                        }}
+                      >
+                        수강신청
+                      </Button>
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="bordered"
+                        color="primary"
+                        className="lg:w-[50%] w-full"
+                        onClick={() => {
+                          router.back()
+                        }}
+                      >
+                        이전으로
+                      </Button>
+                    </BtnBox>
+                  ))}
+              </DetailDiv>
+            </DetailBox>
+            {studentPaymentData.length > 0 && (
+              <DetailBox>
+                <DetailDiv>
+                  <AreaTitle>
+                    <h4>수강 목록</h4>
                     <Button
-                      size="md"
-                      radius="md"
+                      size="sm"
+                      radius="sm"
                       variant="solid"
                       color="primary"
-                      className="lg:w-[50%] w-full text-white"
+                      className="text-white bg-flag1"
                       onClick={() => {
-                        router.push(`/students/write/course/${studentData?.id}`)
+                        {
+                          router.push(
+                            `/students/write/course/${studentData?.id}`,
+                          )
+                        }
                       }}
                     >
-                      수강신청
+                      과정 추가
                     </Button>
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="bordered"
-                      color="primary"
-                      className="lg:w-[50%] w-full"
-                      onClick={() => {
-                        router.back()
-                      }}
-                    >
-                      이전으로
-                    </Button>
-                  </BtnBox>
-                )}
-              </DetailDiv>
-            </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>수강 목록</h4>
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    color="primary"
-                    className="text-white bg-flag1"
-                    onClick={() => {
-                      {
-                        router.push(`/students/write/course/${studentData?.id}`)
-                      }
-                    }}
-                  >
-                    과정 추가
-                  </Button>
-                </AreaTitle>
-                <FlexBox>
-                  <PaymentList>
-                    {studentPaymentData?.map((item, index) => (
-                      <StudentPaymentItem
-                        key={index}
-                        index={index}
-                        detailtData={item}
-                        studentId={studentData?.id}
-                      />
-                    ))}
-                  </PaymentList>
-                </FlexBox>
-              </DetailDiv>
-            </DetailBox>
-
+                  </AreaTitle>
+                  <FlexBox>
+                    <PaymentList>
+                      {studentPaymentData?.map((item, index) => (
+                        <StudentPaymentItem
+                          key={index}
+                          index={index}
+                          detailtData={item}
+                          studentId={studentData?.id}
+                        />
+                      ))}
+                    </PaymentList>
+                  </FlexBox>
+                </DetailDiv>
+              </DetailBox>
+            )}
             <DetailBox>
               <BtnBox>
                 <Button
