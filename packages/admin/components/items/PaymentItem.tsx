@@ -183,12 +183,12 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                       detailtData?.courseComplete === '수료'
                         ? Color2
                         : detailtData?.courseComplete === '미수료' ||
-                          detailtData?.courseComplete === null
+                          detailtData?.courseComplete === ''
                         ? Color1
                         : Color3,
                   }}
                 >
-                  {detailtData?.courseComplete === null
+                  {detailtData?.courseComplete === ''
                     ? '미수료'
                     : detailtData?.courseComplete}
                 </FlatBox>

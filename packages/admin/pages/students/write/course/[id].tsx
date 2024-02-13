@@ -280,7 +280,7 @@ export default function StudentsWriteCourse() {
       createStudentPayment({
         variables: {
           campus: '신촌',
-          seScore: data.seScore === '' ? 0 : parseInt(data.seScore),
+          seScore: data.seScore === null ? 0 : parseInt(data.seScore),
           tuitionFee: parseInt(subjectSelectedData.fee),
           studentId: parseInt(studentId),
           subjectId: parseInt(subjectSelected),
@@ -289,13 +289,13 @@ export default function StudentsWriteCourse() {
           amountReceived: 0,
           situationReport: data.situationReport === '동의' ? true : false,
           actualAmount:
-            data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
+            data.actualAmount === null ? 0 : parseInt(data.actualAmount),
           discountAmount:
             data.discount === 0 ? null : data.discount + disCountType,
           unCollectedAmount:
-            data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
+            data.actualAmount === null ? 0 : parseInt(data.actualAmount),
           subDiv: data.subDiv,
-          dueDate: data.dueDate === undefined ? null : data.dueDate,
+          dueDate: data.dueDate === null ? null : data.dueDate,
         },
         onCompleted: result => {
           if (result.createStudentPayment.ok) {
