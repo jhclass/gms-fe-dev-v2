@@ -295,6 +295,10 @@ export const salesSearchState = atom({
 })
 
 //select
+export const selectedPaymentState = atom({
+  key: 'selectedPayment',
+  default: null,
+})
 export const selectedPaymentDetailState = atom({
   key: 'selectedPaymentDetail',
   default: null,

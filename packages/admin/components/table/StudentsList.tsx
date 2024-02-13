@@ -75,93 +75,82 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+const TsubjectTotal = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
   width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.07}px;
 `
-const Tprogress = styled.div`
+const Tsms = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const TsubDiv = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.07}px;
 `
 const Tbirthday = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.16}px;
 `
 const Tname = styled.div`
   position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 14%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
-  font-weight: 600;
-`
-const Tsubject = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 26%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.26}px;
+  min-width: ${1200 * 0.14}px;
   font-weight: 600;
 `
 const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.16}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.16}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 14%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.14}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -221,12 +210,11 @@ export default function StudentsTable() {
             <Theader>
               <TheaderBox>
                 <Tnum>No</Tnum>
-                <Tprogress>진행상태</Tprogress>
-                <TsubDiv>수강구분</TsubDiv>
                 <Tbirthday>생년월일</Tbirthday>
                 <Tname>이름</Tname>
-                <Tsubject>수강과정</Tsubject>
+                <TsubjectTotal>수강수</TsubjectTotal>
                 <Tphone>연락처</Tphone>
+                <Tsms>SMS여부</Tsms>
                 <Tmanager>담당자</Tmanager>
                 <TcreatedAt>등록일시</TcreatedAt>
               </TheaderBox>

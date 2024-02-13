@@ -147,6 +147,7 @@ export default function SubjectModal({
   setSubjectSelected,
   radio = false,
   setSubjectSelectedData = null,
+  setSub = null,
 }) {
   const router = useRouter()
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
@@ -182,7 +183,6 @@ export default function SubjectModal({
   const handleSbjChange = values => {
     setSubjectSelected(values)
   }
-
   const clickSbjSubmit = () => {
     if (radio) {
       searchSubjectMutation({
@@ -192,6 +192,9 @@ export default function SubjectModal({
         onCompleted: resData => {
           const { result } = resData.searchSubject || {}
           setSubjectSelectedData(result[0])
+          if (setSub !== null) {
+            setSub(result[0].subDiv)
+          }
         },
       })
     }

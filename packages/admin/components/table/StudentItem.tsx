@@ -72,93 +72,82 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+const TsubjectTotal = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
   width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.07}px;
 `
-const Tprogress = styled.div`
+const Tsms = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const TsubDiv = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.07}px;
 `
 const Tbirthday = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.16}px;
 `
 const Tname = styled.div`
   position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 14%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
-  font-weight: 600;
-`
-const Tsubject = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 26%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.26}px;
+  min-width: ${1200 * 0.14}px;
   font-weight: 600;
 `
 const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.16}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.16}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 14%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.14}px;
 `
 const EllipsisBox = styled.p`
   overflow: hidden;
@@ -201,11 +190,11 @@ export default function StudentsItem(props) {
   const conIndex = props.itemIndex
   const student = props.tableData
   const flagString = isDisplayFlag(student.createdAt, student.lectureAssignment)
-  const progressNum = displayPprogress(
-    student.lectureAssignment,
-    student.courseComplete,
-    student.studentPayment[0]?.cancellation,
-  )
+  // const progressNum = displayPprogress(
+  //   student.lectureAssignment,
+  //   student.courseComplete,
+  //   student.studentPayment[0]?.cancellation,
+  // )
   const progressStatus = useRecoilValue(studentProgressStatusState)
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -228,16 +217,6 @@ export default function StudentsItem(props) {
                   {(props.currentPage - 1) * conLimit + (conIndex + 1)}
                 </EllipsisBox>
               </Tnum>
-              <Tprogress style={{ color: progressStatus[progressNum].color }}>
-                <EllipsisBox>{progressStatus[progressNum].name}</EllipsisBox>
-              </Tprogress>
-              <TsubDiv>
-                <EllipsisBox>
-                  {student.studentPayment[0]?.subDiv
-                    ? student.studentPayment[0]?.subDiv
-                    : '-'}
-                </EllipsisBox>
-              </TsubDiv>
               <Tbirthday>
                 <EllipsisBox>
                   {student.birthday ? getDate(student.birthday) : '-'}
@@ -246,16 +225,24 @@ export default function StudentsItem(props) {
               <Tname>
                 <EllipsisBox>{student.name}</EllipsisBox>
               </Tname>
-              <Tsubject>
+              <TsubjectTotal>
                 <EllipsisBox>
-                  {student.studentPayment[0]?.subject?.subjectName
-                    ? student.studentPayment[0]?.subject?.subjectName
-                    : '-'}
+                  {student.studentPayment ? student.studentPayment.length : '-'}
                 </EllipsisBox>
-              </Tsubject>
+              </TsubjectTotal>
               <Tphone>
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
+              <Tsms
+                style={{
+                  color:
+                    student.smsAgreement === '동의' ? '#007de9' : '#FF5900',
+                }}
+              >
+                <EllipsisBox>
+                  {student.smsAgreement === '동의' ? 'O' : 'X'}
+                </EllipsisBox>
+              </Tsms>
               <Tmanager>
                 <EllipsisBox>
                   {student.writer ? student.writer : '-'}
