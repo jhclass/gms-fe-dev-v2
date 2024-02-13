@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Input, Radio, RadioGroup, Select } from '@nextui-org/react'
+import { Button, Input, Radio, RadioGroup, Select } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
@@ -17,7 +17,10 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState } from '@/lib/recoilAtoms'
-import { CREATE_STUDENT_MUTATION } from '@/graphql/mutations'
+import {
+  CHECK_DOUBLE_MUTATION,
+  CREATE_STUDENT_MUTATION,
+} from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
@@ -122,10 +125,14 @@ export default function StudentsWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [createStudent] = useMutation(CREATE_STUDENT_MUTATION)
+  const [checkDouble] = useMutation(CHECK_DOUBLE_MUTATION)
   const Receipt = useRecoilValue(ReceiptState)
-  const { register, control, handleSubmit, formState } = useForm()
-  const { errors } = formState
+  const { register, getValues, control, handleSubmit, formState, reset } =
+    useForm()
+  const { errors, isDirty } = formState
   const [birthdayDate, setBirthdayDate] = useState(null)
+  const [noDouble, setNoDouble] = useState(null)
+
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const onSubmit = data => {
@@ -137,18 +144,33 @@ export default function StudentsWrite() {
         smsAgreement: data.smsAgreement.trim(),
         birthday: data.birthday,
       },
-      // refetchQueries: [
-      //   {
-      //     query: SEE_STUDENT_QUERY,
-      //     variables: { page: 1, limit: 10 },
-      //   },
-      // ],
-      onCompleted: data => {
-        alert('등록되었습니다.')
-        router.push('/students')
+      onCompleted: result => {
+        if (result.createStudent.ok) {
+          alert('등록되었습니다.')
+          router.push('/students')
+        }
       },
     })
     userLogs(`${data.name} 수강생 등록`)
+  }
+  const clickDoubleCheck = (name, phone) => {
+    checkDouble({
+      variables: {
+        name: name.trim(),
+        phoneNum1: phone.trim(),
+      },
+      onCompleted: result => {
+        if (result.doubleCheck.ok) {
+          setNoDouble(true)
+          alert(`신규 수강생 입니다. \n등록이 가능합니다.`)
+        } else {
+          setNoDouble(false)
+          alert('이미 존재하는 수강생 입니다. \n수강생관리를 이용해주세요.')
+          reset()
+          setBirthdayDate(null)
+        }
+      },
+    })
   }
 
   return (
@@ -372,16 +394,38 @@ export default function StudentsWrite() {
                   </AreaBox>
                 </FlexBox>
                 <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
-                  >
-                    등록
-                  </Button2>
+                  {noDouble ? (
+                    <Button2
+                      buttonType="submit"
+                      width="100%"
+                      height="2.5rem"
+                      typeBorder={true}
+                      fontColor="#fff"
+                      bgColor="#007de9"
+                    >
+                      등록
+                    </Button2>
+                  ) : (
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="solid"
+                      color="primary"
+                      className="w-full text-white bg-flag1"
+                      onClick={() => {
+                        const checkName = getValues('name')
+                        const checkPhone = getValues('phoneNum1')
+                        if (checkName !== '' && checkPhone !== '') {
+                          clickDoubleCheck(checkName, checkPhone)
+                        } else {
+                          alert('이름과 연락처를 작성해주세요.')
+                        }
+                      }}
+                    >
+                      중복확인
+                    </Button>
+                  )}
+
                   <Button2
                     buttonType="button"
                     width="100%"

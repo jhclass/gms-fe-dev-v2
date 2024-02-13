@@ -9,7 +9,15 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
+import {
+  Checkbox,
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -174,6 +182,7 @@ export default function StudentsWritePayment() {
   const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
+  const [cashReceipt, setCashReceipt] = useState(['발급'])
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -341,6 +350,10 @@ export default function StudentsWritePayment() {
   }
   const handleBankChange = e => {
     setBankName(e.target.value)
+  }
+  const handleCheckboxChange = (value: string[]) => {
+    setValue('isCashReceipt', value)
+    setCashReceipt(value)
   }
 
   return (
@@ -911,6 +924,36 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox> */}
+                      <AreaBox>
+                        <Controller
+                          control={control}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: '현금 영수증을 발급해주세요.',
+                            },
+                          }}
+                          name="isCashReceipt"
+                          render={({ field, fieldState }) => (
+                            <CheckboxGroup
+                              label={
+                                <FilterLabel>
+                                  현금영수증 발급<span>*</span>
+                                </FilterLabel>
+                              }
+                              value={cashReceipt}
+                              onValueChange={handleCheckboxChange}
+                            >
+                              <Checkbox value="발급">발급</Checkbox>
+                            </CheckboxGroup>
+                          )}
+                        />
+                        {errors.isCashReceipt && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.isCashReceipt.message)}
+                          </p>
+                        )}
+                      </AreaBox>
                     </FlexBox>
                   )}
                   <BtnBox>

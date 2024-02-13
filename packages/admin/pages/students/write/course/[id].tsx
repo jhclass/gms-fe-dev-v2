@@ -30,7 +30,6 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
   SEARCH_STUDENT_BASIC_MUTATION,
-  UPDATE_STUDENT_DUEDATE_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 
@@ -175,7 +174,6 @@ export default function StudentsWriteCourse() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
   const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
-  const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const {
     loading: managerLoading,
     error: managerError,
@@ -230,7 +228,6 @@ export default function StudentsWriteCourse() {
   const [dueDate, setDueDate] = useState(null)
   const [sub, setSub] = useState('없음')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
-  const [receiptSelected, setReceiptSelected] = useState([])
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
@@ -283,8 +280,7 @@ export default function StudentsWriteCourse() {
       createStudentPayment({
         variables: {
           campus: '신촌',
-          seScore: parseInt(data.seScore),
-          subject: data.subject.trim(),
+          seScore: data.seScore === '' ? 0 : parseInt(data.seScore),
           tuitionFee: parseInt(subjectSelectedData.fee),
           studentId: parseInt(studentId),
           subjectId: parseInt(subjectSelected),
@@ -299,21 +295,16 @@ export default function StudentsWriteCourse() {
           unCollectedAmount:
             data.actualAmount === '' ? 0 : parseInt(data.actualAmount),
           subDiv: data.subDiv,
+          dueDate: data.dueDate === undefined ? null : data.dueDate,
         },
-        onCompleted: () => {
-          updateStudentDuedate({
-            variables: {
-              editStudentId: parseInt(studentId),
-              dueDate: data.dueDate === undefined ? null : data.dueDate,
-            },
-            onCompleted: () => {
-              alert('등록되었습니다.')
-              router.push(`/students/detail/${studentId}`)
-            },
-          })
+        onCompleted: result => {
+          if (result.createStudentPayment.ok) {
+            alert('등록되었습니다.')
+            router.push(`/students/detail/${studentId}`)
+            userLogs(`${studentData.name} 수강신청`)
+          }
         },
       })
-      userLogs(`${studentData.name} 수강신청`)
     } else {
       setError(
         'actualAmount',
@@ -552,7 +543,7 @@ export default function StudentsWriteCourse() {
                       {...register('seScore', {
                         required: {
                           value: sub === '국가기간' ? true : false,
-                          message: '선별테스트 점수를 작성해주세요.',
+                          message: '선발 평가 점수를 작성해주세요.',
                         },
                         min: {
                           value: 0,

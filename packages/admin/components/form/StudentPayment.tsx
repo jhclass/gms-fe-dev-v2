@@ -8,8 +8,6 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
-  Checkbox,
-  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
@@ -24,10 +22,7 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
-import {
-  UPDATE_STUDENT_DUEDATE_MUTATION,
-  UPDATE_STUDENT_PAYMENT_MUTATION,
-} from '@/graphql/mutations'
+import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
@@ -151,7 +146,6 @@ export default function StudentPaymentForm({
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
-  const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const {
     register,
     setValue,
@@ -184,7 +178,6 @@ export default function StudentPaymentForm({
       discountUnit: '%',
     },
   })
-  const Receipt = useRecoilValue(ReceiptState)
   const subStatus = useRecoilValue(subStatusState)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
@@ -288,7 +281,7 @@ export default function StudentPaymentForm({
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
-        if (data.actualAmount > 0) {
+        if (data.actualAmount >= 0 && parseInt(data.unCollectedAmount) >= 0) {
           updateStudentPayment({
             variables: {
               editStudentPaymentId: parseInt(studentPaymentData.id),
@@ -302,6 +295,8 @@ export default function StudentPaymentForm({
                   ? parseInt(data.tuitionFee.replace(/,/g, ''), 10)
                   : parseInt(subjectSelectedData.fee),
               processingManagerId: parseInt(subjectManager),
+              cashAmount: studentPaymentData.cashAmount,
+              cardAmount: studentPaymentData.cardAmount,
               situationReport: data.situationReport === '동의' ? true : false,
               paymentDate:
                 data.paymentDate === null
@@ -316,28 +311,18 @@ export default function StudentPaymentForm({
                   : data.discount === '0' || data.discount === ''
                   ? '0'
                   : data.discount + disCountType,
-              unCollectedAmount:
-                typeof data.unCollectedAmount === 'string'
-                  ? parseInt(data.unCollectedAmount)
-                  : data.unCollectedAmount,
-              amountReceived: parseInt(data.amountReceived.replace(/,/g, '')),
+              unCollectedAmount: parseInt(data.unCollectedAmount),
+              amountReceived: studentPaymentData.amountReceived,
               subDiv: data.subDiv,
+              dueDate:
+                data.dueDate === null
+                  ? null
+                  : typeof data.dueDate === 'string'
+                  ? new Date(parseInt(data.dueDate))
+                  : new Date(data.dueDate),
             },
             onCompleted: () => {
-              updateStudentDuedate({
-                variables: {
-                  editStudentId: parseInt(studentData.id),
-                  dueDate:
-                    data.dueDate === null
-                      ? null
-                      : typeof data.dueDate === 'string'
-                      ? new Date(parseInt(data.dueDate))
-                      : new Date(data.dueDate),
-                },
-                onCompleted: () => {
-                  alert('수정되었습니다.')
-                },
-              })
+              alert('수정되었습니다.')
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -346,14 +331,26 @@ export default function StudentPaymentForm({
             dirtyFieldsArray.join(', '),
           )
         } else {
-          setError(
-            'actualAmount',
-            {
-              type: 'custom',
-              message: '실 수강료가 0보다 작습니다.',
-            },
-            { shouldFocus: true },
-          )
+          if (data.actualAmount < 0) {
+            setError(
+              'actualAmount',
+              {
+                type: 'custom',
+                message: '실 수강료가 0보다 작습니다.',
+              },
+              { shouldFocus: true },
+            )
+          }
+          if (parseInt(data.unCollectedAmount) < 0) {
+            setError(
+              'unCollectedAmount',
+              {
+                type: 'custom',
+                message: '수납액이 더 많습니다.',
+              },
+              { shouldFocus: true },
+            )
+          }
         }
       }
     }
@@ -411,10 +408,7 @@ export default function StudentPaymentForm({
   }
 
   const clickSubject = () => {
-    if (
-      studentData.lectureAssignment ||
-      studentPaymentData.paymentDetail.length > 0
-    ) {
+    if (studentData.lectureAssignment) {
       alert('과정 변경이 불가능합니다.')
     } else {
       sbjOpen()
@@ -472,10 +466,7 @@ export default function StudentPaymentForm({
                     labelPlacement="outside"
                     className="max-w-full"
                     variant={
-                      studentData.lectureAssignment ||
-                      studentPaymentData.paymentDetail.length > 0
-                        ? 'faded'
-                        : 'bordered'
+                      studentData.lectureAssignment ? 'faded' : 'bordered'
                     }
                     minRows={1}
                     onClick={() => clickSubject()}
@@ -529,7 +520,7 @@ export default function StudentPaymentForm({
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
-                    placeholder="선별테스트 점수"
+                    placeholder="선발 평가 점수"
                     variant="bordered"
                     radius="md"
                     type="number"
@@ -537,14 +528,26 @@ export default function StudentPaymentForm({
                     endContent={<InputText>/ 100</InputText>}
                     label={
                       <FilterLabel>
-                        선별테스트 점수<span>*</span>
+                        선발 평가 점수
+                        {subjectSelectedData === null
+                          ? studentSubjectData.subDiv === '국가기간' && (
+                              <span>*</span>
+                            )
+                          : sub === '국가기간' && <span>*</span>}
                       </FilterLabel>
                     }
                     className="w-full"
                     {...register('seScore', {
                       required: {
-                        value: true,
-                        message: '선별테스트 점수를 작성해주세요.',
+                        value:
+                          subjectSelectedData === null
+                            ? studentSubjectData.subDiv === '국가기간'
+                              ? true
+                              : false
+                            : sub === '국가기간'
+                            ? true
+                            : false,
+                        message: '선발 평가 점수를 작성해주세요.',
                       },
                       min: {
                         value: 0,
@@ -615,19 +618,11 @@ export default function StudentPaymentForm({
               <FlexBox>
                 <AreaBox>
                   <Input
-                    isReadOnly={
-                      studentData.lectureAssignment ||
-                      studentPaymentData.paymentDetail.length > 0
-                        ? true
-                        : false
-                    }
+                    isReadOnly={studentData.lectureAssignment ? true : false}
                     labelPlacement="outside"
                     placeholder="할인"
                     variant={
-                      studentData.lectureAssignment ||
-                      studentPaymentData.paymentDetail.length > 0
-                        ? 'faded'
-                        : 'bordered'
+                      studentData.lectureAssignment ? 'faded' : 'bordered'
                     }
                     radius="md"
                     type="number"
@@ -648,10 +643,7 @@ export default function StudentPaymentForm({
                         render={({ field, fieldState }) => (
                           <Select
                             isDisabled={
-                              studentData.lectureAssignment ||
-                              studentPaymentData.paymentDetail.length > 0
-                                ? true
-                                : false
+                              studentData.lectureAssignment ? true : false
                             }
                             labelPlacement="outside"
                             label={<span style={{ display: 'none' }}></span>}
@@ -690,19 +682,11 @@ export default function StudentPaymentForm({
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    isReadOnly={
-                      studentData.lectureAssignment ||
-                      studentPaymentData.paymentDetail.length > 0
-                        ? true
-                        : false
-                    }
+                    isReadOnly={studentData.lectureAssignment ? true : false}
                     labelPlacement="outside"
                     placeholder="할인된 수강료"
                     variant={
-                      studentData.lectureAssignment ||
-                      studentPaymentData.paymentDetail.length > 0
-                        ? 'faded'
-                        : 'bordered'
+                      studentData.lectureAssignment ? 'faded' : 'bordered'
                     }
                     radius="md"
                     type="number"
@@ -799,6 +783,11 @@ export default function StudentPaymentForm({
                     }
                     {...register('unCollectedAmount')}
                   />
+                  {errors.unCollectedAmount && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.unCollectedAmount.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
@@ -1011,6 +1000,7 @@ export default function StudentPaymentForm({
         subjectSelected={subjectSelected}
         setSubjectSelected={setSubjectSelected}
         setSubjectSelectedData={setSubjectSelectedData}
+        setSub={setSub}
         sbjIsOpen={sbjIsOpen}
         sbjClose={sbjClose}
         setValue={setValue}

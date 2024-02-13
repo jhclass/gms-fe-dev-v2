@@ -24,7 +24,8 @@ import {
 } from '@/graphql/mutations'
 import CreateStudentMemo from '@/components/form/CreateStudentMemo'
 import StudentMemo from '@/components/form/StudentMemo'
-import StudentPaymentDetailItem from '@/components/form/PaymentDetailItem'
+import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
+import StudentPaymentItem from '@/components/items/PaymentItem'
 
 const ConArea = styled.div`
   width: 100%;
@@ -142,6 +143,21 @@ const FlatBox = styled.div`
   border-radius: 0.5rem;
   font-size: 0.875rem;
 `
+const PaymentList = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  > a {
+    display: block;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+  }
+`
 const MemoList = styled.ul`
   width: 100%;
   display: flex;
@@ -213,185 +229,11 @@ export default function StudentsWrite() {
       },
       onCompleted: data => {
         setStudentData(data.searchStudent?.student[0])
-        setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
-        setStudentSubjectData(
-          data.searchStudent?.student[0].studentPayment[0]?.subject,
-        )
-        setStudentPaymentDetailData(
-          data.searchStudent?.student[0].studentPayment[0]?.paymentDetail,
-        )
+        setStudentPaymentData(data.searchStudent?.student[0].studentPayment)
         setMemoList(data.searchStudent?.student[0].studentMemo)
       },
     })
   }, [router, studentPaymentData])
-  const clickLectureAssignment = () => {
-    if (studentData.lectureAssignment) {
-      const isAssignment = confirm(
-        `${studentData.name}학생의 ${studentSubjectData.subjectName} 강의 배정을 취소 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        updateStudentCourseMutation({
-          variables: {
-            editStudentId: parseInt(studentId),
-            lectureAssignment: false,
-          },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('강의배정 취소되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
-            )
-          },
-        })
-      }
-    } else {
-      const isAssignment = confirm(
-        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 배정 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        updateStudentCourseMutation({
-          variables: {
-            editStudentId: parseInt(studentId),
-            lectureAssignment: true,
-          },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('강의배정 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
-            )
-          },
-        })
-      }
-    }
-  }
-  const clickLCourseComplete = () => {
-    if (studentData.courseComplete) {
-      const isComplete = confirm(
-        `${studentData.name}학생의 이수처리를 취소하시겠습니까?`,
-      )
-      if (isComplete) {
-        updateStudentCourseMutation({
-          variables: {
-            editStudentId: parseInt(studentId),
-            courseComplete: false,
-          },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('이수처리 취소되었습니다.')
-            userLogs(`${studentData.name}학생 이수처리 취소`)
-          },
-        })
-      }
-    } else {
-      const isComplete = confirm(
-        `${studentData.name}학생을 이수처리 하시겠습니까?`,
-      )
-      if (isComplete) {
-        updateStudentCourseMutation({
-          variables: {
-            editStudentId: parseInt(studentId),
-            courseComplete: true,
-          },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('이수처리 되었습니다.')
-            userLogs(`${studentData.name}학생 이수처리`)
-          },
-        })
-      }
-    }
-  }
-
-  const clickClassCancel = () => {
-    if (studentPaymentData.cancellation) {
-      const isAssignment = confirm(
-        `${studentData.name}학생의 ${studentSubjectData.subjectName} 중도포기 철회 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            cancellation: false,
-          },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-                setStudentPaymentData(
-                  data.searchStudent?.student[0].studentPayment[0],
-                )
-              },
-            })
-            alert('중도포기 철회 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
-            )
-          },
-        })
-      }
-    } else {
-      const isAssignment = confirm(
-        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 중도포기 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            cancellation: true,
-          },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-                setStudentPaymentData(
-                  data.searchStudent?.student[0].studentPayment[0],
-                )
-              },
-            })
-            alert('중도포기 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
-            )
-          },
-        })
-      }
-    }
-  }
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -420,7 +262,6 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-
   return (
     <>
       {studentData !== null && (
@@ -559,330 +400,56 @@ export default function StudentsWrite() {
                 )}
               </DetailDiv>
             </DetailBox>
-            {studentPaymentData !== undefined && (
-              <>
-                <DetailBox>
-                  <DetailDiv>
-                    <AreaTitle>
-                      <h4>수강 정보</h4>
-                      <Button
-                        isDisabled={
-                          studentData?.courseComplete ||
-                          studentPaymentData?.cancellation
-                            ? true
-                            : false
-                        }
-                        size="sm"
-                        radius="sm"
-                        variant="solid"
-                        color="primary"
-                        className="text-white"
-                        onClick={() => {
-                          {
-                            router.push(
-                              `/students/edit/course/${studentData?.id}`,
-                            )
-                          }
-                        }}
-                      >
-                        수정
-                      </Button>
-                    </AreaTitle>
-                    <FlexBox>
-                      <AreaSmallBox style={{ minWidth: '20%' }}>
-                        <div>
-                          <FilterLabel>과정코드</FilterLabel>
-                          <LineBox>{studentSubjectData?.subjectCode}</LineBox>
-                        </div>
-                      </AreaSmallBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>과정명</FilterLabel>
-                          <LineBox>{studentSubjectData?.subjectName}</LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaSmallBox>
-                        <RadioBox>
-                          <RadioGroup
-                            isReadOnly
-                            label={
-                              <FilterLabel>
-                                교육상황보고여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            defaultValue={
-                              studentPaymentData?.situationReport
-                                ? '동의'
-                                : '비동의'
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        </RadioBox>
-                      </AreaSmallBox>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>
-                            선발평가점수<span>*</span>
-                          </FilterLabel>
-                          <LineBox>{studentPaymentData?.seScore || 0}</LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강 구분</FilterLabel>
-                          <LineBox>{studentPaymentData?.subDiv}</LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강예정일</FilterLabel>
-                          <LineBox>
-                            {studentData?.dueDate === null
-                              ? ''
-                              : formatDate(studentData?.dueDate, false)}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강료</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.tuitionFee
-                              ? feeFormet(studentPaymentData?.tuitionFee)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>할인금액</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.discountAmount
-                              ? studentPaymentData?.discountAmount
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>
-                            <b>실 수강료</b>
-                          </FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.actualAmount
-                              ? feeFormet(studentPaymentData?.actualAmount)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수납액</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.amountReceived
-                              ? feeFormet(studentPaymentData?.amountReceived)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>
-                            <b>미 수납액</b>
-                          </FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.unCollectedAmount
-                              ? feeFormet(studentPaymentData?.unCollectedAmount)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강담당자</FilterLabel>
-                          <LineBox>
-                            {
-                              managerList.find(
-                                user =>
-                                  user.id ===
-                                  studentPaymentData?.processingManagerId,
-                              )?.mUsername
-                            }
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                    </FlexBox>
-                    <BtnBox4
-                      $isPayment={studentPaymentDetailData?.length === 0}
-                    >
-                      {studentPaymentDetailData?.length === 0 && (
-                        <Button
-                          size="md"
-                          radius="md"
-                          variant="solid"
-                          className="w-full text-white bg-flag1"
-                          onClick={() =>
-                            router.push(
-                              `/students/write/payment/${studentData?.id}`,
-                            )
-                          }
-                        >
-                          수강 결제
-                        </Button>
-                      )}
-                      <Button
-                        isDisabled={
-                          studentData?.courseComplete ||
-                          studentPaymentData?.cancellation
-                            ? true
-                            : false
-                        }
-                        size="md"
-                        radius="md"
-                        variant="bordered"
-                        color="primary"
-                        className="w-full"
-                        onClick={clickLectureAssignment}
-                      >
-                        {studentData?.lectureAssignment
-                          ? '배정 취소'
-                          : '강의배정'}
-                      </Button>
-                      <Button
-                        isDisabled={
-                          studentData?.lectureAssignment &&
-                          !studentPaymentData.cancellation
-                            ? false
-                            : true
-                        }
-                        size="md"
-                        radius="md"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        onClick={clickLCourseComplete}
-                      >
-                        {studentData?.courseComplete
-                          ? '이수처리 취소'
-                          : '이수처리'}
-                      </Button>
-                      <Button
-                        isDisabled={
-                          studentData?.lectureAssignment &&
-                          !studentData?.courseComplete
-                            ? false
-                            : true
-                        }
-                        size="md"
-                        radius="md"
-                        variant="solid"
-                        className="w-full text-white bg-flag1"
-                        onClick={clickClassCancel}
-                      >
-                        {studentPaymentData?.cancellation
-                          ? '중도포기 철회'
-                          : '중도포기'}
-                      </Button>
-                    </BtnBox4>
-                  </DetailDiv>
-                </DetailBox>
-                {/* <DetailBox>
-                  <DetailDiv>
-                    <BtnBox>
-                      <Button
-                        size="md"
-                        radius="md"
-                        variant="solid"
-                        className="w-full text-white bg-flag1"
-                      >
-                        환불신청
-                      </Button>
-                      <Button
-                        size="md"
-                        radius="md"
-                        variant="bordered"
-                        className="w-full text-flag1 border-flag1"
-                      >
-                        삭제
-                      </Button>
-                    </BtnBox>
-                  </DetailDiv>
-                </DetailBox> */}
-              </>
-            )}
-            {studentPaymentDetailData?.length > 0 && (
-              <>
-                <DetailBox>
-                  <DetailDiv>
-                    <AreaTitle>
-                      <h4>결제 정보</h4>
-                      <Button
-                        isDisabled={
-                          studentPaymentData?.unCollectedAmount === 0
-                            ? true
-                            : false
-                        }
-                        size="sm"
-                        radius="sm"
-                        variant="solid"
-                        className="text-white bg-flag1"
-                        onClick={() => {
-                          {
-                            router.push(
-                              `/students/write/payment/${studentData?.id}`,
-                            )
-                          }
-                        }}
-                      >
-                        미수금결제
-                      </Button>
-                    </AreaTitle>
-                    {studentPaymentDetailData?.map((item, index) => (
-                      <StudentPaymentDetailItem
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>수강 목록</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    color="primary"
+                    className="text-white bg-flag1"
+                    onClick={() => {
+                      {
+                        router.push(`/students/write/course/${studentData?.id}`)
+                      }
+                    }}
+                  >
+                    과정 추가
+                  </Button>
+                </AreaTitle>
+                <FlexBox>
+                  <PaymentList>
+                    {studentPaymentData?.map((item, index) => (
+                      <StudentPaymentItem
                         key={index}
-                        setStudentPaymentDetailData={
-                          setStudentPaymentDetailData
-                        }
+                        index={index}
                         detailtData={item}
                         studentId={studentData?.id}
                       />
                     ))}
-                  </DetailDiv>
-                </DetailBox>
-              </>
-            )}
-            {studentPaymentData !== undefined && (
-              <DetailBox>
-                <BtnBox>
-                  <Button
-                    size="md"
-                    radius="md"
-                    variant="bordered"
-                    color="primary"
-                    className="lg:w-[50%] w-full"
-                    onClick={() => {
-                      router.back()
-                    }}
-                  >
-                    이전으로
-                  </Button>
-                </BtnBox>
-              </DetailBox>
-            )}
+                  </PaymentList>
+                </FlexBox>
+              </DetailDiv>
+            </DetailBox>
+
+            <DetailBox>
+              <BtnBox>
+                <Button
+                  size="md"
+                  radius="md"
+                  variant="bordered"
+                  color="primary"
+                  className="lg:w-[50%] w-full"
+                  onClick={() => {
+                    router.back()
+                  }}
+                >
+                  이전으로
+                </Button>
+              </BtnBox>
+            </DetailBox>
 
             <DetailBox>
               <DetailDiv>

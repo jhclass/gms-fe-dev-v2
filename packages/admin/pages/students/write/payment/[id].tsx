@@ -9,7 +9,15 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
+import {
+  Checkbox,
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -161,6 +169,7 @@ export default function StudentsWritePayment() {
     reset,
     setError,
     setFocus,
+    setValue,
     clearErrors,
     handleSubmit,
     formState,
@@ -172,6 +181,7 @@ export default function StudentsWritePayment() {
   const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
+  const [cashReceipt, setCashReceipt] = useState([])
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
 
@@ -180,12 +190,16 @@ export default function StudentsWritePayment() {
       variables: {
         searchStudentId: parseInt(studentId),
       },
-      onCompleted: data => {
-        setStudentData(data.searchStudent?.student[0])
-        setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
-        setStudentSubjectData(
-          data.searchStudent?.student[0].studentPayment[0].subject,
-        )
+      onCompleted: result => {
+        if (result.searchStudent.ok) {
+          setStudentData(result.searchStudent?.student[0])
+          setStudentPaymentData(
+            result.searchStudent?.student[0].studentPayment[0],
+          )
+          setStudentSubjectData(
+            result.searchStudent.student[0].studentPayment[0]?.subject,
+          )
+        }
       },
     })
   }, [router])
@@ -245,30 +259,33 @@ export default function StudentsWritePayment() {
                   studentPaymentData?.amountReceived +
                   parseInt(data.amountPayment),
                 editStudentPaymentId: parseInt(studentPaymentData?.id),
-                subjectId: studentSubjectData.id,
+                subjectId: studentPaymentData?.subjectId,
                 processingManagerId: studentPaymentData?.processingManagerId,
               },
-              onCompleted: () => {
-                searchStudentPayment({
-                  variables: {
-                    searchStudentId: parseInt(studentId),
-                  },
-                  onCompleted: data => {
-                    setStudentData(data.searchStudent?.student[0])
-                    setStudentPaymentData(
-                      data.searchStudent?.student[0].studentPayment[0],
-                    )
-                    setStudentSubjectData(
-                      data.searchStudent?.student[0].studentPayment[0].subject,
-                    )
-                  },
-                })
-                userLogs(`${studentData?.name} 카드 결제 `)
-                reset()
-                clearErrors()
-                setCardName('카드사 선택')
-                setCardPaymentDate(null)
-                setPaymentType(paymentType)
+              onCompleted: result2 => {
+                if (result2.editStudentPayment.ok) {
+                  searchStudentPayment({
+                    variables: {
+                      searchStudentId: parseInt(studentId),
+                    },
+                    onCompleted: data => {
+                      setStudentData(data.searchStudent?.student[0])
+                      setStudentPaymentData(
+                        data.searchStudent?.student[0].studentPayment[0],
+                      )
+                      setStudentSubjectData(
+                        data.searchStudent?.student[0].studentPayment[0]
+                          .subject,
+                      )
+                    },
+                  })
+                  userLogs(`${studentData?.name} 카드 결제 `)
+                  reset()
+                  clearErrors()
+                  setCardName('카드사 선택')
+                  setCardPaymentDate(null)
+                  setPaymentType(paymentType)
+                }
               },
             })
           }
@@ -298,30 +315,34 @@ export default function StudentsWritePayment() {
                   studentPaymentData?.amountReceived +
                   parseInt(data.depositAmount),
                 editStudentPaymentId: parseInt(studentPaymentData?.id),
-                subjectId: studentSubjectData.id,
+                subjectId: studentPaymentData?.subjectId,
                 processingManagerId: studentPaymentData?.processingManagerId,
               },
-              onCompleted: () => {
-                searchStudentPayment({
-                  variables: {
-                    searchStudentId: parseInt(studentId),
-                  },
-                  onCompleted: data => {
-                    setStudentData(data.searchStudent?.student[0])
-                    setStudentPaymentData(
-                      data.searchStudent?.student[0].studentPayment[0],
-                    )
-                    setStudentSubjectData(
-                      data.searchStudent?.student[0].studentPayment[0].subject,
-                    )
-                  },
-                })
-                userLogs(`${studentData?.name} 현금 결제 `)
-                reset()
-                clearErrors()
-                setBankName('은행 선택')
-                setCashDepositDate(null)
-                setPaymentType(paymentType)
+              onCompleted: result2 => {
+                if (result2.editStudentPayment.ok) {
+                  searchStudentPayment({
+                    variables: {
+                      searchStudentId: parseInt(studentId),
+                    },
+                    onCompleted: data => {
+                      setStudentData(data.searchStudent?.student[0])
+                      setStudentPaymentData(
+                        data.searchStudent?.student[0].studentPayment[0],
+                      )
+                      setStudentSubjectData(
+                        data.searchStudent?.student[0].studentPayment[0]
+                          .subject,
+                      )
+                    },
+                  })
+                  userLogs(`${studentData?.name} 현금 결제 `)
+                  reset()
+                  clearErrors()
+                  setBankName('은행 선택')
+                  setCashDepositDate(null)
+                  setPaymentType(paymentType)
+                  setCashReceipt([])
+                }
               },
             })
           }
@@ -338,6 +359,10 @@ export default function StudentsWritePayment() {
   }
   const handleBankChange = e => {
     setBankName(e.target.value)
+  }
+  const handleCheckboxChange = (value: string[]) => {
+    setValue('isCashReceipt', value)
+    setCashReceipt(value)
   }
 
   return (
@@ -903,6 +928,36 @@ export default function StudentsWritePayment() {
                         </p>
                       )}
                     </AreaBox> */}
+                    <AreaBox>
+                      <Controller
+                        control={control}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '현금 영수증을 발급해주세요.',
+                          },
+                        }}
+                        name="isCashReceipt"
+                        render={({ field, fieldState }) => (
+                          <CheckboxGroup
+                            label={
+                              <FilterLabel>
+                                현금영수증 발급<span>*</span>
+                              </FilterLabel>
+                            }
+                            value={cashReceipt}
+                            onValueChange={handleCheckboxChange}
+                          >
+                            <Checkbox value="발급">발급</Checkbox>
+                          </CheckboxGroup>
+                        )}
+                      />
+                      {errors.isCashReceipt && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.isCashReceipt.message)}
+                        </p>
+                      )}
+                    </AreaBox>
                   </FlexBox>
                 )}
                 <BtnBox>
