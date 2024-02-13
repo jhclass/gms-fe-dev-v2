@@ -24,7 +24,6 @@ import Layout from '@/pages/students/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   SEARCH_SUBJECT_MUTATION,
-  UPDATE_STUDENT_DUEDATE_MUTATION,
   UPDATE_STUDENT_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
@@ -158,7 +157,6 @@ export default function StudentsWriteCourse({
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
-  const [updateStudentDuedate] = useMutation(UPDATE_STUDENT_DUEDATE_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
   const {
     register,
