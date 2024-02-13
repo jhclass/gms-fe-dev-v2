@@ -290,20 +290,7 @@ export default function StudentsWriteCourse({
                 : data.unCollectedAmount,
           },
           onCompleted: rr => {
-            updateStudentDuedate({
-              variables: {
-                editStudentId: parseInt(studentData.id),
-                dueDate:
-                  data.dueDate === null
-                    ? null
-                    : typeof data.dueDate === 'string'
-                    ? new Date(parseInt(data.dueDate))
-                    : new Date(data.dueDate),
-              },
-              onCompleted: () => {
-                alert('수정되었습니다.')
-              },
-            })
+            // console.log(rr)
           },
         })
         const dirtyFieldsArray = [...Object.keys(dirtyFields)]
