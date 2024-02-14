@@ -202,6 +202,7 @@ export default function StudentsWrite() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
 
   const { userLogs } = useUserLogsMutation()
@@ -228,9 +229,11 @@ export default function StudentsWrite() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent?.student[0])
-        setStudentPaymentData(data.searchStudent?.student[0].studentPayment)
-        setMemoList(data.searchStudent?.student[0].studentMemo)
+        if (data.searchStudent.ok) {
+          setStudentData(data.searchStudent?.student[0])
+          setStudentPaymentData(data.searchStudent?.student[0].studentPayment)
+          setMemoList(data.searchStudent?.student[0].studentMemo)
+        }
       },
     })
   }, [router, studentPaymentData])
@@ -262,7 +265,6 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-
   return (
     <>
       {studentData !== null && (
@@ -371,9 +373,10 @@ export default function StudentsWrite() {
                     </div>
                   </AreaBox>
                 </FlexBox>
-                {studentPaymentData === null ||
-                  (studentPaymentData?.length === 0 && (
-                    <BtnBox>
+                {(studentPaymentData === null ||
+                  studentPaymentData?.length === 0) && (
+                  <BtnBox>
+                    {(mGrade < 2 || mPart === '교무팀') && (
                       <Button
                         size="md"
                         radius="md"
@@ -388,43 +391,46 @@ export default function StudentsWrite() {
                       >
                         수강신청
                       </Button>
-                      <Button
-                        size="md"
-                        radius="md"
-                        variant="bordered"
-                        color="primary"
-                        className="lg:w-[50%] w-full"
-                        onClick={() => {
-                          router.back()
-                        }}
-                      >
-                        이전으로
-                      </Button>
-                    </BtnBox>
-                  ))}
+                    )}
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="bordered"
+                      color="primary"
+                      className="lg:w-[50%] w-full"
+                      onClick={() => {
+                        router.back()
+                      }}
+                    >
+                      이전으로
+                    </Button>
+                  </BtnBox>
+                )}
               </DetailDiv>
             </DetailBox>
-            {studentPaymentData.length > 0 && (
+            {studentPaymentData?.length > 0 && (
               <DetailBox>
                 <DetailDiv>
                   <AreaTitle>
                     <h4>수강 목록</h4>
-                    <Button
-                      size="sm"
-                      radius="sm"
-                      variant="solid"
-                      color="primary"
-                      className="text-white bg-flag1"
-                      onClick={() => {
-                        {
-                          router.push(
-                            `/students/write/course/${studentData?.id}`,
-                          )
-                        }
-                      }}
-                    >
-                      과정 추가
-                    </Button>
+                    {(mGrade < 2 || mPart === '교무팀') && (
+                      <Button
+                        size="sm"
+                        radius="sm"
+                        variant="solid"
+                        color="primary"
+                        className="text-white bg-flag1"
+                        onClick={() => {
+                          {
+                            router.push(
+                              `/students/write/course/${studentData?.id}`,
+                            )
+                          }
+                        }}
+                      >
+                        과정 추가
+                      </Button>
+                    )}
                   </AreaTitle>
                   <FlexBox>
                     <PaymentList>
@@ -441,22 +447,24 @@ export default function StudentsWrite() {
                 </DetailDiv>
               </DetailBox>
             )}
-            <DetailBox>
-              <BtnBox>
-                <Button
-                  size="md"
-                  radius="md"
-                  variant="bordered"
-                  color="primary"
-                  className="lg:w-[50%] w-full"
-                  onClick={() => {
-                    router.back()
-                  }}
-                >
-                  이전으로
-                </Button>
-              </BtnBox>
-            </DetailBox>
+            {studentPaymentData?.length > 0 && (
+              <DetailBox>
+                <BtnBox>
+                  <Button
+                    size="md"
+                    radius="md"
+                    variant="bordered"
+                    color="primary"
+                    className="lg:w-[50%] w-full"
+                    onClick={() => {
+                      router.back()
+                    }}
+                  >
+                    이전으로
+                  </Button>
+                </BtnBox>
+              </DetailBox>
+            )}
 
             <DetailBox>
               <DetailDiv>

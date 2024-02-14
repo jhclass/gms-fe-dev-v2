@@ -3,13 +3,14 @@ import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
 import { useRecoilState } from 'recoil'
-import { selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import { navOpenState, selectedPaymentDetailState } from '@/lib/recoilAtoms'
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
   SEARCH_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
+import useMmeQuery from '@/utils/mMe'
 
 const FlexCardBox = styled.div<{ $IsRefund: boolean }>`
   display: flex;
@@ -28,12 +29,35 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
+const FlexCol = styled.div<{ $navOpen: boolean }>`
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+
+  @media (max-width: 1400px) {
+    flex-direction: ${props => (props.$navOpen ? 'column' : 'row')};
+  }
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+`
+const Flex = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
 const AreaBoxL = styled.div`
-  min-width: 23%;
+  flex: 1;
+  min-width: 25%;
+  width: 100%;
 `
 const FilterLabel = styled.label`
   font-weight: 500;
@@ -67,6 +91,10 @@ export default function StudentPaymentDetailItem({
   setStudentPaymentDetailData,
 }) {
   const router = useRouter()
+  const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const { userLogs } = useUserLogsMutation()
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
@@ -241,23 +269,25 @@ export default function StudentPaymentDetailItem({
                       >
                         영수증 인쇄
                       </Button> */}
-                <Button
-                  isDisabled={detailtData.reqRefund ? true : false}
-                  size="md"
-                  radius="md"
-                  variant="solid"
-                  color="primary"
-                  className="w-full text-white"
-                  onClick={() => editBtn(detailtData)}
-                >
-                  결제 변경
-                </Button>
+                {(mGrade < 2 || mPart === '회계팀') && (
+                  <Button
+                    isDisabled={detailtData.reqRefund ? true : false}
+                    size="md"
+                    radius="md"
+                    variant="solid"
+                    color="primary"
+                    className="w-full text-white"
+                    onClick={() => editBtn(detailtData)}
+                  >
+                    결제 변경
+                  </Button>
+                )}
                 {detailtData.reqRefund ? (
                   <>
                     <Button
                       size="md"
                       radius="md"
-                      className="w-full text-white bg-flag1"
+                      className="w-full lg:max-w-[50%] text-white bg-flag1"
                       onClick={() => clickReqRefund()}
                     >
                       결제 취소요청 철회
@@ -268,7 +298,7 @@ export default function StudentPaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="w-full text-flag1 border-flag1"
+                    className="w-full lg:max-w-[50%] text-flag1 border-flag1"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청
@@ -283,46 +313,60 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox $IsRefund={detailtData.reqRefund}>
             <FlexBox>
-              <AreaBoxL>
-                <div>
-                  <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
-                </div>
-              </AreaBoxL>
-              <AreaBox>
-                <div>
-                  <FilterLabel>카드회사명</FilterLabel>
-                  <FlatBox>{detailtData?.cardCompany}</FlatBox>
-                </div>
-              </AreaBox>
-              <AreaBox>
-                <div>
-                  <FilterLabel>할부개월</FilterLabel>
-                  <FlatBox>
-                    {detailtData?.installment === 0
-                      ? '1'
-                      : detailtData?.installment}
-                    개월
-                  </FlatBox>
-                </div>
-              </AreaBox>
-              <AreaBox>
-                <div>
-                  <FilterLabel>결제금액</FilterLabel>
-                  <FlatBox>
-                    {detailtData?.amountPayment === null
-                      ? ''
-                      : feeFormet(detailtData?.amountPayment)}
-                    원
-                  </FlatBox>
-                </div>
-              </AreaBox>
-              <AreaBox>
-                <div>
-                  <FilterLabel>수납자</FilterLabel>
-                  <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
-                </div>
-              </AreaBox>
+              <FlexCol $navOpen={navOpen}>
+                <Flex>
+                  <AreaBoxL>
+                    <div>
+                      <FilterLabel>결제일자</FilterLabel>
+                      <FlatBox>
+                        {formatDate(detailtData?.createdAt, true)}
+                      </FlatBox>
+                    </div>
+                  </AreaBoxL>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>승인번호</FilterLabel>
+                      <FlatBox>{detailtData?.ApprovalNum}</FlatBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>카드회사명</FilterLabel>
+                      <FlatBox>{detailtData?.cardCompany}</FlatBox>
+                    </div>
+                  </AreaBox>
+                </Flex>
+                <Flex>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>할부개월</FilterLabel>
+                      <FlatBox>
+                        {detailtData?.installment === 0
+                          ? '1'
+                          : detailtData?.installment}
+                        개월
+                      </FlatBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>결제금액</FilterLabel>
+                      <FlatBox>
+                        {detailtData?.amountPayment === null
+                          ? ''
+                          : feeFormet(detailtData?.amountPayment)}
+                        원
+                      </FlatBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>수납자</FilterLabel>
+                      <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
+                    </div>
+                  </AreaBox>
+                </Flex>
+              </FlexCol>
               {/* <AreaBox>
                 <div>
                   <FilterLabel>영수구분</FilterLabel>

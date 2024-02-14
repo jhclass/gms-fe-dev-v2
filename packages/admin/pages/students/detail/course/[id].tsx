@@ -186,6 +186,7 @@ export default function StudentsWrite() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [selectedPayment, setSelectedPayment] =
     useRecoilState(selectedPaymentState)
@@ -211,18 +212,20 @@ export default function StudentsWrite() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent?.student[0])
-        setStudentPaymentData(
-          data.searchStudent?.student[0].studentPayment[selectedPayment],
-        )
-        setStudentSubjectData(
-          data.searchStudent?.student[0].studentPayment[selectedPayment]
-            ?.subject,
-        )
-        setStudentPaymentDetailData(
-          data.searchStudent?.student[0].studentPayment[selectedPayment]
-            ?.paymentDetail,
-        )
+        if (data.searchStudent.ok) {
+          setStudentData(data.searchStudent?.student[0])
+          setStudentPaymentData(
+            data.searchStudent?.student[0].studentPayment[selectedPayment],
+          )
+          setStudentSubjectData(
+            data.searchStudent?.student[0].studentPayment[selectedPayment]
+              ?.subject,
+          )
+          setStudentPaymentDetailData(
+            data.searchStudent?.student[0].studentPayment[selectedPayment]
+              ?.paymentDetail,
+          )
+        }
       },
     })
   }, [router, studentPaymentData, selectedPayment])
@@ -240,19 +243,21 @@ export default function StudentsWrite() {
             subjectId: studentPaymentData.subjectId,
             processingManagerId: studentPaymentData.processingManagerId,
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('강의배정 취소되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
-            )
+          onCompleted: result => {
+            if (result.editStudentPayment.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                },
+              })
+              alert('강의배정 취소되었습니다.')
+              userLogs(
+                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
+              )
+            }
           },
         })
       }
@@ -268,19 +273,21 @@ export default function StudentsWrite() {
             subjectId: studentPaymentData.subjectId,
             processingManagerId: studentPaymentData.processingManagerId,
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('강의배정 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
-            )
+          onCompleted: result => {
+            if (result.editStudentPayment.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                },
+              })
+              alert('강의배정 되었습니다.')
+              userLogs(
+                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
+              )
+            }
           },
         })
       }
@@ -298,17 +305,19 @@ export default function StudentsWrite() {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: '미수료',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('이수처리 취소되었습니다.')
-            userLogs(`${studentData.name}학생 이수처리 취소`)
+          onCompleted: result => {
+            if (result.classCancellation.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                },
+              })
+              alert('이수처리 취소되었습니다.')
+              userLogs(`${studentData.name}학생 이수처리 취소`)
+            }
           },
         })
       }
@@ -322,17 +331,19 @@ export default function StudentsWrite() {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: '수료',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-              },
-            })
-            alert('이수처리 되었습니다.')
-            userLogs(`${studentData.name}학생 이수처리`)
+          onCompleted: result => {
+            if (result.classCancellation.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                },
+              })
+              alert('이수처리 되었습니다.')
+              userLogs(`${studentData.name}학생 이수처리`)
+            }
           },
         })
       }
@@ -350,24 +361,26 @@ export default function StudentsWrite() {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: '미수료',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-                setStudentPaymentData(
-                  data.searchStudent?.student[0].studentPayment[
-                    selectedPayment
-                  ],
-                )
-              },
-            })
-            alert('중도포기 철회 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
-            )
+          onCompleted: result => {
+            if (result.classCancellation.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                  setStudentPaymentData(
+                    data.searchStudent?.student[0].studentPayment[
+                      selectedPayment
+                    ],
+                  )
+                },
+              })
+              alert('중도포기 철회 되었습니다.')
+              userLogs(
+                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
+              )
+            }
           },
         })
       }
@@ -381,24 +394,26 @@ export default function StudentsWrite() {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: '중도포기',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-                setStudentPaymentData(
-                  data.searchStudent?.student[0].studentPayment[
-                    selectedPayment
-                  ],
-                )
-              },
-            })
-            alert('중도포기 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
-            )
+          onCompleted: result => {
+            if (result.classCancellation.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                  setStudentPaymentData(
+                    data.searchStudent?.student[0].studentPayment[
+                      selectedPayment
+                    ],
+                  )
+                },
+              })
+              alert('중도포기 되었습니다.')
+              userLogs(
+                `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
+              )
+            }
           },
         })
       }
@@ -416,24 +431,26 @@ export default function StudentsWrite() {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: '미수료',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-                setStudentPaymentData(
-                  data.searchStudent?.student[0].studentPayment[
-                    selectedPayment
-                  ],
-                )
-              },
-            })
-            alert('중도포기 철회 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
-            )
+          onCompleted: result => {
+            if (result.classCancellation.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                  setStudentPaymentData(
+                    data.searchStudent?.student[0].studentPayment[
+                      selectedPayment
+                    ],
+                  )
+                },
+              })
+              alert('중도포기 철회 되었습니다.')
+              userLogs(
+                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
+              )
+            }
           },
         })
       }
@@ -447,24 +464,26 @@ export default function StudentsWrite() {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: '수강철회',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                setStudentData(data.searchStudent?.student[0])
-                setStudentPaymentData(
-                  data.searchStudent?.student[0].studentPayment[
-                    selectedPayment
-                  ],
-                )
-              },
-            })
-            alert('수강철회 되었습니다.')
-            userLogs(
-              `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
-            )
+          onCompleted: result => {
+            if (result.classCancellation.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  setStudentData(data.searchStudent?.student[0])
+                  setStudentPaymentData(
+                    data.searchStudent?.student[0].studentPayment[
+                      selectedPayment
+                    ],
+                  )
+                },
+              })
+              alert('수강철회 되었습니다.')
+              userLogs(
+                `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
+              )
+            }
           },
         })
       }
@@ -571,27 +590,29 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>
-                      <Button
-                        isDisabled={
-                          studentPaymentData?.lectureAssignment === '배정'
-                            ? true
-                            : false
-                        }
-                        size="sm"
-                        radius="sm"
-                        variant="solid"
-                        color="primary"
-                        className="text-white"
-                        onClick={() => {
-                          {
-                            router.push(
-                              `/students/edit/course/${studentData?.id}`,
-                            )
+                      {(mGrade < 2 || mPart === '교무팀') && (
+                        <Button
+                          isDisabled={
+                            studentPaymentData?.lectureAssignment === '배정'
+                              ? true
+                              : false
                           }
-                        }}
-                      >
-                        수정
-                      </Button>
+                          size="sm"
+                          radius="sm"
+                          variant="solid"
+                          color="primary"
+                          className="text-white"
+                          onClick={() => {
+                            {
+                              router.push(
+                                `/students/edit/course/${studentData?.id}`,
+                              )
+                            }
+                          }}
+                        >
+                          수정
+                        </Button>
+                      )}
                     </AreaTitle>
                     <FlexBox>
                       <AreaSmallBox style={{ minWidth: '20%' }}>
@@ -731,100 +752,120 @@ export default function StudentsWrite() {
                         </div>
                       </AreaBox>
                     </FlexBox>
-                    <BtnBox4
-                      $isPayment={studentPaymentDetailData?.length === 0}
-                    >
-                      {studentPaymentDetailData?.length === 0 && (
-                        <Button
-                          size="md"
-                          radius="md"
-                          variant="solid"
-                          className="w-full text-white bg-flag1"
-                          onClick={() =>
-                            router.push(
-                              `/students/write/payment/${studentData?.id}`,
-                            )
-                          }
-                        >
-                          수강 결제
-                        </Button>
-                      )}
-                      <Button
-                        isDisabled={
-                          studentPaymentData?.courseComplete === '미수료' ||
-                          studentPaymentData?.courseComplete === ''
-                            ? false
-                            : true
-                        }
-                        size="md"
-                        radius="md"
-                        variant="bordered"
-                        color="primary"
-                        className="w-full lg:max-w-[50%]"
-                        onClick={clickLectureAssignment}
+                    {(mGrade < 2 ||
+                      mPart === '교무팀' ||
+                      mPart === '회계팀') && (
+                      <BtnBox4
+                        $isPayment={studentPaymentDetailData?.length === 0}
                       >
-                        {studentPaymentData?.lectureAssignment === '배정'
-                          ? '배정 취소'
-                          : '강의배정'}
-                      </Button>
-                      {studentPaymentData?.lectureAssignment === '배정' && (
-                        <>
-                          <Button
-                            isDisabled={
-                              studentPaymentData?.courseComplete ===
-                                '수강철회' ||
-                              studentPaymentData?.courseComplete === '중도포기'
-                                ? true
-                                : false
-                            }
-                            size="md"
-                            radius="md"
-                            variant="solid"
-                            color="primary"
-                            className="w-full text-white"
-                            onClick={clickLCourseComplete}
-                          >
-                            {studentPaymentData?.courseComplete === '수료'
-                              ? '이수처리 취소'
-                              : '이수처리'}
-                          </Button>
-                          <Button
-                            isDisabled={
-                              studentPaymentData?.courseComplete === '수료' ||
-                              studentPaymentData?.courseComplete === '중도포기'
-                                ? true
-                                : false
-                            }
-                            size="md"
-                            radius="md"
-                            variant="bordered"
-                            className="w-full text-flag1 border-flag1"
-                            onClick={clickClassCancel}
-                          >
-                            {studentPaymentData?.courseComplete === '수강철회'
-                              ? '수강철회 취소'
-                              : '수강철회'}
-                          </Button>
-                          <Button
-                            isDisabled={
-                              studentPaymentData?.courseComplete === '수료' ||
-                              studentPaymentData?.courseComplete === '수강철회'
-                                ? true
-                                : false
-                            }
-                            size="md"
-                            radius="md"
-                            variant="solid"
-                            className="w-full text-white bg-flag1"
-                            onClick={clickClassDrop}
-                          >
-                            {studentPaymentData?.courseComplete === '중도포기'
-                              ? '중도포기 철회'
-                              : '중도포기'}
-                          </Button>
-                        </>
-                      )}
-                    </BtnBox4>
+                        {studentPaymentDetailData?.length === 0 &&
+                          (mGrade < 2 || mPart === '회계팀') && (
+                            <Button
+                              size="md"
+                              radius="md"
+                              variant="solid"
+                              className={`w-full text-white bg-flag1 ${
+                                mPart === '회계팀' && 'lg:w-[50%]'
+                              }`}
+                              onClick={() =>
+                                router.push(
+                                  `/students/write/payment/${studentData?.id}`,
+                                )
+                              }
+                            >
+                              수강 결제
+                            </Button>
+                          )}
+                        {(mGrade < 2 || mPart === '교무팀') && (
+                          <>
+                            <Button
+                              isDisabled={
+                                studentPaymentData?.courseComplete ===
+                                  '미수료' ||
+                                studentPaymentData?.courseComplete === ''
+                                  ? false
+                                  : true
+                              }
+                              size="md"
+                              radius="md"
+                              variant="bordered"
+                              color="primary"
+                              className="w-full lg:max-w-[50%]"
+                              onClick={clickLectureAssignment}
+                            >
+                              {studentPaymentData?.lectureAssignment === '배정'
+                                ? '배정 취소'
+                                : '강의배정'}
+                            </Button>
+                            {studentPaymentData?.lectureAssignment ===
+                              '배정' && (
+                              <>
+                                <Button
+                                  isDisabled={
+                                    studentPaymentData?.courseComplete ===
+                                      '수강철회' ||
+                                    studentPaymentData?.courseComplete ===
+                                      '중도포기'
+                                      ? true
+                                      : false
+                                  }
+                                  size="md"
+                                  radius="md"
+                                  variant="solid"
+                                  color="primary"
+                                  className="w-full text-white"
+                                  onClick={clickLCourseComplete}
+                                >
+                                  {studentPaymentData?.courseComplete === '수료'
+                                    ? '이수처리 취소'
+                                    : '이수처리'}
+                                </Button>
+                                <Button
+                                  isDisabled={
+                                    studentPaymentData?.courseComplete ===
+                                      '수료' ||
+                                    studentPaymentData?.courseComplete ===
+                                      '중도포기'
+                                      ? true
+                                      : false
+                                  }
+                                  size="md"
+                                  radius="md"
+                                  variant="bordered"
+                                  className="w-full text-flag1 border-flag1"
+                                  onClick={clickClassCancel}
+                                >
+                                  {studentPaymentData?.courseComplete ===
+                                  '수강철회'
+                                    ? '수강철회 취소'
+                                    : '수강철회'}
+                                </Button>
+                                <Button
+                                  isDisabled={
+                                    studentPaymentData?.courseComplete ===
+                                      '수료' ||
+                                    studentPaymentData?.courseComplete ===
+                                      '수강철회'
+                                      ? true
+                                      : false
+                                  }
+                                  size="md"
+                                  radius="md"
+                                  variant="solid"
+                                  className="w-full text-white bg-flag1"
+                                  onClick={clickClassDrop}
+                                >
+                                  {studentPaymentData?.courseComplete ===
+                                  '중도포기'
+                                    ? '중도포기 철회'
+                                    : '중도포기'}
+                                </Button>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </BtnBox4>
+                    )}
                   </DetailDiv>
                 </DetailBox>
                 {/* <DetailBox>
@@ -857,26 +898,28 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>결제 정보</h4>
-                      <Button
-                        isDisabled={
-                          studentPaymentData?.unCollectedAmount === 0
-                            ? true
-                            : false
-                        }
-                        size="sm"
-                        radius="sm"
-                        variant="solid"
-                        className="text-white bg-flag1"
-                        onClick={() => {
-                          {
-                            router.push(
-                              `/students/write/payment/${studentData?.id}`,
-                            )
+                      {(mGrade < 2 || mPart === '회계팀') && (
+                        <Button
+                          isDisabled={
+                            studentPaymentData?.unCollectedAmount === 0
+                              ? true
+                              : false
                           }
-                        }}
-                      >
-                        미수금결제
-                      </Button>
+                          size="sm"
+                          radius="sm"
+                          variant="solid"
+                          className="text-white bg-flag1"
+                          onClick={() => {
+                            {
+                              router.push(
+                                `/students/write/payment/${studentData?.id}`,
+                              )
+                            }
+                          }}
+                        >
+                          미수금결제
+                        </Button>
+                      )}
                     </AreaTitle>
                     {studentPaymentDetailData?.map((item, index) => (
                       <StudentPaymentDetailItem

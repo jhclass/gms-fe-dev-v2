@@ -279,22 +279,22 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
       PaymentDetail {
         amountPayment
         cashOrCard
+        studentId
         id
+        stName
         receiver {
           mUsername
         }
         studentPaymentId
         updatedAt
         studentPayment {
+          studentId
           tuitionFee
           subject {
             subjectName
           }
           subDiv
           unCollectedAmount
-          student {
-            name
-          }
           discountAmount
           amountReceived
           actualAmount

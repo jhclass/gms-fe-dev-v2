@@ -603,10 +603,8 @@ export const SEARCH_STUDENT_MUTATION = gql`
             updatedAt
           }
           processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-          }
+          createdAt
+          updatedAt
           seScore
           situationReport
           unCollectedAmount
@@ -994,7 +992,72 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
     }
   }
 `
-
+export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
+  mutation Mutation(
+    $searchPaymentDetailId: Int
+    $period: [String]
+    $stName: String
+    $reqRefund: Boolean
+    $refundApproval: Boolean
+  ) {
+    searchPaymentDetail(
+      id: $searchPaymentDetailId
+      period: $period
+      stName: $stName
+      reqRefund: $reqRefund
+      refundApproval: $refundApproval
+    ) {
+      totalCount
+      ok
+      message
+      error
+      PaymentDetail {
+        studentId
+        ApprovalNum
+        amountPayment
+        bankName
+        cardCompany
+        cardNum
+        cashOrCard
+        createdAt
+        depositAmount
+        depositorName
+        id
+        depositDate
+        installment
+        paymentDate
+        receiver {
+          mUsername
+          mUserId
+        }
+        receiverId
+        refundApproval
+        refundApprovalDate
+        refundManager
+        reqRefund
+        reqRefundDate
+        reqRefundManager
+        stName
+        studentId
+        updatedAt
+        studentPaymentId
+        studentPayment {
+          subject {
+            subjectName
+          }
+          studentId
+          subjectId
+          processingManagerId
+          tuitionFee
+          discountAmount
+          actualAmount
+          amountReceived
+          unCollectedAmount
+        }
+      }
+    }
+  }
+`
 export const UPDATE_STUDENT_RECEIVED_MUTATION = gql`
   mutation EditStudentPayment(
     $editStudentPaymentId: Int!
