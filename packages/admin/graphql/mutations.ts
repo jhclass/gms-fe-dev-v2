@@ -603,10 +603,8 @@ export const SEARCH_STUDENT_MUTATION = gql`
             updatedAt
           }
           processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-          }
+          createdAt
+          updatedAt
           seScore
           situationReport
           unCollectedAmount

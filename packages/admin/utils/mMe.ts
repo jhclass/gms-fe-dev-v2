@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 const useMmeQuery = () => {
   const { loading, error, data } = useQuery(MME_QUERY)
   const { mMe } = data || {}
-  const { id, mUserId, mUsername, mGrade, mRank } = mMe || {}
+  const { id, mUserId, mUsername, mPart, mGrade, mRank } = mMe || {}
 
   const useMme = e => {
     switch (e) {
@@ -16,6 +16,8 @@ const useMmeQuery = () => {
         return mUsername
       case 'mGrade':
         return mGrade
+      case 'mPart':
+        return mPart
       case 'mRank':
         return mRank
     }

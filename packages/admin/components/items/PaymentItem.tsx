@@ -97,25 +97,14 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const Color1 = '#FF5900'
   const Color2 = '#0D9488'
   const Color3 = '#4f46e5'
-  const formatDate = (data, isTime) => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}:` +
-        `${date.getSeconds().toString().padStart(2, '0')}`
-      return formatted
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
-    }
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
   }
 
   const feeFormet = fee => {
@@ -222,13 +211,7 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
           <AreaBox>
             <div>
               <FilterLabel>등록일시</FilterLabel>
-              <FlatBox>
-                {
-                  managerList.find(
-                    user => user.id === detailtData?.processingManagerId,
-                  )?.mUsername
-                }
-              </FlatBox>
+              <FlatBox>{formatDate(detailtData.createdAt)}</FlatBox>
             </div>
           </AreaBox>
         </FlexBox>

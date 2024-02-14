@@ -10,6 +10,7 @@ import {
   SEARCH_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
+import useMmeQuery from '@/utils/mMe'
 
 const FlexCardBox = styled.div<{ $IsRefund: boolean }>`
   display: flex;
@@ -67,6 +68,9 @@ export default function StudentPaymentDetailItem({
   setStudentPaymentDetailData,
 }) {
   const router = useRouter()
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const { userLogs } = useUserLogsMutation()
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
@@ -241,23 +245,25 @@ export default function StudentPaymentDetailItem({
                       >
                         영수증 인쇄
                       </Button> */}
-                <Button
-                  isDisabled={detailtData.reqRefund ? true : false}
-                  size="md"
-                  radius="md"
-                  variant="solid"
-                  color="primary"
-                  className="w-full text-white"
-                  onClick={() => editBtn(detailtData)}
-                >
-                  결제 변경
-                </Button>
+                {(mGrade < 2 || mPart === '회계팀') && (
+                  <Button
+                    isDisabled={detailtData.reqRefund ? true : false}
+                    size="md"
+                    radius="md"
+                    variant="solid"
+                    color="primary"
+                    className="w-full text-white"
+                    onClick={() => editBtn(detailtData)}
+                  >
+                    결제 변경
+                  </Button>
+                )}
                 {detailtData.reqRefund ? (
                   <>
                     <Button
                       size="md"
                       radius="md"
-                      className="w-full text-white bg-flag1"
+                      className="w-full lg:max-w-[50%] text-white bg-flag1"
                       onClick={() => clickReqRefund()}
                     >
                       결제 취소요청 철회
@@ -268,7 +274,7 @@ export default function StudentPaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="w-full text-flag1 border-flag1"
+                    className="w-full lg:max-w-[50%] text-flag1 border-flag1"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청
