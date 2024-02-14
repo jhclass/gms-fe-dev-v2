@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
 import { useRecoilState } from 'recoil'
-import { selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import { navOpenState, selectedPaymentDetailState } from '@/lib/recoilAtoms'
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
@@ -29,10 +29,14 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
-const FlexCol = styled.div`
+const FlexCol = styled.div<{ $navOpen: boolean }>`
   display: flex;
   width: 100%;
+  gap: 1rem;
 
+  @media (max-width: 1400px) {
+    flex-direction: ${props => (props.$navOpen ? 'column' : 'row')};
+  }
   @media (max-width: 1200px) {
     flex-direction: column;
   }
@@ -51,7 +55,9 @@ const AreaBox = styled.div`
   width: 100%;
 `
 const AreaBoxL = styled.div`
-  min-width: 23%;
+  flex: 1;
+  min-width: 25%;
+  width: 100%;
 `
 const FilterLabel = styled.label`
   font-weight: 500;
@@ -85,6 +91,7 @@ export default function StudentPaymentDetailItem({
   setStudentPaymentDetailData,
 }) {
   const router = useRouter()
+  const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
@@ -306,7 +313,7 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox $IsRefund={detailtData.reqRefund}>
             <FlexBox>
-              <FlexCol>
+              <FlexCol $navOpen={navOpen}>
                 <Flex>
                   <AreaBoxL>
                     <div>
