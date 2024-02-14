@@ -280,6 +280,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
         amountPayment
         cashOrCard
         id
+        stName
         receiver {
           mUsername
         }
@@ -292,9 +293,6 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
           }
           subDiv
           unCollectedAmount
-          student {
-            name
-          }
           discountAmount
           amountReceived
           actualAmount

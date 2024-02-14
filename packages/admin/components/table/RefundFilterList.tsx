@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -7,6 +7,7 @@ import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { refundPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
+import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -249,23 +250,28 @@ export default function RefundFilterTable({
 }) {
   const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
   const [currentLimit] = useState(10)
-  // const [searchStudentFilterMutation] = useMutation(
-  //   SEARCH_STUDENT_FILTER_MUTATION,
-  // )
+  const [searchPaymentDetailFilterMutation] = useMutation(
+    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  )
   const [searchResult, setSearchResult] = useState(null)
 
   useEffect(() => {
-    // searchStudentFilterMutation({
-    //   variables: {
-    //     ...studentFilter,
-    //     page: currentPage,
-    //     perPage: currentLimit,
-    //   },
-    //   onCompleted: resData => {
-    //     const { student, totalCount } = resData.searchStudent || {}
-    //     setSearchResult({ student, totalCount })
-    //   },
-    // })
+    searchPaymentDetailFilterMutation({
+      variables: {
+        ...studentFilter,
+        reqRefund: true,
+        refundApproval: true,
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } =
+            resData.searchPaymentDetail || {}
+          setSearchResult({ PaymentDetail, totalCount })
+        }
+      },
+    })
   }, [studentFilter, currentPage])
 
   const resetList = () => {
@@ -322,7 +328,7 @@ export default function RefundFilterTable({
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&
-              searchResult?.student.map((item, index) => (
+              searchResult?.PaymentDetail.map((item, index) => (
                 <TableItem key={index}>
                   <TableRow>
                     <ThRequestAt>

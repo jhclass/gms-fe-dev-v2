@@ -7,6 +7,10 @@ import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
+import {
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_STUDENT_FILTER_MUTATION,
+} from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -164,23 +168,26 @@ export default function PaymentFilterTable({
 }) {
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
-  // const [searchStudentFilterMutation] = useMutation(
-  //   SEARCH_STUDENT_FILTER_MUTATION,
-  // )
+  const [searchPaymentDetailFilterMutation] = useMutation(
+    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  )
   const [searchResult, setSearchResult] = useState(null)
 
   useEffect(() => {
-    // searchStudentFilterMutation({
-    //   variables: {
-    //     ...studentFilter,
-    //     page: currentPage,
-    //     perPage: currentLimit,
-    //   },
-    //   onCompleted: resData => {
-    //     const { student, totalCount } = resData.searchStudent || {}
-    //     setSearchResult({ student, totalCount })
-    //   },
-    // })
+    searchPaymentDetailFilterMutation({
+      variables: {
+        ...studentFilter,
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } =
+            resData.searchPaymentDetail || {}
+          setSearchResult({ PaymentDetail, totalCount })
+        }
+      },
+    })
   }, [studentFilter, currentPage])
 
   const resetList = () => {
@@ -217,8 +224,9 @@ export default function PaymentFilterTable({
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tnum>No</Tnum>
                 <TcreatedAt>결제일시</TcreatedAt>
-                <Tname>이름</Tname>
+                <Tname>수강생명</Tname>
                 <Tmanager>수납 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
                 <Tamount className="fee">수강료</Tamount>
@@ -231,7 +239,7 @@ export default function PaymentFilterTable({
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&
-              searchResult?.student.map((item, index) => (
+              searchResult?.PaymentDetail?.map((item, index) => (
                 <PaymentItem
                   key={index}
                   tableData={item}

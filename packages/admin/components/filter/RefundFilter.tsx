@@ -112,13 +112,13 @@ export default function RefundFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      studentName: '',
-      createdAt: undefined,
+      stName: '',
+      period: undefined,
     },
   })
 
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
+    if (isDirty) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
           if (dateRange[1] !== null) {
@@ -132,13 +132,13 @@ export default function RefundFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.createdAt,
-        '신청일시의 마지막날을 선택해주세요.',
+        data.period,
+        '승인일시의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
-          studentName: data.studentName === '' ? null : data.studentName,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          stName: data.stName === '' ? null : data.stName,
+          period: data.period === undefined ? null : data.period,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -148,7 +148,7 @@ export default function RefundFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('createdAt', [start, end])
+    setValue('period', [start, end], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -196,7 +196,7 @@ export default function RefundFilter({
             <ItemBox>
               <Controller
                 control={control}
-                name="createdAt"
+                name="period"
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -234,24 +234,34 @@ export default function RefundFilter({
                     dateFormat="yyyy/MM/dd"
                     customInput={
                       <Input
-                        label="신청 일시"
+                        label="승인 일시"
                         labelPlacement="outside"
                         type="text"
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
+                        {...register('period')}
                       />
                     }
                   />
                 )}
               />
               <DateBtn>
-                <Button onClick={handleYesterdayClick}>어제</Button>
-                <Button onClick={handleTodayClick}>오늘</Button>
-                <Button onClick={handleLastMonthClick}>1개월</Button>
-                <Button onClick={handleLastThreeMonthsClick}>3개월</Button>
-                <Button onClick={handleLastSixMonthsClick}>6개월</Button>
+                <Button size="sm" onClick={handleYesterdayClick}>
+                  어제
+                </Button>
+                <Button size="sm" onClick={handleTodayClick}>
+                  오늘
+                </Button>
+                <Button size="sm" onClick={handleLastMonthClick}>
+                  1개월
+                </Button>
+                <Button size="sm" onClick={handleLastThreeMonthsClick}>
+                  3개월
+                </Button>
+                <Button size="sm" onClick={handleLastSixMonthsClick}>
+                  6개월
+                </Button>
               </DateBtn>
             </ItemBox>
 
@@ -263,7 +273,7 @@ export default function RefundFilter({
                 variant="bordered"
                 label="수강생이름"
                 id="studentName"
-                {...register('studentName')}
+                {...register('stName')}
               />
             </ItemBox>
           </BoxTop>

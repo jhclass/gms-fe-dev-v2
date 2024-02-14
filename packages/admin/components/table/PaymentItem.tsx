@@ -117,16 +117,6 @@ const Tsubject = styled.div`
   font-size: inherit;
   min-width: ${1200 * 0.18}px;
 `
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
@@ -176,13 +166,14 @@ export default function StudentsItem(props) {
         <TableRow>
           <Link href={`/students/detail/${student.id}`}>
             <ClickBox>
+              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
                 <EllipsisBox>
                   {student?.updatedAt ? getDate(student?.updatedAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tname>
-                <EllipsisBox>{studentPayment?.student?.name}</EllipsisBox>
+                <EllipsisBox>{student?.stName}</EllipsisBox>
               </Tname>
               <Tmanager>
                 <EllipsisBox>{student?.receiver?.mUsername}</EllipsisBox>

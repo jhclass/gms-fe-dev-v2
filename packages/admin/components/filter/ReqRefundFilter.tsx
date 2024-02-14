@@ -103,13 +103,13 @@ export default function ReqRefundFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      studentName: '',
-      createdAt: undefined,
+      stName: '',
+      period: undefined,
     },
   })
 
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
+    if (isDirty) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
           if (dateRange[1] !== null) {
@@ -123,13 +123,13 @@ export default function ReqRefundFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.createdAt,
-        '승인일시의 마지막날을 선택해주세요.',
+        data.period,
+        '신청일시의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
-          studentName: data.studentName === '' ? null : data.studentName,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          stName: data.stName === '' ? null : data.stName,
+          period: data.period === undefined ? null : data.period,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -139,7 +139,7 @@ export default function ReqRefundFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('createdAt', [start, end])
+    setValue('period', [start, end], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -187,7 +187,7 @@ export default function ReqRefundFilter({
             <ItemBox>
               <Controller
                 control={control}
-                name="createdAt"
+                name="period"
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -231,7 +231,7 @@ export default function ReqRefundFilter({
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
+                        {...register('period')}
                       />
                     }
                   />
@@ -254,7 +254,7 @@ export default function ReqRefundFilter({
                 variant="bordered"
                 label="수강생이름"
                 id="studentName"
-                {...register('studentName')}
+                {...register('stName')}
               />
             </ItemBox>
           </BoxTop>

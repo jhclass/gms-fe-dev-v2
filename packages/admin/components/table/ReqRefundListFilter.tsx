@@ -7,6 +7,7 @@ import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
+import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -224,23 +225,28 @@ export default function ReqRefundFilterTable({
 }) {
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [currentLimit] = useState(10)
-  // const [searchStudentFilterMutation] = useMutation(
-  //   SEARCH_STUDENT_FILTER_MUTATION,
-  // )
+  const [searchPaymentDetailFilterMutation] = useMutation(
+    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  )
   const [searchResult, setSearchResult] = useState(null)
 
   useEffect(() => {
-    // searchStudentFilterMutation({
-    //   variables: {
-    //     ...studentFilter,
-    //     page: currentPage,
-    //     perPage: currentLimit,
-    //   },
-    //   onCompleted: resData => {
-    //     const { student, totalCount } = resData.searchStudent || {}
-    //     setSearchResult({ student, totalCount })
-    //   },
-    // })
+    searchPaymentDetailFilterMutation({
+      variables: {
+        ...studentFilter,
+        reqRefund: true,
+        refundApproval: false,
+        page: currentPage,
+        limit: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } =
+            resData.searchPaymentDetail || {}
+          setSearchResult({ PaymentDetail, totalCount })
+        }
+      },
+    })
   }, [studentFilter, currentPage])
 
   const resetList = () => {
@@ -290,7 +296,7 @@ export default function ReqRefundFilterTable({
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&
-              searchResult?.student.map((item, index) => (
+              searchResult?.PaymentDetail.map((item, index) => (
                 <TableItem key={index}>
                   <TableRow>
                     <Tlist>

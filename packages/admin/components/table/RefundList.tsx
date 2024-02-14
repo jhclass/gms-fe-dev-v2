@@ -3,13 +3,15 @@ import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_AMOUNT_STUDENT_QUERY, SEE_REFUND_QUERY } from '@/graphql/queries'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
-import { refundPageState } from '@/lib/recoilAtoms'
+import { paymentPageState, refundPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
 import {
   APPROVAL_REFUND_MUTATION,
   REQ_REFUND_MUTATION,
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_STUDENTSTATE_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
@@ -226,30 +228,35 @@ const Nolist = styled.div`
 `
 
 export default function RefundTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
+  const router = useRouter()
+  const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { userLogs } = useUserLogsMutation()
-  const { loading, error, data, refetch } = useQuery(SEE_REFUND_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
-  const [approvalRefoundMutation] = useMutation(APPROVAL_REFUND_MUTATION)
-  const studentsPayment = data?.seePaymentDetail || []
-  const students = studentsPayment?.PaymentDetail || []
-
+  const [result, setResult] = useState(null)
+  const [searchPaymentDetailFilterMutation] = useMutation(
+    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  )
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
   useEffect(() => {
-    setTotalCount(studentsPayment.totalCount)
-  }, [studentsPayment, totalCount])
-
-  useEffect(() => {
-    refetch()
-    handleScrollTop()
-  }, [router, refetch, currentPage])
+    searchPaymentDetailFilterMutation({
+      variables: {
+        reqRefund: true,
+        refundApproval: true,
+        page: currentPage,
+        limit: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } =
+            resData.searchPaymentDetail || {}
+          setResult({ PaymentDetail, totalCount })
+          handleScrollTop()
+        }
+      },
+    })
+  }, [router, currentPage])
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -257,42 +264,41 @@ export default function RefundTable() {
   }
 
   return (
-    <>
-      <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 현금
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 카드
-          </ColorCip>
-        </ColorHelp>
-      </TTopic>
-      <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <ThRequestAt>승인일</ThRequestAt>
-                <ThManager>승인담당자</ThManager>
-                <TheaderListBox>
-                  <TrequestAt $width={912}>신청일</TrequestAt>
-                  <Tmanager $width={912}>신청담당자</Tmanager>
-                  <Tname $width={912}>수강생명</Tname>
-                  <Tsubject $width={912}>수강과정</Tsubject>
-                  <Tpayment $width={912}>결제구분</Tpayment>
-                  <TpaymentName $width={912}>은행/카드사</TpaymentName>
-                  <Tamount $width={912}>환불금액</Tamount>
-                </TheaderListBox>
-              </TheaderBox>
-            </Theader>
-            {totalCount > 0 &&
-              students
-                ?.filter(item => item.refundApproval === true)
-                .map((item, index) => (
+    result !== null && (
+      <>
+        <TTopic>
+          <Ttotal>
+            총 <span>{totalCount}</span>건
+          </Ttotal>
+          <ColorHelp>
+            <ColorCip>
+              <span style={{ background: '#007de9' }}></span> : 현금
+            </ColorCip>
+            <ColorCip>
+              <span style={{ background: '#FF5900' }}></span> : 카드
+            </ColorCip>
+          </ColorHelp>
+        </TTopic>
+        <TableArea>
+          <ScrollShadow orientation="horizontal" className="scrollbar">
+            <TableWrap>
+              <Theader>
+                <TheaderBox>
+                  <ThRequestAt>승인일</ThRequestAt>
+                  <ThManager>승인담당자</ThManager>
+                  <TheaderListBox>
+                    <TrequestAt $width={912}>신청일</TrequestAt>
+                    <Tmanager $width={912}>신청담당자</Tmanager>
+                    <Tname $width={912}>수강생명</Tname>
+                    <Tsubject $width={912}>수강과정</Tsubject>
+                    <Tpayment $width={912}>결제구분</Tpayment>
+                    <TpaymentName $width={912}>은행/카드사</TpaymentName>
+                    <Tamount $width={912}>환불금액</Tamount>
+                  </TheaderListBox>
+                </TheaderBox>
+              </Theader>
+              {result.totalCount > 0 &&
+                result.PaymentDetail?.map((item, index) => (
                   <TableItem key={index}>
                     <TableRow>
                       <ThRequestAt>
@@ -315,24 +321,27 @@ export default function RefundTable() {
                     </TableRow>
                   </TableItem>
                 ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
-          </TableWrap>
-        </ScrollShadow>
-        {totalCount > 0 && (
-          <PagerWrap>
-            <Pagination
-              variant="light"
-              showControls
-              initialPage={currentPage}
-              page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
-              onChange={newPage => {
-                setCurrentPage(newPage)
-              }}
-            />
-          </PagerWrap>
-        )}
-      </TableArea>
-    </>
+              {result.totalCount === 0 && (
+                <Nolist>등록된 수강생이 없습니다.</Nolist>
+              )}
+            </TableWrap>
+          </ScrollShadow>
+          {result.totalCount > 0 && (
+            <PagerWrap>
+              <Pagination
+                variant="light"
+                showControls
+                initialPage={currentPage}
+                page={currentPage}
+                total={Math.ceil(result?.totalCount / currentLimit)}
+                onChange={newPage => {
+                  setCurrentPage(newPage)
+                }}
+              />
+            </PagerWrap>
+          )}
+        </TableArea>
+      </>
+    )
   )
 }

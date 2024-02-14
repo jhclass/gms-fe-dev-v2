@@ -112,13 +112,13 @@ export default function PaymentFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      studentName: '',
-      createdAt: undefined,
+      stName: '',
+      period: undefined,
     },
   })
 
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
+    if (isDirty) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
           if (dateRange[1] !== null) {
@@ -132,13 +132,13 @@ export default function PaymentFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.createdAt,
+        data.period,
         '결제일시의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
-          studentName: data.studentName === '' ? null : data.studentName,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          stName: data.stName === '' ? null : data.stName,
+          period: data.period === undefined ? null : data.period,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -148,7 +148,7 @@ export default function PaymentFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('createdAt', [start, end])
+    setValue('period', [start, end], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -196,7 +196,7 @@ export default function PaymentFilter({
             <ItemBox>
               <Controller
                 control={control}
-                name="createdAt"
+                name="period"
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -240,18 +240,28 @@ export default function PaymentFilter({
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
+                        {...register('period')}
                       />
                     }
                   />
                 )}
               />
               <DateBtn>
-                <Button onClick={handleYesterdayClick}>어제</Button>
-                <Button onClick={handleTodayClick}>오늘</Button>
-                <Button onClick={handleLastMonthClick}>1개월</Button>
-                <Button onClick={handleLastThreeMonthsClick}>3개월</Button>
-                <Button onClick={handleLastSixMonthsClick}>6개월</Button>
+                <Button size="sm" onClick={handleYesterdayClick}>
+                  어제
+                </Button>
+                <Button size="sm" onClick={handleTodayClick}>
+                  오늘
+                </Button>
+                <Button size="sm" onClick={handleLastMonthClick}>
+                  1개월
+                </Button>
+                <Button size="sm" onClick={handleLastThreeMonthsClick}>
+                  3개월
+                </Button>
+                <Button size="sm" onClick={handleLastSixMonthsClick}>
+                  6개월
+                </Button>
               </DateBtn>
             </ItemBox>
 
@@ -263,7 +273,7 @@ export default function PaymentFilter({
                 variant="bordered"
                 label="수강생이름"
                 id="studentName"
-                {...register('studentName')}
+                {...register('stName')}
               />
             </ItemBox>
           </BoxTop>

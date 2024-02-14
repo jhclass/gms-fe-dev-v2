@@ -3,13 +3,14 @@ import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_AMOUNT_STUDENT_QUERY, SEE_REFUND_QUERY } from '@/graphql/queries'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
 import {
   APPROVAL_REFUND_MUTATION,
   REQ_REFUND_MUTATION,
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -215,31 +216,41 @@ const Nolist = styled.div`
 `
 
 export default function RequestRefundTable() {
+  const router = useRouter()
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const { userLogs } = useUserLogsMutation()
-  const { loading, error, data, refetch } = useQuery(SEE_REFUND_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
+  const [searchPaymentDetailFilterMutation] = useMutation(
+    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  )
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [approvalRefoundMutation] = useMutation(APPROVAL_REFUND_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
-  const studentsPayment = data?.seePaymentDetail || []
-  const students = studentsPayment?.PaymentDetail || []
+  const [result, setResult] = useState(null)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
-    setTotalCount(studentsPayment.totalCount)
-  }, [studentsPayment, totalCount])
-
-  useEffect(() => {
-    refetch()
-    handleScrollTop()
-  }, [router, refetch, currentPage])
+    searchPaymentDetailFilterMutation({
+      variables: {
+        reqRefund: true,
+        refundApproval: false,
+        page: currentPage,
+        limit: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } =
+            resData.searchPaymentDetail || {}
+          setResult({ PaymentDetail, totalCount })
+          handleScrollTop()
+        }
+      },
+    })
+  }, [router, currentPage])
 
   const clickApprovalRefund = item => {
     const isAssignment = confirm(
@@ -253,21 +264,41 @@ export default function RequestRefundTable() {
           refundApprovalDate: new Date(),
           studentPaymentId: item.studentPaymentId,
         },
-        onCompleted: () => {
-          refetch()
-          updateReceived({
-            variables: {
-              amountReceived:
-                item.studentPayment.amountReceived - item.amountPayment,
-              editStudentPaymentId: item.studentPaymentId,
-              subjectId: item.studentPayment.subject.id,
-              processingManagerId: item.studentPayment.processingManagerId,
-            },
-            onCompleted: () => {
-              alert('환불 승인 되었습니다.')
-              userLogs(`paymentDetail ID : ${item.id} / 환불 승인`)
-            },
-          })
+        onCompleted: resData => {
+          if (resData.refundApproval.ok) {
+            updateReceived({
+              variables: {
+                amountReceived:
+                  item.cashOrCard === '카드'
+                    ? item.studentPayment.amountReceived - item.amountPayment
+                    : item.studentPayment.amountReceived - item.depositAmount,
+                editStudentPaymentId: item.studentPaymentId,
+                subjectId: item.studentPayment.subjectId,
+                processingManagerId: item.studentPayment.processingManagerId,
+              },
+              onCompleted: result => {
+                if (result.editStudentPayment.ok) {
+                  searchPaymentDetailFilterMutation({
+                    variables: {
+                      reqRefund: true,
+                      refundApproval: false,
+                      page: currentPage,
+                      limit: currentLimit,
+                    },
+                    onCompleted: resData => {
+                      if (resData.searchPaymentDetail.ok) {
+                        const { PaymentDetail, totalCount } =
+                          resData.searchPaymentDetail || {}
+                        setResult({ PaymentDetail, totalCount })
+                      }
+                    },
+                  })
+                  alert('환불 승인 되었습니다.')
+                  userLogs(`paymentDetail ID : ${item.id} / 환불 승인`)
+                }
+              },
+            })
+          }
         },
       })
     }
@@ -282,54 +313,67 @@ export default function RequestRefundTable() {
           reqRefund: false,
           reqRefundDate: '',
         },
-        onCompleted: () => {
-          refetch()
-          alert('결제 취소요청 되었습니다.')
-          userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
+        onCompleted: result => {
+          if (result.reqRefund.ok) {
+            searchPaymentDetailFilterMutation({
+              variables: {
+                reqRefund: true,
+                refundApproval: false,
+                page: currentPage,
+                limit: currentLimit,
+              },
+              onCompleted: resData => {
+                if (resData.searchPaymentDetail.ok) {
+                  const { PaymentDetail, totalCount } =
+                    resData.searchPaymentDetail || {}
+                  setResult({ PaymentDetail, totalCount })
+                  handleScrollTop()
+                }
+              },
+            })
+            alert('결제 취소요청 되었습니다.')
+            userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
+          }
         },
       })
     }
   }
 
   return (
-    <>
-      <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 현금
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 카드
-          </ColorCip>
-        </ColorHelp>
-      </TTopic>
-      <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <TheaderListBox>
-                  <TrequestAt $width={1032}>신청일</TrequestAt>
-                  <Tmanager $width={1032}>신청담당자</Tmanager>
-                  <Tname $width={1032}>수강생명</Tname>
-                  <Tsubject $width={1032}>수강과정</Tsubject>
-                  <Tpayment $width={1032}>결제구분</Tpayment>
-                  <TpaymentName $width={1032}>은행/카드사</TpaymentName>
-                  <Tamount $width={1032}>환불금액</Tamount>
-                </TheaderListBox>
-                <Tbtn></Tbtn>
-              </TheaderBox>
-            </Theader>
-            {totalCount > 0 &&
-              students
-                ?.filter(
-                  item =>
-                    item.reqRefund === true && item.refundApproval === false,
-                )
-                .map((item, index) => (
+    result !== null && (
+      <>
+        <TTopic>
+          <Ttotal>
+            총 <span>{totalCount}</span>건
+          </Ttotal>
+          <ColorHelp>
+            <ColorCip>
+              <span style={{ background: '#007de9' }}></span> : 현금
+            </ColorCip>
+            <ColorCip>
+              <span style={{ background: '#FF5900' }}></span> : 카드
+            </ColorCip>
+          </ColorHelp>
+        </TTopic>
+        <TableArea>
+          <ScrollShadow orientation="horizontal" className="scrollbar">
+            <TableWrap>
+              <Theader>
+                <TheaderBox>
+                  <TheaderListBox>
+                    <TrequestAt $width={1032}>신청일</TrequestAt>
+                    <Tmanager $width={1032}>신청담당자</Tmanager>
+                    <Tname $width={1032}>수강생명</Tname>
+                    <Tsubject $width={1032}>수강과정</Tsubject>
+                    <Tpayment $width={1032}>결제구분</Tpayment>
+                    <TpaymentName $width={1032}>은행/카드사</TpaymentName>
+                    <Tamount $width={1032}>환불금액</Tamount>
+                  </TheaderListBox>
+                  <Tbtn></Tbtn>
+                </TheaderBox>
+              </Theader>
+              {result.totalCount > 0 &&
+                result.PaymentDetail.map((item, index) => (
                   <TableItem key={index}>
                     <TableRow>
                       <Tlist>
@@ -366,24 +410,27 @@ export default function RequestRefundTable() {
                     </TableRow>
                   </TableItem>
                 ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
-          </TableWrap>
-        </ScrollShadow>
-        {totalCount > 0 && (
-          <PagerWrap>
-            <Pagination
-              variant="light"
-              showControls
-              initialPage={currentPage}
-              page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
-              onChange={newPage => {
-                setCurrentPage(newPage)
-              }}
-            />
-          </PagerWrap>
-        )}
-      </TableArea>
-    </>
+              {result.totalCount === 0 && (
+                <Nolist>등록된 수강생이 없습니다.</Nolist>
+              )}
+            </TableWrap>
+          </ScrollShadow>
+          {result.totalCount > 0 && (
+            <PagerWrap>
+              <Pagination
+                variant="light"
+                showControls
+                initialPage={currentPage}
+                page={currentPage}
+                total={Math.ceil(result.totalCount / currentLimit)}
+                onChange={newPage => {
+                  setCurrentPage(newPage)
+                }}
+              />
+            </PagerWrap>
+          )}
+        </TableArea>
+      </>
+    )
   )
 }
