@@ -279,6 +279,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
       PaymentDetail {
         amountPayment
         cashOrCard
+        studentId
         id
         stName
         receiver {
@@ -287,6 +288,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
         studentPaymentId
         updatedAt
         studentPayment {
+          studentId
           tuitionFee
           subject {
             subjectName

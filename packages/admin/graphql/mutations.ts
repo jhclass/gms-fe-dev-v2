@@ -1012,6 +1012,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
       message
       error
       PaymentDetail {
+        studentId
         ApprovalNum
         amountPayment
         bankName
@@ -1044,6 +1045,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
           subject {
             subjectName
           }
+          studentId
           subjectId
           processingManagerId
           tuitionFee

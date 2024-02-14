@@ -408,7 +408,7 @@ export default function StudentsWrite() {
                 )}
               </DetailDiv>
             </DetailBox>
-            {studentPaymentData.length > 0 && (
+            {studentPaymentData?.length > 0 && (
               <DetailBox>
                 <DetailDiv>
                   <AreaTitle>

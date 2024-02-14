@@ -164,7 +164,7 @@ export default function StudentsItem(props) {
     <>
       <TableItem>
         <TableRow>
-          <Link href={`/students/detail/${student.id}`}>
+          <Link href={`/students/detail/${studentPayment.studentId}`}>
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
