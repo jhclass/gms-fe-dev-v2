@@ -29,6 +29,23 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
+const FlexCol = styled.div`
+  display: flex;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+`
+const Flex = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
@@ -289,46 +306,60 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox $IsRefund={detailtData.reqRefund}>
             <FlexBox>
-              <AreaBoxL>
-                <div>
-                  <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
-                </div>
-              </AreaBoxL>
-              <AreaBox>
-                <div>
-                  <FilterLabel>카드회사명</FilterLabel>
-                  <FlatBox>{detailtData?.cardCompany}</FlatBox>
-                </div>
-              </AreaBox>
-              <AreaBox>
-                <div>
-                  <FilterLabel>할부개월</FilterLabel>
-                  <FlatBox>
-                    {detailtData?.installment === 0
-                      ? '1'
-                      : detailtData?.installment}
-                    개월
-                  </FlatBox>
-                </div>
-              </AreaBox>
-              <AreaBox>
-                <div>
-                  <FilterLabel>결제금액</FilterLabel>
-                  <FlatBox>
-                    {detailtData?.amountPayment === null
-                      ? ''
-                      : feeFormet(detailtData?.amountPayment)}
-                    원
-                  </FlatBox>
-                </div>
-              </AreaBox>
-              <AreaBox>
-                <div>
-                  <FilterLabel>수납자</FilterLabel>
-                  <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
-                </div>
-              </AreaBox>
+              <FlexCol>
+                <Flex>
+                  <AreaBoxL>
+                    <div>
+                      <FilterLabel>결제일자</FilterLabel>
+                      <FlatBox>
+                        {formatDate(detailtData?.createdAt, true)}
+                      </FlatBox>
+                    </div>
+                  </AreaBoxL>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>승인번호</FilterLabel>
+                      <FlatBox>{detailtData?.ApprovalNum}</FlatBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>카드회사명</FilterLabel>
+                      <FlatBox>{detailtData?.cardCompany}</FlatBox>
+                    </div>
+                  </AreaBox>
+                </Flex>
+                <Flex>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>할부개월</FilterLabel>
+                      <FlatBox>
+                        {detailtData?.installment === 0
+                          ? '1'
+                          : detailtData?.installment}
+                        개월
+                      </FlatBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>결제금액</FilterLabel>
+                      <FlatBox>
+                        {detailtData?.amountPayment === null
+                          ? ''
+                          : feeFormet(detailtData?.amountPayment)}
+                        원
+                      </FlatBox>
+                    </div>
+                  </AreaBox>
+                  <AreaBox>
+                    <div>
+                      <FilterLabel>수납자</FilterLabel>
+                      <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
+                    </div>
+                  </AreaBox>
+                </Flex>
+              </FlexCol>
               {/* <AreaBox>
                 <div>
                   <FilterLabel>영수구분</FilterLabel>
