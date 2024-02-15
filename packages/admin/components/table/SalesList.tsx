@@ -172,7 +172,7 @@ export default function SalesTable({
       <>
         <TTopic>
           <Ttotal>
-            검색 기간&nbsp;
+            검색 기간&nbsp;:&nbsp;
             {Object.keys(studentFilter).length === 0 ? (
               <>
                 <span>{formatDate(new Date())}</span> -
