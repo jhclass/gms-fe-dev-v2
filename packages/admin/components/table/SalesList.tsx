@@ -1,12 +1,17 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
-import router from 'next/router'
+import {
+  GET_HOURLY_SALES_QUERY,
+  GET_SALES_QUERY,
+  SEE_AMOUNT_STUDENT_QUERY,
+} from '@/graphql/queries'
+import router, { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
 import SalesItem from '@/components/table/SalesItem'
+import SalesTotalItem from './SalesTotalItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -62,7 +67,8 @@ const Theader = styled.div`
 `
 
 const TheaderBox = styled.div`
-  display: flex;
+  display: table;
+  width: 100%;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -99,64 +105,140 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function PaymentTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
-  const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_AMOUNT_STUDENT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
+export default function SalesTable({
+  onFilterSearch,
+  studentFilter,
+  setStudentFilter,
+}) {
+  const router = useRouter()
+  const { data, refetch } = useQuery(GET_SALES_QUERY, {
+    variables: {
+      endDate: String(new Date()),
+      startDate: String(new Date()),
+    },
   })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  const {
+    data: hourlyData,
+    refetch: houralyRefetch,
+    networkStatus: houralyNetworkStatus,
+    error,
+  } = useQuery(GET_HOURLY_SALES_QUERY, {
+    variables: { date: new Date().toISOString() },
+  })
+  const [searchResult, setSearchResult] = useState(null)
 
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+  async function fetchData(studentFilter) {
+    let result
+    if (Object.keys(studentFilter).length !== 0) {
+      if (studentFilter.daily) {
+        result = await houralyRefetch({
+          date: studentFilter.selectDate[1].toISOString(),
+        })
+      } else {
+        result = await refetch({
+          startDate: studentFilter.selectDate[0].toISOString(),
+          endDate: studentFilter.selectDate[1].toISOString(),
+        })
+      }
+    } else {
+      result = await houralyRefetch({
+        date: new Date().toISOString(),
+      })
+    }
+    return result
   }
 
   useEffect(() => {
-    setTotalCount(studentsData.totalCount)
-  }, [studentsData, totalCount])
+    fetchData(studentFilter)
+      .then(result => {
+        setSearchResult(result.data)
+      })
+      .catch(error => {
+        console.error('Error occurred during data fetching:', error)
+      })
+  }, [studentFilter, router])
 
-  useEffect(() => {
-    refetch()
-    handleScrollTop()
-  }, [router, refetch, currentPage])
+  const formatDate = data => {
+    const date = new Date(data)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
+  }
 
   return (
-    <>
-      <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
-      </TTopic>
-      <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <TcreatedAt>결제일시</TcreatedAt>
-                <Tamount>카드 결제금액</Tamount>
-                <Tamount>현금 결제금액</Tamount>
-                <Tamount>결제 합계</Tamount>
-                <Tamount>카드 환불금액</Tamount>
-                <Tamount>현금 환불금액</Tamount>
-                <Tamount>환불 홥계</Tamount>
-                <Tamount>총 매출액</Tamount>
-                <Tamount>미수납액</Tamount>
-              </TheaderBox>
-            </Theader>
-            {students?.map((item, index) => (
-              <SalesItem
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                currentPage={currentPage}
-                limit={currentLimit}
-              />
-            ))}
-          </TableWrap>
-        </ScrollShadow>
-      </TableArea>
-    </>
+    searchResult !== null && (
+      <>
+        <TTopic>
+          <Ttotal>
+            검색 기간&nbsp;
+            {Object.keys(studentFilter).length === 0 ? (
+              <>
+                <span>{formatDate(new Date())}</span> -
+                <span>{formatDate(new Date())}</span>
+              </>
+            ) : (
+              <>
+                <span>{formatDate(studentFilter.selectDate[0])}</span> -
+                <span>{formatDate(studentFilter.selectDate[1])}</span>
+              </>
+            )}
+          </Ttotal>
+        </TTopic>
+        <TableArea>
+          <ScrollShadow orientation="horizontal" className="scrollbar">
+            <TableWrap>
+              <Theader>
+                <TheaderBox>
+                  <TcreatedAt>결제일시</TcreatedAt>
+                  <Tamount>카드 결제금액</Tamount>
+                  <Tamount>현금 결제금액</Tamount>
+                  <Tamount>결제 합계</Tamount>
+                  <Tamount>카드 환불금액</Tamount>
+                  <Tamount>현금 환불금액</Tamount>
+                  <Tamount>환불 홥계</Tamount>
+                  <Tamount>총 매출액</Tamount>
+                </TheaderBox>
+              </Theader>
+              {studentFilter.daily || studentFilter.daily === undefined ? (
+                <>
+                  {searchResult?.getHourlySalesData?.map((item, index) => (
+                    <SalesItem
+                      key={index}
+                      tableData={item}
+                      type={true}
+                      date={
+                        studentFilter.daily
+                          ? studentFilter.selectDate[0]
+                          : new Date()
+                      }
+                    />
+                  ))}
+                  <SalesTotalItem
+                    tableData={searchResult?.getHourlySalesData}
+                  />
+                </>
+              ) : (
+                <>
+                  {searchResult?.getSalesData?.length > 0 ? (
+                    <>
+                      {searchResult?.getSalesData?.map((item, index) => (
+                        <SalesItem key={index} tableData={item} type={false} />
+                      ))}
+                      <SalesTotalItem tableData={searchResult?.getSalesData} />
+                    </>
+                  ) : (
+                    <>
+                      <Nolist>검색결과가 없습니다.</Nolist>
+                    </>
+                  )}
+                </>
+              )}
+            </TableWrap>
+          </ScrollShadow>
+        </TableArea>
+      </>
+    )
   )
 }

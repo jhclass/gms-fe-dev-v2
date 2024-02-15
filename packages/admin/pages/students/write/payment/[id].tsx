@@ -184,6 +184,7 @@ export default function StudentsWritePayment() {
   const [cashReceipt, setCashReceipt] = useState([])
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
+  const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
     searchStudentPayment({
@@ -715,13 +716,13 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      {/* <AreaBox>
+                      <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
                             name="paymentDate"
                             rules={{
-                              required: '결제 요청 일자를 선택해주세요.',
+                              required: '결제 일자를 선택해주세요.',
                             }}
                             render={({ field }) => (
                               <DatePicker
@@ -758,7 +759,11 @@ export default function StudentsWritePayment() {
                                 customInput={
                                   <Input
                                     ref={field.ref}
-                                    label={<FilterLabel>결제일자<span>*</span></FilterLabel>}
+                                    label={
+                                      <FilterLabel>
+                                        결제일자<span>*</span>
+                                      </FilterLabel>
+                                    }
                                     labelPlacement="outside"
                                     type="text"
                                     variant="bordered"
@@ -775,7 +780,7 @@ export default function StudentsWritePayment() {
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
-                      </AreaBox> */}
+                      </AreaBox>
                     </FlexBox>
                   </>
                 )}
@@ -869,11 +874,11 @@ export default function StudentsWritePayment() {
                         </p>
                       )}
                     </AreaBox>
-                    {/* <AreaBox>
+                    <AreaBox>
                       <DatePickerBox>
                         <Controller
                           control={control}
-                          rules={{ required: '입금 요청 일자를 선택해주세요.' }}
+                          rules={{ required: '입금 일자를 선택해주세요.' }}
                           name="depositDate"
                           render={({ field }) => (
                             <DatePicker
@@ -910,7 +915,11 @@ export default function StudentsWritePayment() {
                               customInput={
                                 <Input
                                   ref={field.ref}
-                                  label={<FilterLabel>입금일자<span>*</span></FilterLabel>}
+                                  label={
+                                    <FilterLabel>
+                                      입금일자<span>*</span>
+                                    </FilterLabel>
+                                  }
                                   labelPlacement="outside"
                                   type="text"
                                   variant="bordered"
@@ -927,7 +936,7 @@ export default function StudentsWritePayment() {
                           {String(errors.depositDate.message)}
                         </p>
                       )}
-                    </AreaBox> */}
+                    </AreaBox>
                     <AreaBox>
                       <Controller
                         control={control}

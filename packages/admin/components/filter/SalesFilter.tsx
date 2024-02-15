@@ -60,23 +60,46 @@ const ItemBox = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  align-items: flex-end;
 
   .react-datepicker-wrapper {
     width: 100%;
   }
-`
-const DateBtn = styled.div`
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-  flex-wrap: wrap;
 `
 const BtnBox = styled.div`
   display: flex;
   gap: 1rem;
   flex: 1;
   align-items: flex-end;
+`
+const NotiBox = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+`
+const Noti = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  > li {
+    color: #71717a;
+    font-size: 0.8rem;
+    padding-left: 0.5rem;
+    position: relative;
+    line-height: 1;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 2px;
+      height: 2px;
+      margin-top: -1px;
+      background: #007de9;
+    }
+  }
 `
 const FilterVariants = {
   hidden: {
@@ -113,50 +136,49 @@ export default function SalesFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      studentName: '',
-      createdAt: undefined,
+      selectDate: null,
+      daily: null,
     },
   })
 
-  const onSubmit = data => {
-    // console.log(
-    //   startPaymentDate.getYear() === endPaymentDate.getYear() &&
-    //     startPaymentDate.getMonth() === endPaymentDate.getMonth() &&
-    //     startPaymentDate.getDate() === endPaymentDate.getDate(),
-    // )
-    // if (isDirty || data.progress !== undefined) {
-    //   const validateDateRange = (dateRange, message) => {
-    //     if (dateRange !== undefined) {
-    //       if (dateRange[1] !== null) {
-    //         return true
-    //       } else {
-    //         alert(message)
-    //         return false
-    //       }
-    //     } else {
-    //       return true
-    //     }
-    //   }
-    //   const paymentDate = validateDateRange(
-    //     data.createdAt,
-    //     '결제일시의 마지막날을 선택해주세요.',
-    //   )
-    //   if (paymentDate) {
-    //     const filter = {
-    //       studentName: data.studentName === '' ? null : data.studentName,
-    //       createdAt: data.createdAt === undefined ? null : data.createdAt,
-    //     }
-    //     setStudentFilter(filter)
-    //     onFilterSearch(true)
-    //     paymentPage()
-    //   }
-    // }
-  }
-  const setDates = (start, end) => {
-    setPaymentDateRange([start, end])
-    setValue('createdAt', [start, end])
+  const validateDateRange = (dateRange, message) => {
+    if (dateRange !== undefined) {
+      if (dateRange[1] !== null) {
+        return true
+      } else {
+        alert(message)
+        return false
+      }
+    } else {
+      return true
+    }
   }
 
+  const checkDate = () => {
+    const checkResult =
+      startPaymentDate.getYear() === endPaymentDate.getYear() &&
+      startPaymentDate.getMonth() === endPaymentDate.getMonth() &&
+      startPaymentDate.getDate() === endPaymentDate.getDate()
+    return checkResult
+  }
+
+  const onSubmit = data => {
+    if (isDirty) {
+      const paymentDate = validateDateRange(
+        data.selectDate,
+        '검색 기간의 마지막날을 선택해주세요.',
+      )
+      if (paymentDate) {
+        const filter = {
+          selectDate: data.selectDate,
+          daily: checkDate(),
+        }
+        setStudentFilter(filter)
+        onFilterSearch(true)
+        paymentPage()
+      }
+    }
+  }
   return (
     <>
       <FilterBox
@@ -169,7 +191,7 @@ export default function SalesFilter({
             <ItemBox>
               <Controller
                 control={control}
-                name="createdAt"
+                name="selectDate"
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -202,7 +224,7 @@ export default function SalesFilter({
                         date = [e[0], null]
                       }
 
-                      field.onChange(date)
+                      field.onChange(e)
                     }}
                     placeholderText="기간을 선택해주세요."
                     dateFormat="yyyy/MM/dd"
@@ -214,7 +236,7 @@ export default function SalesFilter({
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
+                        {...register('selectDate')}
                       />
                     }
                   />
@@ -233,14 +255,14 @@ export default function SalesFilter({
                 적용
               </Button2>
             </BtnBox>
+            <NotiBox>
+              <Noti>
+                <li>검색 기간은 최대 1달 입니다.</li>
+                <li>기간검색은 일별로 검색됩니다.</li>
+                <li>일별 검색은 24시간으로 검색됩니다.</li>
+              </Noti>
+            </NotiBox>
           </BoxTop>
-          <BoxMiddle>
-            <ItemBox>
-              <p>검색 기간은 최대 1달 입니다.</p>
-              <p>기간검색은 일별로 검색됩니다.</p>
-              <p>일별 검색은 24시간으로 검색됩니다.</p>
-            </ItemBox>
-          </BoxMiddle>
         </FilterForm>
       </FilterBox>
     </>

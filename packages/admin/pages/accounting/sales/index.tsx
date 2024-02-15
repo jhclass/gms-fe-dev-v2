@@ -34,7 +34,11 @@ export default function Sales() {
           setStudentFilter={setStudentFilter}
         />
         <ConBox>
-          <SalesListTable />
+          <SalesListTable
+            onFilterSearch={setFilterSearch}
+            studentFilter={studentFilter}
+            setStudentFilter={setStudentFilter}
+          />
         </ConBox>
       </MainWrap>
     </>

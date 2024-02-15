@@ -125,7 +125,7 @@ export default function StudentsItem(props) {
   const student = studentPayment.studentPayment || []
 
   const getDate = (DataDate: string): string => {
-    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    const LocalDdate = new Date(DataDate).toLocaleDateString()
     return LocalDdate
   }
   const feeFormet = fee => {
@@ -140,7 +140,7 @@ export default function StudentsItem(props) {
           <TrequestAt $width={props.width}>
             <EllipsisBox>
               {studentPayment?.updatedAt
-                ? getDate(studentPayment?.updatedAt)
+                ? getDate(studentPayment?.reqRefundDate)
                 : '-'}
             </EllipsisBox>
           </TrequestAt>

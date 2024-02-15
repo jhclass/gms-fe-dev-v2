@@ -259,7 +259,7 @@ export default function RefundTable() {
   }, [router, currentPage])
 
   const getDate = (DataDate: string): string => {
-    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    const LocalDdate = new Date(DataDate).toLocaleDateString()
     return LocalDdate
   }
 
@@ -303,7 +303,9 @@ export default function RefundTable() {
                     <TableRow>
                       <ThRequestAt>
                         <EllipsisBox>
-                          {item?.updatedAt ? getDate(item?.updatedAt) : '-'}
+                          {item?.refundApprovalDate
+                            ? getDate(item?.refundApprovalDate)
+                            : '-'}
                         </EllipsisBox>
                       </ThRequestAt>
                       <ThManager>

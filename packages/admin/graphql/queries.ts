@@ -281,6 +281,8 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
         cashOrCard
         studentId
         id
+        depositDate
+        paymentDate
         stName
         receiver {
           mUsername
@@ -343,6 +345,36 @@ export const SEE_REFUND_QUERY = gql`
         refundManager
         stName
       }
+    }
+  }
+`
+
+// 통계
+export const GET_SALES_QUERY = gql`
+  query GetSalesData($startDate: String!, $endDate: String!) {
+    getSalesData(startDate: $startDate, endDate: $endDate) {
+      cardRefundTotal
+      cardTotal
+      cashRefundTotal
+      cashTotal
+      paymentTotal
+      date
+      refundTotal
+      totalAmount
+    }
+  }
+`
+export const GET_HOURLY_SALES_QUERY = gql`
+  query GetHourlySalesData($date: String!) {
+    getHourlySalesData(date: $date) {
+      cardRefundTotal
+      cardTotal
+      cashRefundTotal
+      cashTotal
+      hour
+      paymentTotal
+      refundTotal
+      totalAmount
     }
   }
 `

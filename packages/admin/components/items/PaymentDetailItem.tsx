@@ -210,12 +210,16 @@ export default function StudentPaymentDetailItem({
         <>
           <FlexCardBox $IsRefund={detailtData.reqRefund}>
             <FlexBox>
-              <AreaBoxL>
+              <AreaBox>
                 <div>
                   <FilterLabel>결제일자</FilterLabel>
-                  <FlatBox>{formatDate(detailtData?.createdAt, true)}</FlatBox>
+                  <FlatBox>
+                    {detailtData?.depositDate
+                      ? formatDate(detailtData?.depositDate, false)
+                      : '-'}
+                  </FlatBox>
                 </div>
-              </AreaBoxL>
+              </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>은행명</FilterLabel>
@@ -315,14 +319,16 @@ export default function StudentPaymentDetailItem({
             <FlexBox>
               <FlexCol $navOpen={navOpen}>
                 <Flex>
-                  <AreaBoxL>
+                  <AreaBox>
                     <div>
                       <FilterLabel>결제일자</FilterLabel>
                       <FlatBox>
-                        {formatDate(detailtData?.createdAt, true)}
+                        {detailtData?.paymentDate
+                          ? formatDate(detailtData?.paymentDate, false)
+                          : '-'}
                       </FlatBox>
                     </div>
-                  </AreaBoxL>
+                  </AreaBox>
                   <AreaBox>
                     <div>
                       <FilterLabel>승인번호</FilterLabel>
