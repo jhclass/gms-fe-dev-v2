@@ -280,7 +280,7 @@ export default function RefundFilterTable({
   }
 
   const getDate = (DataDate: string): string => {
-    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    const LocalDdate = new Date(DataDate).toLocaleDateString()
     return LocalDdate
   }
 
@@ -333,15 +333,13 @@ export default function RefundFilterTable({
                   <TableRow>
                     <ThRequestAt>
                       <EllipsisBox>
-                        {item?.studentPayment[0].paymentDate
-                          ? getDate(item?.studentPayment[0].paymentDate)
+                        {item.refundApprovalDate
+                          ? getDate(item.refundApprovalDate)
                           : '-'}
                       </EllipsisBox>
                     </ThRequestAt>
                     <ThManager>
-                      <EllipsisBox>
-                        {item?.studentPayment[0].processingManager?.mUsername}
-                      </EllipsisBox>
+                      <EllipsisBox>{item.refundManager}</EllipsisBox>
                     </ThManager>
                     <Tlist>
                       <RefundItem

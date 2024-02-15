@@ -113,7 +113,7 @@ export default function RefundFilter({
   } = useForm({
     defaultValues: {
       stName: '',
-      period: undefined,
+      refundApprovalDate: undefined,
     },
   })
 
@@ -132,13 +132,16 @@ export default function RefundFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.period,
+        data.refundApprovalDate,
         '승인일시의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
           stName: data.stName === '' ? null : data.stName,
-          period: data.period === undefined ? null : data.period,
+          refundApprovalDate:
+            data.refundApprovalDate === undefined
+              ? null
+              : data.refundApprovalDate,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -148,7 +151,7 @@ export default function RefundFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('period', [start, end], { shouldDirty: true })
+    setValue('refundApprovalDate', [start, end], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -196,7 +199,7 @@ export default function RefundFilter({
             <ItemBox>
               <Controller
                 control={control}
-                name="period"
+                name="refundApprovalDate"
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -240,7 +243,7 @@ export default function RefundFilter({
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
-                        {...register('period')}
+                        {...register('refundApprovalDate')}
                       />
                     }
                   />

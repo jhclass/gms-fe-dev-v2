@@ -999,6 +999,8 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
     $stName: String
     $reqRefund: Boolean
     $refundApproval: Boolean
+    $reqRefundDate: [String]
+    $refundApprovalDate: [String]
   ) {
     searchPaymentDetail(
       id: $searchPaymentDetailId
@@ -1006,6 +1008,8 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
       stName: $stName
       reqRefund: $reqRefund
       refundApproval: $refundApproval
+      reqRefundDate: $reqRefundDate
+      refundApprovalDate: $refundApprovalDate
     ) {
       totalCount
       ok

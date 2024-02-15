@@ -169,7 +169,11 @@ export default function StudentsItem(props) {
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student?.updatedAt ? getDate(student?.updatedAt) : '-'}
+                  {student?.depositDate
+                    ? getDate(student?.depositDate)
+                    : student?.paymentDate
+                    ? getDate(student?.paymentDate)
+                    : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tname>

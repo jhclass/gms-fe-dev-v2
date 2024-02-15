@@ -54,6 +54,7 @@ const TableRow = styled.div`
   /* display: grid;
   width: 100%;
   grid-template-columns: 0.5rem auto; */
+  background: rgba(226, 226, 229, 0.5);
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -83,7 +84,6 @@ const Tamount = styled.div`
   &.refund {
     background: rgba(255, 89, 0, 0.15);
   }
-
   &.total {
     background: rgba(226, 226, 229, 0.5);
   }
@@ -96,62 +96,66 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function SalesItem(props) {
+export default function SalesTotalItem(props) {
   const salesData = props.tableData
-  const salesType = props.type
-  const salesDate = props.date
 
-  const formatDate = data => {
-    const date = new Date(data)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} `
-    return formatted
-  }
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
 
+  function sumValuesByKey(key) {
+    return salesData.reduce((accumulator, currentItem) => {
+      return accumulator + (currentItem[key] || 0)
+    }, 0)
+  }
+
   return (
-    <>
-      <TableItem>
-        <TableRow>
-          <TcreatedAt>
-            <EllipsisBox>
-              {salesType ? (
-                <>{`${formatDate(salesDate)} ${salesData?.hour}시`}</>
-              ) : (
-                <>{salesData?.date}</>
-              )}
-            </EllipsisBox>
-          </TcreatedAt>
-          <Tamount className="payment">
-            <EllipsisBox>{feeFormet(salesData?.cardTotal)}</EllipsisBox>
-          </Tamount>
-          <Tamount className="payment">
-            <EllipsisBox>{feeFormet(salesData?.cashTotal)}</EllipsisBox>
-          </Tamount>
-          <Tamount className="payment">
-            <EllipsisBox>{feeFormet(salesData?.paymentTotal)}</EllipsisBox>
-          </Tamount>
-          <Tamount className="refund">
-            <EllipsisBox>{feeFormet(salesData?.cardRefundTotal)}</EllipsisBox>
-          </Tamount>
-          <Tamount className="refund">
-            <EllipsisBox>{feeFormet(salesData?.cashRefundTotal)}</EllipsisBox>
-          </Tamount>
-          <Tamount className="refund">
-            <EllipsisBox>{feeFormet(salesData?.refundTotal)}</EllipsisBox>
-          </Tamount>
-          <Tamount className="total">
-            <EllipsisBox>
-              <b>{feeFormet(salesData?.totalAmount)}</b>
-            </EllipsisBox>
-          </Tamount>
-        </TableRow>
-      </TableItem>
-    </>
+    salesData?.length > 0 && (
+      <>
+        <TableItem>
+          <TableRow>
+            <TcreatedAt>
+              <EllipsisBox>합계</EllipsisBox>
+            </TcreatedAt>
+            <Tamount className="payment">
+              <EllipsisBox>
+                {feeFormet(sumValuesByKey('cardTotal'))}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className="payment">
+              <EllipsisBox>
+                {feeFormet(sumValuesByKey('cashTotal'))}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className="payment">
+              <EllipsisBox>
+                {feeFormet(sumValuesByKey('paymentTotal'))}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className="refund">
+              <EllipsisBox>
+                {feeFormet(sumValuesByKey('cardRefundTotal'))}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className="refund">
+              <EllipsisBox>
+                {feeFormet(sumValuesByKey('cashRefundTotal'))}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className="refund">
+              <EllipsisBox>
+                {feeFormet(sumValuesByKey('refundTotal'))}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className="total">
+              <EllipsisBox>
+                <b>{feeFormet(sumValuesByKey('totalAmount'))}</b>
+              </EllipsisBox>
+            </Tamount>
+          </TableRow>
+        </TableItem>
+      </>
+    )
   )
 }
