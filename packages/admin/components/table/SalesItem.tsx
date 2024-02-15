@@ -39,7 +39,6 @@ const TableItem = styled.div`
   overflow: hidden;
 
   &:hover {
-    cursor: pointer;
     background: rgba(255, 255, 255, 0.8);
   }
 `
@@ -104,9 +103,10 @@ export default function SalesItem(props) {
   const formatDate = data => {
     const date = new Date(data)
     const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} `
+      // `${date.getFullYear()}-` +
+      // `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      // `${date.getDate().toString().padStart(2, '0')} `
+      date.toLocaleDateString()
     return formatted
   }
   const feeFormet = fee => {
@@ -123,7 +123,7 @@ export default function SalesItem(props) {
               {salesType ? (
                 <>{`${formatDate(salesDate)} ${salesData?.hour}시`}</>
               ) : (
-                <>{salesData?.date}</>
+                <>{formatDate(salesData?.date)}</>
               )}
             </EllipsisBox>
           </TcreatedAt>

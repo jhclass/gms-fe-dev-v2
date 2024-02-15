@@ -90,7 +90,6 @@ const TableItem = styled.div`
   overflow: hidden;
 
   &:hover {
-    cursor: pointer;
     background: rgba(255, 255, 255, 0.8);
   }
 `
