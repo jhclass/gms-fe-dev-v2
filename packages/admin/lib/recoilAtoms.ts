@@ -223,7 +223,7 @@ export const studentSearchState = atom({
 })
 export const paymentFilterActiveState = atom<boolean>({
   key: 'paymentFilterActive',
-  default: false,
+  default: true,
 })
 export const paymentPageState = atom<number>({
   key: 'paymentPage',
@@ -242,7 +242,7 @@ export const paymentSearchState = atom({
 })
 export const refundFilterActiveState = atom<boolean>({
   key: 'refundFilterActive',
-  default: false,
+  default: true,
 })
 export const refundPageState = atom<number>({
   key: 'refundPage',
@@ -261,7 +261,7 @@ export const refundSearchState = atom({
 })
 export const reqRefundFilterActiveState = atom<boolean>({
   key: 'reqRefundFilterActive',
-  default: false,
+  default: true,
 })
 export const reqRefundPageState = atom<number>({
   key: 'reqRefundPage',
