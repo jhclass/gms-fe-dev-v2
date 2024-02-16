@@ -244,7 +244,7 @@ export default function StudentsWritePayment() {
           amountPayment: parseInt(data.amountPayment),
           installment: data.installment === '' ? 0 : parseInt(data.installment),
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
-          paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
+          // paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
         },
         onCompleted: result => {
           if (!result.createPaymentDetail.ok) {
@@ -300,7 +300,7 @@ export default function StudentsWritePayment() {
           bankName: data.bankName,
           depositorName: data.depositorName.trim(),
           depositAmount: parseInt(data.depositAmount),
-          depositDate: data.depositDate === undefined ? null : data.depositDate,
+          // depositDate: data.depositDate === undefined ? null : data.depositDate,
         },
         onCompleted: result => {
           if (!result.createPaymentDetail.ok) {
@@ -716,7 +716,7 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      <AreaBox>
+                      {/* <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
@@ -780,7 +780,7 @@ export default function StudentsWritePayment() {
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
-                      </AreaBox>
+                      </AreaBox> */}
                     </FlexBox>
                   </>
                 )}
@@ -874,7 +874,7 @@ export default function StudentsWritePayment() {
                         </p>
                       )}
                     </AreaBox>
-                    <AreaBox>
+                    {/* <AreaBox>
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -936,7 +936,7 @@ export default function StudentsWritePayment() {
                           {String(errors.depositDate.message)}
                         </p>
                       )}
-                    </AreaBox>
+                    </AreaBox> */}
                     <AreaBox>
                       <Controller
                         control={control}

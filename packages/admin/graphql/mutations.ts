@@ -387,6 +387,7 @@ export const CREATE_SUBJECT_MUTATION = gql`
     $subjectCode: String
     $expiresDateStart: String
     $expiresDateEnd: String
+    $round: Int!
   ) {
     createSubject(
       subDiv: $subDiv
@@ -401,6 +402,7 @@ export const CREATE_SUBJECT_MUTATION = gql`
       subjectCode: $subjectCode
       expiresDateStart: $expiresDateStart
       expiresDateEnd: $expiresDateEnd
+      round: $round
     ) {
       error
       message
@@ -433,6 +435,7 @@ export const UPDATE_SUBJECT_MUTATION = gql`
     $expiresDateEnd: String
     $mGrade: Int
     $subjectCode: String
+    $round: Int
   ) {
     updateSubject(
       id: $updateSubjectId
@@ -449,6 +452,7 @@ export const UPDATE_SUBJECT_MUTATION = gql`
       expiresDateEnd: $expiresDateEnd
       mGrade: $mGrade
       subjectCode: $subjectCode
+      round: $round
     ) {
       error
       message
@@ -464,6 +468,7 @@ export const SEARCH_SUBJECT_MUTATION = gql`
     $exposure: Boolean
     $page: Int
     $limit: Int
+    $subjectCode: String
   ) {
     searchSubject(
       id: $searchSubjectId
@@ -472,6 +477,7 @@ export const SEARCH_SUBJECT_MUTATION = gql`
       exposure: $exposure
       page: $page
       limit: $limit
+      subjectCode: $subjectCode
     ) {
       error
       message
@@ -492,6 +498,7 @@ export const SEARCH_SUBJECT_MUTATION = gql`
         teacherName
         totalTime
         updatedAt
+        round
       }
       totalCount
     }

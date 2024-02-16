@@ -113,8 +113,8 @@ export default function SalesTable({
   const router = useRouter()
   const { data, refetch } = useQuery(GET_SALES_QUERY, {
     variables: {
-      endDate: String(new Date()),
-      startDate: String(new Date()),
+      endDate: new Date(),
+      startDate: new Date(),
     },
   })
   const {
@@ -123,7 +123,7 @@ export default function SalesTable({
     networkStatus: houralyNetworkStatus,
     error,
   } = useQuery(GET_HOURLY_SALES_QUERY, {
-    variables: { date: new Date().toISOString() },
+    variables: { date: new Date() },
   })
   const [searchResult, setSearchResult] = useState(null)
 
@@ -132,17 +132,17 @@ export default function SalesTable({
     if (Object.keys(studentFilter).length !== 0) {
       if (studentFilter.daily) {
         result = await houralyRefetch({
-          date: studentFilter.selectDate[1].toISOString(),
+          date: studentFilter.selectDate[1],
         })
       } else {
         result = await refetch({
-          startDate: studentFilter.selectDate[0].toISOString(),
-          endDate: studentFilter.selectDate[1].toISOString(),
+          startDate: studentFilter.selectDate[0],
+          endDate: studentFilter.selectDate[1],
         })
       }
     } else {
       result = await houralyRefetch({
-        date: new Date().toISOString(),
+        date: new Date(),
       })
     }
     return result

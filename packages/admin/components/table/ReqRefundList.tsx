@@ -88,7 +88,6 @@ const TableItem = styled.div`
   overflow: hidden;
 
   &:hover {
-    cursor: pointer;
     background: rgba(255, 255, 255, 0.8);
   }
 `
@@ -219,7 +218,6 @@ export default function RequestRefundTable() {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
   const { userLogs } = useUserLogsMutation()
   const [searchPaymentDetailFilterMutation] = useMutation(
     SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
@@ -344,7 +342,7 @@ export default function RequestRefundTable() {
       <>
         <TTopic>
           <Ttotal>
-            총 <span>{totalCount}</span>건
+            총 <span>{result.totalCount}</span>건
           </Ttotal>
           <ColorHelp>
             <ColorCip>

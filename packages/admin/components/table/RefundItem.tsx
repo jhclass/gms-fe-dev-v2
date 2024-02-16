@@ -135,46 +135,44 @@ export default function StudentsItem(props) {
 
   return (
     <>
-      <Link href={`/students/detail/${student.id}`}>
-        <ClickBox>
-          <TrequestAt $width={props.width}>
-            <EllipsisBox>
-              {studentPayment?.updatedAt
-                ? getDate(studentPayment?.reqRefundDate)
-                : '-'}
-            </EllipsisBox>
-          </TrequestAt>
-          <Tmanager $width={props.width}>
-            <EllipsisBox>{studentPayment?.reqRefundManager}</EllipsisBox>
-          </Tmanager>
-          <Tname $width={props.width}>
-            <EllipsisBox>{studentPayment?.stName}</EllipsisBox>
-          </Tname>
-          <Tsubject $width={props.width}>
-            <EllipsisBox>{student?.subject?.subjectName}</EllipsisBox>
-          </Tsubject>
-          <Tpayment $width={props.width}>
-            <EllipsisBox>{studentPayment?.cashOrCard}</EllipsisBox>
-          </Tpayment>
-          <TpaymentName $width={props.width}>
-            <EllipsisBox>
-              {studentPayment?.cashOrCard === '카드'
-                ? studentPayment?.cardCompany
-                : studentPayment?.bankName}
-            </EllipsisBox>
-          </TpaymentName>
-          <Tamount
-            $width={props.width}
-            className={studentPayment.cashOrCard === '카드' ? 'card' : 'cash'}
-          >
-            <EllipsisBox>
-              {studentPayment?.cashOrCard === '카드'
-                ? feeFormet(studentPayment?.amountPayment)
-                : feeFormet(studentPayment?.depositAmount)}
-            </EllipsisBox>
-          </Tamount>
-        </ClickBox>
-      </Link>
+      <ClickBox>
+        <TrequestAt $width={props.width}>
+          <EllipsisBox>
+            {studentPayment?.updatedAt
+              ? getDate(studentPayment?.reqRefundDate)
+              : '-'}
+          </EllipsisBox>
+        </TrequestAt>
+        <Tmanager $width={props.width}>
+          <EllipsisBox>{studentPayment?.reqRefundManager}</EllipsisBox>
+        </Tmanager>
+        <Tname $width={props.width}>
+          <EllipsisBox>{studentPayment?.stName}</EllipsisBox>
+        </Tname>
+        <Tsubject $width={props.width}>
+          <EllipsisBox>{student?.subject?.subjectName}</EllipsisBox>
+        </Tsubject>
+        <Tpayment $width={props.width}>
+          <EllipsisBox>{studentPayment?.cashOrCard}</EllipsisBox>
+        </Tpayment>
+        <TpaymentName $width={props.width}>
+          <EllipsisBox>
+            {studentPayment?.cashOrCard === '카드'
+              ? studentPayment?.cardCompany
+              : studentPayment?.bankName}
+          </EllipsisBox>
+        </TpaymentName>
+        <Tamount
+          $width={props.width}
+          className={studentPayment.cashOrCard === '카드' ? 'card' : 'cash'}
+        >
+          <EllipsisBox>
+            {studentPayment?.cashOrCard === '카드'
+              ? feeFormet(studentPayment?.amountPayment)
+              : feeFormet(studentPayment?.depositAmount)}
+          </EllipsisBox>
+        </Tamount>
+      </ClickBox>
     </>
   )
 }

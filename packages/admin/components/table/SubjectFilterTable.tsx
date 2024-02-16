@@ -233,18 +233,27 @@ export default function SubjectFilterTable({
   const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
 
+  const searchData = async () => {
+    try {
+      const { data } = await searchSubjectMutation({
+        variables: {
+          ...subjectFilter,
+          page: currentPage,
+          limit: currentLimit,
+        },
+      })
+      if (!data.searchSubject.ok) {
+        throw new Error('과정 검색 실패')
+      }
+      const { result, totalCount } = data.searchSubject
+      setSearchResult({ result, totalCount })
+    } catch (error) {
+      console.error('검색 주제 처리 중 에러 발생:', error)
+    }
+  }
+
   useEffect(() => {
-    searchSubjectMutation({
-      variables: {
-        ...subjectFilter,
-        page: currentPage,
-        limit: currentLimit,
-      },
-      onCompleted: resData => {
-        const { result, totalCount } = resData.searchSubject || {}
-        setSearchResult({ result, totalCount })
-      },
-    })
+    searchData()
   }, [subjectFilter, currentPage])
 
   const feeFormet = fee => {

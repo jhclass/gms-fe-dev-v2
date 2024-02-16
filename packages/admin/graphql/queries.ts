@@ -199,6 +199,7 @@ export const SEE_SUBJECT_QUERY = gql`
         totalTime
         teacherName
         subjectCode
+        round
       }
       ok
       error

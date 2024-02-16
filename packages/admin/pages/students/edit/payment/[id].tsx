@@ -260,12 +260,12 @@ export default function StudentsWritePayment() {
               amountPayment: parseInt(data.amountPayment),
               installment: parseInt(data.installment),
               approvalNum: data.approvalNum.trim(),
-              paymentDate:
-                data.paymentDate === null
-                  ? null
-                  : typeof data.paymentDate === 'string'
-                  ? new Date(parseInt(data.paymentDate))
-                  : new Date(data.paymentDate),
+              // paymentDate:
+              //   data.paymentDate === null
+              //     ? null
+              //     : typeof data.paymentDate === 'string'
+              //     ? new Date(parseInt(data.paymentDate))
+              //     : new Date(data.paymentDate),
             },
             onCompleted: result => {
               if (!result.editPaymentDetail.ok) {
@@ -307,7 +307,7 @@ export default function StudentsWritePayment() {
               bankName: data.bankName,
               depositorName: data.depositorName.trim(),
               depositAmount: parseInt(data.depositAmount),
-              depositDate: new Date(data.depositDate),
+              // depositDate: new Date(data.depositDate),
             },
             onCompleted: result => {
               if (!result.editPaymentDetail.ok) {
@@ -934,6 +934,7 @@ export default function StudentsWritePayment() {
                             },
                           }}
                           name="isCashReceipt"
+                          defaultValue={'발급'}
                           render={({ field, fieldState }) => (
                             <CheckboxGroup
                               label={
