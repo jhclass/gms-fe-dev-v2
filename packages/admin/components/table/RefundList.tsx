@@ -73,7 +73,7 @@ const TheaderBox = styled.div`
 `
 const TheaderListBox = styled.div`
   display: flex;
-  width: 83%;
+  width: 82%;
 `
 const TableItem = styled.div`
   position: relative;
@@ -116,11 +116,11 @@ const ThManager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.09}px;
 `
 const TrequestAt = styled.div<{ $width: number }>`
   display: table-cell;
@@ -230,7 +230,6 @@ export default function RefundTable() {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
   const [result, setResult] = useState(null)
   const [searchPaymentDetailFilterMutation] = useMutation(
     SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
@@ -267,7 +266,7 @@ export default function RefundTable() {
       <>
         <TTopic>
           <Ttotal>
-            총 <span>{totalCount}</span>건
+            총 <span>{result.totalCount}</span>건
           </Ttotal>
           <ColorHelp>
             <ColorCip>

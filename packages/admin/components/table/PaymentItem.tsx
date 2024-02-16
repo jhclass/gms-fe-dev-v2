@@ -169,11 +169,7 @@ export default function StudentsItem(props) {
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student?.depositDate
-                    ? getDate(student?.depositDate)
-                    : student?.paymentDate
-                    ? getDate(student?.paymentDate)
-                    : '-'}
+                  {student?.updatedAt ? getDate(student?.updatedAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tname>
@@ -220,7 +216,6 @@ export default function StudentsItem(props) {
                 </EllipsisBox>
               </Tamount>
               <Tamount className="amount">
-                {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
                   {student?.amountPayment === undefined ||
                   student?.amountPayment === null
@@ -229,7 +224,6 @@ export default function StudentsItem(props) {
                 </EllipsisBox>
               </Tamount>
               <Tamount className="amount">
-                {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
                   {student?.depositAmount === undefined ||
                   student?.depositAmount === null
@@ -238,7 +232,6 @@ export default function StudentsItem(props) {
                 </EllipsisBox>
               </Tamount>
               <Tamount className="amount">
-                {/* <EllipsisBox>{feeFormet(studentPayment.name)}</EllipsisBox> */}
                 <EllipsisBox>
                   {studentPayment?.amountReceived === undefined ||
                   studentPayment?.amountReceived === null

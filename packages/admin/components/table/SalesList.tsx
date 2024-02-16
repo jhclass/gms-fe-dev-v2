@@ -151,7 +151,6 @@ export default function SalesTable({
   useEffect(() => {
     fetchData(studentFilter)
       .then(result => {
-        console.log(result)
         setSearchResult(result.data)
       })
       .catch(error => {

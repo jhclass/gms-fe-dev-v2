@@ -43,7 +43,7 @@ import useMmeQuery from '@/utils/mMe'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ConsolutRepeated from '@/components/form/ConsolutRepeated'
+import ConsolutRepeated from '@/components/items/ConsolutRepeated'
 
 const ConArea = styled.div`
   width: 100%;

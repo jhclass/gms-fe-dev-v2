@@ -75,7 +75,7 @@ const TheaderBox = styled.div`
 `
 const TheaderListBox = styled.div`
   display: flex;
-  width: 76%;
+  width: 82%;
 `
 const TableItem = styled.div`
   position: relative;
@@ -118,11 +118,11 @@ const ThManager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.09}px;
 `
 const TrequestAt = styled.div<{ $width: number }>`
   display: table-cell;
@@ -323,7 +323,6 @@ export default function RefundFilterTable({
                   <TpaymentName $width={912}>은행/카드사</TpaymentName>
                   <Tamount $width={912}>환불금액</Tamount>
                 </TheaderListBox>
-                <Tbtn></Tbtn>
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&

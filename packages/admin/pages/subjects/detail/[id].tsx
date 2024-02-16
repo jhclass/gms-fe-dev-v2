@@ -25,6 +25,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import SubjectRoundItem from '@/components/items/SubjectRoundItem'
 
 const ConArea = styled.div`
   width: 100%;
@@ -42,11 +43,19 @@ const SwitchText = styled.span`
   padding-right: 0.5rem;
   font-size: 0.8rem;
 `
-const DetailForm = styled.form`
+const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
+`
+const DetailForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 const TopInfo = styled.div`
   display: flex;
@@ -70,13 +79,18 @@ const UpdateTime = styled.p`
   }
 `
 
-const DetailDiv = styled.div`
+const SemiTitle = styled.p`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #ff5900;
+  padding-bottom: 0.375rem;
+  display: block;
+`
+const ColFlexBox = styled.div`
   display: flex;
+  gap: 0.5rem;
   flex-direction: column;
-  gap: 1.5rem;
-  @media (max-width: 768px) {
-    gap: 1rem;
-  }
 `
 const FlexBox = styled.div`
   display: flex;
@@ -89,7 +103,22 @@ const FlexBox = styled.div`
 const AreaBox = styled.div`
   flex: 1;
 `
+const AreaSmallBox = styled.div`
+  width: 10%;
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
 
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+`
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -142,34 +171,33 @@ export default function SubjectDetail() {
   const [updateSubject] = useMutation(UPDATE_SUBJECT_MUTATION)
   const [searchSubjectMutation, { data, loading, error }] = useMutation(
     SEARCH_SUBJECT_MUTATION,
-    {
-      variables: {
-        searchStudentStateId: parseInt(subjectId),
-      },
-    },
   )
-  const subjectState = data?.searchSubject.result[0] || []
+  // const subjectState = data?.searchSubject.result[0] || []
+  const [subjectState, setSubjectState] = useState(null)
+  const [subjectRoundItem, setSubjectRoundItem] = useState(null)
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)
 
   const { register, control, setValue, handleSubmit, formState } = useForm({
     defaultValues: {
-      updateSubjectId: subjectState.id,
-      subDiv: subjectState.subDiv,
-      subjectName: subjectState.subjectName,
-      subjectCode: subjectState.subjectCode,
-      fee: subjectState.fee,
-      startDate: subjectState.startDate,
-      endDate: subjectState.endDate,
-      roomNum: subjectState.roomNum,
-      exposure: subjectState.exposure,
-      totalTime: subjectState.totalTime,
-      teacherName: subjectState.teacherName,
-      expiresDateStart: subjectState.expiresDateStart,
-      expiresDateEnd: subjectState.expiresDateEnd,
+      updateSubjectId: subjectState?.id,
+      subDiv: subjectState?.subDiv,
+      subjectName: subjectState?.subjectName,
+      subjectCode: subjectState?.subjectCode,
+      fee: subjectState?.fee,
+      startDate: subjectState?.startDate,
+      endDate: subjectState?.endDate,
+      roomNum: subjectState?.roomNum,
+      exposure: subjectState?.exposure,
+      totalTime: subjectState?.totalTime,
+      teacherName: subjectState?.teacherName,
+      expiresDateStart: subjectState?.expiresDateStart,
+      expiresDateEnd: subjectState?.expiresDateEnd,
+      round: subjectState?.round,
     },
   })
   const { isDirty, dirtyFields, errors } = formState
+
   const [expStartDate, setExpStartDate] = useState(null)
   const [expEndDate, setExpEndDate] = useState(null)
   const [sjStartDate, setSjStartDate] = useState(null)
@@ -179,133 +207,134 @@ export default function SubjectDetail() {
   const [isSelected, setIsSelected] = useState(Boolean)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
-  useEffect(() => {
-    searchSubjectMutation({
-      variables: {
+  const fetchSubjectData = async variables => {
+    const response = await searchSubjectMutation({ variables })
+    if (!response.data.searchSubject.ok) {
+      throw new Error('Failed to fetch subject data')
+    }
+    return response.data.searchSubject.result
+  }
+
+  const searchData = async () => {
+    try {
+      const [subject] = await fetchSubjectData({
         searchSubjectId: parseInt(subjectId),
-      },
-    })
+      })
+      setSubjectState(subject)
+
+      const roundData = await fetchSubjectData({
+        subjectCode: subject.subjectCode,
+      })
+      setSubjectRoundItem(roundData)
+    } catch (error) {
+      console.error('Failed to fetch data:', error.message)
+    }
+  }
+
+  useEffect(() => {
+    searchData()
   }, [router])
 
   useEffect(() => {
-    if (subjectState.exposure) {
+    if (subjectState !== null) {
       setIsSelected(subjectState.exposure)
-    }
-    if (subjectState.subDiv === null || subjectState.subDiv === undefined) {
-      setSub('없음')
-    } else {
-      setSub(subjectState.subDiv)
-    }
-
-    if (
-      subjectState.teacherName === undefined ||
-      subjectState.teacherName === null
-    ) {
-      setTeacher('강사명 없음')
-    } else {
-      setTeacher(subjectState.teacherName)
-    }
-
-    if (
-      subjectState.expiresDateStart === null ||
-      subjectState.expiresDateStart === undefined
-    ) {
-      setExpStartDate(null)
-    } else {
-      const date = parseInt(subjectState.expiresDateStart)
-      setExpStartDate(date)
-    }
-
-    if (
-      subjectState.expiresDateEnd === null ||
-      subjectState.expiresDateEnd === undefined
-    ) {
-      setExpEndDate(null)
-    } else {
-      const date = parseInt(subjectState.expiresDateEnd)
-      setExpEndDate(date)
-    }
-
-    if (
-      subjectState.startDate === null ||
-      subjectState.startDate === undefined
-    ) {
-      setSjStartDate(null)
-    } else {
-      const date = parseInt(subjectState.startDate)
-      setSjStartDate(date)
-    }
-
-    if (subjectState.endDate === null || subjectState.endDate === undefined) {
-      setSjEndDate(null)
-    } else {
-      const date = parseInt(subjectState.endDate)
-      setSjEndDate(date)
+      setSub(subjectState.subDiv ?? '없음')
+      setTeacher(subjectState.teacherName ?? '강사명 없음')
+      setExpStartDate(
+        subjectState.expiresDateStart != null
+          ? parseInt(subjectState.expiresDateStart)
+          : null,
+      )
+      setExpEndDate(
+        subjectState.expiresDateEnd != null
+          ? parseInt(subjectState.expiresDateEnd)
+          : null,
+      )
+      setSjStartDate(
+        subjectState.startDate != null
+          ? parseInt(subjectState.startDate)
+          : null,
+      )
+      setSjEndDate(
+        subjectState.endDate != null ? parseInt(subjectState.endDate) : null,
+      )
     }
   }, [subjectState])
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (isDirty || subjectState.exposure !== isSelected) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
-        updateSubject({
-          variables: {
-            updateSubjectId: subjectState.id,
-            subjectName: data.subjectName.trim(),
-            subjectCode:
-              data.subjectCode === '' ? null : data.subjectCode.trim(),
-            fee: parseInt(data.fee.trim()),
-            subDiv: data.subDiv,
-            startDate:
-              data.startDate === null
-                ? null
-                : typeof data.startDate === 'string'
-                ? new Date(parseInt(data.startDate))
-                : new Date(data.startDate),
-            endDate:
-              data.endDate === null
-                ? null
-                : typeof data.endDate === 'string'
-                ? new Date(parseInt(data.endDate))
-                : new Date(data.endDate),
-            roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
-            exposure: isSelected,
-            totalTime:
-              data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
-            teacherName:
-              data.teacherName === '' ? '강사명 없음' : data.teacherName,
-            expiresDateStart:
-              data.expiresDateStart === null
-                ? null
-                : typeof data.expiresDateStart === 'string'
-                ? new Date(parseInt(data.expiresDateStart))
-                : new Date(data.expiresDateStart),
-            expiresDateEnd:
-              data.expiresDateEnd === null
-                ? null
-                : typeof data.expiresDateEnd === 'string'
-                ? new Date(parseInt(data.expiresDateEnd))
-                : new Date(data.expiresDateEnd),
-          },
-          onCompleted: () => {
-            alert('수정되었습니다.')
-          },
-        })
-        const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-        userLogs(
-          `${subjectState.subjectName} 과목 수정`,
-          dirtyFieldsArray.join(', '),
-        )
+        try {
+          const result = await updateSubject({
+            variables: {
+              updateSubjectId: subjectState.id,
+              subjectName: data.subjectName.trim(),
+              round: parseInt(data.round),
+              subjectCode:
+                data.subjectCode === '' ? null : data.subjectCode.trim(),
+              fee: parseInt(data.fee.trim()),
+              subDiv: data.subDiv,
+              startDate:
+                data.startDate === null
+                  ? null
+                  : typeof data.startDate === 'string'
+                  ? new Date(parseInt(data.startDate))
+                  : new Date(data.startDate),
+              endDate:
+                data.endDate === null
+                  ? null
+                  : typeof data.endDate === 'string'
+                  ? new Date(parseInt(data.endDate))
+                  : new Date(data.endDate),
+              roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
+              exposure: isSelected,
+              totalTime:
+                data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
+              teacherName:
+                data.teacherName === '' ? '강사명 없음' : data.teacherName,
+              expiresDateStart:
+                data.expiresDateStart === null
+                  ? null
+                  : typeof data.expiresDateStart === 'string'
+                  ? new Date(parseInt(data.expiresDateStart))
+                  : new Date(data.expiresDateStart),
+              expiresDateEnd:
+                data.expiresDateEnd === null
+                  ? null
+                  : typeof data.expiresDateEnd === 'string'
+                  ? new Date(parseInt(data.expiresDateEnd))
+                  : new Date(data.expiresDateEnd),
+            },
+          })
+
+          if (!result.data.updateSubject.ok) {
+            throw new Error('과정 수정 실패')
+          }
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${subjectState.subjectName} 과목 수정`,
+            dirtyFieldsArray.join(', '),
+          )
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('과목 수정 중 에러 발생:', error)
+          alert('과목 수정 처리 중 오류가 발생했습니다.')
+        }
       }
     }
   }
-  const onCopy = () => {
+
+  const onCopy = async () => {
     const isCopy = confirm('과정을 복사하시겠습니까?')
-    if (isCopy) {
-      createSubject({
+    if (!isCopy) return
+
+    try {
+      const result = await createSubject({
         variables: {
           subDiv: subjectState?.subDiv,
-          subjectName: `${subjectState?.subjectName}_copy`,
+          subjectName: subjectState?.subjectName,
+          round: parseInt(subjectState.round + 1),
           subjectCode:
             subjectState?.subjectCode === null
               ? null
@@ -339,24 +368,28 @@ export default function SubjectDetail() {
               : new Date(parseInt(subjectState.expiresDateEnd)),
         },
         refetchQueries: [
-          {
-            query: SEE_SUBJECT_QUERY,
-            variables: { page: 1, limit: 10 },
-          },
+          { query: SEE_SUBJECT_QUERY, variables: { page: 1, limit: 10 } },
         ],
-        onCompleted: data => {
-          alert('복사되었습니다.')
-          userLogs(`${subjectState.subjectName} 과정 복사`)
-          router.push('/subjects')
-        },
       })
+
+      if (!result.data.createSubject.ok) {
+        throw new Error('과정 복사 실패')
+      }
+
+      userLogs(`${subjectState.subjectName} 과정 복사`)
+      alert('복사되었습니다.')
+      router.push('/subjects')
+    } catch (error) {
+      console.error('과정 복사 중 에러 발생:', error)
+      alert('과정 복사 처리 중 오류가 발생했습니다.')
     }
   }
 
-  const onDelete = data => {
+  const onDelete = async data => {
     const isDelete = confirm('과정을 삭제하시겠습니까?')
-    if (isDelete) {
-      deleteSubject({
+    if (!isDelete) return
+    try {
+      const result = await deleteSubject({
         variables: {
           deleteSubjectId: data,
         },
@@ -369,12 +402,18 @@ export default function SubjectDetail() {
             },
           },
         ],
-        onCompleted: () => {
-          alert('과정이 삭제되었습니다.')
-          router.push('/subjects')
-          userLogs(`${subjectState.subjectName} 과목 삭제`)
-        },
       })
+
+      if (!result.data.createSubject.ok) {
+        throw new Error('과정 삭제 실패')
+      }
+
+      userLogs(`${subjectState.subjectName} 과목 삭제`)
+      alert('과정이 삭제되었습니다.')
+      router.push('/subjects')
+    } catch (error) {
+      console.error('과정 삭제 중 에러 발생:', error)
+      alert('과정 삭제 처리 중 오류가 발생했습니다.')
     }
   }
 
@@ -423,7 +462,7 @@ export default function SubjectDetail() {
                 </SwitchDiv>
               }
             />
-            <DetailForm onSubmit={handleSubmit(onSubmit)}>
+            <DetailBox onSubmit={handleSubmit(onSubmit)}>
               <TopInfo>
                 <Noti>
                   <span>*</span> 는 필수입력입니다.
@@ -433,7 +472,7 @@ export default function SubjectDetail() {
                   {formatDate(subjectState?.updatedAt, true)}
                 </UpdateTime>
               </TopInfo>
-              <DetailDiv>
+              <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>
                     <Textarea
@@ -466,6 +505,34 @@ export default function SubjectDetail() {
                       </p>
                     )}
                   </AreaBox>
+                  <AreaSmallBox>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="md"
+                      type="number"
+                      placeholder=" "
+                      label={<FilterLabel>회차</FilterLabel>}
+                      defaultValue={subjectState?.round}
+                      className="w-full"
+                      min={1}
+                      {...register('round', {
+                        required: {
+                          value: true,
+                          message: '회차를 작성해주세요.',
+                        },
+                        min: {
+                          value: 1,
+                          message: '1이상의 숫자를 작성해주세요.',
+                        },
+                      })}
+                    />
+                    {errors.round && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.round.message)}
+                      </p>
+                    )}
+                  </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
@@ -738,7 +805,6 @@ export default function SubjectDetail() {
                                 field.onChange(value)
                             handleTeacherChange(value)
                             }
-                         
                           }}
                         >
                           <SelectItem key={'강사명 없음'} value={'강사명 없음'}>
@@ -957,8 +1023,20 @@ export default function SubjectDetail() {
                     </Button2>
                   )}
                 </BtnBox>
-              </DetailDiv>
-            </DetailForm>
+              </DetailForm>
+            </DetailBox>
+            {subjectRoundItem?.length > 1 && (
+              <DetailBox>
+                <SemiTitle>과정 회차 내역</SemiTitle>
+                <ColFlexBox>
+                  {subjectRoundItem
+                    .filter(item => item.round !== subjectState.round)
+                    .map((item, index) => (
+                      <SubjectRoundItem key={index} listData={item} />
+                    ))}
+                </ColFlexBox>
+              </DetailBox>
+            )}
           </ConArea>
         </MainWrap>
       )}

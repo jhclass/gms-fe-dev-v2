@@ -130,41 +130,52 @@ export default function SubjectWrite() {
   const [isSelected, setIsSelected] = useState(false)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
-  const onSubmit = data => {
-    createSubject({
-      variables: {
-        subDiv: data.subDiv,
-        subjectName: data.subjectName.trim(),
-        subjectCode: data.subjectCode === '' ? null : data.subjectCode.trim(),
-        fee: parseInt(data.fee.trim()),
-        startDate:
-          data.startDate === undefined ? null : new Date(data.startDate),
-        endDate: data.endDate === undefined ? null : new Date(data.endDate),
-        roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
-        exposure: isSelected,
-        totalTime: data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
-        teacherName: data.teacherName === '' ? '강사명 없음' : data.teacherName,
-        expiresDateStart:
-          data.expiresDateStart === undefined
-            ? null
-            : new Date(data.expiresDateStart),
-        expiresDateEnd:
-          data.expiresDateEnd === undefined
-            ? null
-            : new Date(data.expiresDateEnd),
-      },
-      refetchQueries: [
-        {
-          query: SEE_SUBJECT_QUERY,
-          variables: { page: 1, limit: 10 },
+  const onSubmit = async data => {
+    try {
+      const result = await createSubject({
+        variables: {
+          subDiv: data.subDiv,
+          round: 1,
+          subjectName: data.subjectName.trim(),
+          subjectCode: data.subjectCode === '' ? null : data.subjectCode.trim(),
+          fee: parseInt(data.fee.trim()),
+          startDate:
+            data.startDate === undefined ? null : new Date(data.startDate),
+          endDate: data.endDate === undefined ? null : new Date(data.endDate),
+          roomNum: data.roomNum === '' ? null : data.roomNum.trim(),
+          exposure: isSelected,
+          totalTime:
+            data.totalTime === '' ? 0 : parseInt(data.totalTime.trim()),
+          teacherName:
+            data.teacherName === '' ? '강사명 없음' : data.teacherName,
+          expiresDateStart:
+            data.expiresDateStart === undefined
+              ? null
+              : new Date(data.expiresDateStart),
+          expiresDateEnd:
+            data.expiresDateEnd === undefined
+              ? null
+              : new Date(data.expiresDateEnd),
         },
-      ],
-      onCompleted: data => {
-        alert('등록되었습니다.')
-        router.push('/subjects')
-      },
-    })
-    userLogs(`${data.subjectName}과정 등록`)
+        refetchQueries: [
+          {
+            query: SEE_SUBJECT_QUERY,
+            variables: { page: 1, limit: 10 },
+          },
+        ],
+      })
+
+      if (!result.data.createSubject.ok) {
+        throw new Error('과정 등록 실패')
+      }
+
+      alert('등록되었습니다.')
+      userLogs(`${data.subjectName}과정 등록`)
+      router.push('/subjects')
+    } catch (error) {
+      console.error('과정 등록 중 에러 발생:', error)
+      alert('과정 등록 처리 중 오류가 발생했습니다.')
+    }
   }
 
   const handleSubChange = e => {
@@ -239,13 +250,27 @@ export default function SubjectWrite() {
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="과정코드"
+                    label={
+                      <FilterLabel>
+                        과정코드<span>*</span>
+                      </FilterLabel>
+                    }
                     onChange={e => {
                       register('subjectCode').onChange(e)
                     }}
                     className="w-full"
-                    {...register('subjectCode')}
+                    {...register('subjectCode', {
+                      required: {
+                        value: true,
+                        message: '과정코드을 입력해주세요.',
+                      },
+                    })}
                   />
+                  {errors.subjectCode && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.subjectCode.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <Input

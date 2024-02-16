@@ -113,9 +113,11 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
     },
   })
 
-  const onSubmit = data => {
-    if (isDirty) {
-      createAdvice({
+  const onSubmit = async data => {
+    if (!isDirty) return
+
+    try {
+      const result = await createAdvice({
         variables: {
           type: data.type,
         },
@@ -124,18 +126,23 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
             query: SEE_ADVICE_TYPE_QUERY,
           },
         ],
-        onCompleted: data => {
-          alert('상담 분야가 등록되었습니다.')
-        },
       })
+      if (!result.data.createAdviceType.ok) {
+        throw new Error('상담 분야 등록 실패')
+      }
+      alert('상담 분야가 등록되었습니다.')
       userLogs(`${data.type} 상담분야 등록`)
+    } catch (error) {
+      console.error('상담 분야 등록 중 에러 발생:', error)
     }
   }
 
-  const deleteType = item => {
+  const deleteType = async item => {
     const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
-    if (isDelete) {
-      deleteAdvice({
+    if (!isDelete) return
+
+    try {
+      const result = await deleteAdvice({
         variables: {
           deleteAdviceTypeId: item.id,
         },
@@ -144,11 +151,15 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
             query: SEE_ADVICE_TYPE_QUERY,
           },
         ],
-        onCompleted: data => {
-          alert('상담 분야가 삭제되었습니다.')
-        },
       })
+
+      if (!result.data.deleteAdviceType.ok) {
+        throw new Error('상담 분야 삭제 실패')
+      }
+      alert('상담 분야가 삭제되었습니다.')
       userLogs(`${item.type} 상담분야 삭제`)
+    } catch (error) {
+      console.error('상담 분야 삭제 중 에러 발생:', error)
     }
   }
 

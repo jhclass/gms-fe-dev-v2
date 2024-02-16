@@ -12,6 +12,7 @@ type subjectItemProps = {
     endDate: string
     roomNum: string
     exposure: boolean
+    round: number
   }
 }
 
@@ -82,7 +83,7 @@ export default function SubjectItem(props: subjectItemProps) {
   return (
     <>
       <Tname>
-        <EllipsisBox>{subject.subjectName}</EllipsisBox>
+        <EllipsisBox>{`[${subject.round}회차] ${subject.subjectName}`}</EllipsisBox>
       </Tname>
       <TsubDiv>{subject.subDiv}</TsubDiv>
       <Tfee>{feeFormet(subject.fee)}</Tfee>

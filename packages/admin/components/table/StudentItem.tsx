@@ -92,21 +92,21 @@ const Tsms = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.08}px;
 `
 const Tbirthday = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 16%;
+  width: 15%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.16}px;
+  min-width: ${1200 * 0.15}px;
 `
 const Tname = styled.div`
   position: relative;
