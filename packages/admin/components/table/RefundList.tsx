@@ -246,7 +246,6 @@ export default function RefundTable() {
         limit: currentLimit,
       },
       onCompleted: resData => {
-        console.log(resData)
         if (resData.searchPaymentDetail.ok) {
           const { PaymentDetail, totalCount } =
             resData.searchPaymentDetail || {}
@@ -256,8 +255,6 @@ export default function RefundTable() {
       },
     })
   }, [router, currentPage])
-
-  console.log(currentPage)
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(DataDate).toLocaleDateString()

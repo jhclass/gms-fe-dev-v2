@@ -360,7 +360,6 @@ export default function ConsultDetail() {
     }
   }
 
-  console.log(studentState)
   const onDelete = data => {
     const isDelete = confirm('상담카드를 삭제시겠습니까?')
     if (isDelete) {
