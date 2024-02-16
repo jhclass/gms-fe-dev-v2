@@ -1001,20 +1001,22 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
 `
 export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
   mutation Mutation(
-    $searchPaymentDetailId: Int
-    $period: [String]
-    $stName: String
+    $page: Int
+    $limit: Int
     $reqRefund: Boolean
     $refundApproval: Boolean
+    $period: [String]
+    $stName: String
     $reqRefundDate: [String]
     $refundApprovalDate: [String]
   ) {
     searchPaymentDetail(
-      id: $searchPaymentDetailId
-      period: $period
-      stName: $stName
+      page: $page
+      limit: $limit
       reqRefund: $reqRefund
       refundApproval: $refundApproval
+      period: $period
+      stName: $stName
       reqRefundDate: $reqRefundDate
       refundApprovalDate: $refundApprovalDate
     ) {

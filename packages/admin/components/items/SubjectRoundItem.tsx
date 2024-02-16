@@ -139,13 +139,13 @@ export default function StudentPaymentDetailItem({ listData }) {
               <FlexItem>
                 <TreceiptDiv>
                   {`${
-                    listData.createdAt === null
+                    listData.startDate === null
                       ? '개강일'
-                      : getDate(listData.createdAt)
+                      : getDate(listData.startDate)
                   } - ${
-                    listData.createdAt === null
+                    listData.endDate === null
                       ? '종강일'
-                      : getDate(listData.createdAt)
+                      : getDate(listData.endDate)
                   }`}
                 </TreceiptDiv>
                 <TadviceType>

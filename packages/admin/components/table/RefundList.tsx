@@ -228,7 +228,7 @@ const Nolist = styled.div`
 
 export default function RefundTable() {
   const router = useRouter()
-  const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
+  const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
   const [currentLimit] = useState(10)
   const [result, setResult] = useState(null)
   const [searchPaymentDetailFilterMutation] = useMutation(
