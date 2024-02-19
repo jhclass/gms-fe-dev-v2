@@ -21,6 +21,7 @@ interface HourData {
   cashRefundTotal: number
   refundTotal: number
   totalAmount: number
+  date: Date
 }
 
 interface HourlyData {
@@ -145,22 +146,16 @@ export default function SalesTable({ salesFilter, days }) {
     }
     return result
   }
-  const gettDate = data => {
-    const date = new Date(data)
-    const formatted = date.toLocaleDateString()
-    return formatted
-  }
 
   const calculateHourlyData = (data: any[], days: number, startDate?: Date) => {
     const startDateCopy = startDate ? new Date(startDate) : new Date()
-    const startNumber = days === 0 ? 0 : startDate.getDate()
     let hourlyData: HourlyData = Object.fromEntries(
       Array.from({ length: days === 0 ? 24 : days + 1 }, (_, i) => {
         const currentDate = new Date(startDateCopy)
         currentDate.setDate(startDateCopy.getDate() + i)
-
+        const key = days === 0 ? `${i}번` : `${currentDate.getDate()}번`
         return [
-          i + startNumber,
+          key,
           {
             cardTotal: 0,
             cashTotal: 0,
@@ -181,13 +176,27 @@ export default function SalesTable({ salesFilter, days }) {
       const isPayment = currentState === '결제'
       const isCard = cashOrCard === '카드'
 
-      if (isPayment) {
-        hourlyData[col][isCard ? 'cardTotal' : 'cashTotal'] += amount
-      } else {
-        hourlyData[col][isCard ? 'cardRefundTotal' : 'cashRefundTotal'] +=
-          amount
+      if (!hourlyData[`${col}번`]) {
+        hourlyData[`${col}번`] = {
+          cardTotal: 0,
+          cashTotal: 0,
+          paymentTotal: 0,
+          cardRefundTotal: 0,
+          cashRefundTotal: 0,
+          refundTotal: 0,
+          totalAmount: 0,
+          date: itemDate,
+        }
       }
-      hourlyData[col]['date'] = itemDate
+
+      if (isPayment) {
+        hourlyData[`${col}번`][isCard ? 'cardTotal' : 'cashTotal'] += amount
+      } else {
+        hourlyData[`${col}번`][
+          isCard ? 'cardRefundTotal' : 'cashRefundTotal'
+        ] += amount
+      }
+      hourlyData[`${col}번`]['date'] = itemDate
     })
 
     Object.values(hourlyData).forEach(hourData => {
