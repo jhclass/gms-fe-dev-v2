@@ -183,20 +183,22 @@ export default function SubjectModal({
   const handleSbjChange = values => {
     setSubjectSelected(values)
   }
-  const clickSbjSubmit = () => {
+
+  const clickSbjSubmit = async () => {
     if (radio) {
-      searchSubjectMutation({
+      const data = await searchSubjectMutation({
         variables: {
           searchSubjectId: parseInt(subjectSelected),
         },
-        onCompleted: resData => {
-          const { result } = resData.searchSubject || {}
-          setSubjectSelectedData(result[0])
-          if (setSub !== null) {
-            setSub(result[0].subDiv)
-          }
-        },
       })
+      if (!data.data.searchSubject.ok) {
+        throw new Error('과목 검색 실패')
+      }
+      const { result } = data.data.searchSubject || {}
+      setSubjectSelectedData(result[0])
+      if (setSub !== null) {
+        setSub(result[0].subDiv)
+      }
     }
     setValue('subject', subjectSelected, { shouldDirty: true })
     sbjClose()

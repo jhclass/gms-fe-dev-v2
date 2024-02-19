@@ -278,21 +278,21 @@ export const reqRefundSearchState = atom({
     stName: string
   },
 })
-export const salesFilterActiveState = atom<boolean>({
-  key: 'salesFilterActive',
-  default: true,
-})
-export const salesFilterState = atom<boolean>({
-  key: 'salesFilter',
-  default: false,
-})
-export const salesSearchState = atom({
-  key: 'salesSearch',
-  default: {} as {
-    createdAt: []
-    stName: string
-  },
-})
+// export const salesFilterActiveState = atom<boolean>({
+//   key: 'salesFilterActive',
+//   default: true,
+// })
+// export const salesFilterState = atom<boolean>({
+//   key: 'salesFilter',
+//   default: false,
+// })
+// export const salesSearchState = atom({
+//   key: 'salesSearch',
+//   default: {} as {
+//     createdAt: []
+//     stName: string
+//   },
+// })
 
 //select
 export const selectedPaymentState = atom({

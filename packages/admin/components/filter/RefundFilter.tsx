@@ -9,11 +9,10 @@ import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { subMonths, subDays } from 'date-fns'
+import { getYear, subMonths, subDays, differenceInDays } from 'date-fns'
 
 type RefundFilterProps = {
   isActive: boolean
@@ -143,6 +142,7 @@ export default function RefundFilter({
               ? null
               : data.refundApprovalDate,
         }
+
         setStudentFilter(filter)
         onFilterSearch(true)
         refundPage()

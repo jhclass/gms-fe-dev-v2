@@ -366,16 +366,21 @@ export const GET_SALES_QUERY = gql`
   }
 `
 export const GET_HOURLY_SALES_QUERY = gql`
-  query GetHourlySalesData($date: String!) {
+  query GetHourlySalesData($date: [String]!) {
     getHourlySalesData(date: $date) {
-      cardRefundTotal
-      cardTotal
-      cashRefundTotal
-      cashTotal
-      hour
-      paymentTotal
-      refundTotal
-      totalAmount
+      thisTimeRefundTotal
+      thisTimeRealTotal
+      thisTimeAmountTotal
+      hourlyTotalCashRefund
+      hourlyTotalCash
+      hourlyTotalCardRefund
+      hourlyTotalCard
+      hourlyDetails {
+        nowDate
+        currentState
+        cashOrCard
+        amount
+      }
     }
   }
 `

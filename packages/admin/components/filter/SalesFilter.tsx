@@ -13,7 +13,7 @@ import { getYear } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { subDays, addMonths } from 'date-fns'
+import { subDays, addMonths, differenceInDays } from 'date-fns'
 
 type SalesFilterProps = {
   isActive: boolean
@@ -64,6 +64,11 @@ const ItemBox = styled.div`
 
   .react-datepicker-wrapper {
     width: 100%;
+  }
+  .react-datepicker__close-icon {
+    height: 40px;
+    bottom: 0;
+    top: auto;
   }
 `
 const BtnBox = styled.div`
@@ -120,7 +125,8 @@ const FilterVariants = {
 export default function SalesFilter({
   isActive,
   onFilterSearch,
-  setStudentFilter,
+  setSalesFilter,
+  setDays,
 }) {
   const paymentPage = useResetRecoilState(paymentPageState)
   const [paymentDateRange, setPaymentDateRange] = useState([null, null])
@@ -154,14 +160,6 @@ export default function SalesFilter({
     }
   }
 
-  const checkDate = () => {
-    const checkResult =
-      startPaymentDate.getYear() === endPaymentDate.getYear() &&
-      startPaymentDate.getMonth() === endPaymentDate.getMonth() &&
-      startPaymentDate.getDate() === endPaymentDate.getDate()
-    return checkResult
-  }
-
   const onSubmit = data => {
     if (isDirty) {
       const paymentDate = validateDateRange(
@@ -169,11 +167,14 @@ export default function SalesFilter({
         '검색 기간의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
-        const filter = {
-          selectDate: data.selectDate,
-          daily: checkDate(),
-        }
-        setStudentFilter(filter)
+        const filter = data.selectDate
+
+        const days = differenceInDays(
+          new Date(endPaymentDate),
+          new Date(startPaymentDate),
+        )
+        setSalesFilter(filter)
+        setDays(days)
         onFilterSearch(true)
         paymentPage()
       }
@@ -211,6 +212,7 @@ export default function SalesFilter({
                       />
                     )}
                     selectsRange={true}
+                    isClearable
                     maxDate={subDays(addMonths(startPaymentDate, 1), 1)}
                     locale="ko"
                     startDate={startPaymentDate}

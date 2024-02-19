@@ -5,21 +5,15 @@ import Layout from '@/pages/accounting/layout'
 import { styled } from 'styled-components'
 import SalesListTable from '@/components/table/SalesList'
 import SalesFilter from '@/components/filter/SalesFilter'
-import { useRecoilState } from 'recoil'
-import {
-  salesFilterActiveState,
-  salesFilterState,
-  salesSearchState,
-} from '@/lib/recoilAtoms'
-
 const ConBox = styled.div`
   margin: 2rem 0;
 `
 
 export default function Sales() {
-  const [filterActive, setFilterActive] = useRecoilState(salesFilterActiveState)
-  const [filterSearch, setFilterSearch] = useRecoilState(salesFilterState)
-  const [studentFilter, setStudentFilter] = useRecoilState(salesSearchState)
+  const [filterActive, setFilterActive] = useState(true)
+  const [filterSearch, setFilterSearch] = useState(false)
+  const [salesFilter, setSalesFilter] = useState([])
+  const [days, setDays] = useState(0)
   return (
     <>
       <MainWrap>
@@ -31,14 +25,11 @@ export default function Sales() {
         <SalesFilter
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
-          setStudentFilter={setStudentFilter}
+          setSalesFilter={setSalesFilter}
+          setDays={setDays}
         />
         <ConBox>
-          <SalesListTable
-            onFilterSearch={setFilterSearch}
-            studentFilter={studentFilter}
-            setStudentFilter={setStudentFilter}
-          />
+          <SalesListTable salesFilter={salesFilter} days={days} />
         </ConBox>
       </MainWrap>
     </>

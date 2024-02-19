@@ -104,14 +104,8 @@ export default function SalesTotalItem(props) {
     return result
   }
 
-  function sumValuesByKey(key) {
-    return salesData.reduce((accumulator, currentItem) => {
-      return accumulator + (currentItem[key] || 0)
-    }, 0)
-  }
-
   return (
-    salesData?.length > 0 && (
+    salesData !== null && (
       <>
         <TableItem>
           <TableRow>
@@ -119,38 +113,32 @@ export default function SalesTotalItem(props) {
               <EllipsisBox>합계</EllipsisBox>
             </TcreatedAt>
             <Tamount className="payment">
-              <EllipsisBox>
-                {feeFormet(sumValuesByKey('cardTotal'))}
-              </EllipsisBox>
+              <EllipsisBox>{feeFormet(salesData.hourlyTotalCard)}</EllipsisBox>
+            </Tamount>
+            <Tamount className="payment">
+              <EllipsisBox>{feeFormet(salesData.hourlyTotalCash)}</EllipsisBox>
             </Tamount>
             <Tamount className="payment">
               <EllipsisBox>
-                {feeFormet(sumValuesByKey('cashTotal'))}
+                {feeFormet(salesData.thisTimeAmountTotal)}
               </EllipsisBox>
             </Tamount>
-            <Tamount className="payment">
+            <Tamount className="refund">
+              {feeFormet(salesData.hourlyTotalCardRefund)}
+            </Tamount>
+            <Tamount className="refund">
               <EllipsisBox>
-                {feeFormet(sumValuesByKey('paymentTotal'))}
+                {feeFormet(salesData.hourlyTotalCashRefund)}
               </EllipsisBox>
             </Tamount>
             <Tamount className="refund">
               <EllipsisBox>
-                {feeFormet(sumValuesByKey('cardRefundTotal'))}
-              </EllipsisBox>
-            </Tamount>
-            <Tamount className="refund">
-              <EllipsisBox>
-                {feeFormet(sumValuesByKey('cashRefundTotal'))}
-              </EllipsisBox>
-            </Tamount>
-            <Tamount className="refund">
-              <EllipsisBox>
-                {feeFormet(sumValuesByKey('refundTotal'))}
+                {feeFormet(salesData.thisTimeRefundTotal)}
               </EllipsisBox>
             </Tamount>
             <Tamount className="total">
               <EllipsisBox>
-                <b>{feeFormet(sumValuesByKey('totalAmount'))}</b>
+                <b>{feeFormet(salesData.thisTimeRealTotal)}</b>
               </EllipsisBox>
             </Tamount>
           </TableRow>

@@ -13,6 +13,20 @@ import { paymentPageState } from '@/lib/recoilAtoms'
 import SalesItem from '@/components/table/SalesItem'
 import SalesTotalItem from './SalesTotalItem'
 
+interface HourData {
+  cardTotal: number
+  cashTotal: number
+  paymentTotal: number
+  cardRefundTotal: number
+  cashRefundTotal: number
+  refundTotal: number
+  totalAmount: number
+}
+
+interface HourlyData {
+  [key: number]: HourData
+}
+
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
@@ -105,58 +119,123 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function SalesTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+export default function SalesTable({ salesFilter, days }) {
   const router = useRouter()
-  const { data, refetch } = useQuery(GET_SALES_QUERY, {
-    variables: {
-      endDate: new Date(),
-      startDate: new Date(),
+  const { data: hourlyData, refetch: houralyRefetch } = useQuery(
+    GET_HOURLY_SALES_QUERY,
+    {
+      variables: {
+        date: [new Date(), new Date(new Date().setHours(23, 59, 59, 999))],
+      },
     },
-  })
-  const {
-    data: hourlyData,
-    refetch: houralyRefetch,
-    networkStatus: houralyNetworkStatus,
-    error,
-  } = useQuery(GET_HOURLY_SALES_QUERY, {
-    variables: { date: new Date() },
-  })
+  )
   const [searchResult, setSearchResult] = useState(null)
+  const [searchResultTotal, setSearchResultTotal] = useState(null)
 
-  async function fetchData(studentFilter) {
+  async function fetchData(salesFilter) {
     let result
-    if (Object.keys(studentFilter).length !== 0) {
-      if (studentFilter.daily) {
-        result = await houralyRefetch({
-          date: studentFilter.selectDate[1],
-        })
-      } else {
-        result = await refetch({
-          startDate: studentFilter.selectDate[0],
-          endDate: studentFilter.selectDate[1],
-        })
-      }
+    if (Object.keys(salesFilter).length !== 0) {
+      result = await houralyRefetch({
+        date: [salesFilter[0], salesFilter[1]],
+      })
     } else {
       result = await houralyRefetch({
-        date: new Date(),
+        date: [new Date(), new Date(new Date().setHours(23, 59, 59, 999))],
       })
     }
     return result
   }
+  const gettDate = data => {
+    const date = new Date(data)
+    const formatted = date.toLocaleDateString()
+    return formatted
+  }
+
+  const calculateHourlyData = (data: any[], days: number, startDate?: Date) => {
+    const startDateCopy = startDate ? new Date(startDate) : new Date()
+    const startNumber = days === 0 ? 0 : startDate.getDate()
+    let hourlyData: HourlyData = Object.fromEntries(
+      Array.from({ length: days === 0 ? 24 : days + 1 }, (_, i) => {
+        const currentDate = new Date(startDateCopy)
+        currentDate.setDate(startDateCopy.getDate() + i)
+
+        return [
+          i + startNumber,
+          {
+            cardTotal: 0,
+            cashTotal: 0,
+            paymentTotal: 0,
+            cardRefundTotal: 0,
+            cashRefundTotal: 0,
+            refundTotal: 0,
+            totalAmount: 0,
+            date: currentDate,
+          },
+        ]
+      }),
+    )
+    data.forEach(item => {
+      const itemDate = new Date(parseInt(item.nowDate))
+      const col = days === 0 ? itemDate.getHours() : itemDate.getDate()
+      const { currentState, cashOrCard, amount } = item
+      const isPayment = currentState === '결제'
+      const isCard = cashOrCard === '카드'
+
+      if (isPayment) {
+        hourlyData[col][isCard ? 'cardTotal' : 'cashTotal'] += amount
+      } else {
+        hourlyData[col][isCard ? 'cardRefundTotal' : 'cashRefundTotal'] +=
+          amount
+      }
+      hourlyData[col]['date'] = itemDate
+    })
+
+    Object.values(hourlyData).forEach(hourData => {
+      const { cardTotal, cashTotal, cardRefundTotal, cashRefundTotal } =
+        hourData
+      hourData['paymentTotal'] = cardTotal + cashTotal
+      hourData['refundTotal'] =
+        Math.abs(cardRefundTotal) + Math.abs(cashRefundTotal)
+      hourData['totalAmount'] =
+        hourData['paymentTotal'] - hourData['refundTotal']
+    })
+
+    return hourlyData
+  }
 
   useEffect(() => {
-    fetchData(studentFilter)
+    fetchData(salesFilter)
       .then(result => {
-        setSearchResult(result.data)
+        const {
+          hourlyDetails,
+          thisTimeRefundTotal,
+          thisTimeRealTotal,
+          thisTimeAmountTotal,
+          hourlyTotalCashRefund,
+          hourlyTotalCash,
+          hourlyTotalCardRefund,
+          hourlyTotalCard,
+        } = result.data.getHourlySalesData
+        const resData = calculateHourlyData(
+          hourlyDetails,
+          days,
+          salesFilter?.[0],
+        )
+        setSearchResult(resData)
+        setSearchResultTotal({
+          thisTimeRefundTotal: thisTimeRefundTotal,
+          thisTimeRealTotal: thisTimeRealTotal,
+          thisTimeAmountTotal: thisTimeAmountTotal,
+          hourlyTotalCashRefund: hourlyTotalCashRefund,
+          hourlyTotalCash: hourlyTotalCash,
+          hourlyTotalCardRefund: hourlyTotalCardRefund,
+          hourlyTotalCard: hourlyTotalCard,
+        })
       })
       .catch(error => {
         console.error('Error occurred during data fetching:', error)
       })
-  }, [studentFilter, router])
+  }, [salesFilter, router])
 
   const formatDate = data => {
     const date = new Date(data)
@@ -173,15 +252,15 @@ export default function SalesTable({
         <TTopic>
           <Ttotal>
             검색 기간&nbsp;:&nbsp;
-            {Object.keys(studentFilter).length === 0 ? (
+            {Object.keys(salesFilter).length === 0 ? (
               <>
                 <span>{formatDate(new Date())}</span> -
                 <span>{formatDate(new Date())}</span>
               </>
             ) : (
               <>
-                <span>{formatDate(studentFilter.selectDate[0])}</span> -
-                <span>{formatDate(studentFilter.selectDate[1])}</span>
+                <span>{formatDate(salesFilter[0])}</span> -
+                <span>{formatDate(salesFilter[1])}</span>
               </>
             )}
           </Ttotal>
@@ -201,40 +280,15 @@ export default function SalesTable({
                   <Tamount>총 매출액</Tamount>
                 </TheaderBox>
               </Theader>
-              {studentFilter.daily || studentFilter.daily === undefined ? (
-                <>
-                  {searchResult?.getHourlySalesData?.map((item, index) => (
-                    <SalesItem
-                      key={index}
-                      tableData={item}
-                      type={true}
-                      date={
-                        studentFilter.daily
-                          ? studentFilter.selectDate[0]
-                          : new Date()
-                      }
-                    />
-                  ))}
-                  <SalesTotalItem
-                    tableData={searchResult?.getHourlySalesData}
-                  />
-                </>
-              ) : (
-                <>
-                  {searchResult?.getSalesData?.length > 0 ? (
-                    <>
-                      {searchResult?.getSalesData?.map((item, index) => (
-                        <SalesItem key={index} tableData={item} type={false} />
-                      ))}
-                      <SalesTotalItem tableData={searchResult?.getSalesData} />
-                    </>
-                  ) : (
-                    <>
-                      <Nolist>검색결과가 없습니다.</Nolist>
-                    </>
-                  )}
-                </>
-              )}
+              {Object.entries(searchResult).map(([col, hourData]) => (
+                <SalesItem
+                  key={col}
+                  col={col}
+                  daily={days === 0 ? true : false}
+                  tableData={hourData}
+                />
+              ))}
+              <SalesTotalItem tableData={searchResultTotal} />
             </TableWrap>
           </ScrollShadow>
         </TableArea>
