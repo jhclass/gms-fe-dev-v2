@@ -268,7 +268,7 @@ export default function ConsultDetail() {
   const { isDirty, dirtyFields, errors } = formState
 
   useEffect(() => {
-    if (studentState?.subject !== null) {
+    if (studentState?.subject.length === 0) {
       setSubjectSelected([])
     } else {
       setSubjectSelected(studentState?.subject)
