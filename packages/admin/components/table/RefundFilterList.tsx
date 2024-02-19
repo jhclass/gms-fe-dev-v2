@@ -211,22 +211,8 @@ const EllipsisBox = styled.p`
 `
 const Tlist = styled.div`
   display: table-cell;
-  width: 76%;
-  min-width: ${1200 * 0.76}px;
-`
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 7%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.07}px;
-`
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  width: 83%;
+  min-width: ${1200 * 0.83}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -348,19 +334,6 @@ export default function RefundFilterTable({
                         width={912}
                       />
                     </Tlist>
-                    <Tbtn>
-                      <BtnBox>
-                        <Button
-                          size="sm"
-                          variant="solid"
-                          color="primary"
-                          className="w-full text-white bg-flag1"
-                          onClick={() => console.log('환불 승인')}
-                        >
-                          환불 취소
-                        </Button>
-                      </BtnBox>
-                    </Tbtn>
                   </TableRow>
                 </TableItem>
               ))}

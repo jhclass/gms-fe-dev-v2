@@ -96,9 +96,9 @@ const EllipsisBox = styled.p`
 `
 
 export default function SalesItem(props) {
+  const col = props.col
   const salesData = props.tableData
-  const salesType = props.type
-  const salesDate = props.date
+  const salesType = props.daily
 
   const formatDate = data => {
     const date = new Date(data)
@@ -121,9 +121,9 @@ export default function SalesItem(props) {
           <TcreatedAt>
             <EllipsisBox>
               {salesType ? (
-                <>{`${formatDate(salesDate)} ${salesData?.hour}시`}</>
+                <>{`${formatDate(salesData.date)} ${col}시`}</>
               ) : (
-                <>{formatDate(salesData?.date)}</>
+                <>{formatDate(salesData.date)}</>
               )}
             </EllipsisBox>
           </TcreatedAt>

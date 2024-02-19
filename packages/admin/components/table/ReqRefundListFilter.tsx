@@ -7,7 +7,13 @@ import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
-import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
+import {
+  APPROVAL_REFUND_MUTATION,
+  REQ_REFUND_MUTATION,
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  UPDATE_STUDENT_RECEIVED_MUTATION,
+} from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -222,12 +228,21 @@ export default function ReqRefundFilterTable({
   studentFilter,
   setStudentFilter,
 }) {
+  const { userLogs } = useUserLogsMutation()
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
+  const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
+  const [approvalRefoundMutation] = useMutation(APPROVAL_REFUND_MUTATION)
+  const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const [currentLimit] = useState(10)
   const [searchPaymentDetailFilterMutation] = useMutation(
     SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
+  const [result, setResult] = useState(null)
+
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     searchPaymentDetailFilterMutation({
@@ -247,6 +262,93 @@ export default function ReqRefundFilterTable({
       },
     })
   }, [studentFilter, currentPage])
+
+  const clickApprovalRefund = item => {
+    const isAssignment = confirm(
+      '환불 승인 하시겠습니까? \n 한번 승인 시 취소 불가능',
+    )
+    if (isAssignment) {
+      approvalRefoundMutation({
+        variables: {
+          refundApprovalId: item.id,
+          refundApproval: true,
+          refundApprovalDate: new Date(),
+          studentPaymentId: item.studentPaymentId,
+        },
+        onCompleted: resData => {
+          if (resData.refundApproval.ok) {
+            updateReceived({
+              variables: {
+                amountReceived:
+                  item.cashOrCard === '카드'
+                    ? item.studentPayment.amountReceived - item.amountPayment
+                    : item.studentPayment.amountReceived - item.depositAmount,
+                editStudentPaymentId: item.studentPaymentId,
+                subjectId: item.studentPayment.subjectId,
+                processingManagerId: item.studentPayment.processingManagerId,
+              },
+              onCompleted: result => {
+                if (result.editStudentPayment.ok) {
+                  searchPaymentDetailFilterMutation({
+                    variables: {
+                      reqRefund: true,
+                      refundApproval: false,
+                      page: currentPage,
+                      limit: currentLimit,
+                    },
+                    onCompleted: resData => {
+                      if (resData.searchPaymentDetail.ok) {
+                        const { PaymentDetail, totalCount } =
+                          resData.searchPaymentDetail || {}
+                        setResult({ PaymentDetail, totalCount })
+                      }
+                    },
+                  })
+                  alert('환불 승인 되었습니다.')
+                  userLogs(`paymentDetail ID : ${item.id} / 환불 승인`)
+                }
+              },
+            })
+          }
+        },
+      })
+    }
+  }
+
+  const clickCancelReq = item => {
+    const isAssignment = confirm('환불 거부 하시겠습니까?')
+    if (isAssignment) {
+      reqRefoundMutation({
+        variables: {
+          reqRefundId: item.id,
+          reqRefund: false,
+          reqRefundDate: '',
+        },
+        onCompleted: result => {
+          if (result.reqRefund.ok) {
+            searchPaymentDetailFilterMutation({
+              variables: {
+                reqRefund: true,
+                refundApproval: false,
+                page: currentPage,
+                limit: currentLimit,
+              },
+              onCompleted: resData => {
+                if (resData.searchPaymentDetail.ok) {
+                  const { PaymentDetail, totalCount } =
+                    resData.searchPaymentDetail || {}
+                  setResult({ PaymentDetail, totalCount })
+                  handleScrollTop()
+                }
+              },
+            })
+            alert('결제 취소요청 되었습니다.')
+            userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
+          }
+        },
+      })
+    }
+  }
 
   const resetList = () => {
     setStudentFilter({})
@@ -314,7 +416,7 @@ export default function ReqRefundFilterTable({
                           variant="solid"
                           color="primary"
                           className="w-full text-white"
-                          onClick={() => console.log('환불 승인')}
+                          onClick={() => clickApprovalRefund(item)}
                         >
                           환불 승인
                         </Button>
@@ -323,7 +425,7 @@ export default function ReqRefundFilterTable({
                           variant="bordered"
                           color="primary"
                           className="w-full"
-                          onClick={() => console.log('환불 거부')}
+                          onClick={() => clickCancelReq(item)}
                         >
                           환불 거부
                         </Button>
