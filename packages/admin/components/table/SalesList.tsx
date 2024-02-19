@@ -169,7 +169,7 @@ export default function SalesTable({ salesFilter, days }) {
             cashRefundTotal: 0,
             refundTotal: 0,
             totalAmount: 0,
-            date: currentDate,
+            date: days === 0 ? startDateCopy : currentDate,
           },
         ]
       }),
