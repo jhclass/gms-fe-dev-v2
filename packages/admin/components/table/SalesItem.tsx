@@ -121,7 +121,7 @@ export default function SalesItem(props) {
           <TcreatedAt>
             <EllipsisBox>
               {salesType ? (
-                <>{`${formatDate(salesData?.date)} ${col}시`}</>
+                <>{`${formatDate(salesData?.date)} ${col}`}</>
               ) : (
                 <>{formatDate(salesData?.date)}</>
               )}

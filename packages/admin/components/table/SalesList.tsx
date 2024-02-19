@@ -153,7 +153,7 @@ export default function SalesTable({ salesFilter, days }) {
       Array.from({ length: days === 0 ? 24 : days + 1 }, (_, i) => {
         const currentDate = new Date(startDateCopy)
         currentDate.setDate(startDateCopy.getDate() + i)
-        const key = days === 0 ? `${i}번` : `${currentDate.getDate()}번`
+        const key = days === 0 ? `${i}시` : `${currentDate.getDate()}시`
         return [
           key,
           {
@@ -176,8 +176,8 @@ export default function SalesTable({ salesFilter, days }) {
       const isPayment = currentState === '결제'
       const isCard = cashOrCard === '카드'
 
-      if (!hourlyData[`${col}번`]) {
-        hourlyData[`${col}번`] = {
+      if (!hourlyData[`${col}시`]) {
+        hourlyData[`${col}시`] = {
           cardTotal: 0,
           cashTotal: 0,
           paymentTotal: 0,
@@ -190,13 +190,13 @@ export default function SalesTable({ salesFilter, days }) {
       }
 
       if (isPayment) {
-        hourlyData[`${col}번`][isCard ? 'cardTotal' : 'cashTotal'] += amount
+        hourlyData[`${col}시`][isCard ? 'cardTotal' : 'cashTotal'] += amount
       } else {
-        hourlyData[`${col}번`][
+        hourlyData[`${col}시`][
           isCard ? 'cardRefundTotal' : 'cashRefundTotal'
         ] += amount
       }
-      hourlyData[`${col}번`]['date'] = itemDate
+      hourlyData[`${col}시`]['date'] = itemDate
     })
 
     Object.values(hourlyData).forEach(hourData => {
