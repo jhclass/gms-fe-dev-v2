@@ -210,6 +210,7 @@ export default function SubjectModal({
     setSubjectSearch(null)
     reset()
   }
+
   return (
     <>
       <Modal size={'2xl'} isOpen={sbjIsOpen} onClose={sbjClose}>
@@ -322,7 +323,10 @@ export default function SubjectModal({
                         subjectList?.result.map((item, index) => (
                           <TableItem key={index}>
                             <TableRow>
-                              <Checkbox key={item.id} value={item.subjectName}>
+                              <Checkbox
+                                key={item.id}
+                                value={`[${item.round}회차]${item.subjectName}`}
+                              >
                                 <SubjectItem tableData={item} />
                               </Checkbox>
                             </TableRow>
