@@ -84,53 +84,82 @@ export default function ConsultMemo(props) {
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const { register, handleSubmit, control, formState } = useForm({})
   const { isDirty } = formState
-  const onDelete = data => {
-    const isDelete = confirm('메모를 삭제하시겠습니까?')
-    if (isDelete) {
-      deleteMemo({
+
+  async function fetchAndUpdateStudentState(studentId) {
+    try {
+      const {
+        data: { searchStudentState },
+      } = await searchStudentStateMutation({
         variables: {
-          deleteConsultationMemoId: data,
-        },
-        onCompleted: () => {
-          props.setMemoList([])
-          searchStudentStateMutation({
-            variables: {
-              searchStudentStateId: parseInt(props.studentId),
-            },
-            onCompleted: data => {
-              props.setMemoList(
-                data.searchStudentState.studentState[0].consultationMemo,
-              )
-            },
-          })
+          searchStudentStateId: studentId,
         },
       })
-      userLogs(`상담학생 id:${data} 메모 삭제`)
+
+      if (!searchStudentState.ok) {
+        throw new Error('학생 상태 조회 실패')
+      }
+
+      const [firstStudentState] = searchStudentState.studentState
+      props.setMemoList(firstStudentState.consultationMemo)
+    } catch (error) {
+      console.error('에러 발생:', error)
+      throw error
     }
   }
 
-  const onSubmit = data => {
+  const onDelete = async item => {
+    const isDelete = confirm('메모를 삭제하시겠습니까?')
+    if (isDelete) {
+      try {
+        const {
+          data: {
+            deleteConsultationMemo: { ok },
+          },
+        } = await deleteMemo({
+          variables: {
+            deleteConsultationMemoId: item.id,
+          },
+        })
+
+        if (!ok) {
+          throw new Error('메모 삭제 실패')
+        }
+
+        props.setMemoList([])
+
+        await fetchAndUpdateStudentState(item.studentStateId)
+        userLogs(`상담학생 id:${item.id} 메모 삭제`)
+      } catch (error) {
+        console.error('에러 발생:', error)
+      }
+    }
+  }
+
+  const onSubmit = async data => {
     if (isDirty) {
-      updateMemo({
-        variables: {
-          updateConsultationMemoId: parseInt(data.id),
-          content: data.content.trim(),
-        },
-        onCompleted: () => {
-          props.setMemoList([])
-          searchStudentStateMutation({
-            variables: {
-              searchStudentStateId: parseInt(props.studentId),
-            },
-            onCompleted: data => {
-              props.setMemoList(
-                data.searchStudentState.studentState[0].consultationMemo,
-              )
-            },
-          })
-        },
-      })
-      userLogs(`상담학생 id:${data.id} 메모 수정`)
+      try {
+        const {
+          data: {
+            updateConsultationMemo: { ok },
+          },
+        } = await updateMemo({
+          variables: {
+            updateConsultationMemoId: parseInt(data.id),
+            content: data.content.trim(),
+          },
+        })
+
+        if (!ok) {
+          throw new Error('메모 수정 실패')
+        }
+
+        props.setMemoList([])
+
+        await fetchAndUpdateStudentState(props.studentId)
+        userLogs(`상담학생 id:${data.id} 메모 수정`)
+      } catch (error) {
+        console.error('에러 발생:', error)
+      }
     }
   }
 
@@ -156,6 +185,7 @@ export default function ConsultMemo(props) {
       return idF
     }
   }
+
   return (
     <DetailForm onSubmit={handleSubmit(onSubmit)}>
       <Input
@@ -217,7 +247,7 @@ export default function ConsultMemo(props) {
             bgColor="#fff"
             borderColor="#007de9"
             typeBorder={true}
-            onClick={() => onDelete(props.item.id)}
+            onClick={() => onDelete(props.item)}
           >
             삭제
           </Button2>

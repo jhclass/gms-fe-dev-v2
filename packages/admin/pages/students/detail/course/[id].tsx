@@ -15,7 +15,11 @@ import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { ReceiptState, selectedPaymentState } from '@/lib/recoilAtoms'
+import {
+  ReceiptState,
+  gradeState,
+  selectedPaymentState,
+} from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
@@ -183,6 +187,7 @@ type studentSubject = {
 }
 
 export default function StudentsWrite() {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -590,7 +595,7 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>
-                      {(mGrade < 2 || mPart === '교무팀') && (
+                      {(mGrade < grade.admin || mPart === '교무팀') && (
                         <Button
                           isDisabled={
                             studentPaymentData?.lectureAssignment === '배정'
@@ -752,14 +757,14 @@ export default function StudentsWrite() {
                         </div>
                       </AreaBox>
                     </FlexBox>
-                    {(mGrade < 2 ||
+                    {(mGrade < grade.admin ||
                       mPart === '교무팀' ||
                       mPart === '회계팀') && (
                       <BtnBox4
                         $isPayment={studentPaymentDetailData?.length === 0}
                       >
                         {studentPaymentDetailData?.length === 0 &&
-                          (mGrade < 2 || mPart === '회계팀') && (
+                          (mGrade < grade.admin || mPart === '회계팀') && (
                             <Button
                               size="md"
                               radius="md"
@@ -776,7 +781,7 @@ export default function StudentsWrite() {
                               수강 결제
                             </Button>
                           )}
-                        {(mGrade < 2 || mPart === '교무팀') && (
+                        {(mGrade < grade.admin || mPart === '교무팀') && (
                           <>
                             <Button
                               isDisabled={
@@ -898,7 +903,7 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>결제 정보</h4>
-                      {(mGrade < 2 || mPart === '회계팀') && (
+                      {(mGrade < grade.admin || mPart === '회계팀') && (
                         <Button
                           isDisabled={
                             studentPaymentData?.unCollectedAmount === 0

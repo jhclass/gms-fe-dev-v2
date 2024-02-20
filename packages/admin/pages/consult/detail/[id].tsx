@@ -22,6 +22,7 @@ import {
   progressStatusState,
   subStatusState,
   receiptStatusState,
+  gradeState,
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
@@ -44,6 +45,7 @@ import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ConsolutRepeated from '@/components/items/ConsolutRepeated'
+import Layout from '../layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -174,6 +176,7 @@ const MemoItem = styled.li`
 
 export default function ConsultDetail() {
   const router = useRouter()
+  const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
@@ -211,35 +214,58 @@ export default function ConsultDetail() {
   const addArr = [...studentAdvice, ...studentMethod]
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
-  useEffect(() => {
-    if (studentId !== null) {
-      searchStudentStateMutation({
-        variables: {
-          searchStudentStateId: parseInt(studentId),
-        },
-        onCompleted: resData => {
-          const {
-            searchStudentState: {
-              studentState: [StudentState],
-            },
-          } = resData
-          setStudentState(StudentState)
-          setMemoList(StudentState.consultationMemo)
-          searchStudentStateMutation({
-            variables: {
-              phoneNum1: StudentState?.phoneNum1,
-              stName: StudentState?.stName,
-            },
-            onCompleted: data => {
-              const {
-                searchStudentState: { studentState },
-              } = data
-              setConsultation(studentState)
-            },
-          })
-        },
+  const fetchStudentState = async () => {
+    if (studentId === null) return
+
+    try {
+      const { data } = await searchStudentStateMutation({
+        variables: { searchStudentStateId: parseInt(studentId) },
       })
+
+      if (!data || !data.searchStudentState.ok) {
+        throw new Error('학생 상태를 불러오는 데 실패했습니다.')
+      }
+
+      return data.searchStudentState.studentState
+    } catch (error) {
+      console.error('학생 상태 조회 에러:', error)
     }
+  }
+
+  const fetchRelatedData = async (phoneNum1, stName) => {
+    try {
+      const { data } = await searchStudentStateMutation({
+        variables: { phoneNum1, stName },
+      })
+
+      if (!data || !data.searchStudentState.ok) {
+        throw new Error('관련 데이터를 불러오는 데 실패했습니다.')
+      }
+
+      return data.searchStudentState.studentState
+    } catch (error) {
+      console.error('관련 데이터 조회 에러:', error)
+    }
+  }
+
+  const fetchData = async () => {
+    const studentState = await fetchStudentState()
+
+    if (studentState) {
+      setStudentState(studentState)
+      setMemoList(studentState.consultationMemo || [])
+
+      const consultationData = await fetchRelatedData(
+        studentState.phoneNum1,
+        studentState.stName,
+      )
+      if (consultationData) {
+        setConsultation(consultationData)
+      }
+    }
+  }
+  useEffect(() => {
+    fetchData()
   }, [router])
 
   const { register, control, setValue, handleSubmit, formState } = useForm({
@@ -711,7 +737,9 @@ export default function ConsultDetail() {
                         </SelectItem>
                         {managerList
                           ?.filter(
-                            manager => manager.mGrade > 0 && manager.mGrade < 3,
+                            manager =>
+                              manager.mGrade === grade.master ||
+                              manager.mPart === '영업팀',
                           )
                           .map(item => (
                             <SelectItem
@@ -905,7 +933,7 @@ export default function ConsultDetail() {
                   >
                     목록으로
                   </Button2>
-                  {mGrade < 2 && (
+                  {mGrade < grade.admin && (
                     <Button2
                       buttonType="button"
                       width="100%"
@@ -970,3 +998,4 @@ export default function ConsultDetail() {
     </>
   )
 }
+ConsultDetail.getLayout = page => <Layout>{page}</Layout>

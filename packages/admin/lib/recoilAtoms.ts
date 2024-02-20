@@ -36,6 +36,22 @@ export const loginPasswordFocuseState = atom<boolean>({
   default: false,
 })
 
+export const userGraderState = atom<number>({
+  key: 'userGraderState',
+  default: 99,
+})
+
+//grade
+export const gradeState = atom({
+  key: 'gradeState',
+  default: {
+    dev: 0,
+    master: 1,
+    admin: 10,
+    guest: 99,
+  },
+})
+
 //Button
 export const ripplesState = atom({
   key: 'ripplesState',
@@ -278,21 +294,6 @@ export const reqRefundSearchState = atom({
     stName: string
   },
 })
-// export const salesFilterActiveState = atom<boolean>({
-//   key: 'salesFilterActive',
-//   default: true,
-// })
-// export const salesFilterState = atom<boolean>({
-//   key: 'salesFilter',
-//   default: false,
-// })
-// export const salesSearchState = atom({
-//   key: 'salesSearch',
-//   default: {} as {
-//     createdAt: []
-//     stName: string
-//   },
-// })
 
 //select
 export const selectedPaymentState = atom({

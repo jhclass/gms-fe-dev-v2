@@ -55,26 +55,47 @@ export default function CreateMemo(props) {
   })
   const { isDirty, isSubmitSuccessful } = formState
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (isDirty) {
-      createMemo({
-        variables: {
-          content: data.content.trim(),
-          studentId: studentId,
-        },
-        onCompleted: data => {
-          props.setMemoList([])
-          searchStudentMutation({
-            variables: {
-              searchStudentId: parseInt(studentId),
-            },
-            onCompleted: data => {
-              props.setMemoList(data.searchStudent.student[0].studentMemo)
-            },
-          })
-        },
-      })
-      userLogs(`수강생 ID:${studentId} 메모 등록`)
+      try {
+        const { content } = data
+
+        const {
+          data: {
+            createStudentMemo: { ok },
+          },
+        } = await createMemo({
+          variables: {
+            content: content.trim(),
+            studentId: studentId,
+          },
+        })
+
+        if (!ok) {
+          throw new Error('메모 등록 실패')
+        }
+
+        props.setMemoList([])
+
+        const {
+          data: { searchStudent },
+        } = await searchStudentMutation({
+          variables: {
+            searchStudentId: parseInt(studentId),
+          },
+        })
+
+        if (!searchStudent.ok) {
+          throw new Error('학생 조회 실패')
+        }
+
+        const { studentMemo } = searchStudent.student[0]
+        props.setMemoList(studentMemo)
+
+        userLogs(`수강생 ID:${studentId} 메모 등록`)
+      } catch (error) {
+        console.error('에러 발생:', error)
+      }
     }
   }
   useEffect(() => {

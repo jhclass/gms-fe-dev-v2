@@ -9,12 +9,14 @@ import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import useMmeQuery from '@/utils/mMe'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import {
+  gradeState,
   subjectFilterActiveState,
   subjectFilterState,
   subjectSearchState,
 } from '@/lib/recoilAtoms'
+import Layout from './layout'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -37,6 +39,7 @@ const IconVariants = {
 }
 
 export default function Subjects() {
+  const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const [filterActive, setFilterActive] = useRecoilState(
@@ -54,7 +57,7 @@ export default function Subjects() {
           isActive={filterActive}
           rightArea={true}
           addRender={
-            mGrade < 2 && (
+            mGrade < grade.admin && (
               <>
                 {
                   <Button
@@ -104,3 +107,4 @@ export default function Subjects() {
     </>
   )
 }
+Subjects.getLayout = page => <Layout>{page}</Layout>

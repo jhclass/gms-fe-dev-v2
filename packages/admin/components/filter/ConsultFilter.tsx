@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 import {
   consultPageState,
+  gradeState,
   progressStatusState,
   receiptStatusState,
   subStatusState,
@@ -116,6 +117,7 @@ export default function ConsultFilter({
   studentFilter,
   setStudentFilter,
 }) {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const {
     data: seeManageUserData,
@@ -424,7 +426,9 @@ export default function ConsultFilter({
                     </SelectItem>
                     {managerList
                       ?.filter(
-                        manager => manager.mGrade > 0 && manager.mGrade < 3,
+                        manager =>
+                          manager.mGrade === grade.master ||
+                          manager.mPart === '영업팀',
                       )
                       .map(item => (
                         <SelectItem key={item.mUsername} value={item.mUsername}>

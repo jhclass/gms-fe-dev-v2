@@ -27,6 +27,8 @@ import {
   UPDATE_STUDENT_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -154,6 +156,7 @@ export default function StudentsWriteCourse({
   studentSubjectData,
   studentPaymentData,
 }) {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
@@ -832,7 +835,9 @@ export default function StudentsWriteCourse({
                         </SelectItem>
                         {managerList
                           ?.filter(
-                            manager => manager.mGrade > 0 && manager.mGrade < 3,
+                            manager =>
+                              manager.mGrade > grade.master ||
+                              manager.mPart === '영업팀',
                           )
                           .map(item => (
                             <SelectItem key={item.id} value={item.id}>

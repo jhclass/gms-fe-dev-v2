@@ -49,38 +49,49 @@ export default function CreateMemo(props) {
   const studentId = props.studentId
   const { userLogs } = useUserLogsMutation()
   const [createMemo] = useMutation(CREATE_CONSULTATION_MEMO_MUTATION)
-  const [searchStudentStateMutation, { data, loading, error }] = useMutation(
-    SEARCH_STUDENTSTATE_MUTATION,
-  )
+  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { content: '', studentStateId: studentId },
   })
   const { isDirty, isSubmitSuccessful } = formState
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (isDirty) {
-      createMemo({
-        variables: {
-          content: data.content.trim(),
-          studentStateId: studentId,
-        },
-        onCompleted: () => {
-          props.setMemoList([])
-          searchStudentStateMutation({
-            variables: {
-              searchStudentStateId: parseInt(studentId),
+      try {
+        await createMemo({
+          variables: {
+            content: data.content.trim(),
+            studentStateId: studentId,
+          },
+        })
+
+        props.setMemoList([])
+
+        const {
+          data: {
+            searchStudentState: {
+              ok,
+              studentState: [{ consultationMemo }],
             },
-            onCompleted: data => {
-              props.setMemoList(
-                data.searchStudentState.studentState[0].consultationMemo,
-              )
-            },
-          })
-        },
-      })
-      userLogs(`상담학생 ID:${studentId} 메모 등록`)
+          },
+        } = await searchStudentStateMutation({
+          variables: {
+            searchStudentStateId: parseInt(studentId),
+          },
+        })
+
+        if (!ok) {
+          throw new Error('메모 등록 실패')
+        }
+        props.setMemoList(consultationMemo)
+
+        userLogs(`상담학생 ID:${studentId} 메모 등록`)
+      } catch (error) {
+        console.error('에러 발생:', error)
+      }
     }
   }
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({ content: '' })

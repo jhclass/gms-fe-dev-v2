@@ -64,16 +64,14 @@ export default function MainWrap({ children }) {
   }, [isScreen, setNavOpen])
   return (
     <>
-      <WithAuth>
-        <Wrap $navOpen={navOpen}>
-          <Header />
-          <Nav />
-          <Container>
-            <ConBox>{children}</ConBox>
-            <Footer />
-          </Container>
-        </Wrap>
-      </WithAuth>
+      <Wrap $navOpen={navOpen}>
+        <Header />
+        <Nav />
+        <Container>
+          <ConBox>{children}</ConBox>
+          <Footer />
+        </Container>
+      </Wrap>
     </>
   )
 }

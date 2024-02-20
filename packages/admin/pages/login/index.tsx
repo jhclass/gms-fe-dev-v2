@@ -1,8 +1,12 @@
 import Link from 'next/link'
 import { useForm, useWatch } from 'react-hook-form'
 import styled from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { loginIdFocuseState, loginPasswordFocuseState } from '@/lib/recoilAtoms'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import {
+  loginIdFocuseState,
+  loginPasswordFocuseState,
+  userGraderState,
+} from '@/lib/recoilAtoms'
 import Button from '@/components/common/Button'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
@@ -11,6 +15,7 @@ import { Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
 import { useState } from 'react'
 import useUserLogsMutation from '@/utils/userLogs'
+import useMmeQuery from '@/utils/mMe'
 
 type LoginForm = {
   id: string
@@ -138,6 +143,7 @@ export default function Login() {
   const [loginError, setLoginError] = useState('')
   const router = useRouter()
   const [login, { loading, error, data }] = useMutation(LOGIN_MUTATION)
+
   const onSubmit = (data: LoginForm) => {
     login({
       variables: {

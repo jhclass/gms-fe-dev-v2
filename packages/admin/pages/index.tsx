@@ -7,6 +7,9 @@ import NewConsultMonthNum from '@/components/dashboard/NewConsultMonthNum '
 import AdviceType from '@/components/dashboard/AdviceType'
 import ReceiptDiv from '@/components/dashboard/ReceiptDiv'
 import useMmeQuery from '@/utils/mMe'
+import { useRecoilValue } from 'recoil'
+import { userGraderState } from '@/lib/recoilAtoms'
+import { useAuthRedirect } from '@/utils/useAuthRedirect'
 
 const HomeArea = styled.div`
   max-width: 1400px;
@@ -36,8 +39,10 @@ const HomeArea = styled.div`
 `
 
 export default function Home() {
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
+  const isCheckingLogin = useAuthRedirect()
+  if (isCheckingLogin) {
+    return null
+  }
 
   return (
     <>

@@ -210,14 +210,6 @@ export default function PaymentFilterTable({
             전체보기
           </Button>
         </TopBox>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미배정
-          </ColorCip>
-        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">

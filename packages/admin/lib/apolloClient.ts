@@ -1,5 +1,4 @@
 // lib/apolloClient.ts
-import { useRouter } from 'next/router'
 import {
   ApolloClient,
   InMemoryCache,
