@@ -4,7 +4,7 @@ import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import WithAuth from '@/components/wrappers/WithAuth'
+import CheckToken from '@/components/wrappers/CheckToken'
 import { useEffect } from 'react'
 import Footer from '../layout/Footer'
 
