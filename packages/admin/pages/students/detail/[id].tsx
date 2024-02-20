@@ -220,8 +220,7 @@ export default function StudentsWrite() {
   )
   const [classCancelMutation] = useMutation(CLASS_CANCEL_MUTATION)
   const [studentData, setStudentData] = useState(null)
-  const [studentSubjectData, setStudentSubjectData] = useState(null)
-  const [studentPaymentData, setStudentPaymentData] = useState(null)
+  const [studentPaymentData, setStudentPaymentData] = useState([])
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState(null)
   const [memoList, setMemoList] = useState([])
   useEffect(() => {

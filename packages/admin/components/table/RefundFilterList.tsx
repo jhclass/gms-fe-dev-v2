@@ -313,7 +313,7 @@ export default function RefundFilterTable({
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&
-              searchResult?.PaymentDetail.map((item, index) => (
+              searchResult?.PaymentDetail?.map((item, index) => (
                 <TableItem key={index}>
                   <TableRow>
                     <ThRequestAt>

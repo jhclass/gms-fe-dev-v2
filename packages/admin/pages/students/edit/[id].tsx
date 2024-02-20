@@ -129,7 +129,7 @@ export default function StudentsEditInfo() {
   const { userLogs } = useUserLogsMutation()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
-  const [UpdateStudentBasic] = useMutation(UPDATE_STUDENT_BASIC_MUTATION)
+  const [updateStudentBasic] = useMutation(UPDATE_STUDENT_BASIC_MUTATION)
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors, isDirty, dirtyFields } = formState
   const [studentData, setStudentData] = useState(null)
@@ -142,7 +142,9 @@ export default function StudentsEditInfo() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent.student[0])
+        if (data.searchStudent.ok) {
+          setStudentData(data.searchStudent.student[0])
+        }
       },
     })
   }, [router])
@@ -160,7 +162,7 @@ export default function StudentsEditInfo() {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
-        UpdateStudentBasic({
+        updateStudentBasic({
           variables: {
             editStudentId: studentData.id,
             name: data.name.trim(),
@@ -174,15 +176,17 @@ export default function StudentsEditInfo() {
                 ? new Date(parseInt(data.birthday))
                 : new Date(data.birthday),
           },
-          onCompleted: data => {
-            alert('수정되었습니다.')
+          onCompleted: result => {
+            if (result.editStudent.ok) {
+              const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+              userLogs(
+                `${studentData.name} 수강생 기본정보 수정`,
+                dirtyFieldsArray.join(', '),
+              )
+              alert('수정되었습니다.')
+            }
           },
         })
-        const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-        userLogs(
-          `${studentData.name} 수강생 기본정보 수정`,
-          dirtyFieldsArray.join(', '),
-        )
       }
     }
   }

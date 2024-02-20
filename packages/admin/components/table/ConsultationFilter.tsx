@@ -243,8 +243,10 @@ export default function ConsolutationFilterTable({
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        const { studentState, totalCount } = resData.searchStudentState || {}
-        setSearchResult({ studentState, totalCount })
+        if (resData.searchStudentState.ok) {
+          const { studentState, totalCount } = resData.searchStudentState || {}
+          setSearchResult({ studentState, totalCount })
+        }
       },
     })
   }, [studentFilter, currentPage])
@@ -301,7 +303,7 @@ export default function ConsolutationFilterTable({
             </Theader>
 
             {searchResult?.totalCount > 0 &&
-              searchResult?.studentState.map((item, index) => (
+              searchResult?.studentState?.map((item, index) => (
                 <ConsultItem
                   key={index}
                   tableData={item}

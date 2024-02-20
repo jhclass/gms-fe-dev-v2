@@ -210,7 +210,7 @@ export default function StudentsWrite() {
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
-  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState(null)
+  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
   useEffect(() => {
     searchStudentMutation({
       variables: {
@@ -255,13 +255,16 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+
+                    userLogs(
+                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
+                    )
+                    alert('강의배정 취소되었습니다.')
+                  }
                 },
               })
-              alert('강의배정 취소되었습니다.')
-              userLogs(
-                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
-              )
             }
           },
         })
@@ -285,13 +288,15 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    userLogs(
+                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
+                    )
+                    alert('강의배정 되었습니다.')
+                  }
                 },
               })
-              alert('강의배정 되었습니다.')
-              userLogs(
-                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
-              )
             }
           },
         })
@@ -317,11 +322,13 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    userLogs(`${studentData.name}학생 이수처리 취소`)
+                    alert('이수처리 취소되었습니다.')
+                  }
                 },
               })
-              alert('이수처리 취소되었습니다.')
-              userLogs(`${studentData.name}학생 이수처리 취소`)
             }
           },
         })
@@ -343,11 +350,13 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    userLogs(`${studentData.name}학생 이수처리`)
+                    alert('이수처리 되었습니다.')
+                  }
                 },
               })
-              alert('이수처리 되었습니다.')
-              userLogs(`${studentData.name}학생 이수처리`)
             }
           },
         })
@@ -373,18 +382,20 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
-                  setStudentPaymentData(
-                    data.searchStudent?.student[0].studentPayment[
-                      selectedPayment
-                    ],
-                  )
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    setStudentPaymentData(
+                      data.searchStudent?.student[0].studentPayment[
+                        selectedPayment
+                      ],
+                    )
+                    userLogs(
+                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
+                    )
+                    alert('중도포기 철회 되었습니다.')
+                  }
                 },
               })
-              alert('중도포기 철회 되었습니다.')
-              userLogs(
-                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
-              )
             }
           },
         })
@@ -406,18 +417,20 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
-                  setStudentPaymentData(
-                    data.searchStudent?.student[0].studentPayment[
-                      selectedPayment
-                    ],
-                  )
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    setStudentPaymentData(
+                      data.searchStudent?.student[0].studentPayment[
+                        selectedPayment
+                      ],
+                    )
+                    userLogs(
+                      `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
+                    )
+                    alert('중도포기 되었습니다.')
+                  }
                 },
               })
-              alert('중도포기 되었습니다.')
-              userLogs(
-                `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
-              )
             }
           },
         })
@@ -443,18 +456,20 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
-                  setStudentPaymentData(
-                    data.searchStudent?.student[0].studentPayment[
-                      selectedPayment
-                    ],
-                  )
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    setStudentPaymentData(
+                      data.searchStudent?.student[0].studentPayment[
+                        selectedPayment
+                      ],
+                    )
+                    userLogs(
+                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
+                    )
+                    alert('중도포기 철회 되었습니다.')
+                  }
                 },
               })
-              alert('중도포기 철회 되었습니다.')
-              userLogs(
-                `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
-              )
             }
           },
         })
@@ -476,18 +491,20 @@ export default function StudentsWrite() {
                   searchStudentId: parseInt(studentId),
                 },
                 onCompleted: data => {
-                  setStudentData(data.searchStudent?.student[0])
-                  setStudentPaymentData(
-                    data.searchStudent?.student[0].studentPayment[
-                      selectedPayment
-                    ],
-                  )
+                  if (data.searchStudent.ok) {
+                    setStudentData(data.searchStudent?.student[0])
+                    setStudentPaymentData(
+                      data.searchStudent?.student[0].studentPayment[
+                        selectedPayment
+                      ],
+                    )
+                    userLogs(
+                      `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
+                    )
+                    alert('수강철회 되었습니다.')
+                  }
                 },
               })
-              alert('수강철회 되었습니다.')
-              userLogs(
-                `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
-              )
             }
           },
         })

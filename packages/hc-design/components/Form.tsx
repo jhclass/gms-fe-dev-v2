@@ -113,8 +113,10 @@ export default function Form() {
             receiptDiv: '온라인',
             classMethod: data.methodSelect,
           },
-          onCompleted: data => {
-            alert('상담신청이 완료되었습니다. 😊')
+          onCompleted: result => {
+            if (result.createStudentState.ok) {
+              alert('상담신청이 완료되었습니다. 😊')
+            }
           },
         })
       }

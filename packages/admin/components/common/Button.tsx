@@ -120,7 +120,7 @@ export default function CustomRippleButton(props: CustomRippleButtonProps) {
         $borderColor={borderColor}
       >
         {children}
-        {ripples.map(ripple => (
+        {ripples?.map(ripple => (
           <BtnWrap
             $typeBorder={typeBorder}
             key={ripple.id}

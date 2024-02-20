@@ -88,15 +88,17 @@ export default function Profile() {
             query: MME_QUERY,
           },
         ],
-        onCompleted: data => {
-          alert('정보가 수정되었습니다.')
+        onCompleted: result => {
+          if (result.editManageUser.ok) {
+            const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+            userLogs(
+              `관리자 ${data.mUsername} 정보 수정`,
+              dirtyFieldsArray.join(', '),
+            )
+            alert('정보가 수정되었습니다.')
+          }
         },
       })
-      const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-      userLogs(
-        `관리자 ${data.mUsername} 정보 수정`,
-        dirtyFieldsArray.join(', '),
-      )
     }
   }
 

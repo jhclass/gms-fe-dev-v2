@@ -102,16 +102,20 @@ export default function ConsultMemo(props) {
         variables: {
           deleteStudentMemoId: data,
         },
-        onCompleted: () => {
-          props.setMemoList([])
-          searchStudentMutation({
-            variables: {
-              searchStudentId: parseInt(props.studentId),
-            },
-            onCompleted: data => {
-              props.setMemoList(data.searchStudent.student[0].studentMemo)
-            },
-          })
+        onCompleted: result => {
+          if (result.deleteStudentMemo.ok) {
+            props.setMemoList([])
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(props.studentId),
+              },
+              onCompleted: data => {
+                if (data.searchStudent.ok) {
+                  props.setMemoList(data.searchStudent.student[0].studentMemo)
+                }
+              },
+            })
+          }
         },
       })
       userLogs(`수강생 id:${data} 메모 삭제`)
@@ -125,16 +129,20 @@ export default function ConsultMemo(props) {
           editStudentMemoId: parseInt(data.id),
           content: data.content.trim(),
         },
-        onCompleted: () => {
-          props.setMemoList([])
-          searchStudentMutation({
-            variables: {
-              searchStudentId: parseInt(props.studentId),
-            },
-            onCompleted: data => {
-              props.setMemoList(data.searchStudent.student[0].studentMemo)
-            },
-          })
+        onCompleted: result => {
+          if (result.editStudentMemo.ok) {
+            props.setMemoList([])
+            searchStudentMutation({
+              variables: {
+                searchStudentId: parseInt(props.studentId),
+              },
+              onCompleted: data => {
+                if (data.searchStudent.ok) {
+                  props.setMemoList(data.searchStudent.student[0].studentMemo)
+                }
+              },
+            })
+          }
         },
       })
       userLogs(`수강생 id:${data.id} 메모 수정`)

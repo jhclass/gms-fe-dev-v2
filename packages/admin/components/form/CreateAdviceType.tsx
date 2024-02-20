@@ -172,7 +172,7 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
       >
         <BoxArea>
           <BoxTop>
-            {adviceList.map((item, index) => (
+            {adviceList?.map((item, index) => (
               <Chip
                 key={index}
                 variant="bordered"

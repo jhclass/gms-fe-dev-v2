@@ -237,7 +237,9 @@ export default function StudentsWriteCourse() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent.student[0])
+        if (data.searchStudent.ok) {
+          setStudentData(data.searchStudent.student[0])
+        }
       },
     })
   }, [router])

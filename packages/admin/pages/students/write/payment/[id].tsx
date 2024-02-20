@@ -270,22 +270,24 @@ export default function StudentsWritePayment() {
                       searchStudentId: parseInt(studentId),
                     },
                     onCompleted: data => {
-                      setStudentData(data.searchStudent?.student[0])
-                      setStudentPaymentData(
-                        data.searchStudent?.student[0].studentPayment[0],
-                      )
-                      setStudentSubjectData(
-                        data.searchStudent?.student[0].studentPayment[0]
-                          .subject,
-                      )
+                      if (data.searchStudent.ok) {
+                        setStudentData(data.searchStudent?.student[0])
+                        setStudentPaymentData(
+                          data.searchStudent?.student[0].studentPayment[0],
+                        )
+                        setStudentSubjectData(
+                          data.searchStudent?.student[0].studentPayment[0]
+                            .subject,
+                        )
+                        userLogs(`${studentData?.name} 카드 결제 `)
+                        reset()
+                        clearErrors()
+                        setCardName('카드사 선택')
+                        setCardPaymentDate(null)
+                        setPaymentType(paymentType)
+                      }
                     },
                   })
-                  userLogs(`${studentData?.name} 카드 결제 `)
-                  reset()
-                  clearErrors()
-                  setCardName('카드사 선택')
-                  setCardPaymentDate(null)
-                  setPaymentType(paymentType)
                 }
               },
             })
@@ -326,23 +328,25 @@ export default function StudentsWritePayment() {
                       searchStudentId: parseInt(studentId),
                     },
                     onCompleted: data => {
-                      setStudentData(data.searchStudent?.student[0])
-                      setStudentPaymentData(
-                        data.searchStudent?.student[0].studentPayment[0],
-                      )
-                      setStudentSubjectData(
-                        data.searchStudent?.student[0].studentPayment[0]
-                          .subject,
-                      )
+                      if (data.searchStudent.ok) {
+                        setStudentData(data.searchStudent?.student[0])
+                        setStudentPaymentData(
+                          data.searchStudent?.student[0].studentPayment[0],
+                        )
+                        setStudentSubjectData(
+                          data.searchStudent?.student[0].studentPayment[0]
+                            .subject,
+                        )
+                        userLogs(`${studentData?.name} 현금 결제 `)
+                        reset()
+                        clearErrors()
+                        setBankName('은행 선택')
+                        setCashDepositDate(null)
+                        setPaymentType(paymentType)
+                        setCashReceipt([])
+                      }
                     },
                   })
-                  userLogs(`${studentData?.name} 현금 결제 `)
-                  reset()
-                  clearErrors()
-                  setBankName('은행 선택')
-                  setCashDepositDate(null)
-                  setPaymentType(paymentType)
-                  setCashReceipt([])
                 }
               },
             })

@@ -199,7 +199,7 @@ export default function ConsolutationRejectTable({
   const [allCheck, setAllCheck] = useState(false)
 
   const rejectAllCheck = () => {
-    const allId = searchResult?.studentState.map(item => item.id)
+    const allId = searchResult?.studentState.map(item => item.id) || []
 
     if (!allCheck) {
       const set = new Set([...checkItem, ...allId])
@@ -223,15 +223,17 @@ export default function ConsolutationRejectTable({
         limit: currentLimit,
       },
       onCompleted: resData => {
-        const { studentState, totalCount } = resData.searchStudentState || {}
-        setSearchResult({ studentState, totalCount })
-        handleScrollTop()
+        if (resData.searchStudentState.ok) {
+          const { studentState, totalCount } = resData.searchStudentState || {}
+          setSearchResult({ studentState, totalCount })
+          handleScrollTop()
+        }
       },
     })
   }, [currentPage])
 
   useEffect(() => {
-    const allId = searchResult?.studentState.map(item => item.id)
+    const allId = searchResult?.studentState.map(item => item.id) || []
     const equalArray = allId?.filter(x => checkItem.includes(x))
     if (equalArray?.length === allId?.length) {
       setAllCheck(true)
@@ -284,7 +286,7 @@ export default function ConsolutationRejectTable({
               </Theader>
 
               {searchResult?.totalCount > 0 &&
-                searchResult?.studentState.map((item, index) => (
+                searchResult?.studentState?.map((item, index) => (
                   <ConsultItem
                     key={index}
                     tableData={item}
