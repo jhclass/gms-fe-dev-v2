@@ -278,6 +278,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
       message
       totalCount
       PaymentDetail {
+        createdAt
         amountPayment
         cashOrCard
         studentId

@@ -462,7 +462,7 @@ export default function SubjectDetail() {
                 </SwitchDiv>
               }
             />
-            <DetailBox onSubmit={handleSubmit(onSubmit)}>
+            <DetailBox>
               <TopInfo>
                 <Noti>
                   <span>*</span> 는 필수입력입니다.
@@ -1030,7 +1030,7 @@ export default function SubjectDetail() {
                 <SemiTitle>과정 회차 내역</SemiTitle>
                 <ColFlexBox>
                   {subjectRoundItem
-                    .filter(item => item.round !== subjectState.round)
+                    .filter(item => item.id !== subjectState.id)
                     .map((item, index) => (
                       <SubjectRoundItem key={index} listData={item} />
                     ))}

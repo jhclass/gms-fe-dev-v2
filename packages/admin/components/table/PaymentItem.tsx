@@ -159,7 +159,6 @@ export default function StudentsItem(props) {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-
   return (
     <>
       <TableItem>
@@ -169,7 +168,7 @@ export default function StudentsItem(props) {
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
                 <EllipsisBox>
-                  {student?.updatedAt ? getDate(student?.updatedAt) : '-'}
+                  {student?.createdAt ? getDate(student?.createdAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tname>
