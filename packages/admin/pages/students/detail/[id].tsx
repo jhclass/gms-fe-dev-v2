@@ -376,7 +376,7 @@ export default function StudentsWrite() {
                 {(studentPaymentData === null ||
                   studentPaymentData?.length === 0) && (
                   <BtnBox>
-                    {(mGrade < grade.admin || mPart === '교무팀') && (
+                    {(mGrade < grade.general || mPart === '교무팀') && (
                       <Button
                         size="md"
                         radius="md"
@@ -413,7 +413,7 @@ export default function StudentsWrite() {
                 <DetailDiv>
                   <AreaTitle>
                     <h4>수강 목록</h4>
-                    {(mGrade < grade.admin || mPart === '교무팀') && (
+                    {(mGrade < grade.general || mPart === '교무팀') && (
                       <Button
                         size="sm"
                         radius="sm"

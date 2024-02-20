@@ -74,7 +74,7 @@ export default function ConsultReject() {
     <>
       <MainWrap>
         <Breadcrumb
-          rightArea={mGrade < grade.admin ? true : false}
+          rightArea={mGrade < grade.general ? true : false}
           addRender={
             <DeleteDiv>
               {checkItem?.length !== 0 && (

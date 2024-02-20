@@ -629,7 +629,7 @@ export default function SubjectDetail() {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    {mGrade < grade.admin ? (
+                    {mGrade < grade.general ? (
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -701,7 +701,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                   <AreaBox>
-                    {mGrade < grade.admin ? (
+                    {mGrade < grade.general ? (
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -976,7 +976,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <BtnBox $isMaster={mGrade < grade.admin}>
+                <BtnBox $isMaster={mGrade < grade.general}>
                   <Button2
                     buttonType="submit"
                     width="100%"
@@ -1011,7 +1011,7 @@ export default function SubjectDetail() {
                   >
                     복사하기
                   </Button2>
-                  {mGrade < grade.admin && (
+                  {mGrade < grade.general && (
                     <Button2
                       buttonType="button"
                       width="100%"

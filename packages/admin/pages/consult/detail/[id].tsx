@@ -938,7 +938,7 @@ export default function ConsultDetail() {
                   >
                     목록으로
                   </Button2>
-                  {mGrade < grade.admin && (
+                  {mGrade < grade.general && (
                     <Button2
                       buttonType="button"
                       width="100%"

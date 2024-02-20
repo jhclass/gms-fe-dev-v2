@@ -57,7 +57,7 @@ export default function Subjects() {
           isActive={filterActive}
           rightArea={true}
           addRender={
-            mGrade < grade.admin && (
+            mGrade < grade.general && (
               <>
                 {
                   <Button
