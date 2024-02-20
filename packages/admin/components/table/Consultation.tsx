@@ -271,15 +271,17 @@ export default function ConsolutationTable() {
             </Theader>
 
             {favoData?.map((item, index) => (
-              <FavoItem
-                forName="favo"
-                key={index}
-                tableData={item}
-                itemIndex={index}
-                favorite={FavoList?.includes(item.id)}
-              />
+              <>
+                <FavoItem
+                  forName="favo"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  favorite={FavoList?.includes(item.id)}
+                />
+                <br />
+              </>
             ))}
-            <br />
             {totalCount > 0 &&
               students?.map((item, index) => (
                 <ConsultItem

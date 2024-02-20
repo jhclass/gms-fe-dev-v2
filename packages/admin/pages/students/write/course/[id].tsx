@@ -25,7 +25,7 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState, subStatusState } from '@/lib/recoilAtoms'
+import { ReceiptState, gradeState, subStatusState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
@@ -169,6 +169,7 @@ const LineBox = styled.div`
 `
 
 export default function StudentsWriteCourse() {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
@@ -898,7 +899,8 @@ export default function StudentsWriteCourse() {
                           {managerList
                             ?.filter(
                               manager =>
-                                manager.mGrade > 0 && manager.mGrade < 3,
+                                manager.mGrade === grade.master ||
+                                manager.mPart === '영업팀',
                             )
                             .map(item => (
                               <SelectItem key={item.id} value={item.id}>

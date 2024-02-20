@@ -20,6 +20,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import Layout from '../layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -114,8 +115,6 @@ const BtnBox = styled.div`
 `
 
 export default function SubjectWrite() {
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
   const [createSubject] = useMutation(CREATE_SUBJECT_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)
@@ -679,3 +678,4 @@ export default function SubjectWrite() {
     </>
   )
 }
+SubjectWrite.getLayout = page => <Layout>{page}</Layout>

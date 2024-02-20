@@ -22,6 +22,7 @@ import {
   progressStatusState,
   subStatusState,
   receiptStatusState,
+  gradeState,
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation, useQuery } from '@apollo/client'
@@ -36,6 +37,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import Layout from '../layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -121,6 +123,7 @@ const BtnBox = styled.div`
 `
 
 export default function ConsultWirte() {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const {
     loading: managerLoading,
@@ -490,7 +493,9 @@ export default function ConsultWirte() {
                       </SelectItem>
                       {managerList
                         ?.filter(
-                          manager => manager.mGrade > 0 && manager.mGrade < 3,
+                          manager =>
+                            manager.mGrade === grade.master ||
+                            manager.mPart === '영업팀',
                         )
                         .map(item => (
                           <SelectItem
@@ -691,3 +696,4 @@ export default function ConsultWirte() {
     </>
   )
 }
+ConsultWirte.getLayout = page => <Layout>{page}</Layout>

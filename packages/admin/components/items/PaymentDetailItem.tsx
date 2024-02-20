@@ -2,8 +2,12 @@ import { Button } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
-import { useRecoilState } from 'recoil'
-import { navOpenState, selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import {
+  gradeState,
+  navOpenState,
+  selectedPaymentDetailState,
+} from '@/lib/recoilAtoms'
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
@@ -90,6 +94,7 @@ export default function StudentPaymentDetailItem({
   studentId,
   setStudentPaymentDetailData,
 }) {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const { useMme } = useMmeQuery()
@@ -273,7 +278,7 @@ export default function StudentPaymentDetailItem({
                       >
                         영수증 인쇄
                       </Button> */}
-                {(mGrade < 2 || mPart === '회계팀') && (
+                {(mGrade < grade.admin || mPart === '회계팀') && (
                   <Button
                     isDisabled={detailtData.reqRefund ? true : false}
                     size="md"

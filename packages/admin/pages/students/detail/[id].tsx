@@ -15,7 +15,7 @@ import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
+import { ReceiptState, gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
@@ -199,6 +199,7 @@ type studentSubject = {
 }
 
 export default function StudentsWrite() {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -376,7 +377,7 @@ export default function StudentsWrite() {
                 {(studentPaymentData === null ||
                   studentPaymentData?.length === 0) && (
                   <BtnBox>
-                    {(mGrade < 2 || mPart === '교무팀') && (
+                    {(mGrade < grade.admin || mPart === '교무팀') && (
                       <Button
                         size="md"
                         radius="md"
@@ -413,7 +414,7 @@ export default function StudentsWrite() {
                 <DetailDiv>
                   <AreaTitle>
                     <h4>수강 목록</h4>
-                    {(mGrade < 2 || mPart === '교무팀') && (
+                    {(mGrade < grade.admin || mPart === '교무팀') && (
                       <Button
                         size="sm"
                         radius="sm"

@@ -10,7 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react'
-import { subStatusState } from '@/lib/recoilAtoms'
+import { gradeState, subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
@@ -26,6 +26,7 @@ import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import SubjectRoundItem from '@/components/items/SubjectRoundItem'
+import Layout from '../layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -160,6 +161,7 @@ const BtnBox = styled.div<{ $isMaster: boolean }>`
 `
 
 export default function SubjectDetail() {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -627,7 +629,7 @@ export default function SubjectDetail() {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    {mGrade < 2 ? (
+                    {mGrade < grade.admin ? (
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -699,7 +701,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                   <AreaBox>
-                    {mGrade < 2 ? (
+                    {mGrade < grade.admin ? (
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -974,7 +976,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <BtnBox $isMaster={mGrade < 2}>
+                <BtnBox $isMaster={mGrade < grade.admin}>
                   <Button2
                     buttonType="submit"
                     width="100%"
@@ -1009,7 +1011,7 @@ export default function SubjectDetail() {
                   >
                     복사하기
                   </Button2>
-                  {mGrade < 2 && (
+                  {mGrade < grade.admin && (
                     <Button2
                       buttonType="button"
                       width="100%"
@@ -1043,3 +1045,4 @@ export default function SubjectDetail() {
     </>
   )
 }
+SubjectDetail.getLayout = page => <Layout>{page}</Layout>

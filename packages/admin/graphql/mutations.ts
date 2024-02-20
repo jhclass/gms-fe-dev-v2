@@ -219,21 +219,19 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         agreement
         campus
         category
+        classMethod
         consultationMemo {
+          id
           content
           createdAt
-          id
-          manageUser {
-            mGrade
-            id
-            mPart
-            mRank
-            mUserId
-            mUsername
-          }
           manageUserId
           studentStateId
           updatedAt
+          manageUser {
+            mUserId
+            mUsername
+            id
+          }
         }
         createdAt
         currentManager
@@ -250,11 +248,10 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         stAddr
         stEmail
         stName
-        stVisit
         subDiv
-        subject
+        stVisit
         updatedAt
-        classMethod
+        subject
       }
     }
   }
@@ -363,11 +360,11 @@ export const UPDATE_CONSULTATION_MEMO_MUTATION = gql`
   }
 `
 export const DELETE_CONSULTATION_MEMO_MUTATION = gql`
-  mutation DeleteConsultationMemo($deleteConsultationMemoId: Int!) {
+  mutation Mutation($deleteConsultationMemoId: Int!) {
     deleteConsultationMemo(id: $deleteConsultationMemoId) {
-      ok
       error
       message
+      ok
     }
   }
 `

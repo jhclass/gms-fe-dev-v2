@@ -16,8 +16,8 @@ import {
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import StudentPayment from '@/components/form/StudentPayment'
-import { useRecoilState } from 'recoil'
-import { selectedPaymentState } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { gradeState, selectedPaymentState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -146,7 +146,6 @@ const LineBox = styled.div`
 
 export default function StudentsWriteCourse() {
   const router = useRouter()
-  const { userLogs } = useUserLogsMutation()
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [selectedPayment, setSelectedPayment] =
     useRecoilState(selectedPaymentState)

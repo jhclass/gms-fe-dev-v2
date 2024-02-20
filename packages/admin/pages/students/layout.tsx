@@ -1,23 +1,14 @@
 import { useRouter } from 'next/router'
 import useMmeQuery from '@/utils/mMe'
 import MainWrap from '@/components/wrappers/MainWrap'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import { useAuthRedirect } from '@/utils/useAuthRedirect'
 
 export default function StudentsLayout({ children }) {
-  const router = useRouter()
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-
-  // useEffect(() => {
-  //   if (mGrade !== 0) {
-  //     router.push('/')
-  //   }
-  // }, [mGrade])
-
+  const isCheckingLogin = useAuthRedirect()
+  if (isCheckingLogin) {
+    return null
+  }
   return <main>{children}</main>
-
-  // if (mGrade === 0) {
-  //   return <main>{children}</main>
-  // } else {
-  //   return <MainWrap>준비중입니다.</MainWrap>
-  // }
 }

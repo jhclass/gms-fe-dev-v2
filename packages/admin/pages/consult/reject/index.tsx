@@ -11,6 +11,9 @@ import {
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import Layout from '../layout'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -22,7 +25,8 @@ const DeleteDiv = styled.div`
   gap: 0.5rem;
 `
 
-export default function Consult() {
+export default function ConsultReject() {
+  const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const [checkItem, setCheckItem] = useState([])
@@ -66,7 +70,7 @@ export default function Consult() {
     <>
       <MainWrap>
         <Breadcrumb
-          rightArea={mGrade < 2 ? true : false}
+          rightArea={mGrade < grade.admin ? true : false}
           addRender={
             <DeleteDiv>
               {checkItem?.length !== 0 && (
@@ -108,3 +112,4 @@ export default function Consult() {
     </>
   )
 }
+ConsultReject.getLayout = page => <Layout>{page}</Layout>
