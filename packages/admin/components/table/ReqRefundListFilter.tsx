@@ -250,6 +250,7 @@ export default function ReqRefundFilterTable({
         ...studentFilter,
         reqRefund: true,
         refundApproval: false,
+        sortOf: 'reqRefundDate',
         page: currentPage,
         limit: currentLimit,
       },

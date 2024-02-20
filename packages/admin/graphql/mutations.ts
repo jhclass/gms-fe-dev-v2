@@ -1001,31 +1001,32 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
 `
 export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
   mutation Mutation(
-    $page: Int
-    $limit: Int
-    $reqRefund: Boolean
-    $refundApproval: Boolean
-    $period: [String]
-    $stName: String
-    $reqRefundDate: [String]
+    $sortOf: String
     $refundApprovalDate: [String]
+    $reqRefundDate: [String]
+    $refundApproval: Boolean
+    $reqRefund: Boolean
+    $limit: Int
+    $page: Int
+    $stName: String
+    $period: [String]
   ) {
     searchPaymentDetail(
-      page: $page
-      limit: $limit
-      reqRefund: $reqRefund
-      refundApproval: $refundApproval
-      period: $period
-      stName: $stName
-      reqRefundDate: $reqRefundDate
+      sortOf: $sortOf
       refundApprovalDate: $refundApprovalDate
+      reqRefundDate: $reqRefundDate
+      refundApproval: $refundApproval
+      reqRefund: $reqRefund
+      limit: $limit
+      page: $page
+      stName: $stName
+      period: $period
     ) {
       totalCount
       ok
       message
       error
       PaymentDetail {
-        studentId
         ApprovalNum
         amountPayment
         bankName
@@ -1034,9 +1035,9 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         cashOrCard
         createdAt
         depositAmount
+        depositDate
         depositorName
         id
-        depositDate
         installment
         paymentDate
         receiver {
@@ -1052,20 +1053,13 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         reqRefundManager
         stName
         studentId
-        updatedAt
         studentPaymentId
+        updatedAt
         studentPayment {
+          subjectId
           subject {
             subjectName
           }
-          studentId
-          subjectId
-          processingManagerId
-          tuitionFee
-          discountAmount
-          actualAmount
-          amountReceived
-          unCollectedAmount
         }
       }
     }

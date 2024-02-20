@@ -242,6 +242,7 @@ export default function RefundTable() {
       variables: {
         reqRefund: true,
         refundApproval: true,
+        sortOf: 'refundApprovalDate',
         page: currentPage,
         limit: currentLimit,
       },
