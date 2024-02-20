@@ -186,12 +186,14 @@ export default function ConsultWirte() {
           variables: { page: 1, limit: 10 },
         },
       ],
-      onCompleted: () => {
-        alert('등록되었습니다.')
-        router.push('/consult')
+      onCompleted: result => {
+        if (result.createStudentState.ok) {
+          userLogs(`${data.stName}의 상담 등록`)
+          alert('등록되었습니다.')
+          router.push('/consult')
+        }
       },
     })
-    userLogs(`${data.stName}의 상담 등록`)
   }
 
   const handleReceiptChange = e => {

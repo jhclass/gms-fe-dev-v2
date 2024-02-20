@@ -73,15 +73,17 @@ export default function Profile() {
             query: MME_QUERY,
           },
         ],
-        onCompleted: data => {
-          alert('비밀번호가 수정되었습니다.')
+        onCompleted: result => {
+          if (result.editManageUser.ok) {
+            const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+            userLogs(
+              `관리자 ${data.mUsername} 비밀번호 수정`,
+              dirtyFieldsArray.join(', '),
+            )
+            alert('비밀번호가 수정되었습니다.')
+          }
         },
       })
-      const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-      userLogs(
-        `관리자 ${data.mUsername} 비밀번호 수정`,
-        dirtyFieldsArray.join(', '),
-      )
     }
   }
 

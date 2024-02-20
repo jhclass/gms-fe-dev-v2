@@ -44,23 +44,27 @@ export default function ConsultReject() {
         variables: {
           deleteStudentStateId: data,
         },
-        onCompleted: () => {
-          searchStudentStateMutation({
-            variables: {
-              progress: 110,
-              page: currentPage,
-              limit: currentLimit,
-            },
-            onCompleted: resData => {
-              const { studentState, totalCount } =
-                resData.searchStudentState || {}
-              setSearchResult({ studentState, totalCount })
-            },
-          })
-          setCheckItem([])
-          const dirtyFieldsArray = [...Object.values(checkItem)]
-          alert('상담카드가 삭제되었습니다.')
-          userLogs(`ID : [${dirtyFieldsArray}] 상담카드 삭제`)
+        onCompleted: result => {
+          if (result.deleteStudentState.ok) {
+            searchStudentStateMutation({
+              variables: {
+                progress: 110,
+                page: currentPage,
+                limit: currentLimit,
+              },
+              onCompleted: resData => {
+                if (resData.searchStudentState.ok) {
+                  const { studentState, totalCount } =
+                    resData.searchStudentState || {}
+                  setSearchResult({ studentState, totalCount })
+                  setCheckItem([])
+                  const dirtyFieldsArray = [...Object.values(checkItem)]
+                  userLogs(`ID : [${dirtyFieldsArray}] 상담카드 삭제`)
+                  alert('상담카드가 삭제되었습니다.')
+                }
+              },
+            })
+          }
         },
       })
     }

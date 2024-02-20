@@ -60,7 +60,7 @@ export default function AdviceTypeModal({
                     onValueChange={handleAdviceChange}
                   >
                     {adviceList !== null &&
-                      adviceList.map((item, index) => (
+                      adviceList?.map((item, index) => (
                         <ChipCheckbox key={item.id} value={item.type}>
                           {item.type}
                         </ChipCheckbox>

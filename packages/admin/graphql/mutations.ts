@@ -221,15 +221,18 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         category
         classMethod
         consultationMemo {
-          id
-          content
-          createdAt
-          manageUserId
           studentStateId
-          updatedAt
+          manageUserId
           manageUser {
+            id
             mUserId
             mUsername
+          }
+          content
+          createdAt
+          id
+          updatedAt
+          studentState {
             id
           }
         }
@@ -1038,6 +1041,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         installment
         paymentDate
         receiver {
+          id
           mUsername
           mUserId
         }
@@ -1053,8 +1057,10 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         studentPaymentId
         updatedAt
         studentPayment {
+          id
           subjectId
           subject {
+            id
             subjectName
           }
         }

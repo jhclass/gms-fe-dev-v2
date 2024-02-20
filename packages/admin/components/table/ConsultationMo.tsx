@@ -214,7 +214,7 @@ export default function ConsolutationTable() {
   return (
     <>
       <TableWrap>
-        {tableData.map((item, index) => (
+        {tableData?.map((item, index) => (
           <TableItem key={index}>
             <TableLt>
               <Tname>{item.name}</Tname>

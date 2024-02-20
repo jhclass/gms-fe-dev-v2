@@ -167,10 +167,12 @@ export default function StudentsWriteCourse() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent?.student[0])
-        setStudentPaymentData(
-          data.searchStudent?.student[0].studentPayment[selectedPayment],
-        )
+        if (data.searchStudent.ok) {
+          setStudentData(data.searchStudent?.student[0])
+          setStudentPaymentData(
+            data.searchStudent?.student[0].studentPayment[selectedPayment],
+          )
+        }
       },
     })
   }, [router])
@@ -181,8 +183,10 @@ export default function StudentsWriteCourse() {
         searchSubjectId: studentPaymentData?.subjectId,
       },
       onCompleted: resData => {
-        const { result } = resData.searchSubject || {}
-        setStudentSubjectData(result[0])
+        if (resData.searchSubject.ok) {
+          const { result } = resData.searchSubject || {}
+          setStudentSubjectData(result[0])
+        }
       },
     })
   }, [studentPaymentData])

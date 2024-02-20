@@ -219,7 +219,7 @@ export default function ConsolutItem(props: ConsultItemProps) {
   const flagString = isDisplayFlag(student.createdAt, student.progress)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
-  const studentAdvice = student?.adviceTypes.map(item => item.type)
+  const studentAdvice = student?.adviceTypes.map(item => item.type) || []
 
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {

@@ -206,7 +206,7 @@ export default function ConsultDetail() {
   const [receipt, setReceipt] = useState('없음')
   const [sub, setSub] = useState('없음')
   const [manager, setManager] = useState('담당자 지정필요')
-  const [consultation, setConsultation] = useState(null)
+  const [consultation, setConsultation] = useState([])
   const [memoList, setMemoList] = useState([])
   const [studentState, setStudentState] = useState(null)
   const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type) || []
@@ -252,18 +252,19 @@ export default function ConsultDetail() {
     const studentState = await fetchStudentState()
 
     if (studentState) {
-      setStudentState(studentState)
+      setStudentState(studentState[0])
       setMemoList(studentState.consultationMemo || [])
 
       const consultationData = await fetchRelatedData(
-        studentState.phoneNum1,
-        studentState.stName,
+        studentState[0].phoneNum1,
+        studentState[0].stName,
       )
       if (consultationData) {
         setConsultation(consultationData)
       }
     }
   }
+
   useEffect(() => {
     fetchData()
   }, [router])
@@ -294,7 +295,7 @@ export default function ConsultDetail() {
   const { isDirty, dirtyFields, errors } = formState
 
   useEffect(() => {
-    if (studentState?.subject.length === 0) {
+    if (studentState?.subject?.length === 0) {
       setSubjectSelected([])
     } else {
       setSubjectSelected(studentState?.subject)
@@ -373,15 +374,17 @@ export default function ConsultDetail() {
             pic: data.pic,
             receiptDiv: data.receiptDiv,
           },
-          onCompleted: data => {
-            alert('수정되었습니다.')
+          onCompleted: result => {
+            if (result.updateStudentState.ok) {
+              const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+              userLogs(
+                `${studentState.stName}의 상담 수정`,
+                dirtyFieldsArray.join(', '),
+              )
+              alert('수정되었습니다.')
+            }
           },
         })
-        const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-        userLogs(
-          `${studentState.stName}의 상담 수정`,
-          dirtyFieldsArray.join(', '),
-        )
       }
     }
   }
@@ -399,10 +402,12 @@ export default function ConsultDetail() {
             variables: { page: 1, limit: 10 },
           },
         ],
-        onCompleted: () => {
-          alert('상담카드가 삭제되었습니다.')
-          router.push('/consult')
-          userLogs(`ID : ${studentState.name} 상담카드 삭제`)
+        onCompleted: result => {
+          if (result.deleteStudentState.ok) {
+            userLogs(`ID : ${studentState.name} 상담카드 삭제`)
+            alert('상담카드가 삭제되었습니다.')
+            router.push('/consult')
+          }
         },
       })
     }

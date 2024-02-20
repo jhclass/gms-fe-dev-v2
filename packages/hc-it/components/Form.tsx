@@ -90,8 +90,10 @@ export default function Form() {
             detail: data.contents,
             receiptDiv: data.receiptDiv,
           },
-          onCompleted: data => {
-            alert('상담신청이 완료되었습니다. 😊')
+          onCompleted: result => {
+            if (result.createStudentState.ok) {
+              alert('상담신청이 완료되었습니다. 😊')
+            }
           },
         })
       }

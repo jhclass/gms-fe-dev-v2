@@ -322,15 +322,17 @@ export default function StudentPaymentForm({
                   ? new Date(parseInt(data.dueDate))
                   : new Date(data.dueDate),
             },
-            onCompleted: () => {
-              alert('수정되었습니다.')
+            onCompleted: result => {
+              if (result.editStudentPayment.ok) {
+                alert('수정되었습니다.')
+                const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                userLogs(
+                  `${studentData.name} 수강신청 수정`,
+                  dirtyFieldsArray.join(', '),
+                )
+              }
             },
           })
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            `${studentData.name} 수강신청 수정`,
-            dirtyFieldsArray.join(', '),
-          )
         } else {
           if (data.actualAmount < 0) {
             setError(

@@ -193,11 +193,15 @@ export default function StudentsWritePayment() {
         searchStudentId: parseInt(studentId),
       },
       onCompleted: data => {
-        setStudentData(data.searchStudent?.student[0])
-        setStudentPaymentData(data.searchStudent?.student[0].studentPayment[0])
-        setStudentSubjectData(
-          data.searchStudent?.student[0].studentPayment[0].subject,
-        )
+        if (data.searchStudent.ok) {
+          setStudentData(data.searchStudent?.student[0])
+          setStudentPaymentData(
+            data.searchStudent?.student[0].studentPayment[0],
+          )
+          setStudentSubjectData(
+            data.searchStudent?.student[0].studentPayment[0].subject,
+          )
+        }
       },
     })
 
@@ -286,13 +290,15 @@ export default function StudentsWritePayment() {
                     processingManagerId:
                       studentPaymentData?.processingManagerId,
                   },
-                  onCompleted: () => {
-                    const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                    userLogs(
-                      `${studentData?.name} 카드 결제 수정`,
-                      dirtyFieldsArray.join(', '),
-                    )
-                    router.back()
+                  onCompleted: result => {
+                    if (result.editStudentPayment.ok) {
+                      const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                      userLogs(
+                        `${studentData?.name} 카드 결제 수정`,
+                        dirtyFieldsArray.join(', '),
+                      )
+                      router.back()
+                    }
                   },
                 })
               }
@@ -328,13 +334,15 @@ export default function StudentsWritePayment() {
                     processingManagerId:
                       studentPaymentData?.processingManagerId,
                   },
-                  onCompleted: () => {
-                    const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                    userLogs(
-                      `${studentData?.name} 현금 결제 수정 `,
-                      dirtyFieldsArray.join(', '),
-                    )
-                    router.back()
+                  onCompleted: result => {
+                    if (result.editStudentPayment.ok) {
+                      const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                      userLogs(
+                        `${studentData?.name} 현금 결제 수정 `,
+                        dirtyFieldsArray.join(', '),
+                      )
+                      router.back()
+                    }
                   },
                 })
               }

@@ -198,8 +198,10 @@ export default function StudentsFilterTable({
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        const { student, totalCount } = resData.searchStudent || {}
-        setSearchResult({ student, totalCount })
+        if (resData.searchStudent.ok) {
+          const { student, totalCount } = resData.searchStudent || {}
+          setSearchResult({ student, totalCount })
+        }
       },
     })
   }, [studentFilter, currentPage])

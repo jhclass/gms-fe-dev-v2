@@ -65,7 +65,7 @@ export default function DatePickerHeader({
           width: '6rem',
         }}
       >
-        {rangeYears.map(option => (
+        {rangeYears?.map(option => (
           <SelectItem key={String(option)} value={String(option)}>
             {String(option)}
           </SelectItem>
@@ -93,7 +93,7 @@ export default function DatePickerHeader({
           width: '6rem',
         }}
       >
-        {months.map(option => (
+        {months?.map(option => (
           <SelectItem key={option} value={option}>
             {option}
           </SelectItem>

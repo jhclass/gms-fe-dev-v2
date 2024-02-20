@@ -135,7 +135,7 @@ export default function CategoryItem<CategoryItemProps>({
     }))
   }
 
-  const subCate = children?.filter(category => category.exposure)
+  const subCate = children?.filter(category => category.exposure) || []
   return (
     <>
       <CateItem
@@ -228,7 +228,7 @@ export default function CategoryItem<CategoryItemProps>({
 
             {navOpen && (
               <Menu $isOpen={isOpen[name]}>
-                {subCate.map((item, index) => (
+                {subCate?.map((item, index) => (
                   <MenuItem
                     key={index}
                     $isActive={router.pathname == item.href}

@@ -372,7 +372,7 @@ export default function RequestRefundTable() {
                 </TheaderBox>
               </Theader>
               {result.totalCount > 0 &&
-                result.PaymentDetail.map((item, index) => (
+                result.PaymentDetail?.map((item, index) => (
                   <TableItem key={index}>
                     <TableRow>
                       <Tlist>

@@ -116,27 +116,26 @@ export default function StudentPaymentDetailItem({
             reqRefund: false,
             reqRefundDate: '',
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: data => {
-                searchStudentMutation({
-                  variables: {
-                    searchStudentId: parseInt(studentId),
-                  },
-                  onCompleted: data => {
+          onCompleted: result => {
+            if (result.reqRefund.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  if (data.searchStudent.ok) {
                     setStudentPaymentDetailData(
                       data.searchStudent?.student[0].studentPayment[0]
                         ?.paymentDetail,
                     )
-                  },
-                })
-              },
-            })
-            alert('결제 취소요청이 철회 되었습니다.')
-            userLogs(`paymentDetail ID : ${detailtData.id} / 결제취소 철회`)
+                    alert('결제 취소요청이 철회 되었습니다.')
+                    userLogs(
+                      `paymentDetail ID : ${detailtData.id} / 결제취소 철회`,
+                    )
+                  }
+                },
+              })
+            }
           },
         })
       }
@@ -149,27 +148,26 @@ export default function StudentPaymentDetailItem({
             reqRefund: true,
             reqRefundDate: new Date(),
           },
-          onCompleted: () => {
-            searchStudentMutation({
-              variables: {
-                searchStudentId: parseInt(studentId),
-              },
-              onCompleted: () => {
-                searchStudentMutation({
-                  variables: {
-                    searchStudentId: parseInt(studentId),
-                  },
-                  onCompleted: data => {
+          onCompleted: result => {
+            if (result.reqRefund.ok) {
+              searchStudentMutation({
+                variables: {
+                  searchStudentId: parseInt(studentId),
+                },
+                onCompleted: data => {
+                  if (data.searchStudent.ok) {
                     setStudentPaymentDetailData(
                       data.searchStudent?.student[0].studentPayment[0]
                         ?.paymentDetail,
                     )
-                  },
-                })
-              },
-            })
-            alert('결제 취소요청 되었습니다.')
-            userLogs(`paymentDetail ID : ${detailtData.id} / 결제취소 요청`)
+                    alert('결제 취소요청 되었습니다.')
+                    userLogs(
+                      `paymentDetail ID : ${detailtData.id} / 결제취소 요청`,
+                    )
+                  }
+                },
+              })
+            }
           },
         })
       }

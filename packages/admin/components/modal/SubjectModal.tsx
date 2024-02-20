@@ -174,8 +174,10 @@ export default function SubjectModal({
         limit: currentSubjectLimit,
       },
       onCompleted: resData => {
-        const { result, totalCount } = resData.searchSubject || {}
-        setSubjectList({ result, totalCount })
+        if (resData.searchSubject.ok) {
+          const { result, totalCount } = resData.searchSubject || {}
+          setSubjectList({ result, totalCount })
+        }
       },
     })
   }, [router, currentSubjectPage, subjectSearch])

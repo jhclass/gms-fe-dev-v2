@@ -176,7 +176,7 @@ export default function SubjectDetail() {
   )
   // const subjectState = data?.searchSubject.result[0] || []
   const [subjectState, setSubjectState] = useState(null)
-  const [subjectRoundItem, setSubjectRoundItem] = useState(null)
+  const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)
 
@@ -406,7 +406,7 @@ export default function SubjectDetail() {
         ],
       })
 
-      if (!result.data.createSubject.ok) {
+      if (!result.data.deleteSubject.ok) {
         throw new Error('과정 삭제 실패')
       }
 
