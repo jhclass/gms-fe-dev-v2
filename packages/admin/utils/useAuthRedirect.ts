@@ -8,10 +8,17 @@ export function useAuthRedirect() {
   const isLoggedIn = useReactiveVar(isLoggedInVar)
   const [isChecking, setIsChecking] = useState(true)
 
+  const checkTokenValidity = () => {
+    const token = localStorage.getItem('token')
+    const isLoggedInUpdate = !!token
+    isLoggedInVar(isLoggedInUpdate)
+  }
+
   useEffect(() => {
+    checkTokenValidity()
     if (!isLoggedIn && router.pathname !== '/login') {
       alert('로그인 해주세요. 😃')
-      window.location.href = '/login'
+      router.replace('/login')
     } else {
       setIsChecking(false)
     }
