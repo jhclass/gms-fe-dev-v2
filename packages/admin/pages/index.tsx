@@ -1,14 +1,10 @@
 import NewConsultNum from '@/components/dashboard/NewConsultNum'
 import ConsultNum from '@/components/dashboard/ConsultNum'
 import Layout from '@/components/wrappers/MainWrap'
-import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import NewConsultMonthNum from '@/components/dashboard/NewConsultMonthNum '
 import AdviceType from '@/components/dashboard/AdviceType'
 import ReceiptDiv from '@/components/dashboard/ReceiptDiv'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilValue } from 'recoil'
-import { userGraderState } from '@/lib/recoilAtoms'
 import { useAuthRedirect } from '@/utils/useAuthRedirect'
 
 const HomeArea = styled.div`

@@ -1,4 +1,5 @@
 import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
+import useMmeQuery from '@/utils/mMe'
 import { Tooltip } from '@nextui-org/react'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
@@ -40,11 +41,13 @@ const CateLink = styled(motion.div)<{ $navOpen: boolean }>`
 const CateIcon = styled.figure`
   width: 1.5rem;
   height: 1.5rem;
+  font-size: 1.5rem;
 `
 const CateTitle = styled.p<{ $navOpen: boolean }>`
   display: ${props => (props.$navOpen ? 'block' : 'none')};
   white-space: nowrap;
   width: ${props => (props.$navOpen ? 'auto' : '0')};
+  padding-top: 0.12rem;
 `
 const MenuBox = styled(motion.div)`
   cursor: pointer;
@@ -112,8 +115,12 @@ export default function CategoryItem<CategoryItemProps>({
   isActive,
   onClick,
   children,
+  cateGrade = null,
 }) {
   const router = useRouter()
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
   const arrowRef = useRef(null)
@@ -136,6 +143,21 @@ export default function CategoryItem<CategoryItemProps>({
   }
 
   const subCate = children?.filter(category => category.exposure) || []
+
+  // const clickCate = (grade, link) => {
+  //   console.log(grade)
+  //   console.log(link)
+  //   if (grade !== null || grade !== undefined) {
+  //     if (mGrade <= 1 || grade === mPart) {
+  //       router.push(link)
+  //     } else {
+  //       alert('🚧 접근 권한이 없습니다. 🚧')
+  //     }
+  //   } else {
+  //     router.push(link)
+  //   }
+  // }
+
   return (
     <>
       <CateItem
@@ -146,6 +168,7 @@ export default function CategoryItem<CategoryItemProps>({
         }}
       >
         {!children || subCate.length === 0 ? (
+          // <Link href="#" onClick={() => clickCate(cateGrade, href)}>
           <Link href={href}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
@@ -159,7 +182,10 @@ export default function CategoryItem<CategoryItemProps>({
                     router.push(href)
                   }}
                 >
-                  {isActive ? (
+                  <i className={iconSrc} />
+
+                  {/* {isActive ? (
+      
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
                       alt={name}
@@ -169,7 +195,7 @@ export default function CategoryItem<CategoryItemProps>({
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
                       alt={name}
                     />
-                  )}
+                  )} */}
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
@@ -208,7 +234,8 @@ export default function CategoryItem<CategoryItemProps>({
                     router.push(href)
                   }}
                 >
-                  {isActive ? (
+                  <i className={iconSrc} />
+                  {/* {isActive ? (
                     <img
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}_w.webp`}
                       alt={name}
@@ -218,7 +245,7 @@ export default function CategoryItem<CategoryItemProps>({
                       src={`https://highclass-image.s3.amazonaws.com/admin/icon/${iconSrc}.webp`}
                       alt={name}
                     />
-                  )}
+                  )} */}
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
@@ -233,6 +260,10 @@ export default function CategoryItem<CategoryItemProps>({
                     key={index}
                     $isActive={router.pathname == item.href}
                   >
+                    {/* <Link
+                      href="#"
+                      onClick={() => clickCate(item.grade, href + item.href)}
+                    > */}
                     <Link href={href + item.href}>{item.name}</Link>
                   </MenuItem>
                 ))}

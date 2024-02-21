@@ -16,7 +16,8 @@ import {
   subjectFilterState,
   subjectSearchState,
 } from '@/lib/recoilAtoms'
-import Layout from '@/pages/subjects/layout'
+import Layout from '@/pages/statistics/layout'
+import PerformanceFilter from '@/components/filter/PerformanceFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -38,7 +39,7 @@ const IconVariants = {
   },
 }
 
-export default function Subjects() {
+export default function Statistics() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -46,8 +47,8 @@ export default function Subjects() {
     subjectFilterActiveState,
   )
   const [filterSearch, setFilterSearch] = useRecoilState(subjectFilterState)
-  const [subjectFilter, setSubjectFilter] = useRecoilState(subjectSearchState)
-  const [createActive, setCreateActive] = useState(false)
+  const [performanceFilter, setPerformanceFilter] =
+    useRecoilState(subjectSearchState)
 
   return (
     <>
@@ -56,55 +57,17 @@ export default function Subjects() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           rightArea={true}
-          addRender={
-            mGrade < grade.general && (
-              <>
-                {
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    color="primary"
-                    className="text-white ml-[0.5rem]"
-                    onClick={() => {
-                      setCreateActive(prev => !prev)
-                    }}
-                  >
-                    <ActiveIcon
-                      variants={IconVariants}
-                      initial="initial"
-                      animate={createActive ? 'active' : 'initial'}
-                      className="xi-check-min"
-                    />
-                    분야 관리
-                  </Button>
-                }
-              </>
-            )
-          }
         />
-        <SubjectsFilter
+        <PerformanceFilter
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
-          setSubjectFilter={setSubjectFilter}
-        />
-        <CreateAdviceType
-          isActive={createActive}
-          onCreateToggle={setCreateActive}
+          setPerformanceFilter={setPerformanceFilter}
         />
         <ConBox>
-          {filterSearch ? (
-            <SubjectFilter
-              onFilterSearch={setFilterSearch}
-              subjectFilter={subjectFilter}
-              setSubjectFilter={setSubjectFilter}
-            />
-          ) : (
-            <SubjectTable />
-          )}
+          <SubjectTable />
         </ConBox>
       </MainWrap>
     </>
   )
 }
-Subjects.getLayout = page => <Layout>{page}</Layout>
+Statistics.getLayout = page => <Layout>{page}</Layout>

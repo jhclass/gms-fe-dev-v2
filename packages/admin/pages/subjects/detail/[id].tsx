@@ -26,7 +26,7 @@ import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import SubjectRoundItem from '@/components/items/SubjectRoundItem'
-import Layout from '../layout'
+import Layout from '@/pages/subjects/layout'
 
 const ConArea = styled.div`
   width: 100%;

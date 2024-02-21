@@ -18,9 +18,8 @@ import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
-import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import Layout from '../layout'
+import Layout from '@/pages/subjects/layout'
 
 const ConArea = styled.div`
   width: 100%;

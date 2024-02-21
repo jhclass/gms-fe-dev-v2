@@ -13,7 +13,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import Layout from '../layout'
+import Layout from '@/pages/consult/layout'
 
 const ConBox = styled.div`
   margin: 2rem 0;

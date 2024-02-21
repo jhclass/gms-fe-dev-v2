@@ -3,13 +3,7 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import {
-  Radio,
-  RadioGroup,
-  Button,
-  CheckboxGroup,
-  Checkbox,
-} from '@nextui-org/react'
+import { Radio, RadioGroup, Button } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -24,7 +18,6 @@ import {
 } from '@/graphql/mutations'
 import CreateStudentMemo from '@/components/form/CreateStudentMemo'
 import StudentMemo from '@/components/form/StudentMemo'
-import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 import StudentPaymentItem from '@/components/items/PaymentItem'
 
 const ConArea = styled.div`

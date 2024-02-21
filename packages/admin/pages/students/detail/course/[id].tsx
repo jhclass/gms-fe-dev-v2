@@ -3,31 +3,19 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import {
-  Radio,
-  RadioGroup,
-  Button,
-  CheckboxGroup,
-  Checkbox,
-} from '@nextui-org/react'
+import { Radio, RadioGroup, Button } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {
-  ReceiptState,
-  gradeState,
-  selectedPaymentState,
-} from '@/lib/recoilAtoms'
+import { gradeState, selectedPaymentState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
   SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
-import CreateStudentMemo from '@/components/form/CreateStudentMemo'
-import StudentMemo from '@/components/form/StudentMemo'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 
 const ConArea = styled.div`

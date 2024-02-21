@@ -9,15 +9,14 @@ import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import {
   SEARCH_STUDENT_PAYMENT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import StudentPayment from '@/components/form/StudentPayment'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { gradeState, selectedPaymentState } from '@/lib/recoilAtoms'
+import { useRecoilState } from 'recoil'
+import { selectedPaymentState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;

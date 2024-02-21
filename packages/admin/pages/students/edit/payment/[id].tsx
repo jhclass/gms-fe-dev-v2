@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import DatePicker, { registerLocale } from 'react-datepicker'
+import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
@@ -29,8 +29,8 @@ import {
   UPDATE_PAYMENT_DETAIL_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
-import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Button2 from '@/components/common/Button'
+import Layout from '@/pages/students/layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -998,3 +998,4 @@ export default function StudentsWritePayment() {
     </>
   )
 }
+StudentsWritePayment.getLayout = page => <Layout>{page}</Layout>

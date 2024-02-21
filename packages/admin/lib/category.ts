@@ -9,6 +9,7 @@ interface Category {
   isBreadcrumb?: boolean
   isFilter?: boolean
   isWrite?: string
+  grade?: string
 }
 
 interface Children {
@@ -18,13 +19,15 @@ interface Children {
   isBreadcrumb: boolean
   isFilter: boolean
   isWrite: string
+  grade?: string
 }
 
 const category: Category[] = [
   {
     id: 0,
     href: '/',
-    iconSrc: 'ico_home',
+    // iconSrc: 'ico_home',
+    iconSrc: 'xi-home-o',
     name: '대시보드',
     exposure: true,
     isBreadcrumb: false,
@@ -35,7 +38,8 @@ const category: Category[] = [
   {
     id: 1,
     href: '/consult',
-    iconSrc: 'ico_consult',
+    // iconSrc: 'ico_consult',
+    iconSrc: 'xi-forum-o',
     name: '상담관리',
     resetItems: [
       'resetConsultPage',
@@ -90,7 +94,8 @@ const category: Category[] = [
   {
     id: 2,
     href: '/subjects',
-    iconSrc: 'ico_work',
+    // iconSrc: 'ico_work',
+    iconSrc: 'xi-library-books-o',
     name: '과정관리',
     resetItems: [
       'resetSubjectPage',
@@ -124,7 +129,8 @@ const category: Category[] = [
   {
     id: 3,
     href: '/students',
-    iconSrc: 'ico_regist',
+    // iconSrc: 'ico_regist',
+    iconSrc: 'xi-user-address',
     name: '수강생관리',
     resetItems: [
       'resetStudentPage',
@@ -166,7 +172,8 @@ const category: Category[] = [
   {
     id: 4,
     href: '/accounting',
-    iconSrc: 'ico_accounting',
+    // iconSrc: 'ico_accounting',
+    iconSrc: 'xi-money',
     name: '회계관리',
     exposure: true,
     resetItems: [
@@ -191,6 +198,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
+        grade: '회계팀',
       },
       {
         href: '/request',
@@ -199,6 +207,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
+        grade: '회계팀',
       },
       {
         href: '/refund',
@@ -207,6 +216,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
+        grade: '회계팀',
       },
       {
         href: '/sales',
@@ -215,6 +225,36 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: false,
         isWrite: '',
+        grade: '회계팀',
+      },
+    ],
+  },
+  {
+    id: 5,
+    href: '/statistics',
+    // iconSrc: 'ico_accounting',
+    iconSrc: 'xi-chart-line',
+    name: '통계',
+    exposure: true,
+    resetItems: [],
+    children: [
+      {
+        href: '/',
+        name: '영업 성과',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+        grade: '영업팀',
+      },
+      {
+        href: '/recruitment',
+        name: '과정 모집',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+        grade: '교무팀',
       },
     ],
   },

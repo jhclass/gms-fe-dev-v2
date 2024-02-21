@@ -9,7 +9,7 @@ import { MME_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
-import Layout from './layout'
+import Layout from '@/pages/member/layout'
 
 const ConArea = styled.div`
   width: 100%;
