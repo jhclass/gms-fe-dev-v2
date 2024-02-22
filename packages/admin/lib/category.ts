@@ -175,6 +175,7 @@ const category: Category[] = [
     // iconSrc: 'ico_accounting',
     iconSrc: 'xi-money',
     name: '회계관리',
+    grade: '회계팀',
     exposure: true,
     resetItems: [
       'resetPaymentPage',
@@ -235,6 +236,7 @@ const category: Category[] = [
     // iconSrc: 'ico_accounting',
     iconSrc: 'xi-chart-line',
     name: '통계',
+    grade: '영업팀',
     exposure: true,
     resetItems: [],
     children: [

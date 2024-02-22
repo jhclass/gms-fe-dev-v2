@@ -123,20 +123,6 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-const isDisplayFlag = (date: string, step: boolean): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && !step) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
-
 export default function RecruitmentItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
@@ -151,7 +137,7 @@ export default function RecruitmentItem(props) {
     if (differenceInDays >= 0) {
       return '#007de9'
     } else {
-      return '#FF5900'
+      return '#71717a'
     }
   }
   const flagString = isDisplayFlag(subject.startDate)

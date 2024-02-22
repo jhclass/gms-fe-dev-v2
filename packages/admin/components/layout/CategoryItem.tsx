@@ -144,19 +144,18 @@ export default function CategoryItem<CategoryItemProps>({
 
   const subCate = children?.filter(category => category.exposure) || []
 
-  // const clickCate = (grade, link) => {
-  //   console.log(grade)
-  //   console.log(link)
-  //   if (grade !== null || grade !== undefined) {
-  //     if (mGrade <= 1 || grade === mPart) {
-  //       router.push(link)
-  //     } else {
-  //       alert('🚧 접근 권한이 없습니다. 🚧')
-  //     }
-  //   } else {
-  //     router.push(link)
-  //   }
-  // }
+  const clickCate = (e, grade, link) => {
+    e.preventDefault()
+    if (grade) {
+      if (mGrade <= 1 || grade === mPart) {
+        router.push(link)
+      } else {
+        alert('🚧 접근 권한이 없습니다. 🚧')
+      }
+    } else {
+      router.push(link)
+    }
+  }
 
   return (
     <>
@@ -168,8 +167,7 @@ export default function CategoryItem<CategoryItemProps>({
         }}
       >
         {!children || subCate.length === 0 ? (
-          // <Link href="#" onClick={() => clickCate(cateGrade, href)}>
-          <Link href={href}>
+          <Link href={href} onClick={e => clickCate(e, cateGrade, href)}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
                 content={name}
@@ -178,8 +176,7 @@ export default function CategoryItem<CategoryItemProps>({
               >
                 <CateIcon
                   onClick={e => {
-                    e.preventDefault()
-                    router.push(href)
+                    clickCate(e, cateGrade, href)
                   }}
                 >
                   <i className={iconSrc} />
@@ -230,8 +227,7 @@ export default function CategoryItem<CategoryItemProps>({
               >
                 <CateIcon
                   onClick={e => {
-                    e.preventDefault()
-                    router.push(href)
+                    clickCate(e, cateGrade, href)
                   }}
                 >
                   <i className={iconSrc} />
@@ -260,11 +256,12 @@ export default function CategoryItem<CategoryItemProps>({
                     key={index}
                     $isActive={router.pathname == item.href}
                   >
-                    {/* <Link
-                      href="#"
-                      onClick={() => clickCate(item.grade, href + item.href)}
-                    > */}
-                    <Link href={href + item.href}>{item.name}</Link>
+                    <Link
+                      href={href + item.href}
+                      onClick={e => clickCate(e, item.grade, href + item.href)}
+                    >
+                      {item.name}
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>

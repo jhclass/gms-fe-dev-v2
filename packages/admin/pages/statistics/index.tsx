@@ -18,6 +18,7 @@ import {
 } from '@/lib/recoilAtoms'
 import Layout from '@/pages/statistics/layout'
 import PerformanceFilter from '@/components/filter/PerformanceFilter'
+import PerformanceChart from '@/components/dashboard/PerformanceChart'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -64,7 +65,7 @@ export default function Statistics() {
           setPerformanceFilter={setPerformanceFilter}
         />
         <ConBox>
-          <SubjectTable />
+          <PerformanceChart />
         </ConBox>
       </MainWrap>
     </>
