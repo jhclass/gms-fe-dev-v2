@@ -35,8 +35,15 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 190px;
+`
+const ChartBox = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+`
 
+const ChartWrap = styled.div`
+  min-width: 1200px;
   .apexcharts-series path {
     stroke-width: 0.3rem;
     @media (max-width: 768px) {
@@ -314,17 +321,16 @@ export default function AdviceType({ startDate, seriesData }) {
           {adviceTypeData !== null && (
             <>
               <Content>
-                <div
-                  style={{ width: '100%', overflowX: 'scroll' }}
-                  className="w-full bg-white"
-                >
-                  <ApexChart
-                    options={chartData.options}
-                    series={chartData.series}
-                    type="line"
-                    height="350"
-                  />
-                </div>
+                <ChartBox>
+                  <ChartWrap>
+                    <ApexChart
+                      options={chartData.options}
+                      series={chartData.series}
+                      type="line"
+                      height="350"
+                    />
+                  </ChartWrap>
+                </ChartBox>
               </Content>
             </>
           )}
