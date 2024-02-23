@@ -1,5 +1,52 @@
 import { topbnrHiddenState } from '@/lib/recoilAtoms'
+import { Link } from '@nextui-org/link'
 import { useRecoilState } from 'recoil'
+import styled from 'styled-components'
+
+const TopBnrBox = styled.div`
+  border-bottom: 2px solid #b8b8b8;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`
+
+const Wrap = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const BnrArea = styled.div``
+const BtnList = styled.ul`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`
+const BtnItme = styled.li`
+  position: relative;
+
+  a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  &:after {
+    content: '';
+    width: 2px;
+    height: 20px;
+    background: #060024;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -10px;
+  }
+`
 
 export default function TopBnr() {
   const [topbnrHidden, setTopbnrHidden] = useRecoilState(topbnrHiddenState)
@@ -8,36 +55,52 @@ export default function TopBnr() {
     setTopbnrHidden(!topbnrHidden)
   }
 
+  function handleClick(event) {
+    event.preventDefault() // 기본 동작 방지
+    alert('🚧 준비중입니다. 🚧')
+  }
+
   return (
     <>
-      <div id="mainTopBnr" className={`${topbnrHidden ? 'hidden' : 'block'}`}>
-        <div className="relative isolate flex justify-center items-center gap-x-6 overflow-hidden bg-black px-6 py-2.5 sm:px-3.5">
-          <div className="flex flex-wrap items-center flex-3 gap-x-4 gap-y-2 max-width-web">
-            <p className="text-lg text-white">
-              <strong className="font-semibold">H-Class 2023 | </strong>
-              새로운 IT
-            </p>
-            <a
-              href="/consult"
-              className="flex items-center justify-center rounded-full bg-white px-3.5 py-2 font-semibold text-gray-900 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
-            >
-              <span className="text-base">Click me</span>
-              <i className="xi-long-arrow-right" />
-            </a>
-          </div>
-          <div className="absolute top-0 flex justify-end h-full right-2 ">
-            <button
-              type="button"
-              onClick={opBnrClick}
-              className="w-10 h-full flex justify-center items-center focus-visible:outline-offset-[-4px]"
-            >
-              <span className="text-white text-3xl/none">
-                <i className="align-middle xi-close-min" />
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <TopBnrBox
+        id="mainTopBnr"
+        className={`${topbnrHidden ? 'hidden' : 'block'}`}
+      >
+        <Wrap>
+          <BnrArea>
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/main_top_img.png"
+              alt="2022 고객만족브랜드 대상 컴퓨터디자인 교육 부문"
+            />
+          </BnrArea>
+          <BtnList>
+            <BtnItme>
+              <Link href="#" onClick={handleClick}>
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn1.png"
+                  alt="수강료조회"
+                />
+              </Link>
+            </BtnItme>
+            <BtnItme>
+              <Link href="#" onClick={handleClick}>
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn2.png"
+                  alt="위치조회"
+                />
+              </Link>
+            </BtnItme>
+            <BtnItme>
+              <Link href="tel:02-393-4321">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.png"
+                  alt="02)393-4321"
+                />
+              </Link>
+            </BtnItme>
+          </BtnList>
+        </Wrap>
+      </TopBnrBox>
     </>
   )
 }

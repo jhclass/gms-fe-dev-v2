@@ -102,7 +102,7 @@ export default function MainSilder() {
           </SwiperSlide> */}
         </Swiper>
         <div className="wrap">
-          <div className="absolute left-0 z-30 w-full px-6 text-center lg:px-6 xl:px-0 -bottom-8">
+          <div className="absolute bottom-0 left-0 z-30 w-full px-6 text-center lg:px-6 xl:px-0">
             <div className="main_visual_pager"></div>
           </div>
         </div>

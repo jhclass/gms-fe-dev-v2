@@ -49,7 +49,7 @@ export default function Header() {
 
   return (
     <>
-      {/* <MainTopBnr /> */}
+      <MainTopBnr />
       <header
         id="header"
         className="px-0 m-auto ax-w-full h-[8rem] lg:h-[4.5rem] relative z-[40]"
