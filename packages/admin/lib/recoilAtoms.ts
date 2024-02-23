@@ -17,6 +17,7 @@ export const categoryMenuState = atom<{}>({
   default: {
     상담관리: true,
     회계관리: true,
+    통계: true,
   },
 })
 
@@ -47,7 +48,7 @@ export const gradeState = atom({
   default: {
     dev: 0,
     master: 1,
-    admin: 10,
+    general: 10,
     guest: 99,
   },
 })
@@ -292,6 +293,43 @@ export const reqRefundSearchState = atom({
   default: {} as {
     createdAt: []
     stName: string
+  },
+})
+
+export const parformanceFilterActiveState = atom<boolean>({
+  key: 'parformanceFilterActive',
+  default: false,
+})
+export const parformancePageState = atom<number>({
+  key: 'parformancePage',
+  default: 1,
+})
+export const parformanceFilterState = atom<boolean>({
+  key: 'parformanceFilter',
+  default: false,
+})
+export const parformanceSearchState = atom({
+  key: 'parformanceSearch',
+  default: {} as {
+    subjectName: string
+  },
+})
+export const recruitmentFilterActiveState = atom<boolean>({
+  key: 'recruitmentFilterActive',
+  default: false,
+})
+export const recruitmentPageState = atom<number>({
+  key: 'recruitmentPage',
+  default: 1,
+})
+export const recruitmentFilterState = atom<boolean>({
+  key: 'recruitmentFilter',
+  default: false,
+})
+export const recruitmentSearchState = atom({
+  key: 'recruitmentSearch',
+  default: {} as {
+    subjectName: string
   },
 })
 

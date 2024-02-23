@@ -166,7 +166,7 @@ const Troom = styled.div`
   color: inherit;
   min-width: ${1200 * 0.07}px;
 `
-const Tteache = styled.div`
+const Tteacher = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -314,7 +314,7 @@ export default function SubjectFilterTable({
                 <Tdate>개강일</Tdate>
                 <Tdate>종강일</Tdate>
                 <Troom>강의실</Troom>
-                <Tteache>강사명</Tteache>
+                <Tteacher>강사명</Tteacher>
               </TheaderBox>
             </Theader>
             {searchResult?.result !== null &&
@@ -360,7 +360,7 @@ export default function SubjectFilterTable({
                     </Tdate>
                     <Tdate>{item.endDate ? getDate(item.endDate) : '-'}</Tdate>
                     <Troom>{item.roomNum ? item.roomNum : '-'}</Troom>
-                    <Tteache>{item.teacherName}</Tteache>
+                    <Tteacher>{item.teacherName}</Tteacher>
                   </TableRow>
                 </TableItem>
               ))}

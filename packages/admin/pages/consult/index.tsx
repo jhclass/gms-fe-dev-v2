@@ -12,7 +12,7 @@ import {
   consultSearchState,
 } from '@/lib/recoilAtoms'
 import { useRouter } from 'next/router'
-import Layout from './layout'
+import Layout from '@/pages/consult/layout'
 
 const ConBox = styled.div`
   margin: 2rem 0;

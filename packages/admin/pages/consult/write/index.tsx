@@ -37,7 +37,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import Layout from '../layout'
+import Layout from '@/pages/consult/layout'
 
 const ConArea = styled.div`
   width: 100%;

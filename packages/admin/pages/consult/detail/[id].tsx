@@ -45,7 +45,7 @@ import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ConsolutRepeated from '@/components/items/ConsolutRepeated'
-import Layout from '../layout'
+import Layout from '@/pages/consult/layout'
 
 const ConArea = styled.div`
   width: 100%;
@@ -938,7 +938,7 @@ export default function ConsultDetail() {
                   >
                     목록으로
                   </Button2>
-                  {mGrade < grade.admin && (
+                  {mGrade < grade.general && (
                     <Button2
                       buttonType="button"
                       width="100%"

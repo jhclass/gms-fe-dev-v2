@@ -32,6 +32,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
+import useMmeQuery from '@/utils/mMe'
 
 const CateWrap = styled(motion.ul)``
 
@@ -126,6 +127,7 @@ export default function Category() {
               href={category.href}
               iconSrc={category.iconSrc}
               name={category.name}
+              cateGrade={category.grade}
               isActive={active === category.href}
               onClick={() => {
                 handleCategoryClick(category.id, category.resetItems)

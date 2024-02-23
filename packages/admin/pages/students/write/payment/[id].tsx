@@ -1,9 +1,10 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
+import Layout from '@/pages/students/layout'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import DatePicker, { registerLocale } from 'react-datepicker'
+import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
@@ -28,7 +29,6 @@ import {
   SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
-import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Button2 from '@/components/common/Button'
 
 const ConArea = styled.div`
@@ -1005,3 +1005,4 @@ export default function StudentsWritePayment() {
     </>
   )
 }
+StudentsWritePayment.getLayout = page => <Layout>{page}</Layout>

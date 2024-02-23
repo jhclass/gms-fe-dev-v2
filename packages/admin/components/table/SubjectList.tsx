@@ -151,7 +151,7 @@ const Troom = styled.div`
   color: inherit;
   min-width: ${1200 * 0.07}px;
 `
-const Tteache = styled.div`
+const Tteacher = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -227,13 +227,6 @@ export default function SubjectTable() {
   const subjectTotal = data?.seeSubject.totalCount || []
   const subjectData = data?.seeSubject.subject || []
 
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
@@ -280,7 +273,7 @@ export default function SubjectTable() {
                 <Tdate>개강일</Tdate>
                 <Tdate>종강일</Tdate>
                 <Troom>강의실</Troom>
-                <Tteache>강사명</Tteache>
+                <Tteacher>강사명</Tteacher>
               </TheaderBox>
             </Theader>
             {subjectData !== null &&
@@ -326,7 +319,7 @@ export default function SubjectTable() {
                     </Tdate>
                     <Tdate>{item.endDate ? getDate(item.endDate) : '-'}</Tdate>
                     <Troom>{item.roomNum ? item.roomNum : '-'}</Troom>
-                    <Tteache>{item.teacherName}</Tteache>
+                    <Tteacher>{item.teacherName}</Tteacher>
                   </TableRow>
                 </TableItem>
               ))}

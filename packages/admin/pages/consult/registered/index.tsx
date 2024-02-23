@@ -13,7 +13,7 @@ import useMmeQuery from '@/utils/mMe'
 import ConsultationRegistered from '@/components/table/ConsultationRegistered'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import Layout from '../layout'
+import Layout from '@/pages/consult/layout'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -74,7 +74,7 @@ export default function ConsultRegistered() {
     <>
       <MainWrap>
         <Breadcrumb
-          rightArea={mGrade < grade.admin ? true : false}
+          rightArea={mGrade < grade.general ? true : false}
           addRender={
             <DeleteDiv>
               {checkItem?.length !== 0 && (

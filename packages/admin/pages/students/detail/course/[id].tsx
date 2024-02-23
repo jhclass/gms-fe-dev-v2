@@ -3,31 +3,19 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import {
-  Radio,
-  RadioGroup,
-  Button,
-  CheckboxGroup,
-  Checkbox,
-} from '@nextui-org/react'
+import { Radio, RadioGroup, Button } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {
-  ReceiptState,
-  gradeState,
-  selectedPaymentState,
-} from '@/lib/recoilAtoms'
+import { gradeState, selectedPaymentState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
   SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
-import CreateStudentMemo from '@/components/form/CreateStudentMemo'
-import StudentMemo from '@/components/form/StudentMemo'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 
 const ConArea = styled.div`
@@ -612,7 +600,7 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>
-                      {(mGrade < grade.admin || mPart === '교무팀') && (
+                      {(mGrade < grade.general || mPart === '교무팀') && (
                         <Button
                           isDisabled={
                             studentPaymentData?.lectureAssignment === '배정'
@@ -774,14 +762,14 @@ export default function StudentsWrite() {
                         </div>
                       </AreaBox>
                     </FlexBox>
-                    {(mGrade < grade.admin ||
+                    {(mGrade < grade.general ||
                       mPart === '교무팀' ||
                       mPart === '회계팀') && (
                       <BtnBox4
                         $isPayment={studentPaymentDetailData?.length === 0}
                       >
                         {studentPaymentDetailData?.length === 0 &&
-                          (mGrade < grade.admin || mPart === '회계팀') && (
+                          (mGrade < grade.general || mPart === '회계팀') && (
                             <Button
                               size="md"
                               radius="md"
@@ -798,7 +786,7 @@ export default function StudentsWrite() {
                               수강 결제
                             </Button>
                           )}
-                        {(mGrade < grade.admin || mPart === '교무팀') && (
+                        {(mGrade < grade.general || mPart === '교무팀') && (
                           <>
                             <Button
                               isDisabled={
@@ -920,7 +908,7 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>결제 정보</h4>
-                      {(mGrade < grade.admin || mPart === '회계팀') && (
+                      {(mGrade < grade.general || mPart === '회계팀') && (
                         <Button
                           isDisabled={
                             studentPaymentData?.unCollectedAmount === 0
