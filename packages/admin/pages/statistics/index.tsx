@@ -75,7 +75,7 @@ export default function Statistics() {
     name: name,
     data: fillArrayWithNull(sales, 24),
   }))
-  console.log(tempData)
+
   return (
     <>
       <MainWrap>
