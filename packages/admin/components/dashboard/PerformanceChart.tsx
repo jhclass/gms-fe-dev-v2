@@ -241,6 +241,7 @@ export default function AdviceType({ startDate, seriesData }) {
             return val && !val.includes('주차') ? val : ''
           },
         },
+        position: 'left',
       },
       yaxis: {
         title: {
