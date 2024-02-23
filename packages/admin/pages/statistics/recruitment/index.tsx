@@ -10,8 +10,8 @@ import {
   recruitmentFilterState,
 } from '@/lib/recoilAtoms'
 import Layout from '@/pages/statistics/layout'
-import RecruitmentFilter from '@/components/filter/recruitmentFilter'
 import RecruitmentTable from '@/components/table/RecruitmentList'
+import RecruitmentFilter from '@/components/filter/RecruitmentFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
