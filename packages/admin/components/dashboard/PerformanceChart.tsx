@@ -1,10 +1,16 @@
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
 import { DASHBOARD_AT_QUERY } from '@/graphql/queries'
-
+import {
+  addMonths,
+  getWeekOfMonth,
+  addWeeks,
+  endOfMonth,
+  format,
+} from 'date-fns'
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const ConArea = styled.div`
   width: 100%;
@@ -39,7 +45,7 @@ const Content = styled.div`
   }
 `
 
-export default function AdviceType() {
+export default function AdviceType({ startDate, seriesData }) {
   const { loading, error, data } = useQuery(DASHBOARD_AT_QUERY)
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
@@ -118,101 +124,188 @@ export default function AdviceType() {
         '#DF4800',
       ],
       xaxis: {
-        categories: [
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-          '1월',
-          '2월',
-          '3월',
-          '4월',
-          '5월',
-          '6월',
-          '7월',
-          '8월',
-          '9월',
-          '10월',
-        ],
-        tickAmount: 60,
-        // type: 'datetime',
-        // stepSize: 1,
-        // min: new Date('2024.01.01').getTime(),
-        // max: new Date('2024.01.13').getTime(),
-        // labels: {
-        //   formatter: function (value, timestamp, opts) {
-        //     return opts.dateFormatter(new Date(timestamp), 'yy-MM-dd')
-        //   },
-        // },
+        // categories: [
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        //   '1월',
+        //   '2월',
+        //   '3월',
+        //   '4월',
+        //   '5월',
+        //   '6월',
+        //   '7월',
+        //   '8월',
+        //   '9월',
+        //   '10월',
+        // ],
+        tickAmount: 24,
+        type: 'datetime',
+        // stepSize: 4,
+        min: new Date('2024.01.01').getTime(),
+        max: new Date('2024.05.31').getTime(),
+        labels: {
+          formatter: function (value, timestamp, opts) {
+            return opts.dateFormatter(new Date(timestamp), 'yy-MM-dd')
+          },
+        },
       },
     },
   }
+  const [chartData, setChartData] = useState({
+    series: [],
+    options: {
+      chart: {
+        toolbar: {
+          show: false,
+        },
+      },
+      xaxis: {
+        categories: [],
+        labels: {
+          formatter: function (val) {
+            return val && !val.includes('주차') ? val : ''
+          },
+        },
+      },
+      yaxis: {
+        title: {
+          text: '총 매출',
+        },
+      },
+      stroke: {
+        width: 2,
+      },
+      markers: {
+        size: 0,
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5,
+        },
+      },
+      colors: [
+        '#2E93fA',
+        '#80E399',
+        '#ebaf32',
+        '#DE4760',
+        '#705Ecc',
+        '#546E7A',
+        '#66DA26',
+        '#DF4800',
+      ],
+    },
+  })
+
+  useEffect(() => {
+    const generateMonths = start => {
+      let categories = []
+      let currentDate = new Date(startDate)
+      let currentYear = currentDate.getFullYear().toString().substring(2)
+      let currentMonth = ('0' + (currentDate.getMonth() + 1)).slice(-2)
+      let startWeekOfMonth = Math.ceil(currentDate.getDate() / 7)
+
+      for (let i = 0; i < 24; i++) {
+        let weekOfMonth = ((startWeekOfMonth + i - 1) % 4) + 1
+        let monthOffset = Math.floor((startWeekOfMonth + i - 1) / 4)
+        let month = (
+          '0' +
+          (((currentDate.getMonth() + monthOffset) % 12) + 1)
+        ).slice(-2)
+        let yearOffset = Math.floor((currentDate.getMonth() + monthOffset) / 12)
+        let year = (currentDate.getFullYear() + yearOffset)
+          .toString()
+          .substring(2)
+
+        if (weekOfMonth === 1) {
+          categories.push(`${year}.${month}월`)
+        } else {
+          categories.push(`${year}.${month}월 ${weekOfMonth}주차`)
+        }
+      }
+
+      return categories
+    }
+
+    const months = generateMonths(startDate)
+
+    setChartData(prevState => ({
+      ...prevState,
+      series: seriesData,
+      options: {
+        ...prevState.options,
+        xaxis: { ...prevState.options.xaxis, categories: months },
+      },
+    }))
+  }, [startDate])
 
   return (
     <ConArea>
@@ -226,8 +319,8 @@ export default function AdviceType() {
                   className="w-full bg-white"
                 >
                   <ApexChart
-                    options={donutData.options}
-                    series={donutData.series}
+                    options={chartData.options}
+                    series={chartData.series}
                     type="line"
                     height="350"
                   />

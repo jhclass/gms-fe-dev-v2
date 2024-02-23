@@ -51,6 +51,31 @@ export default function Statistics() {
   const [performanceFilter, setPerformanceFilter] =
     useRecoilState(subjectSearchState)
 
+  const fillArrayWithNull = (dataArray, targetLength) => {
+    const nullsToAdd = new Array(
+      Math.max(targetLength - dataArray.length, 0),
+    ).fill(null)
+    return [...dataArray, ...nullsToAdd]
+  }
+  const originalData = [
+    {
+      name: ' A',
+      sales: [10, 20, 30, 40, 50, 60],
+    },
+    {
+      name: 'B',
+      sales: [15, 25, 35, 45, 55, 65],
+    },
+    {
+      name: 'c',
+      sales: [25, 55, 65, 15, 6, 65, 39, 100, 420],
+    },
+  ]
+  const tempData = originalData.map(({ name, sales }) => ({
+    name: name,
+    data: fillArrayWithNull(sales, 24),
+  }))
+  console.log(tempData)
   return (
     <>
       <MainWrap>
@@ -65,7 +90,10 @@ export default function Statistics() {
           setPerformanceFilter={setPerformanceFilter}
         />
         <ConBox>
-          <PerformanceChart />
+          <PerformanceChart
+            startDate={new Date('2024-12-23')}
+            seriesData={tempData}
+          />
         </ConBox>
       </MainWrap>
     </>
