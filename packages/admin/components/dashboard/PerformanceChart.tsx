@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import { Tooltip } from '@nextui-org/react'
+import { ScrollShadow, Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
@@ -35,8 +35,13 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 190px;
 
+  .scrollbar {
+    overflow-y: hidden;
+  }
+`
+const ChartWrap = styled.div`
+  min-width: 1200px;
   .apexcharts-series path {
     stroke-width: 0.3rem;
     @media (max-width: 768px) {
@@ -234,6 +239,7 @@ export default function AdviceType({ startDate, seriesData }) {
             return val && !val.includes('주차') ? val : ''
           },
         },
+        position: 'left',
       },
       yaxis: {
         title: {
@@ -314,17 +320,16 @@ export default function AdviceType({ startDate, seriesData }) {
           {adviceTypeData !== null && (
             <>
               <Content>
-                <div
-                  style={{ width: '100%', overflowX: 'scroll' }}
-                  className="w-full bg-white"
-                >
-                  <ApexChart
-                    options={chartData.options}
-                    series={chartData.series}
-                    type="line"
-                    height="350"
-                  />
-                </div>
+                <ScrollShadow orientation="horizontal" className="scrollbar">
+                  <ChartWrap>
+                    <ApexChart
+                      options={chartData.options}
+                      series={chartData.series}
+                      type="line"
+                      height="350"
+                    />
+                  </ChartWrap>
+                </ScrollShadow>
               </Content>
             </>
           )}
