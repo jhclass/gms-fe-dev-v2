@@ -1169,3 +1169,37 @@ export const CLASS_CANCEL_MUTATION = gql`
     }
   }
 `
+
+// statistics
+export const SEARCH_PAYMENT_MUTATION = gql`
+  mutation Mutation($period: [String]!, $processingManagerId: [Int]!) {
+    searchStudentPayment(
+      period: $period
+      processingManagerId: $processingManagerId
+    ) {
+      data {
+        totalCount
+        totalActualAmount
+        processingManagerId
+        payments {
+          actualAmount
+          createdAt
+          subjectId
+          subject {
+            id
+            subjectName
+            subjectCode
+          }
+          processingManagerId
+          processingManager {
+            mUserId
+            mUsername
+          }
+        }
+      }
+      ok
+      message
+      error
+    }
+  }
+`

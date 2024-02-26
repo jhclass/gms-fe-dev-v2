@@ -245,7 +245,9 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
-                <Link href={href}>{name}</Link>
+                <Link href={href} onClick={e => clickCate(e, cateGrade, href)}>
+                  {name}
+                </Link>
               </CateTitle>
             </CateLink>
 

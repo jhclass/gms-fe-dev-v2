@@ -1,20 +1,11 @@
 import { styled } from 'styled-components'
-import { ScrollShadow, Tooltip } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useQuery } from '@apollo/client'
-import { DASHBOARD_AT_QUERY } from '@/graphql/queries'
-import {
-  addMonths,
-  getWeekOfMonth,
-  addWeeks,
-  endOfMonth,
-  format,
-} from 'date-fns'
+import { ScrollShadow } from '@nextui-org/react'
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const ConArea = styled.div`
   width: 100%;
-  max-width: 1400px;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -31,17 +22,13 @@ const DetailDiv = styled.div`
   }
 `
 const Content = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1;
   width: 100%;
 
-  .scrollbar {
-    overflow-y: hidden;
+  @media (max-width: 768px) {
+    max-width: 1000px;
   }
-`
-const ChartWrap = styled.div`
-  min-width: 1200px;
+
   .apexcharts-series path {
     stroke-width: 0.3rem;
     @media (max-width: 768px) {
@@ -49,290 +36,142 @@ const ChartWrap = styled.div`
     }
   }
 `
+const ChartWrap = styled.div`
+  min-width: 700px;
+`
 
-export default function AdviceType({ startDate, seriesData }) {
-  const { loading, error, data } = useQuery(DASHBOARD_AT_QUERY)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isOpenClick, setIsOpenClick] = useState(false)
-  const adviceTypeData = data?.dashboardAT
+export default function AdviceType({ managerIds, totalAmount, totalCount }) {
+  const {
+    loading: managerLoading,
+    error: managerError,
+    data: managerData,
+  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const managerList = managerData?.seeManageUser || []
+  const managerUsernames = managerIds.map(
+    id => managerList.find(user => user.id === id)?.mUsername,
+  )
 
-  const donutData = {
+  const countValue = Math.max(...totalCount)
+  const maxCountValue = countValue <= 10 ? 10 : countValue
+  const amountValue = Math.max(...totalAmount)
+  const maxAmountValue = amountValue <= 10000000 ? 10000000 : amountValue
+
+  const chartData = {
     series: [
       {
-        name: 'A',
-        data: [10, 41, 35, 51, 49, 62, 67, 91, 148, 70, 15, 20],
+        name: '총 건수',
+        type: 'column',
+        data: totalCount,
       },
       {
-        name: 'B',
-        data: [
-          20, 31, 15, 88, 29, 52, 69, 81, 128, 29, 57, 56, 81, 128, 29, 57, 56,
-        ],
+        name: '총 매출',
+        type: 'column',
+        data: totalAmount,
       },
       {
-        name: 'C',
-        data: [60, 21, 15, 18, 29, 52, 169, 81, 48, 100, 2, 56],
-      },
-      {
-        name: 'D',
-        data: [10, 31, 85, 28, 79, 152, 89, 81, 98, 34, 0, 0],
-      },
-      {
-        name: 'E',
-        data: [40, 71, 25, 98, 129, 32, 62, 81, 190, 12, 67, 22],
-      },
-      {
-        name: 'F',
-        data: [30, 151, 85, 18, 19, 132, 22, 61, 190, 0, 54, 78],
+        name: '총 매출(라인)',
+        type: 'line',
+        data: totalAmount,
       },
     ],
     options: {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
       chart: {
-        stroke: {
-          width: 20,
-        },
-        // width: '100%',
-        height: '100%',
-        toolbar: {
-          show: false,
-          tools: {
-            download: false,
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      grid: {
-        row: {
-          colors: ['#f3f3f3', 'transparent'],
-          opacity: 0.5,
-        },
-      },
-      colors: [
-        '#2E93fA',
-        '#80E399',
-        '#ebaf32',
-        '#DE4760',
-        '#705Ecc',
-        '#546E7A',
-        '#66DA26',
-        '#DF4800',
-      ],
-      xaxis: {
-        // categories: [
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        //   '1월',
-        //   '2월',
-        //   '3월',
-        //   '4월',
-        //   '5월',
-        //   '6월',
-        //   '7월',
-        //   '8월',
-        //   '9월',
-        //   '10월',
-        // ],
-        tickAmount: 24,
-        type: 'datetime',
-        // stepSize: 4,
-        min: new Date('2024.01.01').getTime(),
-        max: new Date('2024.05.31').getTime(),
-        labels: {
-          formatter: function (value, timestamp, opts) {
-            return opts.dateFormatter(new Date(timestamp), 'yy-MM-dd')
-          },
-        },
-      },
-    },
-  }
-  const [chartData, setChartData] = useState({
-    series: [],
-    options: {
-      chart: {
+        height: 350,
+        width: '100%',
         toolbar: {
           show: false,
         },
       },
-      xaxis: {
-        categories: [],
-        labels: {
-          formatter: function (val) {
-            return val && !val.includes('주차') ? val : ''
-          },
-        },
-        position: 'left',
-      },
-      yaxis: {
-        title: {
-          text: '총 매출',
+      plotOptions: {
+        bar: {
+          columnWidth: '30%',
         },
       },
       stroke: {
-        width: 2,
+        width: [0, 1, 1],
       },
-      markers: {
-        size: 0,
-      },
-      grid: {
-        row: {
-          colors: ['#f3f3f3', 'transparent'],
-          opacity: 0.5,
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1],
+        formatter: function (val, { seriesIndex }) {
+          if (seriesIndex > 0) {
+            return val / 10000 + '만원'
+          }
+          return val
+        },
+        style: {
+          fontSize: '14px',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          fontWeight: 'bold',
+          colors: undefined,
+        },
+        background: {
+          enabled: true,
+          foreColor: '#fff',
+          padding: 4,
+          borderRadius: 2,
+          borderWidth: 1,
+          borderColor: '#fff',
+          opacity: 0.9,
+          dropShadow: {
+            enabled: false,
+            top: 1,
+            left: 1,
+            blur: 1,
+            color: '#000',
+            opacity: 0.45,
+          },
         },
       },
+      labels: managerUsernames,
+      yaxis: [
+        {
+          title: {
+            text: '총 건수',
+          },
+          max: maxCountValue,
+        },
+        {
+          opposite: true,
+          title: {
+            text: '총 금액 (1만원 단위)',
+          },
+          labels: {
+            formatter: function (value) {
+              return (value / 10000).toFixed(0).toLocaleString()
+            },
+          },
+          max: maxAmountValue,
+        },
+        {
+          show: false,
+          max: maxAmountValue,
+        },
+      ],
       colors: [
-        '#2E93fA',
-        '#80E399',
-        '#ebaf32',
-        '#DE4760',
-        '#705Ecc',
-        '#546E7A',
-        '#66DA26',
-        '#DF4800',
+        'rgba(46,147,250,0.85)',
+        'rgba(0,227,150,0.85)',
+        'rgba(0,227,150,0.85)',
       ],
     },
-  })
-
-  useEffect(() => {
-    const generateMonths = start => {
-      let categories = []
-      let currentDate = new Date(startDate)
-      let currentYear = currentDate.getFullYear().toString().substring(2)
-      let currentMonth = ('0' + (currentDate.getMonth() + 1)).slice(-2)
-      let startWeekOfMonth = Math.ceil(currentDate.getDate() / 7)
-
-      for (let i = 0; i < 24; i++) {
-        let weekOfMonth = ((startWeekOfMonth + i - 1) % 4) + 1
-        let monthOffset = Math.floor((startWeekOfMonth + i - 1) / 4)
-        let month = (
-          '0' +
-          (((currentDate.getMonth() + monthOffset) % 12) + 1)
-        ).slice(-2)
-        let yearOffset = Math.floor((currentDate.getMonth() + monthOffset) / 12)
-        let year = (currentDate.getFullYear() + yearOffset)
-          .toString()
-          .substring(2)
-
-        if (weekOfMonth === 1) {
-          categories.push(`${year}.${month}월`)
-        } else {
-          categories.push(`${year}.${month}월 ${weekOfMonth}주차`)
-        }
-      }
-
-      return categories
-    }
-
-    const months = generateMonths(startDate)
-
-    setChartData(prevState => ({
-      ...prevState,
-      series: seriesData,
-      options: {
-        ...prevState.options,
-        xaxis: { ...prevState.options.xaxis, categories: months },
-      },
-    }))
-  }, [startDate])
+  }
 
   return (
     <ConArea>
       <DetailBox>
         <DetailDiv>
-          {adviceTypeData !== null && (
-            <>
-              <Content>
-                <ScrollShadow orientation="horizontal" className="scrollbar">
-                  <ChartWrap>
-                    <ApexChart
-                      options={chartData.options}
-                      series={chartData.series}
-                      type="line"
-                      height="350"
-                    />
-                  </ChartWrap>
-                </ScrollShadow>
-              </Content>
-            </>
-          )}
+          <Content>
+            <ScrollShadow orientation="horizontal" className="scrollbar">
+              <ChartWrap>
+                <ApexChart
+                  options={chartData.options}
+                  series={chartData.series}
+                  type="bar"
+                  height="350"
+                />
+              </ChartWrap>
+            </ScrollShadow>
+          </Content>
         </DetailDiv>
       </DetailBox>
     </ConArea>
