@@ -23,9 +23,5 @@ export default function AccountingLayout({ children }) {
     return null
   }
 
-  if (mGrade === grade.dev) {
-    return <main>{children}</main>
-  } else {
-    return <MainWrap>준비중입니다.</MainWrap>
-  }
+  return <main>{children}</main>
 }
