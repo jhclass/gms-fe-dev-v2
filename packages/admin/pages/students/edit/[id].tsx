@@ -311,15 +311,24 @@ export default function StudentsEditInfo() {
                       <Button
                         size="md"
                         radius="md"
-                        variant="solid"
+                        variant={noDouble ? 'bordered' : 'solid'}
                         color="primary"
-                        className="w-full text-white bg-flag1"
+                        className={`w-full ${
+                          noDouble ? 'text-[#007de9]' : 'bg-flag1 text-white'
+                        }  `}
                         onClick={() => {
                           if (!noDouble) {
                             const checkName = getValues('name')
                             const checkPhone = getValues('phoneNum1')
                             if (checkName !== '' && checkPhone !== '') {
-                              clickDoubleCheck(checkName, checkPhone)
+                              if (
+                                studentData.name == checkName &&
+                                studentData.phoneNum1 == checkPhone
+                              ) {
+                                setNoDouble(true)
+                              } else {
+                                clickDoubleCheck(checkName, checkPhone)
+                              }
                             } else {
                               alert('이름과 연락처를 작성해주세요.')
                             }
@@ -329,7 +338,9 @@ export default function StudentsEditInfo() {
                           }
                         }}
                       >
-                        {noDouble ? '이름, 전화번호 변경' : '중복확인'}
+                        {noDouble
+                          ? `확인 완료 - 재입력시 클릭해주세요.`
+                          : '중복확인'}
                       </Button>
                       {noDoubleError && (
                         <p className="px-2 pt-2 text-xs text-red-500">
