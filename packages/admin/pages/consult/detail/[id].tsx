@@ -253,7 +253,7 @@ export default function ConsultDetail() {
 
     if (studentState) {
       setStudentState(studentState[0])
-      setMemoList(studentState.consultationMemo || [])
+      setMemoList(studentState[0].consultationMemo || [])
 
       const consultationData = await fetchRelatedData(
         studentState[0].phoneNum1,
