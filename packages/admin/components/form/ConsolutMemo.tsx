@@ -185,7 +185,6 @@ export default function ConsultMemo(props) {
       return idF
     }
   }
-
   return (
     <DetailForm onSubmit={handleSubmit(onSubmit)}>
       <Input
