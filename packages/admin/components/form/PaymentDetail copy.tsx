@@ -837,7 +837,7 @@ export default function StudentsWriteCourse({
                           ?.filter(
                             manager =>
                               manager.mGrade > grade.master ||
-                              manager.mPart === '영업팀',
+                              manager.mPart.includes('영업팀'),
                           )
                           .map(item => (
                             <SelectItem key={item.id} value={item.id}>

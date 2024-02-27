@@ -230,7 +230,10 @@ export default function StudentsTable() {
                   limit={currentLimit}
                 />
               ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
+            {totalCount === 0 ||
+              (totalCount === null && (
+                <Nolist>등록된 수강생이 없습니다.</Nolist>
+              ))}
           </TableWrap>
         </ScrollShadow>
         {totalCount > 0 && (

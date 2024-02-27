@@ -497,7 +497,7 @@ export default function ConsultWirte() {
                         ?.filter(
                           manager =>
                             manager.mGrade === grade.master ||
-                            manager.mPart === '영업팀',
+                            manager.mPart.includes('영업팀'),
                         )
                         .map(item => (
                           <SelectItem

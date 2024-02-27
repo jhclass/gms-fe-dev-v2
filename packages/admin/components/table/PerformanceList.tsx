@@ -14,44 +14,38 @@ const ListBox = styled.div`
   padding: 1.5rem;
 `
 
-export default function PerformanceList({ ids }) {
+export default function PerformanceList({ ids, dateRange }) {
   const [searchPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
-
   const [allData, setAllData] = useState([])
   const [totalAmount, setTotalAmount] = useState([])
   const [countTotal, setCountTotal] = useState([])
   const [idList, setIdList] = useState([])
 
   useEffect(() => {
-    if (ids) {
-      const currentDate = new Date()
-      const sixMonthsAgoDate = new Date()
-      sixMonthsAgoDate.setMonth(currentDate.getMonth() - 6)
-      searchPayment({
-        variables: {
-          period: [sixMonthsAgoDate, currentDate],
-          processingManagerId: ids,
-        },
-        onCompleted: result => {
-          if (result.searchStudentPayment.ok) {
-            setAllData(result.searchStudentPayment.data)
-            const managerId = result.searchStudentPayment.data?.map(
-              item => item.processingManagerId,
-            )
-            const totalAmount = result.searchStudentPayment.data?.map(
-              item => item.totalActualAmount,
-            )
-            const totalCount = result.searchStudentPayment.data?.map(
-              item => item.totalCount,
-            )
-            setTotalAmount(totalAmount)
-            setCountTotal(totalCount)
-            setIdList(managerId)
-          }
-        },
-      })
-    }
-  }, [ids])
+    searchPayment({
+      variables: {
+        period: dateRange,
+        processingManagerId: ids,
+      },
+      onCompleted: result => {
+        if (result.searchStudentPayment.ok) {
+          setAllData(result.searchStudentPayment.data)
+          const managerId = result.searchStudentPayment.data?.map(
+            item => item.processingManagerId,
+          )
+          const totalAmount = result.searchStudentPayment.data?.map(
+            item => item.totalActualAmount,
+          )
+          const totalCount = result.searchStudentPayment.data?.map(
+            item => item.totalCount,
+          )
+          setTotalAmount(totalAmount)
+          setCountTotal(totalCount)
+          setIdList(managerId)
+        }
+      },
+    })
+  }, [ids, dateRange])
 
   return (
     allData?.length > 0 && (

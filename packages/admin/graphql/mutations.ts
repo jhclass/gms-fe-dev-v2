@@ -26,21 +26,19 @@ export const USER_LOGS_MUTATION = gql`
 export const EDIT_MANAGE_USER_MUTATION = gql`
   mutation Mutation(
     $mUsername: String
-    $mPassword: String
     $mGrade: Int
     $mRank: String
     $mPhoneNum: String
     $mPhoneNumCompany: String
     $mPhoneNumInside: String
     $mPhoneNumFriend: String
-    $mPart: String
+    $mPart: [String]
     $mAvatar: String
     $mJoiningDate: String
     $mAddresses: String
   ) {
     editManageUser(
       mUsername: $mUsername
-      mPassword: $mPassword
       mGrade: $mGrade
       mRank: $mRank
       mPhoneNum: $mPhoneNum

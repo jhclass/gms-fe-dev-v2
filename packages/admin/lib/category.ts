@@ -238,7 +238,15 @@ const category: Category[] = [
     name: '통계',
     grade: '영업팀',
     exposure: true,
-    resetItems: [],
+    resetItems: [
+      'resetParformanceFilterActiveState',
+      'resetParformanceFilterState',
+      'resetParformanceSearchState',
+      'resetRecruitmentFilterActiveState',
+      'resetRecruitmentPageState',
+      'resetRecruitmentFilterState',
+      'resetRecruitmentSearchState',
+    ],
     children: [
       {
         href: '/',

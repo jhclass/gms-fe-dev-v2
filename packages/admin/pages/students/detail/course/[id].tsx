@@ -600,7 +600,7 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>
-                      {(mGrade < grade.general || mPart === '교무팀') && (
+                      {(mGrade < grade.general || mPart.includes('교무팀')) && (
                         <Button
                           isDisabled={
                             studentPaymentData?.lectureAssignment === '배정'
@@ -763,19 +763,20 @@ export default function StudentsWrite() {
                       </AreaBox>
                     </FlexBox>
                     {(mGrade < grade.general ||
-                      mPart === '교무팀' ||
-                      mPart === '회계팀') && (
+                      mPart.includes('교무팀') ||
+                      mPart.includes('회계팀')) && (
                       <BtnBox4
                         $isPayment={studentPaymentDetailData?.length === 0}
                       >
                         {studentPaymentDetailData?.length === 0 &&
-                          (mGrade < grade.general || mPart === '회계팀') && (
+                          (mGrade < grade.general ||
+                            mPart.includes('회계팀')) && (
                             <Button
                               size="md"
                               radius="md"
                               variant="solid"
                               className={`w-full text-white bg-flag1 ${
-                                mPart === '회계팀' && 'lg:w-[50%]'
+                                mPart.includes('회계팀') && 'lg:w-[50%]'
                               }`}
                               onClick={() =>
                                 router.push(
@@ -786,7 +787,8 @@ export default function StudentsWrite() {
                               수강 결제
                             </Button>
                           )}
-                        {(mGrade < grade.general || mPart === '교무팀') && (
+                        {(mGrade < grade.general ||
+                          mPart.includes('교무팀')) && (
                           <>
                             <Button
                               isDisabled={
@@ -908,7 +910,7 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>결제 정보</h4>
-                      {(mGrade < grade.general || mPart === '회계팀') && (
+                      {(mGrade < grade.general || mPart.includes('회계팀')) && (
                         <Button
                           isDisabled={
                             studentPaymentData?.unCollectedAmount === 0
