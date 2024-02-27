@@ -266,9 +266,11 @@ export default function StudentsWrite() {
                     <Button
                       size="md"
                       radius="md"
-                      variant="solid"
+                      variant={noDouble ? 'bordered' : 'solid'}
                       color="primary"
-                      className="w-full text-white bg-flag1"
+                      className={`w-full ${
+                        noDouble ? 'text-[#007de9]' : 'bg-flag1 text-white'
+                      }  `}
                       onClick={() => {
                         if (!noDouble) {
                           const checkName = getValues('name')
@@ -284,7 +286,9 @@ export default function StudentsWrite() {
                         }
                       }}
                     >
-                      {noDouble ? '다시입력하기' : '중복확인'}
+                      {noDouble
+                        ? `확인 완료 - 재입력시 클릭해주세요.`
+                        : '중복확인'}
                     </Button>
                     {noDoubleError && (
                       <p className="px-2 pt-2 text-xs text-red-500">
