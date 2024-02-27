@@ -300,10 +300,6 @@ export const parformanceFilterActiveState = atom<boolean>({
   key: 'parformanceFilterActive',
   default: false,
 })
-export const parformancePageState = atom<number>({
-  key: 'parformancePage',
-  default: 1,
-})
 export const parformanceFilterState = atom<boolean>({
   key: 'parformanceFilter',
   default: false,
@@ -311,7 +307,8 @@ export const parformanceFilterState = atom<boolean>({
 export const parformanceSearchState = atom({
   key: 'parformanceSearch',
   default: {} as {
-    subjectName: string
+    period: [string]
+    processingManagerId: [number]
   },
 })
 export const recruitmentFilterActiveState = atom<boolean>({

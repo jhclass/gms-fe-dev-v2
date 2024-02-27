@@ -147,7 +147,7 @@ export default function CategoryItem<CategoryItemProps>({
   const clickCate = (e, grade, link) => {
     e.preventDefault()
     if (grade) {
-      if (mGrade <= 1 || grade === mPart) {
+      if (mGrade <= 1 || mPart.includes(grade)) {
         router.push(link)
       } else {
         alert('🚧 접근 권한이 없습니다. 🚧')

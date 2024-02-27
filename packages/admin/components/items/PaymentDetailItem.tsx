@@ -276,7 +276,7 @@ export default function StudentPaymentDetailItem({
                       >
                         영수증 인쇄
                       </Button> */}
-                {(mGrade < grade.general || mPart === '회계팀') && (
+                {(mGrade < grade.general || mPart.includes('회계팀')) && (
                   <Button
                     isDisabled={detailtData.reqRefund ? true : false}
                     size="md"

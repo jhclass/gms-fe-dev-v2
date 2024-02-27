@@ -4,31 +4,52 @@ import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { subStatusState, subjectPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import { Input } from '@nextui-org/react'
+import { Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { subDays, getYear, addMonths, differenceInDays } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
 registerLocale('ko', ko)
 const _ = require('lodash')
 type SubjectsFilterProps = {
   isActive: boolean
 }
 
+const TopInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
+`
+const Noti = styled.p`
+  span {
+    color: red;
+  }
+`
+
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
 `
 const FilterForm = styled.form`
   display: flex;
   width: 100%;
   gap: 1.5rem;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
+
   flex-direction: column;
 
   @media (max-width: 768px) {
@@ -49,6 +70,12 @@ const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+
+  .react-datepicker__close-icon {
+    height: 40px;
+    bottom: 0;
+    top: auto;
+  }
 `
 
 const BtnBox = styled.div`
@@ -61,8 +88,11 @@ const FilterLabel = styled.label`
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #11181c;
-  padding-bottom: 0.1rem;
   display: block;
+
+  span {
+    color: red;
+  }
 `
 
 const FilterVariants = {
@@ -85,25 +115,54 @@ export default function PerformanceFilter({
   isActive,
   onFilterSearch,
   setPerformanceFilter,
+  performanceFilter,
+  clickReset,
+  setClickReset,
 }) {
-  const subStatus = useRecoilValue(subStatusState)
-  const subjectPage = useResetRecoilState(subjectPageState)
+  const router = useRouter()
+  const {
+    loading: managerLoading,
+    error: managerError,
+    data: managerData,
+  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const managerList = managerData?.seeManageUser || []
   const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
+  const [manager, setManager] = useState(new Set([]))
   const years = _.range(1970, getYear(new Date()) + 1, 1)
+  const [maxDate, setMaxDate] = useState(new Date())
 
   const {
     register,
     handleSubmit,
-    control,
     reset,
-    formState: { isDirty },
+    control,
+    formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      selectDate: '-',
-      subjectName: '',
+      period: '',
+      processingManagerId: '',
     },
   })
+
+  useEffect(() => {
+    if (performanceFilter === null || clickReset) {
+      setManager(new Set([]))
+      setSearchDateRange([null, null])
+      reset()
+    }
+  }, [router, clickReset])
+
+  useEffect(() => {
+    if (startDate) {
+      const calculatedMaxDate = subDays(addMonths(startDate, 6), 1)
+      setMaxDate(
+        calculatedMaxDate > new Date() ? new Date() : calculatedMaxDate,
+      )
+    } else {
+      setMaxDate(new Date())
+    }
+  }, [startDate])
 
   const validateDateRange = (dateRange, message) => {
     if (dateRange !== undefined) {
@@ -121,26 +180,31 @@ export default function PerformanceFilter({
   const onSubmit = data => {
     if (isDirty) {
       const paymentDate = validateDateRange(
-        data.selectDate,
+        data.period,
         '검색 기간의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
-          selectDate: data.selectDate,
-          subjectName: data.subjectName === '' ? null : data.subjectName,
+          period: data.period,
+          processingManagerId: data.processingManagerId
+            .split(',')
+            .map(item => parseInt(item, 10)),
         }
-
-        const days = differenceInDays(new Date(endDate), new Date(startDate))
         setPerformanceFilter(filter)
         onFilterSearch(true)
-        subjectPage()
+        setClickReset(false)
       }
     }
   }
 
   const handleReset = () => {
     setSearchDateRange([null, null])
+    setManager(new Set([]))
     reset()
+  }
+
+  const handleManagerChange = e => {
+    setManager(new Set(e.target.value.split(',')))
   }
 
   return (
@@ -150,12 +214,23 @@ export default function PerformanceFilter({
         initial="hidden"
         animate={isActive ? 'visible' : 'hidden'}
       >
+        <TopInfo>
+          <Noti>
+            <span>*</span> 는 필수입력입니다.
+          </Noti>
+        </TopInfo>
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
               <Controller
                 control={control}
-                name="selectDate"
+                name="period"
+                rules={{
+                  required: {
+                    value: true,
+                    message: '검색 기간을 선택해주세요',
+                  },
+                }}
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -176,7 +251,9 @@ export default function PerformanceFilter({
                     )}
                     selectsRange={true}
                     isClearable
-                    maxDate={subDays(addMonths(startDate, 1), 1)}
+                    // maxDate={subDays(addMonths(startDate, 6), 1)}
+                    // maxDate={new Date()}
+                    maxDate={maxDate}
                     locale="ko"
                     startDate={startDate}
                     endDate={endDate}
@@ -188,35 +265,87 @@ export default function PerformanceFilter({
                       } else {
                         date = [e[0], null]
                       }
-
                       field.onChange(e)
                     }}
                     placeholderText="기간을 선택해주세요."
                     dateFormat="yyyy/MM/dd"
                     customInput={
                       <Input
-                        label="검색 기간"
+                        label={
+                          <FilterLabel>
+                            검색 기간<span>*</span>
+                          </FilterLabel>
+                        }
                         labelPlacement="outside"
                         type="text"
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
-                        {...register('selectDate')}
+                        {...register('period', {
+                          required: {
+                            value: true,
+                            message: '검색 기간을 선택해주세요',
+                          },
+                        })}
                       />
                     }
                   />
                 )}
               />
+              {errors.period && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.period.message)}
+                </p>
+              )}
             </ItemBox>
             <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="과목명"
-                {...register('subjectName')}
+              <Controller
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: '사원을 1명이상 선택해주세요',
+                  },
+                }}
+                name="processingManagerId"
+                defaultValue={'-'}
+                render={({ field }) => (
+                  <Select
+                    labelPlacement="outside"
+                    label={
+                      <FilterLabel>
+                        사원명<span>*</span>
+                      </FilterLabel>
+                    }
+                    placeholder=" "
+                    className="w-full"
+                    isMultiline={true}
+                    selectionMode="multiple"
+                    defaultValue={''}
+                    variant="bordered"
+                    selectedKeys={manager}
+                    onChange={value => {
+                      if (value.target.value !== '') {
+                        field.onChange(value)
+                        handleManagerChange(value)
+                      }
+                    }}
+                  >
+                    {managerList
+                      ?.filter(manager => manager.mPart.includes('영업팀'))
+                      .map(item => (
+                        <SelectItem key={item.id} value={item.mUsername}>
+                          {item.mUsername}
+                        </SelectItem>
+                      ))}
+                  </Select>
+                )}
               />
+              {errors.processingManagerId && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.processingManagerId.message)}
+                </p>
+              )}
             </ItemBox>
           </BoxTop>
           <BtnBox>

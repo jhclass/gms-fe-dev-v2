@@ -428,7 +428,7 @@ export default function ConsultFilter({
                       ?.filter(
                         manager =>
                           manager.mGrade === grade.master ||
-                          manager.mPart === '영업팀',
+                          manager.mPart.includes('영업팀'),
                       )
                       .map(item => (
                         <SelectItem key={item.mUsername} value={item.mUsername}>

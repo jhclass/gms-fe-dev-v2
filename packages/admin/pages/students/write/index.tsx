@@ -132,7 +132,7 @@ export default function StudentsWrite() {
   const { errors, isDirty } = formState
   const [birthdayDate, setBirthdayDate] = useState(null)
   const [noDouble, setNoDouble] = useState(null)
-
+  const [noDoubleError, setNoDoubleError] = useState(false)
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const onSubmit = data => {
@@ -162,10 +162,10 @@ export default function StudentsWrite() {
       onCompleted: result => {
         if (result.doubleCheck.ok) {
           setNoDouble(true)
-          alert(`신규 수강생 입니다. \n등록이 가능합니다.`)
+          setNoDoubleError(false)
         } else {
           setNoDouble(false)
-          alert('이미 존재하는 수강생 입니다. \n수강생관리를 이용해주세요.')
+          setNoDoubleError(true)
           reset()
           setBirthdayDate(null)
         }
@@ -189,9 +189,10 @@ export default function StudentsWrite() {
                 <FlexBox>
                   <AreaBox>
                     <Input
+                      readOnly={noDouble ? true : false}
                       labelPlacement="outside"
                       placeholder="이름"
-                      variant="bordered"
+                      variant={noDouble ? 'faded' : 'bordered'}
                       radius="md"
                       type="text"
                       label={
@@ -218,9 +219,10 @@ export default function StudentsWrite() {
                   </AreaBox>
                   <AreaBox>
                     <Input
+                      readOnly={noDouble ? true : false}
                       labelPlacement="outside"
                       placeholder="연락처"
-                      variant="bordered"
+                      variant={noDouble ? 'faded' : 'bordered'}
                       radius="md"
                       type="text"
                       label={
@@ -258,49 +260,39 @@ export default function StudentsWrite() {
                       </p>
                     )}
                   </AreaBox>
-                  <AreaSmallBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="smsAgreement"
-                        defaultValue={'동의'}
-                        rules={{
-                          required: {
-                            value: true,
-                            message: 'SMS 수신여부를 선택해주세요.',
-                          },
-                        }}
-                        render={({ field }) => (
-                          <RadioGroup
-                            label={
-                              <FilterLabel>
-                                SMS 수신 여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            defaultValue={'동의'}
-                            onValueChange={value => {
-                              field.onChange(value)
-                            }}
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        )}
-                      />
-                    </RadioBox>
-                    {errors.smsAgreement && (
+                </FlexBox>
+                <BtnBox>
+                  <AreaBox>
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="solid"
+                      color="primary"
+                      className="w-full text-white bg-flag1"
+                      onClick={() => {
+                        if (!noDouble) {
+                          const checkName = getValues('name')
+                          const checkPhone = getValues('phoneNum1')
+                          if (checkName !== '' && checkPhone !== '') {
+                            clickDoubleCheck(checkName, checkPhone)
+                          } else {
+                            alert('이름과 연락처를 작성해주세요.')
+                          }
+                        } else {
+                          setNoDouble(false)
+                          reset()
+                        }
+                      }}
+                    >
+                      {noDouble ? '다시입력하기' : '중복확인'}
+                    </Button>
+                    {noDoubleError && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.smsAgreement.message)}
+                        이미 존재하는 수강생 입니다. 수강생관리를 이용해주세요.
                       </p>
                     )}
-                  </AreaSmallBox>
-                </FlexBox>
+                  </AreaBox>
+                </BtnBox>
                 <FlexBox>
                   <AreaBox>
                     <DatePickerBox>
@@ -392,40 +384,61 @@ export default function StudentsWrite() {
                       </p>
                     )}
                   </AreaBox>
+                  <AreaSmallBox>
+                    <RadioBox>
+                      <Controller
+                        control={control}
+                        name="smsAgreement"
+                        defaultValue={'동의'}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: 'SMS 수신여부를 선택해주세요.',
+                          },
+                        }}
+                        render={({ field }) => (
+                          <RadioGroup
+                            label={
+                              <FilterLabel>
+                                SMS 수신 여부<span>*</span>
+                              </FilterLabel>
+                            }
+                            orientation="horizontal"
+                            className="gap-[0.65rem]"
+                            defaultValue={'동의'}
+                            onValueChange={value => {
+                              field.onChange(value)
+                            }}
+                          >
+                            <Radio key={'동의'} value={'동의'}>
+                              동의
+                            </Radio>
+                            <Radio key={'비동의'} value={'비동의'}>
+                              비동의
+                            </Radio>
+                          </RadioGroup>
+                        )}
+                      />
+                    </RadioBox>
+                    {errors.smsAgreement && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.smsAgreement.message)}
+                      </p>
+                    )}
+                  </AreaSmallBox>
                 </FlexBox>
                 <BtnBox>
-                  {noDouble ? (
-                    <Button2
-                      buttonType="submit"
-                      width="100%"
-                      height="2.5rem"
-                      typeBorder={true}
-                      fontColor="#fff"
-                      bgColor="#007de9"
-                    >
-                      등록
-                    </Button2>
-                  ) : (
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      color="primary"
-                      className="w-full text-white bg-flag1"
-                      onClick={() => {
-                        const checkName = getValues('name')
-                        const checkPhone = getValues('phoneNum1')
-                        if (checkName !== '' && checkPhone !== '') {
-                          clickDoubleCheck(checkName, checkPhone)
-                        } else {
-                          alert('이름과 연락처를 작성해주세요.')
-                        }
-                      }}
-                    >
-                      중복확인
-                    </Button>
-                  )}
-
+                  <Button
+                    isDisabled={noDouble ? false : true}
+                    type="submit"
+                    size="md"
+                    radius="md"
+                    variant="solid"
+                    color="primary"
+                    className="w-full text-white"
+                  >
+                    등록
+                  </Button>
                   <Button2
                     buttonType="button"
                     width="100%"

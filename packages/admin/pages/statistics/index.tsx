@@ -3,9 +3,12 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
 import useMmeQuery from '@/utils/mMe'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import {
   gradeState,
+  parformanceFilterActiveState,
+  parformanceFilterState,
+  parformanceSearchState,
   subjectFilterActiveState,
   subjectFilterState,
   subjectSearchState,
@@ -19,11 +22,18 @@ import { useMutation, useQuery } from '@apollo/client'
 import PerformanceBox from '@/components/table/PerformanceBox'
 import { useEffect, useState } from 'react'
 import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
+import { useRouter } from 'next/router'
+import { Button } from '@nextui-org/react'
 
 const ConBox = styled.div`
   margin: 2rem 0;
   z-index: 0;
   position: relative;
+`
+const DeleteDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `
 const ActiveIcon = styled(motion.i)`
   color: #fff;
@@ -41,24 +51,34 @@ const IconVariants = {
 }
 
 export default function Statistics() {
+  const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const {
-    data: seeManageUserData,
-    error,
-    loading: seeMansgeuserLoading,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const [filterActive, setFilterActive] = useRecoilState(
-    subjectFilterActiveState,
+  const { data, error, loading } = useQuery(SEE_MANAGEUSER_QUERY)
+  const [filterActive, setFilterActive] = useState(true)
+  const [filterSearch, setFilterSearch] = useState(false)
+  const [performanceFilter, setPerformanceFilter] = useState(null)
+  const [clickReset, setClickReset] = useState(false)
+  const managerList = data?.seeManageUser.filter(
+    user => user.mPart.includes('영업팀') || user.mGrade === 1,
   )
-  const [filterSearch, setFilterSearch] = useRecoilState(subjectFilterState)
-  const [performanceFilter, setPerformanceFilter] =
-    useRecoilState(subjectSearchState)
-  const managerList = seeManageUserData?.seeManageUser.filter(
-    user => user.mPart === '영업팀' || user.mGrade === 1,
-  )
-  const ids = managerList?.map(user => user.id)
+  const [ids, setIds] = useState(null)
+  const [dateRange, setDateRange] = useState(null)
+
+  useEffect(() => {
+    if (performanceFilter === null) {
+      const allIds = managerList?.map(user => user.id)
+      const currentDate = new Date()
+      const sixMonthsAgoDate = new Date()
+      sixMonthsAgoDate.setMonth(currentDate.getMonth() - 6)
+      setIds(allIds)
+      setDateRange([sixMonthsAgoDate, currentDate])
+    } else {
+      setIds(performanceFilter.processingManagerId)
+      setDateRange(performanceFilter.period)
+    }
+  }, [router, performanceFilter, data])
 
   return (
     <>
@@ -67,14 +87,39 @@ export default function Statistics() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           rightArea={true}
+          addRender={
+            <DeleteDiv>
+              {performanceFilter !== null && (
+                <Button
+                  size="sm"
+                  radius="sm"
+                  variant="bordered"
+                  color="primary"
+                  className="bg-white min-w-unit-1"
+                  onClick={() => {
+                    setFilterActive(true)
+                    setFilterSearch(false)
+                    setPerformanceFilter(null)
+                    setClickReset(true)
+                  }}
+                  startContent={<i className="xi-redo" />}
+                ></Button>
+              )}
+            </DeleteDiv>
+          }
         />
         <PerformanceFilter
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setPerformanceFilter={setPerformanceFilter}
+          performanceFilter={performanceFilter}
+          clickReset={clickReset}
+          setClickReset={setClickReset}
         />
         <ConBox>
-          <PerformanceList ids={ids} />
+          {ids && dateRange && (
+            <PerformanceList ids={ids} dateRange={dateRange} />
+          )}
         </ConBox>
       </MainWrap>
     </>

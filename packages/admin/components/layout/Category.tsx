@@ -6,10 +6,17 @@ import {
   consultFilterState,
   consultPageState,
   consultSearchState,
+  parformanceFilterActiveState,
+  parformanceFilterState,
+  parformanceSearchState,
   paymentFilterActiveState,
   paymentFilterState,
   paymentPageState,
   paymentSearchState,
+  recruitmentFilterActiveState,
+  recruitmentFilterState,
+  recruitmentPageState,
+  recruitmentSearchState,
   refundFilterActiveState,
   refundFilterState,
   refundPageState,
@@ -66,6 +73,25 @@ export default function Category() {
   )
   const resetReqRefundFilterSearch = useResetRecoilState(reqRefundFilterState)
   const resetReqRefundFilter = useResetRecoilState(reqRefundSearchState)
+  const resetParformanceFilterActiveState = useResetRecoilState(
+    parformanceFilterActiveState,
+  )
+  const resetParformanceFilterState = useResetRecoilState(
+    parformanceFilterState,
+  )
+  const resetParformanceSearchState = useResetRecoilState(
+    parformanceSearchState,
+  )
+  const resetRecruitmentFilterActiveState = useResetRecoilState(
+    recruitmentFilterActiveState,
+  )
+  const resetRecruitmentPageState = useResetRecoilState(recruitmentPageState)
+  const resetRecruitmentFilterState = useResetRecoilState(
+    recruitmentFilterState,
+  )
+  const resetRecruitmentSearchState = useResetRecoilState(
+    recruitmentSearchState,
+  )
 
   const resetFunctions = {
     resetConsultPage,
@@ -92,6 +118,13 @@ export default function Category() {
     resetReqRefundFilterActive,
     resetReqRefundFilterSearch,
     resetReqRefundFilter,
+    resetParformanceFilterActiveState,
+    resetParformanceFilterState,
+    resetParformanceSearchState,
+    resetRecruitmentFilterActiveState,
+    resetRecruitmentPageState,
+    resetRecruitmentFilterState,
+    resetRecruitmentSearchState,
   }
 
   const router = useRouter()

@@ -929,7 +929,11 @@ export default function StudentPaymentForm({
                     render={({ field, fieldState }) => (
                       <Select
                         labelPlacement="outside"
-                        label="수강 담당자"
+                        label={
+                          <FilterLabel>
+                            수강 담당자<span>*</span>
+                          </FilterLabel>
+                        }
                         placeholder=" "
                         className="w-full"
                         variant="bordered"
@@ -952,7 +956,7 @@ export default function StudentPaymentForm({
                           ?.filter(
                             manager =>
                               manager.mGrade === grade.master ||
-                              manager.mPart === '영업팀',
+                              manager.mPart.includes('영업팀'),
                           )
                           .map(item => (
                             <SelectItem key={item.id} value={item.id}>
