@@ -193,7 +193,7 @@ export default function StudentsTable() {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{totalCount}</span>건
+          총 <span>{totalCount === null ? '0' : totalCount}</span>건
         </Ttotal>
         <ColorHelp>
           <ColorCip>
