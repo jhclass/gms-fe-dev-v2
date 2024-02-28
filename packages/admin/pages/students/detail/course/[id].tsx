@@ -13,6 +13,8 @@ import { gradeState, selectedPaymentState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_PAYMENT_MUTATION,
   SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
@@ -180,9 +182,7 @@ export default function StudentsWrite() {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
-  const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [selectedPayment, setSelectedPayment] =
-    useRecoilState(selectedPaymentState)
+  const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
   const {
     loading: managerLoading,
@@ -194,34 +194,32 @@ export default function StudentsWrite() {
   const [updateStudentCourseMutation] = useMutation(
     UPDATE_STUDENT_COURSE_MUTATION,
   )
+  const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [classCancelMutation] = useMutation(CLASS_CANCEL_MUTATION)
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
+
   useEffect(() => {
-    searchStudentMutation({
-      variables: {
-        searchStudentId: parseInt(studentId),
-      },
-      onCompleted: data => {
-        if (data.searchStudent.ok) {
-          setStudentData(data.searchStudent?.student[0])
-          setStudentPaymentData(
-            data.searchStudent?.student[0].studentPayment[selectedPayment],
-          )
-          setStudentSubjectData(
-            data.searchStudent?.student[0].studentPayment[selectedPayment]
-              ?.subject,
-          )
-          setStudentPaymentDetailData(
-            data.searchStudent?.student[0].studentPayment[selectedPayment]
-              ?.paymentDetail,
-          )
-        }
-      },
-    })
-  }, [router, studentPaymentData, selectedPayment])
+    if (paymentId !== null) {
+      searchStudentPayment({
+        variables: {
+          searchStudentPaymentId: parseInt(paymentId),
+        },
+        onCompleted: data => {
+          if (data.searchStudentPayment.ok) {
+            setStudentPaymentData(data.searchStudentPayment?.data)
+            setStudentData(data.searchStudentPayment?.data?.student)
+            setStudentSubjectData(data.searchStudentPayment?.data?.subject)
+            setStudentPaymentDetailData(
+              data.searchStudentPayment?.data?.paymentDetail,
+            )
+          }
+        },
+      })
+    }
+  }, [router, paymentId])
 
   const clickLectureAssignment = () => {
     if (studentPaymentData.lectureAssignment === '배정') {
@@ -238,14 +236,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.editStudentPayment.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
-
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
                     )
@@ -271,13 +268,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.editStudentPayment.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
                     )
@@ -305,13 +302,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.classCancellation.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(`${studentData.name}학생 이수처리 취소`)
                     alert('이수처리 취소되었습니다.')
                   }
@@ -333,13 +330,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.classCancellation.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(`${studentData.name}학생 이수처리`)
                     alert('이수처리 되었습니다.')
                   }
@@ -367,20 +364,24 @@ export default function StudentsWrite() {
             if (result.classCancellation.ok) {
               searchStudentMutation({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentId: parseInt(studentData.id),
                 },
                 onCompleted: data => {
                   if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
-                    setStudentPaymentData(
-                      data.searchStudent?.student[0].studentPayment[
-                        selectedPayment
-                      ],
-                    )
-                    userLogs(
-                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
-                    )
-                    alert('중도포기 철회 되었습니다.')
+                    searchStudentPayment({
+                      variables: {
+                        searchStudentPaymentId: parseInt(paymentId),
+                      },
+                      onCompleted: data => {
+                        if (data.searchStudentPayment.ok) {
+                          setStudentPaymentData(data.searchStudentPayment?.data)
+                          userLogs(
+                            `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
+                          )
+                          alert('중도포기 철회 되었습니다.')
+                        }
+                      },
+                    })
                   }
                 },
               })
@@ -400,18 +401,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.classCancellation.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
-                    setStudentPaymentData(
-                      data.searchStudent?.student[0].studentPayment[
-                        selectedPayment
-                      ],
-                    )
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
                     )
@@ -439,18 +435,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.classCancellation.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
-                    setStudentPaymentData(
-                      data.searchStudent?.student[0].studentPayment[
-                        selectedPayment
-                      ],
-                    )
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
                     )
@@ -474,18 +465,13 @@ export default function StudentsWrite() {
           },
           onCompleted: result => {
             if (result.classCancellation.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    setStudentData(data.searchStudent?.student[0])
-                    setStudentPaymentData(
-                      data.searchStudent?.student[0].studentPayment[
-                        selectedPayment
-                      ],
-                    )
+                  if (data.searchStudentPayment.ok) {
+                    setStudentPaymentData(data.searchStudentPayment?.data)
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
                     )
@@ -615,7 +601,7 @@ export default function StudentsWrite() {
                           onClick={() => {
                             {
                               router.push(
-                                `/students/edit/course/${studentData?.id}`,
+                                `/students/edit/course/${studentPaymentData?.id}`,
                               )
                             }
                           }}
@@ -780,7 +766,7 @@ export default function StudentsWrite() {
                               }`}
                               onClick={() =>
                                 router.push(
-                                  `/students/write/payment/${studentData?.id}`,
+                                  `/students/write/payment/${paymentId}`,
                                 )
                               }
                             >
@@ -924,7 +910,7 @@ export default function StudentsWrite() {
                           onClick={() => {
                             {
                               router.push(
-                                `/students/write/payment/${studentData?.id}`,
+                                `/students/write/payment/${paymentId}`,
                               )
                             }
                           }}

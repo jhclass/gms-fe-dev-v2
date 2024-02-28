@@ -11,6 +11,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Layout from '@/pages/students/layout'
 import {
+  SEARCH_PAYMENT_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
@@ -145,10 +146,10 @@ const LineBox = styled.div`
 
 export default function StudentsWriteCourse() {
   const router = useRouter()
-  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const [selectedPayment, setSelectedPayment] =
     useRecoilState(selectedPaymentState)
-  const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
+  const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
   const {
     loading: managerLoading,
@@ -161,20 +162,20 @@ export default function StudentsWriteCourse() {
   const [studentPaymentData, setStudentPaymentData] = useState(null)
 
   useEffect(() => {
-    searchStudentPayment({
-      variables: {
-        searchStudentId: parseInt(studentId),
-      },
-      onCompleted: data => {
-        if (data.searchStudent.ok) {
-          setStudentData(data.searchStudent?.student[0])
-          setStudentPaymentData(
-            data.searchStudent?.student[0].studentPayment[selectedPayment],
-          )
-        }
-      },
-    })
-  }, [router])
+    if (paymentId !== null) {
+      searchStudentPayment({
+        variables: {
+          searchStudentPaymentId: parseInt(paymentId),
+        },
+        onCompleted: data => {
+          if (data.searchStudentPayment.ok) {
+            setStudentData(data.searchStudentPayment?.data?.student)
+            setStudentPaymentData(data.searchStudentPayment?.data)
+          }
+        },
+      })
+    }
+  }, [router, paymentId])
 
   useEffect(() => {
     searchSubject({

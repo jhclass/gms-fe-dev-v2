@@ -296,6 +296,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
           tuitionFee
           subject {
             subjectName
+            id
           }
           subDiv
           unCollectedAmount

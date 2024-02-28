@@ -1061,6 +1061,8 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         studentPaymentId
         updatedAt
         studentPayment {
+          amountReceived
+          processingManagerId
           id
           subjectId
           subject {
@@ -1068,6 +1070,170 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
             subjectName
           }
         }
+      }
+    }
+  }
+`
+export const SEARCH_PAYMENT_MUTATION = gql`
+  mutation SearchStudentPayment($searchStudentPaymentId: Int!) {
+    searchStudentPayment(id: $searchStudentPaymentId) {
+      ok
+      message
+      error
+      data {
+        actualAmount
+        amountReceived
+        campus
+        cardAmount
+        cashAmount
+        classCode
+        courseComplete
+        createdAt
+        discountAmount
+        dueDate
+        employment
+        id
+        lectureAssignment
+        paymentDate
+        paymentDetail {
+          id
+          cashOrCard
+          cardCompany
+          cardNum
+          installment
+          ApprovalNum
+          amountPayment
+          paymentDate
+          bankName
+          depositorName
+          depositAmount
+          depositDate
+          studentPaymentId
+          receiver {
+            id
+            mUserId
+            mUsername
+          }
+          receiverId
+          reqRefund
+          reqRefundManager
+          reqRefundDate
+          refundApproval
+          refundManager
+          refundApprovalDate
+          createdAt
+          updatedAt
+          studentId
+          stName
+          cashReceipts
+        }
+        processingManagerId
+        seScore
+        situationReport
+        student {
+          birthday
+          createdAt
+          id
+          name
+          phoneNum1
+          updatedAt
+          writer
+        }
+        studentId
+        subDiv
+        subject {
+          subjectName
+          subjectCode
+          subDiv
+          round
+          id
+          fee
+        }
+        subjectId
+        tuitionFee
+        unCollectedAmount
+        updatedAt
+      }
+    }
+  }
+`
+export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
+  mutation SearchPaymentDetail($searchPaymentDetailId: Int) {
+    searchPaymentDetail(id: $searchPaymentDetailId) {
+      totalCount
+      ok
+      message
+      error
+      PaymentDetail {
+        ApprovalNum
+        amountPayment
+        bankName
+        cardNum
+        cardCompany
+        cashOrCard
+        cashReceipts
+        createdAt
+        depositAmount
+        depositDate
+        depositorName
+        id
+        installment
+        paymentDate
+        receiver {
+          mUserId
+        }
+        receiverId
+        refundApproval
+        refundApprovalDate
+        refundManager
+        reqRefund
+        reqRefundDate
+        reqRefundManager
+        stName
+        studentId
+        studentPayment {
+          id
+          actualAmount
+          amountReceived
+          campus
+          cardAmount
+          cashAmount
+          classCode
+          courseComplete
+          createdAt
+          discountAmount
+          employment
+          dueDate
+          lectureAssignment
+          paymentDate
+          processingManagerId
+          seScore
+          situationReport
+          studentId
+          student {
+            birthday
+            createdAt
+            id
+            name
+            phoneNum1
+            updatedAt
+          }
+          subDiv
+          updatedAt
+          unCollectedAmount
+          tuitionFee
+          subjectId
+          subject {
+            subjectCode
+            subjectName
+            id
+            subDiv
+            fee
+            round
+          }
+        }
+        studentPaymentId
+        updatedAt
       }
     }
   }
@@ -1175,9 +1341,9 @@ export const CLASS_CANCEL_MUTATION = gql`
 `
 
 // statistics
-export const SEARCH_PAYMENT_MUTATION = gql`
+export const SALES_STATISTICS_MUTATION = gql`
   mutation Mutation($period: [String]!, $processingManagerId: [Int]!) {
-    searchStudentPayment(
+    salesStatistics(
       period: $period
       processingManagerId: $processingManagerId
     ) {

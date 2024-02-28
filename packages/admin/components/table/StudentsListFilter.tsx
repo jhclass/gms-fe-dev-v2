@@ -243,7 +243,7 @@ export default function StudentsFilterTable({
                 <Tnum>No</Tnum>
                 <Tbirthday>생년월일</Tbirthday>
                 <Tname>이름</Tname>
-                <TsubjectTotal>수강수</TsubjectTotal>
+                <TsubjectTotal>수강횟수</TsubjectTotal>
                 <Tphone>연락처</Tphone>
                 <Tsms>SMS여부</Tsms>
                 <Tmanager>담당자</Tmanager>

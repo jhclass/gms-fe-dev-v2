@@ -173,7 +173,7 @@ export default function StudentPaymentForm({
       cashAmount: studentPaymentData?.cashAmount,
       cardAmount: studentPaymentData?.cardAmount,
       discountAmount: studentPaymentData?.discountAmount,
-      dueDate: studentData?.dueDate,
+      dueDate: studentPaymentData?.dueDate,
       subDiv: studentPaymentData?.subDiv,
       discount: studentPaymentData?.discountAmount,
       discountUnit: '%',
@@ -221,10 +221,13 @@ export default function StudentPaymentForm({
       const date = parseInt(studentPaymentData?.paymentDate)
       setPaymentDateSelect(date)
     }
-    if (studentData?.dueDate === null || studentData?.dueDate === undefined) {
+    if (
+      studentPaymentData?.dueDate === null ||
+      studentPaymentData?.dueDate === undefined
+    ) {
       setDueDateSelect(null)
     } else {
-      const date = parseInt(studentData?.dueDate)
+      const date = parseInt(studentPaymentData?.dueDate)
       setDueDateSelect(date)
     }
     if (
@@ -469,7 +472,9 @@ export default function StudentPaymentForm({
                     labelPlacement="outside"
                     className="max-w-full"
                     variant={
-                      studentData.lectureAssignment ? 'faded' : 'bordered'
+                      studentPaymentData.lectureAssignment
+                        ? 'faded'
+                        : 'bordered'
                     }
                     minRows={1}
                     onClick={() => clickSubject()}
@@ -621,11 +626,15 @@ export default function StudentPaymentForm({
               <FlexBox>
                 <AreaBox>
                   <Input
-                    isReadOnly={studentData.lectureAssignment ? true : false}
+                    isReadOnly={
+                      studentPaymentData.lectureAssignment ? true : false
+                    }
                     labelPlacement="outside"
                     placeholder="할인"
                     variant={
-                      studentData.lectureAssignment ? 'faded' : 'bordered'
+                      studentPaymentData.lectureAssignment
+                        ? 'faded'
+                        : 'bordered'
                     }
                     radius="md"
                     type="number"
@@ -646,7 +655,9 @@ export default function StudentPaymentForm({
                         render={({ field, fieldState }) => (
                           <Select
                             isDisabled={
-                              studentData.lectureAssignment ? true : false
+                              studentPaymentData.lectureAssignment
+                                ? true
+                                : false
                             }
                             labelPlacement="outside"
                             label={<span style={{ display: 'none' }}></span>}
@@ -685,11 +696,15 @@ export default function StudentPaymentForm({
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    isReadOnly={studentData.lectureAssignment ? true : false}
+                    isReadOnly={
+                      studentPaymentData.lectureAssignment ? true : false
+                    }
                     labelPlacement="outside"
                     placeholder="할인된 수강료"
                     variant={
-                      studentData.lectureAssignment ? 'faded' : 'bordered'
+                      studentPaymentData.lectureAssignment
+                        ? 'faded'
+                        : 'bordered'
                     }
                     radius="md"
                     type="number"
