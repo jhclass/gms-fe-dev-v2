@@ -26,6 +26,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 
 import {
   CREATE_PAYMENT_DETAIL_MUTATION,
+  SEARCH_PAYMENT_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
@@ -155,8 +156,8 @@ const LineBox = styled.div`
 export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
+  const paymentId = typeof router.query.id === 'string' ? router.query.id : null
+  const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [createPaymentDetail] = useMutation(CREATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const {
@@ -191,23 +192,21 @@ export default function StudentsWritePayment() {
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
-    searchStudentPayment({
-      variables: {
-        searchStudentId: parseInt(studentId),
-      },
-      onCompleted: result => {
-        if (result.searchStudent.ok) {
-          setStudentData(result.searchStudent?.student[0])
-          setStudentPaymentData(
-            result.searchStudent?.student[0].studentPayment[0],
-          )
-          setStudentSubjectData(
-            result.searchStudent.student[0].studentPayment[0]?.subject,
-          )
-        }
-      },
-    })
-  }, [router])
+    if (paymentId !== null) {
+      searchStudentPayment({
+        variables: {
+          searchStudentPaymentId: parseInt(paymentId),
+        },
+        onCompleted: data => {
+          if (data.searchStudentPayment.ok) {
+            setStudentPaymentData(data.searchStudentPayment?.data)
+            setStudentData(data.searchStudentPayment?.data?.student)
+            setStudentSubjectData(data.searchStudentPayment?.data?.subject)
+          }
+        },
+      })
+    }
+  }, [router, paymentId])
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -271,17 +270,14 @@ export default function StudentsWritePayment() {
                 if (result2.editStudentPayment.ok) {
                   searchStudentPayment({
                     variables: {
-                      searchStudentId: parseInt(studentId),
+                      searchStudentPaymentId: parseInt(paymentId),
                     },
                     onCompleted: data => {
-                      if (data.searchStudent.ok) {
-                        setStudentData(data.searchStudent?.student[0])
-                        setStudentPaymentData(
-                          data.searchStudent?.student[0].studentPayment[0],
-                        )
+                      if (data.searchStudentPayment.ok) {
+                        setStudentPaymentData(data.searchStudentPayment?.data)
+                        setStudentData(data.searchStudentPayment?.data?.student)
                         setStudentSubjectData(
-                          data.searchStudent?.student[0].studentPayment[0]
-                            .subject,
+                          data.searchStudentPayment?.data?.subject,
                         )
                         userLogs(`${studentData?.name} 카드 결제 `)
                         reset()
@@ -334,17 +330,14 @@ export default function StudentsWritePayment() {
                 if (result2.editStudentPayment.ok) {
                   searchStudentPayment({
                     variables: {
-                      searchStudentId: parseInt(studentId),
+                      searchStudentPaymentId: parseInt(paymentId),
                     },
                     onCompleted: data => {
-                      if (data.searchStudent.ok) {
-                        setStudentData(data.searchStudent?.student[0])
-                        setStudentPaymentData(
-                          data.searchStudent?.student[0].studentPayment[0],
-                        )
+                      if (data.searchStudentPayment.ok) {
+                        setStudentPaymentData(data.searchStudentPayment?.data)
+                        setStudentData(data.searchStudentPayment?.data?.student)
                         setStudentSubjectData(
-                          data.searchStudent?.student[0].studentPayment[0]
-                            .subject,
+                          data.searchStudentPayment?.data?.subject,
                         )
                         userLogs(`${studentData?.name} 현금 결제 `)
                         reset()
@@ -961,7 +954,7 @@ export default function StudentsWritePayment() {
                     </AreaBox> */}
                     </FlexBox>
                     <FlexBox>
-                      <AreaSmallBox style={{ width: '35%' }}>
+                      <AreaBox>
                         <RadioBox>
                           <Controller
                             control={control}
@@ -1003,7 +996,7 @@ export default function StudentsWritePayment() {
                             {String(errors.cashReceiptType.message)}
                           </p>
                         )}
-                      </AreaSmallBox>
+                      </AreaBox>
                       <AreaBox>
                         <Input
                           labelPlacement="outside"

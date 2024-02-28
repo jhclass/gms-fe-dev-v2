@@ -29,6 +29,8 @@ import {
   selectedPaymentDetailState,
 } from '@/lib/recoilAtoms'
 import {
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_PAYMENT_DETAIL_MUTATION,
   SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_PAYMENT_DETAIL_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
@@ -158,12 +160,17 @@ const LineBox = styled.div`
 export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const paymentDetailId =
+    typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
   const [updatePaymentDetail] = useMutation(UPDATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const [selectedPaymentDeta, setSelectedPaymentDeta] = useRecoilState(
     selectedPaymentDetailState,
+  )
+
+  const [searchPaymentDetailMutation] = useMutation(
+    SEARCH_PAYMENT_DETAIL_MUTATION,
   )
   const {
     loading: managerLoading,
@@ -180,8 +187,7 @@ export default function StudentsWritePayment() {
     handleSubmit,
     formState: { isDirty, dirtyFields, errors },
   } = useForm()
-  const [studentData, setStudentData] = useState(null)
-  const [studentSubjectData, setStudentSubjectData] = useState(null)
+  const [paymentDetailData, setPaymentDetailData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
@@ -194,39 +200,38 @@ export default function StudentsWritePayment() {
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
-    searchStudentPayment({
+    searchPaymentDetailMutation({
       variables: {
-        searchStudentId: parseInt(studentId),
+        searchPaymentDetailId: parseInt(paymentDetailId),
       },
       onCompleted: data => {
-        if (data.searchStudent.ok) {
-          setStudentData(data.searchStudent?.student[0])
+        if (data.searchPaymentDetail.ok) {
+          setPaymentDetailData(data.searchPaymentDetail.PaymentDetail[0])
           setStudentPaymentData(
-            data.searchStudent?.student[0].studentPayment[0],
-          )
-          setStudentSubjectData(
-            data.searchStudent?.student[0].studentPayment[0].subject,
+            data.searchPaymentDetail.PaymentDetail[0].studentPayment,
           )
         }
       },
     })
+  }, [router])
 
-    if (selectedPaymentDeta !== null) {
-      setPaymentType(selectedPaymentDeta.cashOrCard)
-      setCashReceiptType(selectedPaymentDeta?.cashReceipts[0])
-      if (selectedPaymentDeta.cashOrCard === '카드') {
-        setCardName(selectedPaymentDeta.cardCompany)
-        const date = parseInt(selectedPaymentDeta?.paymentDate)
+  useEffect(() => {
+    if (paymentDetailData !== null) {
+      setPaymentType(paymentDetailData.cashOrCard)
+      setCashReceiptType(paymentDetailData?.cashReceipts[0])
+      if (paymentDetailData.cashOrCard === '카드') {
+        setCardName(paymentDetailData.cardCompany)
+        const date = parseInt(paymentDetailData?.paymentDate)
         setCardPaymentDate(date)
         setValue('paymentDate', date)
       } else {
-        setBankName(selectedPaymentDeta.bankName)
-        const date = parseInt(selectedPaymentDeta?.depositDate)
+        setBankName(paymentDetailData.bankName)
+        const date = parseInt(paymentDetailData?.depositDate)
         setCashDepositDate(date)
         setValue('depositDate', date)
       }
     }
-  }, [router])
+  }, [paymentDetailData])
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -263,9 +268,9 @@ export default function StudentsWritePayment() {
         if (paymentType === '카드') {
           updatePaymentDetail({
             variables: {
-              editPaymentDetailId: selectedPaymentDeta?.id,
+              editPaymentDetailId: paymentDetailData?.id,
               cashOrCard: '카드',
-              studentPaymentId: studentPaymentData?.id,
+              studentPaymentId: paymentDetailData?.studentPaymentId,
               cardCompany: data.cardCompany,
               cardNum: data.cardNum.trim(),
               amountPayment: parseInt(data.amountPayment),
@@ -290,10 +295,10 @@ export default function StudentsWritePayment() {
                   variables: {
                     amountReceived:
                       studentPaymentData?.amountReceived -
-                      selectedPaymentDeta.amountPayment +
+                      paymentDetailData.amountPayment +
                       parseInt(data.amountPayment),
-                    editStudentPaymentId: parseInt(studentPaymentData?.id),
-                    subjectId: studentSubjectData.id,
+                    editStudentPaymentId: paymentDetailData?.studentPaymentId,
+                    subjectId: studentPaymentData?.subject.id,
                     processingManagerId:
                       studentPaymentData?.processingManagerId,
                   },
@@ -301,7 +306,7 @@ export default function StudentsWritePayment() {
                     if (result.editStudentPayment.ok) {
                       const dirtyFieldsArray = [...Object.keys(dirtyFields)]
                       userLogs(
-                        `${studentData?.name} 카드 결제 수정`,
+                        `${paymentDetailData?.id} 카드 결제 수정`,
                         dirtyFieldsArray.join(', '),
                       )
                       router.back()
@@ -314,9 +319,9 @@ export default function StudentsWritePayment() {
         } else {
           updatePaymentDetail({
             variables: {
-              editPaymentDetailId: selectedPaymentDeta?.id,
+              editPaymentDetailId: paymentDetailData?.id,
               cashOrCard: '현금',
-              studentPaymentId: parseInt(studentPaymentData?.id),
+              studentPaymentId: paymentDetailData?.studentPaymentId,
               bankName: data.bankName,
               depositorName: data.depositorName.trim(),
               depositAmount: parseInt(data.depositAmount),
@@ -339,10 +344,10 @@ export default function StudentsWritePayment() {
                   variables: {
                     amountReceived:
                       studentPaymentData?.amountReceived -
-                      selectedPaymentDeta.depositAmount +
+                      paymentDetailData.depositAmount +
                       parseInt(data.depositAmount),
-                    editStudentPaymentId: parseInt(studentPaymentData?.id),
-                    subjectId: studentSubjectData.id,
+                    editStudentPaymentId: paymentDetailData?.studentPaymentId,
+                    subjectId: studentPaymentData?.subject.id,
                     processingManagerId:
                       studentPaymentData?.processingManagerId,
                   },
@@ -350,7 +355,7 @@ export default function StudentsWritePayment() {
                     if (result.editStudentPayment.ok) {
                       const dirtyFieldsArray = [...Object.keys(dirtyFields)]
                       userLogs(
-                        `${studentData?.name} 현금 결제 수정 `,
+                        `${paymentDetailData?.id} 현금 결제 수정 `,
                         dirtyFieldsArray.join(', '),
                       )
                       router.back()
@@ -387,7 +392,7 @@ export default function StudentsWritePayment() {
               </Noti>
               <UpdateTime>
                 <span>최근 업데이트 일시 :</span>
-                {formatDate(studentData?.updatedAt, true)}
+                {formatDate(studentPaymentData?.student?.updatedAt, true)}
               </UpdateTime>
             </TopInfo>
             <DetailDiv>
@@ -400,7 +405,7 @@ export default function StudentsWritePayment() {
                     <FilterLabel>
                       이름<span>*</span>
                     </FilterLabel>
-                    <LineBox>{studentData?.name}</LineBox>
+                    <LineBox>{studentPaymentData?.student?.name}</LineBox>
                   </div>
                 </AreaBox>
                 <AreaBox>
@@ -409,7 +414,7 @@ export default function StudentsWritePayment() {
                       생년월일<span>*</span>
                     </FilterLabel>
                     <LineBox>
-                      {formatDate(studentData?.birthday, false)}
+                      {formatDate(studentPaymentData?.student?.birthday, false)}
                     </LineBox>
                   </div>
                 </AreaBox>
@@ -418,7 +423,7 @@ export default function StudentsWritePayment() {
                     <FilterLabel>
                       연락처<span>*</span>
                     </FilterLabel>
-                    <LineBox>{studentData?.phoneNum1}</LineBox>
+                    <LineBox>{studentPaymentData?.student?.phoneNum1}</LineBox>
                   </div>
                 </AreaBox>
               </FlexBox>
@@ -433,13 +438,15 @@ export default function StudentsWritePayment() {
                 <AreaSmallBox style={{ minWidth: '20%' }}>
                   <div>
                     <FilterLabel>수강 구분</FilterLabel>
-                    <LineBox>{studentSubjectData?.subDiv}</LineBox>
+                    <LineBox>{studentPaymentData?.subDiv}</LineBox>
                   </div>
                 </AreaSmallBox>
                 <AreaBox>
                   <div>
                     <FilterLabel>과정명</FilterLabel>
-                    <LineBox>{studentSubjectData?.subjectName}</LineBox>
+                    <LineBox>
+                      {studentPaymentData?.subject?.subjectName}
+                    </LineBox>
                   </div>
                 </AreaBox>
                 <AreaSmallBox style={{ width: '20%' }}>
@@ -516,7 +523,7 @@ export default function StudentsWritePayment() {
               </FlexBox>
             </DetailDiv>
           </DetailBox>
-          {selectedPaymentDeta !== null && (
+          {paymentDetailData !== null && (
             <form onSubmit={handleSubmit(onPaymentDetailSubmit)}>
               <DetailBox>
                 <DetailDiv>
@@ -584,7 +591,7 @@ export default function StudentsWritePayment() {
                       </RadioBox>
                     </AreaBox>
                   </FlexBox>
-                  {paymentType === '카드' && (
+                  {paymentDetailData.cashOrCard === '카드' && (
                     <>
                       <FlexBox>
                         <AreaBox>
@@ -592,7 +599,7 @@ export default function StudentsWritePayment() {
                             control={control}
                             name="cardCompany"
                             rules={{ required: '카드사를 선택해주세요.' }}
-                            defaultValue={selectedPaymentDeta.cardCompany}
+                            defaultValue={paymentDetailData.cardCompany}
                             render={({ field, fieldState }) => (
                               <Select
                                 labelPlacement="outside"
@@ -605,7 +612,7 @@ export default function StudentsWritePayment() {
                                 className="w-full"
                                 variant="bordered"
                                 defaultSelectedKeys={[
-                                  selectedPaymentDeta.cardCompany,
+                                  paymentDetailData.cardCompany,
                                 ]}
                                 selectedKeys={[cardName]}
                                 onChange={value => {
@@ -643,7 +650,7 @@ export default function StudentsWritePayment() {
                                 카드번호<span>*</span>
                               </FilterLabel>
                             }
-                            defaultValue={selectedPaymentDeta.cardNum}
+                            defaultValue={paymentDetailData.cardNum}
                             {...register('cardNum', {
                               required: '카드반호를 작성해주세요.',
                             })}
@@ -666,7 +673,7 @@ export default function StudentsWritePayment() {
                                 할부기간<span>*</span>
                               </FilterLabel>
                             }
-                            defaultValue={selectedPaymentDeta.installment}
+                            defaultValue={paymentDetailData.installment}
                             endContent={<InputText>개월</InputText>}
                             {...register('installment')}
                           />
@@ -683,7 +690,7 @@ export default function StudentsWritePayment() {
                                 결제금액<span>*</span>
                               </FilterLabel>
                             }
-                            defaultValue={selectedPaymentDeta.amountPayment}
+                            defaultValue={paymentDetailData.amountPayment}
                             {...register('amountPayment', {
                               required: '결제금액을 작성해주세요.',
                             })}
@@ -708,7 +715,7 @@ export default function StudentsWritePayment() {
                                 승인번호<span>*</span>
                               </FilterLabel>
                             }
-                            defaultValue={selectedPaymentDeta.ApprovalNum}
+                            defaultValue={paymentDetailData.ApprovalNum}
                             {...register('approvalNum', {
                               required: '승인번호를 작성해주세요.',
                             })}
@@ -785,7 +792,7 @@ export default function StudentsWritePayment() {
                       </FlexBox>
                     </>
                   )}
-                  {paymentType === '현금' && (
+                  {paymentDetailData.cashOrCard === '현금' && (
                     <>
                       <FlexBox>
                         <AreaBox>
@@ -793,7 +800,7 @@ export default function StudentsWritePayment() {
                             control={control}
                             name="bankName"
                             rules={{ required: '입금은행을 선택해주세요.' }}
-                            defaultValue={selectedPaymentDeta.bankName}
+                            defaultValue={paymentDetailData.bankName}
                             render={({ field, fieldState }) => (
                               <Select
                                 labelPlacement="outside"
@@ -806,7 +813,7 @@ export default function StudentsWritePayment() {
                                 className="w-full"
                                 variant="bordered"
                                 defaultSelectedKeys={[
-                                  selectedPaymentDeta.bankName,
+                                  paymentDetailData.bankName,
                                 ]}
                                 selectedKeys={[bankName]}
                                 onChange={value => {
@@ -844,7 +851,7 @@ export default function StudentsWritePayment() {
                                 입금자명<span>*</span>
                               </FilterLabel>
                             }
-                            defaultValue={selectedPaymentDeta.depositorName}
+                            defaultValue={paymentDetailData.depositorName}
                             {...register('depositorName', {
                               required: '입금자를 작성해주세요.',
                             })}
@@ -867,7 +874,7 @@ export default function StudentsWritePayment() {
                                 입금금액<span>*</span>
                               </FilterLabel>
                             }
-                            defaultValue={selectedPaymentDeta.depositAmount}
+                            defaultValue={paymentDetailData.depositAmount}
                             {...register('depositAmount', {
                               required: '입금 금액을 작성해주세요.',
                             })}
@@ -939,7 +946,7 @@ export default function StudentsWritePayment() {
                       </AreaBox> */}
                       </FlexBox>
                       <FlexBox>
-                        <AreaSmallBox style={{ width: '35%' }}>
+                        <AreaBox>
                           <RadioBox>
                             <Controller
                               control={control}
@@ -947,7 +954,7 @@ export default function StudentsWritePayment() {
                               rules={{
                                 required: '현금영수증 타입을 선택해주세요.',
                               }}
-                              defaultValue={selectedPaymentDeta.cashReceipts[0]}
+                              defaultValue={paymentDetailData.cashReceipts[0]}
                               render={({ field }) => (
                                 <RadioGroup
                                   label={
@@ -984,7 +991,7 @@ export default function StudentsWritePayment() {
                               {String(errors.cashReceiptType.message)}
                             </p>
                           )}
-                        </AreaSmallBox>
+                        </AreaBox>
                         <AreaBox>
                           <Input
                             labelPlacement="outside"
@@ -992,7 +999,7 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
-                            defaultValue={selectedPaymentDeta.cashReceipts[1]}
+                            defaultValue={paymentDetailData.cashReceipts[1]}
                             label={
                               <FilterLabel>
                                 현금영수증번호<span>*</span>
@@ -1019,7 +1026,7 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
-                            defaultValue={selectedPaymentDeta.cashReceipts[2]}
+                            defaultValue={paymentDetailData.cashReceipts[2]}
                             label={
                               <FilterLabel>
                                 현금영수증 승인번호<span>*</span>

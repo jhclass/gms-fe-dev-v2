@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PerformanceBox from './PerformanceBox'
-import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
+import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
 import PerformanceTotal from './PerformanceTotal'
 import PerformanceChart from '../dashboard/PerformanceChart'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -15,28 +15,28 @@ const ListBox = styled.div`
 `
 
 export default function PerformanceList({ ids, dateRange }) {
-  const [searchPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
+  const [salesStatistics] = useMutation(SALES_STATISTICS_MUTATION)
   const [allData, setAllData] = useState([])
   const [totalAmount, setTotalAmount] = useState([])
   const [countTotal, setCountTotal] = useState([])
   const [idList, setIdList] = useState([])
 
   useEffect(() => {
-    searchPayment({
+    salesStatistics({
       variables: {
         period: dateRange,
         processingManagerId: ids,
       },
       onCompleted: result => {
-        if (result.searchStudentPayment.ok) {
-          setAllData(result.searchStudentPayment.data)
-          const managerId = result.searchStudentPayment.data?.map(
+        if (result.salesStatistics.ok) {
+          setAllData(result.salesStatistics.data)
+          const managerId = result.salesStatistics.data?.map(
             item => item.processingManagerId,
           )
-          const totalAmount = result.searchStudentPayment.data?.map(
+          const totalAmount = result.salesStatistics.data?.map(
             item => item.totalActualAmount,
           )
-          const totalCount = result.searchStudentPayment.data?.map(
+          const totalCount = result.salesStatistics.data?.map(
             item => item.totalCount,
           )
           setTotalAmount(totalAmount)

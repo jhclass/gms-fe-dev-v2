@@ -378,7 +378,7 @@ export default function StudentsWrite() {
                         className="lg:w-[50%] w-full text-white"
                         onClick={() => {
                           router.push(
-                            `/students/write/course/${studentData?.id}`,
+                            `/students/write/course/${studentData.id}`,
                           )
                         }}
                       >
@@ -416,7 +416,7 @@ export default function StudentsWrite() {
                         onClick={() => {
                           {
                             router.push(
-                              `/students/write/course/${studentData?.id}`,
+                              `/students/write/course/${studentData.id}`,
                             )
                           }
                         }}

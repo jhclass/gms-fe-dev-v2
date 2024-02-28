@@ -116,7 +116,8 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
 
   const clickItem = item => {
     setSelectedPayment(item)
-    router.push(`/students/detail/course/${studentId}`)
+    // router.push(`/students/detail/course/${studentId}`)
+    router.push(`/students/detail/course/${detailtData.id}`)
   }
 
   return (

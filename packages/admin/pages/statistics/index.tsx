@@ -3,25 +3,14 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
 import useMmeQuery from '@/utils/mMe'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
-import {
-  gradeState,
-  parformanceFilterActiveState,
-  parformanceFilterState,
-  parformanceSearchState,
-  subjectFilterActiveState,
-  subjectFilterState,
-  subjectSearchState,
-} from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 import Layout from '@/pages/statistics/layout'
 import PerformanceFilter from '@/components/filter/PerformanceFilter'
-import PerformanceChart from '@/components/dashboard/PerformanceChart'
 import PerformanceList from '@/components/table/PerformanceList'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { useMutation, useQuery } from '@apollo/client'
-import PerformanceBox from '@/components/table/PerformanceBox'
+import { useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
 import { useRouter } from 'next/router'
 import { Button } from '@nextui-org/react'
 

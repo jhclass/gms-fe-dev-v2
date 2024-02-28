@@ -11,6 +11,7 @@ import {
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   SEARCH_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -202,11 +203,6 @@ export default function StudentPaymentDetailItem({
     return result
   }
 
-  const editBtn = item => {
-    setSelectedPaymentDate(item)
-    router.push(`/students/edit/payment/${studentId}`)
-  }
-
   return (
     <>
       {detailtData?.cashOrCard === '현금' && (
@@ -284,7 +280,9 @@ export default function StudentPaymentDetailItem({
                     variant="solid"
                     color="primary"
                     className="w-full text-white"
-                    onClick={() => editBtn(detailtData)}
+                    onClick={() =>
+                      router.push(`/students/edit/payment/${detailtData.id}`)
+                    }
                   >
                     결제 변경
                   </Button>
