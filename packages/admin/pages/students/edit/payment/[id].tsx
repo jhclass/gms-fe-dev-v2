@@ -23,7 +23,11 @@ import { Controller, useForm } from 'react-hook-form'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { selectedPaymentDetailState } from '@/lib/recoilAtoms'
+import {
+  bankNameState,
+  cardNameState,
+  selectedPaymentDetailState,
+} from '@/lib/recoilAtoms'
 import {
   SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_PAYMENT_DETAIL_MUTATION,
@@ -182,9 +186,11 @@ export default function StudentsWritePayment() {
   const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
-  const [cashReceipt, setCashReceipt] = useState(['발급'])
+  const [cashReceiptType, setCashReceiptType] = useState('휴대폰번호')
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashDepositDate, setCashDepositDate] = useState(null)
+  const cardNames = useRecoilValue(cardNameState)
+  const bankNames = useRecoilValue(bankNameState)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
   useEffect(() => {
@@ -207,6 +213,7 @@ export default function StudentsWritePayment() {
 
     if (selectedPaymentDeta !== null) {
       setPaymentType(selectedPaymentDeta.cashOrCard)
+      setCashReceiptType(selectedPaymentDeta?.cashReceipts[0])
       if (selectedPaymentDeta.cashOrCard === '카드') {
         setCardName(selectedPaymentDeta.cardCompany)
         const date = parseInt(selectedPaymentDeta?.paymentDate)
@@ -313,6 +320,11 @@ export default function StudentsWritePayment() {
               bankName: data.bankName,
               depositorName: data.depositorName.trim(),
               depositAmount: parseInt(data.depositAmount),
+              cashReceipts: [
+                data.cashReceiptType,
+                data.cashReceiptNum,
+                data.cashReceiptApprovalNum,
+              ],
               // depositDate: new Date(data.depositDate),
             },
             onCompleted: result => {
@@ -359,9 +371,8 @@ export default function StudentsWritePayment() {
   const handleBankChange = e => {
     setBankName(e.target.value)
   }
-  const handleCheckboxChange = (value: string[]) => {
-    setValue('isCashReceipt', value)
-    setCashReceipt(value)
+  const handleCashReceiptTypeChange = value => {
+    setCashReceiptType(value)
   }
 
   return (
@@ -604,18 +615,13 @@ export default function StudentsWritePayment() {
                                   }
                                 }}
                               >
-                                <SelectItem
-                                  key={'카드사 선택'}
-                                  value={'카드사 선택'}
-                                >
-                                  {'카드사 선택'}
-                                </SelectItem>
-                                <SelectItem key={'현대카드'} value={'현대카드'}>
-                                  {'현대카드'}
-                                </SelectItem>
-                                <SelectItem key={'KB카드'} value={'KB카드'}>
-                                  {'KB카드'}
-                                </SelectItem>
+                                {Object.entries(cardNames).map(
+                                  ([key, name]) => (
+                                    <SelectItem key={name} value={name}>
+                                      {name}
+                                    </SelectItem>
+                                  ),
+                                )}
                               </Select>
                             )}
                           />
@@ -780,100 +786,99 @@ export default function StudentsWritePayment() {
                     </>
                   )}
                   {paymentType === '현금' && (
-                    <FlexBox>
-                      <AreaBox>
-                        <Controller
-                          control={control}
-                          name="bankName"
-                          rules={{ required: '입금은행을 선택해주세요.' }}
-                          defaultValue={selectedPaymentDeta.bankName}
-                          render={({ field, fieldState }) => (
-                            <Select
-                              labelPlacement="outside"
-                              label={
-                                <FilterLabel>
-                                  은행명<span>*</span>
-                                </FilterLabel>
-                              }
-                              placeholder=" "
-                              className="w-full"
-                              variant="bordered"
-                              defaultSelectedKeys={[
-                                selectedPaymentDeta.bankName,
-                              ]}
-                              selectedKeys={[bankName]}
-                              onChange={value => {
-                                if (value.target.value !== '') {
-                                  field.onChange(value)
-                                  handleBankChange(value)
+                    <>
+                      <FlexBox>
+                        <AreaBox>
+                          <Controller
+                            control={control}
+                            name="bankName"
+                            rules={{ required: '입금은행을 선택해주세요.' }}
+                            defaultValue={selectedPaymentDeta.bankName}
+                            render={({ field, fieldState }) => (
+                              <Select
+                                labelPlacement="outside"
+                                label={
+                                  <FilterLabel>
+                                    은행명<span>*</span>
+                                  </FilterLabel>
                                 }
-                              }}
-                            >
-                              <SelectItem key={'은행 선택'} value={'은행 선택'}>
-                                {'은행 선택'}
-                              </SelectItem>
-                              <SelectItem key={'우리은행'} value={'우리은행'}>
-                                {'우리은행'}
-                              </SelectItem>
-                              <SelectItem key={'KB은행'} value={'KB은행'}>
-                                {'KB은행'}
-                              </SelectItem>
-                            </Select>
+                                placeholder=" "
+                                className="w-full"
+                                variant="bordered"
+                                defaultSelectedKeys={[
+                                  selectedPaymentDeta.bankName,
+                                ]}
+                                selectedKeys={[bankName]}
+                                onChange={value => {
+                                  if (value.target.value !== '') {
+                                    field.onChange(value)
+                                    handleBankChange(value)
+                                  }
+                                }}
+                              >
+                                {Object.entries(bankNames).map(
+                                  ([key, name]) => (
+                                    <SelectItem key={name} value={name}>
+                                      {name}
+                                    </SelectItem>
+                                  ),
+                                )}
+                              </Select>
+                            )}
+                          />
+                          {errors.bankName && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.bankName.message)}
+                            </p>
                           )}
-                        />
-                        {errors.bankName && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
-                            {String(errors.bankName.message)}
-                          </p>
-                        )}
-                      </AreaBox>
-                      <AreaBox>
-                        <Input
-                          labelPlacement="outside"
-                          placeholder="입금자명"
-                          variant="bordered"
-                          radius="md"
-                          type="text"
-                          label={
-                            <FilterLabel>
-                              입금자명<span>*</span>
-                            </FilterLabel>
-                          }
-                          defaultValue={selectedPaymentDeta.depositorName}
-                          {...register('depositorName', {
-                            required: '입금자를 작성해주세요.',
-                          })}
-                        />
-                        {errors.depositorName && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
-                            {String(errors.depositorName.message)}
-                          </p>
-                        )}
-                      </AreaBox>
-                      <AreaBox>
-                        <Input
-                          labelPlacement="outside"
-                          placeholder="입금금액"
-                          variant="bordered"
-                          radius="md"
-                          type="text"
-                          label={
-                            <FilterLabel>
-                              입금금액<span>*</span>
-                            </FilterLabel>
-                          }
-                          defaultValue={selectedPaymentDeta.depositAmount}
-                          {...register('depositAmount', {
-                            required: '입금 금액을 작성해주세요.',
-                          })}
-                        />
-                        {errors.depositAmount && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
-                            {String(errors.depositAmount.message)}
-                          </p>
-                        )}
-                      </AreaBox>
-                      {/* <AreaBox>
+                        </AreaBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="입금자명"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label={
+                              <FilterLabel>
+                                입금자명<span>*</span>
+                              </FilterLabel>
+                            }
+                            defaultValue={selectedPaymentDeta.depositorName}
+                            {...register('depositorName', {
+                              required: '입금자를 작성해주세요.',
+                            })}
+                          />
+                          {errors.depositorName && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.depositorName.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="입금금액"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label={
+                              <FilterLabel>
+                                입금금액<span>*</span>
+                              </FilterLabel>
+                            }
+                            defaultValue={selectedPaymentDeta.depositAmount}
+                            {...register('depositAmount', {
+                              required: '입금 금액을 작성해주세요.',
+                            })}
+                          />
+                          {errors.depositAmount && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.depositAmount.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        {/* <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
@@ -932,38 +937,110 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox> */}
-                      <AreaBox>
-                        <Controller
-                          control={control}
-                          rules={{
-                            required: {
-                              value: true,
-                              message: '현금 영수증을 발급해주세요.',
-                            },
-                          }}
-                          name="isCashReceipt"
-                          defaultValue={'발급'}
-                          render={({ field, fieldState }) => (
-                            <CheckboxGroup
-                              label={
-                                <FilterLabel>
-                                  현금영수증 발급<span>*</span>
-                                </FilterLabel>
-                              }
-                              value={cashReceipt}
-                              onValueChange={handleCheckboxChange}
-                            >
-                              <Checkbox value="발급">발급</Checkbox>
-                            </CheckboxGroup>
+                      </FlexBox>
+                      <FlexBox>
+                        <AreaSmallBox style={{ width: '35%' }}>
+                          <RadioBox>
+                            <Controller
+                              control={control}
+                              name="cashReceiptType"
+                              rules={{
+                                required: '현금영수증 타입을 선택해주세요.',
+                              }}
+                              defaultValue={selectedPaymentDeta.cashReceipts[0]}
+                              render={({ field }) => (
+                                <RadioGroup
+                                  label={
+                                    <FilterLabel>
+                                      현금영수증<span>*</span>
+                                    </FilterLabel>
+                                  }
+                                  orientation="horizontal"
+                                  className="gap-[0.65rem]"
+                                  value={cashReceiptType}
+                                  onValueChange={value => {
+                                    field.onChange(value)
+                                    handleCashReceiptTypeChange(value)
+                                  }}
+                                >
+                                  <Radio
+                                    key={'휴대폰번호'}
+                                    value={'휴대폰번호'}
+                                  >
+                                    휴대폰번호
+                                  </Radio>
+                                  <Radio
+                                    key={'주민등록번호'}
+                                    value={'주민등록번호'}
+                                  >
+                                    주민등록번호
+                                  </Radio>
+                                </RadioGroup>
+                              )}
+                            />
+                          </RadioBox>
+                          {errors.cashReceiptType && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cashReceiptType.message)}
+                            </p>
                           )}
-                        />
-                        {errors.isCashReceipt && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
-                            {String(errors.isCashReceipt.message)}
-                          </p>
-                        )}
-                      </AreaBox>
-                    </FlexBox>
+                        </AreaSmallBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="현금영수증번호"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            defaultValue={selectedPaymentDeta.cashReceipts[1]}
+                            label={
+                              <FilterLabel>
+                                현금영수증번호<span>*</span>
+                              </FilterLabel>
+                            }
+                            {...register('cashReceiptNum', {
+                              required: '현금영수증 번호를 작성해주세요.',
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: '숫자만 입력 가능합니다.',
+                              },
+                            })}
+                          />
+                          {errors.cashReceiptNum && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cashReceiptNum.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="현금영수증 승인번호"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            defaultValue={selectedPaymentDeta.cashReceipts[2]}
+                            label={
+                              <FilterLabel>
+                                현금영수증 승인번호<span>*</span>
+                              </FilterLabel>
+                            }
+                            {...register('cashReceiptApprovalNum', {
+                              required: '현금영수증 승인번호를 작성해주세요.',
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: '숫자만 입력 가능합니다.',
+                              },
+                            })}
+                          />
+                          {errors.cashReceiptApprovalNum && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cashReceiptApprovalNum.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                      </FlexBox>
+                    </>
                   )}
                   <BtnBox>
                     <Button2

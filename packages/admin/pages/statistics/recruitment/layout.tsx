@@ -13,5 +13,10 @@ export default function StatisticsLayout({ children }) {
   if (isCheckingLogin) {
     return null
   }
-  return <main>{children}</main>
+  // return <main>{children}</main>
+  if (mGrade === grade.dev) {
+    return <main>{children}</main>
+  } else {
+    return <MainWrap>준비중입니다.</MainWrap>
+  }
 }

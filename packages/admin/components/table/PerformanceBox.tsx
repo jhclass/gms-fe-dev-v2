@@ -30,7 +30,6 @@ const TableWrap = styled.div`
   width: 100%;
   display: table;
   min-width: 700px;
-  max-width: 1400px;
   border-bottom: 1px solid #e4e4e7;
   border-radius: 0.5rem;
 `
