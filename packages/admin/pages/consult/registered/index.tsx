@@ -89,6 +89,7 @@ export default function ConsultRegistered() {
                 ></Button>
               )}
               <Button
+                isDisabled={checkItem?.length === 0 ? true : false}
                 size="sm"
                 radius="sm"
                 variant="solid"

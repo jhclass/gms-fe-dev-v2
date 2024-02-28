@@ -587,6 +587,7 @@ export const SEARCH_STUDENT_MUTATION = gql`
             cardNum
             cashOrCard
             createdAt
+            cashReceipts
             depositAmount
             depositDate
             depositorName
@@ -758,6 +759,7 @@ export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
             cardNum
             cashOrCard
             createdAt
+            cashReceipts
             depositAmount
             depositDate
             depositorName
@@ -938,6 +940,7 @@ export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
     $depositAmount: Int
     $depositorName: String
     $bankName: String
+    $cashReceipts: [String]
   ) {
     createPaymentDetail(
       cashOrCard: $cashOrCard
@@ -952,6 +955,7 @@ export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
       depositAmount: $depositAmount
       depositorName: $depositorName
       bankName: $bankName
+      cashReceipts: $cashReceipts
     ) {
       ok
       error
@@ -975,6 +979,7 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
     $depositorName: String
     $depositAmount: Int
     $depositDate: String
+    $cashReceipts: [String]
   ) {
     editPaymentDetail(
       id: $editPaymentDetailId
@@ -990,6 +995,7 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
       depositorName: $depositorName
       depositAmount: $depositAmount
       depositDate: $depositDate
+      cashReceipts: $cashReceipts
     ) {
       ok
       error

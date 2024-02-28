@@ -223,11 +223,12 @@ export default function SubjectDetail() {
         searchSubjectId: parseInt(subjectId),
       })
       setSubjectState(subject)
-
-      const roundData = await fetchSubjectData({
-        subjectCode: subject.subjectCode,
-      })
-      setSubjectRoundItem(roundData)
+      if (subject.subjectCode !== null) {
+        const roundData = await fetchSubjectData({
+          subjectCode: subject.subjectCode,
+        })
+        setSubjectRoundItem(roundData)
+      }
     } catch (error) {
       console.error('Failed to fetch data:', error.message)
     }
@@ -544,14 +545,28 @@ export default function SubjectDetail() {
                       variant="bordered"
                       radius="md"
                       type="text"
-                      label="과정코드"
+                      label={
+                        <FilterLabel>
+                          과정코드<span>*</span>
+                        </FilterLabel>
+                      }
                       defaultValue={subjectState?.subjectCode}
                       onChange={e => {
                         register('subjectCode').onChange(e)
                       }}
                       className="w-full"
-                      {...register('subjectCode')}
+                      {...register('subjectCode', {
+                        required: {
+                          value: true,
+                          message: '과정코드을 입력해주세요.',
+                        },
+                      })}
                     />
+                    {errors.subjectCode && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.subjectCode.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input

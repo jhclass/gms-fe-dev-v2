@@ -9,7 +9,7 @@ import {
   recruitmentFilterActiveState,
   recruitmentFilterState,
 } from '@/lib/recoilAtoms'
-import Layout from '@/pages/statistics/layout'
+import Layout from '@/pages/statistics/recruitment/layout'
 import RecruitmentTable from '@/components/table/RecruitmentList'
 import RecruitmentFilter from '@/components/filter/RecruitmentFilter'
 
