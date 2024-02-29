@@ -652,7 +652,7 @@ export default function StudentsWrite() {
                           <FlexCon>
                             <CheckboxGroup
                               isReadOnly={true}
-                              label={<FilterLabel>주말반</FilterLabel>}
+                              label={<FilterLabel>주말</FilterLabel>}
                               defaultValue={[studentPaymentData?.isWeekend]}
                               classNames={{ wrapper: 'items-center' }}
                             >

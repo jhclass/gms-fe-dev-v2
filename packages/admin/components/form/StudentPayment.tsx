@@ -16,6 +16,7 @@ import {
   Select,
   SelectItem,
   Textarea,
+  Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
@@ -67,6 +68,10 @@ const AreaTitle = styled.div`
     font-weight: 600;
   }
 `
+const ToolTipBox = styled.i`
+  color: #71717a;
+  vertical-align: -1px;
+`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
@@ -96,6 +101,7 @@ const FlexCon = styled.div`
   label {
     span {
       margin-right: 0;
+      margin-top: 0.2rem;
     }
   }
 `
@@ -165,6 +171,8 @@ export default function StudentPaymentForm({
 }) {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenClick, setIsOpenClick] = useState(false)
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
   const {
@@ -329,6 +337,7 @@ export default function StudentPaymentForm({
       resetField('isWeekend')
     }
   }, [subjectSelectedData])
+
   const onSubmit = data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
@@ -619,10 +628,33 @@ export default function StudentPaymentForm({
                         render={({ field, fieldState }) => (
                           <CheckboxGroup
                             isDisabled={isDiscount ? true : false}
-                            label={<FilterLabel>주말반</FilterLabel>}
+                            label={
+                              <FilterLabel>
+                                주말
+                                <ToolTipBox>
+                                  <Tooltip
+                                    content={'실 수강료의 20%만큼 가산됩니다.'}
+                                    placement="bottom"
+                                    isOpen={isOpen}
+                                    onOpenChange={open => setIsOpen(open)}
+                                  >
+                                    <i
+                                      className="xi-help"
+                                      onClick={() => {
+                                        setIsOpenClick(!isOpenClick)
+                                        setIsOpen(!isOpenClick)
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </ToolTipBox>
+                              </FilterLabel>
+                            }
                             value={weekendClass}
                             onValueChange={handleCheckboxChange}
-                            classNames={{ wrapper: 'items-center' }}
+                            classNames={{
+                              wrapper: 'items-center',
+                              label: 'text-[0.875rem] text-[#11181c]',
+                            }}
                           >
                             <Checkbox value="Y"></Checkbox>
                           </CheckboxGroup>
