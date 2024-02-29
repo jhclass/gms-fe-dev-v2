@@ -66,7 +66,6 @@ const AreaBox = styled.div`
 `
 const AreaBoxS = styled.div`
   min-width: 5%;
-  font-weight: bold;
   text-align: center;
   @media (max-width: 768px) {
     min-width: 100%;
@@ -81,6 +80,7 @@ const FlatBox = styled.div`
   line-height: 40px;
   border-radius: 0.5rem;
   font-size: 0.875rem;
+  font-weight: bold;
 `
 
 export default function PerformanceTotal({

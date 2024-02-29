@@ -1,4 +1,4 @@
-import { Button, Link } from '@nextui-org/react'
+import { Button, Link, Textarea } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
@@ -140,8 +140,20 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
           </AreaGroup>
           <AreaBox>
             <div>
-              <FilterLabel>과정명</FilterLabel>
-              <FlatBox>{detailtData?.subject.subjectName}</FlatBox>
+              <Textarea
+                label="과정명"
+                isDisabled={true}
+                isReadOnly={true}
+                labelPlacement="outside"
+                defaultValue={detailtData?.subject.subjectName}
+                minRows={1}
+                variant="flat"
+                size="md"
+                radius="sm"
+                classNames={{
+                  base: 'opacity-1',
+                }}
+              ></Textarea>
             </div>
           </AreaBox>
         </FlexBox>

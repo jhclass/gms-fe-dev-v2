@@ -138,6 +138,14 @@ export const studentProgressStatusState = atom({
   },
 })
 
+export const additionalAmountState = atom({
+  key: 'additionalAmount',
+  default: {
+    basic: 1.2,
+    frist: 1.5,
+  },
+})
+
 export const receiptStatusState = atom({
   key: 'receiptStatus',
   default: {

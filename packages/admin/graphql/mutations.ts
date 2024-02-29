@@ -862,6 +862,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     $unCollectedAmount: Int
     $actualAmount: Int
     $discountAmount: String
+    $isWeekend: String
   ) {
     createStudentPayment(
       campus: $campus
@@ -878,6 +879,7 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       unCollectedAmount: $unCollectedAmount
       actualAmount: $actualAmount
       discountAmount: $discountAmount
+      isWeekend: $isWeekend
     ) {
       error
       message
@@ -1093,6 +1095,7 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         dueDate
         employment
         id
+        isWeekend
         lectureAssignment
         paymentDate
         paymentDetail {

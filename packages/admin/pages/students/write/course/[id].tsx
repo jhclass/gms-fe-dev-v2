@@ -10,6 +10,8 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
+  Checkbox,
+  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
@@ -25,7 +27,12 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState, gradeState, subStatusState } from '@/lib/recoilAtoms'
+import {
+  ReceiptState,
+  additionalAmountState,
+  gradeState,
+  subStatusState,
+} from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
@@ -106,8 +113,21 @@ const AreaBox = styled.div`
   }
 `
 const AreaSmallBox = styled.div`
+  display: flex;
+  gap: 1rem;
   @media (max-width: 768px) {
     width: 100% !important;
+  }
+`
+const FlexCon = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  label {
+    span {
+      margin-right: 0;
+    }
   }
 `
 const DatePickerBox = styled.div`
@@ -190,6 +210,8 @@ export default function StudentsWriteCourse() {
     setValue,
     handleSubmit,
     clearErrors,
+    resetField,
+    reset,
     formState,
   } = useForm({
     mode: 'onChange',
@@ -212,6 +234,7 @@ export default function StudentsWriteCourse() {
       discount: 0,
       discountUnit: '%',
       subDiv: null,
+      isWeekend: '',
     },
   })
   const { errors } = formState
@@ -221,6 +244,7 @@ export default function StudentsWriteCourse() {
     onClose: sbjClose,
   } = useDisclosure()
   const subStatus = useRecoilValue(subStatusState)
+  const additionalState = useRecoilValue(additionalAmountState)
   const [studentData, setStudentData] = useState(null)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
@@ -228,6 +252,8 @@ export default function StudentsWriteCourse() {
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
   const [sub, setSub] = useState('없음')
+  const [weekendClass, setWeekendClass] = useState([])
+  const [isDiscount, setIsDiscount] = useState(false)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
@@ -272,9 +298,14 @@ export default function StudentsWriteCourse() {
 
   useEffect(() => {
     if (subjectSelectedData !== null) {
-      disCounCalculator(subjectSelectedData?.fee)
       setSub(subjectSelectedData?.subDiv)
+      setValue('tuitionFee', subjectSelectedData?.fee)
+      setValue('actualAmount', subjectSelectedData?.fee)
       setValue('subDiv', subjectSelectedData?.subDiv)
+      setValue('unCollectedAmount', subjectSelectedData?.fee)
+      resetField('discount')
+      setWeekendClass([])
+      resetField('isWeekend')
     }
   }, [subjectSelectedData])
 
@@ -284,7 +315,7 @@ export default function StudentsWriteCourse() {
         variables: {
           campus: '신촌',
           seScore: data.seScore === null ? 0 : parseInt(data.seScore),
-          tuitionFee: parseInt(subjectSelectedData.fee),
+          tuitionFee: parseInt(data.tuitionFee),
           studentId: parseInt(studentId),
           subjectId: parseInt(subjectSelected),
           processingManagerId: parseInt(data.processingManagerId),
@@ -299,6 +330,7 @@ export default function StudentsWriteCourse() {
             data.actualAmount === null ? 0 : parseInt(data.actualAmount),
           subDiv: data.subDiv,
           dueDate: data.dueDate === null ? null : data.dueDate,
+          isWeekend: data.isWeekend === '' ? 'N' : data.isWeekend,
         },
         onCompleted: result => {
           if (result.createStudentPayment.ok) {
@@ -350,28 +382,53 @@ export default function StudentsWriteCourse() {
   const handleDisCountChange = e => {
     setDisCountType(e.target.value)
     if (subjectSelectedData !== null) {
-      disCounCalculator(subjectSelectedData?.fee)
+      let fee
+      if (weekendClass[0] === 'Y') {
+        fee = subjectSelectedData?.fee * additionalState.basic
+      } else {
+        fee = subjectSelectedData?.fee
+      }
+      disCounCalculator(fee)
     }
   }
 
   const discountChange = value => {
+    if (value === '' || value === '0') {
+      setIsDiscount(false)
+    } else {
+      setIsDiscount(true)
+    }
+
     if (value === '' || value < 0) {
       setValue('discount', 0)
     } else {
       setValue('discount', parseInt(value))
     }
     if (subjectSelectedData !== null) {
-      disCounCalculator(subjectSelectedData?.fee)
+      let fee
+      if (weekendClass[0] === 'Y') {
+        fee = subjectSelectedData?.fee * additionalState.basic
+      } else {
+        fee = subjectSelectedData?.fee
+      }
+      disCounCalculator(fee)
     }
   }
 
   const discountTotal = value => {
     if (subjectSelectedData !== null) {
-      const discountPrice = subjectSelectedData?.fee - parseInt(value)
+      let fee
+      if (weekendClass[0] === 'Y') {
+        fee = subjectSelectedData?.fee * additionalState.basic
+      } else {
+        fee = subjectSelectedData?.fee
+      }
+
+      const discountPrice = fee - parseInt(value)
       setValue('discount', discountPrice)
       setDisCountType('원')
       setValue('discountUnit', '원')
-      disCounCalculator(subjectSelectedData?.fee)
+      disCounCalculator(fee)
     }
   }
   const handleSubChange = e => {
@@ -382,6 +439,22 @@ export default function StudentsWriteCourse() {
     setSubjectManager(e.target.value)
   }
 
+  const handleCheckboxChange = value => {
+    setValue('isWeekend', value[0])
+    setWeekendClass(value)
+    if (value[0] === 'Y') {
+      setValue('actualAmount', subjectSelectedData?.fee * additionalState.basic)
+      setValue('tuitionFee', subjectSelectedData?.fee * additionalState.basic)
+      setValue(
+        'unCollectedAmount',
+        subjectSelectedData?.fee * additionalState.basic,
+      )
+    } else {
+      setValue('actualAmount', subjectSelectedData?.fee)
+      setValue('tuitionFee', subjectSelectedData?.fee)
+      setValue('unCollectedAmount', subjectSelectedData?.fee)
+    }
+  }
   return (
     <>
       <MainWrap>
@@ -500,31 +573,58 @@ export default function StudentsWriteCourse() {
                     )}
                   </AreaBox>
                   <AreaSmallBox>
-                    <RadioBox>
-                      <Controller
-                        control={control}
-                        name="situationReport"
-                        defaultValue={'비동의'}
-                        render={({ field }) => (
-                          <RadioGroup
-                            label={<FilterLabel>교육상황보고여부</FilterLabel>}
-                            defaultValue={'비동의'}
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                            onValueChange={value => {
-                              field.onChange(value)
-                            }}
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        )}
-                      />
-                    </RadioBox>
+                    <div>
+                      <FlexCon>
+                        <Controller
+                          control={control}
+                          name="isWeekend"
+                          render={({ field, fieldState }) => (
+                            <CheckboxGroup
+                              isDisabled={
+                                subjectSelectedData === null || isDiscount
+                                  ? true
+                                  : false
+                              }
+                              label={<FilterLabel>주말반</FilterLabel>}
+                              value={weekendClass}
+                              onValueChange={handleCheckboxChange}
+                              classNames={{ wrapper: 'items-center' }}
+                            >
+                              <Checkbox value="Y"></Checkbox>
+                            </CheckboxGroup>
+                          )}
+                        />
+                      </FlexCon>
+                    </div>
+                    <div>
+                      <RadioBox>
+                        <Controller
+                          control={control}
+                          name="situationReport"
+                          defaultValue={'비동의'}
+                          render={({ field }) => (
+                            <RadioGroup
+                              label={
+                                <FilterLabel>교육상황보고여부</FilterLabel>
+                              }
+                              defaultValue={'비동의'}
+                              orientation="horizontal"
+                              className="gap-[0.65rem]"
+                              onValueChange={value => {
+                                field.onChange(value)
+                              }}
+                            >
+                              <Radio key={'동의'} value={'동의'}>
+                                동의
+                              </Radio>
+                              <Radio key={'비동의'} value={'비동의'}>
+                                비동의
+                              </Radio>
+                            </RadioGroup>
+                          )}
+                        />
+                      </RadioBox>
+                    </div>
                   </AreaSmallBox>
                 </FlexBox>
                 <FlexBox>
@@ -599,9 +699,13 @@ export default function StudentsWriteCourse() {
                       labelPlacement="outside"
                       placeholder="수강료"
                       value={
-                        subjectSelectedData !== null &&
-                        subjectSelectedData?.fee !== null
-                          ? feeFormet(subjectSelectedData?.fee)
+                        subjectSelectedData !== null
+                          ? weekendClass[0] === 'Y'
+                            ? feeFormet(
+                                subjectSelectedData?.fee *
+                                  additionalState.basic,
+                              )
+                            : feeFormet(subjectSelectedData?.fee)
                           : ''
                       }
                       variant="faded"
@@ -673,8 +777,13 @@ export default function StudentsWriteCourse() {
                       type="number"
                       label="할인된 수강료"
                       defaultValue={
-                        subjectSelectedData?.fee !== undefined
-                          ? subjectSelectedData?.fee
+                        subjectSelectedData !== null
+                          ? weekendClass[0] === 'Y'
+                            ? feeFormet(
+                                subjectSelectedData?.fee *
+                                  additionalState.basic,
+                              )
+                            : feeFormet(subjectSelectedData?.fee)
                           : ''
                       }
                       onValueChange={value => {
