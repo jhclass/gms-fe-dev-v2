@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Radio, RadioGroup, Button } from '@nextui-org/react'
+import {
+  Radio,
+  RadioGroup,
+  Button,
+  CheckboxGroup,
+  Checkbox,
+} from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -84,6 +90,25 @@ const AreaBox = styled.div`
 const AreaSmallBox = styled.div`
   @media (max-width: 768px) {
     width: 100% !important;
+  }
+`
+const AreaSmallBox2 = styled.div`
+  display: flex;
+  gap: 1rem;
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
+`
+const FlexCon = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  label {
+    span {
+      margin-right: 0;
+      margin-top: 0.25rem;
+    }
   }
 `
 
@@ -513,7 +538,6 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-
   return (
     <>
       {studentData !== null && (
@@ -623,32 +647,46 @@ export default function StudentsWrite() {
                           <LineBox>{studentSubjectData?.subjectName}</LineBox>
                         </div>
                       </AreaBox>
-                      <AreaSmallBox>
-                        <RadioBox>
-                          <RadioGroup
-                            isReadOnly
-                            label={
-                              <FilterLabel>
-                                교육상황보고여부<span>*</span>
-                              </FilterLabel>
-                            }
-                            defaultValue={
-                              studentPaymentData?.situationReport
-                                ? '동의'
-                                : '비동의'
-                            }
-                            orientation="horizontal"
-                            className="gap-[0.65rem]"
-                          >
-                            <Radio key={'동의'} value={'동의'}>
-                              동의
-                            </Radio>
-                            <Radio key={'비동의'} value={'비동의'}>
-                              비동의
-                            </Radio>
-                          </RadioGroup>
-                        </RadioBox>
-                      </AreaSmallBox>
+                      <AreaSmallBox2>
+                        <div>
+                          <FlexCon>
+                            <CheckboxGroup
+                              isReadOnly={true}
+                              label={<FilterLabel>주말반</FilterLabel>}
+                              defaultValue={[studentPaymentData?.isWeekend]}
+                              classNames={{ wrapper: 'items-center' }}
+                            >
+                              <Checkbox value="Y"></Checkbox>
+                            </CheckboxGroup>
+                          </FlexCon>
+                        </div>
+                        <div>
+                          <RadioBox>
+                            <RadioGroup
+                              isReadOnly
+                              label={
+                                <FilterLabel>
+                                  교육상황보고여부<span>*</span>
+                                </FilterLabel>
+                              }
+                              defaultValue={
+                                studentPaymentData?.situationReport
+                                  ? '동의'
+                                  : '비동의'
+                              }
+                              orientation="horizontal"
+                              className="gap-[0.65rem]"
+                            >
+                              <Radio key={'동의'} value={'동의'}>
+                                동의
+                              </Radio>
+                              <Radio key={'비동의'} value={'비동의'}>
+                                비동의
+                              </Radio>
+                            </RadioGroup>
+                          </RadioBox>
+                        </div>
+                      </AreaSmallBox2>
                     </FlexBox>
                     <FlexBox>
                       <AreaBox>
