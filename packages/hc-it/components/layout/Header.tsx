@@ -30,9 +30,9 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY
-      const topBnrTop = document.getElementById('mainTopBnr').clientHeight
+      // const topBnrTop = document.getElementById('mainTopBnr').clientHeight
 
-      if (currentScroll > topBnrTop) {
+      if (currentScroll > 0) {
         setHeaderFixed(true)
       } else {
         setHeaderFixed(false)

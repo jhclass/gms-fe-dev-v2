@@ -160,7 +160,7 @@ export default function Header() {
             </div>
           </div>
           <div className="flex items-center lg:pb-2 lg:wrap h-[3.5rem] lg:hidden">
-            <Gnb />
+            {/* <Gnb /> */}
           </div>
         </div>
       </header>

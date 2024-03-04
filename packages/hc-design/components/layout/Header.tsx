@@ -6,8 +6,85 @@ import SearchBox from '@/components/SearchBox'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { headerFixedState, moMenuOpenState } from '@/lib/recoilAtoms'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import MenuAll from '../MenuAll'
+import styled from 'styled-components'
+
+const HeaderBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 6.5rem;
+`
+const Logo = styled.div``
+
+const Nav = styled.ul`
+  display: flex;
+  height: 100%;
+  align-items: center;
+
+  > li {
+    width: 12.5%;
+    position: relative;
+
+    &:after {
+      content: '';
+      width: 50%;
+      height: 0.4rem;
+      background: #000;
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      margin-left: -25%;
+    }
+  }
+`
+const GnbBox = styled.div`
+  display: none;
+`
+
+const cate = [
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_on.png',
+    alt: '모션그래픽과정',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_on.png',
+    alt: '시각디자인과정',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_on.png',
+    alt: '웹툰과정',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_on.png',
+    alt: '디지털드로잉과정',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_on.png',
+    alt: '국비/취업지원',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_on.png',
+    alt: '일본취업지원',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_on.png',
+    alt: '아카데미소개',
+  },
+  {
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_off.png',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_on.png',
+    alt: '고객상담센터',
+  },
+]
 
 export default function Header() {
   const handleTest = e => {
@@ -18,6 +95,8 @@ export default function Header() {
   const router = useRouter()
   const [moMenuOpen, setmoMenuOpen] = useRecoilState(moMenuOpenState)
   const [headerFixed, setHeaderFixed] = useRecoilState(headerFixedState)
+  const [showGnb, setShowGnb] = useState(false)
+  const [hoverIndex, setHoverIndex] = useState(null)
 
   const handleButtonClick = () => {
     setmoMenuOpen(!moMenuOpen)
@@ -49,7 +128,6 @@ export default function Header() {
 
   return (
     <>
-      <MainTopBnr />
       <header
         id="header"
         className="px-0 m-auto ax-w-full h-[8rem] lg:h-[4.5rem] relative z-[40]"
@@ -59,109 +137,55 @@ export default function Header() {
             headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'
           } flex-col w-full bg-white max-w-full px-0 border-b-1`}
         >
-          <div className="flex wrap items-center justify-between w-full max-w-[1440px] h-[4.5rem] border-b-1 border-primary lg:border-b-0">
-            <div className="flex items-center h-full">
-              <h1 className="grow-0">
-                <Link href="/" className="block w-[12rem]">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/common/H_logo.svg"
-                    alt="H ACADEMY | H아카데미"
-                  />
-                </Link>
-              </h1>
-              <div className="items-center hidden h-full px-10 lg:flex">
-                <ul className="flex items-center px-3 text-lg font-base lg:px-0 whitespace-nowrap scroll_sm">
-                  <li className="relative mr-3 after:w-[1px] after:h-[6px] after:bg-zinc-500 after:absolute after:top-[50%] after:mt-[-3px] after:right-[-0.75rem]">
-                    <Link
-                      color="foreground"
-                      href="/detail/webtoon"
-                      className="py-3 lg:py-0"
-                    >
-                      🖌️ 웹툰
-                    </Link>
-                  </li>
-                  <li className="relative mx-3 after:w-[1px] after:h-[6px] after:bg-zinc-500 after:absolute after:top-[50%] after:mt-[-3px] after:right-[-0.75rem]">
-                    <Link
-                      color="foreground"
-                      href="/detail/emoticon"
-                      className="py-3 lg:py-0"
-                    >
-                      😍 이모티콘
-                    </Link>
-                  </li>
-                  <li className="mx-3">
-                    <Link
-                      color="foreground"
-                      href="/detail/motion"
-                      className="py-3 lg:py-0"
-                    >
-                      🏃 모션
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              {/* <div className="items-center hidden h-full px-10 lg:flex">
-                <div className="min-w-[5.5rem] relative hidden h-full mr-3 md:hidden lg:block after:w-[1px]">
-                  <MenuAll />
-                </div>
-                <ul className="flex items-center px-3 scroll overflow-x-auto overflow-y-hidden text-lg font-base max-w-[87%] w-auto lg:px-0 whitespace-nowrap scroll_sm">
-                  <li className="mx-2">
-                    <Link
-                      color="foreground"
-                      href="/detail/webtoon"
-                      className="py-3 lg:py-0"
-                    >
-                      🖌️웹툰
-                    </Link>
-                  </li>
-                  <li className="mx-2">
-                    <Link
-                      color="foreground"
-                      href="/detail/emoticon"
-                      className="py-3 lg:py-0"
-                    >
-                      😍이모티콘
-                    </Link>
-                  </li>
-                  <li className="mx-2">
-                    <Link
-                      color="foreground"
-                      href="/detail/motion"
-                      className="py-3 lg:py-0"
-                    >
-                      🖥️모션
-                    </Link>
-                  </li>
-                </ul>
-              </div> */}
-            </div>
-            <div className="flex items-center justify-end py-3">
-              <Button
-                onClick={consultClick}
-                variant="flat"
-                className="hidden text-white bg-primary border-1 lg:block border-primary"
-              >
-                <i className="pr-2 xi-call" />
-                지금 바로 문의하기
-              </Button>
-              <Link
-                href="/consult"
-                className="flex items-center justify-center w-10 h-10 text-2xl text-white rounded-full lg:hidden bg-primary"
-              >
-                <i className="xi-call" />
+          <MainTopBnr />
+
+          <HeaderBox className="wrap">
+            <Logo>
+              <Link href="/" className="block">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/header_logo.png"
+                  alt="H ACADEMY | H아카데미"
+                />
               </Link>
-              {/* <button
-                className="flex items-center ml-2 justify-center w-7 h-[3rem] outline-none lg:hidden group tap-highlight-transparent"
-                type="button"
-                onClick={handleButtonClick}
-              > */}
-              {/* <span className="relative w-7 h-[1.5px] bg-black pointer-events-none flex flex-col items-center justify-center text-inherit before:content-[''] before:h-full before:absolute before:w-full before:bg-current before:-translate-y-2 before:rotate-0 after:content-[''] after:absolute before:left-0 after:left-0 after:h-full after:w-full after:bg-current after:translate-y-2 after:rotate-0"></span>
-              </button> */}
-            </div>
-          </div>
-          <div className="flex items-center lg:pb-2 lg:wrap h-[3.5rem] lg:hidden">
-            <Gnb />
-          </div>
+            </Logo>
+
+            <Nav
+              onMouseEnter={() => {
+                setHoverIndex(true)
+                setHoverIndex(0)
+              }}
+              onMouseLeave={() => {
+                setShowGnb(false)
+                setHoverIndex(null)
+              }}
+            >
+              {cate.map((item, index) => (
+                <li
+                  key={index}
+                  onMouseEnter={() => {
+                    setShowGnb(true)
+                    setHoverIndex(index + 1)
+                  }}
+                >
+                  <img
+                    src={hoverIndex - 1 === index ? item.on : item.off}
+                    alt={item.alt}
+                  />
+                </li>
+              ))}
+            </Nav>
+          </HeaderBox>
+          <GnbBox
+            onMouseEnter={() => {
+              setHoverIndex(0)
+            }}
+            onMouseLeave={() => {
+              setHoverIndex(null)
+            }}
+            style={{ display: hoverIndex ? 'block' : 'none' }}
+          >
+            <Gnb setHoverIndex={setHoverIndex} />
+          </GnbBox>
         </div>
       </header>
       <Menu />
