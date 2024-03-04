@@ -116,6 +116,7 @@ const Tfee = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 132px;
+  vertical-align: middle;
 `
 const Texposure = styled.div`
   display: table-cell;
@@ -140,6 +141,7 @@ const Tdate = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
+  vertical-align: middle;
 `
 const Troom = styled.div`
   display: table-cell;
@@ -150,6 +152,7 @@ const Troom = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.07}px;
+  vertical-align: middle;
 `
 const Tteacher = styled.div`
   display: table-cell;
@@ -160,6 +163,7 @@ const Tteacher = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
+  vertical-align: middle;
 `
 const OnExposure = styled.span`
   color: #007de9;
