@@ -1,3 +1,4 @@
+import { ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
 
 type subjectItemProps = {
@@ -21,7 +22,7 @@ const Tname = styled.div`
   justify-content: center;
   align-items: center;
   width: 60%;
-  padding: 1rem;
+  padding: 0.5rem;
   font-size: inherit;
   color: inherit;
   min-width: 360px;
@@ -71,6 +72,16 @@ const EllipsisBox = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `
+
+const ScrollBox = styled.div`
+  /* overflow-x: auto; */
+  width: 360px;
+  white-space: nowrap;
+
+  .scrollbar {
+    padding: 0.5rem;
+  }
+`
 export default function SubjectItem(props: subjectItemProps) {
   const subject = props.tableData
   const feeFormet = fee => {
@@ -83,7 +94,12 @@ export default function SubjectItem(props: subjectItemProps) {
   return (
     <>
       <Tname>
-        <EllipsisBox>{`[${subject.round}회차] ${subject.subjectName}`}</EllipsisBox>
+        <ScrollBox>
+          <ScrollShadow
+            orientation="horizontal"
+            className="scrollbar"
+          >{`[${subject.round}회차] ${subject.subjectName}`}</ScrollShadow>
+        </ScrollBox>
       </Tname>
       <TsubDiv>{subject.subDiv}</TsubDiv>
       <Tfee>{feeFormet(subject.fee)}</Tfee>

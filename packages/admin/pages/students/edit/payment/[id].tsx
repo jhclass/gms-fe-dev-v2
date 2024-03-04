@@ -17,6 +17,7 @@ import {
   RadioGroup,
   Select,
   SelectItem,
+  Textarea,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
@@ -443,10 +444,20 @@ export default function StudentsWritePayment() {
                 </AreaSmallBox>
                 <AreaBox>
                   <div>
-                    <FilterLabel>과정명</FilterLabel>
-                    <LineBox>
-                      {studentPaymentData?.subject?.subjectName}
-                    </LineBox>
+                    <Textarea
+                      label="과정명"
+                      isDisabled={true}
+                      isReadOnly={true}
+                      labelPlacement="outside"
+                      defaultValue={studentPaymentData?.subject?.subjectName}
+                      minRows={1}
+                      variant="underlined"
+                      size="md"
+                      radius="sm"
+                      classNames={{
+                        base: 'opacity-1',
+                      }}
+                    ></Textarea>
                   </div>
                 </AreaBox>
                 <AreaSmallBox style={{ width: '20%' }}>

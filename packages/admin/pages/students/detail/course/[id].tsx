@@ -9,6 +9,7 @@ import {
   Button,
   CheckboxGroup,
   Checkbox,
+  Textarea,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -200,6 +201,14 @@ type studentSubject = {
   tuitionFee: number
   unCollectedAmount: number
 }
+
+const EllipsisBox = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`
 
 export default function StudentsWrite() {
   const grade = useRecoilValue(gradeState)
@@ -643,8 +652,20 @@ export default function StudentsWrite() {
                       </AreaSmallBox>
                       <AreaBox>
                         <div>
-                          <FilterLabel>과정명</FilterLabel>
-                          <LineBox>{studentSubjectData?.subjectName}</LineBox>
+                          <Textarea
+                            label="과정명"
+                            isDisabled={true}
+                            isReadOnly={true}
+                            labelPlacement="outside"
+                            defaultValue={studentSubjectData?.subjectName}
+                            minRows={1}
+                            variant="underlined"
+                            size="md"
+                            radius="sm"
+                            classNames={{
+                              base: 'opacity-1',
+                            }}
+                          ></Textarea>
                         </div>
                       </AreaBox>
                       <AreaSmallBox2>
