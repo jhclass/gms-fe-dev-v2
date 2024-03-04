@@ -888,7 +888,11 @@ export default function StudentPaymentForm({
                     }
                     radius="md"
                     type="number"
-                    label="할인된 수강료"
+                    label={
+                      <FilterLabel>
+                        할인된 수강료 <span>(실 결제금액)</span>
+                      </FilterLabel>
+                    }
                     defaultValue={
                       studentPaymentData?.actualAmount !== undefined
                         ? studentPaymentData?.actualAmount
