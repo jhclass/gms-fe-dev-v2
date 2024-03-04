@@ -34,6 +34,7 @@ import {
 import Button2 from '@/components/common/Button'
 import { useRecoilValue } from 'recoil'
 import { bankNameState, cardNameState } from '@/lib/recoilAtoms'
+import PaymentInfo from '@/components/items/PaymentInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -426,110 +427,10 @@ export default function StudentsWritePayment() {
                 <AreaTitle>
                   <h4>수강 정보</h4>
                 </AreaTitle>
-                <FlexBox>
-                  <AreaSmallBox style={{ minWidth: '20%' }}>
-                    <div>
-                      <FilterLabel>수강 구분</FilterLabel>
-                      <LineBox>{studentSubjectData?.subDiv}</LineBox>
-                    </div>
-                  </AreaSmallBox>
-                  <AreaBox>
-                    <div>
-                      <Textarea
-                        label="과정명"
-                        isDisabled={true}
-                        isReadOnly={true}
-                        labelPlacement="outside"
-                        defaultValue={studentSubjectData?.subjectName}
-                        minRows={1}
-                        variant="underlined"
-                        size="md"
-                        radius="sm"
-                        classNames={{
-                          base: 'opacity-1',
-                        }}
-                      ></Textarea>
-                    </div>
-                  </AreaBox>
-                  <AreaSmallBox style={{ width: '20%' }}>
-                    <div>
-                      <FilterLabel>수강당담자</FilterLabel>
-                      <LineBox>
-                        {
-                          managerList.find(
-                            user =>
-                              user.id ===
-                              studentPaymentData?.processingManagerId,
-                          )?.mUsername
-                        }
-                      </LineBox>
-                    </div>
-                  </AreaSmallBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>수강료</FilterLabel>
-                      <LineBox>
-                        {studentPaymentData?.tuitionFee
-                          ? feeFormet(studentPaymentData?.tuitionFee)
-                          : '0'}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>할인금액</FilterLabel>
-                      <LineBox>
-                        {studentPaymentData?.discountAmount
-                          ? feeFormet(studentPaymentData?.discountAmount)
-                          : '0'}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        <b>실 수강료</b>
-                      </FilterLabel>
-                      <LineBox>
-                        {studentPaymentData?.actualAmount
-                          ? feeFormet(studentPaymentData?.actualAmount)
-                          : '0'}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>수납액</FilterLabel>
-                      <LineBox>
-                        {/* {studentPaymentData?.actualAmount
-                          ? received(
-                              studentPaymentData?.actualAmount,
-                              studentPaymentData?.unCollectedAmount,
-                            )
-                          : '0'} */}
-                        {studentPaymentData?.amountReceived
-                          ? feeFormet(studentPaymentData?.amountReceived)
-                          : '0'}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        <b>미 수납액</b>
-                      </FilterLabel>
-                      <LineBox>
-                        {studentPaymentData?.unCollectedAmount
-                          ? feeFormet(studentPaymentData?.unCollectedAmount)
-                          : '0'}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
+                <PaymentInfo
+                  studentSubjectData={studentPaymentData?.subject}
+                  studentPaymentData={studentPaymentData}
+                />
               </DetailDiv>
             </DetailBox>
           )}

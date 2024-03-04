@@ -28,6 +28,8 @@ const Tname = styled.div`
   min-width: 360px;
   font-size: 0.875rem;
   font-weight: 600;
+  vertical-align: middle;
+  text-align: left;
   color: #71717a;
   @media (max-width: 768px) {
     padding: 0.5rem;
@@ -44,6 +46,7 @@ const TsubDiv = styled.div`
   min-width: 102px;
   font-size: 0.875rem;
   color: #71717a;
+  vertical-align: middle;
   @media (max-width: 768px) {
     padding: 0.5rem;
   }
@@ -57,6 +60,7 @@ const Tfee = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 132px;
+  vertical-align: middle;
   font-size: 0.875rem;
   color: #71717a;
   @media (max-width: 768px) {
@@ -93,14 +97,7 @@ export default function SubjectItem(props: subjectItemProps) {
 
   return (
     <>
-      <Tname>
-        <ScrollBox>
-          <ScrollShadow
-            orientation="horizontal"
-            className="scrollbar"
-          >{`[${subject.round}회차] ${subject.subjectName}`}</ScrollShadow>
-        </ScrollBox>
-      </Tname>
+      <Tname>{`[${subject.round}회차] ${subject.subjectName}`}</Tname>
       <TsubDiv>{subject.subDiv}</TsubDiv>
       <Tfee>{feeFormet(subject.fee)}</Tfee>
     </>
