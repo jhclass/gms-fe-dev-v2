@@ -27,6 +27,18 @@ const LavBox = styled.ul`
   border-left: 1px solid #c2c2c2;
   align-items: center;
   gap: 0.3rem;
+  > li {
+    width: 100%;
+    text-align: center;
+  }
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  img {
+    margin: 0 auto;
+  }
 `
 
 export default function Gnb({ setHoverIndex }) {
