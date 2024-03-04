@@ -1,14 +1,8 @@
-import { topbnrHiddenState } from '@/lib/recoilAtoms'
 import { Link } from '@nextui-org/link'
-import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 
 const TopBnrBox = styled.div`
   border-bottom: 2px solid #b8b8b8;
-
-  @media (max-width: 1024px) {
-    display: none;
-  }
 `
 
 const Wrap = styled.div`
@@ -46,15 +40,14 @@ const BtnItme = styled.li`
     top: 50%;
     margin-top: -10px;
   }
+  &:last-child {
+    a {
+      padding: 0 0 0 2rem;
+    }
+  }
 `
 
 export default function TopBnr() {
-  const [topbnrHidden, setTopbnrHidden] = useRecoilState(topbnrHiddenState)
-
-  const opBnrClick = () => {
-    setTopbnrHidden(!topbnrHidden)
-  }
-
   function handleClick(event) {
     event.preventDefault() // 기본 동작 방지
     alert('🚧 준비중입니다. 🚧')
@@ -62,10 +55,7 @@ export default function TopBnr() {
 
   return (
     <>
-      <TopBnrBox
-        id="mainTopBnr"
-        className={`${topbnrHidden ? 'hidden' : 'block'}`}
-      >
+      <TopBnrBox>
         <Wrap>
           <BnrArea>
             <img

@@ -9,6 +9,7 @@ import {
   Button,
   CheckboxGroup,
   Checkbox,
+  Textarea,
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -25,6 +26,7 @@ import {
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
+import PaymentInfo from '@/components/items/PaymentInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -200,6 +202,14 @@ type studentSubject = {
   tuitionFee: number
   unCollectedAmount: number
 }
+
+const EllipsisBox = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`
 
 export default function StudentsWrite() {
   const grade = useRecoilValue(gradeState)
@@ -634,158 +644,10 @@ export default function StudentsWrite() {
                         </Button>
                       )}
                     </AreaTitle>
-                    <FlexBox>
-                      <AreaSmallBox style={{ minWidth: '20%' }}>
-                        <div>
-                          <FilterLabel>과정코드</FilterLabel>
-                          <LineBox>{studentSubjectData?.subjectCode}</LineBox>
-                        </div>
-                      </AreaSmallBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>과정명</FilterLabel>
-                          <LineBox>{studentSubjectData?.subjectName}</LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaSmallBox2>
-                        <div>
-                          <FlexCon>
-                            <CheckboxGroup
-                              isReadOnly={true}
-                              label={<FilterLabel>주말반</FilterLabel>}
-                              defaultValue={[studentPaymentData?.isWeekend]}
-                              classNames={{ wrapper: 'items-center' }}
-                            >
-                              <Checkbox value="Y"></Checkbox>
-                            </CheckboxGroup>
-                          </FlexCon>
-                        </div>
-                        <div>
-                          <RadioBox>
-                            <RadioGroup
-                              isReadOnly
-                              label={
-                                <FilterLabel>
-                                  교육상황보고여부<span>*</span>
-                                </FilterLabel>
-                              }
-                              defaultValue={
-                                studentPaymentData?.situationReport
-                                  ? '동의'
-                                  : '비동의'
-                              }
-                              orientation="horizontal"
-                              className="gap-[0.65rem]"
-                            >
-                              <Radio key={'동의'} value={'동의'}>
-                                동의
-                              </Radio>
-                              <Radio key={'비동의'} value={'비동의'}>
-                                비동의
-                              </Radio>
-                            </RadioGroup>
-                          </RadioBox>
-                        </div>
-                      </AreaSmallBox2>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>
-                            선발평가점수<span>*</span>
-                          </FilterLabel>
-                          <LineBox>{studentPaymentData?.seScore || 0}</LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강 구분</FilterLabel>
-                          <LineBox>{studentPaymentData?.subDiv}</LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강예정일</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.dueDate === null
-                              ? ''
-                              : formatDate(studentPaymentData?.dueDate, false)}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강료</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.tuitionFee
-                              ? feeFormet(studentPaymentData?.tuitionFee)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>할인금액</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.discountAmount
-                              ? studentPaymentData?.discountAmount
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>
-                            <b>실 수강료</b>
-                          </FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.actualAmount
-                              ? feeFormet(studentPaymentData?.actualAmount)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                    </FlexBox>
-                    <FlexBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수납액</FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.amountReceived
-                              ? feeFormet(studentPaymentData?.amountReceived)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>
-                            <b>미 수납액</b>
-                          </FilterLabel>
-                          <LineBox>
-                            {studentPaymentData?.unCollectedAmount
-                              ? feeFormet(studentPaymentData?.unCollectedAmount)
-                              : '0'}
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                      <AreaBox>
-                        <div>
-                          <FilterLabel>수강담당자</FilterLabel>
-                          <LineBox>
-                            {
-                              managerList.find(
-                                user =>
-                                  user.id ===
-                                  studentPaymentData?.processingManagerId,
-                              )?.mUsername
-                            }
-                          </LineBox>
-                        </div>
-                      </AreaBox>
-                    </FlexBox>
+                    <PaymentInfo
+                      studentSubjectData={studentSubjectData}
+                      studentPaymentData={studentPaymentData}
+                    />
                     {(mGrade < grade.general ||
                       mPart.includes('교무팀') ||
                       mPart.includes('회계팀')) && (
@@ -904,28 +766,6 @@ export default function StudentsWrite() {
                     )}
                   </DetailDiv>
                 </DetailBox>
-                {/* <DetailBox>
-                  <DetailDiv>
-                    <BtnBox>
-                      <Button
-                        size="md"
-                        radius="md"
-                        variant="solid"
-                        className="w-full text-white bg-flag1"
-                      >
-                        환불신청
-                      </Button>
-                      <Button
-                        size="md"
-                        radius="md"
-                        variant="bordered"
-                        className="w-full text-flag1 border-flag1"
-                      >
-                        삭제
-                      </Button>
-                    </BtnBox>
-                  </DetailDiv>
-                </DetailBox> */}
               </>
             )}
             {studentPaymentDetailData?.length > 0 && (

@@ -1,3 +1,4 @@
+import { ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
 
 type subjectItemProps = {
@@ -21,12 +22,14 @@ const Tname = styled.div`
   justify-content: center;
   align-items: center;
   width: 60%;
-  padding: 1rem;
+  padding: 0.5rem;
   font-size: inherit;
   color: inherit;
   min-width: 360px;
   font-size: 0.875rem;
   font-weight: 600;
+  vertical-align: middle;
+  text-align: left;
   color: #71717a;
   @media (max-width: 768px) {
     padding: 0.5rem;
@@ -43,6 +46,7 @@ const TsubDiv = styled.div`
   min-width: 102px;
   font-size: 0.875rem;
   color: #71717a;
+  vertical-align: middle;
   @media (max-width: 768px) {
     padding: 0.5rem;
   }
@@ -56,6 +60,7 @@ const Tfee = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: 132px;
+  vertical-align: middle;
   font-size: 0.875rem;
   color: #71717a;
   @media (max-width: 768px) {
@@ -71,6 +76,16 @@ const EllipsisBox = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `
+
+const ScrollBox = styled.div`
+  /* overflow-x: auto; */
+  width: 360px;
+  white-space: nowrap;
+
+  .scrollbar {
+    padding: 0.5rem;
+  }
+`
 export default function SubjectItem(props: subjectItemProps) {
   const subject = props.tableData
   const feeFormet = fee => {
@@ -82,9 +97,7 @@ export default function SubjectItem(props: subjectItemProps) {
 
   return (
     <>
-      <Tname>
-        <EllipsisBox>{`[${subject.round}회차] ${subject.subjectName}`}</EllipsisBox>
-      </Tname>
+      <Tname>{`[${subject.round}회차] ${subject.subjectName}`}</Tname>
       <TsubDiv>{subject.subDiv}</TsubDiv>
       <Tfee>{feeFormet(subject.fee)}</Tfee>
     </>
