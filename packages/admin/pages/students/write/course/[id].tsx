@@ -345,6 +345,8 @@ export default function StudentsWriteCourse() {
             alert('등록되었습니다.')
             router.push(`/students/detail/${studentId}`)
             userLogs(`${studentData.name} 수강신청`)
+          } else {
+            alert(result.createStudentPayment.message)
           }
         },
       })
