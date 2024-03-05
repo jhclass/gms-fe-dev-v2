@@ -122,14 +122,19 @@ const Nolist = styled.div`
 
 export default function SalesTable({ salesFilter, days }) {
   const router = useRouter()
+  const now = new Date()
   const { data: hourlyData, refetch: houralyRefetch } = useQuery(
     GET_HOURLY_SALES_QUERY,
     {
       variables: {
-        date: [new Date(), new Date(new Date().setHours(23, 59, 59, 999))],
+        date: [
+          new Date(now.setHours(0, 0, 0)),
+          new Date(now.setHours(23, 59, 59)),
+        ],
       },
     },
   )
+
   const [searchResult, setSearchResult] = useState(null)
   const [searchResultTotal, setSearchResultTotal] = useState(null)
 
@@ -141,7 +146,10 @@ export default function SalesTable({ salesFilter, days }) {
       })
     } else {
       result = await houralyRefetch({
-        date: [new Date(), new Date(new Date().setHours(23, 59, 59, 999))],
+        date: [
+          new Date(new Date().setHours(0, 0, 0, 0)),
+          new Date(new Date().setHours(23, 59, 59, 999)),
+        ],
       })
     }
     return result
