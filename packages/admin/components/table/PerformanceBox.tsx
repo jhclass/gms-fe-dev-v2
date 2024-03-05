@@ -98,7 +98,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function PerformanceBox({ managerData }) {
+export default function PerformanceBox({ managerData, dateRange }) {
   return (
     <>
       <TableArea>

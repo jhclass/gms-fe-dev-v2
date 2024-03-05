@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { moMenuOpenState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
 import { useRecoilState } from 'recoil'
@@ -6,7 +6,7 @@ import Accordion from '@/components/Accordion'
 import router from 'next/router'
 
 export default function Menu() {
-  const [moMenuOpen, setmoMenuOpen] = useRecoilState(moMenuOpenState)
+  const [moMenuOpen, setmoMenuOpen] = useState(false)
 
   const handleTest = e => {
     e.preventDefault()
