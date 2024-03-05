@@ -59,15 +59,15 @@ export default function PerformanceList({ ids, dateRange }) {
         </div>
         {allData?.map((item, index) => (
           <ListBox key={index}>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <PerformanceTotal
-                ranking={index}
-                managerId={item.processingManagerId}
-                totalAmount={item.totalActualAmount}
-                totalCount={item.totalCount}
-              />
-            </div>
-            <PerformanceBox managerData={item} />
+            {/* <div style={{ marginBottom: '1.5rem' }}> */}
+            <PerformanceTotal
+              ranking={index}
+              managerId={item.processingManagerId}
+              totalAmount={item.totalActualAmount}
+              totalCount={item.totalCount}
+            />
+            {/* </div> */}
+            {/* <PerformanceBox managerData={item} dateRange={dateRange} /> */}
           </ListBox>
         ))}
       </>

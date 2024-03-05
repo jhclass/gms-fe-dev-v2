@@ -1345,30 +1345,22 @@ export const CLASS_CANCEL_MUTATION = gql`
 
 // statistics
 export const SALES_STATISTICS_MUTATION = gql`
-  mutation Mutation($period: [String]!, $processingManagerId: [Int]!) {
+  mutation Mutation(
+    $period: [String]!
+    $processingManagerId: [Int]!
+    $page: Int
+    $limit: Int
+  ) {
     salesStatistics(
       period: $period
       processingManagerId: $processingManagerId
+      page: $page
+      limit: $limit
     ) {
       data {
         totalCount
         totalActualAmount
         processingManagerId
-        payments {
-          actualAmount
-          createdAt
-          subjectId
-          subject {
-            id
-            subjectName
-            subjectCode
-          }
-          processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-          }
-        }
       }
       ok
       message
