@@ -24,7 +24,7 @@
   }
 
   .wrap {
-    @apply relative w-full lg:px-6 xl:px-0 xl:w-web xl:m-auto;
+    @apply relative w-full px-6 lg:px-6 xl:px-0 xl:w-web xl:m-auto;
   }
 
   .scroll {

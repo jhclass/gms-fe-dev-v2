@@ -3,6 +3,9 @@ import styled from 'styled-components'
 
 const TopBnrBox = styled.div`
   border-bottom: 2px solid #b8b8b8;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 const Wrap = styled.div`

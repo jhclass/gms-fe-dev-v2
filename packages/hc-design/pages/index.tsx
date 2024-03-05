@@ -1,4 +1,5 @@
 import WideSlider from '@/components/main/WideSlider'
+import WideSliderMo from '@/components/main/WideSliderMo'
 import QuickMenu from '@/components/main/QuickMenu'
 import { styled } from 'styled-components'
 import Curriculum from '@/components/main/Curriculum'
@@ -37,7 +38,15 @@ const MainBnr = styled.div`
     background: none;
   }
 `
-const MoBnr = styled.div``
+const MainBtn = styled.div`
+  margin: 2rem 0 4rem;
+  a {
+    display: block;
+  }
+  @media (max-width: 960px) {
+    background: none;
+  }
+`
 export default function Home() {
   // const router = useRouter()
   // useEffect(() => {
@@ -47,8 +56,22 @@ export default function Home() {
   // }, [router])
   return (
     <MainCon>
-      <WideSlider />
+      <div className="hidden md:block">
+        <WideSlider />
+      </div>
+      <div className="block md:hidden">
+        <WideSliderMo></WideSliderMo>
+      </div>
+
       <QuickMenu></QuickMenu>
+      <MainBtn>
+        <Link>
+          <img
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/main_btn01.png"
+            alt="전체 과정(컨텐츠) 보기"
+          />
+        </Link>
+      </MainBtn>
       <SectionArea>
         <Wrap>
           <img
@@ -57,6 +80,7 @@ export default function Home() {
             alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
           />
           <img
+            className="hidden md:block"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_tit.png"
             alt="Design&IT / @curriculum"
           />
@@ -65,10 +89,20 @@ export default function Home() {
           <Curriculum />
         </ItemArea>
       </SectionArea>
+      <img
+        className="block mb-20 md:hidden"
+        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco01.png"
+      />
       <SectionArea>
         <Wrap>
           <img
+            className="hidden md:block"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_tit.png"
+            alt="RealFeedback / @student review"
+          />
+          <img
+            className="block md:hidden"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_tit.png"
             alt="RealFeedback / @student review"
           />
         </Wrap>
@@ -98,20 +132,19 @@ export default function Home() {
       </MainBnr>
 
       <SectionArea>
-        <Wrap>
+        <Wrap className="hidden md:block">
           <Link>
             <img
-              className="hidden md:block"
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom.png"
-              alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
-            />
-            <img
-              className="block md:hidden"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bottom.png"
               alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
             />
           </Link>
         </Wrap>
+        <img
+          className="block md:hidden"
+          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bottom.png"
+          alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
+        />
       </SectionArea>
     </MainCon>
   )

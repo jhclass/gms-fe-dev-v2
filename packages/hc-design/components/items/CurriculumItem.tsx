@@ -17,7 +17,20 @@ export default function CurriculumItem({ itemData }) {
   return (
     <Item>
       <Link href={item.link}>
-        <img src={item.img} alt={`${item.category} / ${item.desc}`} />
+        {item.img && (
+          <img
+            src={item.img}
+            alt={`${item.category} / ${item.desc}`}
+            className="hidden md:block"
+          />
+        )}
+        {item.mimg && (
+          <img
+            src={item.mimg}
+            alt={`${item.category} / ${item.desc}`}
+            className="block md:hidden"
+          />
+        )}
       </Link>
     </Item>
   )
