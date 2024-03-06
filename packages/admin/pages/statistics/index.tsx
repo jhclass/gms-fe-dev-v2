@@ -49,8 +49,8 @@ export default function Statistics() {
   const [filterSearch, setFilterSearch] = useState(false)
   const [performanceFilter, setPerformanceFilter] = useState(null)
   const [clickReset, setClickReset] = useState(false)
-  const managerList = data?.seeManageUser.filter(
-    user => user.mPart.includes('영업팀') || user.mGrade === 1,
+  const managerList = data?.seeManageUser.filter(user =>
+    user.mPart.includes('영업팀'),
   )
   const [ids, setIds] = useState(null)
   const [dateRange, setDateRange] = useState(null)

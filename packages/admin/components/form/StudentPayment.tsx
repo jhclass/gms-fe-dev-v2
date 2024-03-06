@@ -308,9 +308,11 @@ export default function StudentPaymentForm({
       return disCountP
     }
   }
+
   const disCounCalculator = fee => {
     const price = disCountPrice(getValues('discountUnit'), fee)
     const total = price - parseInt(studentPaymentData?.amountReceived)
+
     if (price < 0) {
       setError('actualAmount', {
         type: 'custom',
