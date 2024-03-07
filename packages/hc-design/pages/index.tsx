@@ -117,7 +117,7 @@ export default function Home() {
       />
       <MainBnr>
         <Wrap>
-          <Link>
+          <Link href="/support">
             <img
               className="hidden md:block"
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bnr01.png"
