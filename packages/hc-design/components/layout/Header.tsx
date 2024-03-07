@@ -13,11 +13,13 @@ const HeaderBox = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 6.5rem;
+  gap: 0.5rem;
   @media (max-width: 960px) {
     height: 4rem;
   }
 `
 const Logo = styled.div`
+  min-width: 12rem;
   @media (max-width: 960px) {
     width: 12rem;
   }
@@ -223,7 +225,7 @@ export default function Header() {
             <Logo>
               <Link href="/" className="block">
                 <img
-                  className="w-[15rem] hidden lg:block"
+                  className="hidden lg:block"
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/header_logo.png"
                   alt="H ACADEMY | H아카데미"
                 />
@@ -272,6 +274,7 @@ export default function Header() {
               setHoverIndex(null)
             }}
             style={{ display: hoverIndex ? 'block' : 'none' }}
+            className="hidden lg:block"
           >
             <Gnb setHoverIndex={setHoverIndex} />
           </GnbBox>
