@@ -216,6 +216,7 @@ export default function StudentsWrite() {
   const [studentPaymentData, setStudentPaymentData] = useState([])
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState(null)
   const [memoList, setMemoList] = useState([])
+
   useEffect(() => {
     searchStudentMutation({
       variables: {
@@ -229,7 +230,7 @@ export default function StudentsWrite() {
         }
       },
     })
-  }, [router, studentPaymentData])
+  }, [router])
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)

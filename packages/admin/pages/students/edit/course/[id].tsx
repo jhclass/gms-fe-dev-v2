@@ -175,7 +175,7 @@ export default function StudentsWriteCourse() {
         },
       })
     }
-  }, [router, paymentId])
+  }, [router])
 
   useEffect(() => {
     searchSubject({
