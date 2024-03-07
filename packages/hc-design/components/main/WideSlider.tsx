@@ -21,51 +21,36 @@ export default function MainSilder() {
           <SwiperSlide>
             <Link href="/detail/webtoon">
               <div className="flex justify-center">
-                <video autoPlay loop muted className="hidden wmd:block">
+                <video autoPlay loop muted>
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/main/main_banner02.mp4"
                     type="video/mp4"
                   />
                 </video>
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/main/main_banner02_mo.webp"
-                  style={{ overflow: 'hidden' }}
-                  className="block wmd:hidden"
-                />
               </div>
             </Link>
           </SwiperSlide>
           <SwiperSlide>
             <Link href="/detail/emoticon">
               <div className="flex justify-center">
-                <video autoPlay loop muted className="hidden wmd:block">
+                <video autoPlay loop muted>
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/main/main_banner03.mp4"
                     type="video/mp4"
                   />
                 </video>
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/main/main_banner03_mo.webp"
-                  style={{ overflow: 'hidden' }}
-                  className="block wmd:hidden"
-                />
               </div>
             </Link>
           </SwiperSlide>
           <SwiperSlide>
             <Link href="/detail/motion">
               <div className="flex justify-center">
-                <video autoPlay loop muted className="hidden wmd:block">
+                <video autoPlay loop muted>
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/main/main_banner01.mp4"
                     type="video/mp4"
                   />
                 </video>
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/main/main_banner01_mo.webp"
-                  style={{ overflow: 'hidden' }}
-                  className="block wmd:hidden"
-                />
               </div>
             </Link>
           </SwiperSlide>
