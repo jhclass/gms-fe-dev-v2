@@ -64,7 +64,7 @@ export default function CurriculumItems() {
   return (
     <div className="wrap">
       <List>
-        <div className="grid grid-cols-1 gap-20 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 xl:grid-cols-5 xl:gap-8">
+        <div className="grid grid-cols-1 gap-20 md:gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 xl:grid-cols-5 xl:gap-8">
           {list.map((item, index) => (
             <CurriculumItem key={index} itemData={item}></CurriculumItem>
           ))}

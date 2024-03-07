@@ -45,19 +45,33 @@ export default function Aside() {
         id="aside"
         className={`${
           asideHidden ? 'opacity-0' : 'opacity-100'
-        } bottom-[8rem] rounded-s-lg left-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all`}
+        } bottom-[8rem] rounded-s-lg right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all`}
       >
-        <div className="w-[5rem]">
+        <div className="w-[3.2rem] h-[3.2rem] text-white rounded-full text-2xl/none bg-primary">
           <Link
             href="/consult"
             as="/consult"
             className="flex items-center justify-center w-full h-full"
           >
-            <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/floating01.png"
-              alt="문의하기"
-            />
+            <i className="xi-call" />
           </Link>
+        </div>
+        <div className="text-3xl/none w-[3.2rem] h-[3.2rem] mt-3 text-black rounded-full bg-[#ffe839]">
+          <Link
+            href="#"
+            onClick={handleTest}
+            className="flex items-center justify-center w-full h-full"
+          >
+            <i className="xi-kakaotalk" />
+          </Link>
+        </div>
+        <div className="hidden lg:block w-[3.2rem] h-[3.2rem] mt-3 text-white bg-black rounded-full text-2xl/none">
+          <button
+            onClick={scrollToTop}
+            className="flex items-center justify-center w-full h-full"
+          >
+            <i className="xi-angle-up" />
+          </button>
         </div>
       </aside>
     </>

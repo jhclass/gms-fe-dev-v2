@@ -27,24 +27,25 @@ const SectionArea = styled.div``
 const ItemArea = styled.div`
   padding: 3.5rem 0;
   background: #0e0053;
-  @media (max-width: 960px) {
+  @media (max-width: 640px) {
     background: none;
   }
 `
 const MainBnr = styled.div`
   padding-bottom: 3.5rem;
   background: #0e0053;
-  @media (max-width: 960px) {
+  @media (max-width: 640px) {
     background: none;
   }
 `
 const MainBtn = styled.div`
+  display: none;
   margin: 2rem 0 4rem;
   a {
     display: block;
   }
-  @media (max-width: 960px) {
-    background: none;
+  @media (max-width: 640px) {
+    display: block;
   }
 `
 export default function Home() {

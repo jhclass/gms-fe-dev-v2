@@ -13,12 +13,12 @@ const HeaderBox = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 6.5rem;
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     height: 4rem;
   }
 `
 const Logo = styled.div`
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     width: 12rem;
   }
 `
@@ -44,14 +44,14 @@ const Nav = styled.ul`
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     display: none;
   }
 `
 const GnbBtn = styled.button`
   display: none;
   width: 3rem;
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     display: block;
   }
 `
@@ -210,7 +210,7 @@ export default function Header() {
     <>
       <header
         id="header"
-        className="px-0 m-auto ax-w-full h-[4rem] lg:h-[4.5rem] relative z-[40]"
+        className="px-0 m-auto ax-w-full h-[4rem] lg:h-[10rem] relative z-[40]"
       >
         <div
           className={`${
@@ -223,12 +223,12 @@ export default function Header() {
             <Logo>
               <Link href="/" className="block">
                 <img
-                  className="hidden lg:block"
+                  className="w-[15rem] hidden lg:block"
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/header_logo.png"
                   alt="H ACADEMY | H아카데미"
                 />
                 <img
-                  className="block lg:hidden"
+                  className="w-[12rem] block lg:hidden"
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.png"
                   alt="H ACADEMY | H아카데미"
                 />
@@ -336,7 +336,7 @@ export default function Header() {
           </MgnbNav>
           <MgnbNav2>
             <li>
-              <Link>
+              <Link href="/support">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_05.png"
                   alt="국비/쉬업지원"
@@ -344,7 +344,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link>
+              <Link href="/academy">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_06.png"
                   alt="아카데미소개"

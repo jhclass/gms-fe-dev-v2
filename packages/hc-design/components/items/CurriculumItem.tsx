@@ -21,14 +21,14 @@ export default function CurriculumItem({ itemData }) {
           <img
             src={item.img}
             alt={`${item.category} / ${item.desc}`}
-            className="hidden md:block"
+            className="hidden lg:block"
           />
         )}
         {item.mimg && (
           <img
             src={item.mimg}
             alt={`${item.category} / ${item.desc}`}
-            className="block md:hidden"
+            className="block lg:hidden"
           />
         )}
       </Link>
