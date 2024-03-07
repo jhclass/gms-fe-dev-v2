@@ -22,6 +22,16 @@ const ConBtn = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0;
+    p {
+      width: 50%;
+    }
+  }
 `
 
 export default function academyFeatures() {
@@ -46,7 +56,7 @@ export default function academyFeatures() {
                       src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_01.webp"
                       alt=" Q. 에이치아카데미의 교육은 무엇이 다른가요? 만족도가 다릅니다.그리고 수강생의 결과가 다릅니다. 비전공자라도 취업이 가능하도록 만드는 아카데미.본원에 방문하시면 그 결과를 보여드립니다."
                     />
-                    <p>
+                    <p className="pl-[3rem]">
                       <Link href={'#'}>
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn02.webp"
@@ -54,7 +64,7 @@ export default function academyFeatures() {
                         />
                       </Link>
                     </p>
-                    <p>
+                    <p className="pl-[3rem]">
                       <Link href={'#'}>
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn04.webp"
@@ -73,7 +83,7 @@ export default function academyFeatures() {
                       src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_03.webp"
                       alt=" Q. 배우면 뭐해?... 실무에서 아쓰는데?.. 현업에서 활동중인 디자이너가 직접 강의를 진행합니다. 배웠지만 사용할 수 없는 촌스러운 강의는 하지 않습니다. 수업에 참여만해도, 실력이 업그레이드 됩니다. 에이치아카데미 강의는 특별합니다."
                     />
-                    <p>
+                    <p className="pr-[3rem]">
                       <Link href={'#'}>
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn01.webp"
@@ -81,7 +91,7 @@ export default function academyFeatures() {
                         />
                       </Link>
                     </p>
-                    <p>
+                    <p className="pr-[3rem]">
                       <Link href={'#'}>
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn03.webp"
@@ -112,7 +122,7 @@ export default function academyFeatures() {
                 전공자, 비전공자의 고민을 공감하고 목표달성을 함께하겠습니다. Q. 에이치아카데미의 교육은 무엇이 다른가요? 만족도가 다릅니다.그리고 수강생의 결과가 다릅니다. 비전공자라도 취업이 가능하도록 만드는 아카데미.본원에 방문하시면 그 결과를 보여드립니다.
                 배우면 뭐해?... 실무에서 아쓰는데?.. 현업에서 활동중인 디자이너가 직접 강의를 진행합니다. 배웠지만 사용할 수 없는 촌스러운 강의는 하지 않습니다. 수업에 참여만해도, 실력이 업그레이드 됩니다. 에이치아카데미 강의는 특별합니다."
             />
-            <div>
+            <ConBtn>
               <p>
                 <Link href={'#'}>
                   <img
@@ -145,7 +155,7 @@ export default function academyFeatures() {
                   />
                 </Link>
               </p>
-            </div>
+            </ConBtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/academy_features_02.webp"
               alt="“디자이너/프로그래머를 희망하는 당신에게 에이치아카데미 연구진만의 반복 T.A.P.E.(4단계) 시스템으로 상상 이상의 실력을 만들어드리겠습니다.”
