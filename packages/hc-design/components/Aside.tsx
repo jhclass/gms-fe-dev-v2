@@ -43,9 +43,7 @@ export default function Aside() {
     <>
       <aside
         id="aside"
-        className={`${
-          asideHidden ? 'opacity-0' : 'opacity-100'
-        } bottom-[8rem] rounded-s-lg left-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all`}
+        className="bottom-[8rem] rounded-s-lg left-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
       >
         <div className="w-[5rem]">
           <Link
