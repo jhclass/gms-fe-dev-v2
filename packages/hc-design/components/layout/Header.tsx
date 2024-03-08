@@ -309,7 +309,7 @@ export default function Header() {
           </MgnbBnr>
           <MgnbNav>
             <li>
-              <Link>
+              <Link href="/motiongraphic">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_01.png"
                   alt="모션그래픽과정"
