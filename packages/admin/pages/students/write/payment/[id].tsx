@@ -208,7 +208,7 @@ export default function StudentsWritePayment() {
         },
       })
     }
-  }, [router, paymentId])
+  }, [router])
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
