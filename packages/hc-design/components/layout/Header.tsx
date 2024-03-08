@@ -61,7 +61,6 @@ const GnbBox = styled.div`
   display: none;
 `
 const Mgnb = styled.div<{ $moMenuOpen: boolean }>`
-  display: ${props => (props.$moMenuOpen ? 'flex' : 'none')};
   position: fixed;
   top: 0;
   right: 0;
@@ -70,6 +69,11 @@ const Mgnb = styled.div<{ $moMenuOpen: boolean }>`
   align-items: flex-start;
   z-index: 100;
   height: 100%;
+  display: none;
+
+  @media (max-width: 960px) {
+    display: ${props => (props.$moMenuOpen ? 'flex' : 'none')};
+  }
 `
 
 const MgnbClose = styled.button`
@@ -305,7 +309,7 @@ export default function Header() {
           </MgnbBnr>
           <MgnbNav>
             <li>
-              <Link>
+              <Link href="/motiongraphic">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_01.png"
                   alt="모션그래픽과정"
