@@ -23,5 +23,9 @@ export default function AccountingLayout({ children }) {
     return null
   }
 
-  return <main>{children}</main>
+  if (mGrade === grade.dev) {
+    return <main>{children}</main>
+  } else {
+    return <MainWrap>기능 점검으로 잠시 서비스 중단 합니다.</MainWrap>
+  }
 }
