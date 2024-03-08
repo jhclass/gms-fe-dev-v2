@@ -271,8 +271,9 @@ export default function StudentPaymentForm({
       studentPaymentData?.isWeekend === undefined
     ) {
       setWeekendClass([])
-    } else {
+    } else if (studentPaymentData?.isWeekend.includes('Y')) {
       setWeekendClass([studentPaymentData?.isWeekend])
+      setValue('isWeekend', studentPaymentData?.isWeekend)
     }
     if (
       studentPaymentData?.discountAmount === null ||
@@ -380,7 +381,7 @@ export default function StudentPaymentForm({
                   : typeof data.dueDate === 'string'
                   ? new Date(parseInt(data.dueDate))
                   : new Date(data.dueDate),
-              isWeekend: data.isWeekend === '' ? 'N' : data.isWeekend,
+              isWeekend: data.isWeekend === undefined ? 'N' : data.isWeekend,
             },
             onCompleted: result => {
               if (result.editStudentPayment.ok) {
