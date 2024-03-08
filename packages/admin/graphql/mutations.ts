@@ -1246,15 +1246,15 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
 export const UPDATE_STUDENT_RECEIVED_MUTATION = gql`
   mutation EditStudentPayment(
     $editStudentPaymentId: Int!
-    $subjectId: Int
-    $amountReceived: Int
+    $subjectId: Int!
     $processingManagerId: Int
+    $amountReceived: Int
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
       subjectId: $subjectId
-      amountReceived: $amountReceived
       processingManagerId: $processingManagerId
+      amountReceived: $amountReceived
     ) {
       error
       message
