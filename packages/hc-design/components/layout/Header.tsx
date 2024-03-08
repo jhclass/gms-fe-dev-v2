@@ -61,7 +61,6 @@ const GnbBox = styled.div`
   display: none;
 `
 const Mgnb = styled.div<{ $moMenuOpen: boolean }>`
-  display: ${props => (props.$moMenuOpen ? 'flex' : 'none')};
   position: fixed;
   top: 0;
   right: 0;
@@ -70,6 +69,11 @@ const Mgnb = styled.div<{ $moMenuOpen: boolean }>`
   align-items: flex-start;
   z-index: 100;
   height: 100%;
+  display: none;
+
+  @media (max-width: 960px) {
+    display: ${props => (props.$moMenuOpen ? 'flex' : 'none')};
+  }
 `
 
 const MgnbClose = styled.button`
