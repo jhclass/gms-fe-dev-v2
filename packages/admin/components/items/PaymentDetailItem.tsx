@@ -12,6 +12,7 @@ import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
   SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_PAYMENT_MUTATION,
   SEARCH_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -92,7 +93,7 @@ const FlatBox = styled.div`
 
 export default function StudentPaymentDetailItem({
   detailtData,
-  studentId,
+  paymentId,
   setStudentPaymentDetailData,
 }) {
   const grade = useRecoilValue(gradeState)
@@ -103,10 +104,11 @@ export default function StudentPaymentDetailItem({
   const mPart = useMme('mPart')
   const { userLogs } = useUserLogsMutation()
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
-  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
+  const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [selectedPaymentDate, setSelectedPaymentDate] = useRecoilState(
     selectedPaymentDetailState,
   )
+
   const clickReqRefund = () => {
     if (detailtData.reqRefund) {
       const isAssignment = confirm('결제를 취소요청을 철회 하시겠습니까?')
@@ -119,19 +121,14 @@ export default function StudentPaymentDetailItem({
           },
           onCompleted: result => {
             if (result.reqRefund.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
+                  if (data.searchStudentPayment.ok) {
                     setStudentPaymentDetailData(
-                      data.searchStudent?.student[0].studentPayment[0]
-                        ?.paymentDetail,
-                    )
-                    alert('결제 취소요청이 철회 되었습니다.')
-                    userLogs(
-                      `paymentDetail ID : ${detailtData.id} / 결제취소 철회`,
+                      data.searchStudentPayment?.data?.paymentDetail,
                     )
                   }
                 },
@@ -151,15 +148,14 @@ export default function StudentPaymentDetailItem({
           },
           onCompleted: result => {
             if (result.reqRefund.ok) {
-              searchStudentMutation({
+              searchStudentPayment({
                 variables: {
-                  searchStudentId: parseInt(studentId),
+                  searchStudentPaymentId: parseInt(paymentId),
                 },
                 onCompleted: data => {
-                  if (data.searchStudent.ok) {
+                  if (data.searchStudentPayment.ok) {
                     setStudentPaymentDetailData(
-                      data.searchStudent?.student[0].studentPayment[0]
-                        ?.paymentDetail,
+                      data.searchStudentPayment?.data?.paymentDetail,
                     )
                     alert('결제 취소요청 되었습니다.')
                     userLogs(

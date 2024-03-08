@@ -16,7 +16,11 @@ import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { gradeState, selectedPaymentState } from '@/lib/recoilAtoms'
+import {
+  gradeState,
+  selectedPaymentState,
+  studentPaymentDetailDataState,
+} from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
@@ -234,7 +238,8 @@ export default function StudentsWrite() {
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
-  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
+  const [studentPaymentDetailData, setStudentPaymentDetailData] =
+    useRecoilState(studentPaymentDetailDataState)
 
   useEffect(() => {
     if (paymentId !== null) {
@@ -254,7 +259,7 @@ export default function StudentsWrite() {
         },
       })
     }
-  }, [router, paymentId])
+  }, [router])
 
   const clickLectureAssignment = () => {
     if (studentPaymentData.lectureAssignment === '배정') {
@@ -804,7 +809,7 @@ export default function StudentsWrite() {
                           setStudentPaymentDetailData
                         }
                         detailtData={item}
-                        studentId={studentData?.id}
+                        paymentId={paymentId}
                       />
                     ))}
                   </DetailDiv>

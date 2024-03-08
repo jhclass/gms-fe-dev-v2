@@ -233,6 +233,11 @@ export const bankNameState = atom({
   },
 })
 
+export const studentPaymentDetailDataState = atom<[]>({
+  key: 'studentPaymentDetailData',
+  default: [],
+})
+
 //filter
 export const consultFilterActiveState = atom<boolean>({
   key: 'consultFilterActive',
