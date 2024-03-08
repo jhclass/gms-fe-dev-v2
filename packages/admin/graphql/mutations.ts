@@ -1347,26 +1347,48 @@ export const CLASS_CANCEL_MUTATION = gql`
 
 // statistics
 export const SALES_STATISTICS_MUTATION = gql`
-  mutation Mutation(
-    $period: [String]!
-    $processingManagerId: [Int]!
-    $page: Int
-    $limit: Int
-  ) {
+  mutation Mutation($period: [String]!, $processingManagerId: [Int]!) {
     salesStatistics(
       period: $period
       processingManagerId: $processingManagerId
-      page: $page
-      limit: $limit
     ) {
       data {
         totalCount
         totalActualAmount
         processingManagerId
       }
+      error
+      message
+      ok
+    }
+  }
+`
+export const SALES_STATISTICS_LIST_MUTATION = gql`
+  mutation SalesStatisticsList(
+    $period: [String]!
+    $processingManagerId: Int!
+    $page: Int
+    $limit: Int
+  ) {
+    salesStatisticsList(
+      period: $period
+      processingManagerId: $processingManagerId
+      page: $page
+      limit: $limit
+    ) {
+      processingManagerId
       ok
       message
       error
+      data {
+        actualAmount
+        createdAt
+        subject {
+          id
+          subjectName
+          subjectCode
+        }
+      }
     }
   }
 `

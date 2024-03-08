@@ -64,7 +64,7 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="">
+                <Link href="/motiongraphic">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_01.png"
                     alt="프리미어프로"

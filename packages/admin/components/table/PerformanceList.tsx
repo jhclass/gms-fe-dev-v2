@@ -2,7 +2,10 @@ import { useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PerformanceBox from './PerformanceBox'
-import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
+import {
+  SALES_STATISTICS_LIST_MUTATION,
+  SALES_STATISTICS_MUTATION,
+} from '@/graphql/mutations'
 import PerformanceTotal from './PerformanceTotal'
 import PerformanceChart from '../dashboard/PerformanceChart'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -48,29 +51,31 @@ export default function PerformanceList({ ids, dateRange }) {
   }, [ids, dateRange])
 
   return (
-    allData?.length > 0 && (
-      <>
-        <div style={{ marginBottom: '3rem' }}>
-          <PerformanceChart
-            managerIds={idList}
-            totalAmount={totalAmount}
-            totalCount={countTotal}
-          />
-        </div>
-        {allData?.map((item, index) => (
-          <ListBox key={index}>
-            {/* <div style={{ marginBottom: '1.5rem' }}> */}
+    <>
+      <div style={{ marginBottom: '3rem' }}>
+        <PerformanceChart
+          managerIds={idList}
+          totalAmount={totalAmount}
+          totalCount={countTotal}
+        />
+      </div>
+      {allData?.map((item, index) => (
+        <ListBox key={index}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <PerformanceTotal
               ranking={index}
               managerId={item.processingManagerId}
               totalAmount={item.totalActualAmount}
               totalCount={item.totalCount}
             />
-            {/* </div> */}
-            {/* <PerformanceBox managerData={item} dateRange={dateRange} /> */}
-          </ListBox>
-        ))}
-      </>
-    )
+          </div>
+          <PerformanceBox
+            managerData={item}
+            dateRange={dateRange}
+            totalCount={item.totalCount}
+          />
+        </ListBox>
+      ))}
+    </>
   )
 }
