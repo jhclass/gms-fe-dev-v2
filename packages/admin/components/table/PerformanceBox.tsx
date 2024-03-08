@@ -112,6 +112,23 @@ export default function PerformanceBox({ managerData, dateRange, totalCount }) {
   const [currentLimit] = useState(5)
   const [detailData, setDetailData] = useState(null)
   useEffect(() => {
+    setCurrentPage(1)
+    salesStatisticsList({
+      variables: {
+        period: dateRange,
+        processingManagerId: managerData.processingManagerId,
+        page: 1,
+        limit: currentLimit,
+      },
+      onCompleted: result => {
+        if (result.salesStatisticsList.ok) {
+          setDetailData(result.salesStatisticsList.data)
+        }
+      },
+    })
+  }, [managerData, dateRange])
+
+  useEffect(() => {
     salesStatisticsList({
       variables: {
         period: dateRange,
@@ -125,10 +142,10 @@ export default function PerformanceBox({ managerData, dateRange, totalCount }) {
         }
       },
     })
-  }, [managerData, dateRange, currentPage])
+  }, [currentPage])
 
   return (
-    detailData && (
+    managerData && (
       <>
         <TableArea>
           <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -143,15 +160,16 @@ export default function PerformanceBox({ managerData, dateRange, totalCount }) {
               </Theader>
               {totalCount !== 0 && (
                 <>
-                  {detailData.map((item, index) => (
-                    <PerformanceItem
-                      key={index}
-                      currentPage={currentPage}
-                      limit={currentLimit}
-                      tableData={item}
-                      itemIndex={index}
-                    />
-                  ))}
+                  {detailData &&
+                    detailData.map((item, index) => (
+                      <PerformanceItem
+                        key={index}
+                        currentPage={currentPage}
+                        limit={currentLimit}
+                        tableData={item}
+                        itemIndex={index}
+                      />
+                    ))}
                 </>
               )}
               {detailData?.totalCount === 0 && (
