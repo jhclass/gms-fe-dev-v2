@@ -9,7 +9,10 @@ import { useRecoilState } from 'recoil'
 import { studentPageState } from '@/lib/recoilAtoms'
 import PerformanceItem from './PerformanceItem'
 import PerformanceTotal from './PerformanceTotal'
-import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
+import {
+  SALES_STATISTICS_LIST_MUTATION,
+  SEARCH_PAYMENT_MUTATION,
+} from '@/graphql/mutations'
 
 const TableArea = styled.div``
 const TTopic = styled.div`
@@ -97,38 +100,81 @@ const Nolist = styled.div`
   font-size: 0.875rem;
   color: #71717a;
 `
+const PagerWrap = styled.div`
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+`
 
-export default function PerformanceBox({ managerData, dateRange }) {
+export default function PerformanceBox({ managerData, dateRange, totalCount }) {
+  const [salesStatisticsList] = useMutation(SALES_STATISTICS_LIST_MUTATION)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentLimit] = useState(5)
+  const [detailData, setDetailData] = useState(null)
+  useEffect(() => {
+    salesStatisticsList({
+      variables: {
+        period: dateRange,
+        processingManagerId: managerData.processingManagerId,
+        page: currentPage,
+        limit: currentLimit,
+      },
+      onCompleted: result => {
+        if (result.salesStatisticsList.ok) {
+          setDetailData(result.salesStatisticsList.data)
+        }
+      },
+    })
+  }, [managerData, dateRange, currentPage])
+
   return (
-    <>
-      <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <Tnum>No</Tnum>
-                <TcreatedAt>등록일시</TcreatedAt>
-                <TSubject>과정명</TSubject>
-                <Tamount>실 수강료</Tamount>
-              </TheaderBox>
-            </Theader>
-            {managerData?.totalCount > 0 && (
-              <>
-                {managerData?.payments.map((item, index) => (
-                  <PerformanceItem
-                    key={index}
-                    tableData={item}
-                    itemIndex={index}
-                  />
-                ))}
-              </>
-            )}
-            {managerData?.totalCount === 0 && (
-              <Nolist>데이터가 없습니다.</Nolist>
-            )}
-          </TableWrap>
-        </ScrollShadow>
-      </TableArea>
-    </>
+    detailData && (
+      <>
+        <TableArea>
+          <ScrollShadow orientation="horizontal" className="scrollbar">
+            <TableWrap>
+              <Theader>
+                <TheaderBox>
+                  <Tnum>No</Tnum>
+                  <TcreatedAt>등록일시</TcreatedAt>
+                  <TSubject>과정명</TSubject>
+                  <Tamount>실 수강료</Tamount>
+                </TheaderBox>
+              </Theader>
+              {totalCount !== 0 && (
+                <>
+                  {detailData.map((item, index) => (
+                    <PerformanceItem
+                      key={index}
+                      currentPage={currentPage}
+                      limit={currentLimit}
+                      tableData={item}
+                      itemIndex={index}
+                    />
+                  ))}
+                </>
+              )}
+              {detailData?.totalCount === 0 && (
+                <Nolist>데이터가 없습니다.</Nolist>
+              )}
+            </TableWrap>
+          </ScrollShadow>
+          {totalCount !== 0 && (
+            <PagerWrap>
+              <Pagination
+                variant="light"
+                showControls
+                initialPage={currentPage}
+                page={currentPage}
+                total={Math.ceil(totalCount / currentLimit)}
+                onChange={newPage => {
+                  setCurrentPage(newPage)
+                }}
+              />
+            </PagerWrap>
+          )}
+        </TableArea>
+      </>
+    )
   )
 }

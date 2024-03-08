@@ -1,7 +1,8 @@
 import { styled } from 'styled-components'
 import Link from 'next/link'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SALES_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
 
 type ConsultItemProps = {
   tableData: {

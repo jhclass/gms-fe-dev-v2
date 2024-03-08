@@ -116,12 +116,13 @@ export default function PerformanceItem(props) {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+
   return (
     <>
       <TableItem>
         <TableRow>
           <ClickBox>
-            <Tnum>{conIndex + 1}</Tnum>
+            <Tnum> {(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
             <TcreatedAt>
               <EllipsisBox>{getDate(paymentData?.createdAt)}</EllipsisBox>
             </TcreatedAt>

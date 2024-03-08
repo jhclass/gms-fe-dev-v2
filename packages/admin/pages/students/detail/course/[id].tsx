@@ -3,28 +3,16 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import {
-  Radio,
-  RadioGroup,
-  Button,
-  CheckboxGroup,
-  Checkbox,
-  Textarea,
-} from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {
-  gradeState,
-  selectedPaymentState,
-  studentPaymentDetailDataState,
-} from '@/lib/recoilAtoms'
+import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
-  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   SEARCH_PAYMENT_MUTATION,
   SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
@@ -238,8 +226,7 @@ export default function StudentsWrite() {
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
-  const [studentPaymentDetailData, setStudentPaymentDetailData] =
-    useRecoilState(studentPaymentDetailDataState)
+  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
 
   useEffect(() => {
     if (paymentId !== null) {

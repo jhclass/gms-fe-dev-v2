@@ -11,9 +11,7 @@ import {
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
-  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   SEARCH_PAYMENT_MUTATION,
-  SEARCH_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
