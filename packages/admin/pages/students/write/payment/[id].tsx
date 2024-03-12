@@ -28,7 +28,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import {
   CREATE_PAYMENT_DETAIL_MUTATION,
   SEARCH_PAYMENT_MUTATION,
-  SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import Button2 from '@/components/common/Button'
@@ -201,9 +200,9 @@ export default function StudentsWritePayment() {
         },
         onCompleted: data => {
           if (data.searchStudentPayment.ok) {
-            setStudentPaymentData(data.searchStudentPayment?.data)
-            setStudentData(data.searchStudentPayment?.data?.student)
-            setStudentSubjectData(data.searchStudentPayment?.data?.subject)
+            setStudentPaymentData(data.searchStudentPayment?.data[0])
+            setStudentData(data.searchStudentPayment?.data[0]?.student)
+            setStudentSubjectData(data.searchStudentPayment?.data[0]?.subject)
           }
         },
       })

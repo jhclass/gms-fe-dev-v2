@@ -8,7 +8,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
@@ -236,11 +236,11 @@ export default function StudentsWrite() {
         },
         onCompleted: data => {
           if (data.searchStudentPayment.ok) {
-            setStudentPaymentData(data.searchStudentPayment?.data)
-            setStudentData(data.searchStudentPayment?.data?.student)
-            setStudentSubjectData(data.searchStudentPayment?.data?.subject)
+            setStudentPaymentData(data.searchStudentPayment?.data[0])
+            setStudentData(data.searchStudentPayment?.data[0]?.student)
+            setStudentSubjectData(data.searchStudentPayment?.data[0]?.subject)
             setStudentPaymentDetailData(
-              data.searchStudentPayment?.data?.paymentDetail,
+              data.searchStudentPayment?.data[0]?.paymentDetail,
             )
           }
         },
@@ -269,7 +269,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
                     )
@@ -301,7 +301,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
                     )
@@ -335,7 +335,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(`${studentData.name}학생 이수처리 취소`)
                     alert('이수처리 취소되었습니다.')
                   }
@@ -363,7 +363,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(`${studentData.name}학생 이수처리`)
                     alert('이수처리 되었습니다.')
                   }
@@ -401,7 +401,9 @@ export default function StudentsWrite() {
                       },
                       onCompleted: data => {
                         if (data.searchStudentPayment.ok) {
-                          setStudentPaymentData(data.searchStudentPayment?.data)
+                          setStudentPaymentData(
+                            data.searchStudentPayment?.data[0],
+                          )
                           userLogs(
                             `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
                           )
@@ -434,7 +436,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
                     )
@@ -468,7 +470,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
                     )
@@ -498,7 +500,7 @@ export default function StudentsWrite() {
                 },
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data)
+                    setStudentPaymentData(data.searchStudentPayment?.data[0])
                     userLogs(
                       `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
                     )

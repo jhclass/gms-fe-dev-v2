@@ -826,17 +826,17 @@ export const UPDATE_STUDENT_BASIC_MUTATION = gql`
   }
 `
 export const UPDATE_STUDENT_COURSE_MUTATION = gql`
-  mutation Mutation(
+  mutation EditStudentPayment(
     $editStudentPaymentId: Int!
-    $lectureAssignment: String
+    $subjectId: Int!
     $processingManagerId: Int
-    $subjectId: Int
+    $lectureAssignment: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
-      lectureAssignment: $lectureAssignment
-      processingManagerId: $processingManagerId
       subjectId: $subjectId
+      processingManagerId: $processingManagerId
+      lectureAssignment: $lectureAssignment
     ) {
       error
       message
@@ -930,6 +930,133 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
     }
   }
 `
+export const SEARCH_PAYMENT_MUTATION = gql`
+  mutation SearchStudentPayment($searchStudentPaymentId: Int) {
+    searchStudentPayment(id: $searchStudentPaymentId) {
+      ok
+      message
+      error
+      totalCount
+      data {
+        actualAmount
+        amountReceived
+        campus
+        cardAmount
+        cashAmount
+        classCode
+        courseComplete
+        createdAt
+        discountAmount
+        dueDate
+        employment
+        id
+        isWeekend
+        lectureAssignment
+        paymentDate
+        paymentDetail {
+          ApprovalNum
+          amountPayment
+          bankName
+          cardCompany
+          cardNum
+          cashOrCard
+          cashReceipts
+          createdAt
+          depositAmount
+          depositorName
+          depositDate
+          id
+          installment
+          paymentDate
+          receiver {
+            mUserId
+            mUsername
+            id
+          }
+          receiverId
+          refundApproval
+          refundApprovalDate
+          reqRefund
+          refundManager
+          reqRefundDate
+          reqRefundManager
+          stName
+          studentId
+          updatedAt
+        }
+        processingManager {
+          mUserId
+          mUsername
+          id
+        }
+        processingManagerId
+        seScore
+        situationReport
+        studentId
+        student {
+          birthday
+          createdAt
+          id
+          name
+          phoneNum1
+          writer
+          updatedAt
+        }
+        subDiv
+        subject {
+          fee
+          id
+          subDiv
+          subjectName
+          subjectCode
+        }
+        subjectId
+        tuitionFee
+        unCollectedAmount
+        updatedAt
+      }
+    }
+  }
+`
+export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
+  mutation Mutation(
+    $page: Int
+    $limit: Int
+    $studentName: String
+    $period: [String]
+  ) {
+    searchStudentPayment(
+      page: $page
+      limit: $limit
+      studentName: $studentName
+      period: $period
+    ) {
+      data {
+        actualAmount
+        amountReceived
+        discountAmount
+        id
+        processingManager {
+          mUsername
+        }
+        student {
+          name
+        }
+        subject {
+          round
+          subjectName
+        }
+        updatedAt
+        unCollectedAmount
+        tuitionFee
+      }
+      error
+      message
+      ok
+      totalCount
+    }
+  }
+`
 export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
   mutation Mutation(
     $cashOrCard: String!
@@ -967,7 +1094,6 @@ export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
     }
   }
 `
-
 export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
   mutation EditPaymentDetail(
     $editPaymentDetailId: Int!
@@ -1004,161 +1130,6 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
       ok
       error
       message
-    }
-  }
-`
-export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
-  mutation Mutation(
-    $sortOf: String
-    $refundApprovalDate: [String]
-    $reqRefundDate: [String]
-    $refundApproval: Boolean
-    $reqRefund: Boolean
-    $limit: Int
-    $page: Int
-    $stName: String
-    $period: [String]
-  ) {
-    searchPaymentDetail(
-      sortOf: $sortOf
-      refundApprovalDate: $refundApprovalDate
-      reqRefundDate: $reqRefundDate
-      refundApproval: $refundApproval
-      reqRefund: $reqRefund
-      limit: $limit
-      page: $page
-      stName: $stName
-      period: $period
-    ) {
-      totalCount
-      ok
-      message
-      error
-      PaymentDetail {
-        ApprovalNum
-        amountPayment
-        bankName
-        cardCompany
-        cardNum
-        cashOrCard
-        createdAt
-        depositAmount
-        depositDate
-        depositorName
-        id
-        installment
-        paymentDate
-        receiver {
-          id
-          mUsername
-          mUserId
-        }
-        receiverId
-        refundApproval
-        refundApprovalDate
-        refundManager
-        reqRefund
-        reqRefundDate
-        reqRefundManager
-        stName
-        studentId
-        studentPaymentId
-        updatedAt
-        studentPayment {
-          amountReceived
-          processingManagerId
-          id
-          subjectId
-          subject {
-            id
-            subjectName
-          }
-        }
-      }
-    }
-  }
-`
-export const SEARCH_PAYMENT_MUTATION = gql`
-  mutation SearchStudentPayment($searchStudentPaymentId: Int!) {
-    searchStudentPayment(id: $searchStudentPaymentId) {
-      ok
-      message
-      error
-      data {
-        actualAmount
-        amountReceived
-        campus
-        cardAmount
-        cashAmount
-        classCode
-        courseComplete
-        createdAt
-        discountAmount
-        dueDate
-        employment
-        id
-        isWeekend
-        lectureAssignment
-        paymentDate
-        paymentDetail {
-          id
-          cashOrCard
-          cardCompany
-          cardNum
-          installment
-          ApprovalNum
-          amountPayment
-          paymentDate
-          bankName
-          depositorName
-          depositAmount
-          depositDate
-          studentPaymentId
-          receiver {
-            id
-            mUserId
-            mUsername
-          }
-          receiverId
-          reqRefund
-          reqRefundManager
-          reqRefundDate
-          refundApproval
-          refundManager
-          refundApprovalDate
-          createdAt
-          updatedAt
-          studentId
-          stName
-          cashReceipts
-        }
-        processingManagerId
-        seScore
-        situationReport
-        student {
-          birthday
-          createdAt
-          id
-          name
-          phoneNum1
-          updatedAt
-          writer
-        }
-        studentId
-        subDiv
-        subject {
-          subjectName
-          subjectCode
-          subDiv
-          round
-          id
-          fee
-        }
-        subjectId
-        tuitionFee
-        unCollectedAmount
-        updatedAt
-      }
     }
   }
 `
@@ -1239,6 +1210,77 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
         }
         studentPaymentId
         updatedAt
+      }
+    }
+  }
+`
+export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
+  mutation Mutation(
+    $sortOf: String
+    $refundApprovalDate: [String]
+    $reqRefundDate: [String]
+    $refundApproval: Boolean
+    $reqRefund: Boolean
+    $limit: Int
+    $page: Int
+    $stName: String
+    $period: [String]
+  ) {
+    searchPaymentDetail(
+      sortOf: $sortOf
+      refundApprovalDate: $refundApprovalDate
+      reqRefundDate: $reqRefundDate
+      refundApproval: $refundApproval
+      reqRefund: $reqRefund
+      limit: $limit
+      page: $page
+      stName: $stName
+      period: $period
+    ) {
+      totalCount
+      ok
+      message
+      error
+      PaymentDetail {
+        ApprovalNum
+        amountPayment
+        bankName
+        cardCompany
+        cardNum
+        cashOrCard
+        createdAt
+        depositAmount
+        depositDate
+        depositorName
+        id
+        installment
+        paymentDate
+        receiver {
+          id
+          mUsername
+          mUserId
+        }
+        receiverId
+        refundApproval
+        refundApprovalDate
+        refundManager
+        reqRefund
+        reqRefundDate
+        reqRefundManager
+        stName
+        studentId
+        studentPaymentId
+        updatedAt
+        studentPayment {
+          amountReceived
+          processingManagerId
+          id
+          subjectId
+          subject {
+            id
+            subjectName
+          }
+        }
       }
     }
   }

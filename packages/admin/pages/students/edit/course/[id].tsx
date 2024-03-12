@@ -12,7 +12,6 @@ import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Layout from '@/pages/students/layout'
 import {
   SEARCH_PAYMENT_MUTATION,
-  SEARCH_STUDENT_PAYMENT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import StudentPayment from '@/components/form/StudentPayment'
@@ -169,8 +168,8 @@ export default function StudentsWriteCourse() {
         },
         onCompleted: data => {
           if (data.searchStudentPayment.ok) {
-            setStudentData(data.searchStudentPayment?.data?.student)
-            setStudentPaymentData(data.searchStudentPayment?.data)
+            setStudentData(data.searchStudentPayment?.data[0]?.student)
+            setStudentPaymentData(data.searchStudentPayment?.data[0])
           }
         },
       })

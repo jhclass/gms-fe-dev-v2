@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
+import { SEE_PAYMENT_DETAIL_QUERY, SEE_PAYMENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
@@ -92,7 +92,7 @@ const Tname = styled.div`
   width: 8%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.08}px;
 `
 const Tsubject = styled.div`
   position: relative;
@@ -104,31 +104,21 @@ const Tsubject = styled.div`
   font-size: inherit;
   min-width: ${1200 * 0.18}px;
 `
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -152,11 +142,11 @@ export default function PaymentTable() {
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_PAYMENT_DETAIL_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SEE_PAYMENT_QUERY, {
     variables: { page: currentPage, limit: currentLimit },
   })
-  const studentsData = data?.seePaymentDetail || []
-  const students = studentsData?.PaymentDetail || []
+  const studentsData = data?.seeStudentPayment || []
+  const students = studentsData?.StudentPayment || []
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -186,15 +176,13 @@ export default function PaymentTable() {
                 <Tnum>No</Tnum>
                 <TcreatedAt>결제일시</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>수납 담당자</Tmanager>
+                <Tmanager>수강 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
                 <Tamount className="fee">수강료</Tamount>
                 <Tamount className="discount">할인금액</Tamount>
                 <Tamount className="actual">실 수강료</Tamount>
                 <Tamount className="unpaid">미수납액</Tamount>
-                <Tamount className="amount">카드결제액</Tamount>
-                <Tamount className="amount">현금결제액</Tamount>
-                <Tamount className="amount">결제합계</Tamount>
+                <Tamount className="amount">총 결제액</Tamount>
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&

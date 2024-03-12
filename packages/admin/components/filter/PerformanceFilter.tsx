@@ -261,10 +261,14 @@ export default function PerformanceFilter({
                       setSearchDateRange(e)
                       let date
                       if (e[1] !== null) {
-                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                        date = [
+                          new Date(e[0]?.setHours(0, 0, 0, 0)),
+                          new Date(e[1]?.setHours(23, 59, 59, 999)),
+                        ]
                       } else {
-                        date = [e[0], null]
+                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
                       }
+
                       field.onChange(e)
                     }}
                     placeholderText="기간을 선택해주세요."

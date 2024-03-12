@@ -1,26 +1,13 @@
-import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
 import {
   Radio,
   RadioGroup,
-  Button,
   CheckboxGroup,
   Checkbox,
   Textarea,
 } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import useUserLogsMutation from '@/utils/userLogs'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
-import {
-  CLASS_CANCEL_MUTATION,
-  SEARCH_PAYMENT_MUTATION,
-  SEARCH_STUDENT_MUTATION,
-  UPDATE_STUDENT_COURSE_MUTATION,
-} from '@/graphql/mutations'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
