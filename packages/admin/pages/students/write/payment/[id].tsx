@@ -275,10 +275,14 @@ export default function StudentsWritePayment() {
                     },
                     onCompleted: data => {
                       if (data.searchStudentPayment.ok) {
-                        setStudentPaymentData(data.searchStudentPayment?.data)
-                        setStudentData(data.searchStudentPayment?.data?.student)
+                        setStudentPaymentData(
+                          data.searchStudentPayment?.data[0],
+                        )
+                        setStudentData(
+                          data.searchStudentPayment?.data[0]?.student,
+                        )
                         setStudentSubjectData(
-                          data.searchStudentPayment?.data?.subject,
+                          data.searchStudentPayment?.data[0]?.subject,
                         )
                         userLogs(`${studentData?.name} 카드 결제 `)
                         reset()
@@ -335,10 +339,14 @@ export default function StudentsWritePayment() {
                     },
                     onCompleted: data => {
                       if (data.searchStudentPayment.ok) {
-                        setStudentPaymentData(data.searchStudentPayment?.data)
-                        setStudentData(data.searchStudentPayment?.data?.student)
+                        setStudentPaymentData(
+                          data.searchStudentPayment?.data[0],
+                        )
+                        setStudentData(
+                          data.searchStudentPayment?.data[0]?.student,
+                        )
                         setStudentSubjectData(
-                          data.searchStudentPayment?.data?.subject,
+                          data.searchStudentPayment?.data[0]?.subject,
                         )
                         userLogs(`${studentData?.name} 현금 결제 `)
                         reset()
