@@ -1,18 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_STUDENT_QUERY } from '@/graphql/queries'
-import router from 'next/router'
-import StudentItem from '@/components/table/StudentItem'
-import { useRecoilState } from 'recoil'
-import { studentPageState } from '@/lib/recoilAtoms'
 import PerformanceItem from './PerformanceItem'
-import PerformanceTotal from './PerformanceTotal'
-import {
-  SALES_STATISTICS_LIST_MUTATION,
-  SEARCH_PAYMENT_MUTATION,
-} from '@/graphql/mutations'
+import { SALES_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div``
 const TTopic = styled.div`

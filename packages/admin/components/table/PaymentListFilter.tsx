@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
 import {
   SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_PAYMENT_FILTER_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
 
@@ -73,7 +74,6 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
-
 const TheaderBox = styled.div`
   display: flex;
 `
@@ -105,7 +105,7 @@ const Tname = styled.div`
   width: 8%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.08}px;
 `
 const Tsubject = styled.div`
   position: relative;
@@ -117,31 +117,21 @@ const Tsubject = styled.div`
   font-size: inherit;
   min-width: ${1200 * 0.18}px;
 `
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -168,23 +158,22 @@ export default function PaymentFilterTable({
 }) {
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
-  const [searchPaymentDetailFilterMutation] = useMutation(
-    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  const [searchPaymentFilterMutation] = useMutation(
+    SEARCH_PAYMENT_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
 
   useEffect(() => {
-    searchPaymentDetailFilterMutation({
+    searchPaymentFilterMutation({
       variables: {
         ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        if (resData.searchPaymentDetail.ok) {
-          const { PaymentDetail, totalCount } =
-            resData.searchPaymentDetail || {}
-          setSearchResult({ PaymentDetail, totalCount })
+        if (resData.searchStudentPayment.ok) {
+          const { data, totalCount } = resData.searchStudentPayment || {}
+          setSearchResult({ data, totalCount })
         }
       },
     })
@@ -219,19 +208,17 @@ export default function PaymentFilterTable({
                 <Tnum>No</Tnum>
                 <TcreatedAt>결제일시</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>수납 담당자</Tmanager>
+                <Tmanager>수강 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
                 <Tamount className="fee">수강료</Tamount>
                 <Tamount className="discount">할인금액</Tamount>
                 <Tamount className="actual">실 수강료</Tamount>
                 <Tamount className="unpaid">미수납액</Tamount>
-                <Tamount className="amount">카드결제액</Tamount>
-                <Tamount className="amount">현금결제액</Tamount>
-                <Tamount className="amount">결제합계</Tamount>
+                <Tamount className="amount">총 결제액</Tamount>
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&
-              searchResult?.PaymentDetail?.map((item, index) => (
+              searchResult?.data?.map((item, index) => (
                 <PaymentItem
                   key={index}
                   tableData={item}

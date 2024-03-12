@@ -140,7 +140,9 @@ export default function ReqRefundFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('reqRefundDate', [start, end], { shouldDirty: true })
+    const setStart = new Date(start.setHours(0, 0, 0, 0))
+    const setEnd = new Date(end.setHours(23, 59, 59, 999))
+    setValue('reqRefundDate', [setStart, setEnd], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -215,9 +217,12 @@ export default function ReqRefundFilter({
                       setPaymentDateRange(e)
                       let date
                       if (e[1] !== null) {
-                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                        date = [
+                          new Date(e[0]?.setHours(0, 0, 0, 0)),
+                          new Date(e[1]?.setHours(23, 59, 59, 999)),
+                        ]
                       } else {
-                        date = [e[0], null]
+                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
                       }
 
                       field.onChange(date)
@@ -239,11 +244,21 @@ export default function ReqRefundFilter({
                 )}
               />
               <DateBtn>
-                <Button onClick={handleYesterdayClick}>어제</Button>
-                <Button onClick={handleTodayClick}>오늘</Button>
-                <Button onClick={handleLastMonthClick}>1개월</Button>
-                <Button onClick={handleLastThreeMonthsClick}>3개월</Button>
-                <Button onClick={handleLastSixMonthsClick}>6개월</Button>
+                <Button size="sm" onClick={handleYesterdayClick}>
+                  어제
+                </Button>
+                <Button size="sm" onClick={handleTodayClick}>
+                  오늘
+                </Button>
+                <Button size="sm" onClick={handleLastMonthClick}>
+                  1개월
+                </Button>
+                <Button size="sm" onClick={handleLastThreeMonthsClick}>
+                  3개월
+                </Button>
+                <Button size="sm" onClick={handleLastSixMonthsClick}>
+                  6개월
+                </Button>
               </DateBtn>
             </ItemBox>
 

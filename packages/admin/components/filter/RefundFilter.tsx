@@ -151,7 +151,9 @@ export default function RefundFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('refundApprovalDate', [start, end], { shouldDirty: true })
+    const setStart = new Date(start.setHours(0, 0, 0, 0))
+    const setEnd = new Date(end.setHours(23, 59, 59, 999))
+    setValue('refundApprovalDate', [setStart, setEnd], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -226,9 +228,12 @@ export default function RefundFilter({
                       setPaymentDateRange(e)
                       let date
                       if (e[1] !== null) {
-                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                        date = [
+                          new Date(e[0]?.setHours(0, 0, 0, 0)),
+                          new Date(e[1]?.setHours(23, 59, 59, 999)),
+                        ]
                       } else {
-                        date = [e[0], null]
+                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
                       }
 
                       field.onChange(date)

@@ -270,6 +270,36 @@ export const SEE_AMOUNT_STUDENT_QUERY = gql`
 `
 
 // 회계
+export const SEE_PAYMENT_QUERY = gql`
+  query Query($page: Int, $limit: Int) {
+    seeStudentPayment(page: $page, limit: $limit) {
+      totalCount
+      ok
+      message
+      error
+      StudentPayment {
+        amountReceived
+        actualAmount
+        discountAmount
+        unCollectedAmount
+        tuitionFee
+        updatedAt
+        subject {
+          subjectName
+          round
+        }
+        processingManager {
+          mUsername
+        }
+        student {
+          id
+          name
+        }
+        id
+      }
+    }
+  }
+`
 export const SEE_PAYMENT_DETAIL_QUERY = gql`
   query SeePaymentDetail($page: Int, $limit: Int) {
     seePaymentDetail(page: $page, limit: $limit) {

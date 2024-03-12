@@ -112,7 +112,7 @@ export default function PaymentFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      stName: '',
+      studentName: '',
       period: undefined,
     },
   })
@@ -137,7 +137,7 @@ export default function PaymentFilter({
       )
       if (paymentDate) {
         const filter = {
-          stName: data.stName === '' ? null : data.stName,
+          studentName: data.studentName === '' ? null : data.studentName,
           period: data.period === undefined ? null : data.period,
         }
         setStudentFilter(filter)
@@ -148,7 +148,9 @@ export default function PaymentFilter({
   }
   const setDates = (start, end) => {
     setPaymentDateRange([start, end])
-    setValue('period', [start, end], { shouldDirty: true })
+    const setStart = new Date(start.setHours(0, 0, 0, 0))
+    const setEnd = new Date(end.setHours(23, 59, 59, 999))
+    setValue('period', [setStart, setEnd], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -223,9 +225,12 @@ export default function PaymentFilter({
                       setPaymentDateRange(e)
                       let date
                       if (e[1] !== null) {
-                        date = [e[0], new Date(e[1]?.setHours(23, 59, 59, 999))]
+                        date = [
+                          new Date(e[0]?.setHours(0, 0, 0, 0)),
+                          new Date(e[1]?.setHours(23, 59, 59, 999)),
+                        ]
                       } else {
-                        date = [e[0], null]
+                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
                       }
 
                       field.onChange(date)
@@ -273,7 +278,7 @@ export default function PaymentFilter({
                 variant="bordered"
                 label="수강생이름"
                 id="studentName"
-                {...register('stName')}
+                {...register('studentName')}
               />
             </ItemBox>
           </BoxTop>

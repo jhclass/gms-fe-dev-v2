@@ -126,7 +126,7 @@ export default function StudentPaymentDetailItem({
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
                     setStudentPaymentDetailData(
-                      data.searchStudentPayment?.data?.paymentDetail,
+                      data.searchStudentPayment?.data[0]?.paymentDetail,
                     )
                   }
                 },
@@ -153,7 +153,7 @@ export default function StudentPaymentDetailItem({
                 onCompleted: data => {
                   if (data.searchStudentPayment.ok) {
                     setStudentPaymentDetailData(
-                      data.searchStudentPayment?.data?.paymentDetail,
+                      data.searchStudentPayment?.data[0]?.paymentDetail,
                     )
                     alert('결제 취소요청 되었습니다.')
                     userLogs(
