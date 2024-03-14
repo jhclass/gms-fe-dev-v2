@@ -5,12 +5,13 @@ import { studentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
 import { Input } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
+import { useRouter } from 'next/router'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -104,12 +105,16 @@ export default function StudentsFilter({
   isActive,
   onFilterSearch,
   setStudentFilter,
+  studentFilter,
 }) {
+  const router = useRouter()
   const studentPage = useResetRecoilState(studentPageState)
   const [birthdayRange, setBirthdayRange] = useState([null, null])
   const [startBirthday, endBirthday] = birthdayRange
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
+  const [phone, setPhone] = useState('')
+  const [name, setName] = useState('')
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
@@ -127,6 +132,44 @@ export default function StudentsFilter({
       createdAt: undefined,
     },
   })
+
+  useEffect(() => {
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.studentName === null
+    ) {
+      setName('')
+    } else {
+      setName(studentFilter?.studentName)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.phoneNum === null
+    ) {
+      setPhone('')
+    } else {
+      setPhone(studentFilter?.phoneNum)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.birthday === null
+    ) {
+      setBirthdayRange([null, null])
+    } else {
+      setBirthdayRange([studentFilter?.birthday[0], studentFilter?.birthday[1]])
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.createdAt === null
+    ) {
+      setCreatDateRange([null, null])
+    } else {
+      setCreatDateRange([
+        studentFilter?.createdAt[0],
+        studentFilter?.createdAt[1],
+      ])
+    }
+  }, [router, studentFilter])
 
   const onSubmit = data => {
     if (isDirty || data.progress !== undefined) {
@@ -186,6 +229,8 @@ export default function StudentsFilter({
                 type="text"
                 variant="bordered"
                 label="연락처"
+                value={phone}
+                onValueChange={setPhone}
                 id="phoneNum"
                 {...register('phoneNum', {
                   maxLength: {
@@ -211,6 +256,8 @@ export default function StudentsFilter({
                 type="text"
                 variant="bordered"
                 label="수강생이름"
+                value={name}
+                onValueChange={setName}
                 id="studentName"
                 {...register('studentName')}
               />

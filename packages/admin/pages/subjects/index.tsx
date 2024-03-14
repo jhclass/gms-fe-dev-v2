@@ -87,6 +87,7 @@ export default function Subjects() {
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setSubjectFilter={setSubjectFilter}
+          subjectFilter={subjectFilter}
         />
         <CreateAdviceType
           isActive={createActive}

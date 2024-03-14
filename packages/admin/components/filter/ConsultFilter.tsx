@@ -267,7 +267,7 @@ export default function ConsultFilter({
       const numericKeys = studentFilter?.progress.map(key => String(key))
       setProgressSelected(numericKeys)
     }
-  }, [router])
+  }, [router, studentFilter])
 
   const handleReceiptChange = e => {
     setReceipt(e.target.value)

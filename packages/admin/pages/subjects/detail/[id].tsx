@@ -324,6 +324,7 @@ export default function SubjectDetail() {
             dirtyFieldsArray.join(', '),
           )
           alert('수정되었습니다.')
+          router.back()
         } catch (error) {
           console.error('과목 수정 중 에러 발생:', error)
           alert('과목 수정 처리 중 오류가 발생했습니다.')
