@@ -273,6 +273,7 @@ export default function PerformanceFilter({
                     }}
                     placeholderText="기간을 선택해주세요."
                     dateFormat="yyyy/MM/dd"
+                    onChangeRaw={e => e.preventDefault()}
                     customInput={
                       <Input
                         label={
@@ -280,6 +281,9 @@ export default function PerformanceFilter({
                             검색 기간<span>*</span>
                           </FilterLabel>
                         }
+                        classNames={{
+                          input: 'caret-transparent',
+                        }}
                         labelPlacement="outside"
                         type="text"
                         variant="bordered"

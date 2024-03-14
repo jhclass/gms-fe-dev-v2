@@ -385,6 +385,7 @@ export default function SubjectWrite() {
                             setExpStartDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               label="승인 유효기간(시작일)"
@@ -392,6 +393,9 @@ export default function SubjectWrite() {
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -435,6 +439,7 @@ export default function SubjectWrite() {
                             setExpEndDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               label="승인 유효기간(만료일)"
@@ -442,6 +447,9 @@ export default function SubjectWrite() {
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -555,6 +563,7 @@ export default function SubjectWrite() {
                             setSjStartDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               label="개강일"
@@ -562,6 +571,9 @@ export default function SubjectWrite() {
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -605,6 +617,7 @@ export default function SubjectWrite() {
                             setSjEndDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               label="종강일"
@@ -612,6 +625,9 @@ export default function SubjectWrite() {
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }

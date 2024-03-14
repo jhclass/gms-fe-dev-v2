@@ -582,6 +582,7 @@ export default function ConsultWirte() {
                         }}
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm"
+                        onChangeRaw={e => e.preventDefault()}
                         customInput={
                           <Input
                             label="상담예정일"
@@ -589,6 +590,9 @@ export default function ConsultWirte() {
                             type="text"
                             variant="bordered"
                             id="date"
+                            classNames={{
+                              input: 'caret-transparent',
+                            }}
                             startContent={<i className="xi-calendar" />}
                           />
                         }
@@ -632,6 +636,7 @@ export default function ConsultWirte() {
                           setExpEnrollDate(date)
                         }}
                         dateFormat="yyyy/MM/dd"
+                        onChangeRaw={e => e.preventDefault()}
                         customInput={
                           <Input
                             label="수강예정일"
@@ -639,6 +644,9 @@ export default function ConsultWirte() {
                             type="text"
                             variant="bordered"
                             id="date"
+                            classNames={{
+                              input: 'caret-transparent',
+                            }}
                             startContent={<i className="xi-calendar" />}
                           />
                         }

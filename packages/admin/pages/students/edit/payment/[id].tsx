@@ -683,6 +683,7 @@ export default function StudentsWritePayment() {
                                     setCardPaymentDate(date)
                                   }}
                                   dateFormat="yyyy/MM/dd"
+                                  onChangeRaw={e => e.preventDefault()}
                                   customInput={
                                     <Input
                                       ref={field.ref}
@@ -693,6 +694,9 @@ export default function StudentsWritePayment() {
                                       type="text"
                                       variant="bordered"
                                       id="date"
+                                               classNames={{
+                                input: 'caret-transparent',
+                              }}
                                       startContent={
                                         <i className="xi-calendar" />
                                       }
@@ -842,6 +846,7 @@ export default function StudentsWritePayment() {
                                   setCashDepositDate(date)
                                 }}
                                 dateFormat="yyyy/MM/dd"
+                                onChangeRaw={e => e.preventDefault()}
                                 customInput={
                                   <Input
                                     ref={field.ref}
@@ -850,6 +855,9 @@ export default function StudentsWritePayment() {
                                     type="text"
                                     variant="bordered"
                                     id="date"
+                                             classNames={{
+                                input: 'caret-transparent',
+                              }}
                                     startContent={<i className="xi-calendar" />}
                                   />
                                 }

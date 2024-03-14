@@ -237,6 +237,7 @@ export default function PaymentFilter({
                     }}
                     placeholderText="기간을 선택해주세요."
                     dateFormat="yyyy/MM/dd"
+                    onChangeRaw={e => e.preventDefault()}
                     customInput={
                       <Input
                         label="결제 일시"
@@ -244,6 +245,9 @@ export default function PaymentFilter({
                         type="text"
                         variant="bordered"
                         id="date"
+                        classNames={{
+                          input: 'caret-transparent',
+                        }}
                         startContent={<i className="xi-calendar" />}
                         {...register('period')}
                       />
