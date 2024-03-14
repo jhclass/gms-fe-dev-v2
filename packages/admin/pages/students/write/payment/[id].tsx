@@ -294,6 +294,7 @@ export default function StudentsWritePayment() {
                         setCardName('카드사 선택')
                         setCardPaymentDate(null)
                         setPaymentType(paymentType)
+                        router.back()
                       }
                     },
                   })
@@ -358,6 +359,7 @@ export default function StudentsWritePayment() {
                         setBankName('은행 선택')
                         setCashDepositDate(null)
                         setPaymentType(paymentType)
+                        router.back()
                       }
                     },
                   })
@@ -568,10 +570,6 @@ export default function StudentsWritePayment() {
                           }
                           {...register('cardNum', {
                             required: '카드반호를 작성해주세요.',
-                            pattern: {
-                              value: /^[0-9]+$/,
-                              message: '숫자만 입력 가능합니다.',
-                            },
                           })}
                         />
                         {errors.cardNum && (
@@ -617,10 +615,6 @@ export default function StudentsWritePayment() {
                           }
                           {...register('approvalNum', {
                             required: '승인번호를 작성해주세요.',
-                            pattern: {
-                              value: /^[0-9]+$/,
-                              message: '숫자만 입력 가능합니다.',
-                            },
                           })}
                         />
                         {errors.approvalNum && (
@@ -944,10 +938,6 @@ export default function StudentsWritePayment() {
                           }
                           {...register('cashReceiptNum', {
                             required: '현금영수증 번호를 작성해주세요.',
-                            pattern: {
-                              value: /^[0-9]+$/,
-                              message: '숫자만 입력 가능합니다.',
-                            },
                           })}
                         />
                         {errors.cashReceiptNum && (
@@ -970,10 +960,6 @@ export default function StudentsWritePayment() {
                           }
                           {...register('cashReceiptApprovalNum', {
                             required: '현금영수증 승인번호를 작성해주세요.',
-                            pattern: {
-                              value: /^[0-9]+$/,
-                              message: '숫자만 입력 가능합니다.',
-                            },
                           })}
                         />
                         {errors.cashReceiptApprovalNum && (
@@ -1006,7 +992,7 @@ export default function StudentsWritePayment() {
                     typeBorder={true}
                     onClick={() => router.back()}
                   >
-                    뒤로가기
+                    이전으로
                   </Button2>
                 </BtnBox>
               </DetailDiv>

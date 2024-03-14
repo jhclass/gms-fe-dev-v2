@@ -150,12 +150,12 @@ export default function StudentsWrite() {
       },
       onCompleted: result => {
         if (result.createStudent.ok) {
+          userLogs(`${data.name} 수강생 등록`)
           alert('등록되었습니다.')
-          router.push('/students')
+          router.back()
         }
       },
     })
-    userLogs(`${data.name} 수강생 등록`)
   }
   const clickDoubleCheck = (name, phone) => {
     checkDouble({
@@ -476,9 +476,9 @@ export default function StudentsWrite() {
                     bgColor="#fff"
                     borderColor="#007de9"
                     typeBorder={true}
-                    onClick={() => router.push('/consult')}
+                    onClick={() => router.back()}
                   >
-                    목록으로
+                    이전으로
                   </Button2>
                 </BtnBox>
               </DetailDiv>

@@ -385,7 +385,7 @@ export default function SubjectDetail() {
 
       userLogs(`${subjectState.subjectName} 과정 복사`)
       alert('복사되었습니다.')
-      router.push('/subjects')
+      router.back()
     } catch (error) {
       console.error('과정 복사 중 에러 발생:', error)
       alert('과정 복사 처리 중 오류가 발생했습니다.')
@@ -417,7 +417,7 @@ export default function SubjectDetail() {
 
       userLogs(`${subjectState.subjectName} 과목 삭제`)
       alert('과정이 삭제되었습니다.')
-      router.push('/subjects')
+      router.back()
     } catch (error) {
       console.error('과정 삭제 중 에러 발생:', error)
       alert('과정 삭제 처리 중 오류가 발생했습니다.')
@@ -1030,9 +1030,9 @@ export default function SubjectDetail() {
                     bgColor="#fff"
                     borderColor="#007de9"
                     typeBorder={true}
-                    onClick={() => router.push('/subjects')}
+                    onClick={() => router.back()}
                   >
-                    목록으로
+                    이전으로
                   </Button2>
                   <Button2
                     buttonType="button"

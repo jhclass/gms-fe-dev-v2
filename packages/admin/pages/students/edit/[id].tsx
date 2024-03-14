@@ -193,6 +193,7 @@ export default function StudentsEditInfo() {
                 dirtyFieldsArray.join(', '),
               )
               alert('수정되었습니다.')
+              router.back()
             }
           },
         })

@@ -12,7 +12,7 @@ import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { getYear, subMonths, subDays, differenceInDays } from 'date-fns'
+import { getYear, subMonths, subDays } from 'date-fns'
 
 type RefundFilterProps = {
   isActive: boolean

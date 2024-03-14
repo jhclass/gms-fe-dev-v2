@@ -385,12 +385,13 @@ export default function StudentPaymentForm({
             },
             onCompleted: result => {
               if (result.editStudentPayment.ok) {
-                alert('수정되었습니다.')
                 const dirtyFieldsArray = [...Object.keys(dirtyFields)]
                 userLogs(
                   `${studentData.name} 수강신청 수정`,
                   dirtyFieldsArray.join(', '),
                 )
+                alert('수정되었습니다.')
+                router.back()
               }
             },
           })
@@ -1208,7 +1209,7 @@ export default function StudentPaymentForm({
                   typeBorder={true}
                   onClick={() => router.back()}
                 >
-                  뒤로가기
+                  이전으로
                 </Button2>
               </BtnBox>
             </DetailDiv>

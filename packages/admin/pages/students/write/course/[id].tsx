@@ -346,9 +346,9 @@ export default function StudentsWriteCourse() {
         },
         onCompleted: result => {
           if (result.createStudentPayment.ok) {
-            alert('등록되었습니다.')
-            router.push(`/students/detail/${studentId}`)
             userLogs(`${studentData.name} 수강신청`)
+            alert('등록되었습니다.')
+            router.back()
           } else {
             alert(result.createStudentPayment.message)
           }
@@ -1104,7 +1104,7 @@ export default function StudentsWriteCourse() {
                     typeBorder={true}
                     onClick={() => router.back()}
                   >
-                    뒤로가기
+                    이전으로
                   </Button2>
                 </BtnBox>
               </DetailDiv>

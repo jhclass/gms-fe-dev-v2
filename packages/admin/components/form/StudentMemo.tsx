@@ -112,13 +112,13 @@ export default function ConsultMemo(props) {
               onCompleted: data => {
                 if (data.searchStudent.ok) {
                   props.setMemoList(data.searchStudent.student[0].studentMemo)
+                  userLogs(`수강생 id:${data} 메모 삭제`)
                 }
               },
             })
           }
         },
       })
-      userLogs(`수강생 id:${data} 메모 삭제`)
     }
   }
 
