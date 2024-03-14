@@ -833,15 +833,20 @@ export default function ConsultDetail() {
                             field.onChange(date)
                             setStVisitDate(date)
                           }}
+                          onChangeRaw={e => e.preventDefault()}
                           showTimeSelect
                           dateFormat="yyyy/MM/dd HH:mm"
                           customInput={
                             <Input
+                              isReadOnly={true}
                               label="상담예정일"
                               labelPlacement="outside"
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -886,6 +891,7 @@ export default function ConsultDetail() {
                             setExpEnrollDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               label="수강예정일"
@@ -893,6 +899,9 @@ export default function ConsultDetail() {
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }

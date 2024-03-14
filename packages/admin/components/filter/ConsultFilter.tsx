@@ -515,6 +515,7 @@ export default function ConsultFilter({
 
                       field.onChange(date)
                     }}
+                    onChangeRaw={e => e.preventDefault()}
                     placeholderText="기간을 선택해주세요."
                     dateFormat="yyyy/MM/dd"
                     customInput={
@@ -524,6 +525,9 @@ export default function ConsultFilter({
                         type="text"
                         variant="bordered"
                         id="date"
+                        classNames={{
+                          input: 'caret-transparent',
+                        }}
                         startContent={<i className="xi-calendar" />}
                         {...register('createdAt')}
                       />
@@ -574,6 +578,7 @@ export default function ConsultFilter({
                       field.onChange(date)
                     }}
                     dateFormat="yyyy/MM/dd"
+                    onChangeRaw={e => e.preventDefault()}
                     placeholderText="기간을 선택해주세요."
                     customInput={
                       <Input
@@ -582,6 +587,9 @@ export default function ConsultFilter({
                         type="text"
                         variant="bordered"
                         id="date"
+                        classNames={{
+                          input: 'caret-transparent',
+                        }}
                         startContent={<i className="xi-calendar" />}
                         {...register('stVisit')}
                       />

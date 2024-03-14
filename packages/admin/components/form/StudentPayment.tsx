@@ -1040,6 +1040,7 @@ export default function StudentPaymentForm({
                             setPaymentDateSelect(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               ref={field.ref}
@@ -1052,6 +1053,9 @@ export default function StudentPaymentForm({
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -1102,6 +1106,7 @@ export default function StudentPaymentForm({
                             setDueDateSelect(date)
                           }}
                           dateFormat="yyyy/MM/dd"
+                          onChangeRaw={e => e.preventDefault()}
                           customInput={
                             <Input
                               label="수강예정일"
@@ -1109,6 +1114,9 @@ export default function StudentPaymentForm({
                               type="text"
                               variant="bordered"
                               id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
                               startContent={<i className="xi-calendar" />}
                             />
                           }

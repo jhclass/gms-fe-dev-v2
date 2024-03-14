@@ -172,7 +172,24 @@ export default function StudentsWrite() {
       },
     })
   }
+  // const handleDateChange = (rawInput) => {
+  //   if (parseInt(rawInput.charAt(0)) > 2) {
+  //     alert('년도는 4자리수로 입력해주세요')
+  //     return
+  //   }
+  //   const regex = /^(\d{4})(\d{2})(\d{2})$/
 
+  //   if (regex.test(rawInput)) {
+  //     const [, year, month, day] = rawInput.match(regex)
+  //     const formattedDate = new Date(year, month - 1, day)
+  //     setBirthdayDate(formattedDate)
+  //   } else {
+  //     const dateObject = new Date(rawInput)
+  //     if (dateObject && !isNaN(dateObject.getTime())) {
+  //       setBirthdayDate(dateObject)
+  //     }
+  //   }
+  // }
   return (
     <>
       <MainWrap>
@@ -341,6 +358,7 @@ export default function StudentsWrite() {
                               setBirthdayDate(date)
                             }}
                             dateFormat="yyyy/MM/dd"
+                            onChangeRaw={e => e.preventDefault()}
                             customInput={
                               <Input
                                 ref={field.ref}
@@ -353,6 +371,9 @@ export default function StudentsWrite() {
                                 type="text"
                                 variant="bordered"
                                 id="date"
+                                classNames={{
+                                  input: 'caret-transparent',
+                                }}
                                 startContent={<i className="xi-calendar" />}
                               />
                             }

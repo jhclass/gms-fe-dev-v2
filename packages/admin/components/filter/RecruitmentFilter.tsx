@@ -199,11 +199,15 @@ export default function RecruitmentFilter({
                     }}
                     placeholderText="기간을 선택해주세요."
                     dateFormat="yyyy/MM/dd"
+                    onChangeRaw={e => e.preventDefault()}
                     customInput={
                       <Input
                         label="검색 기간"
                         labelPlacement="outside"
                         type="text"
+                        classNames={{
+                          input: 'caret-transparent',
+                        }}
                         variant="bordered"
                         id="date"
                         startContent={<i className="xi-calendar" />}
