@@ -1164,11 +1164,7 @@ export default function StudentPaymentForm({
                           {'담당자 지정필요'}
                         </SelectItem>
                         {managerList
-                          ?.filter(
-                            manager =>
-                              manager.mGrade === grade.master ||
-                              manager.mPart.includes('영업팀'),
-                          )
+                          ?.filter(manager => manager.mPart.includes('영업팀'))
                           .map(item => (
                             <SelectItem key={item.id} value={item.id}>
                               {item.mUsername}

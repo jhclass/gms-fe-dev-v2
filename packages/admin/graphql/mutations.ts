@@ -863,6 +863,9 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
     $actualAmount: Int
     $discountAmount: String
     $isWeekend: String
+    $lectureAssignment: String
+    $courseComplete: String
+    $employment: String
   ) {
     createStudentPayment(
       campus: $campus
@@ -880,6 +883,9 @@ export const CREATE_STUDENT_PAYMENT_MUTATION = gql`
       actualAmount: $actualAmount
       discountAmount: $discountAmount
       isWeekend: $isWeekend
+      lectureAssignment: $lectureAssignment
+      courseComplete: $courseComplete
+      employment: $employment
     ) {
       error
       message
