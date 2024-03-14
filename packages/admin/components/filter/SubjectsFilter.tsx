@@ -9,7 +9,8 @@ import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 type SubjectsFilterProps = {
   isActive: boolean
@@ -83,11 +84,14 @@ export default function SubjectsFilter({
   isActive,
   onFilterSearch,
   setSubjectFilter,
+  subjectFilter,
 }) {
   const subStatus = useRecoilValue(subStatusState)
+  const router = useRouter()
   const subjectPage = useResetRecoilState(subjectPageState)
   const [sub, setSub] = useState('-')
   const [exposure, setExposure] = useState('-')
+  const [sbjName, setSbjName] = useState('')
   const {
     register,
     handleSubmit,
@@ -101,6 +105,33 @@ export default function SubjectsFilter({
       subjectName: '',
     },
   })
+
+  useEffect(() => {
+    if (
+      Object.keys(subjectFilter).length === 0 ||
+      subjectFilter?.subDiv === null
+    ) {
+      setSub('-')
+    } else {
+      setSub(subjectFilter?.subDiv)
+    }
+    if (
+      Object.keys(subjectFilter).length === 0 ||
+      subjectFilter?.exposure === null
+    ) {
+      setExposure('-')
+    } else {
+      setExposure(subjectFilter?.exposure)
+    }
+    if (
+      Object.keys(subjectFilter).length === 0 ||
+      subjectFilter?.subjectName === null
+    ) {
+      setSbjName('')
+    } else {
+      setSbjName(subjectFilter?.subjectName)
+    }
+  }, [router, subjectFilter])
 
   const handleSubChange = e => {
     setSub(e.target.value)
@@ -219,6 +250,8 @@ export default function SubjectsFilter({
                 type="text"
                 variant="bordered"
                 label="과목명"
+                value={sbjName}
+                onValueChange={setSbjName}
                 {...register('subjectName')}
               />
             </ItemBox>

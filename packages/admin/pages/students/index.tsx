@@ -36,6 +36,7 @@ export default function Students() {
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
+          studentFilter={studentFilter}
         />
         <ConBox>
           {filterSearch ? (
