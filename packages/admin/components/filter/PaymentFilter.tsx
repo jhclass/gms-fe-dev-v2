@@ -77,6 +77,25 @@ const BtnBox = styled.div`
   gap: 1rem;
   flex: 1;
 `
+const DatePickerBox = styled.div`
+  width: 100%;
+  .react-datepicker-wrapper {
+    display: inline;
+    width: 100%;
+  }
+  .react-datepicker__input-container {
+    display: inline;
+  }
+  .react-datepicker__close-icon {
+    height: 2.5rem;
+    top: auto;
+    bottom: 0;
+  }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
+`
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -196,82 +215,84 @@ export default function PaymentFilter({
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
-              <Controller
-                control={control}
-                name="period"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    selectsRange={true}
-                    locale="ko"
-                    startDate={startPaymentDate}
-                    endDate={endPaymentDate}
-                    onChange={e => {
-                      setPaymentDateRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [
-                          new Date(e[0]?.setHours(0, 0, 0, 0)),
-                          new Date(e[1]?.setHours(23, 59, 59, 999)),
-                        ]
-                      } else {
-                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                      }
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="period"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      locale="ko"
+                      startDate={startPaymentDate}
+                      endDate={endPaymentDate}
+                      onChange={e => {
+                        setPaymentDateRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
 
-                      field.onChange(date)
-                    }}
-                    placeholderText="기간을 선택해주세요."
-                    dateFormat="yyyy/MM/dd"
-                    onChangeRaw={e => e.preventDefault()}
-                    customInput={
-                      <Input
-                        label="결제 일시"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
-                        startContent={<i className="xi-calendar" />}
-                        {...register('period')}
-                      />
-                    }
-                  />
-                )}
-              />
-              <DateBtn>
-                <Button size="sm" onClick={handleYesterdayClick}>
-                  어제
-                </Button>
-                <Button size="sm" onClick={handleTodayClick}>
-                  오늘
-                </Button>
-                <Button size="sm" onClick={handleLastMonthClick}>
-                  1개월
-                </Button>
-                <Button size="sm" onClick={handleLastThreeMonthsClick}>
-                  3개월
-                </Button>
-                <Button size="sm" onClick={handleLastSixMonthsClick}>
-                  6개월
-                </Button>
-              </DateBtn>
+                        field.onChange(date)
+                      }}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      customInput={
+                        <Input
+                          label="결제 일시"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('period')}
+                        />
+                      }
+                    />
+                  )}
+                />
+                <DateBtn>
+                  <Button size="sm" onClick={handleYesterdayClick}>
+                    어제
+                  </Button>
+                  <Button size="sm" onClick={handleTodayClick}>
+                    오늘
+                  </Button>
+                  <Button size="sm" onClick={handleLastMonthClick}>
+                    1개월
+                  </Button>
+                  <Button size="sm" onClick={handleLastThreeMonthsClick}>
+                    3개월
+                  </Button>
+                  <Button size="sm" onClick={handleLastSixMonthsClick}>
+                    6개월
+                  </Button>
+                </DateBtn>
+              </DatePickerBox>
             </ItemBox>
 
             <ItemBox>

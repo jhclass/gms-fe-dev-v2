@@ -65,6 +65,25 @@ const BtnBox = styled.div`
   gap: 1rem;
   flex: 1;
 `
+const DatePickerBox = styled.div`
+  width: 100%;
+  .react-datepicker-wrapper {
+    display: inline;
+    width: 100%;
+  }
+  .react-datepicker__input-container {
+    display: inline;
+  }
+  .react-datepicker__close-icon {
+    height: 2.5rem;
+    top: auto;
+    bottom: 0;
+  }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
+`
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -199,126 +218,130 @@ export default function StudentsFilter({
           </BoxTop>
           <BoxMiddle>
             <ItemBox>
-              <Controller
-                control={control}
-                name="birthday"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    selectsRange={true}
-                    locale="ko"
-                    startDate={startBirthday}
-                    endDate={endBirthday}
-                    onChange={e => {
-                      setBirthdayRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [
-                          new Date(e[0]?.setHours(0, 0, 0, 0)),
-                          new Date(e[1]?.setHours(23, 59, 59, 999)),
-                        ]
-                      } else {
-                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                      }
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="birthday"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      locale="ko"
+                      startDate={startBirthday}
+                      endDate={endBirthday}
+                      onChange={e => {
+                        setBirthdayRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
 
-                      field.onChange(date)
-                    }}
-                    placeholderText="기간을 선택해주세요."
-                    dateFormat="yyyy/MM/dd"
-                    onChangeRaw={e => e.preventDefault()}
-                    customInput={
-                      <Input
-                        label="생년월일"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
-                        startContent={<i className="xi-calendar" />}
-                        {...register('birthday')}
-                      />
-                    }
-                  />
-                )}
-              />
+                        field.onChange(date)
+                      }}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      customInput={
+                        <Input
+                          label="생년월일"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('birthday')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
             </ItemBox>
             <ItemBox>
-              <Controller
-                control={control}
-                name="createdAt"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    selectsRange={true}
-                    locale="ko"
-                    startDate={startCreatDate}
-                    endDate={endCreatDate}
-                    onChange={e => {
-                      setCreatDateRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [
-                          new Date(e[0]?.setHours(0, 0, 0, 0)),
-                          new Date(e[1]?.setHours(23, 59, 59, 999)),
-                        ]
-                      } else {
-                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                      }
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="createdAt"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      locale="ko"
+                      startDate={startCreatDate}
+                      endDate={endCreatDate}
+                      onChange={e => {
+                        setCreatDateRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
 
-                      field.onChange(date)
-                    }}
-                    onChangeRaw={e => e.preventDefault()}
-                    placeholderText="기간을 선택해주세요."
-                    dateFormat="yyyy/MM/dd"
-                    customInput={
-                      <Input
-                        label="등록일시"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
-                        startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
-                      />
-                    }
-                  />
-                )}
-              />
+                        field.onChange(date)
+                      }}
+                      onChangeRaw={e => e.preventDefault()}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      customInput={
+                        <Input
+                          label="등록일시"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('createdAt')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
             </ItemBox>
           </BoxMiddle>
           <BtnBox>

@@ -94,6 +94,14 @@ const DatePickerBox = styled.div`
     top: auto;
     bottom: 0;
   }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
 `
 const FilterLabel = styled.label`
   font-weight: 500;

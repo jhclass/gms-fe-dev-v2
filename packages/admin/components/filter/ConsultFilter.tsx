@@ -95,6 +95,26 @@ const FilterLabel = styled.label`
   display: block;
 `
 
+const DatePickerBox = styled.div`
+  width: 100%;
+  .react-datepicker-wrapper {
+    display: inline;
+    width: 100%;
+  }
+  .react-datepicker__input-container {
+    display: inline;
+  }
+  .react-datepicker__close-icon {
+    height: 2.5rem;
+    top: auto;
+    bottom: 0;
+  }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
+`
+
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -475,128 +495,132 @@ export default function ConsultFilter({
           </BoxTop>
           <BoxMiddle>
             <ItemBox>
-              <Controller
-                control={control}
-                name="createdAt"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    selectsRange={true}
-                    locale="ko"
-                    showYearDropdown
-                    startDate={startCreatDate}
-                    endDate={endCreatDate}
-                    onChange={e => {
-                      setCreatDateRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [
-                          new Date(e[0]?.setHours(0, 0, 0, 0)),
-                          new Date(e[1]?.setHours(23, 59, 59, 999)),
-                        ]
-                      } else {
-                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                      }
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="createdAt"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      locale="ko"
+                      showYearDropdown
+                      startDate={startCreatDate}
+                      endDate={endCreatDate}
+                      onChange={e => {
+                        setCreatDateRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
 
-                      field.onChange(date)
-                    }}
-                    onChangeRaw={e => e.preventDefault()}
-                    placeholderText="기간을 선택해주세요."
-                    dateFormat="yyyy/MM/dd"
-                    customInput={
-                      <Input
-                        label="등록일시"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
-                        startContent={<i className="xi-calendar" />}
-                        {...register('createdAt')}
-                      />
-                    }
-                  />
-                )}
-              />
+                        field.onChange(date)
+                      }}
+                      onChangeRaw={e => e.preventDefault()}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      customInput={
+                        <Input
+                          label="등록일시"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('createdAt')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
             </ItemBox>
             <ItemBox>
-              <Controller
-                control={control}
-                name="stVisit"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    locale="ko"
-                    showYearDropdown
-                    selectsRange={true}
-                    startDate={startVisitDate}
-                    endDate={endVisitDate}
-                    onChange={e => {
-                      setVisitDateRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [
-                          new Date(e[0]?.setHours(0, 0, 0, 0)),
-                          new Date(e[1]?.setHours(23, 59, 59, 999)),
-                        ]
-                      } else {
-                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                      }
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="stVisit"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      locale="ko"
+                      showYearDropdown
+                      selectsRange={true}
+                      startDate={startVisitDate}
+                      endDate={endVisitDate}
+                      onChange={e => {
+                        setVisitDateRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
 
-                      field.onChange(date)
-                    }}
-                    dateFormat="yyyy/MM/dd"
-                    onChangeRaw={e => e.preventDefault()}
-                    placeholderText="기간을 선택해주세요."
-                    customInput={
-                      <Input
-                        label="상담예정일"
-                        labelPlacement="outside"
-                        type="text"
-                        variant="bordered"
-                        id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
-                        startContent={<i className="xi-calendar" />}
-                        {...register('stVisit')}
-                      />
-                    }
-                  />
-                )}
-              />
+                        field.onChange(date)
+                      }}
+                      dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      placeholderText="기간을 선택해주세요."
+                      customInput={
+                        <Input
+                          label="상담예정일"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('stVisit')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
             </ItemBox>
             <ItemBox>
               <Input
