@@ -194,7 +194,7 @@ export default function ConsultWirte() {
         if (result.createStudentState.ok) {
           userLogs(`${data.stName}의 상담 등록`)
           alert('등록되었습니다.')
-          router.push('/consult')
+          router.back()
         }
       },
     })
@@ -691,9 +691,9 @@ export default function ConsultWirte() {
                   bgColor="#fff"
                   borderColor="#007de9"
                   typeBorder={true}
-                  onClick={() => router.push('/consult')}
+                  onClick={() => router.back()}
                 >
-                  목록으로
+                  이전으로
                 </Button2>
               </BtnBox>
             </DetailForm>

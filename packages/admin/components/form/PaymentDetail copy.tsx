@@ -895,7 +895,7 @@ export default function StudentsWriteCourse({
                   typeBorder={true}
                   onClick={() => router.back()}
                 >
-                  뒤로가기
+                  이전으로
                 </Button2>
               </BtnBox>
             </DetailDiv>

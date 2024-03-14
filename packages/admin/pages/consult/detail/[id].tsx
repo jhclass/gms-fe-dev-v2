@@ -386,6 +386,7 @@ export default function ConsultDetail() {
                 dirtyFieldsArray.join(', '),
               )
               alert('수정되었습니다.')
+              router.back()
             }
           },
         })
@@ -410,7 +411,7 @@ export default function ConsultDetail() {
           if (result.deleteStudentState.ok) {
             userLogs(`ID : ${studentState.name} 상담카드 삭제`)
             alert('상담카드가 삭제되었습니다.')
-            router.push('/consult')
+            router.back()
           }
         },
       })
@@ -949,7 +950,7 @@ export default function ConsultDetail() {
                     typeBorder={true}
                     onClick={() => router.back()}
                   >
-                    목록으로
+                    이전으로
                   </Button2>
                   {mGrade < grade.general && (
                     <Button2

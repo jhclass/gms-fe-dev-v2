@@ -689,9 +689,9 @@ export default function SubjectWrite() {
                   bgColor="#fff"
                   borderColor="#007de9"
                   typeBorder={true}
-                  onClick={() => router.push('/subjects')}
+                  onClick={() => router.back()}
                 >
-                  목록으로
+                  이전으로
                 </Button2>
               </BtnBox>
             </DetailForm>
