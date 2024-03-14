@@ -221,9 +221,7 @@ export default function StudentsWriteCourse() {
     setError,
     setValue,
     handleSubmit,
-    clearErrors,
     resetField,
-    reset,
     formState,
   } = useForm({
     mode: 'onChange',
@@ -343,6 +341,9 @@ export default function StudentsWriteCourse() {
           subDiv: data.subDiv,
           dueDate: data.dueDate === null ? null : data.dueDate,
           isWeekend: data.isWeekend === '' ? 'N' : data.isWeekend,
+          lectureAssignment: '미배정',
+          courseComplete: '미수료',
+          employment: '미취업',
         },
         onCompleted: result => {
           if (result.createStudentPayment.ok) {
@@ -1059,10 +1060,8 @@ export default function StudentsWriteCourse() {
                             {'담당자 지정필요'}
                           </SelectItem>
                           {managerList
-                            ?.filter(
-                              manager =>
-                                manager.mGrade === grade.master ||
-                                manager.mPart.includes('영업팀'),
+                            ?.filter(manager =>
+                              manager.mPart.includes('영업팀'),
                             )
                             .map(item => (
                               <SelectItem key={item.id} value={item.id}>
