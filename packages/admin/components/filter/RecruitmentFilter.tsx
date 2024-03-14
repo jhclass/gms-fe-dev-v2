@@ -68,6 +68,25 @@ const FilterLabel = styled.label`
   padding-bottom: 0.1rem;
   display: block;
 `
+const DatePickerBox = styled.div`
+  width: 100%;
+  .react-datepicker-wrapper {
+    display: inline;
+    width: 100%;
+  }
+  .react-datepicker__input-container {
+    display: inline;
+  }
+  .react-datepicker__close-icon {
+    height: 2.5rem;
+    top: auto;
+    bottom: 0;
+  }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
+`
 
 const FilterVariants = {
   hidden: {
@@ -156,67 +175,69 @@ export default function RecruitmentFilter({
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
-              <Controller
-                control={control}
-                name="selectDate"
-                render={({ field }) => (
-                  <DatePicker
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                    }) => (
-                      <DatePickerHeader
-                        rangeYears={years}
-                        clickDate={date}
-                        changeYear={changeYear}
-                        changeMonth={changeMonth}
-                        decreaseMonth={decreaseMonth}
-                        increaseMonth={increaseMonth}
-                      />
-                    )}
-                    selectsRange={true}
-                    isClearable
-                    maxDate={subDays(addMonths(startDate, 1), 1)}
-                    locale="ko"
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={e => {
-                      setSearchDateRange(e)
-                      let date
-                      if (e[1] !== null) {
-                        date = [
-                          new Date(e[0]?.setHours(0, 0, 0, 0)),
-                          new Date(e[1]?.setHours(23, 59, 59, 999)),
-                        ]
-                      } else {
-                        date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                      }
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="selectDate"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      isClearable
+                      maxDate={subDays(addMonths(startDate, 1), 1)}
+                      locale="ko"
+                      startDate={startDate}
+                      endDate={endDate}
+                      onChange={e => {
+                        setSearchDateRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
 
-                      field.onChange(e)
-                    }}
-                    placeholderText="기간을 선택해주세요."
-                    dateFormat="yyyy/MM/dd"
-                    onChangeRaw={e => e.preventDefault()}
-                    customInput={
-                      <Input
-                        label="검색 기간"
-                        labelPlacement="outside"
-                        type="text"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
-                        variant="bordered"
-                        id="date"
-                        startContent={<i className="xi-calendar" />}
-                        {...register('selectDate')}
-                      />
-                    }
-                  />
-                )}
-              />
+                        field.onChange(e)
+                      }}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      customInput={
+                        <Input
+                          label="검색 기간"
+                          labelPlacement="outside"
+                          type="text"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          variant="bordered"
+                          id="date"
+                          startContent={<i className="xi-calendar" />}
+                          {...register('selectDate')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
             </ItemBox>
             <ItemBox>
               <Input
