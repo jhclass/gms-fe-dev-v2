@@ -1392,7 +1392,15 @@ export const CLASS_CANCEL_MUTATION = gql`
     }
   }
 `
-
+export const CLASS_CHECK_MUTATION = gql`
+  mutation DuplicateCheck($studentId: Int!, $subjectId: Int!) {
+    duplicateCheck(studentId: $studentId, subjectId: $subjectId) {
+      error
+      message
+      ok
+    }
+  }
+`
 // statistics
 export const SALES_STATISTICS_MUTATION = gql`
   mutation Mutation($period: [String]!, $processingManagerId: [Int]!) {
