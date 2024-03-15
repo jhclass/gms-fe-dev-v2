@@ -72,7 +72,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/motiongraphic/afterEffect">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_02.png"
                     alt="에펙"
@@ -80,7 +80,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/motiongraphic/cinema">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_03.png"
                     alt="시네마4D"
