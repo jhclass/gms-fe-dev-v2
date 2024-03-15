@@ -13,6 +13,7 @@ import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
+  CLASS_CHECK_MUTATION,
   SEARCH_PAYMENT_MUTATION,
   SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
@@ -211,18 +212,12 @@ export default function StudentsWrite() {
   const mPart = useMme('mPart')
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
-  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
   const [updateStudentCourseMutation] = useMutation(
     UPDATE_STUDENT_COURSE_MUTATION,
   )
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [classCancelMutation] = useMutation(CLASS_CANCEL_MUTATION)
+  const [classCheckMutation] = useMutation(CLASS_CHECK_MUTATION)
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
@@ -234,285 +229,255 @@ export default function StudentsWrite() {
         variables: {
           searchStudentPaymentId: parseInt(paymentId),
         },
-        onCompleted: data => {
-          if (data.searchStudentPayment.ok) {
-            setStudentPaymentData(data.searchStudentPayment?.data[0])
-            setStudentData(data.searchStudentPayment?.data[0]?.student)
-            setStudentSubjectData(data.searchStudentPayment?.data[0]?.subject)
-            setStudentPaymentDetailData(
-              data.searchStudentPayment?.data[0]?.paymentDetail,
-            )
+        onCompleted: ({
+          searchStudentPayment: {
+            ok,
+            data: [firstData],
+          },
+        }) => {
+          if (ok) {
+            const { student, subject, paymentDetail } = firstData
+            setStudentPaymentData(firstData)
+            setStudentData(student)
+            setStudentSubjectData(subject)
+            setStudentPaymentDetailData(paymentDetail)
           }
         },
       })
     }
   }, [router])
 
-  const clickLectureAssignment = () => {
-    if (studentPaymentData.lectureAssignment === '배정') {
-      const isAssignment = confirm(
-        `${studentData.name}학생의 ${studentSubjectData.subjectName} 강의 배정을 취소 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        updateStudentCourseMutation({
-          variables: {
-            editStudentPaymentId: parseInt(studentPaymentData.id),
-            lectureAssignment: '미배정',
-            subjectId: studentPaymentData.subjectId,
-            processingManagerId: studentPaymentData.processingManagerId,
-          },
-          onCompleted: result => {
-            if (result.editStudentPayment.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(
-                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`,
-                    )
-                    alert('강의배정 취소되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
-      }
-    } else {
-      const isAssignment = confirm(
-        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 배정 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        updateStudentCourseMutation({
-          variables: {
-            editStudentPaymentId: parseInt(studentPaymentData.id),
-            lectureAssignment: '배정',
-            subjectId: studentPaymentData.subjectId,
-            processingManagerId: studentPaymentData.processingManagerId,
-          },
-          onCompleted: result => {
-            if (result.editStudentPayment.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(
-                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
-                    )
-                    alert('강의배정 되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
-      }
+  const searchAndUpdateStudentPayment = async () => {
+    const {
+      data: {
+        searchStudentPayment: {
+          ok,
+          data: [firstData],
+        },
+      },
+    } = await searchStudentPayment({
+      variables: {
+        searchStudentPaymentId: parseInt(paymentId),
+      },
+    })
+    if (ok) {
+      setStudentPaymentData(firstData)
+      return true
+    }
+    return false
+  }
+
+  const notifyUser = (message, isError = false) => {
+    alert(message)
+    if (isError) {
+      console.error(message)
     }
   }
 
-  const clickLCourseComplete = () => {
-    if (studentPaymentData.courseComplete === '수료') {
-      const isComplete = confirm(
-        `${studentData.name}학생의 이수처리를 취소하시겠습니까?`,
-      )
-      if (isComplete) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            courseComplete: '미수료',
-          },
-          onCompleted: result => {
-            if (result.classCancellation.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(`${studentData.name}학생 이수처리 취소`)
-                    alert('이수처리 취소되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
+  const executeMutation = async (mutation, variables, successMessage) => {
+    try {
+      const { data } = await mutation({ variables })
+      const firstKey = Object.keys(data)[0]
+      const { ok } = data[firstKey]
+      if (ok) {
+        if (successMessage) notifyUser(successMessage)
+        return true
+      } else {
+        throw new Error('Operation failed')
       }
-    } else {
-      const isComplete = confirm(
-        `${studentData.name}학생을 이수처리 하시겠습니까?`,
-      )
-      if (isComplete) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            courseComplete: '수료',
-          },
-          onCompleted: result => {
-            if (result.classCancellation.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(`${studentData.name}학생 이수처리`)
-                    alert('이수처리 되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
+    } catch (error) {
+      notifyUser('처리 중 오류가 발생했습니다.', true)
+      return false
+    }
+  }
+  interface HandleStudentPaymentUpdateParams {
+    isCurrentlySet: boolean
+    checkFunction?: (variables: any) => Promise<boolean>
+    updateFunction: (variables: any, successMessage: string) => Promise<void>
+    variables: any
+    confirmationMessage: string
+    successMessage: string
+    failureMessage?: string
+    logMessage: string
+  }
+
+  const handleStudentPaymentUpdate = async ({
+    isCurrentlySet,
+    checkFunction = async () => true,
+    updateFunction,
+    variables,
+    confirmationMessage,
+    successMessage,
+    failureMessage = '조건을 만족하지 않아 처리할 수 없습니다.',
+    logMessage,
+  }: HandleStudentPaymentUpdateParams) => {
+    if (!confirm(confirmationMessage)) return
+
+    let updateSuccessful = false
+    try {
+      if (isCurrentlySet) {
+        await updateFunction(variables, successMessage)
+        updateSuccessful = true
+      } else {
+        const ok = await checkFunction(variables)
+        if (ok) {
+          await updateFunction(variables, successMessage)
+          updateSuccessful = true
+        } else {
+          notifyUser(failureMessage)
+        }
       }
+    } catch (error) {
+      console.error('업데이트 중 에러 발생:', error)
+      notifyUser('업데이트 중 문제가 발생했습니다.')
+      updateSuccessful = false
+    }
+    if (updateSuccessful) {
+      userLogs(logMessage)
     }
   }
 
-  const clickClassDrop = () => {
-    if (studentPaymentData.courseComplete === '중도포기') {
-      const isAssignment = confirm(
-        `${studentData.name}학생의 ${studentSubjectData.subjectName} 중도포기 철회 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            courseComplete: '미수료',
-          },
-          onCompleted: result => {
-            if (result.classCancellation.ok) {
-              searchStudentMutation({
-                variables: {
-                  searchStudentId: parseInt(studentData.id),
-                },
-                onCompleted: data => {
-                  if (data.searchStudent.ok) {
-                    searchStudentPayment({
-                      variables: {
-                        searchStudentPaymentId: parseInt(paymentId),
-                      },
-                      onCompleted: data => {
-                        if (data.searchStudentPayment.ok) {
-                          setStudentPaymentData(
-                            data.searchStudentPayment?.data[0],
-                          )
-                          userLogs(
-                            `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`,
-                          )
-                          alert('중도포기 철회 되었습니다.')
-                        }
-                      },
-                    })
-                  }
-                },
-              })
-            }
-          },
-        })
+  const clickLectureAssignment = async () => {
+    const isCurrentlyAssigned = studentPaymentData.lectureAssignment === '배정'
+    const confirmationMessage = isCurrentlyAssigned
+      ? `${studentData.name}학생의 ${studentSubjectData.subjectName} 강의 배정을 취소 하시겠습니까?`
+      : `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 배정 하시겠습니까?`
+
+    const updateLogic = async () => {
+      const success = await handleStudentPaymentUpdate({
+        isCurrentlySet: isCurrentlyAssigned,
+        updateFunction: async (variables, successMessage) => {
+          const success = await executeMutation(
+            updateStudentCourseMutation,
+            variables,
+            successMessage,
+          )
+          if (success) await searchAndUpdateStudentPayment()
+        },
+        variables: {
+          editStudentPaymentId: parseInt(studentPaymentData.id),
+          lectureAssignment: isCurrentlyAssigned ? '미배정' : '배정',
+          subjectId: studentPaymentData.subjectId,
+          processingManagerId: studentPaymentData.processingManagerId,
+        },
+        confirmationMessage,
+        successMessage: isCurrentlyAssigned
+          ? '강의배정 취소되었습니다.'
+          : '강의배정 되었습니다.',
+        logMessage: isCurrentlyAssigned
+          ? `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`
+          : `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
+      })
+      return success
+    }
+
+    if (!isCurrentlyAssigned) {
+      const {
+        data: {
+          duplicateCheck: { ok },
+        },
+      } = await classCheckMutation({
+        variables: {
+          studentId: studentData.id,
+          subjectId: studentPaymentData.subjectId,
+        },
+      })
+      if (ok) {
+        await updateLogic()
+      } else {
+        alert('강의가 중복됩니다. 배정할 수 없습니다.')
       }
     } else {
-      const isAssignment = confirm(
-        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 중도포기 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            courseComplete: '중도포기',
-          },
-          onCompleted: result => {
-            if (result.classCancellation.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(
-                      `${studentData.name}학생 ${studentSubjectData.subjectName} 중도포기 `,
-                    )
-                    alert('중도포기 되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
-      }
+      await updateLogic()
     }
   }
 
-  const clickClassCancel = () => {
-    if (studentPaymentData.courseComplete === '수강철회') {
-      const isAssignment = confirm(
-        `${studentData.name}학생의 ${studentSubjectData.subjectName} 수강철회를 취소 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            courseComplete: '미수료',
-          },
-          onCompleted: result => {
-            if (result.classCancellation.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(
-                      `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 수강철회 취소`,
-                    )
-                    alert('중도포기 철회 되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
-      }
-    } else {
-      const isAssignment = confirm(
-        `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 수강철회 하시겠습니까?`,
-      )
-      if (isAssignment) {
-        classCancelMutation({
-          variables: {
-            classCancellationId: parseInt(studentPaymentData.id),
-            courseComplete: '수강철회',
-          },
-          onCompleted: result => {
-            if (result.classCancellation.ok) {
-              searchStudentPayment({
-                variables: {
-                  searchStudentPaymentId: parseInt(paymentId),
-                },
-                onCompleted: data => {
-                  if (data.searchStudentPayment.ok) {
-                    setStudentPaymentData(data.searchStudentPayment?.data[0])
-                    userLogs(
-                      `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 `,
-                    )
-                    alert('수강철회 되었습니다.')
-                  }
-                },
-              })
-            }
-          },
-        })
-      }
-    }
+  const clickCompletion = async () => {
+    const isCurrentlyCompleted = studentPaymentData.courseComplete === '수료'
+    const confirmationMessage = isCurrentlyCompleted
+      ? `${studentData.name}학생의 이수 처리를 취소하시겠습니까?`
+      : `${studentData.name}학생을 이수 처리하시겠습니까?`
+
+    await handleStudentPaymentUpdate({
+      isCurrentlySet: isCurrentlyCompleted,
+      updateFunction: async (variables, successMessage) => {
+        const success = await executeMutation(
+          classCancelMutation,
+          variables,
+          successMessage,
+        )
+        if (success) await searchAndUpdateStudentPayment()
+      },
+      variables: {
+        classCancellationId: parseInt(studentPaymentData.id),
+        courseComplete: isCurrentlyCompleted ? '미수료' : '수료',
+      },
+      confirmationMessage,
+      successMessage: isCurrentlyCompleted
+        ? '이수 처리가 취소되었습니다.'
+        : '이수 처리되었습니다.',
+      logMessage: isCurrentlyCompleted
+        ? `${studentData.name}학생 이수처리 취소`
+        : `${studentData.name}학생 이수처리`,
+    })
+  }
+
+  const clickDropout = async () => {
+    const isCurrentlyDroppedOut =
+      studentPaymentData.courseComplete === '중도포기'
+    await handleStudentPaymentUpdate({
+      isCurrentlySet: isCurrentlyDroppedOut,
+      updateFunction: async (variables, successMessage) => {
+        const success = await executeMutation(
+          classCancelMutation,
+          variables,
+          successMessage,
+        )
+        if (success) await searchAndUpdateStudentPayment()
+      },
+      variables: {
+        classCancellationId: parseInt(studentPaymentData.id),
+        courseComplete: isCurrentlyDroppedOut ? '미수료' : '중도포기',
+      },
+      confirmationMessage: isCurrentlyDroppedOut
+        ? `${studentData.name}학생의 중도포기를 취소하시겠습니까?`
+        : `${studentData.name}학생을 중도포기 처리하시겠습니까?`,
+      successMessage: isCurrentlyDroppedOut
+        ? '중도 포기가 취소되었습니다.'
+        : '중도 포기 처리되었습니다.',
+      logMessage: isCurrentlyDroppedOut
+        ? `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`
+        : `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기`,
+    })
+  }
+
+  const clickWithdrawal = async () => {
+    const isCurrentlyWithdrawn =
+      studentPaymentData.courseComplete === '수강철회'
+    await handleStudentPaymentUpdate({
+      isCurrentlySet: isCurrentlyWithdrawn,
+      updateFunction: async (variables, successMessage) => {
+        const success = await executeMutation(
+          classCancelMutation,
+          variables,
+          successMessage,
+        )
+        if (success) await searchAndUpdateStudentPayment()
+      },
+      variables: {
+        classCancellationId: parseInt(studentPaymentData.id),
+        courseComplete: isCurrentlyWithdrawn ? '미수료' : '수강철회',
+      },
+      confirmationMessage: isCurrentlyWithdrawn
+        ? `${studentData.name}학생의 수강철회를 취소하시겠습니까?`
+        : `${studentData.name}학생을 수강철회 처리하시겠습니까?`,
+      successMessage: isCurrentlyWithdrawn
+        ? '수강철회가 취소되었습니다.'
+        : '수강철회 처리되었습니다.',
+      logMessage: isCurrentlyWithdrawn
+        ? `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 취소`
+        : `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회`,
+    })
   }
 
   const formatDate = (data, isTime) => {
@@ -706,7 +671,7 @@ export default function StudentsWrite() {
                                   variant="solid"
                                   color="primary"
                                   className="w-full text-white"
-                                  onClick={clickLCourseComplete}
+                                  onClick={clickCompletion}
                                 >
                                   {studentPaymentData?.courseComplete === '수료'
                                     ? '이수처리 취소'
@@ -725,7 +690,7 @@ export default function StudentsWrite() {
                                   radius="md"
                                   variant="bordered"
                                   className="w-full text-flag1 border-flag1"
-                                  onClick={clickClassCancel}
+                                  onClick={clickWithdrawal}
                                 >
                                   {studentPaymentData?.courseComplete ===
                                   '수강철회'
@@ -745,7 +710,7 @@ export default function StudentsWrite() {
                                   radius="md"
                                   variant="solid"
                                   className="w-full text-white bg-flag1"
-                                  onClick={clickClassDrop}
+                                  onClick={clickDropout}
                                 >
                                   {studentPaymentData?.courseComplete ===
                                   '중도포기'

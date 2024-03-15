@@ -5,7 +5,7 @@ import { paymentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import { Button, Input } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -14,6 +14,7 @@ import DatePickerHeader from '../common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { subMonths, subDays } from 'date-fns'
+import { useRouter } from 'next/router'
 
 type PaymentFilterProps = {
   isActive: boolean
@@ -116,11 +117,14 @@ export default function PaymentFilter({
   isActive,
   onFilterSearch,
   setStudentFilter,
+  studentFilter,
 }) {
+  const router = useRouter()
   const paymentPage = useResetRecoilState(paymentPageState)
   const [paymentDateRange, setPaymentDateRange] = useState([null, null])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
+  const [name, setName] = useState('')
 
   const {
     register,
@@ -135,6 +139,25 @@ export default function PaymentFilter({
       period: undefined,
     },
   })
+
+  useEffect(() => {
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.studentName === null
+    ) {
+      setName('')
+    } else {
+      setName(studentFilter?.studentName)
+    }
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.period === null
+    ) {
+      setPaymentDateRange([null, null])
+    } else {
+      setPaymentDateRange([studentFilter?.period[0], studentFilter?.period[1]])
+    }
+  }, [router, studentFilter])
 
   const onSubmit = data => {
     if (isDirty) {
@@ -303,6 +326,8 @@ export default function PaymentFilter({
                 variant="bordered"
                 label="수강생이름"
                 id="studentName"
+                value={name}
+                onValueChange={setName}
                 {...register('studentName')}
               />
             </ItemBox>

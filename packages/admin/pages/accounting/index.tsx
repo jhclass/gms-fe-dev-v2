@@ -35,6 +35,7 @@ export default function Accounting() {
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
+          studentFilter={studentFilter}
         />
         <ConBox>
           {filterSearch ? (
