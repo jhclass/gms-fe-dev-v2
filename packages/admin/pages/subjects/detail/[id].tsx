@@ -239,7 +239,9 @@ export default function SubjectDetail() {
   }
 
   useEffect(() => {
-    searchData()
+    if (subjectId !== null) {
+      searchData()
+    }
   }, [router])
 
   useEffect(() => {
@@ -565,6 +567,10 @@ export default function SubjectDetail() {
                           value: true,
                           message: '과정코드을 입력해주세요.',
                         },
+                        pattern: {
+                          value: /^[a-zA-Z0-9\s]*$/,
+                          message: '특수 문자는 사용할 수 없습니다.',
+                        },
                       })}
                     />
                     {errors.subjectCode && (
@@ -813,8 +819,18 @@ export default function SubjectDetail() {
                         register('roomNum').onChange(e)
                       }}
                       className="w-full"
-                      {...register('roomNum')}
+                      {...register('roomNum', {
+                        pattern: {
+                          value: /^[가-힣a-zA-Z0-9\s]*$/,
+                          message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        },
+                      })}
                     />
+                    {errors.roomNum && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.roomNum.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   {/* <AreaBox>
                     <Controller

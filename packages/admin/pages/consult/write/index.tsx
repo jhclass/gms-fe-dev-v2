@@ -244,6 +244,10 @@ export default function ConsultWirte() {
                         value: true,
                         message: '이름을 입력해주세요.',
                       },
+                      pattern: {
+                        value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        message: '한글, 영어, 숫자만 사용 가능합니다.',
+                      },
                     })}
                   />
                   {errors.stName && (
@@ -264,8 +268,18 @@ export default function ConsultWirte() {
                       register('stEmail').onChange(e)
                     }}
                     className="w-full"
-                    {...register('stEmail')}
+                    {...register('stEmail', {
+                      pattern: {
+                        value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                        message: '유효하지 않은 이메일 형식입니다.',
+                      },
+                    })}
                   />
+                  {errors.stEmail && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.stEmail.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
@@ -323,10 +337,15 @@ export default function ConsultWirte() {
                       register('phoneNum2').onChange(e)
                     }}
                     className="w-full"
+                    maxLength={12}
                     {...register('phoneNum2', {
                       pattern: {
                         value: /^[0-9]+$/,
                         message: '숫자만 입력 가능합니다.',
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: '최대 12자리까지 입력 가능합니다.',
                       },
                     })}
                   />
@@ -348,10 +367,15 @@ export default function ConsultWirte() {
                       register('phoneNum3').onChange(e)
                     }}
                     className="w-full"
+                    maxLength={12}
                     {...register('phoneNum3', {
                       pattern: {
                         value: /^[0-9]+$/,
                         message: '숫자만 입력 가능합니다.',
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: '최대 12자리까지 입력 가능합니다.',
                       },
                     })}
                   />

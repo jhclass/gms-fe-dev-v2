@@ -230,6 +230,10 @@ export default function StudentsWrite() {
                           value: true,
                           message: '이름을 입력해주세요.',
                         },
+                        pattern: {
+                          value: /^[가-힣a-zA-Z0-9\s]*$/,
+                          message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        },
                       })}
                     />
                     {errors.name && (
@@ -400,10 +404,15 @@ export default function StudentsWrite() {
                       type="text"
                       label="기타 연락처"
                       className="w-full"
+                      maxLength={12}
                       {...register('phoneNum2', {
                         pattern: {
                           value: /^[0-9]+$/,
                           message: '숫자만 입력 가능합니다.',
+                        },
+                        maxLength: {
+                          value: 12,
+                          message: '최대 12자리까지 입력 가능합니다.',
                         },
                       })}
                     />
