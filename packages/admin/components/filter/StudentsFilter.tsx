@@ -231,6 +231,7 @@ export default function StudentsFilter({
                 label="연락처"
                 value={phone}
                 onValueChange={setPhone}
+                maxLength={11}
                 id="phoneNum"
                 {...register('phoneNum', {
                   maxLength: {
@@ -259,8 +260,18 @@ export default function StudentsFilter({
                 value={name}
                 onValueChange={setName}
                 id="studentName"
-                {...register('studentName')}
+                {...register('studentName', {
+                  pattern: {
+                    value: /^[가-힣a-zA-Z0-9\s]*$/,
+                    message: '한글, 영어, 숫자만 사용 가능합니다.',
+                  },
+                })}
               />
+              {errors.studentName && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.studentName.message)}
+                </p>
+              )}
             </ItemBox>
           </BoxTop>
           <BoxMiddle>

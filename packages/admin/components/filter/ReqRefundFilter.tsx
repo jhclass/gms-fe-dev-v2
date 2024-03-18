@@ -295,8 +295,18 @@ export default function ReqRefundFilter({
                 variant="bordered"
                 label="수강생이름"
                 id="studentName"
-                {...register('stName')}
+                {...register('stName', {
+                  pattern: {
+                    value: /^[가-힣a-zA-Z0-9\s]*$/,
+                    message: '한글, 영어, 숫자만 사용 가능합니다.',
+                  },
+                })}
               />
+              {errors.stName && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.stName.message)}
+                </p>
+              )}
             </ItemBox>
           </BoxTop>
           <BtnBox>

@@ -631,6 +631,7 @@ export default function ConsultFilter({
                 label="연락처"
                 value={phone}
                 onValueChange={setPhone}
+                maxLength={11}
                 onChange={e => {
                   register('phoneNum1').onChange(e)
                 }}
@@ -663,8 +664,18 @@ export default function ConsultFilter({
                 onChange={e => {
                   register('stName').onChange(e)
                 }}
-                {...register('stName')}
+                {...register('stName', {
+                  pattern: {
+                    value: /^[가-힣a-zA-Z0-9\s]*$/,
+                    message: '한글, 영어, 숫자만 사용 가능합니다.',
+                  },
+                })}
               />
+              {errors.stName && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.stName.message)}
+                </p>
+              )}
             </ItemBox>
           </BoxMiddle>
           <BoxBottom>

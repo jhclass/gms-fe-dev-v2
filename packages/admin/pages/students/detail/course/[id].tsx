@@ -181,6 +181,14 @@ const MemoItem = styled.li`
   }
 `
 
+const EllipsisBox = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`
+
 type studentSubject = {
   actualAmount: number
   cardAmount: number
@@ -196,13 +204,16 @@ type studentSubject = {
   unCollectedAmount: number
 }
 
-const EllipsisBox = styled.p`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-`
+type HandleStudentPaymentUpdateParams = {
+  isCurrentlySet: boolean
+  checkFunction?: (variables: any) => Promise<boolean>
+  updateFunction: (variables: any, successMessage: string) => Promise<void>
+  variables: any
+  confirmationMessage: string
+  successMessage: string
+  failureMessage?: string
+  logMessage: string
+}
 
 export default function StudentsWrite() {
   const grade = useRecoilValue(gradeState)
@@ -289,16 +300,6 @@ export default function StudentsWrite() {
       notifyUser('처리 중 오류가 발생했습니다.', true)
       return false
     }
-  }
-  interface HandleStudentPaymentUpdateParams {
-    isCurrentlySet: boolean
-    checkFunction?: (variables: any) => Promise<boolean>
-    updateFunction: (variables: any, successMessage: string) => Promise<void>
-    variables: any
-    confirmationMessage: string
-    successMessage: string
-    failureMessage?: string
-    logMessage: string
   }
 
   const handleStudentPaymentUpdate = async ({

@@ -569,7 +569,7 @@ export default function StudentsWritePayment() {
                             </FilterLabel>
                           }
                           {...register('cardNum', {
-                            required: '카드반호를 작성해주세요.',
+                            required: '카드번호를 작성해주세요.',
                           })}
                         />
                         {errors.cardNum && (
@@ -777,7 +777,14 @@ export default function StudentsWritePayment() {
                             </FilterLabel>
                           }
                           {...register('depositorName', {
-                            required: '입금자를 작성해주세요.',
+                            required: {
+                              value: true,
+                              message: '입금자를 작성해주세요.',
+                            },
+                            pattern: {
+                              value: /^[가-힣a-zA-Z\s]*$/,
+                              message: '한글, 영어만 사용 가능합니다.',
+                            },
                           })}
                         />
                         {errors.depositorName && (
@@ -931,13 +938,21 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
+                          maxLength={cashReceiptType === '휴대폰번호' ? 11 : 13}
                           label={
                             <FilterLabel>
                               현금영수증번호<span>*</span>
                             </FilterLabel>
                           }
                           {...register('cashReceiptNum', {
-                            required: '현금영수증 번호를 작성해주세요.',
+                            required: {
+                              value: true,
+                              message: '현금영수증 번호를 작성해주세요.',
+                            },
+                            pattern: {
+                              value: /^[0-9]+$/,
+                              message: '숫자만 입력 가능합니다.',
+                            },
                           })}
                         />
                         {errors.cashReceiptNum && (
