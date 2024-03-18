@@ -233,7 +233,6 @@ export default function StudentsWrite() {
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
-
   useEffect(() => {
     if (paymentId !== null) {
       searchStudentPayment({
