@@ -278,6 +278,16 @@ const category: Category[] = [
     isWrite: '',
     children: [],
   },
+  {
+    href: '/testCate',
+    iconSrc: '',
+    name: '테스트',
+    exposure: false,
+    isBreadcrumb: true,
+    isFilter: false,
+    isWrite: '',
+    children: [],
+  },
 ]
 
 export default category
