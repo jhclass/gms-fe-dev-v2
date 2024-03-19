@@ -1081,7 +1081,7 @@ export default function SubjectDetail() {
             </DetailBox>
             {subjectRoundItem?.length > 1 && (
               <DetailBox>
-                <SemiTitle>동일 과정 코드 내역</SemiTitle>
+                <SemiTitle>동일 과정코드 내역</SemiTitle>
                 <ColFlexBox>
                   {subjectRoundItem
                     .filter(item => item.id !== subjectState.id)
