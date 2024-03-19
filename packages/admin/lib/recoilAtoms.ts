@@ -157,6 +157,7 @@ export const receiptStatusState = atom({
     5: '카카오톡',
     6: '플레이스',
     7: 'EMS',
+    8: '추천',
   },
 })
 
