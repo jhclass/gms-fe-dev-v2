@@ -995,7 +995,7 @@ export default function ConsultDetail() {
             </DetailBox>
             {consultation?.length > 1 && (
               <DetailBox>
-                <SemiTitle>중목 상담 문의 내역</SemiTitle>
+                <SemiTitle>중복 상담 문의 내역</SemiTitle>
                 <ColFlexBox>
                   {consultation
                     .filter(item => item.id !== studentState.id)
