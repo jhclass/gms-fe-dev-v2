@@ -322,7 +322,7 @@ export default function Header() {
         <HeaderRt>
           <NotiBtn
             onClick={() => {
-              router.push('/')
+              router.push('/', undefined, { shallow: true })
             }}
           >
             <img
