@@ -26,11 +26,19 @@ const TestSelect = styled.select`
   text-align: center;
 `
 
+const BtnCell = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+`
+
 export default function TestCate() {
   const nodes = [
     {
       id: '0',
       name: '김빨강',
+      subDiv: '근로자',
       days: 7,
       attendance: 7,
       absent: 0,
@@ -50,6 +58,7 @@ export default function TestCate() {
     {
       id: '1',
       name: '김주황',
+      subDiv: '근로자',
       days: 7,
       attendance: 5,
       absent: 2,
@@ -69,6 +78,7 @@ export default function TestCate() {
     {
       id: '2',
       name: '김노랑',
+      subDiv: '근로자',
       days: 7,
       attendance: 7,
       absent: 0,
@@ -88,6 +98,7 @@ export default function TestCate() {
     {
       id: '3',
       name: '김초록',
+      subDiv: '근로자',
       days: 7,
       attendance: 5,
       absent: 2,
@@ -107,6 +118,7 @@ export default function TestCate() {
     {
       id: '4',
       name: '김파랑',
+      subDiv: '근로자',
       days: 7,
       attendance: 5,
       absent: 2,
@@ -126,6 +138,7 @@ export default function TestCate() {
     {
       id: '5',
       name: '김남',
+      subDiv: '근로자',
       days: 7,
       attendance: 7,
       absent: 0,
@@ -140,6 +153,7 @@ export default function TestCate() {
     {
       id: '6',
       name: '김보라',
+      subDiv: '근로자',
       days: 7,
       attendance: 5,
       absent: 2,
@@ -154,6 +168,7 @@ export default function TestCate() {
     {
       id: '7',
       name: '박빨강',
+      subDiv: '근로자',
       days: 7,
       attendance: 7,
       absent: 0,
@@ -168,6 +183,7 @@ export default function TestCate() {
     {
       id: '8',
       name: '박주황',
+      subDiv: '근로자',
       days: 7,
       attendance: 7,
       absent: 0,
@@ -182,6 +198,7 @@ export default function TestCate() {
     {
       id: '9',
       name: '박노랑',
+      subDiv: '근로자',
       days: 7,
       attendance: 7,
       absent: 0,
@@ -206,13 +223,17 @@ export default function TestCate() {
   ]
   const todayIndex = datesArray.indexOf(today)
 
-  let gridTemplateColumns = 'repeat(5, 1fr)'
+  let gridTemplateColumns = '50px 100px 100px repeat(4, 70px)'
+  let gridTemplateColumnsMo = '50px 100px'
   for (let i = 1; i < todayIndex + 1; i++) {
-    gridTemplateColumns += ' repeat(1, .8fr)'
+    gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+    gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
-  gridTemplateColumns += ' repeat(1, 1.4fr)'
+  gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
+  gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
   for (let i = todayIndex + 1 + 1; i <= 5; i++) {
-    gridTemplateColumns += ' repeat(1, .8fr)'
+    gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+    gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
 
   const test = e => {
@@ -241,32 +262,66 @@ export default function TestCate() {
         text-align:center;
         font-size: 0.875rem;
         color: #71717a;
+
+         @media (max-width: 768px) {
+        --data-table-library_grid-template-columns:${gridTemplateColumnsMo};
+          }
       `,
       BaseCell: `
         padding: 0.5rem;
+        min-width: 70px;
         &:nth-of-type(1) {
           left: 0px;
           border-radius: 0.5rem 0 0 0.5rem;
             background:hsl(240 5% 98%);
         }
         &:nth-of-type(2) {
-          left: 10%;
+          left: 50px;
             background:hsl(240 5% 98%);
         }
         &:nth-of-type(3) {
-          left: 15%;
-            background:hsl(240 5% 98%);
+          left: 150px;
+          background:hsl(240 5% 98%);
+          @media (max-width: 768px) {
+            display:none;
+          } 
         }
         &:nth-of-type(4) {
-          left: 20%;
+          left: 250px;
             background:hsl(240 5% 98%);
+            @media (max-width: 768px) {
+            display:none;
+          }
         }
         &:nth-of-type(5) {
-          left: 25%;
+          left: 320px;
           background:hsl(240 5% 98%);
+          @media (max-width: 768px) {
+            display:none;
+          }
+        }
+        &:nth-of-type(6) {
+          left: 390px;
+          background:hsl(240 5% 98%);
+          @media (max-width: 768px) {
+            display:none;
+          }
+        }
+          &:nth-of-type(7) {
+          left: 460px;
+          background:hsl(240 5% 98%);
+          @media (max-width: 768px) {
+            display:none;
+          }
         }
         &:nth-last-of-type(1) {
           border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        > div {
+          overflow:unset;
+          white-space:unset;
+          text-overflow:unset;
         }
       `,
       HeaderRow: `
@@ -277,264 +332,35 @@ export default function TestCate() {
         padding: 1rem;
         font-weight: 600;
         &:nth-of-type(1) {
-              background:#d6e4f1;
+          background:#d6e4f1;
         }
         &:nth-of-type(2) {
-              background:#d6e4f1;
+          background:#d6e4f1;
         }
         &:nth-of-type(3) {
-              background:#d6e4f1;
+          background:#d6e4f1;
         }
         &:nth-of-type(4) {
-        background:#d6e4f1;
+          background:#d6e4f1;
         }
         &:nth-of-type(5) {
-              background:#d6e4f1;
+          background:#d6e4f1;
+        }
+         &:nth-of-type(6) {
+          background:#d6e4f1;
+        }
+         &:nth-of-type(7) {
+          background:#d6e4f1;
         }
       `,
     },
   ])
 
-  const COLUMNS = [
-    { label: '이름', renderCell: item => item.name, pinLeft: true },
-    { label: '훈련 일수', renderCell: item => item.days, pinLeft: true },
-    { label: '출석 일수', renderCell: item => item.attendance, pinLeft: true },
-    { label: '결석 일수', renderCell: item => item.absent, pinLeft: true },
-    { label: '출석률', renderCell: item => item.attendanceRate, pinLeft: true },
-    {
-      label: '24-01-01',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day1}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day1')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-
-    {
-      label: '24-01-02',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day2}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day2')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-03',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day3}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day3')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-04',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day4}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day4')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-05',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day5}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day5')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-06',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day6}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day6')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-07',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day7}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day7')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-08',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day8}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day8')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-09',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day9}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day9')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-    {
-      label: '24-01-10',
-      renderCell: item => (
-        <TestSelect
-          style={{
-            width: '100%',
-            border: 'none',
-            fontSize: '1rem',
-            padding: 0,
-            margin: 0,
-          }}
-          value={item.day10}
-          onChange={event => handleUpdate(event.target.value, item.id, 'day10')}
-        >
-          <option value="-">-</option>
-          <option value="출석">출석</option>
-          <option value="결석">결석</option>
-          <option value="지각">지각</option>
-          <option value="조퇴">조퇴</option>
-        </TestSelect>
-      ),
-    },
-  ]
   return (
     gridTemplateColumns && (
       <>
         <MainWrap>
           <div>
-            {/* <div style={{ height: '300px' }}> */}
-            {/* <CompactTable
-            columns={COLUMNS}
-            data={data}
-            theme={theme}
-            layout={{ custom: true, horizontalScroll: true, fixedHeader: true }}
-          /> */}
             <Table
               data={data}
               theme={theme}
@@ -548,7 +374,9 @@ export default function TestCate() {
                 <>
                   <Header>
                     <HeaderRow>
+                      <HeaderCell pinLeft>No</HeaderCell>
                       <HeaderCell pinLeft>이름</HeaderCell>
+                      <HeaderCell pinLeft>수강구분</HeaderCell>
                       <HeaderCell pinLeft>훈련 일수</HeaderCell>
                       <HeaderCell pinLeft>출석 일수</HeaderCell>
                       <HeaderCell pinLeft>결석 일수</HeaderCell>
@@ -562,46 +390,11 @@ export default function TestCate() {
                   </Header>
 
                   <Body>
-                    <Row
-                      item={{
-                        id: '1',
-                        nodes: [],
-                      }}
-                    >
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell>
-                        <Button onClick={() => test('24.04.01')}>
-                          훈련일지
-                        </Button>
-                      </Cell>
-                      <Cell>
-                        <Button onClick={() => test('24.04.02')}>
-                          훈련일지
-                        </Button>
-                      </Cell>
-                      <Cell>
-                        <Button onClick={() => test('24.04.03')}>
-                          훈련일지
-                        </Button>
-                      </Cell>
-                      <Cell>
-                        <Button onClick={() => test('24.04.04')}>
-                          훈련일지
-                        </Button>
-                      </Cell>
-                      <Cell>
-                        <Button onClick={() => test('24.04.05')}>
-                          훈련일지
-                        </Button>
-                      </Cell>
-                    </Row>
-                    {tableList.map(item => (
+                    {tableList.map((item, index) => (
                       <Row key={item.id} item={item}>
+                        <Cell pinLeft>{index + 1}</Cell>
                         <Cell pinLeft>{item.name}</Cell>
+                        <Cell pinLeft>{item.subDiv}</Cell>
                         <Cell pinLeft>{item.days}</Cell>
                         <Cell pinLeft>{item.attendance}</Cell>
                         <Cell pinLeft>{item.absent}</Cell>
@@ -622,9 +415,18 @@ export default function TestCate() {
                           >
                             <option value="-">-</option>
                             <option value="출석">출석</option>
-                            <option value="결석">결석</option>
                             <option value="지각">지각</option>
                             <option value="조퇴">조퇴</option>
+                            <option value="지각&조퇴">지각&조퇴</option>
+                            <option value="결석">결석</option>
+                            <option value="외출">외출</option>
+                            <option value="지각&외출">지각&외출</option>
+                            <option value="외출&조퇴">외출&조퇴</option>
+                            <option value="지각&외출&조퇴">
+                              지각&외출&조퇴
+                            </option>
+                            <option value="휴가/공가">휴가/공가</option>
+                            <option value="절반출석">절반출석</option>
                           </TestSelect>
                         </Cell>
                         <Cell>
@@ -643,9 +445,18 @@ export default function TestCate() {
                           >
                             <option value="-">-</option>
                             <option value="출석">출석</option>
-                            <option value="결석">결석</option>
                             <option value="지각">지각</option>
                             <option value="조퇴">조퇴</option>
+                            <option value="지각&조퇴">지각&조퇴</option>
+                            <option value="결석">결석</option>
+                            <option value="외출">외출</option>
+                            <option value="지각&외출">지각&외출</option>
+                            <option value="외출&조퇴">외출&조퇴</option>
+                            <option value="지각&외출&조퇴">
+                              지각&외출&조퇴
+                            </option>
+                            <option value="휴가/공가">휴가/공가</option>
+                            <option value="절반출석">절반출석</option>
                           </TestSelect>
                         </Cell>
                         <Cell>
@@ -664,9 +475,18 @@ export default function TestCate() {
                           >
                             <option value="-">-</option>
                             <option value="출석">출석</option>
-                            <option value="결석">결석</option>
                             <option value="지각">지각</option>
                             <option value="조퇴">조퇴</option>
+                            <option value="지각&조퇴">지각&조퇴</option>
+                            <option value="결석">결석</option>
+                            <option value="외출">외출</option>
+                            <option value="지각&외출">지각&외출</option>
+                            <option value="외출&조퇴">외출&조퇴</option>
+                            <option value="지각&외출&조퇴">
+                              지각&외출&조퇴
+                            </option>
+                            <option value="휴가/공가">휴가/공가</option>
+                            <option value="절반출석">절반출석</option>
                           </TestSelect>
                         </Cell>
                         <Cell>
@@ -685,9 +505,18 @@ export default function TestCate() {
                           >
                             <option value="-">-</option>
                             <option value="출석">출석</option>
-                            <option value="결석">결석</option>
                             <option value="지각">지각</option>
                             <option value="조퇴">조퇴</option>
+                            <option value="지각&조퇴">지각&조퇴</option>
+                            <option value="결석">결석</option>
+                            <option value="외출">외출</option>
+                            <option value="지각&외출">지각&외출</option>
+                            <option value="외출&조퇴">외출&조퇴</option>
+                            <option value="지각&외출&조퇴">
+                              지각&외출&조퇴
+                            </option>
+                            <option value="휴가/공가">휴가/공가</option>
+                            <option value="절반출석">절반출석</option>
                           </TestSelect>
                         </Cell>
                         <Cell>
@@ -706,13 +535,141 @@ export default function TestCate() {
                           >
                             <option value="-">-</option>
                             <option value="출석">출석</option>
-                            <option value="결석">결석</option>
                             <option value="지각">지각</option>
                             <option value="조퇴">조퇴</option>
+                            <option value="지각&조퇴">지각&조퇴</option>
+                            <option value="결석">결석</option>
+                            <option value="외출">외출</option>
+                            <option value="지각&외출">지각&외출</option>
+                            <option value="외출&조퇴">외출&조퇴</option>
+                            <option value="지각&외출&조퇴">
+                              지각&외출&조퇴
+                            </option>
+                            <option value="휴가/공가">휴가/공가</option>
+                            <option value="절반출석">절반출석</option>
                           </TestSelect>
                         </Cell>
                       </Row>
                     ))}
+                    <Row
+                      item={{
+                        id: '1',
+                        nodes: [],
+                      }}
+                    >
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell>
+                        <BtnCell>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            onClick={() => test('24.04.01')}
+                          >
+                            일지
+                          </Button>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            className="text-white bg-flag1"
+                          >
+                            저장
+                          </Button>
+                        </BtnCell>
+                      </Cell>
+                      <Cell>
+                        <BtnCell>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            onClick={() => test('24.04.01')}
+                          >
+                            일지
+                          </Button>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            className="text-white bg-flag1"
+                          >
+                            저장
+                          </Button>
+                        </BtnCell>
+                      </Cell>
+                      <Cell>
+                        <BtnCell>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            onClick={() => test('24.04.01')}
+                          >
+                            일지
+                          </Button>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            className="text-white bg-flag1"
+                          >
+                            저장
+                          </Button>
+                        </BtnCell>
+                      </Cell>
+                      <Cell>
+                        <BtnCell>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            onClick={() => test('24.04.01')}
+                          >
+                            일지
+                          </Button>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            className="text-white bg-flag1"
+                          >
+                            저장
+                          </Button>
+                        </BtnCell>
+                      </Cell>
+                      <Cell>
+                        <BtnCell>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            onClick={() => test('24.04.01')}
+                          >
+                            일지
+                          </Button>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            className="text-white bg-flag1"
+                          >
+                            저장
+                          </Button>
+                        </BtnCell>
+                      </Cell>
+                    </Row>
                   </Body>
                 </>
               )}
