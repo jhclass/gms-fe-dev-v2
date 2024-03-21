@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
-import { useRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import {
   activeCategoryState,
   consultFilterActiveState,
   consultFilterState,
   consultPageState,
   consultSearchState,
+  gradeState,
+  navOpenState,
   parformanceFilterActiveState,
   parformanceFilterState,
   parformanceSearchState,
@@ -40,6 +42,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
 import useMmeQuery from '@/utils/mMe'
+import Link from 'next/link'
 
 const CateWrap = styled(motion.ul)``
 
@@ -149,6 +152,10 @@ export default function Category() {
     }
   }, [router.pathname])
   const active = breadcrumb[0] === undefined ? '/' : `/${breadcrumb[0]}`
+
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   return (
     <>
       <CateWrap>
@@ -169,6 +176,7 @@ export default function Category() {
             />
           ))}
       </CateWrap>
+      {mGrade === grade.dev && <Link href="/testCate">TEST CATE</Link>}
     </>
   )
 }

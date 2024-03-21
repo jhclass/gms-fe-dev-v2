@@ -1,14 +1,10 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PerformanceBox from './PerformanceBox'
-import {
-  SALES_STATISTICS_LIST_MUTATION,
-  SALES_STATISTICS_MUTATION,
-} from '@/graphql/mutations'
+import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
 import PerformanceTotal from './PerformanceTotal'
 import PerformanceChart from '../dashboard/PerformanceChart'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 const ListBox = styled.div`
   margin-top: 2rem;

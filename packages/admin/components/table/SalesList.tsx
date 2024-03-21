@@ -1,15 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { useQuery } from '@apollo/client'
+import { ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  GET_HOURLY_SALES_QUERY,
-  GET_SALES_QUERY,
-  SEE_AMOUNT_STUDENT_QUERY,
-} from '@/graphql/queries'
-import router, { useRouter } from 'next/router'
-import { useRecoilState } from 'recoil'
-import { paymentPageState } from '@/lib/recoilAtoms'
+import { GET_HOURLY_SALES_QUERY } from '@/graphql/queries'
+import { useRouter } from 'next/router'
 import SalesItem from '@/components/table/SalesItem'
 import SalesTotalItem from './SalesTotalItem'
 
@@ -123,17 +117,19 @@ const Nolist = styled.div`
 export default function SalesTable({ salesFilter, days }) {
   const router = useRouter()
   const now = new Date()
-  const { data: hourlyData, refetch: houralyRefetch } = useQuery(
-    GET_HOURLY_SALES_QUERY,
-    {
-      variables: {
-        date: [
-          new Date(now.setHours(0, 0, 0)),
-          new Date(now.setHours(23, 59, 59)),
-        ],
-      },
+  const {
+    loading,
+    error,
+    data: hourlyData,
+    refetch: houralyRefetch,
+  } = useQuery(GET_HOURLY_SALES_QUERY, {
+    variables: {
+      date: [
+        new Date(now.setHours(0, 0, 0)),
+        new Date(now.setHours(23, 59, 59)),
+      ],
     },
-  )
+  })
 
   const [searchResult, setSearchResult] = useState(null)
   const [searchResultTotal, setSearchResultTotal] = useState(null)
@@ -218,6 +214,10 @@ export default function SalesTable({ salesFilter, days }) {
     })
 
     return hourlyData
+  }
+
+  if (error) {
+    console.log(error)
   }
 
   useEffect(() => {

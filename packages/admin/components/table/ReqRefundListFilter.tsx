@@ -1,9 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
-import router from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
@@ -266,7 +264,7 @@ export default function ReqRefundFilterTable({
 
   const clickApprovalRefund = item => {
     const isAssignment = confirm(
-      '환불 승인 하시겠습니까? \n 한번 승인 시 취소 불가능',
+      '환불 승인 하시겠습니까? \n한번 승인 시 취소 불가능',
     )
     if (isAssignment) {
       approvalRefoundMutation({

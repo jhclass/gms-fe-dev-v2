@@ -1,17 +1,11 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY } from '@/graphql/queries'
-import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
-import {
-  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
-  SEARCH_PAYMENT_FILTER_MUTATION,
-  SEARCH_STUDENT_FILTER_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_PAYMENT_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

@@ -142,7 +142,7 @@ export default function ConsultFilter({
   const {
     data: seeManageUserData,
     error,
-    loading: seeMansgeuserLoading,
+    loading,
   } = useQuery(SEE_MANAGEUSER_QUERY)
   const {
     loading: adviceLoading,
@@ -337,6 +337,14 @@ export default function ConsultFilter({
     setCreatDateRange([null, null])
     setVisitDateRange([null, null])
     reset()
+  }
+
+  if (loading || adviceLoading) return null
+  if (error) {
+    console.log(error)
+  }
+  if (adviceError) {
+    console.log(adviceError)
   }
 
   return (

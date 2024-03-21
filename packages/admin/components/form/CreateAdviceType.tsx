@@ -163,6 +163,10 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
     }
   }
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <FilterBox

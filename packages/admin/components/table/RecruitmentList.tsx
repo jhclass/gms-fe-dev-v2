@@ -151,6 +151,10 @@ export default function RecruitmentTable() {
     handleScrollTop()
   }, [router, refetch, currentPage])
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <TTopic>

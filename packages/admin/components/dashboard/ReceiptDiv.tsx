@@ -97,6 +97,10 @@ export default function ReceiptDiv() {
     },
   }
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <ItemBox>
       <Title>

@@ -1,19 +1,12 @@
-import { useMutation, useQuery } from '@apollo/client'
-import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
+import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_AMOUNT_STUDENT_QUERY, SEE_REFUND_QUERY } from '@/graphql/queries'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
-import { paymentPageState, refundPageState } from '@/lib/recoilAtoms'
+import { refundPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
-import {
-  APPROVAL_REFUND_MUTATION,
-  REQ_REFUND_MUTATION,
-  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
-  SEARCH_STUDENTSTATE_MUTATION,
-} from '@/graphql/mutations'
-import useUserLogsMutation from '@/utils/userLogs'
+import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

@@ -200,11 +200,7 @@ export default function StudentsWrite() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
 
   const { userLogs } = useUserLogsMutation()
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const Receipt = useRecoilValue(ReceiptState)
   const managerList = managerData?.seeManageUser || []
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
@@ -259,6 +255,11 @@ export default function StudentsWrite() {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       {studentData !== null && (

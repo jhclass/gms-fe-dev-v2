@@ -210,9 +210,12 @@ export default function ConsolutationTable() {
     data: MMeFavoData,
   } = useQuery(MME_FAVO_QUERY)
   const FavoList = MMeFavoData?.mMe.favoriteStudentState
-  const { data: seeFavoData, refetch: favoRefetch } = useQuery(
-    SEE_FAVORITESTATE_QUERY,
-  )
+  const {
+    loading: seeFavoLoading,
+    error: seeFavoError,
+    data: seeFavoData,
+    refetch: favoRefetch,
+  } = useQuery(SEE_FAVORITESTATE_QUERY)
   const studentsData = data?.seeStudentState || []
   const students = studentsData?.studentState || []
   const favoData = seeFavoData?.seeFavorite || []
@@ -231,6 +234,17 @@ export default function ConsolutationTable() {
     favoRefetch()
     handleScrollTop()
   }, [router, refetch, favoRefetch, currentPage])
+
+  if (loading || seeFavoLoading || MMeFavoLoading) return null
+  if (error) {
+    console.log(error)
+  }
+  if (seeFavoError) {
+    console.log(seeFavoError)
+  }
+  if (MMeFavoError) {
+    console.log(MMeFavoError)
+  }
 
   return (
     <>

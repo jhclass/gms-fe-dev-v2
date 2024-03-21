@@ -41,11 +41,7 @@ const ChartWrap = styled.div`
 `
 
 export default function AdviceType({ managerIds, totalAmount, totalCount }) {
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const managerUsernames = managerIds.map(
     id => managerList.find(user => user.id === id)?.mUsername,
@@ -154,6 +150,10 @@ export default function AdviceType({ managerIds, totalAmount, totalCount }) {
         'rgba(0,227,150,0.85)',
       ],
     },
+  }
+
+  if (error) {
+    console.log(error)
   }
 
   return (

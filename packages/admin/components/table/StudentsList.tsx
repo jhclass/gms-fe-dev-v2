@@ -2,13 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  MME_FAVO_QUERY,
-  SEE_FAVORITESTATE_QUERY,
-  SEE_STUDENT_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
+import { SEE_STUDENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import StudentItem from '@/components/table/StudentItem'
 import { useRecoilState } from 'recoil'
@@ -188,6 +182,10 @@ export default function StudentsTable() {
     refetch()
     handleScrollTop()
   }, [router, refetch, currentPage])
+
+  if (error) {
+    console.log(error)
+  }
 
   return (
     <>

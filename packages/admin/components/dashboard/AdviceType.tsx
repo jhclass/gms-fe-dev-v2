@@ -97,6 +97,10 @@ export default function AdviceType() {
     },
   }
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <ItemBox>
       {adviceTypeData !== null && (

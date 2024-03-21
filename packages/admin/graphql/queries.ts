@@ -285,6 +285,7 @@ export const SEE_PAYMENT_QUERY = gql`
         tuitionFee
         updatedAt
         subject {
+          id
           subjectName
           round
         }

@@ -153,6 +153,10 @@ export default function Form() {
     setGroupSelected(updatedGroupSelected)
   }
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <div className="wrap">

@@ -245,6 +245,10 @@ export default function SubjectTable() {
     handleScrollTop()
   }, [router, refetch, currentPage])
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <TTopic>

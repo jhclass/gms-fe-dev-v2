@@ -69,6 +69,10 @@ export default function Statistics() {
     }
   }, [router, performanceFilter, data])
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <MainWrap>

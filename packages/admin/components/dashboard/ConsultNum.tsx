@@ -60,7 +60,7 @@ const Total = styled.div`
 `
 
 export default function ConsultNum() {
-  const { data, refetch } = useQuery(DASHBOARD_UNP_QUERY)
+  const { loading, error, data, refetch } = useQuery(DASHBOARD_UNP_QUERY)
   const unpCount = data?.dashboardUnp.unpCount || 0
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
@@ -75,6 +75,11 @@ export default function ConsultNum() {
   useEffect(() => {
     refetch()
   }, [refetch])
+
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <ItemBox>
       <Title>

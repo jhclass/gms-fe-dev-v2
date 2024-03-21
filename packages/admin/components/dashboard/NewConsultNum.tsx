@@ -78,7 +78,7 @@ const MoMIcon = styled.p`
 `
 
 export default function NewConsultNum() {
-  const { data, refetch } = useQuery(DASHBOARD_TODAY_QUERY)
+  const { loading, error, data, refetch } = useQuery(DASHBOARD_TODAY_QUERY)
   const dataToday = data?.dashboardToday.today || 0
   const dataCompare = data?.dashboardToday.compareToday || 0
   const [isIncrease, setIsIncrease] = useState<boolean>()
@@ -102,6 +102,10 @@ export default function NewConsultNum() {
     } else {
       return '9999+'
     }
+  }
+
+  if (error) {
+    console.log(error)
   }
 
   return (

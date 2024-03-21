@@ -139,11 +139,7 @@ export default function PerformanceFilter({
   setClickReset,
 }) {
   const router = useRouter()
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
@@ -224,6 +220,10 @@ export default function PerformanceFilter({
 
   const handleManagerChange = e => {
     setManager(new Set(e.target.value.split(',')))
+  }
+
+  if (error) {
+    console.log(error)
   }
 
   return (

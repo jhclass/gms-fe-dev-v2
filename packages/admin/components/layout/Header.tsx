@@ -298,6 +298,10 @@ export default function Header() {
     )
   }, [headerUserMenu])
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <HeaderSec $navOpen={navOpen}>
@@ -322,7 +326,7 @@ export default function Header() {
         <HeaderRt>
           <NotiBtn
             onClick={() => {
-              router.push('/')
+              router.push('/', undefined, { shallow: true })
             }}
           >
             <img

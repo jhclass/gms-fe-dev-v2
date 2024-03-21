@@ -1,9 +1,10 @@
-import { navOpenState } from '@/lib/recoilAtoms'
+import { gradeState, navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 import Category from '@/components/layout/Category'
+import useMmeQuery from '@/utils/mMe'
 
 const NavSec = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -104,6 +105,9 @@ const DimBtn = styled.button`
 `
 
 export default function Header() {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
 
   const toggleNav = () => {

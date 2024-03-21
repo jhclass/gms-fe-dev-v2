@@ -313,6 +313,10 @@ export default function AdviceType({ startDate, seriesData }) {
     }))
   }, [startDate])
 
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <ConArea>
       <DetailBox>
