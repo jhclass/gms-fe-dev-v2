@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -111,6 +111,11 @@ const AreaSmallBox = styled.div`
     width: 100% !important;
   }
 `
+const CardNumBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+`
+
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -188,6 +193,7 @@ export default function StudentsWritePayment() {
     setFocus,
     setError,
     handleSubmit,
+    clearErrors,
     formState: { isDirty, dirtyFields, errors },
   } = useForm()
   const [paymentDetailData, setPaymentDetailData] = useState(null)
@@ -224,6 +230,12 @@ export default function StudentsWritePayment() {
       setCashReceiptType(paymentDetailData?.cashReceipts[0])
       if (paymentDetailData.cashOrCard === '카드') {
         setCardName(paymentDetailData.cardCompany)
+        const cardNum = paymentDetailData.cardNum
+        const chunkSize = 4
+        const chunks = cardNum.match(new RegExp('.{1,' + chunkSize + '}', 'g'))
+        setValue('cardNum1', chunks[0])
+        setValue('cardNum2', chunks[1])
+        setValue('cardNum4', chunks[3])
         if (paymentDetailData?.paymentDate === null) {
           setCardPaymentDate(null)
           setValue('paymentDate', null)
@@ -245,6 +257,71 @@ export default function StudentsWritePayment() {
       }
     }
   }, [paymentDetailData])
+
+  const input1Ref = useRef(null)
+  const input2Ref = useRef(null)
+  const input4Ref = useRef(null)
+
+  const handleInput1Change = value => {
+    if (/^\d*$/.test(value)) {
+      clearErrors('cardNum1')
+      if (value.length === 4) {
+        setValue('cardNum1', value, { shouldDirty: true })
+        input2Ref.current?.focus()
+      } else if (value.length < 4) {
+        setError('cardNum1', {
+          type: 'manual',
+          message: '1번째 입력칸은 4자리수를 입력해주세요.',
+        })
+      }
+    } else {
+      setError('cardNum1', {
+        type: 'manual',
+        message: '1번째 입력칸은  숫자만 입력 가능합니다.',
+      })
+    }
+  }
+
+  const handleInput2Change = value => {
+    if (/^\d*$/.test(value)) {
+      clearErrors('cardNum2')
+      if (value.length === 4) {
+        setValue('cardNum2', value, { shouldDirty: true })
+        input4Ref.current?.focus()
+      } else if (value.length < 4) {
+        setError('cardNum2', {
+          type: 'manual',
+          message: '2번째 입력칸은4자리수를 입력해주세요.',
+        })
+      }
+    } else {
+      setError('cardNum2', {
+        type: 'manual',
+        message: '2번째 입력칸은 숫자만 입력 가능합니다.',
+      })
+    }
+  }
+
+  const handleInput4Change = value => {
+    if (/^\d*$/.test(value)) {
+      clearErrors('cardNum4')
+
+      if (value.length === 4) {
+        setValue('cardNum4', value, { shouldDirty: true })
+        input2Ref.current?.focus()
+      } else if (value.length < 4) {
+        setError('cardNum4', {
+          type: 'manual',
+          message: '4번째 입력칸은 4자리수를 입력해주세요.',
+        })
+      }
+    } else {
+      setError('cardNum4', {
+        type: 'manual',
+        message: '4번째 입력칸은 숫자만 입력 가능합니다.',
+      })
+    }
+  }
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -285,7 +362,11 @@ export default function StudentsWritePayment() {
               cashOrCard: '카드',
               studentPaymentId: paymentDetailData?.studentPaymentId,
               cardCompany: data.cardCompany,
-              cardNum: data.cardNum.trim(),
+              cardNum:
+                data.cardNum1.trim() +
+                data.cardNum2.trim() +
+                '****' +
+                data.cardNum4.trim(),
               amountPayment: parseInt(data.amountPayment),
               installment: parseInt(data.installment),
               approvalNum: data.approvalNum.trim(),
@@ -578,7 +659,7 @@ export default function StudentsWritePayment() {
                           )}
                         </AreaBox>
                         <AreaBox>
-                          <Input
+                          {/* <Input
                             labelPlacement="outside"
                             placeholder="카드번호"
                             variant="bordered"
@@ -597,6 +678,74 @@ export default function StudentsWritePayment() {
                           {errors.cardNum && (
                             <p className="px-2 pt-2 text-xs text-red-500">
                               {String(errors.cardNum.message)}
+                            </p>
+                          )} */}
+                          <CardNumBox>
+                            <Input
+                              labelPlacement="outside"
+                              radius="md"
+                              variant="bordered"
+                              placeholder="1234"
+                              ref={input1Ref}
+                              maxLength={4}
+                              defaultValue={paymentDetailData.cardNum.slice(
+                                0,
+                                4,
+                              )}
+                              onChange={e => handleInput1Change(e.target.value)}
+                              label={
+                                <FilterLabel>
+                                  카드번호<span>*</span>
+                                </FilterLabel>
+                              }
+                            />
+                            <Input
+                              ref={input2Ref}
+                              labelPlacement="outside"
+                              radius="md"
+                              variant="bordered"
+                              placeholder="1234"
+                              maxLength={4}
+                              defaultValue={paymentDetailData.cardNum.slice(
+                                4,
+                                8,
+                              )}
+                              onChange={e => handleInput2Change(e.target.value)}
+                            />
+                            <Input
+                              labelPlacement="outside"
+                              variant="faded"
+                              radius="md"
+                              value="****"
+                              isReadOnly={true}
+                            />
+                            <Input
+                              ref={input4Ref}
+                              labelPlacement="outside"
+                              radius="md"
+                              variant="bordered"
+                              placeholder="1234"
+                              maxLength={4}
+                              defaultValue={paymentDetailData.cardNum.slice(
+                                12,
+                                16,
+                              )}
+                              onChange={e => handleInput4Change(e.target.value)}
+                            />
+                          </CardNumBox>
+                          {errors.cardNum1 && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cardNum1.message)}
+                            </p>
+                          )}
+                          {errors.cardNum2 && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cardNum2.message)}
+                            </p>
+                          )}
+                          {errors.cardNum4 && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.cardNum4.message)}
                             </p>
                           )}
                         </AreaBox>
