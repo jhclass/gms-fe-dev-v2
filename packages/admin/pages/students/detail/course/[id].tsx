@@ -4,8 +4,7 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
@@ -15,7 +14,6 @@ import {
   CLASS_CANCEL_MUTATION,
   CLASS_CHECK_MUTATION,
   SEARCH_PAYMENT_MUTATION,
-  SEARCH_STUDENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'

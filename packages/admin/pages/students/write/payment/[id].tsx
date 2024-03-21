@@ -169,11 +169,7 @@ export default function StudentsWritePayment() {
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [createPaymentDetail] = useMutation(CREATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const {
     register,
@@ -470,6 +466,11 @@ export default function StudentsWritePayment() {
   }
   const handleCashReceiptTypeChange = value => {
     setCashReceiptType(value)
+  }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
   }
 
   return (

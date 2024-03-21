@@ -231,7 +231,11 @@ export default function ConsolutationFilterTable({
     data: MMeData,
   } = useQuery(MME_QUERY)
   const FavoList = MMeData?.mMe.favoriteStudentState
-  const { data: seeFavoData } = useQuery(SEE_FAVORITESTATE_QUERY)
+  const {
+    loading,
+    error,
+    data: seeFavoData,
+  } = useQuery(SEE_FAVORITESTATE_QUERY)
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
 
@@ -255,6 +259,15 @@ export default function ConsolutationFilterTable({
     setStudentFilter({})
     onFilterSearch(false)
   }
+
+  if (loading || MMeLoading) return null
+  if (error) {
+    console.log(error)
+  }
+  if (MMeError) {
+    console.log(MMeError)
+  }
+
   return (
     <>
       <TTopic>

@@ -87,11 +87,7 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const router = useRouter()
   const [selectedPayment, setSelectedPayment] =
     useRecoilState(selectedPaymentState)
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
 
   const Color1 = '#FF5900'
@@ -118,6 +114,11 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
     setSelectedPayment(item)
     // router.push(`/students/detail/course/${studentId}`)
     router.push(`/students/detail/course/${detailtData.id}`)
+  }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
   }
 
   return (

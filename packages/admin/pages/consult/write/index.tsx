@@ -129,11 +129,7 @@ const BtnBox = styled.div`
 export default function ConsultWirte() {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
@@ -208,6 +204,11 @@ export default function ConsultWirte() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
+  }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
   }
 
   return (

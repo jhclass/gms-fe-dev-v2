@@ -90,17 +90,19 @@ export default function PerformanceTotal({
   totalAmount,
   totalCount,
 }) {
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
 
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <FlexBox>

@@ -184,11 +184,7 @@ export default function ConsultDetail() {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
@@ -438,6 +434,11 @@ export default function ConsultDetail() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
+  }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
   }
 
   return (

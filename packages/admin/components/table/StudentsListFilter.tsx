@@ -1,16 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  MME_FAVO_QUERY,
-  SEE_FAVORITESTATE_QUERY,
-  SEE_STUDENT_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
-import router from 'next/router'
-
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 import StudentItem from './StudentItem'
 import { useRecoilState } from 'recoil'

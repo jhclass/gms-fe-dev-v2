@@ -111,11 +111,7 @@ export default function PaymentInfo({
   studentSubjectData,
   studentPaymentData,
 }) {
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
 
   const formatDate = (data, isTime) => {
@@ -145,6 +141,12 @@ export default function PaymentInfo({
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <FlexBox>

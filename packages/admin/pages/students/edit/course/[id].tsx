@@ -154,11 +154,7 @@ export default function StudentsWriteCourse() {
     useRecoilState(selectedPaymentState)
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
@@ -213,6 +209,11 @@ export default function StudentsWriteCourse() {
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
     }
+  }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
   }
 
   return (

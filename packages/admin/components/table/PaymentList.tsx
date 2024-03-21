@@ -161,6 +161,11 @@ export default function PaymentTable() {
     handleScrollTop()
   }, [router, refetch, currentPage])
 
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <TTopic>

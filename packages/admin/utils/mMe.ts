@@ -23,6 +23,11 @@ const useMmeQuery = () => {
     }
   }
 
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return { useMme }
 }
 export default useMmeQuery

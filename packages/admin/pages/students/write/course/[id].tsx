@@ -207,11 +207,7 @@ export default function StudentsWriteCourse() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
   const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
-  const {
-    loading: managerLoading,
-    error: managerError,
-    data: managerData,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
   const Receipt = useRecoilValue(ReceiptState)
   const {
@@ -470,6 +466,12 @@ export default function StudentsWriteCourse() {
       setValue('unCollectedAmount', subjectSelectedData?.fee)
     }
   }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       <MainWrap>

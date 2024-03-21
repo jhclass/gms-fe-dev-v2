@@ -10,6 +10,11 @@ const useIsMmeQuery = () => {
   })
   const { ok } = data?.isMme || {}
 
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return ok
 }
 export default useIsMmeQuery

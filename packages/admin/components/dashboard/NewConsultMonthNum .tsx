@@ -78,7 +78,7 @@ const MoMIcon = styled.p`
 `
 
 export default function NewConsultNum() {
-  const { data, refetch } = useQuery(DASHBOARD_MONTH_QUERY)
+  const { loading, error, data, refetch } = useQuery(DASHBOARD_MONTH_QUERY)
   const dataMonth = data?.dashboardMonth.month || 0
   const dataCompare = data?.dashboardMonth.compareMonth || 0
   const [isIncrease, setIsIncrease] = useState<boolean>()
@@ -106,6 +106,12 @@ export default function NewConsultNum() {
       return '9999+'
     }
   }
+
+  if (loading) return null
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <ItemBox>
       <Title>
