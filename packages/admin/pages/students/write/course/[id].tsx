@@ -467,7 +467,6 @@ export default function StudentsWriteCourse() {
     }
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

@@ -76,7 +76,6 @@ export default function ConsultNum() {
     refetch()
   }, [refetch])
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

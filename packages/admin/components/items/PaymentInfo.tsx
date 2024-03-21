@@ -142,7 +142,6 @@ export default function PaymentInfo({
     return result
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

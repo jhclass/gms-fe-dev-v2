@@ -222,7 +222,6 @@ export default function PerformanceFilter({
     setManager(new Set(e.target.value.split(',')))
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

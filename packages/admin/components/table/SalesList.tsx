@@ -216,7 +216,6 @@ export default function SalesTable({ salesFilter, days }) {
     return hourlyData
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

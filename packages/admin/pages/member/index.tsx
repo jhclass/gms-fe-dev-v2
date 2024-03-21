@@ -119,7 +119,6 @@ export default function Profile() {
     alert(`비밀번호변경은 관리자에게 문의주세요.😀\nkkalim4913@gmail.com`)
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

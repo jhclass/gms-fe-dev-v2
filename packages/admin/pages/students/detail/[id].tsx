@@ -256,7 +256,6 @@ export default function StudentsWrite() {
     return result
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

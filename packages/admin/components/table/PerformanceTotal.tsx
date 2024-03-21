@@ -98,7 +98,6 @@ export default function PerformanceTotal({
     return result
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

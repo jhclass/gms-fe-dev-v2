@@ -116,7 +116,6 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
     router.push(`/students/detail/course/${detailtData.id}`)
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

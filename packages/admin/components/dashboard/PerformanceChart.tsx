@@ -152,7 +152,6 @@ export default function AdviceType({ managerIds, totalAmount, totalCount }) {
     },
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

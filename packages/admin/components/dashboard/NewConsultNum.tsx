@@ -104,7 +104,6 @@ export default function NewConsultNum() {
     }
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

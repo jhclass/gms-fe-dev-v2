@@ -313,7 +313,6 @@ export default function AdviceType({ startDate, seriesData }) {
     }))
   }, [startDate])
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

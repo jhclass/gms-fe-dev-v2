@@ -97,7 +97,6 @@ export default function ReceiptDiv() {
     },
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

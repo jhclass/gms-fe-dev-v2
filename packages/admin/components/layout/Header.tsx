@@ -298,7 +298,6 @@ export default function Header() {
     )
   }, [headerUserMenu])
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

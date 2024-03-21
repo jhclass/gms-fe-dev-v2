@@ -69,7 +69,6 @@ export default function Statistics() {
     }
   }, [router, performanceFilter, data])
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

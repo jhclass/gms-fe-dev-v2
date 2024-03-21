@@ -153,7 +153,6 @@ export default function Form() {
     setGroupSelected(updatedGroupSelected)
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

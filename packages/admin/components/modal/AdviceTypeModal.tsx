@@ -41,7 +41,6 @@ export default function AdviceTypeModal({
     onClose()
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

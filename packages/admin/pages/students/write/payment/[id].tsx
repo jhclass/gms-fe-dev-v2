@@ -468,7 +468,6 @@ export default function StudentsWritePayment() {
     setCashReceiptType(value)
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }

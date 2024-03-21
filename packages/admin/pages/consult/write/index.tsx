@@ -206,7 +206,6 @@ export default function ConsultWirte() {
     setManager(e.target.value)
   }
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }
