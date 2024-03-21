@@ -167,7 +167,7 @@ export default function CategoryItem<CategoryItemProps>({
         }}
       >
         {!children || subCate.length === 0 ? (
-          <Link href={href} onClick={e => clickCate(e, cateGrade, href)}>
+          <Link href={'#'} onClick={e => clickCate(e, cateGrade, href)}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
                 content={name}
@@ -245,7 +245,7 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
-                <Link href={href} onClick={e => clickCate(e, cateGrade, href)}>
+                <Link href={'#'} onClick={e => clickCate(e, cateGrade, href)}>
                   {name}
                 </Link>
               </CateTitle>
@@ -259,7 +259,7 @@ export default function CategoryItem<CategoryItemProps>({
                     $isActive={router.pathname == item.href}
                   >
                     <Link
-                      href={href + item.href}
+                      href={'#'}
                       onClick={e => clickCate(e, item.grade, href + item.href)}
                     >
                       {item.name}
