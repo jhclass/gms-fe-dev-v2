@@ -339,7 +339,6 @@ export default function ConsultFilter({
     reset()
   }
 
-  if (loading || adviceLoading) return null
   if (error) {
     console.log(error)
   }
