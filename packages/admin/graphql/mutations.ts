@@ -1448,3 +1448,25 @@ export const SALES_STATISTICS_LIST_MUTATION = gql`
     }
   }
 `
+
+export const GET_HOURLY_SALES_MUTATION = gql`
+  mutation Mutation($date: [String]!) {
+    getHourlySalesData(date: $date) {
+      ok
+      error
+      hourlyDetails {
+        nowDate
+        cashOrCard
+        currentState
+        amount
+      }
+      hourlyTotalCard
+      hourlyTotalCardRefund
+      hourlyTotalCashRefund
+      hourlyTotalCash
+      thisTimeRefundTotal
+      thisTimeAmountTotal
+      thisTimeRealTotal
+    }
+  }
+`

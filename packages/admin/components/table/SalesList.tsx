@@ -1,11 +1,11 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { GET_HOURLY_SALES_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import SalesItem from '@/components/table/SalesItem'
 import SalesTotalItem from './SalesTotalItem'
+import { GET_HOURLY_SALES_MUTATION } from '@/graphql/mutations'
 
 interface HourData {
   cardTotal: number
@@ -117,35 +117,47 @@ const Nolist = styled.div`
 export default function SalesTable({ salesFilter, days }) {
   const router = useRouter()
   const now = new Date()
-  const {
-    loading,
-    error,
-    data: hourlyData,
-    refetch: houralyRefetch,
-  } = useQuery(GET_HOURLY_SALES_QUERY, {
-    variables: {
-      date: [
-        new Date(now.setHours(0, 0, 0)),
-        new Date(now.setHours(23, 59, 59)),
-      ],
-    },
-  })
+  const [houralySales] = useMutation(GET_HOURLY_SALES_MUTATION)
 
   const [searchResult, setSearchResult] = useState(null)
   const [searchResultTotal, setSearchResultTotal] = useState(null)
 
+  const tformatDate = (data, isTime) => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    if (isTime) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
+  }
+
   async function fetchData(salesFilter) {
     let result
     if (Object.keys(salesFilter).length !== 0) {
-      result = await houralyRefetch({
-        date: [salesFilter[0], salesFilter[1]],
+      result = await houralySales({
+        variables: {
+          date: [salesFilter[0], salesFilter[1]],
+        },
       })
     } else {
-      result = await houralyRefetch({
-        date: [
-          new Date(new Date().setHours(0, 0, 0, 0)),
-          new Date(new Date().setHours(23, 59, 59, 999)),
-        ],
+      result = await houralySales({
+        variables: {
+          date: [
+            new Date(new Date().setHours(0, 0, 0, 0)),
+            new Date(new Date().setHours(23, 59, 59, 999)),
+          ],
+        },
       })
     }
     return result
@@ -216,10 +228,6 @@ export default function SalesTable({ salesFilter, days }) {
     return hourlyData
   }
 
-  if (error) {
-    console.log(error)
-  }
-
   useEffect(() => {
     fetchData(salesFilter)
       .then(result => {
@@ -252,7 +260,7 @@ export default function SalesTable({ salesFilter, days }) {
       .catch(error => {
         console.error('Error occurred during data fetching:', error)
       })
-  }, [salesFilter, router])
+  }, [salesFilter])
 
   const formatDate = data => {
     const date = new Date(data)

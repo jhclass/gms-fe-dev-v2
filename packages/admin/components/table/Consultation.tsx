@@ -235,7 +235,6 @@ export default function ConsolutationTable() {
     handleScrollTop()
   }, [router, refetch, favoRefetch, currentPage])
 
-  if (loading || seeFavoLoading || MMeFavoLoading) return null
   if (error) {
     console.log(error)
   }

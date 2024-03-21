@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/students/layout'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { registerLocale } from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
@@ -34,6 +34,7 @@ import Button2 from '@/components/common/Button'
 import { useRecoilValue } from 'recoil'
 import { bankNameState, cardNameState } from '@/lib/recoilAtoms'
 import PaymentInfo from '@/components/items/PaymentInfo'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const ConArea = styled.div`
   width: 100%;
@@ -192,7 +193,7 @@ export default function StudentsWritePayment() {
   const [bankName, setBankName] = useState('은행 선택')
   const [cashReceiptType, setCashReceiptType] = useState('휴대폰번호')
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
-  const [cashDepositDate, setCashDepositDate] = useState(null)
+  const [cashPaymentDate, setCashPaymentDate] = useState(null)
   const cardNames = useRecoilValue(cardNameState)
   const bankNames = useRecoilValue(bankNameState)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -280,19 +281,6 @@ export default function StudentsWritePayment() {
   }
 
   const handleInput4Change = value => {
-    // const numericValue = value.replace(/\D/g, '')
-    // const trimmedValue = numericValue.slice(0, 3)
-    // const formattedValue = '*' + trimmedValue
-    // setInput4Value(formattedValue)
-    // if (/^\d*$/.test(trimmedValue)) {
-    //   clearErrors('cardNum2')
-    //   setValue('cardNum4', formattedValue)
-    // } else {
-    //   setError('cardNum4', {
-    //     type: 'manual',
-    //     message: '숫자만 입력 가능합니다.',
-    //   })
-    // }
     if (/^\d*$/.test(value)) {
       clearErrors('cardNum4')
 
@@ -335,7 +323,7 @@ export default function StudentsWritePayment() {
           amountPayment: parseInt(data.amountPayment),
           installment: data.installment === '' ? 0 : parseInt(data.installment),
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
-          // paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
+          paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
         },
         onCompleted: result => {
           if (!result.createPaymentDetail.ok) {
@@ -400,7 +388,7 @@ export default function StudentsWritePayment() {
             data.cashReceiptNum,
             data.cashReceiptApprovalNum,
           ],
-          // depositDate: data.depositDate === undefined ? null : data.depositDate,
+          paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
         },
         onCompleted: result => {
           if (!result.createPaymentDetail.ok) {
@@ -440,7 +428,7 @@ export default function StudentsWritePayment() {
                         reset()
                         clearErrors()
                         setBankName('은행 선택')
-                        setCashDepositDate(null)
+                        setCashPaymentDate(null)
                         setPaymentType(paymentType)
                         router.back()
                       }
@@ -798,7 +786,7 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      {/* <AreaBox>
+                      <AreaBox>
                         <DatePickerBox>
                           <Controller
                             control={control}
@@ -826,6 +814,9 @@ export default function StudentsWritePayment() {
                                 )}
                                 locale="ko"
                                 showYearDropdown
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={1}
                                 selected={
                                   cardPaymentDate === null
                                     ? null
@@ -837,8 +828,8 @@ export default function StudentsWritePayment() {
                                   field.onChange(date)
                                   setCardPaymentDate(date)
                                 }}
-                                dateFormat="yyyy/MM/dd"
-                                  onChangeRaw={e => e.preventDefault()}
+                                dateFormat="yyyy/MM/dd HH:mm"
+                                onChangeRaw={e => e.preventDefault()}
                                 customInput={
                                   <Input
                                     ref={field.ref}
@@ -851,9 +842,9 @@ export default function StudentsWritePayment() {
                                     type="text"
                                     variant="bordered"
                                     id="date"
-                                        classNames={{
-                                  input: 'caret-transparent',
-                                }}
+                                    classNames={{
+                                      input: 'caret-transparent',
+                                    }}
                                     startContent={<i className="xi-calendar" />}
                                   />
                                 }
@@ -866,7 +857,7 @@ export default function StudentsWritePayment() {
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
-                      </AreaBox> */}
+                      </AreaBox>
                     </FlexBox>
                   </>
                 )}
@@ -968,73 +959,76 @@ export default function StudentsWritePayment() {
                           </p>
                         )}
                       </AreaBox>
-                      {/* <AreaBox>
-                      <DatePickerBox>
-                        <Controller
-                          control={control}
-                          rules={{ required: '입금 일자를 선택해주세요.' }}
-                          name="depositDate"
-                          render={({ field }) => (
-                            <DatePicker
-                              renderCustomHeader={({
-                                date,
-                                changeYear,
-                                changeMonth,
-                                decreaseMonth,
-                                increaseMonth,
-                              }) => (
-                                <DatePickerHeader
-                                  rangeYears={years}
-                                  clickDate={date}
-                                  changeYear={changeYear}
-                                  changeMonth={changeMonth}
-                                  decreaseMonth={decreaseMonth}
-                                  increaseMonth={increaseMonth}
-                                />
-                              )}
-                              locale="ko"
-                              showYearDropdown
-                              selected={
-                                cashDepositDate === null
-                                  ? null
-                                  : new Date(cashDepositDate)
-                              }
-                              placeholderText="날짜를 선택해주세요."
-                              isClearable
-                              onChange={date => {
-                                field.onChange(date)
-                                setCashDepositDate(date)
-                              }}
-                              dateFormat="yyyy/MM/dd"
-                                onChangeRaw={e => e.preventDefault()}
-                              customInput={
-                                <Input
-                                  ref={field.ref}
-                                  label={
-                                    <FilterLabel>
-                                      입금일자<span>*</span>
-                                    </FilterLabel>
-                                  }
-                                  labelPlacement="outside"
-                                  type="text"
-                                  variant="bordered"
-                                  id="date"
-                                      classNames={{
-                                  input: 'caret-transparent',
+                      <AreaBox>
+                        <DatePickerBox>
+                          <Controller
+                            control={control}
+                            rules={{ required: '입금 일자를 선택해주세요.' }}
+                            name="paymentDate"
+                            render={({ field }) => (
+                              <DatePicker
+                                renderCustomHeader={({
+                                  date,
+                                  changeYear,
+                                  changeMonth,
+                                  decreaseMonth,
+                                  increaseMonth,
+                                }) => (
+                                  <DatePickerHeader
+                                    rangeYears={years}
+                                    clickDate={date}
+                                    changeYear={changeYear}
+                                    changeMonth={changeMonth}
+                                    decreaseMonth={decreaseMonth}
+                                    increaseMonth={increaseMonth}
+                                  />
+                                )}
+                                locale="ko"
+                                showYearDropdown
+                                selected={
+                                  cashPaymentDate === null
+                                    ? null
+                                    : new Date(cashPaymentDate)
+                                }
+                                placeholderText="날짜를 선택해주세요."
+                                isClearable
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={1}
+                                onChange={date => {
+                                  field.onChange(date)
+                                  setCashPaymentDate(date)
                                 }}
-                                  startContent={<i className="xi-calendar" />}
-                                />
-                              }
-                            />
-                          )}
-                        />
-                      </DatePickerBox>
-                      {errors.depositDate && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
-                          {String(errors.depositDate.message)}
-                        </p>
-                      )}
-                    </AreaBox> */}
+                                dateFormat="yyyy/MM/dd HH:mm"
+                                onChangeRaw={e => e.preventDefault()}
+                                customInput={
+                                  <Input
+                                    ref={field.ref}
+                                    label={
+                                      <FilterLabel>
+                                        입금일자<span>*</span>
+                                      </FilterLabel>
+                                    }
+                                    labelPlacement="outside"
+                                    type="text"
+                                    variant="bordered"
+                                    id="date"
+                                    classNames={{
+                                      input: 'caret-transparent',
+                                    }}
+                                    startContent={<i className="xi-calendar" />}
+                                  />
+                                }
+                              />
+                            )}
+                          />
+                        </DatePickerBox>
+                        {errors.paymentDate && (
+                          <p className="px-2 pt-2 text-xs text-red-500">
+                            {String(errors.paymentDate.message)}
+                          </p>
+                        )}
+                      </AreaBox>
                     </FlexBox>
                     <FlexBox>
                       <AreaBox>

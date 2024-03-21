@@ -178,8 +178,7 @@ export default function StudentPaymentDetailItem({
         `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
         `${date.getDate().toString().padStart(2, '0')} ` +
         `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}:` +
-        `${date.getSeconds().toString().padStart(2, '0')}`
+        `${date.getMinutes().toString().padStart(2, '0')}`
       return formatted
     } else {
       const formatted =
@@ -205,10 +204,10 @@ export default function StudentPaymentDetailItem({
             <FlexBox>
               <AreaBoxL>
                 <div>
-                  <FilterLabel>결제일자</FilterLabel>
+                  <FilterLabel>결제일시</FilterLabel>
                   <FlatBox>
-                    {detailtData?.updatedAt
-                      ? formatDate(detailtData?.updatedAt, true)
+                    {detailtData?.paymentDate
+                      ? formatDate(detailtData?.paymentDate, true)
                       : '-'}
                   </FlatBox>
                 </div>
@@ -316,10 +315,10 @@ export default function StudentPaymentDetailItem({
                 <Flex>
                   <AreaBoxL>
                     <div>
-                      <FilterLabel>결제일자</FilterLabel>
+                      <FilterLabel>결제일시</FilterLabel>
                       <FlatBox>
-                        {detailtData?.updatedAt
-                          ? formatDate(detailtData?.updatedAt, true)
+                        {detailtData?.paymentDate
+                          ? formatDate(detailtData?.paymentDate, true)
                           : '-'}
                       </FlatBox>
                     </div>

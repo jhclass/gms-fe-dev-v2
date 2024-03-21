@@ -260,7 +260,6 @@ export default function ConsolutationFilterTable({
     onFilterSearch(false)
   }
 
-  if (loading || MMeLoading) return null
   if (error) {
     console.log(error)
   }

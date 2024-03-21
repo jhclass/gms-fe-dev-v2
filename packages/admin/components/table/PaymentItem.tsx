@@ -63,11 +63,11 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 5%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.05}px;
 `
 const Tamount = styled.div`
   display: table-cell;
@@ -119,11 +119,11 @@ const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.1}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
