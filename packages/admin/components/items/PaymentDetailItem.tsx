@@ -397,12 +397,27 @@ export default function StudentPaymentDetailItem({
               >
                 영수증 인쇄
               </Button> */}
+                {(mGrade < grade.general || mPart.includes('회계팀')) && (
+                  <Button
+                    isDisabled={detailtData.reqRefund ? true : false}
+                    size="md"
+                    radius="md"
+                    variant="solid"
+                    color="primary"
+                    className="w-full text-white"
+                    onClick={() =>
+                      router.push(`/students/edit/payment/${detailtData.id}`)
+                    }
+                  >
+                    결제 변경
+                  </Button>
+                )}
                 {detailtData.reqRefund ? (
                   <Button
                     isDisabled={detailtData.refundApproval ? true : false}
                     size="md"
                     radius="md"
-                    className="lg:w-[50%] w-full text-white bg-flag1"
+                    className="w-full lg:max-w-[50%] text-white bg-flag1"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소요청 철회
@@ -412,7 +427,7 @@ export default function StudentPaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="lg:w-[50%] w-full text-flag1 border-flag1"
+                    className="w-full lg:max-w-[50%] text-flag1 border-flag1"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청

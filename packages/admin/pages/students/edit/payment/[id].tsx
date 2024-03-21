@@ -224,9 +224,14 @@ export default function StudentsWritePayment() {
       setCashReceiptType(paymentDetailData?.cashReceipts[0])
       if (paymentDetailData.cashOrCard === '카드') {
         setCardName(paymentDetailData.cardCompany)
-        const date = parseInt(paymentDetailData?.paymentDate)
-        setCardPaymentDate(date)
-        setValue('paymentDate', date)
+        if (paymentDetailData?.paymentDate === null) {
+          setCardPaymentDate(null)
+          setValue('paymentDate', null)
+        } else {
+          const date = parseInt(paymentDetailData?.paymentDate)
+          setCardPaymentDate(date)
+          setValue('paymentDate', date)
+        }
       } else {
         setBankName(paymentDetailData.bankName)
         if (paymentDetailData?.paymentDate === null) {
