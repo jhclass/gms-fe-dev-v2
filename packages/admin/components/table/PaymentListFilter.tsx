@@ -75,11 +75,11 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 5%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.05}px;
 `
 const Tamount = styled.div`
   display: table-cell;
@@ -115,11 +115,11 @@ const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.1}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
@@ -200,7 +200,7 @@ export default function PaymentFilterTable({
             <Theader>
               <TheaderBox>
                 <Tnum>No</Tnum>
-                <TcreatedAt>결제일시</TcreatedAt>
+                <TcreatedAt>최근 업데이트</TcreatedAt>
                 <Tname>수강생명</Tname>
                 <Tmanager>수강 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
