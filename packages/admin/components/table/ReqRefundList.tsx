@@ -252,7 +252,7 @@ export default function RequestRefundTable() {
 
   const clickApprovalRefund = item => {
     const isAssignment = confirm(
-      '환불 승인 하시겠습니까? \n 한번 승인 시 취소 불가능',
+      '환불 승인 하시겠습니까? \n한번 승인 시 취소 불가능',
     )
     if (isAssignment) {
       approvalRefoundMutation({
