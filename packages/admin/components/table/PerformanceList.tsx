@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PerformanceBox from './PerformanceBox'
 import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
-import PerformanceTotal from './PerformanceTotal'
-import PerformanceChart from '../dashboard/PerformanceChart'
+import PerformanceTotal from '@/components/table/PerformanceTotal'
+import PerformanceChart from '@/components/dashboard/PerformanceChart'
 
 const ListBox = styled.div`
   margin-top: 2rem;
