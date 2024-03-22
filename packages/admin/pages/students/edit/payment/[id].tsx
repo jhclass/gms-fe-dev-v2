@@ -749,7 +749,7 @@ export default function StudentsWritePayment() {
                             </p>
                           )}
                         </AreaBox>
-                        <AreaSmallBox>
+                        <AreaBox>
                           <Input
                             labelPlacement="outside"
                             placeholder="할부기간"
@@ -763,31 +763,13 @@ export default function StudentsWritePayment() {
                             }
                             defaultValue={paymentDetailData.installment}
                             endContent={<InputText>개월</InputText>}
-                            {...register('installment')}
-                          />
-                        </AreaSmallBox>
-                        <AreaBox>
-                          <Input
-                            labelPlacement="outside"
-                            placeholder="결제금액"
-                            variant="bordered"
-                            radius="md"
-                            type="text"
-                            label={
-                              <FilterLabel>
-                                결제금액<span>*</span>
-                              </FilterLabel>
-                            }
-                            defaultValue={paymentDetailData.amountPayment}
-                            {...register('amountPayment', {
-                              required: '결제금액을 작성해주세요.',
+                            {...register('installment', {
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: '숫자만 입력 가능합니다.',
+                              },
                             })}
                           />
-                          {errors.amountPayment && (
-                            <p className="px-2 pt-2 text-xs text-red-500">
-                              {String(errors.amountPayment.message)}
-                            </p>
-                          )}
                         </AreaBox>
                       </FlexBox>
                       <FlexBox>
@@ -811,6 +793,33 @@ export default function StudentsWritePayment() {
                           {errors.approvalNum && (
                             <p className="px-2 pt-2 text-xs text-red-500">
                               {String(errors.approvalNum.message)}
+                            </p>
+                          )}
+                        </AreaBox>
+                        <AreaBox>
+                          <Input
+                            labelPlacement="outside"
+                            placeholder="결제금액"
+                            variant="bordered"
+                            radius="md"
+                            type="text"
+                            label={
+                              <FilterLabel>
+                                결제금액<span>*</span>
+                              </FilterLabel>
+                            }
+                            defaultValue={paymentDetailData.amountPayment}
+                            {...register('amountPayment', {
+                              required: '결제금액을 작성해주세요.',
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: '숫자만 입력 가능합니다.',
+                              },
+                            })}
+                          />
+                          {errors.amountPayment && (
+                            <p className="px-2 pt-2 text-xs text-red-500">
+                              {String(errors.amountPayment.message)}
                             </p>
                           )}
                         </AreaBox>
