@@ -102,7 +102,7 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="">
+                <Link href="/design">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_01.png"
                     alt="포토샵"
@@ -110,7 +110,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/design/illust">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_02.png"
                     alt="일러스트"
@@ -178,7 +178,7 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="">
+                <Link href="/artwork">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_01.png"
                     alt="디지털드로잉"
@@ -186,7 +186,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/artwork/game">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_02.png"
                     alt="원화(아트웍/게임)"
@@ -194,7 +194,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/artwork/emoticon">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_03.png"
                     alt="이모티콘 제작"
@@ -232,7 +232,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/support/system">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_04.png"
                     alt="취업시스템"

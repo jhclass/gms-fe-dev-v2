@@ -1,4 +1,6 @@
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
 const TopText = styled.p`
@@ -44,28 +46,34 @@ const BtnSection = styled.div`
     }
   }
 `
-export default function academy() {
+export default function motiongraphicChinema4D() {
+  const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+
   return (
     <>
       <section>
         <div>
           <div className="max-w-[2000px] mx-auto my-0 relative">
-            <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_bg.gif"
-              alt="시네마 포디 과정소개 @CINEMA 4D
-              모션그래픽 콘셉트에 부합하는 모델링, 맵핑, 라이팅, 키프레임과 충돌 태그 및 모그라프, 패브릭, 깃털, 연기 등. 다양한 사물과의 합성을 통해 작품완성까지!! 시포디의 기초사용법과 활용방법을 교육. 
-              시포디의 시뮬레이션 기능을 이해하고 간단한 애니메이션부터 단계별 레슨을 통해, 자연스러운 움직임과 리얼한 재질표현을 위해 다양한 기능들을 학습하는 수업입니다.
-              사실적 질감 묘사 및 다양한 사물과의 영상합성을 통해, 시네마포디를 사용한 최종결과물을 제작하게됩니다."
-              className="hidden w-full wmd:block"
-            ></img>
-            <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_bg.gif"
-              alt="시네마 포디 과정소개 @CINEMA 4D
-              모션그래픽 콘셉트에 부합하는 모델링, 맵핑, 라이팅, 키프레임과 충돌 태그 및 모그라프, 패브릭, 깃털, 연기 등. 다양한 사물과의 합성을 통해 작품완성까지!! 시포디의 기초사용법과 활용방법을 교육. 
-              시포디의 시뮬레이션 기능을 이해하고 간단한 애니메이션부터 단계별 레슨을 통해, 자연스러운 움직임과 리얼한 재질표현을 위해 다양한 기능들을 학습하는 수업입니다.
-              사실적 질감 묘사 및 다양한 사물과의 영상합성을 통해, 시네마포디를 사용한 최종결과물을 제작하게됩니다."
-              className="block w-full wmd:hidden"
-            ></img>
+            <div className="hidden w-full wmd:block">
+              <ReactPlayer
+                width="100%"
+                height="100%"
+                muted={true}
+                loop={true}
+                playing={true}
+                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_cinema_bg.mp4"
+              />
+            </div>
+            <div className="block w-full wmd:hidden">
+              <ReactPlayer
+                width="100%"
+                height="100%"
+                muted={true}
+                loop={true}
+                playing={true}
+                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_cinema_bg.mp4"
+              />
+            </div>
             <TopText>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_01.png"
