@@ -1,6 +1,4 @@
-import Form from '@/components/Form'
-
-export default function academy() {
+export default function support() {
   return (
     <>
       <section>

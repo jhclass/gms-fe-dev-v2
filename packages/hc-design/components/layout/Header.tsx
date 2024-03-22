@@ -294,7 +294,7 @@ export default function Header() {
         </MgnbClose>
         <MgnbCon>
           <MgnbBnr>
-            <Link>
+            <Link href="/">
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_logo.png"
                 alt="ACADEMY"
@@ -317,7 +317,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link>
+              <Link href="/design">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_02.png"
                   alt="시각디자인과정"
@@ -333,7 +333,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link>
+              <Link href="/artwork">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_04.png"
                   alt="디지털드로잉과정"
@@ -346,7 +346,7 @@ export default function Header() {
               <Link href="/support">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_05.png"
-                  alt="국비/쉬업지원"
+                  alt="국비/취업지원"
                 />
               </Link>
             </li>

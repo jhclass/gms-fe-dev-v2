@@ -20,7 +20,7 @@ const BtnSection = styled.div`
     }
   }
 `
-export default function academy() {
+export default function motiongraphicPremiere() {
   return (
     <>
       <section>
