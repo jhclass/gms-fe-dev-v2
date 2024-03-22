@@ -197,7 +197,6 @@ export default function StudentsWritePayment() {
   const cardNames = useRecoilValue(cardNameState)
   const bankNames = useRecoilValue(bankNameState)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [input4Value, setInput4Value] = useState('*')
 
   useEffect(() => {
     if (paymentId !== null) {
@@ -694,7 +693,6 @@ export default function StudentsWritePayment() {
                             radius="md"
                             variant="bordered"
                             placeholder="1234"
-                            // value={input4Value}
                             maxLength={4}
                             onChange={e => handleInput4Change(e.target.value)}
                           />

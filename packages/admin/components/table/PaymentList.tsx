@@ -68,21 +68,21 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 5%;
+  width: 6%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.05}px;
+  min-width: ${1200 * 0.06}px;
 `
 const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tname = styled.div`
   position: relative;
@@ -99,20 +99,20 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 18%;
+  width: 21%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.18}px;
+  min-width: ${1200 * 0.21}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.11}px;
 `
 const Tmanager = styled.div`
   display: table-cell;
