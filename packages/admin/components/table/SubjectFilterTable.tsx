@@ -272,8 +272,9 @@ export default function SubjectFilterTable({
   }
 
   const resetList = () => {
-    setSubjectFilter({})
-    onFilterSearch(false)
+    // setSubjectFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/subjects'
   }
 
   return (

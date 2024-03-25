@@ -198,8 +198,9 @@ export default function StudentsFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+    // setStudentFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/students'
   }
 
   return (
