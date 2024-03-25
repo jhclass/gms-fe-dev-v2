@@ -11,6 +11,11 @@ import {
   parformanceFilterActiveState,
   parformanceFilterState,
   parformanceSearchState,
+  paymentDetailFilterActiveState,
+  paymentDetailFilterPageState,
+  paymentDetailFilterState,
+  paymentDetailPageState,
+  paymentDetailSearchState,
   paymentFilterActiveState,
   paymentFilterState,
   paymentPageState,
@@ -66,6 +71,17 @@ export default function Category() {
   const resetPaymentFilterActive = useResetRecoilState(paymentFilterActiveState)
   const resetPaymentFilterSearch = useResetRecoilState(paymentFilterState)
   const resetPaymentFilter = useResetRecoilState(paymentSearchState)
+  const resetPaymentDetailPage = useResetRecoilState(paymentDetailPageState)
+  const resetPaymentDetailFilterActive = useResetRecoilState(
+    paymentDetailFilterActiveState,
+  )
+  const resetPaymentDetailFilterPage = useResetRecoilState(
+    paymentDetailFilterPageState,
+  )
+  const resetPaymentDetailFilterSearch = useResetRecoilState(
+    paymentDetailFilterState,
+  )
+  const resetPaymentDetailFilter = useResetRecoilState(paymentDetailSearchState)
   const resetRefundPage = useResetRecoilState(refundPageState)
   const resetRefundFilterActive = useResetRecoilState(refundFilterActiveState)
   const resetRefundFilterSearch = useResetRecoilState(refundFilterState)
@@ -113,6 +129,11 @@ export default function Category() {
     resetPaymentFilterActive,
     resetPaymentFilterSearch,
     resetPaymentFilter,
+    resetPaymentDetailPage,
+    resetPaymentDetailFilterActive,
+    resetPaymentDetailFilterSearch,
+    resetPaymentDetailFilterPage,
+    resetPaymentDetailFilter,
     resetRefundPage,
     resetRefundFilterActive,
     resetRefundFilterSearch,

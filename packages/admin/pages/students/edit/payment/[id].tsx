@@ -780,6 +780,7 @@ export default function StudentsWritePayment() {
                             variant="bordered"
                             radius="md"
                             type="text"
+                            maxLength={8}
                             label={
                               <FilterLabel>
                                 승인번호<span>*</span>
@@ -788,6 +789,14 @@ export default function StudentsWritePayment() {
                             defaultValue={paymentDetailData.ApprovalNum}
                             {...register('approvalNum', {
                               required: '승인번호를 작성해주세요.',
+                              maxLength: {
+                                value: 8,
+                                message: '최대 8자리까지 입력 가능합니다.',
+                              },
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: '숫자만 입력 가능합니다.',
+                              },
                             })}
                           />
                           {errors.approvalNum && (

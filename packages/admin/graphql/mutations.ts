@@ -1222,26 +1222,28 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
 `
 export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
   mutation Mutation(
-    $sortOf: String
-    $refundApprovalDate: [String]
-    $reqRefundDate: [String]
-    $refundApproval: Boolean
-    $reqRefund: Boolean
-    $limit: Int
-    $page: Int
     $stName: String
+    $sortOf: String
     $period: [String]
+    $page: Int
+    $limit: Int
+    $reqRefund: Boolean
+    $refundApproval: Boolean
+    $reqRefundDate: [String]
+    $refundApprovalDate: [String]
+    $approvalNum: String
   ) {
     searchPaymentDetail(
-      sortOf: $sortOf
-      refundApprovalDate: $refundApprovalDate
-      reqRefundDate: $reqRefundDate
-      refundApproval: $refundApproval
-      reqRefund: $reqRefund
-      limit: $limit
-      page: $page
       stName: $stName
+      sortOf: $sortOf
       period: $period
+      page: $page
+      limit: $limit
+      reqRefund: $reqRefund
+      refundApproval: $refundApproval
+      reqRefundDate: $reqRefundDate
+      refundApprovalDate: $refundApprovalDate
+      ApprovalNum: $approvalNum
     ) {
       totalCount
       ok
@@ -1285,6 +1287,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
           subject {
             id
             subjectName
+            round
           }
         }
       }

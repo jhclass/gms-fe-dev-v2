@@ -1,11 +1,11 @@
-import { useMutation } from '@apollo/client'
-import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
+import { useSuspenseQuery } from '@apollo/client'
+import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import PaymentItem from '@/components/table/PaymentItem'
-import { useRecoilState } from 'recoil'
-import { paymentPageState } from '@/lib/recoilAtoms'
-import { SEARCH_PAYMENT_FILTER_MUTATION } from '@/graphql/mutations'
+import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
+import router from 'next/router'
+import { PaymentDetailResult } from '@/src/generated/graphql'
+import PaymentDetailItem from '@/components/table/PaymentDetailItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -24,14 +24,21 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
-const TopBox = styled.div`
+const ColorHelp = styled.div`
   display: flex;
-  gap: 0.5rem;
+`
+const ColorCip = styled.p`
+  padding-left: 0.5rem;
+  display: flex;
   align-items: center;
+  color: #71717a;
+  font-size: 0.7rem;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-between;
+  span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 1rem;
+    height: 2px;
   }
 `
 const TableWrap = styled.div`
@@ -51,8 +58,15 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
+
 const TheaderBox = styled.div`
   display: flex;
+`
+const Tflag = styled.div`
+  display: table-cell;
+  width: 0.5rem;
+  height: 100%;
+  min-width: 7px;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -68,11 +82,11 @@ const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.11}px;
 `
 const Tname = styled.div`
   position: relative;
@@ -89,10 +103,20 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 21%;
+  width: 33%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.21}px;
+  min-width: ${1200 * 0.33}px;
+`
+const Tapproval = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 11%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.11}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -128,76 +152,80 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function PaymentFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
-  const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
-  const [currentLimit] = useState(10)
-  const [searchPaymentFilterMutation] = useMutation(
-    SEARCH_PAYMENT_FILTER_MUTATION,
-  )
-  const [searchResult, setSearchResult] = useState(null)
-  console.log(studentFilter)
-  useEffect(() => {
-    searchPaymentFilterMutation({
-      variables: {
-        ...studentFilter,
-        page: currentPage,
-        perPage: currentLimit,
-      },
-      onCompleted: resData => {
-        console.log(resData)
-        if (resData.searchStudentPayment.ok) {
-          const { data, totalCount } = resData.searchStudentPayment || {}
-          setSearchResult({ data, totalCount })
-        }
-      },
-    })
-  }, [studentFilter, currentPage])
+type SeePaymentDetailQuery = {
+  seePaymentDetail: PaymentDetailResult
+}
 
-  const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+export default function PaymentDetailTable({ currentPage, setCurrentPage }) {
+  const [currentLimit] = useState(10)
+  const [totalCount, setTotalCount] = useState(0)
+  const { error, data, refetch } = useSuspenseQuery<SeePaymentDetailQuery>(
+    SEE_PAYMENT_DETAIL_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
+  const studentsData = data?.seePaymentDetail
+  const students = studentsData.PaymentDetail
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    setTotalCount(studentsData.totalCount)
+  }, [studentsData, totalCount])
+
+  useEffect(() => {
+    handleScrollTop()
+  }, [currentPage])
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      refetch()
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
+
+  if (error) {
+    console.log(error)
   }
 
   return (
     <>
       <TTopic>
-        <TopBox>
-          <Ttotal>
-            총
-            <span>
-              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
-            </span>
-            건이 검색되었습니다.
-          </Ttotal>
-          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
-            전체보기
-          </Button>
-        </TopBox>
+        <Ttotal>
+          총 <span>{totalCount}</span>건
+        </Ttotal>
+        <ColorHelp>
+          <ColorCip>
+            <span style={{ background: '#FF5900' }}></span> : 환불
+          </ColorCip>
+        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tflag></Tflag>
                 <Tnum>No</Tnum>
-                <TcreatedAt>최근 업데이트</TcreatedAt>
+                <TcreatedAt>결제 일시</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>수강 담당자</Tmanager>
+                <Tmanager>수납 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
-                <Tamount className="fee">수강료</Tamount>
-                <Tamount className="discount">할인금액</Tamount>
-                <Tamount className="actual">실 수강료</Tamount>
-                <Tamount className="unpaid">미수납액</Tamount>
-                <Tamount className="amount">총 결제액</Tamount>
+                <Tapproval>카드승인번호</Tapproval>
+                <Tamount className="amount">카드 결제액</Tamount>
+                <Tamount className="amount">현금 결제액</Tamount>
               </TheaderBox>
             </Theader>
-            {searchResult?.totalCount > 0 &&
-              searchResult?.data?.map((item, index) => (
-                <PaymentItem
+            {totalCount > 0 &&
+              students?.map((item, index) => (
+                <PaymentDetailItem
                   key={index}
                   tableData={item}
                   itemIndex={index}
@@ -205,19 +233,17 @@ export default function PaymentFilterTable({
                   limit={currentLimit}
                 />
               ))}
-            {searchResult?.totalCount === 0 && (
-              <Nolist>검색결과가 없습니다.</Nolist>
-            )}
+            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
-        {searchResult?.totalCount > 0 && (
+        {totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(searchResult?.totalCount / currentLimit)}
+              total={Math.ceil(totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

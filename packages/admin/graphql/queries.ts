@@ -302,40 +302,36 @@ export const SEE_PAYMENT_QUERY = gql`
   }
 `
 export const SEE_PAYMENT_DETAIL_QUERY = gql`
-  query SeePaymentDetail($page: Int, $limit: Int) {
+  query Query($page: Int, $limit: Int) {
     seePaymentDetail(page: $page, limit: $limit) {
       ok
-      error
       message
+      error
       totalCount
       PaymentDetail {
-        createdAt
-        amountPayment
-        cashOrCard
-        studentId
         id
-        depositDate
+        cashOrCard
+        amountPayment
+        ApprovalNum
         paymentDate
-        stName
+        depositAmount
+        studentPaymentId
+        studentPayment {
+          subject {
+            id
+            subjectName
+            round
+          }
+        }
         receiver {
+          id
+          mUserId
           mUsername
         }
-        studentPaymentId
-        updatedAt
-        studentPayment {
-          studentId
-          tuitionFee
-          subject {
-            subjectName
-            id
-          }
-          subDiv
-          unCollectedAmount
-          discountAmount
-          amountReceived
-          actualAmount
-        }
-        depositAmount
+        receiverId
+        refundApproval
+        stName
+        studentId
       }
     }
   }
