@@ -259,8 +259,9 @@ export default function RefundFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+    // setStudentFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/accounting/refund'
   }
 
   const getDate = (DataDate: string): string => {

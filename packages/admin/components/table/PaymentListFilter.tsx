@@ -158,8 +158,9 @@ export default function PaymentFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+    // setStudentFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/accounting/outstanding'
   }
 
   return (

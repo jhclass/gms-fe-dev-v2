@@ -188,8 +188,9 @@ export default function PaymentDetailFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+    // setStudentFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/accounting'
   }
 
   return (

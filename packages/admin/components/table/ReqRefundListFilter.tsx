@@ -350,8 +350,9 @@ export default function ReqRefundFilterTable({
   }
 
   const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+    // setStudentFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/accounting/request'
   }
 
   return (

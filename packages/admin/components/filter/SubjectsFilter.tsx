@@ -105,7 +105,6 @@ export default function SubjectsFilter({
       subjectName: '',
     },
   })
-
   useEffect(() => {
     if (
       Object.keys(subjectFilter).length === 0 ||
@@ -121,7 +120,7 @@ export default function SubjectsFilter({
     ) {
       setExposure('-')
     } else {
-      setExposure(subjectFilter?.exposure)
+      setExposure(subjectFilter?.exposure ? '노출' : '미노출')
     }
     if (
       Object.keys(subjectFilter).length === 0 ||
