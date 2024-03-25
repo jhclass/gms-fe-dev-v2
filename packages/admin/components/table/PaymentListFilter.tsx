@@ -139,7 +139,7 @@ export default function PaymentFilterTable({
     SEARCH_PAYMENT_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  console.log(studentFilter)
+
   useEffect(() => {
     searchPaymentFilterMutation({
       variables: {
@@ -148,7 +148,6 @@ export default function PaymentFilterTable({
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        console.log(resData)
         if (resData.searchStudentPayment.ok) {
           const { data, totalCount } = resData.searchStudentPayment || {}
           setSearchResult({ data, totalCount })
