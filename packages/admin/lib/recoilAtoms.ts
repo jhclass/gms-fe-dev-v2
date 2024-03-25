@@ -304,6 +304,30 @@ export const studentSearchState = atom({
     createdAt: string
   },
 })
+export const paymentDetailFilterActiveState = atom<boolean>({
+  key: 'paymentDetailFilterActive',
+  default: true,
+})
+export const paymentDetailPageState = atom<number>({
+  key: 'paymentDetailPage',
+  default: 1,
+})
+export const paymentDetailFilterState = atom<boolean>({
+  key: 'paymentDetailFilter',
+  default: false,
+})
+export const paymentDetailFilterPageState = atom<number>({
+  key: 'paymentDetailFilterPage',
+  default: 1,
+})
+export const paymentDetailSearchState = atom({
+  key: 'paymentSearch',
+  default: {} as {
+    period: []
+    stName: string
+    approvalNum: string
+  },
+})
 export const paymentFilterActiveState = atom<boolean>({
   key: 'paymentFilterActive',
   default: true,

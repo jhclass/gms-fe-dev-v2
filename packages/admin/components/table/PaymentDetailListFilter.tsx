@@ -1,11 +1,17 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import PaymentItem from '@/components/table/PaymentItem'
+import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
+import router from 'next/router'
+import { PaymentDetailResult } from '@/src/generated/graphql'
+import PaymentDetailItem from '@/components/table/PaymentDetailItem'
+import {
+  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
+  SEARCH_PAYMENT_DETAIL_MUTATION,
+} from '@/graphql/mutations'
 import { useRecoilState } from 'recoil'
-import { paymentPageState } from '@/lib/recoilAtoms'
-import { SEARCH_PAYMENT_FILTER_MUTATION } from '@/graphql/mutations'
+import { paymentDetailFilterPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -51,8 +57,15 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
+
 const TheaderBox = styled.div`
   display: flex;
+`
+const Tflag = styled.div`
+  display: table-cell;
+  width: 0.5rem;
+  height: 100%;
+  min-width: 7px;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -68,11 +81,11 @@ const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.11}px;
 `
 const Tname = styled.div`
   position: relative;
@@ -89,10 +102,20 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 21%;
+  width: 33%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.21}px;
+  min-width: ${1200 * 0.33}px;
+`
+const Tapproval = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 11%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.11}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -128,30 +151,37 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function PaymentFilterTable({
+type SeePaymentDetailQuery = {
+  seePaymentDetail: PaymentDetailResult
+}
+
+export default function PaymentDetailFilterTable({
   onFilterSearch,
   studentFilter,
   setStudentFilter,
 }) {
-  const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
+  const [currentPage, setCurrentPage] = useRecoilState(
+    paymentDetailFilterPageState,
+  )
   const [currentLimit] = useState(10)
   const [searchPaymentFilterMutation] = useMutation(
-    SEARCH_PAYMENT_FILTER_MUTATION,
+    SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  console.log(studentFilter)
+
   useEffect(() => {
     searchPaymentFilterMutation({
       variables: {
         ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
+        sortOf: 'paymentDate',
       },
       onCompleted: resData => {
-        console.log(resData)
-        if (resData.searchStudentPayment.ok) {
-          const { data, totalCount } = resData.searchStudentPayment || {}
-          setSearchResult({ data, totalCount })
+        if (resData.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } =
+            resData.searchPaymentDetail || {}
+          setSearchResult({ PaymentDetail, totalCount })
         }
       },
     })
@@ -183,21 +213,20 @@ export default function PaymentFilterTable({
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tflag></Tflag>
                 <Tnum>No</Tnum>
-                <TcreatedAt>최근 업데이트</TcreatedAt>
+                <TcreatedAt>결제 일시</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>수강 담당자</Tmanager>
+                <Tmanager>수납 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
-                <Tamount className="fee">수강료</Tamount>
-                <Tamount className="discount">할인금액</Tamount>
-                <Tamount className="actual">실 수강료</Tamount>
-                <Tamount className="unpaid">미수납액</Tamount>
-                <Tamount className="amount">총 결제액</Tamount>
+                <Tapproval>카드승인번호</Tapproval>
+                <Tamount className="amount">카드 결제액</Tamount>
+                <Tamount className="amount">현금 결제액</Tamount>
               </TheaderBox>
             </Theader>
             {searchResult?.totalCount > 0 &&
-              searchResult?.data?.map((item, index) => (
-                <PaymentItem
+              searchResult?.PaymentDetail?.map((item, index) => (
+                <PaymentDetailItem
                   key={index}
                   tableData={item}
                   itemIndex={index}

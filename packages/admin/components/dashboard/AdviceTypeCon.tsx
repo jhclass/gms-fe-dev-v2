@@ -4,6 +4,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_AT_QUERY } from '@/graphql/queries'
+import { DashboardAtResult } from '@/src/generated/graphql'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -58,11 +59,7 @@ const Content = styled.div`
   min-height: 190px;
 `
 type DashboardAT = {
-  dashboardAT: {
-    count: number[]
-    topFiveName: string[]
-    totalStudentState: number
-  }
+  dashboardAT: DashboardAtResult
 }
 
 export default function AdviceTypeCon() {

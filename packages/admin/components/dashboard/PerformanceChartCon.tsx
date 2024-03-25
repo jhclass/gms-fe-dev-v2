@@ -4,6 +4,7 @@ import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useQuery, useSuspenseQuery } from '@apollo/client'
 import { ScrollShadow } from '@nextui-org/react'
 import { ManageUser } from '@/src/generated/graphql'
+
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const ConArea = styled.div`
   width: 100%;

@@ -2,8 +2,9 @@ import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_RD_QUERY } from '@/graphql/queries'
+import { DashboardRdResult } from '@/src/generated/graphql'
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const ItemBox = styled.div`
@@ -57,12 +58,7 @@ const Content = styled.div`
   min-height: 190px;
 `
 type DashboardRD = {
-  dashboardRD: [
-    {
-      count: number
-      receiptDiv: string
-    },
-  ]
+  dashboardRD: DashboardRdResult[]
 }
 export default function ReceiptDivCon() {
   const { error, data } = useSuspenseQuery<DashboardRD>(DASHBOARD_RD_QUERY)

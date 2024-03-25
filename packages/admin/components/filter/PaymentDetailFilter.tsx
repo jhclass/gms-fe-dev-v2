@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
-import { paymentPageState } from '@/lib/recoilAtoms'
+import { paymentDetailPageState, paymentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import { Button, Input } from '@nextui-org/react'
@@ -120,11 +120,12 @@ export default function PaymentFilter({
   studentFilter,
 }) {
   const router = useRouter()
-  const paymentPage = useResetRecoilState(paymentPageState)
+  const paymentPage = useResetRecoilState(paymentDetailPageState)
   const [paymentDateRange, setPaymentDateRange] = useState([null, null])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
   const [name, setName] = useState('')
+  const [approval, setApproval] = useState('')
 
   const {
     register,
@@ -135,19 +136,20 @@ export default function PaymentFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      studentName: '',
+      stName: '',
       period: undefined,
+      approvalNum: '',
     },
   })
 
   useEffect(() => {
     if (
       Object.keys(studentFilter).length === 0 ||
-      studentFilter?.studentName === null
+      studentFilter?.stName === null
     ) {
       setName('')
     } else {
-      setName(studentFilter?.studentName)
+      setName(studentFilter?.stName)
     }
     if (
       Object.keys(studentFilter).length === 0 ||
@@ -157,7 +159,15 @@ export default function PaymentFilter({
     } else {
       setPaymentDateRange([studentFilter?.period[0], studentFilter?.period[1]])
     }
-  }, [router, studentFilter])
+    if (
+      Object.keys(studentFilter).length === 0 ||
+      studentFilter?.approvalNum === null
+    ) {
+      setApproval('')
+    } else {
+      setApproval(studentFilter?.approvalNum)
+    }
+  }, [studentFilter])
 
   const onSubmit = data => {
     if (isDirty) {
@@ -175,12 +185,13 @@ export default function PaymentFilter({
       }
       const paymentDate = validateDateRange(
         data.period,
-        '최근 업데이트일의 마지막날을 선택해주세요.',
+        '결제일시의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
-          studentName: data.studentName === '' ? null : data.studentName,
+          stName: data.stName === '' ? null : data.stName,
           period: data.period === undefined ? null : data.period,
+          approvalNum: data.approvalNum === '' ? null : data.approvalNum,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -283,7 +294,7 @@ export default function PaymentFilter({
                       onChangeRaw={e => e.preventDefault()}
                       customInput={
                         <Input
-                          label="최근 업데이트일"
+                          label="결제 일시"
                           labelPlacement="outside"
                           type="text"
                           variant="bordered"
@@ -325,19 +336,47 @@ export default function PaymentFilter({
                 type="text"
                 variant="bordered"
                 label="수강생이름"
-                id="studentName"
+                id="stName"
                 value={name}
                 onValueChange={setName}
-                {...register('studentName', {
+                {...register('stName', {
                   pattern: {
                     value: /^[가-힣a-zA-Z0-9\s]*$/,
                     message: '한글, 영어, 숫자만 사용 가능합니다.',
                   },
                 })}
               />
-              {errors.studentName && (
+              {errors.stName && (
                 <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.studentName.message)}
+                  {String(errors.stName.message)}
+                </p>
+              )}
+            </ItemBox>
+            <ItemBox>
+              <Input
+                labelPlacement="outside"
+                placeholder=" "
+                type="text"
+                variant="bordered"
+                label="카드 승인번호"
+                id="approvalNum"
+                value={approval}
+                onValueChange={setApproval}
+                maxLength={8}
+                {...register('approvalNum', {
+                  maxLength: {
+                    value: 8,
+                    message: '최대 8자리까지 입력 가능합니다.',
+                  },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: '숫자만 입력 가능합니다.',
+                  },
+                })}
+              />
+              {errors.approvalNum && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.approvalNum.message)}
                 </p>
               )}
             </ItemBox>

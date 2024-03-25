@@ -231,7 +231,7 @@ export default function TestCate() {
   }
   gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
   gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-  for (let i = todayIndex + 1 + 1; i <= 5; i++) {
+  for (let i = todayIndex + 1 + 1; i <= 4; i++) {
     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }

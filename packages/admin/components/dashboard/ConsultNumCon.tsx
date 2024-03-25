@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_UNP_QUERY } from '@/graphql/queries'
 import { DashboardUnpResult } from '@/src/generated/graphql'
 
