@@ -304,7 +304,7 @@ export default function PaymentFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
-                          readOnly={true}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('period')}
                         />
