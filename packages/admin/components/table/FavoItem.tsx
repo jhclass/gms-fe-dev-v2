@@ -6,25 +6,6 @@ import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 
-type ConsultItemProps = {
-  tableData: {
-    adviceTypes: any
-    id: number
-    stName: string
-    phoneNum1: string
-    progress: number
-    subDiv: string
-    stVisit: string
-    expEnrollDate: string
-    createdAt: string
-    receiptDiv: string
-    pic: string
-  }
-  forName?: string
-  itemIndex: number
-  favorite?: boolean
-}
-
 const TableRow = styled.div`
   position: relative;
   display: table-row;
@@ -201,7 +182,7 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-export default function FavoriteItem(props: ConsultItemProps) {
+export default function FavoriteItem(props) {
   const conIndex = props.itemIndex
   const student = props.tableData
   const flagString = isDisplayFlag(student.createdAt, student.progress)

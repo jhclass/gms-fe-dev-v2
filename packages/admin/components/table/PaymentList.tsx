@@ -1,12 +1,13 @@
-import { useQuery } from '@apollo/client'
+import { DocumentNode, useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_PAYMENT_DETAIL_QUERY, SEE_PAYMENT_QUERY } from '@/graphql/queries'
+import { SEE_PAYMENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
+import { StudentPaymentResult } from '@/src/generated/graphql'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -138,15 +139,22 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
+type seePaymentQuery = {
+  seeStudentPayment: StudentPaymentResult
+}
+
 export default function PaymentTable() {
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_PAYMENT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const studentsData = data?.seeStudentPayment || []
-  const students = studentsData?.StudentPayment || []
+  const { error, data, refetch } = useSuspenseQuery<seePaymentQuery>(
+    SEE_PAYMENT_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
+  const studentsData = data?.seeStudentPayment
+  const students = studentsData?.StudentPayment
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -157,9 +165,20 @@ export default function PaymentTable() {
   }, [studentsData, totalCount])
 
   useEffect(() => {
-    refetch()
     handleScrollTop()
-  }, [router, refetch, currentPage])
+  }, [currentPage])
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      refetch()
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   if (error) {
     console.log(error)

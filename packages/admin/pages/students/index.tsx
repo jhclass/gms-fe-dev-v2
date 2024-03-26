@@ -11,11 +11,24 @@ import {
   studentFilterState,
   studentSearchState,
 } from '@/lib/recoilAtoms'
+import { Suspense } from 'react'
 
 const ConBox = styled.div`
   margin: 2rem 0;
   z-index: 0;
   position: relative;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 export default function Students() {
   const [filterActive, setFilterActive] = useRecoilState(
@@ -39,15 +52,23 @@ export default function Students() {
           studentFilter={studentFilter}
         />
         <ConBox>
-          {filterSearch ? (
-            <StudentsFilterTable
-              onFilterSearch={setFilterSearch}
-              studentFilter={studentFilter}
-              setStudentFilter={setStudentFilter}
-            />
-          ) : (
-            <StudentsTable />
-          )}
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            {filterSearch ? (
+              <StudentsFilterTable
+                onFilterSearch={setFilterSearch}
+                studentFilter={studentFilter}
+                setStudentFilter={setStudentFilter}
+              />
+            ) : (
+              <StudentsTable />
+            )}
+          </Suspense>
         </ConBox>
       </MainWrap>
     </>

@@ -11,9 +11,22 @@ import {
   paymentSearchState,
 } from '@/lib/recoilAtoms'
 import PaymentFilterTable from '@/components/table/PaymentListFilter'
+import { Suspense } from 'react'
 
 const ConBox = styled.div`
   margin: 2rem 0;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export default function Outstanding() {
@@ -38,15 +51,23 @@ export default function Outstanding() {
           studentFilter={studentFilter}
         />
         <ConBox>
-          {filterSearch ? (
-            <PaymentFilterTable
-              onFilterSearch={setFilterSearch}
-              studentFilter={studentFilter}
-              setStudentFilter={setStudentFilter}
-            />
-          ) : (
-            <PaymentTable />
-          )}
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            {filterSearch ? (
+              <PaymentFilterTable
+                onFilterSearch={setFilterSearch}
+                studentFilter={studentFilter}
+                setStudentFilter={setStudentFilter}
+              />
+            ) : (
+              <PaymentTable />
+            )}
+          </Suspense>
         </ConBox>
       </MainWrap>
     </>
