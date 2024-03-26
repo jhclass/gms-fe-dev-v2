@@ -293,7 +293,10 @@ export default function PaymentFilter({
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
                       disabledKeyboardNavigation
-                      onFocus={e => (e.target.readOnly = true)}
+                      readOnly={true}
+                      open={true}
+                      // onFocus={e => (e.target.readOnly = true)}
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label="결제 일시"
