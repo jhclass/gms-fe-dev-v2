@@ -14,14 +14,11 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
 
-  span {
-    font-weight: 400;
-    color: #007de9;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
   }
 `
 const TopBox = styled.div`
@@ -32,6 +29,15 @@ const TopBox = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     justify-content: space-between;
+  }
+`
+const Ttotal = styled.p`
+  font-weight: 300;
+  margin-right: 0.5rem;
+
+  span {
+    font-weight: 400;
+    color: #007de9;
   }
 `
 const ColorHelp = styled.div`
