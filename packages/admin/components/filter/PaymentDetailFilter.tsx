@@ -292,6 +292,8 @@ export default function PaymentFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      disabledKeyboardNavigation
+                      onFocus={e => (e.target.readOnly = true)}
                       customInput={
                         <Input
                           label="결제 일시"
@@ -302,6 +304,10 @@ export default function PaymentFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
+                          // onFocus={e => {
+                          //   console.log(e)
+                          //   e.blur()
+                          // }}
                           startContent={<i className="xi-calendar" />}
                           {...register('period')}
                         />
