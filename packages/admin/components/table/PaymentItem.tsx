@@ -191,7 +191,9 @@ export default function StudentsItem(props) {
               <Tamount className="discount">
                 <EllipsisBox>
                   {payment?.discountAmount === undefined ||
-                  payment?.discountAmount === null
+                  payment?.discountAmount === null ||
+                  payment?.discountAmount === '0%' ||
+                  payment?.discountAmount === '0원'
                     ? '0'
                     : feeFormet(payment?.discountAmount)}
                 </EllipsisBox>
