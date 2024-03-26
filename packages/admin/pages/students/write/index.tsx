@@ -367,6 +367,7 @@ export default function StudentsWrite() {
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
                             customInput={
                               <Input
                                 ref={field.ref}
@@ -382,6 +383,7 @@ export default function StudentsWrite() {
                                 classNames={{
                                   input: 'caret-transparent',
                                 }}
+                                isReadOnly={true}
                                 startContent={<i className="xi-calendar" />}
                               />
                             }

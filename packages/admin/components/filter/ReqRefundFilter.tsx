@@ -250,6 +250,7 @@ export default function ReqRefundFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label="승일 일시"
@@ -260,6 +261,7 @@ export default function ReqRefundFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('reqRefundDate')}
                         />

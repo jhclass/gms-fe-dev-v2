@@ -319,6 +319,7 @@ export default function StudentsFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label="생년월일"
@@ -329,6 +330,7 @@ export default function StudentsFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('birthday')}
                         />
@@ -380,6 +382,7 @@ export default function StudentsFilter({
                         field.onChange(date)
                       }}
                       onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       customInput={
@@ -392,6 +395,7 @@ export default function StudentsFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('createdAt')}
                         />

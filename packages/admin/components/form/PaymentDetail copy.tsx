@@ -727,6 +727,7 @@ export default function StudentsWriteCourse({
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChangeRaw={e => e.preventDefault()}
+                          onFocus={e => e.target.blur()}
                           onChange={date => {
                             field.onChange(date)
                             setPaymentDateSelect(date)
@@ -747,6 +748,7 @@ export default function StudentsWriteCourse({
                               classNames={{
                                 input: 'caret-transparent',
                               }}
+                              isReadOnly={true}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -798,6 +800,7 @@ export default function StudentsWriteCourse({
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
+                          onFocus={e => e.target.blur()}
                           customInput={
                             <Input
                               label="수강예정일"
@@ -808,6 +811,7 @@ export default function StudentsWriteCourse({
                               classNames={{
                                 input: 'caret-transparent',
                               }}
+                              isReadOnly={true}
                               startContent={<i className="xi-calendar" />}
                             />
                           }

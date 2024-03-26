@@ -254,6 +254,7 @@ export default function SalesFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label="검색 기간"
@@ -264,6 +265,7 @@ export default function SalesFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('selectDate')}
                         />

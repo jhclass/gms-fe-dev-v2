@@ -220,6 +220,8 @@ export default function RecruitmentFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      disabledKeyboardNavigation
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label="검색 기간"
@@ -230,6 +232,7 @@ export default function RecruitmentFilter({
                           }}
                           variant="bordered"
                           id="date"
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('selectDate')}
                         />

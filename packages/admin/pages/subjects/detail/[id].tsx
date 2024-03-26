@@ -694,6 +694,7 @@ export default function SubjectDetail() {
                               }}
                               dateFormat="yyyy/MM/dd"
                               onChangeRaw={e => e.preventDefault()}
+                              onFocus={e => e.target.blur()}
                               customInput={
                                 <Input
                                   label="승인 유효기간(시작일)"
@@ -704,6 +705,7 @@ export default function SubjectDetail() {
                                   classNames={{
                                     input: 'caret-transparent',
                                   }}
+                                  isReadOnly={true}
                                   startContent={<i className="xi-calendar" />}
                                 />
                               }
@@ -770,6 +772,7 @@ export default function SubjectDetail() {
                               }}
                               dateFormat="yyyy/MM/dd"
                               onChangeRaw={e => e.preventDefault()}
+                              onFocus={e => e.target.blur()}
                               customInput={
                                 <Input
                                   label="승인 유효기간(만료일)"
@@ -780,6 +783,7 @@ export default function SubjectDetail() {
                                   classNames={{
                                     input: 'caret-transparent',
                                   }}
+                                  isReadOnly={true}
                                   startContent={<i className="xi-calendar" />}
                                 />
                               }
@@ -928,6 +932,7 @@ export default function SubjectDetail() {
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
                             customInput={
                               <Input
                                 label="개강일"
@@ -938,6 +943,7 @@ export default function SubjectDetail() {
                                 classNames={{
                                   input: 'caret-transparent',
                                 }}
+                                isReadOnly={true}
                                 startContent={<i className="xi-calendar" />}
                               />
                             }
@@ -983,6 +989,7 @@ export default function SubjectDetail() {
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
                             customInput={
                               <Input
                                 label="종강일"
@@ -993,6 +1000,7 @@ export default function SubjectDetail() {
                                 classNames={{
                                   input: 'caret-transparent',
                                 }}
+                                isReadOnly={true}
                                 startContent={<i className="xi-calendar" />}
                               />
                             }
@@ -1081,7 +1089,6 @@ export default function SubjectDetail() {
             </DetailBox>
             {subjectRoundItem?.length > 1 && (
               <DetailBox>
-
                 <SemiTitle>동일 과정코드 내역</SemiTitle>
 
                 <ColFlexBox>
