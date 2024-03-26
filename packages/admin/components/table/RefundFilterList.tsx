@@ -36,7 +36,12 @@ const TopBox = styled.div`
 `
 const ColorHelp = styled.div`
   display: flex;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
+
 const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
@@ -49,6 +54,11 @@ const ColorCip = styled.p`
     margin-right: 0.5rem;
     width: 1rem;
     height: 2px;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0.5rem;
   }
 `
 const TableWrap = styled.div`
