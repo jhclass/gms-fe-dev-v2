@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import SubjectTable from '@/components/table/SubjectList'
 import { styled } from 'styled-components'
@@ -22,6 +22,18 @@ const ConBox = styled.div`
   margin: 2rem 0;
   z-index: 0;
   position: relative;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const ActiveIcon = styled(motion.i)`
   color: #fff;
@@ -94,15 +106,23 @@ export default function Subjects() {
           onCreateToggle={setCreateActive}
         />
         <ConBox>
-          {filterSearch ? (
-            <SubjectFilter
-              onFilterSearch={setFilterSearch}
-              subjectFilter={subjectFilter}
-              setSubjectFilter={setSubjectFilter}
-            />
-          ) : (
-            <SubjectTable />
-          )}
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            {filterSearch ? (
+              <SubjectFilter
+                onFilterSearch={setFilterSearch}
+                subjectFilter={subjectFilter}
+                setSubjectFilter={setSubjectFilter}
+              />
+            ) : (
+              <SubjectTable />
+            )}
+          </Suspense>
         </ConBox>
       </MainWrap>
     </>

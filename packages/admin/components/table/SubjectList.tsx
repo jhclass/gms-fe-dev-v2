@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -7,6 +7,7 @@ import router from 'next/router'
 import SubjectItem from '@/components/table/SubjectItem'
 import { useRecoilState } from 'recoil'
 import { subjectPageState } from '@/lib/recoilAtoms'
+import { SeeSubjectResult } from '@/src/generated/graphql'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -221,15 +222,20 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-
+type seeSubjectQuery = {
+  seeSubject: SeeSubjectResult
+}
 export default function SubjectTable() {
   const [currentPage, setCurrentPage] = useRecoilState(subjectPageState)
   const [currentLimit] = useState(10)
-  const { loading, error, data, refetch } = useQuery(SEE_SUBJECT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const subjectTotal = data?.seeSubject.totalCount || []
-  const subjectData = data?.seeSubject.subject || []
+  const { error, data, refetch } = useSuspenseQuery<seeSubjectQuery>(
+    SEE_SUBJECT_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
+  const subjectTotal = data?.seeSubject.totalCount
+  const subjectData = data?.seeSubject.subject
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -241,9 +247,20 @@ export default function SubjectTable() {
   }
 
   useEffect(() => {
-    refetch()
     handleScrollTop()
-  }, [router, refetch, currentPage])
+  }, [currentPage])
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      refetch()
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   if (error) {
     console.log(error)

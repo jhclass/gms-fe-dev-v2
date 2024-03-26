@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import dynamic from 'next/dynamic'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { ScrollShadow } from '@nextui-org/react'
 import { ManageUser } from '@/src/generated/graphql'
 

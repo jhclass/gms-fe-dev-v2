@@ -10,7 +10,7 @@ import PerformanceFilter from '@/components/filter/PerformanceFilter'
 import PerformanceList from '@/components/table/PerformanceList'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Button } from '@nextui-org/react'
 
@@ -23,6 +23,18 @@ const DeleteDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const ActiveIcon = styled(motion.i)`
   color: #fff;
@@ -101,14 +113,22 @@ export default function Statistics() {
             </DeleteDiv>
           }
         />
-        <PerformanceFilter
-          isActive={filterActive}
-          onFilterSearch={setFilterSearch}
-          setPerformanceFilter={setPerformanceFilter}
-          performanceFilter={performanceFilter}
-          clickReset={clickReset}
-          setClickReset={setClickReset}
-        />
+        <Suspense
+          fallback={
+            <LodingDiv>
+              <i className="xi-spinner-2" />
+            </LodingDiv>
+          }
+        >
+          <PerformanceFilter
+            isActive={filterActive}
+            onFilterSearch={setFilterSearch}
+            setPerformanceFilter={setPerformanceFilter}
+            performanceFilter={performanceFilter}
+            clickReset={clickReset}
+            setClickReset={setClickReset}
+          />
+        </Suspense>
         <ConBox>
           {ids && dateRange && (
             <PerformanceList ids={ids} dateRange={dateRange} />

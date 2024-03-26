@@ -1,22 +1,6 @@
 import { ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
 
-type subjectItemProps = {
-  tableData: {
-    id: number
-    subDiv: string
-    subjectName: string
-    createdAt: string
-    updatedAt: string
-    fee: number
-    startDate: string
-    endDate: string
-    roomNum: string
-    exposure: boolean
-    round: number
-  }
-}
-
 const Tname = styled.div`
   display: table-cell;
   justify-content: center;
@@ -86,7 +70,7 @@ const ScrollBox = styled.div`
     padding: 0.5rem;
   }
 `
-export default function SubjectItem(props: subjectItemProps) {
+export default function SubjectItem(props) {
   const subject = props.tableData
   const feeFormet = fee => {
     const result = fee

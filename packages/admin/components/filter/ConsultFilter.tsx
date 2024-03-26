@@ -13,7 +13,7 @@ import Button from '@/components/common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useSuspenseQuery } from '@apollo/client'
 import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -21,6 +21,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { getYear } from 'date-fns'
+import { ManageUser, ResultAdviceType } from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -130,7 +131,12 @@ const FilterVariants = {
     },
   },
 }
-
+type seeManagerQuery = {
+  seeManageUser: ManageUser[]
+}
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
+}
 export default function ConsultFilter({
   isActive,
   onFilterSearch,
@@ -139,20 +145,14 @@ export default function ConsultFilter({
 }) {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const {
-    data: seeManageUserData,
-    error,
-    loading,
-  } = useQuery(SEE_MANAGEUSER_QUERY)
-  const {
-    loading: adviceLoading,
-    error: adviceError,
-    data: adviceData,
-  } = useQuery(SEE_ADVICE_TYPE_QUERY)
+  const { data: seeManageUserData, error } =
+    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
+  const { error: adviceError, data: adviceData } =
+    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
-  const managerList = seeManageUserData?.seeManageUser || []
-  const adviceList = adviceData?.seeAdviceType.adviceType || []
+  const managerList = seeManageUserData?.seeManageUser
+  const adviceList = adviceData?.seeAdviceType.adviceType
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const progressStatus = useRecoilValue(progressStatusState)
@@ -448,20 +448,18 @@ export default function ConsultFilter({
                       }
                     }}
                   >
-                    <SelectItem key={'-'} value={'-'}>
-                      {'-'}
-                    </SelectItem>
-                    {managerList
-                      ?.filter(
+                    {[
+                      { mUsername: '-', mUserId: '-' },
+                      ...managerList?.filter(
                         manager =>
-                          manager.mGrade === grade.master ||
-                          manager.mPart.includes('영업팀'),
-                      )
-                      .map(item => (
-                        <SelectItem key={item.mUsername} value={item.mUsername}>
-                          {item.mUsername}
-                        </SelectItem>
-                      ))}
+                          manager?.mGrade === grade.master ||
+                          manager?.mPart.includes('영업팀'),
+                      ),
+                    ].map(item => (
+                      <SelectItem key={item.mUsername} value={item.mUsername}>
+                        {item.mUsername}
+                      </SelectItem>
+                    ))}
                   </Select>
                 )}
               />
@@ -487,10 +485,7 @@ export default function ConsultFilter({
                       }
                     }}
                   >
-                    <SelectItem key={'-'} value={'-'}>
-                      {'-'}
-                    </SelectItem>
-                    {adviceList?.map(item => (
+                    {[{ type: '-' }, ...adviceList]?.map(item => (
                       <SelectItem key={item.type} value={item.type}>
                         {item.type}
                       </SelectItem>

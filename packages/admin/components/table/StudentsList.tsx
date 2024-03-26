@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -7,6 +7,7 @@ import router from 'next/router'
 import StudentItem from '@/components/table/StudentItem'
 import { useRecoilState } from 'recoil'
 import { studentPageState } from '@/lib/recoilAtoms'
+import { SeeStudentResult } from '@/src/generated/graphql'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -159,16 +160,21 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-
+type seeStudentQuery = {
+  seeStudent: SeeStudentResult
+}
 export default function StudentsTable() {
   const [currentPage, setCurrentPage] = useRecoilState(studentPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const studentsData = data?.seeStudent || []
-  const students = studentsData?.student || []
+  const { error, data, refetch } = useSuspenseQuery<seeStudentQuery>(
+    SEE_STUDENT_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
+  const studentsData = data?.seeStudent
+  const students = studentsData?.student
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -179,9 +185,20 @@ export default function StudentsTable() {
   }, [studentsData, totalCount])
 
   useEffect(() => {
-    refetch()
     handleScrollTop()
-  }, [router, refetch, currentPage])
+  }, [currentPage])
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      refetch()
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   if (error) {
     console.log(error)

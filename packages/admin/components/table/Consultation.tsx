@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import {
@@ -12,6 +12,11 @@ import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
+import {
+  ManageUser,
+  StudentState,
+  StudentStateResponse,
+} from '@/src/generated/graphql'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -196,30 +201,38 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
+type seeStudentState = {
+  seeStudentState: StudentStateResponse
+}
+type mmeFavoQuery = {
+  mMe: ManageUser
+}
+type seeFavoriteState = {
+  seeFavorite: StudentState[]
+}
 
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { loading, error, data, refetch } = useQuery(SEE_STUDENT_STATE_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
-  const {
-    loading: MMeFavoLoading,
-    error: MMeFavoError,
-    data: MMeFavoData,
-  } = useQuery(MME_FAVO_QUERY)
+  const { error, data, refetch } = useSuspenseQuery<seeStudentState>(
+    SEE_STUDENT_STATE_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
+  const { error: MMeFavoError, data: MMeFavoData } =
+    useSuspenseQuery<mmeFavoQuery>(MME_FAVO_QUERY)
   const FavoList = MMeFavoData?.mMe.favoriteStudentState
   const {
-    loading: seeFavoLoading,
     error: seeFavoError,
     data: seeFavoData,
     refetch: favoRefetch,
-  } = useQuery(SEE_FAVORITESTATE_QUERY)
-  const studentsData = data?.seeStudentState || []
-  const students = studentsData?.studentState || []
-  const favoData = seeFavoData?.seeFavorite || []
-  const favoTotal = favoData?.length || 0
+  } = useSuspenseQuery<seeFavoriteState>(SEE_FAVORITESTATE_QUERY)
+  const studentsData = data?.seeStudentState
+  const students = studentsData?.studentState
+  const favoData = seeFavoData?.seeFavorite
+  const favoTotal = favoData?.length
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -230,10 +243,21 @@ export default function ConsolutationTable() {
   }, [studentsData, totalCount])
 
   useEffect(() => {
-    refetch()
-    favoRefetch()
     handleScrollTop()
-  }, [router, refetch, favoRefetch, currentPage])
+  }, [currentPage])
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      refetch()
+      favoRefetch()
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   if (error) {
     console.log(error)
@@ -283,18 +307,18 @@ export default function ConsolutationTable() {
               </TheaderBox>
             </Theader>
 
-            {favoData?.map((item, index) => (
-              <>
-                <FavoItem
-                  forName="favo"
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  favorite={FavoList?.includes(item.id)}
-                />
-                <br />
-              </>
-            ))}
+            {favoTotal > 0 &&
+              favoData?.map((item, index) => (
+                <Fragment key={index}>
+                  <FavoItem
+                    forName="favo"
+                    tableData={item}
+                    itemIndex={index}
+                    favorite={FavoList?.includes(item.id)}
+                  />
+                </Fragment>
+              ))}
+            {favoTotal > 0 && <br />}
             {totalCount > 0 &&
               students?.map((item, index) => (
                 <ConsultItem

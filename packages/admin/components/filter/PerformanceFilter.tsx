@@ -1,19 +1,18 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { subStatusState, subjectPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
 import { Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { subDays, getYear, addMonths, differenceInDays } from 'date-fns'
-import DatePickerHeader from '../common/DatePickerHeader'
+import { subDays, getYear, addMonths } from 'date-fns'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { useQuery } from '@apollo/client'
+import { useQuery, useSuspenseQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { ManageUser } from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
 type SubjectsFilterProps = {
@@ -129,7 +128,9 @@ const FilterVariants = {
     },
   },
 }
-
+type seeManagerQuery = {
+  seeManageUser: ManageUser[]
+}
 export default function PerformanceFilter({
   isActive,
   onFilterSearch,
@@ -139,8 +140,9 @@ export default function PerformanceFilter({
   setClickReset,
 }) {
   const router = useRouter()
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
+  const { error, data: managerData } =
+    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
+  const managerList = managerData?.seeManageUser
   const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
   const [manager, setManager] = useState(new Set([]))

@@ -7,31 +7,6 @@ import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 import { Checkbox } from '@nextui-org/react'
 
-type ConsultItemProps = {
-  tableData: {
-    adviceTypes: any
-    id: number
-    stName: string
-    phoneNum1: string
-    progress: number
-    subDiv: string
-    stVisit: string
-    createdAt: string
-    receiptDiv: string
-    pic: string
-  }
-  forName?: string
-  itemIndex: number
-  currentPage: number
-  limit?: number
-  favorite?: boolean
-  favoTotal?: number
-  flagNum?: number
-  checkBtn?: boolean
-  checkItem?: number[]
-  setCheckItem?: (newItems: number[]) => void
-}
-
 const TableItem = styled.div`
   position: relative;
   width: 100%;
@@ -212,7 +187,7 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-export default function ConsolutItem(props: ConsultItemProps) {
+export default function ConsolutItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData

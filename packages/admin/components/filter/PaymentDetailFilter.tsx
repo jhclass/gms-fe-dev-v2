@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
-import { paymentDetailPageState, paymentPageState } from '@/lib/recoilAtoms'
+import { paymentDetailPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import { Button, Input } from '@nextui-org/react'
@@ -10,15 +10,11 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { subMonths, subDays } from 'date-fns'
 import { useRouter } from 'next/router'
-
-type PaymentFilterProps = {
-  isActive: boolean
-}
 
 const FilterBox = styled(motion.div)`
   z-index: 2;

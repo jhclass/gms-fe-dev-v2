@@ -251,7 +251,7 @@ export default function SubjectFilterTable({
       const { result, totalCount } = data.searchSubject
       setSearchResult({ result, totalCount })
     } catch (error) {
-      console.error('검색 주제 처리 중 에러 발생:', error)
+      // console.error('검색 주제 처리 중 에러 발생:', error)
     }
   }
 
@@ -282,10 +282,7 @@ export default function SubjectFilterTable({
       <TTopic>
         <TopBox>
           <Ttotal>
-            총
-            <span>
-              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
-            </span>
+            총<span>{searchResult?.totalCount}</span>
             건이 검색되었습니다.
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>
@@ -321,7 +318,7 @@ export default function SubjectFilterTable({
                 <Tteacher>강사명</Tteacher>
               </TheaderBox>
             </Theader>
-            {searchResult?.result !== null &&
+            {searchResult?.totalCount > 0 &&
               searchResult?.result.map((item, index) => (
                 <TableItem
                   key={index}
@@ -368,7 +365,7 @@ export default function SubjectFilterTable({
                   </TableRow>
                 </TableItem>
               ))}
-            {searchResult?.result === null && (
+            {searchResult?.totalCount === 0 && (
               <Nolist>검색결과가 없습니다.</Nolist>
             )}
           </TableWrap>
