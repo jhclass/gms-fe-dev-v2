@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import { Suspense } from 'react'
-import NewConsultNumCon from '@/components/dashboard/NewConsultMonthNumCon'
+import NewConsultMonthNumCon from '@/components/dashboard/NewConsultMonthNumCon'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -24,7 +24,7 @@ export default function NewConsultNum() {
         </LodingDiv>
       }
     >
-      <NewConsultNumCon />
+      <NewConsultMonthNumCon />
     </Suspense>
   )
 }

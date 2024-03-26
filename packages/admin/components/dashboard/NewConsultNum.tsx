@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import { Suspense } from 'react'
-import NewConsultNumCon from '@/components/dashboard/NewConsultMonthNumCon'
+import NewConsultNumCon from '@/components/dashboard/NewConsultNumCon'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
