@@ -942,6 +942,7 @@ export default function StudentsWriteCourse() {
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
                             customInput={
                               <Input
                                 ref={field.ref}
@@ -957,6 +958,7 @@ export default function StudentsWriteCourse() {
                                 classNames={{
                                   input: 'caret-transparent',
                                 }}
+                                isReadOnly={true}
                                 startContent={<i className="xi-calendar" />}
                               />
                             }
@@ -1007,6 +1009,7 @@ export default function StudentsWriteCourse() {
                             ref={field.ref}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
                             customInput={
                               <Input
                                 label="수강예정일"
@@ -1017,6 +1020,7 @@ export default function StudentsWriteCourse() {
                                 classNames={{
                                   input: 'caret-transparent',
                                 }}
+                                isReadOnly={true}
                                 startContent={<i className="xi-calendar" />}
                               />
                             }

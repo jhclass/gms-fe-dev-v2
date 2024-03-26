@@ -611,6 +611,7 @@ export default function ConsultWirte() {
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm"
                         onChangeRaw={e => e.preventDefault()}
+                        onFocus={e => e.target.blur()}
                         customInput={
                           <Input
                             label="상담예정일"
@@ -621,6 +622,7 @@ export default function ConsultWirte() {
                             classNames={{
                               input: 'caret-transparent',
                             }}
+                            isReadOnly={true}
                             startContent={<i className="xi-calendar" />}
                           />
                         }
@@ -665,6 +667,7 @@ export default function ConsultWirte() {
                         }}
                         dateFormat="yyyy/MM/dd"
                         onChangeRaw={e => e.preventDefault()}
+                        onFocus={e => e.target.blur()}
                         customInput={
                           <Input
                             label="수강예정일"
@@ -675,6 +678,7 @@ export default function ConsultWirte() {
                             classNames={{
                               input: 'caret-transparent',
                             }}
+                            isReadOnly={true}
                             startContent={<i className="xi-calendar" />}
                           />
                         }

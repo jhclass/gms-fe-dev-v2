@@ -281,6 +281,8 @@ export default function PaymentFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      disabledKeyboardNavigation
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label="최근 업데이트일"
@@ -291,6 +293,7 @@ export default function PaymentFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('period')}
                         />

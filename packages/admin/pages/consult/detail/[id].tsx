@@ -864,11 +864,11 @@ export default function ConsultDetail() {
                             setStVisitDate(date)
                           }}
                           onChangeRaw={e => e.preventDefault()}
+                          onFocus={e => e.target.blur()}
                           showTimeSelect
                           dateFormat="yyyy/MM/dd HH:mm"
                           customInput={
                             <Input
-                              isReadOnly={true}
                               label="상담예정일"
                               labelPlacement="outside"
                               type="text"
@@ -877,6 +877,7 @@ export default function ConsultDetail() {
                               classNames={{
                                 input: 'caret-transparent',
                               }}
+                              isReadOnly={true}
                               startContent={<i className="xi-calendar" />}
                             />
                           }
@@ -922,6 +923,7 @@ export default function ConsultDetail() {
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
+                          onFocus={e => e.target.blur()}
                           customInput={
                             <Input
                               label="수강예정일"
@@ -932,6 +934,7 @@ export default function ConsultDetail() {
                               classNames={{
                                 input: 'caret-transparent',
                               }}
+                              isReadOnly={true}
                               startContent={<i className="xi-calendar" />}
                             />
                           }

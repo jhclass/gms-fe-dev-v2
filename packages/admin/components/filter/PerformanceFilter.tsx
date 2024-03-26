@@ -294,6 +294,8 @@ export default function PerformanceFilter({
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       onChangeRaw={e => e.preventDefault()}
+                      disabledKeyboardNavigation
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
                           label={
@@ -308,6 +310,7 @@ export default function PerformanceFilter({
                           type="text"
                           variant="bordered"
                           id="date"
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('period', {
                             required: {

@@ -405,6 +405,7 @@ export default function StudentsEditInfo() {
                               }}
                               dateFormat="yyyy/MM/dd"
                               onChangeRaw={e => e.preventDefault()}
+                              onFocus={e => e.target.blur()}
                               customInput={
                                 <Input
                                   ref={field.ref}
@@ -420,6 +421,7 @@ export default function StudentsEditInfo() {
                                   classNames={{
                                     input: 'caret-transparent',
                                   }}
+                                  isReadOnly={true}
                                   startContent={<i className="xi-calendar" />}
                                 />
                               }
