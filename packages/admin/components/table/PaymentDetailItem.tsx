@@ -195,7 +195,8 @@ export default function StudentsItem(props) {
               <Tamount className={payment?.refundApproval ? 'refund' : ''}>
                 <EllipsisBox>
                   {payment?.amountPayment === undefined ||
-                  payment?.amountPayment === null
+                  payment?.amountPayment === null ||
+                  payment?.amountPayment === 0
                     ? '0'
                     : payment?.refundApproval
                     ? `-${feeFormet(payment?.amountPayment)}`
@@ -205,7 +206,8 @@ export default function StudentsItem(props) {
               <Tamount className={payment?.refundApproval ? 'refund' : ''}>
                 <EllipsisBox>
                   {payment?.depositAmount === undefined ||
-                  payment?.depositAmount === null
+                  payment?.depositAmount === null ||
+                  payment?.depositAmount === 0
                     ? '0'
                     : payment?.refundApproval
                     ? `-${feeFormet(payment?.depositAmount)}`
