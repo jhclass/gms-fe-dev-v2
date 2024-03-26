@@ -189,6 +189,7 @@ export default function Login() {
                 variant="bordered"
                 label="User ID"
                 id="id"
+                autoCapitalize="none"
                 onFocus={() => setLoginIdFocus(true)}
                 className="text-white"
                 {...register('id', {

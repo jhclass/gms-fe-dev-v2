@@ -20,14 +20,11 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
 
-  span {
-    font-weight: 400;
-    color: #007de9;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
   }
 `
 const TopBox = styled.div`
@@ -38,6 +35,42 @@ const TopBox = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     justify-content: space-between;
+  }
+`
+const Ttotal = styled.p`
+  font-weight: 300;
+  margin-right: 0.5rem;
+
+  span {
+    font-weight: 400;
+    color: #007de9;
+  }
+`
+const ColorHelp = styled.div`
+  display: flex;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`
+
+const ColorCip = styled.p`
+  padding-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #71717a;
+  font-size: 0.7rem;
+
+  span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 1rem;
+    height: 2px;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0.5rem;
   }
 `
 const TableWrap = styled.div`
@@ -208,6 +241,11 @@ export default function PaymentDetailFilterTable({
             전체보기
           </Button>
         </TopBox>
+        <ColorHelp>
+          <ColorCip>
+            <span style={{ background: '#FF5900' }}></span> : 환불
+          </ColorCip>
+        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
