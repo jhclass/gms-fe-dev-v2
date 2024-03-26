@@ -302,11 +302,6 @@ export default function PaymentFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
-                          onFocus={e => {
-                            // iOS에서는 이 호출이 필요할 수 있음
-                            e.target.blur()
-                          }}
-                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('period')}
                         />
