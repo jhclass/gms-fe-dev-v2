@@ -304,10 +304,7 @@ export default function PaymentFilter({
                           classNames={{
                             input: 'caret-transparent',
                           }}
-                          // onFocus={e => {
-                          //   console.log(e)
-                          //   e.blur()
-                          // }}
+                          isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('period')}
                         />
