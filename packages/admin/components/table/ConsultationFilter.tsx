@@ -256,8 +256,9 @@ export default function ConsolutationFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    setStudentFilter({})
-    onFilterSearch(false)
+    // setStudentFilter({})
+    // onFilterSearch(false)
+    window.location.href = '/consult'
   }
 
   if (error) {
