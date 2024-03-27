@@ -330,7 +330,6 @@ export default function StudentsWritePayment() {
   }
 
   const onPaymentDetailSubmit = data => {
-    console.log(data)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -353,7 +352,6 @@ export default function StudentsWritePayment() {
                   : new Date(data.paymentDate),
             },
             onCompleted: result => {
-              console.log(result)
               if (!result.editPaymentDetail.ok) {
                 setFocus('amountPayment')
                 setError('amountPayment', {
