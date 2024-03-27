@@ -237,11 +237,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function ReqRefundFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+export default function ReqRefundFilterTable({ studentFilter }) {
   const { userLogs } = useUserLogsMutation()
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
@@ -366,8 +362,6 @@ export default function ReqRefundFilterTable({
   }
 
   const resetList = () => {
-    // setStudentFilter({})
-    // onFilterSearch(false)
     window.location.href = '/accounting/request'
   }
 

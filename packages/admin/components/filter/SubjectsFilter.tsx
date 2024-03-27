@@ -12,10 +12,6 @@ registerLocale('ko', ko)
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-type SubjectsFilterProps = {
-  isActive: boolean
-}
-
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;

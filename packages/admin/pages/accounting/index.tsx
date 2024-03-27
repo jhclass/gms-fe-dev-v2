@@ -65,11 +65,7 @@ export default function Accounting() {
             }
           >
             {filterSearch ? (
-              <PaymentDetailFilterTable
-                onFilterSearch={setFilterSearch}
-                studentFilter={studentFilter}
-                setStudentFilter={setStudentFilter}
-              />
+              <PaymentDetailFilterTable studentFilter={studentFilter} />
             ) : (
               <PaymentDetailTable
                 currentPage={currentPage}

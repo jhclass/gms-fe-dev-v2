@@ -15,9 +15,6 @@ import { useRouter } from 'next/router'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
-type StudentsFilterProps = {
-  isActive: boolean
-}
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;

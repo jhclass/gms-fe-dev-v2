@@ -5,6 +5,7 @@ import Layout from '@/pages/accounting/layout'
 import { styled } from 'styled-components'
 import SalesListTable from '@/components/table/SalesList'
 import SalesFilter from '@/components/filter/SalesFilter'
+
 const ConBox = styled.div`
   margin: 2rem 0;
 `

@@ -15,10 +15,6 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import { subDays, addMonths, differenceInDays } from 'date-fns'
 
-type SalesFilterProps = {
-  isActive: boolean
-}
-
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;

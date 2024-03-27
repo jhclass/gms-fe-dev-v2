@@ -242,11 +242,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function RefundFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+export default function RefundFilterTable({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
   const [currentLimit] = useState(10)
   const [searchPaymentDetailFilterMutation] = useMutation(
@@ -275,8 +271,6 @@ export default function RefundFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    // setStudentFilter({})
-    // onFilterSearch(false)
     window.location.href = '/accounting/refund'
   }
 

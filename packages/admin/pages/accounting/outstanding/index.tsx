@@ -59,11 +59,7 @@ export default function Outstanding() {
             }
           >
             {filterSearch ? (
-              <PaymentFilterTable
-                onFilterSearch={setFilterSearch}
-                studentFilter={studentFilter}
-                setStudentFilter={setStudentFilter}
-              />
+              <PaymentFilterTable studentFilter={studentFilter} />
             ) : (
               <PaymentTable />
             )}

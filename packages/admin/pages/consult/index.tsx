@@ -1,11 +1,11 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import ConsultationTable from '@/components/table/Consultation'
 import ConsultationFilter from '@/components/table/ConsultationFilter'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ConsultFilter from '@/components/filter/ConsultFilter'
 import { styled } from 'styled-components'
-import { useRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import {
   consultFilterActiveState,
   consultFilterState,
@@ -63,23 +63,27 @@ export default function Consult() {
           />
         </Suspense>
         <ConBox>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            {filterSearch ? (
-              <ConsultationFilter
-                onFilterSearch={setFilterSearch}
-                studentFilter={studentFilter}
-                setStudentFilter={setStudentFilter}
-              />
-            ) : (
+          {filterSearch ? (
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <ConsultationFilter studentFilter={studentFilter} />
+            </Suspense>
+          ) : (
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
               <ConsultationTable />
-            )}
-          </Suspense>
+            </Suspense>
+          )}
         </ConBox>
       </MainWrap>
     </>

@@ -38,11 +38,7 @@ export default function Refund() {
         />
         <ConBox>
           {filterSearch ? (
-            <RefundFilterTable
-              onFilterSearch={setFilterSearch}
-              studentFilter={studentFilter}
-              setStudentFilter={setStudentFilter}
-            />
+            <RefundFilterTable studentFilter={studentFilter} />
           ) : (
             <RefundTable />
           )}

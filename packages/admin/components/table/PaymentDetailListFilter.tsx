@@ -1,15 +1,10 @@
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
-import router from 'next/router'
 import { PaymentDetailResult } from '@/src/generated/graphql'
 import PaymentDetailItem from '@/components/table/PaymentDetailItem'
-import {
-  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
-  SEARCH_PAYMENT_DETAIL_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
 import { useRecoilState } from 'recoil'
 import { paymentDetailFilterPageState } from '@/lib/recoilAtoms'
 
@@ -188,11 +183,7 @@ type SeePaymentDetailQuery = {
   seePaymentDetail: PaymentDetailResult
 }
 
-export default function PaymentDetailFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+export default function PaymentDetailFilterTable({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(
     paymentDetailFilterPageState,
   )
@@ -221,8 +212,6 @@ export default function PaymentDetailFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    // setStudentFilter({})
-    // onFilterSearch(false)
     window.location.href = '/accounting'
   }
 

@@ -16,10 +16,6 @@ const _ = require('lodash')
 import { subMonths, subDays } from 'date-fns'
 import { useRouter } from 'next/router'
 
-type PaymentFilterProps = {
-  isActive: boolean
-}
-
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;

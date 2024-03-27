@@ -226,11 +226,7 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-export default function SubjectFilterTable({
-  onFilterSearch,
-  subjectFilter,
-  setSubjectFilter,
-}) {
+export default function SubjectFilterTable({ subjectFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(subjectPageState)
   const [currentLimit] = useState(10)
   const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
@@ -251,7 +247,7 @@ export default function SubjectFilterTable({
       const { result, totalCount } = data.searchSubject
       setSearchResult({ result, totalCount })
     } catch (error) {
-      // console.error('검색 주제 처리 중 에러 발생:', error)
+      console.error('검색 처리 중 에러 발생:', error)
     }
   }
 
@@ -259,21 +255,12 @@ export default function SubjectFilterTable({
     searchData()
   }, [subjectFilter, currentPage])
 
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
 
   const resetList = () => {
-    // setSubjectFilter({})
-    // onFilterSearch(false)
     window.location.href = '/subjects'
   }
 

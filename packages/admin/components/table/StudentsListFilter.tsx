@@ -184,11 +184,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function StudentsFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+export default function StudentsFilterTable({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(studentPageState)
   const [currentLimit] = useState(10)
   const [searchStudentFilterMutation] = useMutation(
@@ -213,8 +209,6 @@ export default function StudentsFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    // setStudentFilter({})
-    // onFilterSearch(false)
     window.location.href = '/students'
   }
 

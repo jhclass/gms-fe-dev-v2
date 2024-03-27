@@ -234,7 +234,6 @@ export default function StudentsWritePayment() {
     }
   }
   const input1Ref = useRef(null)
-  const input2Ref = useRef(null)
   const input4Ref = useRef(null)
 
   const handleInput1Change = value => {
@@ -242,7 +241,7 @@ export default function StudentsWritePayment() {
       clearErrors('cardNum1')
       if (value.length === 4) {
         setValue('cardNum1', value)
-        input2Ref.current?.focus()
+        input4Ref.current?.focus()
       } else if (value.length < 4) {
         setError('cardNum1', {
           type: 'manual',
@@ -257,33 +256,12 @@ export default function StudentsWritePayment() {
     }
   }
 
-  const handleInput2Change = value => {
-    if (/^\d*$/.test(value)) {
-      clearErrors('cardNum2')
-      if (value.length === 4) {
-        setValue('cardNum2', value)
-        input4Ref.current?.focus()
-      } else if (value.length < 4) {
-        setError('cardNum2', {
-          type: 'manual',
-          message: '2번째 입력칸은4자리수를 입력해주세요.',
-        })
-      }
-    } else {
-      setError('cardNum2', {
-        type: 'manual',
-        message: '2번째 입력칸은 숫자만 입력 가능합니다.',
-      })
-    }
-  }
-
   const handleInput4Change = value => {
     if (/^\d*$/.test(value)) {
       clearErrors('cardNum4')
 
       if (value.length === 4) {
         setValue('cardNum4', value)
-        input2Ref.current?.focus()
       } else if (value.length < 4) {
         setError('cardNum4', {
           type: 'manual',
@@ -312,11 +290,7 @@ export default function StudentsWritePayment() {
           cashOrCard: '카드',
           studentPaymentId: studentPaymentData?.id,
           cardCompany: data.cardCompany,
-          cardNum:
-            data.cardNum1.trim() +
-            data.cardNum2.trim() +
-            '****' +
-            data.cardNum4.trim(),
+          cardNum: data.cardNum1.trim() + '********' + data.cardNum4.trim(),
           amountPayment: parseInt(data.amountPayment),
           installment: data.installment === '' ? 0 : parseInt(data.installment),
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
@@ -651,28 +625,31 @@ export default function StudentsWritePayment() {
                           </p>
                         )} */}
                         <CardNumBox>
-                          <Input
-                            labelPlacement="outside"
-                            radius="md"
-                            variant="bordered"
-                            placeholder="1234"
-                            ref={input1Ref}
-                            maxLength={4}
-                            onChange={e => handleInput1Change(e.target.value)}
-                            label={
-                              <FilterLabel>
-                                카드번호<span>*</span>
-                              </FilterLabel>
-                            }
-                          />
-                          <Input
-                            ref={input2Ref}
-                            labelPlacement="outside"
-                            radius="md"
-                            variant="bordered"
-                            placeholder="1234"
-                            maxLength={4}
-                            onChange={e => handleInput2Change(e.target.value)}
+                          <Controller
+                            control={control}
+                            name="cardNum1"
+                            rules={{
+                              required:
+                                '1번째 입력칸에 카드번호 4자리를 입력해주세요',
+                            }}
+                            render={({ field }) => (
+                              <Input
+                                labelPlacement="outside"
+                                radius="md"
+                                variant="bordered"
+                                placeholder="1234"
+                                ref={input1Ref}
+                                maxLength={4}
+                                onChange={e =>
+                                  handleInput1Change(e.target.value)
+                                }
+                                label={
+                                  <FilterLabel>
+                                    카드번호<span>*</span>
+                                  </FilterLabel>
+                                }
+                              />
+                            )}
                           />
                           <Input
                             labelPlacement="outside"
@@ -682,13 +659,32 @@ export default function StudentsWritePayment() {
                             isReadOnly={true}
                           />
                           <Input
-                            ref={input4Ref}
                             labelPlacement="outside"
+                            variant="faded"
                             radius="md"
-                            variant="bordered"
-                            placeholder="1234"
-                            maxLength={4}
-                            onChange={e => handleInput4Change(e.target.value)}
+                            value="****"
+                            isReadOnly={true}
+                          />
+                          <Controller
+                            control={control}
+                            name="cardNum4"
+                            rules={{
+                              required:
+                                '4번째 입력칸에 카드번호 4자리를 입력해주세요',
+                            }}
+                            render={({ field }) => (
+                              <Input
+                                labelPlacement="outside"
+                                radius="md"
+                                variant="bordered"
+                                placeholder="1234"
+                                ref={input4Ref}
+                                maxLength={4}
+                                onChange={e =>
+                                  handleInput4Change(e.target.value)
+                                }
+                              />
+                            )}
                           />
                         </CardNumBox>
                         {errors.cardNum1 && (

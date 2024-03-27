@@ -13,7 +13,7 @@ import Button from '@/components/common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -24,10 +24,6 @@ import { getYear } from 'date-fns'
 import { ManageUser, ResultAdviceType } from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
-
-type ConsultFilterProps = {
-  isActive: boolean
-}
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -131,12 +127,14 @@ const FilterVariants = {
     },
   },
 }
+
 type seeManagerQuery = {
   seeManageUser: ManageUser[]
 }
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
+
 export default function ConsultFilter({
   isActive,
   onFilterSearch,
