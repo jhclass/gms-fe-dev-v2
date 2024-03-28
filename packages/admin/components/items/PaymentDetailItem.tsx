@@ -3,11 +3,7 @@ import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {
-  gradeState,
-  navOpenState,
-  selectedPaymentDetailState,
-} from '@/lib/recoilAtoms'
+import { gradeState, navOpenState } from '@/lib/recoilAtoms'
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
@@ -103,9 +99,6 @@ export default function StudentPaymentDetailItem({
   const { userLogs } = useUserLogsMutation()
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
-  const [selectedPaymentDate, setSelectedPaymentDate] = useRecoilState(
-    selectedPaymentDetailState,
-  )
 
   const clickReqRefund = () => {
     if (detailtData.reqRefund) {

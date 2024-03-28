@@ -19,7 +19,7 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -28,12 +28,9 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
-import {
-  ReceiptState,
-  additionalAmountState,
-  gradeState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { ManageUser } from '@/src/generated/graphql'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -163,18 +160,22 @@ const extractUnit = inputString => {
   }
 }
 
+type manageUser = {
+  seeManageUser: ManageUser[]
+}
+
 export default function StudentPaymentForm({
   studentData,
-  managerList,
   studentSubjectData,
   studentPaymentData,
 }) {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
+  const { error, data } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
+  const managerList = data?.seeManageUser || []
   const {
     register,
     setValue,
@@ -557,6 +558,11 @@ export default function StudentPaymentForm({
       }
     }
   }
+
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       {studentPaymentData !== null && studentSubjectData !== null && (
@@ -1161,19 +1167,19 @@ export default function StudentPaymentForm({
                           }
                         }}
                       >
-                        <SelectItem
-                          key={'담당자 지정필요'}
-                          value={'담당자 지정필요'}
-                        >
-                          {'담당자 지정필요'}
-                        </SelectItem>
-                        {managerList
-                          ?.filter(manager => manager.mPart.includes('영업팀'))
-                          .map(item => (
-                            <SelectItem key={item.id} value={item.id}>
-                              {item.mUsername}
-                            </SelectItem>
-                          ))}
+                        {[
+                          {
+                            mUsername: '담당자 지정필요',
+                            id: '담당자 지정필요',
+                          },
+                          ...managerList?.filter(manager =>
+                            manager.mPart.includes('영업팀'),
+                          ),
+                        ].map(item => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.mUsername}
+                          </SelectItem>
+                        ))}
                       </Select>
                     )}
                   />

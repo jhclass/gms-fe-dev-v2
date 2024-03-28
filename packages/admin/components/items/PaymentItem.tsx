@@ -1,18 +1,8 @@
-import { Button, Link, Textarea } from '@nextui-org/react'
+import { Textarea } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
-import { useRecoilState } from 'recoil'
-import {
-  selectedPaymentDetailState,
-  selectedPaymentState,
-} from '@/lib/recoilAtoms'
-import { useMutation, useQuery } from '@apollo/client'
-import {
-  REQ_REFUND_MUTATION,
-  SEARCH_STUDENT_MUTATION,
-} from '@/graphql/mutations'
-import useUserLogsMutation from '@/utils/userLogs'
+import { useQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 const FlexCardBox = styled.div`
@@ -85,8 +75,6 @@ const FlatBox = styled.div`
 
 export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const router = useRouter()
-  const [selectedPayment, setSelectedPayment] =
-    useRecoilState(selectedPaymentState)
   const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
 
@@ -111,8 +99,6 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   }
 
   const clickItem = item => {
-    setSelectedPayment(item)
-    // router.push(`/students/detail/course/${studentId}`)
     router.push(`/students/detail/course/${detailtData.id}`)
   }
 

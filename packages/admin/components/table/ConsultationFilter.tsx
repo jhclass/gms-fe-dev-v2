@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'

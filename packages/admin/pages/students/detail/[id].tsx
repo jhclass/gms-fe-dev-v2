@@ -4,18 +4,12 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Radio, RadioGroup, Button } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import useUserLogsMutation from '@/utils/userLogs'
+import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { ReceiptState, gradeState } from '@/lib/recoilAtoms'
+import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
-import {
-  CLASS_CANCEL_MUTATION,
-  SEARCH_STUDENT_MUTATION,
-  UPDATE_STUDENT_COURSE_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
 import CreateStudentMemo from '@/components/form/CreateStudentMemo'
 import StudentMemo from '@/components/form/StudentMemo'
 import StudentPaymentItem from '@/components/items/PaymentItem'
@@ -198,19 +192,9 @@ export default function StudentsWrite() {
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-
-  const { userLogs } = useUserLogsMutation()
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
-  const Receipt = useRecoilValue(ReceiptState)
-  const managerList = managerData?.seeManageUser || []
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
-  const [updateStudentCourseMutation] = useMutation(
-    UPDATE_STUDENT_COURSE_MUTATION,
-  )
-  const [classCancelMutation] = useMutation(CLASS_CANCEL_MUTATION)
   const [studentData, setStudentData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState([])
-  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState(null)
   const [memoList, setMemoList] = useState([])
 
   useEffect(() => {
@@ -247,17 +231,6 @@ export default function StudentsWrite() {
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
     }
-  }
-
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (

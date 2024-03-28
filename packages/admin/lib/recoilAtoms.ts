@@ -173,16 +173,16 @@ export const subStatusState = atom({
   },
 })
 
-export const ReceiptState = atom({
-  key: 'Receipt',
-  default: {
-    0: '자체영수증',
-    1: '현금영수증',
-    2: '이니시스',
-    3: '계산서',
-    4: 'LGU+',
-  },
-})
+// export const ReceiptState = atom({
+//   key: 'Receipt',
+//   default: {
+//     0: '자체영수증',
+//     1: '현금영수증',
+//     2: '이니시스',
+//     3: '계산서',
+//     4: 'LGU+',
+//   },
+// })
 
 export const cardNameState = atom({
   key: 'cardName',
@@ -418,14 +418,4 @@ export const recruitmentSearchState = atom({
   default: {} as {
     subjectName: string
   },
-})
-
-//select
-export const selectedPaymentState = atom({
-  key: 'selectedPayment',
-  default: null,
-})
-export const selectedPaymentDetailState = atom({
-  key: 'selectedPaymentDetail',
-  default: null,
 })
