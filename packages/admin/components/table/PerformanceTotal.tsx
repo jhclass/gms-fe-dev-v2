@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { ManageUser } from '@/src/generated/graphql'
 

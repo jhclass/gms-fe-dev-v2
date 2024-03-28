@@ -21,18 +21,13 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import {
-  additionalAmountState,
-  gradeState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
