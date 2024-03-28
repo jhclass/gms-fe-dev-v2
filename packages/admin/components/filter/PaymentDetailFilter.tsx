@@ -327,7 +327,6 @@ export default function PaymentFilter({
                 </DateBtn>
               </DatePickerBox>
             </ItemBox>
-
             <ItemBox>
               <Input
                 labelPlacement="outside"

@@ -140,21 +140,14 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
-}
-
 export default function ConsultWirte() {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
+  const grade = useRecoilValue(gradeState)
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const managerList = managerData?.seeManageUser || []
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -223,10 +216,6 @@ export default function ConsultWirte() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -528,11 +517,18 @@ export default function ConsultWirte() {
                       }
                     >
                       <ManagerSelect
-                        manager={manager}
+                        selecedKey={manager}
                         field={field}
-                        handleManagerChange={handleManagerChange}
-                        managerList={managerList}
-                        grade={grade}
+                        label={'담당자'}
+                        handleChange={handleManagerChange}
+                        optionDefualt={{
+                          mUsername: '담당자 지정필요',
+                          mUserId: '담당자 지정필요',
+                        }}
+                        filter={manager =>
+                          manager.mGrade === grade.master ||
+                          manager.mPart.includes('영업팀')
+                        }
                       />
                     </Suspense>
                   )}

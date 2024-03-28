@@ -11,8 +11,6 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
-  Checkbox,
-  CheckboxGroup,
   Input,
   Radio,
   RadioGroup,
@@ -20,9 +18,8 @@ import {
   SelectItem,
   Textarea,
 } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 
 import {
@@ -184,7 +181,6 @@ export default function StudentsWritePayment() {
   } = useForm()
   const { errors } = formState
   const [studentData, setStudentData] = useState(null)
-  const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [paymentType, setPaymentType] = useState('카드')
   const [cardName, setCardName] = useState('카드사 선택')
@@ -206,7 +202,6 @@ export default function StudentsWritePayment() {
           if (data.searchStudentPayment.ok) {
             setStudentPaymentData(data.searchStudentPayment?.data[0])
             setStudentData(data.searchStudentPayment?.data[0]?.student)
-            setStudentSubjectData(data.searchStudentPayment?.data[0]?.subject)
           }
         },
       })
@@ -327,9 +322,6 @@ export default function StudentsWritePayment() {
                         setStudentData(
                           data.searchStudentPayment?.data[0]?.student,
                         )
-                        setStudentSubjectData(
-                          data.searchStudentPayment?.data[0]?.subject,
-                        )
                         userLogs(`${studentData?.name} 카드 결제 `)
                         reset()
                         clearErrors()
@@ -391,9 +383,6 @@ export default function StudentsWritePayment() {
                         )
                         setStudentData(
                           data.searchStudentPayment?.data[0]?.student,
-                        )
-                        setStudentSubjectData(
-                          data.searchStudentPayment?.data[0]?.subject,
                         )
                         userLogs(`${studentData?.name} 현금 결제 `)
                         reset()

@@ -1,10 +1,10 @@
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
+import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { ResultAdviceType } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
 
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
 }
 
 export default function managerSelect({
@@ -14,17 +14,14 @@ export default function managerSelect({
   label,
   handleChange,
   optionDefualt,
-  filter,
+  filter = null,
 }) {
-  const { error: seeManagerError, data: seeManagerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const managerList = [
-    optionDefualt,
-    ...seeManagerData?.seeManageUser?.filter(filter),
-  ]
+  const { error: adviceError, data: adviceData } =
+    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY)
+  const adviceList = [optionDefualt, ...adviceData?.seeAdviceType.adviceType]
 
-  if (seeManagerError) {
-    console.log(seeManagerError)
+  if (adviceError) {
+    console.log(adviceError)
   }
 
   return (
@@ -44,9 +41,9 @@ export default function managerSelect({
           }
         }}
       >
-        {managerList.map(item => (
-          <SelectItem key={item.mUsername} value={item.mUsername}>
-            {item.mUsername}
+        {adviceList?.map(item => (
+          <SelectItem key={item.type} value={item.type}>
+            {item.type}
           </SelectItem>
         ))}
       </Select>
