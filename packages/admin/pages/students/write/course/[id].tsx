@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -39,10 +39,23 @@ import {
   SEARCH_STUDENT_BASIC_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import ManagerSelect from '@/components/common/ManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -198,7 +211,6 @@ const LineBox = styled.div`
 `
 
 export default function StudentsWriteCourse() {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [isOpen, setIsOpen] = useState(false)
@@ -206,8 +218,6 @@ export default function StudentsWriteCourse() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
   const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
-  const { error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
   const {
     register,
     getValues,
@@ -463,10 +473,6 @@ export default function StudentsWriteCourse() {
       setValue('tuitionFee', subjectSelectedData?.fee)
       setValue('unCollectedAmount', subjectSelectedData?.fee)
     }
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -1038,40 +1044,29 @@ export default function StudentsWriteCourse() {
                         },
                       }}
                       render={({ field, fieldState }) => (
-                        <Select
-                          labelPlacement="outside"
-                          label={
-                            <FilterLabel>
-                              수강 담당자<span>*</span>
-                            </FilterLabel>
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
                           }
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          selectedKeys={[subjectManager]}
-                          onChange={value => {
-                            if (value.target.value !== '') {
-                              field.onChange(value)
-                              handleSubManagerChange(value)
-                            }
-                          }}
                         >
-                          <SelectItem
-                            key={'담당자 지정필요'}
-                            value={'담당자 지정필요'}
-                          >
-                            {'담당자 지정필요'}
-                          </SelectItem>
-                          {managerList
-                            ?.filter(manager =>
-                              manager.mPart.includes('영업팀'),
-                            )
-                            .map(item => (
-                              <SelectItem key={item.id} value={item.id}>
-                                {item.mUsername}
-                              </SelectItem>
-                            ))}
-                        </Select>
+                          <ManagerSelect
+                            selecedKey={subjectManager}
+                            field={field}
+                            label={
+                              <FilterLabel>
+                                수강 담당자<span>*</span>
+                              </FilterLabel>
+                            }
+                            handleChange={handleSubManagerChange}
+                            optionDefualt={{
+                              mUsername: '담당자 지정필요',
+                              mUserId: '담당자 지정필요',
+                            }}
+                            filter={manager => manager.mPart.includes('영업팀')}
+                          />
+                        </Suspense>
                       )}
                     />
                     {errors.processingManagerId && (

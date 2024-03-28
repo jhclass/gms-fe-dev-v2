@@ -30,7 +30,7 @@ export default function StatisticsList({ performanceFilter }) {
       setIds(performanceFilter.processingManagerId)
       setDateRange(performanceFilter.period)
     }
-  }, [router, performanceFilter, data])
+  }, [router, performanceFilter])
 
   if (error) {
     console.log(error)

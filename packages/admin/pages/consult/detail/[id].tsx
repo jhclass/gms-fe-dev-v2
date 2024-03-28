@@ -25,17 +25,14 @@ import {
   gradeState,
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
-import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import {
   DELETE_STUDENT_STATE_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
   UPDATE_STUDENT_STATE_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
+import { SEE_STUDENT_STATE_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import ConsolutMemo from '@/components/form/ConsolutMemo'
@@ -46,7 +43,6 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ConsolutRepeated from '@/components/items/ConsolutRepeated'
 import Layout from '@/pages/consult/layout'
-import { ManageUser } from '@/src/generated/graphql'
 import ManagerSelect from '@/components/common/ManagerSelect'
 
 const ConArea = styled.div`
@@ -192,18 +188,12 @@ const MemoItem = styled.li`
   }
 `
 
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
-}
-
 export default function ConsultDetail() {
   const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
@@ -211,7 +201,6 @@ export default function ConsultDetail() {
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const managerList = managerData?.seeManageUser
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: sbjIsOpen,
@@ -453,10 +442,6 @@ export default function ConsultDetail() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -776,12 +761,19 @@ export default function ConsultDetail() {
                         }
                       >
                         <ManagerSelect
-                          studentState={studentState}
-                          manager={manager}
+                          selecedKey={manager}
                           field={field}
-                          handleManagerChange={handleManagerChange}
-                          managerList={managerList}
-                          grade={grade}
+                          label={'담당자'}
+                          defaultValue={studentState ? studentState.pic : null}
+                          handleChange={handleManagerChange}
+                          optionDefualt={{
+                            mUsername: '담당자 지정필요',
+                            mUserId: '담당자 지정필요',
+                          }}
+                          filter={manager =>
+                            manager.mGrade === grade.master ||
+                            manager.mPart.includes('영업팀')
+                          }
                         />
                       </Suspense>
                     )}

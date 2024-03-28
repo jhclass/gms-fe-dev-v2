@@ -102,22 +102,12 @@ export default function PerformanceBox({ managerData, dateRange, totalCount }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(5)
   const [detailData, setDetailData] = useState(null)
+
   useEffect(() => {
-    setCurrentPage(1)
-    salesStatisticsList({
-      variables: {
-        period: dateRange,
-        processingManagerId: managerData.processingManagerId,
-        page: 1,
-        limit: currentLimit,
-      },
-      onCompleted: result => {
-        if (result.salesStatisticsList.ok) {
-          setDetailData(result.salesStatisticsList.data)
-        }
-      },
-    })
-  }, [managerData, dateRange])
+    if (currentPage !== 1) {
+      setCurrentPage(1)
+    }
+  }, [dateRange, managerData])
 
   useEffect(() => {
     salesStatisticsList({

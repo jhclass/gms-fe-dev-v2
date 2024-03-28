@@ -12,22 +12,33 @@ import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { useSuspenseQuery } from '@apollo/client'
-import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import { ManageUser, ResultAdviceType } from '@/src/generated/graphql'
+import ManagerSelect from '@/components/common/ManagerSelect'
+import AdviceSelect from '@/components//common/AdviceSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const FilterForm = styled.form`
   display: flex;
@@ -128,13 +139,6 @@ const FilterVariants = {
   },
 }
 
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
-}
-type seeAdviceTypeQuery = {
-  seeAdviceType: ResultAdviceType
-}
-
 export default function ConsultFilter({
   isActive,
   onFilterSearch,
@@ -143,14 +147,8 @@ export default function ConsultFilter({
 }) {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const { data: seeManageUserData, error } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const { error: adviceError, data: adviceData } =
-    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
-  const managerList = seeManageUserData?.seeManageUser
-  const adviceList = adviceData?.seeAdviceType.adviceType
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
   const progressStatus = useRecoilValue(progressStatusState)
@@ -337,13 +335,6 @@ export default function ConsultFilter({
     reset()
   }
 
-  if (error) {
-    console.log(error)
-  }
-  if (adviceError) {
-    console.log(adviceError)
-  }
-
   return (
     <>
       <FilterBox
@@ -431,34 +422,28 @@ export default function ConsultFilter({
                 name="pic"
                 defaultValue={'-'}
                 render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label="담당자"
-                    placeholder=" "
-                    className="w-full"
-                    defaultValue={'-'}
-                    variant="bordered"
-                    selectedKeys={[manager]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        field.onChange(value)
-                        handleManagerChange(value)
-                      }
-                    }}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
                   >
-                    {[
-                      { mUsername: '-', mUserId: '-' },
-                      ...managerList?.filter(
-                        manager =>
-                          manager?.mGrade === grade.master ||
-                          manager?.mPart.includes('영업팀'),
-                      ),
-                    ].map(item => (
-                      <SelectItem key={item.mUsername} value={item.mUsername}>
-                        {item.mUsername}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    <ManagerSelect
+                      selecedKey={manager}
+                      field={field}
+                      label={'담당자'}
+                      handleChange={handleManagerChange}
+                      optionDefualt={{
+                        mUsername: '-',
+                        mUserId: '-',
+                      }}
+                      filter={manager =>
+                        manager?.mGrade === grade.master ||
+                        manager?.mPart.includes('영업팀')
+                      }
+                    />
+                  </Suspense>
                 )}
               />
             </ItemBox>
@@ -468,27 +453,23 @@ export default function ConsultFilter({
                 name="adviceType"
                 defaultValue={'-'}
                 render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label="상담분야"
-                    placeholder=" "
-                    className="w-full"
-                    defaultValue={'-'}
-                    variant="bordered"
-                    selectedKeys={[adviceType]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        field.onChange(value)
-                        handleAdviceChange(value)
-                      }
-                    }}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
                   >
-                    {[{ type: '-' }, ...adviceList]?.map(item => (
-                      <SelectItem key={item.type} value={item.type}>
-                        {item.type}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    <AdviceSelect
+                      selecedKey={adviceType}
+                      field={field}
+                      label={'상담분야'}
+                      handleChange={handleAdviceChange}
+                      optionDefualt={{
+                        type: '-',
+                      }}
+                    />
+                  </Suspense>
                 )}
               />
             </ItemBox>

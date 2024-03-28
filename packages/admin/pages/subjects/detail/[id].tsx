@@ -178,13 +178,12 @@ export default function SubjectDetail() {
   const [searchSubjectMutation, { data, loading, error }] = useMutation(
     SEARCH_SUBJECT_MUTATION,
   )
-  // const subjectState = data?.searchSubject.result[0] || []
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)
 
-  const { register, control, setValue, handleSubmit, formState } = useForm({
+  const { register, control, handleSubmit, formState } = useForm({
     defaultValues: {
       updateSubjectId: subjectState?.id,
       subDiv: subjectState?.subDiv,
