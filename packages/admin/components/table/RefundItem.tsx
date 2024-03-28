@@ -1,6 +1,4 @@
 import { styled } from 'styled-components'
-import Link from 'next/link'
-import { Button } from '@nextui-org/react'
 
 type ConsultItemProps = {
   tableData: {

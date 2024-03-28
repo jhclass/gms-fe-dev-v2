@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -25,7 +25,7 @@ import {
   gradeState,
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client'
 import {
   DELETE_STUDENT_STATE_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
@@ -46,10 +46,24 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ConsolutRepeated from '@/components/items/ConsolutRepeated'
 import Layout from '@/pages/consult/layout'
+import { ManageUser } from '@/src/generated/graphql'
+import ManagerSelect from '@/components/common/ManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -178,13 +192,18 @@ const MemoItem = styled.li`
   }
 `
 
+type seeManagerQuery = {
+  seeManageUser: ManageUser[]
+}
+
 export default function ConsultDetail() {
   const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { error, data: managerData } =
+    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
@@ -192,7 +211,7 @@ export default function ConsultDetail() {
   const progressStatus = useRecoilValue(progressStatusState)
   const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const managerList = managerData?.seeManageUser || []
+  const managerList = managerData?.seeManageUser
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: sbjIsOpen,
@@ -749,42 +768,22 @@ export default function ConsultDetail() {
                     name="pic"
                     defaultValue={studentState?.pic}
                     render={({ field }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="담당자"
-                        placeholder=" "
-                        className="w-full"
-                        defaultValue={studentState?.pic}
-                        variant="bordered"
-                        selectedKeys={[manager]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleManagerChange(value)
-                          }
-                        }}
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
+                        }
                       >
-                        <SelectItem
-                          key={'담당자 지정필요'}
-                          value={'담당자 지정필요'}
-                        >
-                          {'담당자 지정필요'}
-                        </SelectItem>
-                        {managerList
-                          ?.filter(
-                            manager =>
-                              manager.mGrade === grade.master ||
-                              manager.mPart.includes('영업팀'),
-                          )
-                          .map(item => (
-                            <SelectItem
-                              key={item.mUsername}
-                              value={item.mUsername}
-                            >
-                              {item.mUsername}
-                            </SelectItem>
-                          ))}
-                      </Select>
+                        <ManagerSelect
+                          studentState={studentState}
+                          manager={manager}
+                          field={field}
+                          handleManagerChange={handleManagerChange}
+                          managerList={managerList}
+                          grade={grade}
+                        />
+                      </Suspense>
                     )}
                   />
                   <Input

@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -25,7 +25,7 @@ import {
   gradeState,
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import {
@@ -38,10 +38,24 @@ import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/consult/layout'
+import { ManageUser } from '@/src/generated/graphql'
+import ManagerSelect from '@/components/common/ManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -126,10 +140,15 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
+type seeManagerQuery = {
+  seeManageUser: ManageUser[]
+}
+
 export default function ConsultWirte() {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { error, data: managerData } =
+    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
@@ -501,41 +520,21 @@ export default function ConsultWirte() {
                   control={control}
                   name="pic"
                   render={({ field, fieldState }) => (
-                    <Select
-                      labelPlacement="outside"
-                      label="담당자"
-                      placeholder=" "
-                      className="w-full"
-                      variant="bordered"
-                      selectedKeys={[manager]}
-                      onChange={value => {
-                        if (value.target.value !== '') {
-                          field.onChange(value)
-                          handleManagerChange(value)
-                        }
-                      }}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
                     >
-                      <SelectItem
-                        key={'담당자 지정필요'}
-                        value={'담당자 지정필요'}
-                      >
-                        {'담당자 지정필요'}
-                      </SelectItem>
-                      {managerList
-                        ?.filter(
-                          manager =>
-                            manager.mGrade === grade.master ||
-                            manager.mPart.includes('영업팀'),
-                        )
-                        .map(item => (
-                          <SelectItem
-                            key={item.mUsername}
-                            value={item.mUsername}
-                          >
-                            {item.mUsername}
-                          </SelectItem>
-                        ))}
-                    </Select>
+                      <ManagerSelect
+                        manager={manager}
+                        field={field}
+                        handleManagerChange={handleManagerChange}
+                        managerList={managerList}
+                        grade={grade}
+                      />
+                    </Suspense>
                   )}
                 />
                 <Input

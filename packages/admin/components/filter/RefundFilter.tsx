@@ -14,10 +14,6 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import { getYear, subMonths, subDays } from 'date-fns'
 
-type RefundFilterProps = {
-  isActive: boolean
-}
-
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;

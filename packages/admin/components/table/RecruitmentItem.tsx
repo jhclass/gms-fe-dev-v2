@@ -1,6 +1,4 @@
 import { styled } from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { studentProgressStatusState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
 
 type ConsultItemProps = {

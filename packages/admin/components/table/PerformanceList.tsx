@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PerformanceBox from './PerformanceBox'
 import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
@@ -11,6 +11,18 @@ const ListBox = styled.div`
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export default function PerformanceList({ ids, dateRange }) {
@@ -58,12 +70,20 @@ export default function PerformanceList({ ids, dateRange }) {
       {allData?.map((item, index) => (
         <ListBox key={index}>
           <div style={{ marginBottom: '1.5rem' }}>
-            <PerformanceTotal
-              ranking={index}
-              managerId={item.processingManagerId}
-              totalAmount={item.totalActualAmount}
-              totalCount={item.totalCount}
-            />
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <PerformanceTotal
+                ranking={index}
+                managerId={item.processingManagerId}
+                totalAmount={item.totalActualAmount}
+                totalCount={item.totalCount}
+              />
+            </Suspense>
           </div>
           <PerformanceBox
             managerData={item}

@@ -2,10 +2,10 @@ import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_STUDENT_QUERY, SEE_SUBJECT_QUERY } from '@/graphql/queries'
+import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import { useRecoilState } from 'recoil'
-import { recruitmentPageState, studentPageState } from '@/lib/recoilAtoms'
+import { recruitmentPageState } from '@/lib/recoilAtoms'
 import RecruitmentItem from '@/components/table/RecruitmentItem'
 
 const TableArea = styled.div`

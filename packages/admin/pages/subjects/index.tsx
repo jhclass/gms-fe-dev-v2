@@ -114,11 +114,7 @@ export default function Subjects() {
             }
           >
             {filterSearch ? (
-              <SubjectFilter
-                onFilterSearch={setFilterSearch}
-                subjectFilter={subjectFilter}
-                setSubjectFilter={setSubjectFilter}
-              />
+              <SubjectFilter subjectFilter={subjectFilter} />
             ) : (
               <SubjectTable />
             )}

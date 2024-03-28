@@ -128,11 +128,7 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function PaymentFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+export default function PaymentFilterTable({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(paymentPageState)
   const [currentLimit] = useState(10)
   const [searchPaymentFilterMutation] = useMutation(
@@ -157,8 +153,6 @@ export default function PaymentFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    // setStudentFilter({})
-    // onFilterSearch(false)
     window.location.href = '/accounting/outstanding'
   }
 

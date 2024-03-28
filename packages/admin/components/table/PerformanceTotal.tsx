@@ -1,8 +1,7 @@
 import { styled } from 'styled-components'
-import Link from 'next/link'
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery, useSuspenseQuery } from '@apollo/client'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SALES_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
+import { ManageUser } from '@/src/generated/graphql'
 
 type ConsultItemProps = {
   tableData: {
@@ -84,13 +83,17 @@ const FlatBox = styled.div`
   font-weight: bold;
 `
 
+type seeManagerQuery = {
+  seeManageUser: ManageUser[]
+}
 export default function PerformanceTotal({
   ranking,
   managerId,
   totalAmount,
   totalCount,
 }) {
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { error, data: managerData } =
+    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
 
   const feeFormet = fee => {

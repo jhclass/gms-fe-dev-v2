@@ -60,11 +60,7 @@ export default function Students() {
             }
           >
             {filterSearch ? (
-              <StudentsFilterTable
-                onFilterSearch={setFilterSearch}
-                studentFilter={studentFilter}
-                setStudentFilter={setStudentFilter}
-              />
+              <StudentsFilterTable studentFilter={studentFilter} />
             ) : (
               <StudentsTable />
             )}

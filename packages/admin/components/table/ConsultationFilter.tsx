@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -7,6 +7,7 @@ import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import { consultPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
+import { ManageUser, StudentState } from '@/src/generated/graphql'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -216,26 +217,23 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function ConsolutationFilterTable({
-  onFilterSearch,
-  studentFilter,
-  setStudentFilter,
-}) {
+type mmeFavoQuery = {
+  mMe: ManageUser
+}
+type seeFavoriteState = {
+  seeFavorite: StudentState[]
+}
+export default function ConsolutationFilterTable({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
-  const {
-    loading: MMeLoading,
-    error: MMeError,
-    data: MMeData,
-  } = useQuery(MME_QUERY)
+  const { error: MMeError, data: MMeData } =
+    useSuspenseQuery<mmeFavoQuery>(MME_QUERY)
   const FavoList = MMeData?.mMe.favoriteStudentState
-  const {
-    loading,
-    error,
-    data: seeFavoData,
-  } = useQuery(SEE_FAVORITESTATE_QUERY)
+  const { error, data: seeFavoData } = useSuspenseQuery<seeFavoriteState>(
+    SEE_FAVORITESTATE_QUERY,
+  )
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
 
@@ -256,8 +254,6 @@ export default function ConsolutationFilterTable({
   }, [studentFilter, currentPage])
 
   const resetList = () => {
-    // setStudentFilter({})
-    // onFilterSearch(false)
     window.location.href = '/consult'
   }
 
@@ -315,18 +311,17 @@ export default function ConsolutationFilterTable({
               </TheaderBox>
             </Theader>
 
-            {searchResult?.totalCount > 0 &&
-              searchResult?.studentState?.map((item, index) => (
-                <ConsultItem
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                  favorite={FavoList?.includes(item.id)}
-                  favoTotal={favoTotal}
-                />
-              ))}
+            {searchResult?.studentState?.map((item, index) => (
+              <ConsultItem
+                key={index}
+                tableData={item}
+                itemIndex={index}
+                currentPage={currentPage}
+                limit={currentLimit}
+                favorite={FavoList?.includes(item.id)}
+                favoTotal={favoTotal}
+              />
+            ))}
             {searchResult?.totalCount === 0 && (
               <Nolist>검색결과가 없습니다.</Nolist>
             )}

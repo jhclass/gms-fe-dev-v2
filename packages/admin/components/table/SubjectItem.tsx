@@ -1,4 +1,3 @@
-import { ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
 
 const Tname = styled.div`

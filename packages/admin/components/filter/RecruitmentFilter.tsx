@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import {
-  recruitmentPageState,
-  subStatusState,
-  subjectPageState,
-} from '@/lib/recoilAtoms'
+import { useResetRecoilState } from 'recoil'
+import { recruitmentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
 import { Input } from '@nextui-org/react'
@@ -17,9 +13,6 @@ import DatePickerHeader from '../common/DatePickerHeader'
 import { useState } from 'react'
 registerLocale('ko', ko)
 const _ = require('lodash')
-type SubjectsFilterProps = {
-  isActive: boolean
-}
 
 const FilterBox = styled(motion.div)`
   z-index: 2;

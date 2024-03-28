@@ -10,14 +10,11 @@ import { subDays, getYear, addMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { ManageUser } from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
-type SubjectsFilterProps = {
-  isActive: boolean
-}
 
 const TopInfo = styled.div`
   display: flex;
