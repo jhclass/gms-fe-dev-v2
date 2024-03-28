@@ -29,7 +29,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import {
-  ReceiptState,
   additionalAmountState,
   gradeState,
   subStatusState,
@@ -207,9 +206,8 @@ export default function StudentsWriteCourse() {
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
   const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
+  const { error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser || []
-  const Receipt = useRecoilValue(ReceiptState)
   const {
     register,
     getValues,

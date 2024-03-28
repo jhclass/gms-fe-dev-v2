@@ -41,9 +41,11 @@ const Content = styled.div`
 const ChartWrap = styled.div`
   min-width: 700px;
 `
+
 type manageUser = {
   seeManageUser: ManageUser[]
 }
+
 export default function PerformanceChartCon({
   managerIds,
   totalAmount,

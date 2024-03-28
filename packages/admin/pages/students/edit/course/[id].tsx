@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -7,20 +7,29 @@ import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { useMutation, useQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
 import {
   SEARCH_PAYMENT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import StudentPayment from '@/components/form/StudentPayment'
-import { useRecoilState } from 'recoil'
-import { selectedPaymentState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -150,12 +159,8 @@ const LineBox = styled.div`
 export default function StudentsWriteCourse() {
   const router = useRouter()
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [selectedPayment, setSelectedPayment] =
-    useRecoilState(selectedPaymentState)
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [searchSubject] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
   const [studentData, setStudentData] = useState(null)
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
@@ -209,10 +214,6 @@ export default function StudentsWriteCourse() {
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
     }
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -281,12 +282,19 @@ export default function StudentsWriteCourse() {
             </DetailDiv>
           </DetailBox>
 
-          <StudentPayment
-            studentData={studentData}
-            managerList={managerList}
-            studentSubjectData={studentSubjectData}
-            studentPaymentData={studentPaymentData}
-          />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <StudentPayment
+              studentData={studentData}
+              studentSubjectData={studentSubjectData}
+              studentPaymentData={studentPaymentData}
+            />
+          </Suspense>
         </ConArea>
       </MainWrap>
     </>

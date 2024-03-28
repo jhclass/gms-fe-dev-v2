@@ -1,5 +1,6 @@
 import { styled } from 'styled-components'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 type ConsultItemProps = {
   tableData: {
@@ -43,7 +44,6 @@ const TableItem = styled.div`
     background: rgba(255, 255, 255, 0.8);
   }
 `
-
 const TableRow = styled.div`
   position: relative;
   display: table-row;
@@ -148,6 +148,7 @@ const EllipsisBox = styled.p`
 `
 
 export default function StudentsItem(props) {
+  const router = useRouter()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const payment = props.tableData
@@ -161,11 +162,25 @@ export default function StudentsItem(props) {
     return result
   }
 
+  const clickLink = e => {
+    if (payment?.refundApproval) {
+      e.preventDefault()
+    } else {
+      router.push(`/students/edit/payment/${payment.id}`, undefined, {
+        shallow: true,
+      })
+    }
+  }
+
   return (
     <>
       <TableItem>
         <TableRow>
-          <Link href={`/students/edit/payment/${payment.id}`}>
+          <div
+            onClick={e => {
+              clickLink(e)
+            }}
+          >
             <ClickBox>
               <Tflag
                 style={{
@@ -215,7 +230,7 @@ export default function StudentsItem(props) {
                 </EllipsisBox>
               </Tamount>
             </ClickBox>
-          </Link>
+          </div>
         </TableRow>
       </TableItem>
     </>

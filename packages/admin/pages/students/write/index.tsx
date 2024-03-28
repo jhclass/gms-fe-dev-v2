@@ -9,14 +9,12 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Radio, RadioGroup, Select } from '@nextui-org/react'
+import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { ReceiptState } from '@/lib/recoilAtoms'
 import {
   CHECK_DOUBLE_MUTATION,
   CREATE_STUDENT_MUTATION,
@@ -130,7 +128,6 @@ export default function StudentsWrite() {
   const { userLogs } = useUserLogsMutation()
   const [createStudent] = useMutation(CREATE_STUDENT_MUTATION)
   const [checkDouble] = useMutation(CHECK_DOUBLE_MUTATION)
-  const Receipt = useRecoilValue(ReceiptState)
   const { register, getValues, control, handleSubmit, formState, reset } =
     useForm()
   const { errors, isDirty } = formState

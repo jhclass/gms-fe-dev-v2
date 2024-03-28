@@ -9,30 +9,14 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
-  Textarea,
-} from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
+import { bankNameState, cardNameState } from '@/lib/recoilAtoms'
 import {
-  bankNameState,
-  cardNameState,
-  selectedPaymentDetailState,
-} from '@/lib/recoilAtoms'
-import {
-  SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   SEARCH_PAYMENT_DETAIL_MUTATION,
-  SEARCH_STUDENT_PAYMENT_MUTATION,
   UPDATE_PAYMENT_DETAIL_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
@@ -174,18 +158,12 @@ export default function StudentsWritePayment() {
   const { userLogs } = useUserLogsMutation()
   const paymentDetailId =
     typeof router.query.id === 'string' ? router.query.id : null
-  const [searchStudentPayment] = useMutation(SEARCH_STUDENT_PAYMENT_MUTATION)
   const [updatePaymentDetail] = useMutation(UPDATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
-  const [selectedPaymentDeta, setSelectedPaymentDeta] = useRecoilState(
-    selectedPaymentDetailState,
-  )
-
   const [searchPaymentDetailMutation] = useMutation(
     SEARCH_PAYMENT_DETAIL_MUTATION,
   )
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
+
   const {
     register,
     control,
@@ -451,10 +429,6 @@ export default function StudentsWritePayment() {
   }
   const handleCashReceiptTypeChange = value => {
     setCashReceiptType(value)
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
