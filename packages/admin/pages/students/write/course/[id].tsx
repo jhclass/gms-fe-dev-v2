@@ -21,25 +21,23 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import {
-  additionalAmountState,
-  gradeState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
   SEARCH_STUDENT_BASIC_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ManagerSelect from '@/components/common/ManagerSelect'
+import ManagerSelectID from '@/components/common/ManagerSelectID'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { ManageUser } from '@/src/generated/graphql'
+// import ManagerSelectD from '@/components/common/ManagerSelectD'
 
 const ConArea = styled.div`
   width: 100%;
@@ -209,6 +207,9 @@ const LineBox = styled.div`
   line-height: 40px;
   font-size: 0.875rem;
 `
+type manageUser = {
+  seeManageUser: ManageUser[]
+}
 
 export default function StudentsWriteCourse() {
   const router = useRouter()
@@ -216,6 +217,8 @@ export default function StudentsWriteCourse() {
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
+  const { error, data } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
+  const managerList = data?.seeManageUser || []
   const [searchStudentBasic] = useMutation(SEARCH_STUDENT_BASIC_MUTATION)
   const [createStudentPayment] = useMutation(CREATE_STUDENT_PAYMENT_MUTATION)
   const {
@@ -1044,29 +1047,38 @@ export default function StudentsWriteCourse() {
                         },
                       }}
                       render={({ field, fieldState }) => (
-                        <Suspense
-                          fallback={
-                            <LodingDiv>
-                              <i className="xi-spinner-2" />
-                            </LodingDiv>
+                        <Select
+                          labelPlacement="outside"
+                          label={
+                            <FilterLabel>
+                              수강 담당자<span>*</span>
+                            </FilterLabel>
                           }
-                        >
-                          <ManagerSelect
-                            selecedKey={subjectManager}
-                            field={field}
-                            label={
-                              <FilterLabel>
-                                수강 담당자<span>*</span>
-                              </FilterLabel>
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[subjectManager]}
+                          onChange={value => {
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubManagerChange(value)
                             }
-                            handleChange={handleSubManagerChange}
-                            optionDefualt={{
+                          }}
+                        >
+                          {[
+                            {
                               mUsername: '담당자 지정필요',
-                              mUserId: '담당자 지정필요',
-                            }}
-                            filter={manager => manager.mPart.includes('영업팀')}
-                          />
-                        </Suspense>
+                              id: '담당자 지정필요',
+                            },
+                            ...managerList?.filter(manager =>
+                              manager.mPart.includes('영업팀'),
+                            ),
+                          ].map(item => (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.mUsername}
+                            </SelectItem>
+                          ))}
+                        </Select>
                       )}
                     />
                     {errors.processingManagerId && (
