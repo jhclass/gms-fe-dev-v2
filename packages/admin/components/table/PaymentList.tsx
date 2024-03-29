@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEE_PAYMENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
@@ -11,6 +11,18 @@ import { StudentPaymentResult } from '@/src/generated/graphql'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const TTopic = styled.div`
   display: flex;
@@ -210,13 +222,21 @@ export default function PaymentTable() {
             </Theader>
             {totalCount > 0 &&
               students?.map((item, index) => (
-                <PaymentItem
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                />
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <PaymentItem
+                    key={index}
+                    tableData={item}
+                    itemIndex={index}
+                    currentPage={currentPage}
+                    limit={currentLimit}
+                  />
+                </Suspense>
               ))}
             {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
           </TableWrap>

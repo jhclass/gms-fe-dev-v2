@@ -6,14 +6,27 @@ import {
   Checkbox,
   Textarea,
 } from '@nextui-org/react'
-import { useQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { Suspense } from 'react'
+import PaymentInfoManager from '@/components/items/PaymentInfoManager'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
+`
+
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const DetailDiv = styled.div`
@@ -111,9 +124,6 @@ export default function PaymentInfo({
   studentSubjectData,
   studentPaymentData,
 }) {
-  const { loading, error, data: managerData } = useQuery(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
-
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -140,10 +150,6 @@ export default function PaymentInfo({
       .toString()
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -298,13 +304,15 @@ export default function PaymentInfo({
         <AreaBox>
           <div>
             <FilterLabel>수강담당자</FilterLabel>
-            <LineBox>
-              {
-                managerList.find(
-                  user => user.id === studentPaymentData?.processingManagerId,
-                )?.mUsername
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
               }
-            </LineBox>
+            >
+              <PaymentInfoManager studentPaymentData={studentPaymentData} />
+            </Suspense>
           </div>
         </AreaBox>
       </FlexBox>

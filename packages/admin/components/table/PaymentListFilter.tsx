@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
@@ -10,6 +10,19 @@ import { SEARCH_PAYMENT_FILTER_MUTATION } from '@/graphql/mutations'
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
 const TTopic = styled.div`
   display: flex;
   align-items: center;
@@ -191,13 +204,21 @@ export default function PaymentFilterTable({ studentFilter }) {
             </Theader>
             {searchResult?.totalCount > 0 &&
               searchResult?.data?.map((item, index) => (
-                <PaymentItem
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                />
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <PaymentItem
+                    key={index}
+                    tableData={item}
+                    itemIndex={index}
+                    currentPage={currentPage}
+                    limit={currentLimit}
+                  />
+                </Suspense>
               ))}
             {searchResult?.totalCount === 0 && (
               <Nolist>검색결과가 없습니다.</Nolist>
