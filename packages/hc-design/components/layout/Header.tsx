@@ -325,7 +325,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link>
+              <Link href="/webtoon">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_03.png"
                   alt="웹툰과정"

@@ -140,7 +140,7 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="">
+                <Link href="/webtoon">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_01.png"
                     alt="기초드로잉(클립스튜디오)"
@@ -148,7 +148,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/webtoon/production">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_02.png"
                     alt="웹툰 연출/각색"
@@ -156,7 +156,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/webtoon/background">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_03.png"
                     alt="웹툰 배경"
