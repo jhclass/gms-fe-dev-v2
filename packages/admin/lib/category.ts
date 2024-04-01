@@ -300,7 +300,24 @@ const category: Category[] = [
     isBreadcrumb: true,
     isFilter: false,
     isWrite: '',
-    children: [],
+    children: [
+      {
+        href: '/',
+        name: '테스트 출석부',
+        exposure: false,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
+      {
+        href: '/testDates',
+        name: '테스트 달력',
+        exposure: false,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
+    ],
   },
 ]
 
