@@ -2,22 +2,33 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import { Chip, Input } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
 import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import {
   CREATE_ADVICE_TYPE_MUTATION,
   DELETE_ADVICE_TYPE_MUTATION,
 } from '@/graphql/mutations'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
+import CreateAdviceTypeChip from './CreateAdviceTypeChip'
+import { Suspense } from 'react'
 
-type ConsultFilterProps = {
-  isActive: boolean
-}
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -97,12 +108,10 @@ const FilterVariants = {
   },
 }
 
-export default function CreateAdviceType({ isActive, onCreateToggle }) {
+export default function CreateAdviceType({ isActive }) {
   const { userLogs } = useUserLogsMutation()
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
   const [deleteAdvice] = useMutation(DELETE_ADVICE_TYPE_MUTATION)
-  const { loading, error, data } = useQuery(SEE_ADVICE_TYPE_QUERY)
-  const adviceList = data?.seeAdviceType.adviceType || []
   const {
     register,
     handleSubmit,
@@ -163,10 +172,6 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
     }
   }
 
-  if (error) {
-    console.log(error)
-  }
-
   return (
     <>
       <FilterBox
@@ -176,15 +181,15 @@ export default function CreateAdviceType({ isActive, onCreateToggle }) {
       >
         <BoxArea>
           <BoxTop>
-            {adviceList?.map((item, index) => (
-              <Chip
-                key={index}
-                variant="bordered"
-                onClose={() => deleteType(item)}
-              >
-                {item.type}
-              </Chip>
-            ))}
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <CreateAdviceTypeChip />
+            </Suspense>
           </BoxTop>
           <BoxBottom>
             <FilterForm onSubmit={handleSubmit(onSubmit)}>

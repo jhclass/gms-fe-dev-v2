@@ -9,17 +9,20 @@ import {
   ModalHeader,
   ScrollShadow,
 } from '@nextui-org/react'
-import { useQuery } from '@apollo/client'
-import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
-import ChipCheckbox from '@/components/common/ChipCheckbox'
+import AdviceTypeModalChip from './AdviceTypeModalChip'
+import { Suspense } from 'react'
 
-const Nolist = styled.div`
-  display: flex;
+const LodingDiv = styled.div`
+  padding: 1.5rem;
   width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
 `
 
 export default function AdviceTypeModal({
@@ -30,19 +33,12 @@ export default function AdviceTypeModal({
   adviceTypeSelected,
   setAdviceTypeSelected,
 }) {
-  const { loading, error, data } = useQuery(SEE_ADVICE_TYPE_QUERY)
-  const adviceList = data?.seeAdviceType.adviceType || []
-
   const handleAdviceChange = values => {
     setAdviceTypeSelected(values)
   }
   const clickAdviceSubmit = () => {
     setValue('adviceTypes', adviceTypeSelected)
     onClose()
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -63,15 +59,15 @@ export default function AdviceTypeModal({
                     value={adviceTypeSelected}
                     onValueChange={handleAdviceChange}
                   >
-                    {adviceList !== null &&
-                      adviceList?.map((item, index) => (
-                        <ChipCheckbox key={item.id} value={item.type}>
-                          {item.type}
-                        </ChipCheckbox>
-                      ))}
-                    {adviceList === null && (
-                      <Nolist>등록된 분야가 없습니다.</Nolist>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <AdviceTypeModalChip />
+                    </Suspense>
                   </CheckboxGroup>
                 </ScrollShadow>
               </ModalBody>

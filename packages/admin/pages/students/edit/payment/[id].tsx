@@ -790,6 +790,9 @@ export default function StudentsWritePayment() {
                                 value: /^[0-9]+$/,
                                 message: '숫자만 입력 가능합니다.',
                               },
+                              validate: value =>
+                                parseInt(value, 10) > 999 ||
+                                '1000원 이상 입력해야 합니다.',
                             })}
                           />
                           {errors.amountPayment && (
@@ -967,6 +970,9 @@ export default function StudentsWritePayment() {
                             defaultValue={paymentDetailData.depositAmount}
                             {...register('depositAmount', {
                               required: '입금 금액을 작성해주세요.',
+                              validate: value =>
+                                parseInt(value, 10) > 9 ||
+                                '10원 이상 입력해야 합니다.',
                             })}
                           />
                           {errors.depositAmount && (

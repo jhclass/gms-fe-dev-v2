@@ -101,10 +101,7 @@ export default function Subjects() {
           setSubjectFilter={setSubjectFilter}
           subjectFilter={subjectFilter}
         />
-        <CreateAdviceType
-          isActive={createActive}
-          onCreateToggle={setCreateActive}
-        />
+        <CreateAdviceType isActive={createActive} />
         <ConBox>
           <Suspense
             fallback={
