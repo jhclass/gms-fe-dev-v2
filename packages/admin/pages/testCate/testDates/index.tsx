@@ -3,77 +3,140 @@ import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
+import { getYear } from 'date-fns'
+registerLocale('ko', ko)
+const _ = require('lodash')
 import MainWrap from '@/components/wrappers/MainWrap'
+import { Button } from '@nextui-org/react'
+import { styled } from 'styled-components'
 // import DatePickerHeader from '../common/DatePickerHeader'
 
+const DatePickerBox = styled.div`
+  .react-datepicker__day--keyboard-selected {
+    background-color: transparent;
+  }
+  .react-datepicker__day--highlighted {
+    background-color: #007de9;
+    color: #fff;
+  }
+`
+
 export default function TestDate() {
-  const startDate = new Date('2024-04-01')
-  const endDate = new Date('2024-04-30')
-  // 사용자가 선택한 요일을 저장하는 배열
+  const startDate = new Date('2024-01-10')
+  const endDate = new Date('2024-03-15')
   const [disabledDays, setDisabledDays] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
 
   useEffect(() => {
-    const updatedSelectedDates = [...selectedDates]
     let currentDate = new Date(startDate)
+    let updatedSelectedDates = []
 
     while (currentDate <= endDate) {
-      const dayOfWeek = currentDate.getDay()
-      const isSelectedDay = disabledDays.includes(dayOfWeek)
-      const isSelectedDate = selectedDates.some(
-        selectedDate => selectedDate.getTime() === currentDate.getTime(),
-      )
-      if (isSelectedDay && isSelectedDate) {
-        const index = selectedDates.findIndex(
-          selectedDate => selectedDate.getTime() === currentDate.getTime(),
-        )
-        console.log(currentDate, index)
-        // 유효한 인덱스인 경우에만 제거
-        // if (index !== -1) {
-        //   updatedSelectedDates.splice(index, 1)
-        // }
-      } else if (!isSelectedDay && !isSelectedDate) {
-        updatedSelectedDates.push(new Date(currentDate))
-      }
+      const dateString = currentDate.toISOString().split('T')[0]
+      updatedSelectedDates.push(dateString)
 
       currentDate.setDate(currentDate.getDate() + 1)
     }
-
     setSelectedDates(updatedSelectedDates)
-  }, [disabledDays])
+  }, [])
+
+  const calculateMonthsShown = (startDate, endDate) => {
+    const startYear = startDate.getFullYear()
+    const endYear = endDate.getFullYear()
+    const startMonth = startDate.getMonth()
+    const endMonth = endDate.getMonth()
+
+    // 두 날짜 사이의 총 월 수 계산
+    const months = (endYear - startYear) * 12 + endMonth - startMonth + 1
+    return months
+  }
+
+  const monthsShown = calculateMonthsShown(startDate, endDate)
 
   const isDayDisabled = date => {
     const day = date.getDay()
     return disabledDays.includes(day)
   }
 
-  // 요일 선택 핸들러
-  const toggleDay = day => {
-    setDisabledDays(prev =>
-      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day],
-    )
-  }
+  const updateSelectedDates = (isDayDisabled, day) => {
+    if (isDayDisabled) {
+      let newDatesToAdd = []
+      let currentDate = new Date(startDate)
+      while (currentDate <= endDate) {
+        if (currentDate.getDay() === day) {
+          const dateString = currentDate.toISOString().split('T')[0]
+          if (!selectedDates.includes(dateString)) {
+            newDatesToAdd.push(dateString)
+          }
+        }
+        currentDate.setDate(currentDate.getDate() + 1)
+      }
 
-  const handleDateSelect = date => {
-    const isSelected = selectedDates.find(
-      selectedDate => selectedDate.getTime() === date.getTime(),
-    )
-    if (isSelected) {
-      setSelectedDates(
-        selectedDates.filter(
-          selectedDate => selectedDate.getTime() !== date.getTime(),
-        ),
-      )
+      setSelectedDates(prevSelectedDates => [
+        ...prevSelectedDates,
+        ...newDatesToAdd,
+      ])
     } else {
-      setSelectedDates([...selectedDates, date])
+      setSelectedDates(prevSelectedDates => {
+        return prevSelectedDates.filter(dateString => {
+          const date = new Date(dateString)
+          return date.getDay() !== day
+        })
+      })
     }
   }
 
-  // console.log('disabledDays', disabledDays)
-  // console.log('selectedDates', selectedDates)
+  // 요일 선택 핸들러
+  const toggleDay = day => {
+    setDisabledDays(prev => {
+      const isDayDisabled = prev.includes(day)
+      const newDisabledDays = isDayDisabled
+        ? prev.filter(d => d !== day)
+        : [...prev, day]
+
+      updateSelectedDates(isDayDisabled, day)
+
+      return newDisabledDays
+    })
+  }
+
+  const formatDate = date => {
+    const d = new Date(date)
+    let month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear()
+
+    if (month.length < 2) month = '0' + month
+    if (day.length < 2) day = '0' + day
+
+    return [year, month, day].join('-')
+  }
+
+  const handleDateSelect = date => {
+    const dateString = formatDate(date)
+
+    setSelectedDates(currentSelectedDates => {
+      const isSelected = currentSelectedDates.some(
+        selectedDate => selectedDate === dateString,
+      )
+
+      if (isSelected) {
+        return currentSelectedDates.filter(
+          selectedDate => selectedDate !== dateString,
+        )
+      } else {
+        return [...currentSelectedDates, dateString]
+      }
+    })
+  }
+
+  const clickDate = () => {
+    console.log(selectedDates)
+  }
+
   return (
     <MainWrap>
-      <div>
+      <DatePickerBox>
         <div>
           {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
             <label key={index}>
@@ -88,16 +151,17 @@ export default function TestDate() {
         </div>
         <DatePicker
           inline
-          selected={null}
-          highlightDates={selectedDates}
-          // onChange={date => setStartDate(date)}
+          locale="ko"
+          highlightDates={selectedDates.map(dateString => new Date(dateString))}
           onChange={handleDateSelect}
           filterDate={date => !isDayDisabled(date)}
+          selected={startDate}
           minDate={startDate}
           maxDate={endDate}
-          // 선택된 요일이 비활성화된 요일 배열에 포함되어 있지 않으면 선택 가능
+          monthsShown={monthsShown}
         />
-      </div>
+        <Button onClick={clickDate}> 선택된날짜</Button>
+      </DatePickerBox>
     </MainWrap>
   )
 }
