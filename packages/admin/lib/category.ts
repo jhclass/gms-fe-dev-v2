@@ -93,6 +93,36 @@ const category: Category[] = [
   },
   {
     id: 2,
+    href: '/lecture',
+    // iconSrc: 'ico_work',
+    iconSrc: 'xi-presentation',
+    name: '강의관리',
+    resetItems: [],
+    exposure: true,
+    isBreadcrumb: true,
+    isFilter: true,
+    isWrite: '/subjects/write',
+    children: [
+      // {
+      //   href: '/detail',
+      //   name: '출석부',
+      //   exposure: false,
+      //   isBreadcrumb: true,
+      //   isFilter: false,
+      //   isWrite: '',
+      // },
+      // {
+      //   href: '/write',
+      //   name: '강의 등록',
+      //   exposure: false,
+      //   isBreadcrumb: true,
+      //   isFilter: false,
+      //   isWrite: '',
+      // },
+    ],
+  },
+  {
+    id: 3,
     href: '/subjects',
     // iconSrc: 'ico_work',
     iconSrc: 'xi-library-books-o',
@@ -127,7 +157,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     href: '/students',
     // iconSrc: 'ico_regist',
     iconSrc: 'xi-user-address',
@@ -170,7 +200,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     href: '/accounting',
     // iconSrc: 'ico_accounting',
     iconSrc: 'xi-money',
@@ -245,7 +275,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     href: '/statistics',
     // iconSrc: 'ico_accounting',
     iconSrc: 'xi-chart-line',
