@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button } from '@nextui-org/react'
+import { Button, Chip } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -16,8 +16,6 @@ import {
   SEARCH_PAYMENT_MUTATION,
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
-import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
-import PaymentInfo from '@/components/items/PaymentInfo'
 import LectureInfo from '@/components/items/LectureInfo'
 
 const ConArea = styled.div`
@@ -42,6 +40,7 @@ const TopInfo = styled.div`
   }
 `
 const Noti = styled.p`
+  font-size: 0.8rem;
   span {
     color: red;
   }
@@ -67,6 +66,12 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
+const FlexChipBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+`
+
 const AreaTitle = styled.div`
   display: flex;
   justify-content: space-between;
@@ -550,46 +555,44 @@ export default function StudentsWrite() {
               <LectureInfo />
             </DetailDiv>
           </DetailBox>
-
-          {studentPaymentDetailData?.length > 0 && (
-            <>
-              <DetailBox>
-                <DetailDiv>
-                  <AreaTitle>
-                    <h4>결제 정보</h4>
-                    {(mGrade < grade.general || mPart.includes('회계팀')) && (
-                      <Button
-                        isDisabled={
-                          studentPaymentData?.unCollectedAmount === 0
-                            ? true
-                            : false
-                        }
-                        size="sm"
-                        radius="sm"
-                        variant="solid"
-                        className="text-white bg-flag1"
-                        onClick={() => {
-                          {
-                            router.push(`/students/write/payment/${paymentId}`)
-                          }
-                        }}
-                      >
-                        미수금결제
-                      </Button>
-                    )}
-                  </AreaTitle>
-                  {studentPaymentDetailData?.map((item, index) => (
-                    <StudentPaymentDetailItem
-                      key={index}
-                      setStudentPaymentDetailData={setStudentPaymentDetailData}
-                      detailtData={item}
-                      paymentId={paymentId}
-                    />
-                  ))}
-                </DetailDiv>
-              </DetailBox>
-            </>
-          )}
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>학적부</h4>
+              </AreaTitle>
+              <Noti>
+                <span>❗️</span>
+                교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지 않습니다.
+              </Noti>
+              <FlexChipBox>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+                <Chip color="primary">Primary</Chip>
+              </FlexChipBox>
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>출석부</h4>
+              </AreaTitle>
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>결석인원현황</h4>
+              </AreaTitle>
+              <FlexBox></FlexBox>
+            </DetailDiv>
+          </DetailBox>
           <DetailBox>
             <BtnBox>
               <Button
