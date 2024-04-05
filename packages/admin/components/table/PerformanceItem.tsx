@@ -93,6 +93,9 @@ const Tamount = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${600 * 0.25}px;
+  span {
+    color: red;
+  }
 `
 const EllipsisBox = styled.p`
   overflow: hidden;
@@ -129,7 +132,14 @@ export default function PerformanceItem(props) {
               <EllipsisBox>{paymentData.subject.subjectName}</EllipsisBox>
             </TSubject>
             <Tamount>
-              <EllipsisBox>{feeFormet(paymentData?.actualAmount)}</EllipsisBox>
+              <EllipsisBox>
+                {paymentData?.actualAmount === null ||
+                paymentData?.actualAmount === 0 ? (
+                  <span>0</span>
+                ) : (
+                  feeFormet(paymentData?.actualAmount)
+                )}
+              </EllipsisBox>
             </Tamount>
           </ClickBox>
         </TableRow>
