@@ -327,7 +327,7 @@ export default function StudentsWriteCourse() {
   }, [subjectSelectedData])
 
   const onSubmit = data => {
-    if (data.actualAmount > 0) {
+    if (data.actualAmount >= 0) {
       createStudentPayment({
         variables: {
           campus: '신촌',
