@@ -366,7 +366,8 @@ export default function StudentPaymentForm({
                   : typeof data.paymentDate === 'string'
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
-              actualAmount: parseInt(data.actualAmount),
+              actualAmount:
+                data.actualAmount === null ? 0 : parseInt(data.actualAmount),
               discountAmount:
                 data.discount === null
                   ? studentPaymentData?.discountAmount

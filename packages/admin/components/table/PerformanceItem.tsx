@@ -129,7 +129,11 @@ export default function PerformanceItem(props) {
               <EllipsisBox>{paymentData.subject.subjectName}</EllipsisBox>
             </TSubject>
             <Tamount>
-              <EllipsisBox>{feeFormet(paymentData?.actualAmount)}</EllipsisBox>
+              <EllipsisBox>
+                {paymentData?.actualAmount === null
+                  ? '0'
+                  : feeFormet(paymentData?.actualAmount)}
+              </EllipsisBox>
             </Tamount>
           </ClickBox>
         </TableRow>
