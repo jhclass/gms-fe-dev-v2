@@ -93,6 +93,9 @@ const Tamount = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${600 * 0.25}px;
+  span {
+    color: red;
+  }
 `
 const EllipsisBox = styled.p`
   overflow: hidden;
@@ -130,9 +133,12 @@ export default function PerformanceItem(props) {
             </TSubject>
             <Tamount>
               <EllipsisBox>
-                {paymentData?.actualAmount === null
-                  ? '0'
-                  : feeFormet(paymentData?.actualAmount)}
+                {paymentData?.actualAmount === null ||
+                paymentData?.actualAmount === 0 ? (
+                  <span>0</span>
+                ) : (
+                  feeFormet(paymentData?.actualAmount)
+                )}
               </EllipsisBox>
             </Tamount>
           </ClickBox>
