@@ -1,4 +1,11 @@
-import { Button, Input, Pagination, ScrollShadow } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Pagination,
+  Radio,
+  RadioGroup,
+  ScrollShadow,
+} from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
@@ -77,25 +84,15 @@ const ClickBox = styled.div`
   display: flex;
   width: 100%;
 `
-const Tcount = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
 const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 50%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.25}px;
+  min-width: ${1200 * 0.5}px;
 `
 
 const Tdate = styled.div`
@@ -120,15 +117,15 @@ const Tname = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 
-const Tnum = styled.div`
+const Tradio = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 15%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.15}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
@@ -237,11 +234,9 @@ export default function AbsentList() {
               <TheaderBox>
                 <ClickBox>
                   <Tname>이름</Tname>
-                  <Tdate>결석일자</Tdate>
-                  <Tnum>결석일차</Tnum>
-                  <Tcount>결석횟수</Tcount>
-                  <Ttext>결석사유</Ttext>
-                  <Ttext>조치사항</Ttext>
+                  <Tradio>중도탈락구분</Tradio>
+                  <Tdate>중도탈락일자</Tdate>
+                  <Ttext>중도탈락사유</Ttext>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -260,6 +255,20 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tname>
+                  <Tradio>
+                    <RadioGroup
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={'수강보기'}
+                    >
+                      <Radio key={'수강포기'} value={'수강포기'}>
+                        수강포기
+                      </Radio>
+                      <Radio key={'미수료'} value={'미수료'}>
+                        미수료
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
                   <Tdate>
                     <DatePickerBox>
                       <DatePicker
@@ -311,39 +320,6 @@ export default function AbsentList() {
                       />
                     </DatePickerBox>
                   </Tdate>
-                  <Tnum>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tnum>
-                  <Tcount>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcount>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
                   <Ttext>
                     <Input
                       labelPlacement="outside"
@@ -387,6 +363,21 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tname>
+                  <Tradio>
+                    <RadioGroup
+                      isReadOnly={true}
+                      orientation="horizontal"
+                      className="gap-2"
+                      defaultValue={'수강포기'}
+                    >
+                      <Radio key={'수강포기'} value={'수강포기'}>
+                        수강포기
+                      </Radio>
+                      <Radio key={'미수료'} value={'미수료'}>
+                        미수료
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
                   <Tdate>
                     <Input
                       isReadOnly={true}
@@ -400,49 +391,10 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tdate>
-                  <Tnum>
-                    <Input
-                      isReadOnly={true}
-                      labelPlacement="outside"
-                      defaultValue={'3일차'}
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tnum>
-                  <Tcount>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'1회'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcount>
                   <Ttext>
                     <Input
                       isReadOnly={true}
-                      defaultValue={'무단결석'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'조치사항조치사항'}
+                      defaultValue={'중도탈락사유'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"

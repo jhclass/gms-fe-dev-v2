@@ -76,13 +76,13 @@ export default function artworkDigitalDrawing() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_01.webp"
                 alt="디지털드로잉 과정소개 @DIGITAL DRAWING
                 디지털 일러스트레이션의 다양한 완성, 분야별 컨셉파악부터 스토리에 따른 개인별 작품완성까지!! 타블렛의 기초 사용법부터 체계적인이론을 바탕으로, 개인별 스타일에 맞는 드로잉을 표현하기 위한 1:1 면담진행, 개개인의 니즈에 맞춘 컨셉별 특성표현과 캐릭터의 독창성을 고려하여 창의적인 작품을 디지털기법을 통해 완성하는 교육과정입니다."
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_01.webp"
                 alt="디지털드로잉 과정소개 @DIGITAL DRAWING
                 디지털 일러스트레이션의 다양한 완성, 분야별 컨셉파악부터 스토리에 따른 개인별 작품완성까지!! 타블렛의 기초 사용법부터 체계적인이론을 바탕으로, 개인별 스타일에 맞는 드로잉을 표현하기 위한 1:1 면담진행, 개개인의 니즈에 맞춘 컨셉별 특성표현과 캐릭터의 독창성을 고려하여 창의적인 작품을 디지털기법을 통해 완성하는 교육과정입니다."
                 className="block w-full wmd:hidden"
@@ -93,7 +93,7 @@ export default function artworkDigitalDrawing() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_02.webp"
               alt="Step .01 라인드로잉의 중요성 | 타블렛 이용시 주의사항 및 사용방법 디지털 라인드로잉 강의(브러시기능 이해) -직선/정원/타원/프리커브 라인드로잉 연습 & 개인별 트레이닝,
               Step .02 구도와 명암의 이해 | 사물 대상 정면, 반측면 구도 및 명암 이해 동물캐릭터 대상 구도 및 명암 컬러링,
               Step .03 동물 부분묘사-1 | 실사 동물(大) 예시로 근육 개념 이해 및 드로잉 -기린/코끼리/하마 등 큰동물 대상 실습,
@@ -115,12 +115,12 @@ export default function artworkDigitalDrawing() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -130,12 +130,12 @@ export default function artworkDigitalDrawing() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_02.webp"
               alt="Step .01 라인드로잉의 중요성 | 타블렛 이용시 주의사항 및 사용방법 디지털 라인드로잉 강의(브러시기능 이해) -직선/정원/타원/프리커브 라인드로잉 연습 & 개인별 트레이닝,
               Step .02 구도와 명암의 이해 | 사물 대상 정면, 반측면 구도 및 명암 이해 동물캐릭터 대상 구도 및 명암 컬러링,
               Step .03 동물 부분묘사-1 | 실사 동물(大) 예시로 근육 개념 이해 및 드로잉 -기린/코끼리/하마 등 큰동물 대상 실습,
@@ -157,13 +157,13 @@ export default function artworkDigitalDrawing() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

@@ -1,4 +1,11 @@
-import { Button, Input, Pagination, ScrollShadow } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Pagination,
+  Radio,
+  RadioGroup,
+  ScrollShadow,
+} from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
@@ -76,26 +83,17 @@ const TheaderBox = styled.div`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
-`
-const Tcount = styled.div`
-  display: table-cell;
-  justify-content: center;
   align-items: center;
-  width: 8%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
 `
 const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 7%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.25}px;
+  min-width: ${1200 * 0.07}px;
 `
 
 const Tdate = styled.div`
@@ -103,10 +101,10 @@ const Tdate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 8%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.08}px;
 `
 
 const Tname = styled.div`
@@ -114,13 +112,23 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 6%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.06}px;
 `
 
-const Tnum = styled.div`
+const Tradio = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 0.5rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.06}px;
+`
+const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -129,16 +137,6 @@ const Tnum = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.08}px;
-`
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 15%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.15}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -185,6 +183,7 @@ const TableRow = styled.div`
 const BtnBox = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   gap: 0.5rem;
 `
 
@@ -237,11 +236,19 @@ export default function AbsentList() {
               <TheaderBox>
                 <ClickBox>
                   <Tname>이름</Tname>
-                  <Tdate>결석일자</Tdate>
-                  <Tnum>결석일차</Tnum>
-                  <Tcount>결석횟수</Tcount>
-                  <Ttext>결석사유</Ttext>
-                  <Ttext>조치사항</Ttext>
+                  <Tradio>취업/창업</Tradio>
+                  <Tdate>취업일자</Tdate>
+                  <Ttext>회사명</Ttext>
+                  <Ttext>사업자번호</Ttext>
+                  <Ttext>담당업무</Ttext>
+                  <Ttext>소재지</Ttext>
+                  <Ttext>전화번호</Ttext>
+                  <Ttext>사업자규모</Ttext>
+                  <Tradio>고용보험</Tradio>
+                  <Tradio>재직증명</Tradio>
+                  <Tradio>관련분야</Tradio>
+                  <Tradio>취업형태</Tradio>
+                  <Tradio>중복여부</Tradio>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -260,6 +267,20 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tname>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'취업'}
+                    >
+                      <Radio key={'취업'} value={'취업'}>
+                        취업
+                      </Radio>
+                      <Radio key={'창업'} value={'창업'}>
+                        창업
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
                   <Tdate>
                     <DatePickerBox>
                       <DatePicker
@@ -311,28 +332,6 @@ export default function AbsentList() {
                       />
                     </DatePickerBox>
                   </Tdate>
-                  <Tnum>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tnum>
-                  <Tcount>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcount>
                   <Ttext>
                     <Input
                       labelPlacement="outside"
@@ -355,6 +354,123 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Ttext>
+                  <Ttext>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'Y'}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'Y'}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'동일'}
+                    >
+                      <Radio key={'동일'} value={'동일'}>
+                        동일
+                      </Radio>
+                      <Radio key={'관련'} value={'관련'}>
+                        관련
+                      </Radio>
+                      <Radio key={'다른'} value={'다른'}>
+                        다른
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'조기'}
+                    >
+                      <Radio key={'조기'} value={'조기'}>
+                        조기
+                      </Radio>
+                      <Radio key={'수료'} value={'수료'}>
+                        수료
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'N'}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
                   <Tbtn>
                     <BtnBox>
                       <Button
@@ -387,6 +503,20 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tname>
+                  <Tradio>
+                    <RadioGroup
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'취업'}
+                    >
+                      <Radio key={'취업'} value={'취업'}>
+                        취업
+                      </Radio>
+                      <Radio key={'창업'} value={'창업'}>
+                        창업
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
                   <Tdate>
                     <Input
                       isReadOnly={true}
@@ -400,36 +530,10 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tdate>
-                  <Tnum>
-                    <Input
-                      isReadOnly={true}
-                      labelPlacement="outside"
-                      defaultValue={'3일차'}
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tnum>
-                  <Tcount>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'1회'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcount>
                   <Ttext>
                     <Input
                       isReadOnly={true}
-                      defaultValue={'무단결석'}
+                      defaultValue={'회사명'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -442,7 +546,7 @@ export default function AbsentList() {
                   <Ttext>
                     <Input
                       isReadOnly={true}
-                      defaultValue={'조치사항조치사항'}
+                      defaultValue={'사업자번호'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -452,6 +556,136 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Ttext>
+                  <Ttext>
+                    <Input
+                      isReadOnly={true}
+                      defaultValue={'담당업무'}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      isReadOnly={true}
+                      defaultValue={'소재지'}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      isReadOnly={true}
+                      defaultValue={'전화번호'}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      isReadOnly={true}
+                      defaultValue={'사업장규모'}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Ttext>
+                  <Tradio>
+                    <RadioGroup
+                      isReadOnly={true}
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'Y'}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      isReadOnly={true}
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'Y'}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      isReadOnly={true}
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'동일'}
+                    >
+                      <Radio key={'동일'} value={'동일'}>
+                        동일
+                      </Radio>
+                      <Radio key={'관련'} value={'관련'}>
+                        관련
+                      </Radio>
+                      <Radio key={'다른'} value={'다른'}>
+                        다른
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      isReadOnly={true}
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'조기'}
+                    >
+                      <Radio key={'조기'} value={'조기'}>
+                        조기
+                      </Radio>
+                      <Radio key={'수료'} value={'수료'}>
+                        수료
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
+                  <Tradio>
+                    <RadioGroup
+                      isReadOnly={true}
+                      size={'sm'}
+                      className="gap-[0.5rem]"
+                      defaultValue={'N'}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  </Tradio>
                   <Tbtn>
                     <BtnBox>
                       <Button

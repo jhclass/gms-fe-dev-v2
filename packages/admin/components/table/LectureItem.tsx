@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Button, Checkbox } from '@nextui-org/react'
 import { useState } from 'react'
 import LectureReportList from './LectureReportList'
+import { useRouter } from 'next/router'
 
 const TableItem = styled.div`
   position: relative;
@@ -172,6 +173,7 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props) {
+  const router = useRouter()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
@@ -289,7 +291,7 @@ export default function ConsolutItem(props) {
                     variant="bordered"
                     color="primary"
                     className="w-full"
-                    // onClick={() => clickCancelReq(item)}
+                    onClick={() => router.push('/lecture/attendance')}
                   >
                     출석부
                   </Button>

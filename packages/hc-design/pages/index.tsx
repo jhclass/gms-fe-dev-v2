@@ -68,7 +68,7 @@ export default function Home() {
       <MainBtn>
         <Link>
           <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/main_btn01.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/main_btn01.webp"
             alt="전체 과정(컨텐츠) 보기"
           />
         </Link>
@@ -77,12 +77,12 @@ export default function Home() {
         <Wrap>
           <img
             className="block md:hidden"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr02.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr02.webp"
             alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
           />
           <img
             className="hidden md:block"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_tit.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_tit.webp"
             alt="Design&IT / @curriculum"
           />
         </Wrap>
@@ -92,18 +92,18 @@ export default function Home() {
       </SectionArea>
       <img
         className="block mb-20 md:hidden"
-        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco01.png"
+        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco01.webp"
       />
       <SectionArea>
         <Wrap>
           <img
             className="hidden md:block"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_tit.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_tit.webp"
             alt="RealFeedback / @student review"
           />
           <img
             className="block md:hidden"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_tit.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_tit.webp"
             alt="RealFeedback / @student review"
           />
         </Wrap>
@@ -113,19 +113,19 @@ export default function Home() {
       </SectionArea>
       <img
         className="block mb-20 md:hidden"
-        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco02.png"
+        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco02.webp"
       />
       <MainBnr>
         <Wrap>
           <Link href="/support">
             <img
               className="hidden md:block"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bnr01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bnr01.webp"
               alt="국비지원, 내일배움카드 나도 지원대상인지 궁금하다면? 빠른 확인서비스 이용하기! Click"
             />
             <img
               className="block md:hidden"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr01.webp"
               alt="국비지원, 내일배움카드 나도 지원대상인지 궁금하다면? 빠른 확인서비스 이용하기! Click"
             />
           </Link>
@@ -136,14 +136,14 @@ export default function Home() {
         <Wrap className="hidden md:block">
           <Link>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom.webp"
               alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
             />
           </Link>
         </Wrap>
         <img
           className="block md:hidden"
-          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bottom.png"
+          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bottom.webp"
           alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
         />
       </SectionArea>

@@ -76,7 +76,7 @@ export default function motiongraphicChinema4D() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_01.webp"
                 alt="시네마 포디 과정소개 @CINEMA 4D
               모션그래픽 콘셉트에 부합하는 모델링, 맵핑, 라이팅, 키프레임과 충돌 태그 및 모그라프, 패브릭, 깃털, 연기 등. 다양한 사물과의 합성을 통해 작품완성까지!! 시포디의 기초사용법과 활용방법을 교육. 
               시포디의 시뮬레이션 기능을 이해하고 간단한 애니메이션부터 단계별 레슨을 통해, 자연스러운 움직임과 리얼한 재질표현을 위해 다양한 기능들을 학습하는 수업입니다.
@@ -84,7 +84,7 @@ export default function motiongraphicChinema4D() {
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_01.webp"
                 alt="시네마 포디 과정소개 @CINEMA 4D
               모션그래픽 콘셉트에 부합하는 모델링, 맵핑, 라이팅, 키프레임과 충돌 태그 및 모그라프, 패브릭, 깃털, 연기 등. 다양한 사물과의 합성을 통해 작품완성까지!! 시포디의 기초사용법과 활용방법을 교육. 
               시포디의 시뮬레이션 기능을 이해하고 간단한 애니메이션부터 단계별 레슨을 통해, 자연스러운 움직임과 리얼한 재질표현을 위해 다양한 기능들을 학습하는 수업입니다.
@@ -97,7 +97,7 @@ export default function motiongraphicChinema4D() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_02.webp"
               alt="Step .01 기초 UI활용 Modeling | 시포디 인터페이스의 이해 모션그래픽 및 영상제작 파이프라인 소개, 툴 설명 Nerbs 및 Spline 활용한 모델링 기초 모델링의 기본 이해, 제품디자인 ( Line/ Round/ Shape ),
               Step .02 Modeling, Mapping Animation | 모델링의 활용 / 스컬핑 방식의 이해 / 에프터이펙트와 Cinema4D의 호환 씬세팅을 위한 기본적인 이해 Camera/ Light/ 각각의 쉐이더에 대한 이해 UV에 대한 이해와 UV layout을 활용한 UV맵 정리,
               Step .03 Animation 심화과정 01 (Hair. Cloth. Mograph) | Hair/ Cloth를 활용한 깃털, 민들레, 천, 깃발 제작 및 애니메이션 X-Particle소개 Mograph를 활용한 Animation-1 Mograph를 활용한 Animation-2,
@@ -119,12 +119,12 @@ export default function motiongraphicChinema4D() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -134,12 +134,12 @@ export default function motiongraphicChinema4D() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_02.webp"
               alt="Step .01 기초 UI활용 Modeling | 시포디 인터페이스의 이해 모션그래픽 및 영상제작 파이프라인 소개, 툴 설명 Nerbs 및 Spline 활용한 모델링 기초 모델링의 기본 이해, 제품디자인 ( Line/ Round/ Shape ),
             Step .02 Modeling, Mapping Animation | 모델링의 활용 / 스컬핑 방식의 이해 / 에프터이펙트와 Cinema4D의 호환 씬세팅을 위한 기본적인 이해 Camera/ Light/ 각각의 쉐이더에 대한 이해 UV에 대한 이해와 UV layout을 활용한 UV맵 정리,
             Step .03 Animation 심화과정 01 (Hair. Cloth. Mograph) | Hair/ Cloth를 활용한 깃털, 민들레, 천, 깃발 제작 및 애니메이션 X-Particle소개 Mograph를 활용한 Animation-1 Mograph를 활용한 Animation-2,
@@ -161,13 +161,13 @@ export default function motiongraphicChinema4D() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

@@ -56,18 +56,18 @@ export default function handleClick() {
         <QuickItem>
           <figure>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_tit01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_tit01.webp"
               alt="notice & event"
             />
           </figure>
           <QuickCon>
             <Link href="#" onClick={handleClick}>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_no_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_no_01.webp"
                 alt="event 2024년 K-MOVE 해외취업 과정 개강"
               />
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/flag_new.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/flag_new.webp"
                 alt="NEW"
               />
             </Link>
@@ -76,18 +76,18 @@ export default function handleClick() {
         <QuickItem>
           <figure>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_tit02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_tit02.webp"
               alt="Congratulation"
             />
           </figure>
           <QuickCon>
             <Link href="#" onClick={handleClick}>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_con_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_quick_con_01.webp"
                 alt="주식회사범정 김OO님 취업을 축하드립니다."
               />
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/flag_new.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/flag_new.webp"
                 alt="NEW"
               />
             </Link>

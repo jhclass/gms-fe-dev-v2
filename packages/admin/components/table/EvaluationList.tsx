@@ -1,4 +1,11 @@
-import { Button, Input, Pagination, ScrollShadow } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Pagination,
+  Radio,
+  RadioGroup,
+  ScrollShadow,
+} from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
@@ -76,37 +83,17 @@ const TheaderBox = styled.div`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
-`
-const Tcount = styled.div`
-  display: table-cell;
-  justify-content: center;
   align-items: center;
-  width: 8%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
 `
 const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 65%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.25}px;
-`
-
-const Tdate = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 0.5rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.65}px;
 `
 
 const Tname = styled.div`
@@ -118,17 +105,6 @@ const Tname = styled.div`
   padding: 0.5rem;
   font-size: inherit;
   min-width: ${1200 * 0.1}px;
-`
-
-const Tnum = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
@@ -236,12 +212,9 @@ export default function AbsentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
-                  <Tname>이름</Tname>
-                  <Tdate>결석일자</Tdate>
-                  <Tnum>결석일차</Tnum>
-                  <Tcount>결석횟수</Tcount>
-                  <Ttext>결석사유</Ttext>
-                  <Ttext>조치사항</Ttext>
+                  <Tname>구분</Tname>
+                  <Ttext>평가내용</Ttext>
+                  <Tname>배점</Tname>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -260,79 +233,6 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tname>
-                  <Tdate>
-                    <DatePickerBox>
-                      <DatePicker
-                        renderCustomHeader={({
-                          date,
-                          changeYear,
-                          changeMonth,
-                          decreaseMonth,
-                          increaseMonth,
-                        }) => (
-                          <DatePickerHeader
-                            rangeYears={years}
-                            clickDate={date}
-                            changeYear={changeYear}
-                            changeMonth={changeMonth}
-                            decreaseMonth={decreaseMonth}
-                            increaseMonth={increaseMonth}
-                          />
-                        )}
-                        locale="ko"
-                        showYearDropdown
-                        selected={
-                          stVisitDate === null ? null : new Date(stVisitDate)
-                        }
-                        placeholderText="날짜선택"
-                        isClearable
-                        onChange={date => {
-                          setStVisitDate(date)
-                        }}
-                        dateFormat="yyyy/MM/dd"
-                        onChangeRaw={e => e.preventDefault()}
-                        onFocus={e => e.target.blur()}
-                        customInput={
-                          <Input
-                            labelPlacement="outside"
-                            variant="bordered"
-                            radius="sm"
-                            size="sm"
-                            type="text"
-                            placeholder=" "
-                            id="date"
-                            classNames={{
-                              input: 'caret-transparent',
-                            }}
-                            isReadOnly={true}
-                            startContent={<i className="xi-calendar" />}
-                          />
-                        }
-                      />
-                    </DatePickerBox>
-                  </Tdate>
-                  <Tnum>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tnum>
-                  <Tcount>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcount>
                   <Ttext>
                     <Input
                       labelPlacement="outside"
@@ -344,7 +244,7 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Ttext>
+                  <Tname>
                     <Input
                       labelPlacement="outside"
                       variant="bordered"
@@ -354,7 +254,7 @@ export default function AbsentList() {
                       placeholder=" "
                       className="w-full"
                     />
-                  </Ttext>
+                  </Tname>
                   <Tbtn>
                     <BtnBox>
                       <Button
@@ -377,7 +277,7 @@ export default function AbsentList() {
                   <Tname>
                     <Input
                       isReadOnly={true}
-                      defaultValue={'김나라'}
+                      defaultValue={'1차'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -387,49 +287,10 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Tname>
-                  <Tdate>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'2024-01-14'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tdate>
-                  <Tnum>
-                    <Input
-                      isReadOnly={true}
-                      labelPlacement="outside"
-                      defaultValue={'3일차'}
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tnum>
-                  <Tcount>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'1회'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcount>
                   <Ttext>
                     <Input
                       isReadOnly={true}
-                      defaultValue={'무단결석'}
+                      defaultValue={'평가내용'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -439,10 +300,10 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Ttext>
+                  <Tname>
                     <Input
                       isReadOnly={true}
-                      defaultValue={'조치사항조치사항'}
+                      defaultValue={'20점'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -451,7 +312,7 @@ export default function AbsentList() {
                       placeholder=" "
                       className="w-full"
                     />
-                  </Ttext>
+                  </Tname>
                   <Tbtn>
                     <BtnBox>
                       <Button

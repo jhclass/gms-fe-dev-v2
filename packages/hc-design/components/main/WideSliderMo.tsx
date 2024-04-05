@@ -47,21 +47,21 @@ export default function WideSliderMo() {
           <SwiperSlide>
             <Link href="/detail/webtoon">
               <div className="flex justify-center">
-                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.png" />
+                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.webp" />
               </div>
             </Link>
           </SwiperSlide>
           <SwiperSlide>
             <Link href="/detail/webtoon">
               <div className="flex justify-center">
-                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.png" />
+                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.webp" />
               </div>
             </Link>
           </SwiperSlide>
           <SwiperSlide>
             <Link href="/detail/webtoon">
               <div className="flex justify-center">
-                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.png" />
+                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.webp" />
               </div>
             </Link>
           </SwiperSlide>
@@ -69,7 +69,7 @@ export default function WideSliderMo() {
         <div className="wrap">
           <SwiperPager>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/mo/main_visual_pager.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/mo/main_visual_pager.webp"
               alt=""
             />
             <div className="main_visual_mo_pager"></div>
@@ -77,7 +77,7 @@ export default function WideSliderMo() {
         </div>
         <SwiperDeco>
           <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_deco.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_deco.webp"
             alt=""
           />
         </SwiperDeco>

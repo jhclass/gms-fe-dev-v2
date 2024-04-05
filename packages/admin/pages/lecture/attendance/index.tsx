@@ -17,6 +17,13 @@ import {
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
+import AbsentList from '@/components/table/AbsentList'
+import AropoutList from '@/components/table/AropoutList'
+import AropoutStateList from '@/components/table/AropoutStateList'
+import AcquisitionList from '@/components/table/AcquisitionList'
+import EmploymentList from '@/components/table/EmploymentList'
+import EvaluationList from '@/components/table/EvaluationList'
+import Attendance from '@/components/table/Attendance'
 
 const ConArea = styled.div`
   width: 100%;
@@ -583,6 +590,7 @@ export default function StudentsWrite() {
               <AreaTitle>
                 <h4>출석부</h4>
               </AreaTitle>
+              <Attendance />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -590,7 +598,47 @@ export default function StudentsWrite() {
               <AreaTitle>
                 <h4>결석인원현황</h4>
               </AreaTitle>
-              <FlexBox></FlexBox>
+              <AbsentList />
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>중도탈락현황</h4>
+              </AreaTitle>
+              <AropoutList />
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>중도탈락 사전점검</h4>
+              </AreaTitle>
+              <AropoutStateList />
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>자격취득현황</h4>
+              </AreaTitle>
+              <AcquisitionList />
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>취업현황</h4>
+              </AreaTitle>
+              <EmploymentList />
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>정기평가 내용설정</h4>
+              </AreaTitle>
+              <EvaluationList />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
