@@ -4,8 +4,6 @@ import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
 import Layout from '@/pages/lecture/layout'
 import { Suspense, useState } from 'react'
-import LectureList from '@/components/table/LectureList'
-import LectureFilter from '@/components/filter/LectureFilter'
 import EmploymentStateList from '@/components/table/EmploymentStateList'
 import EmploymentStateFilter from '@/components/filter/EmploymentStateFilter'
 
@@ -13,11 +11,6 @@ const ConBox = styled.div`
   margin: 2rem 0;
   z-index: 0;
   position: relative;
-`
-const DeleteDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 `
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -31,22 +24,7 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-const ActiveIcon = styled(motion.i)`
-  color: #fff;
-`
-
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
-
-export default function Lecture() {
+export default function Employment() {
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [studentFilter, setStudentFilter] = useState()
@@ -100,4 +78,4 @@ export default function Lecture() {
     </>
   )
 }
-Lecture.getLayout = page => <Layout>{page}</Layout>
+Employment.getLayout = page => <Layout>{page}</Layout>

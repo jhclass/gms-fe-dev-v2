@@ -9,23 +9,14 @@ import {
   subStatusState,
 } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import ChipCheckbox from '@/components/common/ChipCheckbox'
-import {
-  Button,
-  CheckboxGroup,
-  Input,
-  Select,
-  SelectItem,
-} from '@nextui-org/react'
-import { Suspense, useEffect, useState } from 'react'
+import { Button, Input } from '@nextui-org/react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import ManagerSelect from '@/components/common/ManagerSelect'
-import AdviceSelect from '@/components//common/AdviceSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -37,18 +28,6 @@ const FilterBox = styled(motion.div)`
   @media (max-width: 768px) {
     width: 100%;
   }
-`
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
 `
 const FilterForm = styled.form`
   display: flex;
@@ -85,15 +64,6 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
 `
-const FilterLabel = styled.label`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #11181c;
-  padding-bottom: 0.1rem;
-  display: block;
-`
-
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
