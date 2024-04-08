@@ -101,10 +101,10 @@ const Tdate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 11%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.11}px;
 `
 
 const Tname = styled.div`
@@ -112,21 +112,21 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 9%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.09}px;
 `
 
 const Tradio = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 5%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.05}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
@@ -189,6 +189,18 @@ const BtnBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .react-datepicker {
+    /* margin-left: 50%; */
+  }
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -222,9 +234,19 @@ export default function AbsentList() {
   const [totalCount, setTotalCount] = useState(0)
   const [stVisitDate, setStVisitDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const formatDate = data => {
+    const date = new Date(data)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')}`
+    return formatted
   }
 
   return (
@@ -236,7 +258,7 @@ export default function AbsentList() {
               <TheaderBox>
                 <ClickBox>
                   <Tname>이름</Tname>
-                  <Tradio>취업/창업</Tradio>
+                  <Tradio>구분</Tradio>
                   <Tdate>취업일자</Tdate>
                   <Ttext>회사명</Ttext>
                   <Ttext>사업자번호</Ttext>
@@ -244,11 +266,27 @@ export default function AbsentList() {
                   <Ttext>소재지</Ttext>
                   <Ttext>전화번호</Ttext>
                   <Ttext>사업자규모</Ttext>
-                  <Tradio>고용보험</Tradio>
-                  <Tradio>재직증명</Tradio>
-                  <Tradio>관련분야</Tradio>
-                  <Tradio>취업형태</Tradio>
-                  <Tradio>중복여부</Tradio>
+                  <Tradio>
+                    고용
+                    <br />
+                    보험
+                  </Tradio>
+                  <Tradio>
+                    재직 <br />
+                    증명
+                  </Tradio>
+                  <Tradio>
+                    관련 <br />
+                    분야
+                  </Tradio>
+                  <Tradio>
+                    취업 <br />
+                    형태
+                  </Tradio>
+                  <Tradio>
+                    중복 <br />
+                    여부
+                  </Tradio>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -282,55 +320,25 @@ export default function AbsentList() {
                     </RadioGroup>
                   </Tradio>
                   <Tdate>
-                    <DatePickerBox>
-                      <DatePicker
-                        renderCustomHeader={({
-                          date,
-                          changeYear,
-                          changeMonth,
-                          decreaseMonth,
-                          increaseMonth,
-                        }) => (
-                          <DatePickerHeader
-                            rangeYears={years}
-                            clickDate={date}
-                            changeYear={changeYear}
-                            changeMonth={changeMonth}
-                            decreaseMonth={decreaseMonth}
-                            increaseMonth={increaseMonth}
-                          />
-                        )}
-                        locale="ko"
-                        showYearDropdown
-                        selected={
-                          stVisitDate === null ? null : new Date(stVisitDate)
-                        }
-                        placeholderText="날짜선택"
-                        isClearable
-                        onChange={date => {
-                          setStVisitDate(date)
-                        }}
-                        dateFormat="yyyy/MM/dd"
-                        onChangeRaw={e => e.preventDefault()}
-                        onFocus={e => e.target.blur()}
-                        customInput={
-                          <Input
-                            labelPlacement="outside"
-                            variant="bordered"
-                            radius="sm"
-                            size="sm"
-                            type="text"
-                            placeholder=" "
-                            id="date"
-                            classNames={{
-                              input: 'caret-transparent',
-                            }}
-                            isReadOnly={true}
-                            startContent={<i className="xi-calendar" />}
-                          />
-                        }
-                      />
-                    </DatePickerBox>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      id="date"
+                      classNames={{
+                        input: 'caret-transparent',
+                      }}
+                      isReadOnly={true}
+                      startContent={<i className="xi-calendar" />}
+                      defaultValue={
+                        stVisitDate === null ? null : String(stVisitDate)
+                      }
+                      value={formatDate(stVisitDate) || ''}
+                      onClick={() => setIsOpen(!isOpen)}
+                    />
                   </Tdate>
                   <Ttext>
                     <Input
@@ -519,15 +527,23 @@ export default function AbsentList() {
                   </Tradio>
                   <Tdate>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'2024-01-14'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
                       size="sm"
                       type="text"
                       placeholder=" "
-                      className="w-full"
+                      id="date"
+                      classNames={{
+                        input: 'caret-transparent',
+                      }}
+                      isReadOnly={true}
+                      startContent={<i className="xi-calendar" />}
+                      defaultValue={
+                        stVisitDate === null ? null : String(stVisitDate)
+                      }
+                      value={formatDate(stVisitDate) || ''}
+                      onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
                   <Ttext>
@@ -728,6 +744,36 @@ export default function AbsentList() {
           </PagerWrap>
         )}
       </TableArea>
+      {isOpen && (
+        <DatePickerBox>
+          <DatePicker
+            inline
+            renderCustomHeader={({
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+            }) => (
+              <DatePickerHeader
+                rangeYears={years}
+                clickDate={date}
+                changeYear={changeYear}
+                changeMonth={changeMonth}
+                decreaseMonth={decreaseMonth}
+                increaseMonth={increaseMonth}
+              />
+            )}
+            locale="ko"
+            showYearDropdown
+            selected={stVisitDate === null ? null : new Date(stVisitDate)}
+            onChange={date => {
+              setStVisitDate(date)
+              setIsOpen(false)
+            }}
+          />
+        </DatePickerBox>
+      )}
     </>
   )
 }
