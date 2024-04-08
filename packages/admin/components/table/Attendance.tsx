@@ -1,8 +1,4 @@
-import MainWrap from '@/components/wrappers/MainWrap'
 import { styled } from 'styled-components'
-import { motion } from 'framer-motion'
-import Layout from '@/pages/testCate/layout'
-// import { nodes } from '@/pages/testCate/data'
 import {
   Table,
   Header,
@@ -13,7 +9,6 @@ import {
   Cell,
 } from '@table-library/react-table-library/table'
 import { useTheme } from '@table-library/react-table-library/theme'
-import { getTheme } from '@table-library/react-table-library/baseline'
 import { useState } from 'react'
 import { Button, Pagination } from '@nextui-org/react'
 

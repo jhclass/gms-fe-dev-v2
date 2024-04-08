@@ -16,48 +16,11 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  ManageUser,
-  StudentState,
-  StudentStateResponse,
-} from '@/src/generated/graphql'
 import DatePickerHeader from '../common/DatePickerHeader'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
   position: relative;
-`
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
 `
 const TableWrap = styled.div`
   width: 100%;
@@ -84,16 +47,17 @@ const TheaderBox = styled.div`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `
 const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 27%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.25}px;
+  min-width: ${1200 * 0.27}px;
 `
 
 const Tdate = styled.div`
@@ -120,34 +84,26 @@ const Tradio = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 20%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.25}px;
+  min-width: ${1200 * 0.2}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 14%;
+  width: 15%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.15}px;
 `
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
-`
-const Nolist = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
 `
 
 const TableItem = styled.div`
@@ -188,7 +144,7 @@ const DatePickerBox = styled.div`
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 5;
+  z-index: 21;
   left: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -215,15 +171,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-type seeStudentState = {
-  seeStudentState: StudentStateResponse
-}
-type mmeFavoQuery = {
-  mMe: ManageUser
-}
-type seeFavoriteState = {
-  seeFavorite: StudentState[]
-}
 
 export default function AbsentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
@@ -278,7 +225,8 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       orientation="horizontal"
-                      className="gap-1"
+                      size={'sm'}
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'훈련교사'}
                     >
                       <Radio key={'훈련교사'} value={'훈련교사'}>
@@ -368,7 +316,8 @@ export default function AbsentList() {
                     <RadioGroup
                       isReadOnly={true}
                       orientation="horizontal"
-                      className="gap-1"
+                      size={'sm'}
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'교무팀장'}
                     >
                       <Radio key={'훈련교사'} value={'훈련교사'}>

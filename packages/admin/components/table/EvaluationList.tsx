@@ -26,38 +26,6 @@ import DatePickerHeader from '../common/DatePickerHeader'
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
-`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
@@ -121,14 +89,6 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-const Nolist = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
-`
 
 const TableItem = styled.div`
   position: relative;
@@ -183,15 +143,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-type seeStudentState = {
-  seeStudentState: StudentStateResponse
-}
-type mmeFavoQuery = {
-  mMe: ManageUser
-}
-type seeFavoriteState = {
-  seeFavorite: StudentState[]
-}
 
 export default function AbsentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)

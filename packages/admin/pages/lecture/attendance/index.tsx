@@ -5,17 +5,8 @@ import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button, Chip } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
-import {
-  CLASS_CANCEL_MUTATION,
-  CLASS_CHECK_MUTATION,
-  SEARCH_PAYMENT_MUTATION,
-  UPDATE_STUDENT_COURSE_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
 import AropoutList from '@/components/table/AropoutList'
@@ -229,18 +220,6 @@ export default function StudentsWrite() {
             <DetailDiv>
               <AreaTitleFilter>
                 <h4>출석부</h4>
-                {/* <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  color="primary"
-                  className="text-white"
-                  onClick={() => {
-                    setFilterActive1(!filterActive1)
-                  }}
-                >
-                  Filter
-                </Button> */}
                 <AttendanceFilter
                   isActive={filterActive1}
                   // onFilterSearch={undefined}
@@ -248,12 +227,6 @@ export default function StudentsWrite() {
                   // setStudentFilter={undefined}
                 />
               </AreaTitleFilter>
-              {/* <AttendanceFilter
-                isActive={filterActive1}
-                // onFilterSearch={undefined}
-                // studentFilter={undefined}
-                // setStudentFilter={undefined}
-              /> */}
               <Attendance />
             </DetailDiv>
           </DetailBox>
@@ -268,7 +241,6 @@ export default function StudentsWrite() {
                   // setStudentFilter={undefined}
                 />
               </AreaTitleFilter>
-
               <AbsentList />
             </DetailDiv>
           </DetailBox>

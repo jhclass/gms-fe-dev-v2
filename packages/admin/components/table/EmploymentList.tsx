@@ -112,46 +112,37 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 6%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.06}px;
 `
 
 const Tradio = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 5%;
+  width: 6%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.05}px;
+  min-width: ${1200 * 0.06}px;
 `
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 6%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.06}px;
 `
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
 `
-const Nolist = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
-`
-
 const TableItem = styled.div`
   position: relative;
   width: 100%;
@@ -191,7 +182,7 @@ const DatePickerBox = styled.div`
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 5;
+  z-index: 21;
   left: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -218,15 +209,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-type seeStudentState = {
-  seeStudentState: StudentStateResponse
-}
-type mmeFavoQuery = {
-  mMe: ManageUser
-}
-type seeFavoriteState = {
-  seeFavorite: StudentState[]
-}
 
 export default function AbsentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
@@ -308,7 +290,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'취업'}
                     >
                       <Radio key={'취업'} value={'취업'}>
@@ -409,7 +391,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'Y'}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -423,7 +405,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'Y'}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -437,7 +419,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'동일'}
                     >
                       <Radio key={'동일'} value={'동일'}>
@@ -454,7 +436,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'조기'}
                     >
                       <Radio key={'조기'} value={'조기'}>
@@ -468,7 +450,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'N'}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -514,7 +496,7 @@ export default function AbsentList() {
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'취업'}
                     >
                       <Radio key={'취업'} value={'취업'}>
@@ -628,7 +610,7 @@ export default function AbsentList() {
                     <RadioGroup
                       isReadOnly={true}
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'Y'}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -643,7 +625,7 @@ export default function AbsentList() {
                     <RadioGroup
                       isReadOnly={true}
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'Y'}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -658,7 +640,7 @@ export default function AbsentList() {
                     <RadioGroup
                       isReadOnly={true}
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'동일'}
                     >
                       <Radio key={'동일'} value={'동일'}>
@@ -676,7 +658,7 @@ export default function AbsentList() {
                     <RadioGroup
                       isReadOnly={true}
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'조기'}
                     >
                       <Radio key={'조기'} value={'조기'}>
@@ -691,7 +673,7 @@ export default function AbsentList() {
                     <RadioGroup
                       isReadOnly={true}
                       size={'sm'}
-                      className="gap-[0.5rem]"
+                      className="gap-[0.5rem] items-center"
                       defaultValue={'N'}
                     >
                       <Radio key={'Y'} value={'Y'}>
