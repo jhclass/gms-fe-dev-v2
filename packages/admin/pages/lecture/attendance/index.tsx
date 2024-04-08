@@ -24,6 +24,8 @@ import AcquisitionList from '@/components/table/AcquisitionList'
 import EmploymentList from '@/components/table/EmploymentList'
 import EvaluationList from '@/components/table/EvaluationList'
 import Attendance from '@/components/table/Attendance'
+import AropoutFilter from '@/components/filter/AropoutFilter'
+import AttendanceFilter from '@/components/filter/AttendanceFilter'
 
 const ConArea = styled.div`
   width: 100%;
@@ -87,6 +89,20 @@ const AreaTitle = styled.div`
   h4 {
     font-size: 1.2rem;
     font-weight: 600;
+  }
+`
+const AreaTitleFilter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
   }
 `
 const AreaBox = styled.div`
@@ -244,6 +260,8 @@ export default function StudentsWrite() {
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
+
+  const [filterActive1, setFilterActive1] = useState(true)
   useEffect(() => {
     if (paymentId !== null) {
       searchStudentPayment({
@@ -587,17 +605,48 @@ export default function StudentsWrite() {
           </DetailBox>
           <DetailBox>
             <DetailDiv>
-              <AreaTitle>
+              <AreaTitleFilter>
                 <h4>출석부</h4>
-              </AreaTitle>
+                {/* <Button
+                  size="sm"
+                  radius="sm"
+                  variant="solid"
+                  color="primary"
+                  className="text-white"
+                  onClick={() => {
+                    setFilterActive1(!filterActive1)
+                  }}
+                >
+                  Filter
+                </Button> */}
+                <AttendanceFilter
+                  isActive={filterActive1}
+                  // onFilterSearch={undefined}
+                  // studentFilter={undefined}
+                  // setStudentFilter={undefined}
+                />
+              </AreaTitleFilter>
+              {/* <AttendanceFilter
+                isActive={filterActive1}
+                // onFilterSearch={undefined}
+                // studentFilter={undefined}
+                // setStudentFilter={undefined}
+              /> */}
               <Attendance />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
             <DetailDiv>
-              <AreaTitle>
+              <AreaTitleFilter>
                 <h4>결석인원현황</h4>
-              </AreaTitle>
+                <AropoutFilter
+                  isActive={filterActive1}
+                  // onFilterSearch={undefined}
+                  // studentFilter={undefined}
+                  // setStudentFilter={undefined}
+                />
+              </AreaTitleFilter>
+
               <AbsentList />
             </DetailDiv>
           </DetailBox>
