@@ -5,31 +5,31 @@ import styled from 'styled-components'
 
 const GnbBox = styled.div`
   border-top: 1px solid #c2c2c2;
+  background-image: linear-gradient(rgba(242, 232, 255, 1), transparent);
+  background-color: transparent;
 `
-const Wrap = styled.div`
-  display: flex;
-  width: 1440px;
-  margin: 0 auto;
-`
+
 const BnrBox = styled.div`
-  width: 20%;
+  width: 21.5278vw;
 `
 const LavList = styled.div`
-  width: 80%;
   display: flex;
+  justify-content: flex-end;
 `
 
 const LavBox = styled.ul`
-  width: 12.5%;
+  width: 100%;
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
   border-left: 1px solid #c2c2c2;
   align-items: center;
   gap: 0.3rem;
+
   > li {
     width: 100%;
     text-align: center;
+    padding-right: 1vw;
   }
   a {
     display: block;
@@ -37,6 +37,7 @@ const LavBox = styled.ul`
     height: 100%;
   }
   img {
+    width: 100%;
     margin: 0 auto;
   }
 `
@@ -50,7 +51,10 @@ export default function Gnb({ setHoverIndex }) {
   return (
     <>
       <GnbBox>
-        <div className="wrap" style={{ display: 'flex' }}>
+        <div
+          className="wrap"
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
           <BnrBox>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_bnr01.webp"
@@ -67,7 +71,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="/motiongraphic">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_01.webp"
-                    alt="프리미어프로"
+                    alt="영상편집"
                   />
                 </Link>
               </li>
@@ -75,7 +79,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="/motiongraphic/afterEffect">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_02.webp"
-                    alt="에펙"
+                    alt="2D 모션그래픽"
                   />
                 </Link>
               </li>
@@ -83,15 +87,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="/motiongraphic/cinema">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_03.webp"
-                    alt="시네마4D"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_04.webp"
-                    alt="모션포트폴리오"
+                    alt="3D 모션그래픽"
                   />
                 </Link>
               </li>
@@ -143,7 +139,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="/webtoon">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_01.webp"
-                    alt="기초드로잉(클립스튜디오)"
+                    alt="웹툰캐릭터 (클립스튜디오)"
                   />
                 </Link>
               </li>
@@ -167,7 +163,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_04.webp"
-                    alt="웹툰 원고"
+                    alt="웹툰 스토리 (원고/작가)"
                   />
                 </Link>
               </li>
@@ -189,7 +185,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="/artwork/game">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_02.webp"
-                    alt="원화(아트웍/게임)"
+                    alt="원화 (아트웍/게임)"
                   />
                 </Link>
               </li>
@@ -211,55 +207,15 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="/support">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_01.webp"
-                    alt="구직자과정"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="/support">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_02.webp"
-                    alt="재직자과정"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_03.webp"
-                    alt="국가기간전략산업산업훈련"
+                    alt="국민내일배움카드"
                   />
                 </Link>
               </li>
               <li>
                 <Link href="/support/system">
                   <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_04.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_02.webp"
                     alt="취업시스템"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_05.webp"
-                    alt="취업현황"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_06.webp"
-                    alt="채용정보"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_07.webp"
-                    alt="언론보도"
                   />
                 </Link>
               </li>
@@ -270,18 +226,18 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="">
+                <Link href="/academy">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_01.webp"
-                    alt="K-MOVE(일본)"
+                    alt="아카데미소개"
                   />
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/academy/features">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_02.webp"
-                    alt="해외취업시스템"
+                    alt="교육특성"
                   />
                 </Link>
               </li>
@@ -289,7 +245,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_03.webp"
-                    alt="일본 약정회사 현환"
+                    alt="오시는길"
                   />
                 </Link>
               </li>
@@ -300,18 +256,18 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="/academy">
+                <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_01.webp"
-                    alt="아카데미소개"
+                    alt="수강료 조회"
                   />
                 </Link>
               </li>
               <li>
-                <Link href="/academy/features">
+                <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_02.webp"
-                    alt="교육특성"
+                    alt="시간표 조회"
                   />
                 </Link>
               </li>
@@ -319,7 +275,7 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_03.webp"
-                    alt="강사소개"
+                    alt="온라인 상담"
                   />
                 </Link>
               </li>
@@ -327,96 +283,18 @@ export default function Gnb({ setHoverIndex }) {
                 <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_04.webp"
-                    alt="교육시설"
+                    alt="위치 조회"
                   />
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_05.webp"
-                    alt="커뮤니티"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_06.webp"
-                    alt="오시는길"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_07.webp"
-                    alt="포트폴리오"
-                  />
-                </Link>
-              </li>
-            </LavBox>
-            <LavBox
-              onMouseEnter={() => {
-                setHoverIndex(8)
-              }}
-            >
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_01.webp"
-                    alt="수강료조회"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_02.webp"
-                    alt="시간표조회"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_03.webp"
-                    alt="카톡상담"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_04.webp"
-                    alt="온라인상담"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_05.webp"
-                    alt="위치조회"
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_06.webp"
                     alt="업무제휴"
                   />
                 </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_07.webp"
-                    alt="맞춤컨설팅"
-                  />
-                </Link>
-              </li>
+              </li> */}
             </LavBox>
           </LavList>
         </div>

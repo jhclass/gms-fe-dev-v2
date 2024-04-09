@@ -45,42 +45,33 @@ export default function WideSliderMo() {
           className="mySwiper2"
         >
           <SwiperSlide>
-            <Link href="/detail/webtoon">
-              <div className="flex justify-center">
-                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.webp" />
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link href="/detail/webtoon">
-              <div className="flex justify-center">
-                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.webp" />
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link href="/detail/webtoon">
-              <div className="flex justify-center">
-                <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.webp" />
-              </div>
-            </Link>
+            <div className="flex justify-center">
+              <figure className="absolute w-[59.2593vw] bottom-0 left-0">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01_tit.webp"
+                  alt="영상편집&제작 2D/3D 모션그래픽 취업과정 과정상세보기"
+                />
+              </figure>
+              <video autoPlay loop muted poster="썸네일경로">
+                <source
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <figure className="absolute z-[6] w-[28.7037vw] bottom-[11.1111vw] right-[8.3333vw]">
+                <Link href="/detail/webtoon">
+                  <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01_btn.webp" />
+                </Link>
+              </figure>
+            </div>
           </SwiperSlide>
         </Swiper>
-        <div className="wrap">
-          <SwiperPager>
-            <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/icon/mo/main_visual_pager.webp"
-              alt=""
-            />
-            <div className="main_visual_mo_pager"></div>
-          </SwiperPager>
-        </div>
-        <SwiperDeco>
-          <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_deco.webp"
-            alt=""
-          />
-        </SwiperDeco>
+        <button className="main_prev w-[10%] absolute top-[50%] left-0 z-[5] -translate-y-[50%]">
+          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner_btn.png" />
+        </button>
+        <button className="rotate-180  w-[10%] main_next absolute top-[50%] right-0 z-[5] -translate-y-[50%]">
+          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner_btn.png" />
+        </button>
       </div>
     </>
   )

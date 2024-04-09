@@ -25,7 +25,7 @@ export default function Footer() {
   return (
     <>
       <footer id="footer">
-        <div className="bg-[#070028] hidden md:block">
+        <div className="hidden md:block">
           <div className="wrap" style={{ display: 'flex' }}>
             <p>
               <img
