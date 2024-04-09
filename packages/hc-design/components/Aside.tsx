@@ -52,7 +52,7 @@ export default function Aside() {
             className="flex items-center justify-center w-full h-full"
           >
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/floating01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/floating01.webp"
               alt="문의하기"
             />
           </Link>

@@ -74,14 +74,14 @@ export default function motiongraphicAfterEffect() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_01.webp"
                 alt="에프터이펙트 과정소개 @AFTER EFFECT
                 모션그래픽 영상제작의 표준!! 에프터 이펙트의 기초부터 활용까지!! 화려한 영상미로 시선을 사로잡는 모션그래픽?? 현업에서 가장 핫한 에프터이펙트의 사용 기법으로 탄탄 기초부터, 화려한 영상제작까지 배우는 수업입니다.
                 관련자격증#ACE"
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_01.webp"
                 alt="에프터이펙트 과정소개 @AFTER EFFECT
                 모션그래픽 영상제작의 표준!! 에프터 이펙트의 기초부터 활용까지!! 화려한 영상미로 시선을 사로잡는 모션그래픽?? 현업에서 가장 핫한 에프터이펙트의 사용 기법으로 탄탄 기초부터, 화려한 영상제작까지 배우는 수업입니다.
                 관련자격증#ACE"
@@ -93,7 +93,7 @@ export default function motiongraphicAfterEffect() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_02.webp"
               alt="Step .01 인터페이스의 이해, 기본 조작 연습 Mask와 Shape Layer의 이해와 기초 | 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습,
               Step .02 Matte의 이해와 활용 Parent와 Puppet tool |번짐 영상소스를 활용한 장면전환 효과 연출 캐릭터 소스의 관절을 연결한 애니메이션 제작,
               Step .03 3d Layer의 이해와 활용 카메라 레이어 기초 | 나비의 날개 짓 만들기 Solid Layer를 이용한 큐브 제작 카메라의 기본 조작 연습 Depth Of Field 옵션 활용,
@@ -113,12 +113,12 @@ export default function motiongraphicAfterEffect() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -128,12 +128,12 @@ export default function motiongraphicAfterEffect() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_02.webp"
               alt="Step .01 인터페이스의 이해, 기본 조작 연습 Mask와 Shape Layer의 이해와 기초 | 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습,
               Step .02 Matte의 이해와 활용 Parent와 Puppet tool |번짐 영상소스를 활용한 장면전환 효과 연출 캐릭터 소스의 관절을 연결한 애니메이션 제작,
               Step .03 3d Layer의 이해와 활용 카메라 레이어 기초 | 나비의 날개 짓 만들기 Solid Layer를 이용한 큐브 제작 카메라의 기본 조작 연습 Depth Of Field 옵션 활용,
@@ -153,13 +153,13 @@ export default function motiongraphicAfterEffect() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

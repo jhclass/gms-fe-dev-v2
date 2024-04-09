@@ -76,14 +76,14 @@ export default function webtoonDrawing() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_01.webp"
                 alt="기초드로잉 (CLIP STUDIO) 과정소개 @BASIC DRAWING
                 웹툰 / 일러스트레이션의 시작, 즐기면서 배우는 드로잉&창작 기본기 트레이닝!
                 클립스튜디오의 사용법 및 기초적인 도형을 이해하며, 디자인 스타일에 맞는 일러스트를 표현. 컨셉에 맞는 캐릭터의 표현과 성격에 맞는 비율 표현원리를 배우는 수업입니다. 또한 여러방면에 걸쳐 활용가능한 아이덴티티의 개념까지 함께 연습이 되도록 교육하는 강좌입니다."
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_01.webp"
                 alt="기초드로잉 (CLIP STUDIO) 과정소개 @BASIC DRAWING
                 웹툰 / 일러스트레이션의 시작, 즐기면서 배우는 드로잉&창작 기본기 트레이닝!
                 클립스튜디오의 사용법 및 기초적인 도형을 이해하며, 디자인 스타일에 맞는 일러스트를 표현. 컨셉에 맞는 캐릭터의 표현과 성격에 맞는 비율 표현원리를 배우는 수업입니다. 또한 여러방면에 걸쳐 활용가능한 아이덴티티의 개념까지 함께 연습이 되도록 교육하는 강좌입니다."
@@ -95,7 +95,7 @@ export default function webtoonDrawing() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_02.webp"
               alt="Step .01 드로잉 기초 및 채색.01 | 클립스튜디오기초 - 인체 단순화 (몸통) - 인체 단순화 (하체) - 인체 단순화 (상하체),
               Step .02 드로잉 기초 및 채색.02 | 클립스튜디오기초 - 인체 단순화 (팔) - 인체 단순화 (손) - 인체 단순화 (발, 잡화),
               Step .03 캐릭터 드로잉.01 | Stroke 스케치 및 채색 - 인물, 피사체,
@@ -112,12 +112,12 @@ export default function webtoonDrawing() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -127,12 +127,12 @@ export default function webtoonDrawing() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_02.webp"
               alt="Step .01 드로잉 기초 및 채색.01 | 클립스튜디오기초 - 인체 단순화 (몸통) - 인체 단순화 (하체) - 인체 단순화 (상하체),
               Step .02 드로잉 기초 및 채색.02 | 클립스튜디오기초 - 인체 단순화 (팔) - 인체 단순화 (손) - 인체 단순화 (발, 잡화),
               Step .03 캐릭터 드로잉.01 | Stroke 스케치 및 채색 - 인물, 피사체,
@@ -149,13 +149,13 @@ export default function webtoonDrawing() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

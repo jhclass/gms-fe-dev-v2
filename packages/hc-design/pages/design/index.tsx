@@ -76,14 +76,14 @@ export default function designPhotoshop() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_01.webp"
                 alt="포토샵 과정소개 @PHOTOSHOP
                 포토샵 교육의 차별화, 전문적인 합성, 디테일한 보정. 실무자도 모르는 표현기법을 속성으로!! 포토샵 프로그램을 활용하여 지면광고 디자인, 전문적인 합성을 통한 디지털아트웍, 세부적인 색감보정을 통해 디자인의 완성도를 극대화 하는 수업입니다.
                 관련자격증 #컴퓨터그래픽스운용기능사 #GTQ 포토샵 #ACP(구 ACA)/ ACE"
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_01.webp"
                 alt="포토샵 과정소개 @PHOTOSHOP
                 포토샵 교육의 차별화, 전문적인 합성, 디테일한 보정. 실무자도 모르는 표현기법을 속성으로!! 포토샵 프로그램을 활용하여 지면광고 디자인, 전문적인 합성을 통한 디지털아트웍, 세부적인 색감보정을 통해 디자인의 완성도를 극대화 하는 수업입니다.
                 관련자격증 #컴퓨터그래픽스운용기능사 #GTQ 포토샵 #ACP(구 ACA)/ ACE"
@@ -95,7 +95,7 @@ export default function designPhotoshop() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_02.webp"
               alt="Step .01 기초그래픽의 이해 브러시 / 성형 / 타이포 | 포토샵의 기본활용 방향 제시. 인터페이스 둘러보기 선택도구의 사용법 및 활용 / 컨텐트어웨어 / 퍼펫웝 사용 및 활용 브러시 활용 / 힐링브러시, 레드아이 툴 이해 리퀴파이를 사용한 올바른 성형 / 타이포 표현 및 필터활용 레이어스타일을 활용한 심볼제작,
               Step .02 이미지 보정 / 합성 블렌딩모드의 이해 / 합성 | 타이포의 변형 및 활용 / 패스의 이해 필터를 활용한 백그라운드 제작 / 스마트오브젝트 이해 블렌딩모드의 이해 / 보정도구(색상보정)의 이해 / HDR보정 블렌딩모드를 활용한 합성 작업 / 필 값을 활용한 레이어스타일 적용 마스크 활용 / 기본 아트웍 제작,
               Step .03 디스플레이스, 빛 표현의 이해 포스터에 적합한 컬러보정 | 광고 기본 레이아웃 / 진출, 후퇴색 표현, 시각 유도 표현법 디스플레이스 필터를 활용한 왜곡 표현법 / 원근감에 따른 하이라이트 지정법 레이어스타일을 접목한 빛 표현 / 기본구도 및 인물배치와 로고 정렬 컬러 발란스 활용 / 쉐도우, 미드톤에 맞는 색배합 / 음영에 따른 합성방법,
@@ -112,12 +112,12 @@ export default function designPhotoshop() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -127,12 +127,12 @@ export default function designPhotoshop() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_02.webp"
               alt="Step .01 기초그래픽의 이해 브러시 / 성형 / 타이포 | 포토샵의 기본활용 방향 제시. 인터페이스 둘러보기 선택도구의 사용법 및 활용 / 컨텐트어웨어 / 퍼펫웝 사용 및 활용 브러시 활용 / 힐링브러시, 레드아이 툴 이해 리퀴파이를 사용한 올바른 성형 / 타이포 표현 및 필터활용 레이어스타일을 활용한 심볼제작,
               Step .02 이미지 보정 / 합성 블렌딩모드의 이해 / 합성 | 타이포의 변형 및 활용 / 패스의 이해 필터를 활용한 백그라운드 제작 / 스마트오브젝트 이해 블렌딩모드의 이해 / 보정도구(색상보정)의 이해 / HDR보정 블렌딩모드를 활용한 합성 작업 / 필 값을 활용한 레이어스타일 적용 마스크 활용 / 기본 아트웍 제작,
               Step .03 디스플레이스, 빛 표현의 이해 포스터에 적합한 컬러보정 | 광고 기본 레이아웃 / 진출, 후퇴색 표현, 시각 유도 표현법 디스플레이스 필터를 활용한 왜곡 표현법 / 원근감에 따른 하이라이트 지정법 레이어스타일을 접목한 빛 표현 / 기본구도 및 인물배치와 로고 정렬 컬러 발란스 활용 / 쉐도우, 미드톤에 맞는 색배합 / 음영에 따른 합성방법,
@@ -149,13 +149,13 @@ export default function designPhotoshop() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_photoshop_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

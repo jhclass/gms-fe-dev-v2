@@ -76,13 +76,13 @@ export default function artworkEmoticon() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_01.webp"
                 alt="이모티콘 과정소개 @EMOTICON
                 생동감 있는 감정표현으로 5주 만의 이모티콘 크리에이터 되기!! 이모티콘과 상관없는 비전공자도 캐릭터제작 실습을 통한 이모티콘을 승인 받을 수 있는 방법을 알려드립니다. 누구나 쉽고 재미있게 만드는 이모티콘 제작을 해보고 캐릭터를 만드는 방법부터 판매, 제안 까지 가능한 수업입니다. 내가 제작한 이모티콘 카카오톡에 제안!"
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_01.webp"
                 alt="이모티콘 과정소개 @EMOTICON
                 생동감 있는 감정표현으로 5주 만의 이모티콘 크리에이터 되기!! 이모티콘과 상관없는 비전공자도 캐릭터제작 실습을 통한 이모티콘을 승인 받을 수 있는 방법을 알려드립니다. 누구나 쉽고 재미있게 만드는 이모티콘 제작을 해보고 캐릭터를 만드는 방법부터 판매, 제안 까지 가능한 수업입니다. 내가 제작한 이모티콘 카카오톡에 제안!"
                 className="block w-full wmd:hidden"
@@ -93,7 +93,7 @@ export default function artworkEmoticon() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_02.webp"
               alt="Step .01 이모티콘 제작의 이해 | 하드웨어 및 소프트웨어의 이해 (Tablet, Photoshop) 동시 작업을 위한 기초 작업과정 이해 이모티콘 제작에 사용되는 Tablet과 Photoshop을 사용하기 위한 환경설정과 활용예시 등을 통해 사용법과 기초 작업 틀을 구축합니다.,
               Step .02 이모티콘 제작 기획 | 이모티콘샵의 시장조사 / 표절과 창작의 이해 이모티콘 시장 트렌드를 이해하여 상업적인 이모티콘을 제작방향을 설정하며, 표절과 창작의 차이를 통해 나만의 이모티콘을 기획할 수 있습니다.,
               Step .03 이모티콘 캐릭터 제작 | 스케치 클린업 및 채색 / Phtoshop action을 활용한 빠르고 깔끔한 채색 기초 스케치와 깔끔하게 따는 클린업 작업의 개념을 이해하며 드로잉을 실습할 수 있고, Photoshop의 로봇기능이라 불리는 'action'을 활용하여 빠르고 정확하게 채색하는 방법을 배워 이모티콘 캐릭터를 제작할 수 있습니다.,
@@ -115,12 +115,12 @@ export default function artworkEmoticon() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -130,12 +130,12 @@ export default function artworkEmoticon() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_02.webp"
               alt="Step .01 이모티콘 제작의 이해 | 하드웨어 및 소프트웨어의 이해 (Tablet, Photoshop) 동시 작업을 위한 기초 작업과정 이해 이모티콘 제작에 사용되는 Tablet과 Photoshop을 사용하기 위한 환경설정과 활용예시 등을 통해 사용법과 기초 작업 틀을 구축합니다.,
               Step .02 이모티콘 제작 기획 | 이모티콘샵의 시장조사 / 표절과 창작의 이해 이모티콘 시장 트렌드를 이해하여 상업적인 이모티콘을 제작방향을 설정하며, 표절과 창작의 차이를 통해 나만의 이모티콘을 기획할 수 있습니다.,
               Step .03 이모티콘 캐릭터 제작 | 스케치 클린업 및 채색 / Phtoshop action을 활용한 빠르고 깔끔한 채색 기초 스케치와 깔끔하게 따는 클린업 작업의 개념을 이해하며 드로잉을 실습할 수 있고, Photoshop의 로봇기능이라 불리는 'action'을 활용하여 빠르고 정확하게 채색하는 방법을 배워 이모티콘 캐릭터를 제작할 수 있습니다.,
@@ -157,13 +157,13 @@ export default function artworkEmoticon() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_emoticon_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

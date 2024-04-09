@@ -19,9 +19,9 @@ const HeaderBox = styled.div`
   }
 `
 const Logo = styled.div`
-  min-width: 12rem;
+  width: 21.5278vw;
   @media (max-width: 960px) {
-    width: 12rem;
+    width: 10rem;
   }
 `
 
@@ -29,21 +29,12 @@ const Nav = styled.ul`
   display: flex;
   height: 100%;
   align-items: center;
+  justify-content: flex-end;
 
   > li {
-    width: 12.5%;
     position: relative;
-
-    &:after {
-      content: '';
-      width: 50%;
-      height: 0.4rem;
-      background: #000;
-      position: absolute;
-      bottom: -0.5rem;
-      left: 50%;
-      margin-left: -25%;
-    }
+    cursor: pointer;
+    padding-right: 1vw;
   }
 
   @media (max-width: 960px) {
@@ -134,43 +125,38 @@ const MgnbNav2 = styled.ul`
 
 const cate = [
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_on.png',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_01_on.webp',
     alt: '모션그래픽과정',
   },
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_on.png',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_on.webp',
     alt: '시각디자인과정',
   },
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_on.png',
-    alt: '웹툰과정',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_on.webp',
+    alt: '웹툰과정 (작가데뷔)',
   },
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_on.png',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_04_on.webp',
     alt: '디지털드로잉과정',
   },
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_on.png',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_05_on.webp',
     alt: '국비/취업지원',
   },
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_on.png',
-    alt: '일본취업지원',
-  },
-  {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_on.png',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_on.webp',
     alt: '아카데미소개',
   },
   {
-    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_off.png',
-    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_08_on.png',
+    off: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_off.webp',
+    on: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_on.webp',
     alt: '고객상담센터',
   },
 ]
@@ -216,60 +202,62 @@ export default function Header() {
     <>
       <header
         id="header"
-        className="px-0 m-auto ax-w-full h-[4rem] lg:h-[10rem] relative z-[40]"
+        className="px-0 m-auto max-w-full h-[4rem] lg:h-[10rem] relative z-[40]"
       >
         <div
           className={`${
             headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'
-          } flex-col w-full bg-[#040033] lg:bg-white max-w-full px-0 lg:border-b-1`}
+          } flex-col w-full  max-w-full px-0`}
         >
-          <MainTopBnr />
+          <div className="bg-[#040033] lg:bg-white">
+            <MainTopBnr />
 
-          <HeaderBox className="wrap">
-            <Logo>
-              <Link href="/" className="block">
-                <img
-                  className="hidden lg:block"
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/header_logo.png"
-                  alt="H ACADEMY | H아카데미"
-                />
-                <img
-                  className="w-[12rem] block lg:hidden"
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.png"
-                  alt="H ACADEMY | H아카데미"
-                />
-              </Link>
-            </Logo>
-
-            <Nav
-              onMouseEnter={() => {
-                setHoverIndex(0)
-              }}
-              onMouseLeave={() => {
-                setHoverIndex(null)
-              }}
-            >
-              {cate.map((item, index) => (
-                <li
-                  key={index}
-                  onMouseEnter={() => {
-                    setHoverIndex(index + 1)
-                  }}
-                >
+            <HeaderBox className="wrap ">
+              <Logo>
+                <Link href="/" className="block">
                   <img
-                    src={hoverIndex - 1 === index ? item.on : item.off}
-                    alt={item.alt}
+                    className="hidden lg:block"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/header_logo.webp"
+                    alt="H ACADEMY | H아카데미"
                   />
-                </li>
-              ))}
-            </Nav>
-            <GnbBtn onClick={handleButtonClick}>
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/nav_btn.png"
-                alt="메뉴"
-              ></img>
-            </GnbBtn>
-          </HeaderBox>
+                  <img
+                    className="w-[12rem] block lg:hidden"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.webp"
+                    alt="H ACADEMY | H아카데미"
+                  />
+                </Link>
+              </Logo>
+
+              <Nav
+                onMouseEnter={() => {
+                  setHoverIndex(0)
+                }}
+                onMouseLeave={() => {
+                  setHoverIndex(null)
+                }}
+              >
+                {cate.map((item, index) => (
+                  <li
+                    key={index}
+                    onMouseEnter={() => {
+                      setHoverIndex(index + 1)
+                    }}
+                  >
+                    <img
+                      src={hoverIndex - 1 === index ? item.on : item.off}
+                      alt={item.alt}
+                    />
+                  </li>
+                ))}
+              </Nav>
+              <GnbBtn onClick={handleButtonClick}>
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/nav_btn.webp"
+                  alt="메뉴"
+                ></img>
+              </GnbBtn>
+            </HeaderBox>
+          </div>
           <GnbBox
             onMouseEnter={() => {
               setHoverIndex(0)
@@ -278,17 +266,18 @@ export default function Header() {
               setHoverIndex(null)
             }}
             style={{ display: hoverIndex ? 'block' : 'none' }}
+            // style={{ display: 'block' }}
             className="hidden lg:block"
           >
             <Gnb setHoverIndex={setHoverIndex} />
           </GnbBox>
         </div>
       </header>
-      <Menu />
+      {/* <Menu /> */}
       <Mgnb $moMenuOpen={moMenuOpen}>
         <MgnbClose onClick={handleButtonClick}>
           <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/close_btn01.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/close_btn01.webp"
             alt="close"
           />
         </MgnbClose>
@@ -296,13 +285,13 @@ export default function Header() {
           <MgnbBnr>
             <Link href="/">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_logo.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_logo.webp"
                 alt="ACADEMY"
               />
             </Link>
             <Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_bnr01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_bnr01.webp"
                 alt="전과정 국비지원"
               />
             </Link>
@@ -311,7 +300,7 @@ export default function Header() {
             <li>
               <Link href="/motiongraphic">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_01.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_01.webp"
                   alt="모션그래픽과정"
                 />
               </Link>
@@ -319,7 +308,7 @@ export default function Header() {
             <li>
               <Link href="/design">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_02.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_02.webp"
                   alt="시각디자인과정"
                 />
               </Link>
@@ -327,7 +316,7 @@ export default function Header() {
             <li>
               <Link href="/webtoon">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_03.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_03.webp"
                   alt="웹툰과정"
                 />
               </Link>
@@ -335,7 +324,7 @@ export default function Header() {
             <li>
               <Link href="/artwork">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_04.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_04.webp"
                   alt="디지털드로잉과정"
                 />
               </Link>
@@ -345,7 +334,7 @@ export default function Header() {
             <li>
               <Link href="/support">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_05.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_05.webp"
                   alt="국비/취업지원"
                 />
               </Link>
@@ -353,7 +342,7 @@ export default function Header() {
             <li>
               <Link href="/academy">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_06.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_06.webp"
                   alt="아카데미소개"
                 />
               </Link>
@@ -361,7 +350,7 @@ export default function Header() {
             <li>
               <Link>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_07.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_07.webp"
                   alt="일본취업지원"
                 />
               </Link>
@@ -369,7 +358,7 @@ export default function Header() {
             <li>
               <Link>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_08.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_08.webp"
                   alt="고객상담센터"
                 />
               </Link>

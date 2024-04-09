@@ -2,6 +2,7 @@ import { Link } from '@nextui-org/react'
 import styled from 'styled-components'
 
 const Item = styled.div`
+  position: relative;
   a {
     display: block;
     width: 100%;

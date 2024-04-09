@@ -76,14 +76,14 @@ export default function webtoonProduction() {
             </div>
             <TopText>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_01.webp"
                 alt="웹툰 연출/각색 과정소개 @webtoon dramatization
                     매끄러운 스토리 구성을 위한 기획부터 콘티 연출과 각색까지! 풍부한 전달력 및 웹툰 연출 TIP! 노하우!
                     웹툰작가 시점의 기본과 대중적인 스토리를 위한 기획방식을 이해하고 좋은 이야기를 구성하기 위한 스토리텔링 방식을 개인에 스타일에 접목시켜 나만의 스토리 연축을 습득합니다. 또한, 퍼포먼스를 더하기 위한 다양한 상황별 각색 ‘TIP’을 경험하고 웹툰 전체의 중요한 신호탄이 될 수 있는 작가 선생님만의 연축/각색 노하우를 습득합니다."
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_01.webp"
                 alt="웹툰 연출/각색 과정소개 @webtoon dramatization
                     매끄러운 스토리 구성을 위한 기획부터 콘티 연출과 각색까지! 풍부한 전달력 및 웹툰 연출 TIP! 노하우!
                     웹툰작가 시점의 기본과 대중적인 스토리를 위한 기획방식을 이해하고 좋은 이야기를 구성하기 위한 스토리텔링 방식을 개인에 스타일에 접목시켜 나만의 스토리 연축을 습득합니다. 또한, 퍼포먼스를 더하기 위한 다양한 상황별 각색 ‘TIP’을 경험하고 웹툰 전체의 중요한 신호탄이 될 수 있는 작가 선생님만의 연축/각색 노하우를 습득합니다."
@@ -95,7 +95,7 @@ export default function webtoonProduction() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_02.webp"
               alt="Step .01 스토리 구성방식 | 스토리텔링을 위한 기획 및 스토리보딩 신속한 기획을 위한 플롯과 트리트먼트 적용 가상의 세계관 스토리 구성 시작하기 구성된 글과 스토리 바탕의 자료수집하기 스토리보드 제작하기,
               Step .02 연출 기획하기 | 장편, 단편 연재 및 목표 일정 계획하기 준비 된 스토리보드를 한줄 요약 및 요소 정하기 - 상징, 반전, 복선, 환상적인 캐릭터, 코믹한 캐릭터 등등,
               Step .03 스토리 각색 및 콘티 .01 | 스토리 각색 요소 점검 및 콘티 작성 장면 각색 및 기본 콘티 완성하기 웹툰연재 1~3화 승부수 표현을 위한 상징적인 각색 각색한 내용에 맞춰 기본콘티 완성, 
@@ -112,12 +112,12 @@ export default function webtoonProduction() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -127,12 +127,12 @@ export default function webtoonProduction() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_deco.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_02.webp"
               alt="Step .01 스토리 구성방식 | 스토리텔링을 위한 기획 및 스토리보딩 신속한 기획을 위한 플롯과 트리트먼트 적용 가상의 세계관 스토리 구성 시작하기 구성된 글과 스토리 바탕의 자료수집하기 스토리보드 제작하기,
               Step .02 연출 기획하기 | 장편, 단편 연재 및 목표 일정 계획하기 준비 된 스토리보드를 한줄 요약 및 요소 정하기 - 상징, 반전, 복선, 환상적인 캐릭터, 코믹한 캐릭터 등등,
               Step .03 스토리 각색 및 콘티 .01 | 스토리 각색 요소 점검 및 콘티 작성 장면 각색 및 기본 콘티 완성하기 웹툰연재 1~3화 승부수 표현을 위한 상징적인 각색 각색한 내용에 맞춰 기본콘티 완성, 
@@ -149,13 +149,13 @@ export default function webtoonProduction() {
             <BtnSection>
               <Link href={'#'}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_btn.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

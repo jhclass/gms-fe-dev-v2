@@ -5,6 +5,7 @@ import { styled } from 'styled-components'
 import Curriculum from '@/components/main/Curriculum'
 import Review from '@/components/main/Review'
 import { Link } from '@nextui-org/react'
+import LoopDeco from '@/components/items/LoopDeco'
 
 const MainCon = styled.div`
   padding-bottom: 3.5rem;
@@ -25,22 +26,18 @@ const Wrap = styled.div`
 `
 const SectionArea = styled.div``
 const ItemArea = styled.div`
-  padding: 3.5rem 0;
-  background: #0e0053;
   @media (max-width: 640px) {
     background: none;
   }
 `
 const MainBnr = styled.div`
-  padding-bottom: 3.5rem;
-  background: #0e0053;
+  padding: 8rem 0;
   @media (max-width: 640px) {
     background: none;
   }
 `
 const MainBtn = styled.div`
   display: none;
-  margin: 2rem 0 4rem;
   a {
     display: block;
   }
@@ -64,68 +61,79 @@ export default function Home() {
         <WideSliderMo></WideSliderMo>
       </div>
 
-      <QuickMenu></QuickMenu>
+      {/* <QuickMenu></QuickMenu> */}
+
+      <LoopDeco />
       <MainBtn>
-        <Link>
+        <Link href="">
           <img
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/main_btn01.png"
-            alt="전체 과정(컨텐츠) 보기"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_btn01.webp"
+            alt="H ACADEMY 전체 과정보기"
           />
         </Link>
+        <LoopDeco />
       </MainBtn>
+
       <SectionArea>
         <Wrap>
           <img
-            className="block md:hidden"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr02.png"
-            alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
+            className="hidden md:block md:mt-[8rem]"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_tit.webp"
+            alt="Design&IT / @curriculum"
           />
           <img
-            className="hidden md:block"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_tit.png"
+            className="block md:hidden mt-[5rem]"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_curr_tit.webp"
             alt="Design&IT / @curriculum"
           />
         </Wrap>
+        <LoopDeco />
         <ItemArea>
           <Curriculum />
         </ItemArea>
       </SectionArea>
       <img
         className="block mb-20 md:hidden"
-        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco01.png"
+        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco01.webp"
       />
       <SectionArea>
         <Wrap>
           <img
-            className="hidden md:block"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_tit.png"
+            className="hidden md:block md:mt-[8rem]"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_tit.webp"
             alt="RealFeedback / @student review"
           />
           <img
             className="block md:hidden"
-            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_tit.png"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_tit.webp"
             alt="RealFeedback / @student review"
           />
         </Wrap>
+        <LoopDeco />
         <ItemArea>
-          <Review />
+          <Wrap>
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_01.webp"
+              alt="후기"
+            />
+          </Wrap>
         </ItemArea>
       </SectionArea>
       <img
         className="block mb-20 md:hidden"
-        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco02.png"
+        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco02.webp"
       />
       <MainBnr>
         <Wrap>
           <Link href="/support">
             <img
               className="hidden md:block"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bnr01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bnr01.webp"
               alt="국비지원, 내일배움카드 나도 지원대상인지 궁금하다면? 빠른 확인서비스 이용하기! Click"
             />
             <img
               className="block md:hidden"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bnr01.webp"
               alt="국비지원, 내일배움카드 나도 지원대상인지 궁금하다면? 빠른 확인서비스 이용하기! Click"
             />
           </Link>
@@ -133,19 +141,27 @@ export default function Home() {
       </MainBnr>
 
       <SectionArea>
-        <Wrap className="hidden md:block">
-          <Link>
-            <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom.png"
-              alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
-            />
-          </Link>
+        <Wrap>
+          <img
+            className="hidden md:block"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom_tit.webp"
+            alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
+          />
+          <img
+            className="block md:hidden"
+            src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bottom_tit.webp"
+            alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
+          />
         </Wrap>
-        <img
-          className="block md:hidden"
-          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_bottom.png"
-          alt="@CREATIVE FACILITY / 수강생의 학습능률을 위한, 쾌적한 시설과 환경을 제공합니다."
-        />
+        <LoopDeco />
+        <ItemArea>
+          <Wrap>
+            {/* <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_01.webp"
+              alt="후기"
+            /> */}
+          </Wrap>
+        </ItemArea>
       </SectionArea>
     </MainCon>
   )

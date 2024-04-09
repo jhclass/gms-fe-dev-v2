@@ -62,7 +62,7 @@ export default function TopBnr() {
         <Wrap>
           <BnrArea>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/main_top_img.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/main_top_img.webp"
               alt="2022 고객만족브랜드 대상 컴퓨터디자인 교육 부문"
             />
           </BnrArea>
@@ -70,7 +70,7 @@ export default function TopBnr() {
             <BtnItme>
               <Link href="#" onClick={handleClick}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn1.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn1.webp"
                   alt="수강료조회"
                 />
               </Link>
@@ -78,7 +78,7 @@ export default function TopBnr() {
             <BtnItme>
               <Link href="#" onClick={handleClick}>
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn2.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn2.webp"
                   alt="위치조회"
                 />
               </Link>
@@ -86,7 +86,7 @@ export default function TopBnr() {
             <BtnItme>
               <Link href="tel:02-393-4321">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
                   alt="02)393-4321"
                 />
               </Link>

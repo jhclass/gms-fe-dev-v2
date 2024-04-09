@@ -16,6 +16,7 @@ export const categoryMenuState = atom<{}>({
   key: 'categoryMenuState',
   default: {
     상담관리: true,
+    강의관리: true,
     회계관리: true,
     통계: true,
   },

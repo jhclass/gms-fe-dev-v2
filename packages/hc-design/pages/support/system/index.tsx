@@ -22,7 +22,7 @@ export default function supportSystem() {
         <div>
           <div className="max-w-[2000px] mx-auto my-0">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_01.webp"
               alt="Mentoring
               Job Strategy
               Matching
@@ -30,7 +30,7 @@ export default function supportSystem() {
               className="hidden w-full wmd:block"
             ></img>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_01.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_01.webp"
               alt="Mentoring
               Job Strategy
               Matching
@@ -51,7 +51,7 @@ export default function supportSystem() {
         <div className="max-w-[1440px] mx-auto my-0">
           <div className="hidden w-full wmd:block">
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_02.webp"
               alt="jOb conSulting sySteM. 
               에이치아카데미 @취업지원시스템 소개
               에이치아카데미 취업지원센터는 수강생 여러분의 취업 및 작가데뷔 꿈을 이뤄드리기 위한 전문적인 컨설팅 시스템을 제공합니다. 
@@ -66,21 +66,21 @@ export default function supportSystem() {
             <Btnbox>
               <Link href="">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn01.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn01.webp"
                   alt="취업현황 확인하기"
                   style={{ width: '19.8611VW', maxWidth: '286px' }}
                 ></img>
               </Link>
               <Link href="">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn02.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn02.webp"
                   alt="채용정보 확인하기"
                   style={{ width: '19.8611VW', maxWidth: '286px' }}
                 ></img>
               </Link>
             </Btnbox>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_03.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_03.webp"
               alt="에이치아카데미의 트렌디한 컨설팅 노하우로 취업의 기쁨을 함께하세요."
             ></img>
           </div>
@@ -88,21 +88,21 @@ export default function supportSystem() {
             <Btnbox>
               <Link href="">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn01.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn01.webp"
                   alt="취업현황 확인하기"
                   style={{ width: '46.8519VW' }}
                 ></img>
               </Link>
               <Link href="">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn02.png"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn02.webp"
                   alt="채용정보 확인하기"
                   style={{ width: '46.8519VW' }}
                 ></img>
               </Link>
             </Btnbox>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_02.webp"
               alt="에이치아카데미의 트렌디한 컨설팅 노하우로 취업의 기쁨을 함께하세요."
             ></img>
           </div>
