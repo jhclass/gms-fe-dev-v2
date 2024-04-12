@@ -93,7 +93,7 @@ export default function designIllustrator() {
                 muted={true}
                 loop={true}
                 playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/design_graphics_bg.mp4"
+                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/design_webdesign_bg.mp4"
               />
             </div>
             <div className="block w-full wmd:hidden">
@@ -103,7 +103,7 @@ export default function designIllustrator() {
                 muted={true}
                 loop={true}
                 playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/design_graphics_bg.mp4"
+                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/design_webdesign_bg.mp4"
               />
             </div>
             <TopText>
@@ -134,23 +134,21 @@ export default function designIllustrator() {
                 </Link>
               </TopBtn>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_01.webp"
-                alt="컴퓨터그래픽스운용기능사 @COMPUTER GRAPHICS LICENSE
-                시험에 필요한 핵심만 쏙쏙, 출제유형 분석과 모의고사 트레이닝!!
-                최근 일러스트의 비중이 높아진 컴퓨터그래픽스 운용기능사의 시험유형을 파악.
-                일러스트 실습을 통한 오브젝트 표현법 실습과 포토샵 필터의 사용법. 최종 아웃풋을 위한
-                인디자인 사용방법까지 단기간에 실기문제에 적응하도록 학습하는 수업입니다.
-                "
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_01.webp"
+                alt="웹디자인기능사 과정소개 @CRAFTSMAN WEB DESIGN
+                웹 경험이 없어도 수강 OK~ 출제유형 분석을 통한 기출문제로 체계적인 시험대비!!
+                최근 퍼블리싱의 비중이 높아진 웹디자인기능사의 시험유형을 파악.
+                HTML부터 CSS, J-Query까지 합격에 필요한 내용을 분석하여 단기간에 학습하고,
+                자체개발한 기출문제를 통해 실기문제에 대한 적응력을 함양하는 수업입니다."
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_01.webp"
-                alt="컴퓨터그래픽스운용기능사 @COMPUTER GRAPHICS LICENSE
-                시험에 필요한 핵심만 쏙쏙, 출제유형 분석과 모의고사 트레이닝!!
-                최근 일러스트의 비중이 높아진 컴퓨터그래픽스 운용기능사의 시험유형을 파악.
-                일러스트 실습을 통한 오브젝트 표현법 실습과 포토샵 필터의 사용법. 최종 아웃풋을 위한
-                인디자인 사용방법까지 단기간에 실기문제에 적응하도록 학습하는 수업입니다.
-                "
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_01.webp"
+                alt="웹디자인기능사 과정소개 @CRAFTSMAN WEB DESIGN
+                웹 경험이 없어도 수강 OK~ 출제유형 분석을 통한 기출문제로 체계적인 시험대비!!
+                최근 퍼블리싱의 비중이 높아진 웹디자인기능사의 시험유형을 파악.
+                HTML부터 CSS, J-Query까지 합격에 필요한 내용을 분석하여 단기간에 학습하고,
+                자체개발한 기출문제를 통해 실기문제에 대한 적응력을 함양하는 수업입니다."
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
@@ -189,16 +187,17 @@ export default function designIllustrator() {
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_02.png"
-              alt="Step .01 시험소개, 문제 유형 파악 | 컴퓨터그래픽스운용기능사 소개 시험시 주의사항 학습 기출문제 풀이,
-              Step .02 일러스트 이해 | 출제유형에 맞는 일러스트레이터 실기 유형 파악 및 이해 기출문제 풀이,
-              Step .03 포토샵 이해 | 출제유형에 맞는 포토샵 실기 유형 파악 및 이해 기출문제 풀이,
-              Step .04 인디자인 이해(출력) |인디자인 재단선 작성 및 출력 이해 사기출문제 풀이,
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_02.png"
+              alt="Step .01 HTML5, CSS | HTML5의 정의. 문서를 구성하는 기본요소 파악 구조를 나타내는 요소 정의 요소를 활용한 레이아웃 작업 CSS정의 및 속성,
+              Step .02 J-Query기초 및 활용 | J-Query 기본 문법 J-Query 메소드 마우스이벤트 소개 J-Query 응용,
+              Step .03 기출문제 풀이1 | 웹디자인기능사 기출문제풀이,
+              Step .04 기출문제 풀이2 | 웹디자인기능사 기출문제풀이 최종점검,
               
               CLASS FOCUS 에이치아카데미는 개인 맞춤형 수업을 추구합니다.
-              일러스트 | 시험유형에 맞는 일러스트 오브젝트 표현능력을 향상합니다.
-              포토샵 | 포토샵 필터의 기능과 시험에 맞는 레이어스타일을 학습합니다.
-              사전연습 | 시험응시 중 실수할 수 있는 요소를 사전에 파악하여 시험에 대한 실전적응력을 향상합니다.
+              시험유형 분석 | 시험유형에 맞는 HTML5의 정의 및 요소를 학습합니다.
+              문제 처리능력 향상 | CSS속성 문제에 대한 유형변화와 핵심을 찾도록 합니다.
+              J-Query 집중대비 | J-Query활용분야에서 출제될 수 있는 문제를 집중 공략합니다.
+              자체개발 기출문제 | 자체개발한 기출문제를 통해 실전적용력을 함양합니다.
               "
             ></img>
             <BtnSection>
@@ -209,7 +208,7 @@ export default function designIllustrator() {
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_03.png"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -224,16 +223,17 @@ export default function designIllustrator() {
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_02.png"
-              alt="Step .01 시험소개, 문제 유형 파악 | 컴퓨터그래픽스운용기능사 소개 시험시 주의사항 학습 기출문제 풀이,
-              Step .02 일러스트 이해 | 출제유형에 맞는 일러스트레이터 실기 유형 파악 및 이해 기출문제 풀이,
-              Step .03 포토샵 이해 | 출제유형에 맞는 포토샵 실기 유형 파악 및 이해 기출문제 풀이,
-              Step .04 인디자인 이해(출력) |인디자인 재단선 작성 및 출력 이해 사기출문제 풀이,
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_02.png"
+              alt="Step .01 HTML5, CSS | HTML5의 정의. 문서를 구성하는 기본요소 파악 구조를 나타내는 요소 정의 요소를 활용한 레이아웃 작업 CSS정의 및 속성,
+              Step .02 J-Query기초 및 활용 | J-Query 기본 문법 J-Query 메소드 마우스이벤트 소개 J-Query 응용,
+              Step .03 기출문제 풀이1 | 웹디자인기능사 기출문제풀이,
+              Step .04 기출문제 풀이2 | 웹디자인기능사 기출문제풀이 최종점검,
               
               CLASS FOCUS 에이치아카데미는 개인 맞춤형 수업을 추구합니다.
-              일러스트 | 시험유형에 맞는 일러스트 오브젝트 표현능력을 향상합니다.
-              포토샵 | 포토샵 필터의 기능과 시험에 맞는 레이어스타일을 학습합니다.
-              사전연습 | 시험응시 중 실수할 수 있는 요소를 사전에 파악하여 시험에 대한 실전적응력을 향상합니다.
+              시험유형 분석 | 시험유형에 맞는 HTML5의 정의 및 요소를 학습합니다.
+              문제 처리능력 향상 | CSS속성 문제에 대한 유형변화와 핵심을 찾도록 합니다.
+              J-Query 집중대비 | J-Query활용분야에서 출제될 수 있는 문제를 집중 공략합니다.
+              자체개발 기출문제 | 자체개발한 기출문제를 통해 실전적용력을 함양합니다.
               "
             ></img>
             <BtnSection>
@@ -245,7 +245,7 @@ export default function designIllustrator() {
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_03.png"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
