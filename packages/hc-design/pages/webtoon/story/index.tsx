@@ -93,7 +93,7 @@ export default function webtoonBackground() {
                 muted={true}
                 loop={true}
                 playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_background_bg.mp4"
+                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_story_bg.mp4"
               />
             </div>
             <div className="block w-full wmd:hidden">
@@ -103,7 +103,7 @@ export default function webtoonBackground() {
                 muted={true}
                 loop={true}
                 playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_background_bg.mp4"
+                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_story_bg.mp4"
               />
             </div>
             <TopText>
@@ -134,17 +134,21 @@ export default function webtoonBackground() {
                 </Link>
               </TopBtn>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_01.webp"
-                alt="웹툰배경 과정소개 @perspective drawing
-                    전경 및 캐릭터 투시도 기반의 웹툰 배경 제작! 소실점부터 다양한 구도를 체험하여 스케치업을 이용한 웹툰 배경 트레이닝!
-                    선 원근법, 박스에 인물 넣기, 얼굴 도형화 각도 별 실습, 명암법과 그림자, 공간 또는 구도별 인물 배치 그리고 인체 비례와 동세, 해부학, 전경 투시 순으로 배경을 자연스럽게 그릴 수 있는 방법에 대해서 배울 수 있습니다. 또한 Sketch-Up(스케치업) 프로그램을 통해 3D배경 제작까지 공부합니다."
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_01.webp"
+                alt="웹툰 원고(작가데뷔) 과정소개 @webtoon author
+                작가(보조작가)데뷔를 위한!! 도전작 및 공모전을 위한 !! 웹툰 완성 최종단계!!
+                지금까지 기초드로잉, 웹툰 연출/각색, 배경 드로잉을 경험하였다면,
+                이제는 작가데뷔 차례!! 작가데뷔를 위한 도전작 준비 기획부터 투고까지!!
+                대표 웹툰 플랫폼 및 대형 웹툰 유통사를 소개 받으며, 웹툰원고 투고를 지원합니다."
                 className="hidden w-full wmd:block"
               ></img>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_background_01.webp"
-                alt="웹툰배경 과정소개 @perspective drawing
-                전경 및 캐릭터 투시도 기반의 웹툰 배경 제작! 소실점부터 다양한 구도를 체험하여 스케치업을 이용한 웹툰 배경 트레이닝!
-                선 원근법, 박스에 인물 넣기, 얼굴 도형화 각도 별 실습, 명암법과 그림자, 공간 또는 구도별 인물 배치 그리고 인체 비례와 동세, 해부학, 전경 투시 순으로 배경을 자연스럽게 그릴 수 있는 방법에 대해서 배울 수 있습니다. 또한 Sketch-Up(스케치업) 프로그램을 통해 3D배경 제작까지 공부합니다."
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_01.webp"
+                alt="웹툰 원고(작가데뷔) 과정소개 @webtoon author
+                작가(보조작가)데뷔를 위한!! 도전작 및 공모전을 위한 !! 웹툰 완성 최종단계!!
+                지금까지 기초드로잉, 웹툰 연출/각색, 배경 드로잉을 경험하였다면,
+                이제는 작가데뷔 차례!! 작가데뷔를 위한 도전작 준비 기획부터 투고까지!!
+                대표 웹툰 플랫폼 및 대형 웹툰 유통사를 소개 받으며, 웹툰원고 투고를 지원합니다."
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
@@ -183,11 +187,13 @@ export default function webtoonBackground() {
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_02.webp"
-              alt="Step .01 배경 드로잉 캐릭터 투시 | 소실점 이해 및 실내,실외의 다양한 투시도 제작 1~3 소점 투시 피사체, 건물, 배경, 캐릭터 점목 다양한 구도의 캐릭터 투시 제작,
-              Step .02 배경 채색 스케치업 기본 | 원근감 표기 및 건물 질감 합성 스케치업 기초 및 실내, 실외 제작 - 사물 및 피사체를 통한 기본기 익히기 3D배경과 웹툰의 인물배치 응용하기,
-              Step .03 건축물과 전경 | 건물 제작 및 건축양식에 어울리는 질감 합성하기 넓은 대지를 기준하여 구조 디자인 및 지형요소 알아보기,
-              Step .04 원경 제작과 블렌더 (BLENDER) | 투시구조에 따른 원경과 구조 파악하기 블렌더 기초와 스컬핑 표현하기 스케치업과 연계된 호환요소 파악 및 표현하기 컨셉별 배경 보정방식 및 포트폴리오 제작,
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_02.png"
+              alt="Step .01 트렌드 / 글로벌 웹툰기획 TIP | 썸네일 기획 및 작성 - 장르 선택 및 트리트먼트 작성 단편 분량 1~3화 준비하기,
+              Step .02 웹툰작가 능력강화 | 캐릭터 연구(시트제작, 드로잉, 채색) 배경작업 (스케치업, 사진보정 및 편집 등) 콘티 (원고로 옮기기 및 스케치),
+              Step .03 웹툰 편집, 각색 방법론 | 웹툰 도전작 원고 완성도 기준 설정 채색 및 배경 각색 노하우 휭 스크롤( 페이지 ) 콘티 제작 최종 작품기획서 작성, 
+              Step .04 웹툰 및 웹소설 플랫폼 | 대표 플랫폼 : 네이버, 카카오, 레진코믹스 등 웹툰 스튜디오, 유통전문 회사 이해 희 역량 파악 후 포지션 지원,
+              Step .05 웹툰 법률 ( 만화포함 ) 원고 완성 및 투고 | 웹툰 계약의 이해 ( 업계 권장 작가 계약서 살펴보기 )
+              웹툰( 만화 ) 저작권과 상업적 이용 라이선스 이해 트레이싱 및 표절 피하기 원고 완성 및 투고,
 
               CLASS FOCUS 에이치아카데미는 개인 맞춤형 수업을 추구합니다.
               컨셉설정 | 장르별 특성에 따른 컨텐츠 목적의 개념을 이해하고 표현능력을 위한 컨셉설정 능력을 향상합니다.
@@ -203,7 +209,7 @@ export default function webtoonBackground() {
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_03.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_03.png"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -213,16 +219,18 @@ export default function webtoonBackground() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_background_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_background_02.webp"
-              alt="Step .01 배경 드로잉 캐릭터 투시 | 소실점 이해 및 실내,실외의 다양한 투시도 제작 1~3 소점 투시 피사체, 건물, 배경, 캐릭터 점목 다양한 구도의 캐릭터 투시 제작,
-              Step .02 배경 채색 스케치업 기본 | 원근감 표기 및 건물 질감 합성 스케치업 기초 및 실내, 실외 제작 - 사물 및 피사체를 통한 기본기 익히기 3D배경과 웹툰의 인물배치 응용하기,
-              Step .03 건축물과 전경 | 건물 제작 및 건축양식에 어울리는 질감 합성하기 넓은 대지를 기준하여 구조 디자인 및 지형요소 알아보기,
-              Step .04 원경 제작과 블렌더 (BLENDER) | 투시구조에 따른 원경과 구조 파악하기 블렌더 기초와 스컬핑 표현하기 스케치업과 연계된 호환요소 파악 및 표현하기 컨셉별 배경 보정방식 및 포트폴리오 제작,
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_02.png"
+              alt="Step .01 트렌드 / 글로벌 웹툰기획 TIP | 썸네일 기획 및 작성 - 장르 선택 및 트리트먼트 작성 단편 분량 1~3화 준비하기,
+              Step .02 웹툰작가 능력강화 | 캐릭터 연구(시트제작, 드로잉, 채색) 배경작업 (스케치업, 사진보정 및 편집 등) 콘티 (원고로 옮기기 및 스케치),
+              Step .03 웹툰 편집, 각색 방법론 | 웹툰 도전작 원고 완성도 기준 설정 채색 및 배경 각색 노하우 휭 스크롤( 페이지 ) 콘티 제작 최종 작품기획서 작성, 
+              Step .04 웹툰 및 웹소설 플랫폼 | 대표 플랫폼 : 네이버, 카카오, 레진코믹스 등 웹툰 스튜디오, 유통전문 회사 이해 희 역량 파악 후 포지션 지원,
+              Step .05 웹툰 법률 ( 만화포함 ) 원고 완성 및 투고 | 웹툰 계약의 이해 ( 업계 권장 작가 계약서 살펴보기 )
+              웹툰( 만화 ) 저작권과 상업적 이용 라이선스 이해 트레이싱 및 표절 피하기 원고 완성 및 투고,
 
               CLASS FOCUS 에이치아카데미는 개인 맞춤형 수업을 추구합니다.
               컨셉설정 | 장르별 특성에 따른 컨텐츠 목적의 개념을 이해하고 표현능력을 위한 컨셉설정 능력을 향상합니다.
@@ -239,7 +247,7 @@ export default function webtoonBackground() {
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_background_03.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_03.png"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
