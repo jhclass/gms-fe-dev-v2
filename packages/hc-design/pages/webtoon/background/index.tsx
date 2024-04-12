@@ -3,10 +3,42 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  a {
+    display: block;
+    width: 226px;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -75,6 +107,32 @@ export default function webtoonBackground() {
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_01.webp"
                 alt="웹툰배경 과정소개 @perspective drawing
@@ -93,7 +151,37 @@ export default function webtoonBackground() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_02.webp"
               alt="Step .01 배경 드로잉 캐릭터 투시 | 소실점 이해 및 실내,실외의 다양한 투시도 제작 1~3 소점 투시 피사체, 건물, 배경, 캐릭터 점목 다양한 구도의 캐릭터 투시 제작,

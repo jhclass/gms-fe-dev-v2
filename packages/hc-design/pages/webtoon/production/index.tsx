@@ -3,10 +3,42 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  a {
+    display: block;
+    width: 226px;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -75,6 +107,32 @@ export default function webtoonProduction() {
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_01.webp"
                 alt="웹툰 연출/각색 과정소개 @webtoon dramatization
@@ -93,7 +151,37 @@ export default function webtoonProduction() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_02.webp"
               alt="Step .01 스토리 구성방식 | 스토리텔링을 위한 기획 및 스토리보딩 신속한 기획을 위한 플롯과 트리트먼트 적용 가상의 세계관 스토리 구성 시작하기 구성된 글과 스토리 바탕의 자료수집하기 스토리보드 제작하기,

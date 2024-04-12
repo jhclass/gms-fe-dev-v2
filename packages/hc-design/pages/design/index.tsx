@@ -3,10 +3,42 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  a {
+    display: block;
+    width: 226px;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -75,6 +107,32 @@ export default function designPhotoshop() {
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/design">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_top_btn01.webp"
+                    alt="포토샵"
+                  />
+                </Link>
+                <Link href="/design/illust">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_top_btn02.webp"
+                    alt="일러스트"
+                  />
+                </Link>
+                <Link href="/design/graphics">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_top_btn03.webp"
+                    alt="그래픽스운용기사"
+                  />
+                </Link>
+                <Link href="/design/webdesign">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_top_btn04.webp"
+                    alt="웹디자인기능사"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_01.webp"
                 alt="포토샵 과정소개 @PHOTOSHOP
@@ -93,7 +151,37 @@ export default function designPhotoshop() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/design">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_top_btn01.webp"
+                    alt="포토샵"
+                  />
+                </Link>
+                <Link href="/design/illust">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_top_btn02.webp"
+                    alt="일러스트"
+                  />
+                </Link>
+                <Link href="/design/graphics">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_top_btn03.webp"
+                    alt="그래픽스운용기사"
+                  />
+                </Link>
+                <Link href="/design/webdesign">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_top_btn04.webp"
+                    alt="웹디자인기능사"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_02.webp"
               alt="Step .01 기초그래픽의 이해 브러시 / 성형 / 타이포 | 포토샵의 기본활용 방향 제시. 인터페이스 둘러보기 선택도구의 사용법 및 활용 / 컨텐트어웨어 / 퍼펫웝 사용 및 활용 브러시 활용 / 힐링브러시, 레드아이 툴 이해 리퀴파이를 사용한 올바른 성형 / 타이포 표현 및 필터활용 레이어스타일을 활용한 심볼제작,

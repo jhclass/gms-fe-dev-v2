@@ -3,10 +3,42 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  a {
+    display: block;
+    width: 226px;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -75,6 +107,32 @@ export default function webtoonDrawing() {
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_01.webp"
                 alt="기초드로잉 (CLIP STUDIO) 과정소개 @BASIC DRAWING
@@ -93,7 +151,37 @@ export default function webtoonDrawing() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_02.webp"
               alt="Step .01 드로잉 기초 및 채색.01 | 클립스튜디오기초 - 인체 단순화 (몸통) - 인체 단순화 (하체) - 인체 단순화 (상하체),
