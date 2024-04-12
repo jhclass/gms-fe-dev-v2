@@ -230,7 +230,7 @@ export default function ConsolutItem(props) {
             }}
           ></Tflag>
 
-          <ClickBox>
+          <ClickBox onClick={() => setIsOpen(!isOpen)}>
             <div>
               <Tnum>
                 <EllipsisBox>
@@ -282,16 +282,22 @@ export default function ConsolutItem(props) {
                     variant="solid"
                     color="primary"
                     className="w-full text-white"
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={e => {
+                      e.preventDefault()
+                      router.push('/lecture/detail')
+                    }}
                   >
-                    훈련상황보고
+                    강의 수정
                   </Button>
                   <Button
                     size="sm"
                     variant="bordered"
                     color="primary"
                     className="w-full"
-                    onClick={() => router.push('/lecture/attendance')}
+                    onClick={e => {
+                      e.preventDefault()
+                      router.push('/lecture/attendance')
+                    }}
                   >
                     출석부
                   </Button>
