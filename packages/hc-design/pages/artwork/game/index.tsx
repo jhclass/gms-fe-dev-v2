@@ -3,12 +3,42 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
 `
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: flex;
+`
 
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  a {
+    display: block;
+    width: 226px;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`
 const MoCon = styled.div`
   position: relative;
   display: none;
@@ -75,6 +105,26 @@ export default function artworkGame() {
               />
             </div>
             <TopText>
+              <TopBtn className="block w-full wmd:hidden">
+                <Link href="/artwork">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_top_btn01.webp"
+                    alt="디지털드로잉"
+                  />
+                </Link>
+                <Link href="/artwork/game">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_top_btn02.webp"
+                    alt="원화 (아트윅/게임)"
+                  />
+                </Link>
+                <Link href="/artwork/emoticon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_top_btn03.webp"
+                    alt="이모티콘"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_game_01.webp"
                 alt="게임원화 과정소개 @GAME DRAWING
@@ -91,7 +141,31 @@ export default function artworkGame() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/artwork">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_top_btn01.webp"
+                    alt="디지털드로잉"
+                  />
+                </Link>
+                <Link href="/artwork/game">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_top_btn02.webp"
+                    alt="원화 (아트윅/게임)"
+                  />
+                </Link>
+                <Link href="/artwork/emoticon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_top_btn03.webp"
+                    alt="이모티콘"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_game_02.webp"
               alt="Step .01 게임원화 이해 | 빛과 그림자 개념 이해 및 표현 입체표현 원리 이해 컨셉 조사 및 이미지 매칭 모작,

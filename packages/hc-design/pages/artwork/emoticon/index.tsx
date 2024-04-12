@@ -3,10 +3,41 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  a {
+    display: block;
+    width: 226px;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -75,6 +106,26 @@ export default function artworkEmoticon() {
               />
             </div>
             <TopText>
+              <TopBtn className="block w-full wmd:hidden">
+                <Link href="/artwork">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_top_btn01.webp"
+                    alt="디지털드로잉"
+                  />
+                </Link>
+                <Link href="/artwork/game">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_top_btn02.webp"
+                    alt="원화 (아트윅/게임)"
+                  />
+                </Link>
+                <Link href="/artwork/emoticon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_top_btn03.webp"
+                    alt="이모티콘"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_01.webp"
                 alt="이모티콘 과정소개 @EMOTICON
@@ -91,7 +142,31 @@ export default function artworkEmoticon() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/artwork">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_top_btn01.webp"
+                    alt="디지털드로잉"
+                  />
+                </Link>
+                <Link href="/artwork/game">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_top_btn02.webp"
+                    alt="원화 (아트윅/게임)"
+                  />
+                </Link>
+                <Link href="/artwork/emoticon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_top_btn03.webp"
+                    alt="이모티콘"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_02.webp"
               alt="Step .01 이모티콘 제작의 이해 | 하드웨어 및 소프트웨어의 이해 (Tablet, Photoshop) 동시 작업을 위한 기초 작업과정 이해 이모티콘 제작에 사용되는 Tablet과 Photoshop을 사용하기 위한 환경설정과 활용예시 등을 통해 사용법과 기초 작업 틀을 구축합니다.,
