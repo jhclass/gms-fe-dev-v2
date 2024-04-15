@@ -202,7 +202,7 @@ export default function designIllustrator() {
               "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_illust_btn.webp"
                   alt="수강료 조회"
@@ -237,7 +237,7 @@ export default function designIllustrator() {
               "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_illust_btn.webp"
                   alt="수강료 조회"

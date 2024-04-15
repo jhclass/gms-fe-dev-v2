@@ -19,7 +19,7 @@ export default function MainSilder() {
           className="mySwiper1"
         >
           <SwiperSlide>
-            <Link href="/detail/webtoon">
+            <Link href="/motiongraphic">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%]">
                   <img
@@ -37,7 +37,7 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link href="/detail/webtoon">
+            <Link href="/motiongraphic">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] ">
                   <img
@@ -55,13 +55,13 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
         </Swiper>
-        <button className="main_prev w-[5%] absolute top-[50%] left-0 z-[5] -translate-y-[50%]">
+        <button className="main_prev w-[4vw] absolute top-[50%] left-0 z-[5] -translate-y-[50%]">
           <img
             className="w-full"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner_btn.png"
           />
         </button>
-        <button className="rotate-180 w-[5%] main_next absolute top-[50%] right-0 z-[5] -translate-y-[50%]">
+        <button className="rotate-180 w-[4vw] main_next absolute top-[50%] right-0 z-[5] -translate-y-[50%]">
           <img
             className="w-full"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner_btn.png"

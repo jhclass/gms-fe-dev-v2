@@ -67,27 +67,11 @@ type FormValues = {
   contents: string
   privacy: string
 }
-const adviceList = [
-  '포토샵',
-  '에펙',
-  '모션그래픽',
-  '게임원화',
-  '자격증',
-  '일러스트',
-  '시네마 4D',
-  '웹툰',
-  '이모티콘',
-  '국민취업지원제도',
-  '프리미어 프로',
-  '영상편집',
-  '디지털드로잉',
-  'JAVA/IT',
-  '업무제휴',
-]
+
 export default function Form() {
   const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
-  // const { loading, error, data: adciveData } = useQuery(SEE_ADVICE_TYPE_QUERY)
-  // const adviceList = adciveData?.seeAdviceType.adviceType || []
+  const { loading, error, data: adciveData } = useQuery(SEE_ADVICE_TYPE_QUERY)
+  const adviceList = adciveData?.seeAdviceType.adviceType || []
   const [groupSelected, setGroupSelected] = useRecoilState(
     formGroupSelectedState,
   )
@@ -171,9 +155,9 @@ export default function Form() {
     setGroupSelected(updatedGroupSelected)
   }
 
-  // if (error) {
-  //   console.log(error)
-  // }
+  if (error) {
+    console.log(error)
+  }
 
   return (
     <>
@@ -209,13 +193,15 @@ export default function Form() {
                       adviceList.map((item, index) => (
                         <Checkbox
                           key={index}
-                          value={item}
+                          value={item.type}
                           radius={'full'}
                           classNames={{
                             wrapper: 'before:border-[#100061]',
                           }}
                         >
-                          <span className="text-lg text-[#100061]">{item}</span>
+                          <span className="text-lg text-[#100061]">
+                            {item.type}
+                          </span>
                         </Checkbox>
                       ))}
                     {adviceList === null && (

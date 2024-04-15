@@ -59,7 +59,7 @@ export default function WideSliderMo() {
                 />
               </video>
               <figure className="absolute z-[6] w-[28.7037vw] bottom-[11.1111vw] right-[8.3333vw]">
-                <Link href="/detail/webtoon">
+                <Link href="/motiongraphic">
                   <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01_btn.webp" />
                 </Link>
               </figure>
