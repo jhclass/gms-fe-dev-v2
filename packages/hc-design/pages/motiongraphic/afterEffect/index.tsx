@@ -10,18 +10,21 @@ const TopText = styled.div`
 
 const PCTopbtn = styled.div`
   position: absolute;
-  top: 22px;
-  left: 22px;
+  top: 1.5278vw;
+  left: 1.5278vw;
   display: flex;
 `
 
 const Btns = styled.div`
   display: flex;
   gap: 0.5rem;
+  background: #fff;
 
   a {
     display: block;
-    width: 226px;
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
   }
 `
 
@@ -170,6 +173,11 @@ export default function motiongraphicAfterEffect() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_02.webp"
               alt="Step .01 인터페이스의 이해, 기본 조작 연습 Mask와 Shape Layer의 이해와 기초 | 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습,

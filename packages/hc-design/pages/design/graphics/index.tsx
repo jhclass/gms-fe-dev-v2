@@ -11,18 +11,21 @@ const TopText = styled.div`
 
 const PCTopbtn = styled.div`
   position: absolute;
-  top: 22px;
-  left: 22px;
+  top: 1.5278vw;
+  left: 1.5278vw;
   display: flex;
 `
 
 const Btns = styled.div`
   display: flex;
   gap: 0.5rem;
+  background: #fff;
 
   a {
     display: block;
-    width: 226px;
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
   }
 `
 
@@ -180,6 +183,11 @@ export default function designIllustrator() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_02.png"
               alt="Step .01 시험소개, 문제 유형 파악 | 컴퓨터그래픽스운용기능사 소개 시험시 주의사항 학습 기출문제 풀이,

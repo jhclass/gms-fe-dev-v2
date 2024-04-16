@@ -11,19 +11,22 @@ const TopText = styled.div`
 
 const PCTopbtn = styled.div`
   position: absolute;
-  top: 0.25%;
-  left: 2%;
+  top: 1.5278vw;
+  left: 1.5278vw;
   display: flex;
 `
 
 const Btns = styled.div`
   display: flex;
   gap: 0.5rem;
+  background: #fff;
 
-  /* a {
+  a {
     display: block;
-    width: 226px;
-  } */
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
+  }
 `
 
 const TopBtn = styled.div`
@@ -188,6 +191,11 @@ export default function webtoonBackground() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_02.png"
               alt="Step .01 트렌드 / 글로벌 웹툰기획 TIP | 썸네일 기획 및 작성 - 장르 선택 및 트리트먼트 작성 단편 분량 1~3화 준비하기,

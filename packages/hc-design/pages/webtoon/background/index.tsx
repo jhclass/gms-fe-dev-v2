@@ -11,19 +11,22 @@ const TopText = styled.div`
 
 const PCTopbtn = styled.div`
   position: absolute;
-  top: 0.25%;
-  left: 2%;
+  top: 1.5278vw;
+  left: 1.5278vw;
   display: flex;
 `
 
 const Btns = styled.div`
   display: flex;
   gap: 0.5rem;
+  background: #fff;
 
-  /* a {
+  a {
     display: block;
-    width: 226px;
-  } */
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
+  }
 `
 
 const TopBtn = styled.div`
@@ -184,6 +187,11 @@ export default function webtoonBackground() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_02.webp"
               alt="Step .01 배경 드로잉 캐릭터 투시 | 소실점 이해 및 실내,실외의 다양한 투시도 제작 1~3 소점 투시 피사체, 건물, 배경, 캐릭터 점목 다양한 구도의 캐릭터 투시 제작,
