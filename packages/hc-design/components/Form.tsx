@@ -91,7 +91,6 @@ export default function Form() {
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data)
     setButtonClickable(false)
     try {
       if (regExp.test(data.contents)) {
@@ -115,7 +114,6 @@ export default function Form() {
             classMethod: data.methodSelect,
           },
           onCompleted: result => {
-            console.log(result)
             if (result.createStudentState.ok) {
               alert('상담신청이 완료되었습니다. 😊')
             }

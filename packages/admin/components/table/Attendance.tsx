@@ -249,8 +249,7 @@ export default function TestCate() {
       }),
     }))
   }
-  console.log(gridTemplateColumns)
-  console.log(todayIndex)
+
   const theme = useTheme([
     // getTheme(),
     {
