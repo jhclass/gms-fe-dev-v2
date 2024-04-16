@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import {
   Button,
+  CheckboxGroup,
   Modal,
   ModalBody,
   ModalContent,
@@ -12,6 +13,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { useEffect, useState } from 'react'
+import ChipCheckbox from '../common/ChipCheckbox'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -21,6 +23,14 @@ const DatePickerBox = styled.div`
   }
   .react-datepicker__month-container {
     width: 100%;
+  }
+  .react-datepicker__day--selected {
+    background: none;
+    color: #000;
+
+    &.react-datepicker__day--disabled {
+      color: #ccc;
+    }
   }
   .react-datepicker__current-month,
   .react-datepicker-time__header,
@@ -51,7 +61,8 @@ const DatePickerBox = styled.div`
 
 const DayCheck = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.2rem;
+  flex-wrap: wrap;
 `
 export default function LectureDates({
   isOpen,
@@ -63,6 +74,7 @@ export default function LectureDates({
   const endDate = new Date('2024-03-15')
   const [disabledDays, setDisabledDays] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
+  const [groupSelected, setGroupSelected] = useState([])
 
   useEffect(() => {
     let currentDate = new Date(startDate)
@@ -125,6 +137,8 @@ export default function LectureDates({
 
   // 요일 선택 핸들러
   const toggleDay = day => {
+    console.log(day)
+    setGroupSelected(day)
     setDisabledDays(prev => {
       const isDayDisabled = prev.includes(day)
       const newDisabledDays = isDayDisabled
@@ -186,7 +200,7 @@ export default function LectureDates({
               <ModalHeader className="flex flex-col gap-1">
                 기간선택
                 <DayCheck>
-                  {['일', '월', '화', '수', '목', '금', '토'].map(
+                  {/* {['일', '월', '화', '수', '목', '금', '토'].map(
                     (day, index) => (
                       <label key={index}>
                         <input
@@ -196,6 +210,18 @@ export default function LectureDates({
                         />
                         {day}
                       </label>
+                    ),
+                  )} */}
+
+                  {[' 일 ', ' 월 ', ' 화 ', ' 수 ', ' 목 ', ' 금 ', ' 토 '].map(
+                    (day, index) => (
+                      <ChipCheckbox
+                        key={index}
+                        value={index}
+                        onChange={e => toggleDay(index)}
+                      >
+                        {day}
+                      </ChipCheckbox>
                     ),
                   )}
                 </DayCheck>
