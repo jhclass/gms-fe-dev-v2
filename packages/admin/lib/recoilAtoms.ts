@@ -91,6 +91,10 @@ export const progressStatusState = atom({
       name: '등록완료',
       color: '#043999',
     },
+    70: {
+      name: '확인요망',
+      color: '#be058e',
+    },
     110: {
       name: '오류/거부',
       color: '#cdcdcd',

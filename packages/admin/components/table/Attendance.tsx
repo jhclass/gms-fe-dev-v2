@@ -210,11 +210,11 @@ export default function TestCate() {
 
   const today = new Date().toISOString().split('T')[0]
   const datesArray = [
-    '2024-03-18',
-    '2024-03-19',
-    '2024-03-20',
-    '2024-03-21',
-    '2024-03-22',
+    '2024-04-11',
+    '2024-04-12',
+    '2024-04-15',
+    '2024-04-16',
+    '2024-04-17',
   ]
   const todayIndex = datesArray.indexOf(today)
 
@@ -226,7 +226,7 @@ export default function TestCate() {
   }
   gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
   gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-  for (let i = todayIndex + 1 + 1; i <= 4; i++) {
+  for (let i = todayIndex + 1; i <= 4; i++) {
     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
@@ -249,6 +249,7 @@ export default function TestCate() {
       }),
     }))
   }
+
   const theme = useTheme([
     // getTheme(),
     {
@@ -258,13 +259,20 @@ export default function TestCate() {
         font-size: 0.875rem;
         color: #71717a;
 
-         @media (max-width: 768px) {
+        @media (max-width: 768px) {
         --data-table-library_grid-template-columns:${gridTemplateColumnsMo};
           }
       `,
       BaseCell: `
         padding: 0.5rem;
         min-width: 70px;
+        &:nth-of-type(${8 + todayIndex}) {
+          background:rgba(0, 125, 233, 0.15);
+
+          select {
+            // background:rgba(0, 125, 233, 0.15);
+          }
+        }
         &:nth-of-type(1) {
           left: 0px;
           border-radius: 0.5rem 0 0 0.5rem;
@@ -355,11 +363,11 @@ export default function TestCate() {
                     <HeaderCell pinLeft>출석 일수</HeaderCell>
                     <HeaderCell pinLeft>결석 일수</HeaderCell>
                     <HeaderCell pinLeft>출석률</HeaderCell>
-                    <HeaderCell>24-01-01</HeaderCell>
-                    <HeaderCell>24-01-02</HeaderCell>
-                    <HeaderCell>24-01-03</HeaderCell>
-                    <HeaderCell>24-01-04</HeaderCell>
-                    <HeaderCell>24-01-05</HeaderCell>
+                    <HeaderCell>24-01-11</HeaderCell>
+                    <HeaderCell>24-01-12</HeaderCell>
+                    <HeaderCell>24-01-15</HeaderCell>
+                    <HeaderCell>24-01-16</HeaderCell>
+                    <HeaderCell>24-01-17</HeaderCell>
                   </HeaderRow>
                 </Header>
 

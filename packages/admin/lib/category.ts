@@ -112,6 +112,14 @@ const category: Category[] = [
         isWrite: '',
       },
       {
+        href: '/detail',
+        name: '강의 상세',
+        exposure: false,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
+      {
         href: '/attendance',
         name: '출석부',
         exposure: false,

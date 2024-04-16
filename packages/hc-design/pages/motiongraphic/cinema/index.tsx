@@ -3,12 +3,46 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
 `
 
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 1.5278vw;
+  left: 1.5278vw;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  background: #fff;
+
+  a {
+    display: block;
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`
 const MoCon = styled.div`
   position: relative;
   display: none;
@@ -61,6 +95,7 @@ export default function motiongraphicChinema4D() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_cinema_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_cinema_bg.mp4"
               />
             </div>
@@ -71,10 +106,31 @@ export default function motiongraphicChinema4D() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_cinema_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_cinema_bg.mp4"
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/motiongraphic">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motionc_top_btn01.webp"
+                    alt="영상편집"
+                  />
+                </Link>
+                <Link href="/motiongraphic/afterEffect">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_top_btn02.webp"
+                    alt="2D모션그래픽"
+                  />
+                </Link>
+                <Link href="/artmotiongraphicwork/cinema">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_top_btn03.webp"
+                    alt="3D모션그래픽"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_01.webp"
                 alt="시네마 포디 과정소개 @CINEMA 4D
@@ -95,7 +151,36 @@ export default function motiongraphicChinema4D() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/artwork">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn01.webp"
+                    alt="영상편집"
+                  />
+                </Link>
+                <Link href="/artwork/game">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn02.webp"
+                    alt="2D모션그래픽"
+                  />
+                </Link>
+                <Link href="/artwork/emoticon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn03.webp"
+                    alt="3D모션그래픽"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_02.webp"
               alt="Step .01 기초 UI활용 Modeling | 시포디 인터페이스의 이해 모션그래픽 및 영상제작 파이프라인 소개, 툴 설명 Nerbs 및 Spline 활용한 모델링 기초 모델링의 기본 이해, 제품디자인 ( Line/ Round/ Shape ),
@@ -117,7 +202,7 @@ export default function motiongraphicChinema4D() {
             "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_btn.webp"
                   alt="수강료 조회"
@@ -159,7 +244,7 @@ export default function motiongraphicChinema4D() {
           "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_cinema_btn.webp"
                   alt="수강료 조회"

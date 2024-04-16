@@ -72,12 +72,11 @@ const MgnbClose = styled.button`
 `
 const MgnbCon = styled.div`
   width: 85%;
-  background-image: url('https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_bg.png');
+  background-image: url('https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_bg.webp');
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: top center;
   max-height: 100vh;
-  padding-left: 0.3rem;
   height: 100%;
 `
 
@@ -88,10 +87,14 @@ const MgnbBnr = styled.p`
 `
 const MgnbNav = styled.ul`
   margin-top: 1rem;
-  padding-left: 1rem;
+  padding: 0 2rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.5rem 2rem;
+  flex-wrap: wrap;
+
+  li {
+    width: calc(50% - 1rem);
+  }
 
   a {
     display: block;
@@ -99,7 +102,7 @@ const MgnbNav = styled.ul`
     height: 100%;
 
     img {
-      width: 14rem;
+      /* width: 14rem; */
     }
   }
 `
@@ -289,12 +292,6 @@ export default function Header() {
                 alt="ACADEMY"
               />
             </Link>
-            <Link>
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_bnr01.webp"
-                alt="전과정 국비지원"
-              />
-            </Link>
           </MgnbBnr>
           <MgnbNav>
             <li>
@@ -306,64 +303,174 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/design">
+              <Link href="/motiongraphic/afterEffect">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_02.webp"
-                  alt="시각디자인과정"
+                  alt="2D모션그래픽"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/motiongraphic/cinema">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_03.webp"
+                  alt="3D모션그래픽"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/design">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_04.webp"
+                  alt="포토샵"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/design/illust">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_05.webp"
+                  alt="일러스트"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/design/graphics">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_06.webp"
+                  alt="컴퓨터그래픽스운용기능사"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/design/webdesign">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_07.webp"
+                  alt="웹디자인기능사"
                 />
               </Link>
             </li>
             <li>
               <Link href="/webtoon">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_03.webp"
-                  alt="웹툰과정"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_08.webp"
+                  alt="웹툰캐릭터"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/webtoon/production">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_09.webp"
+                  alt="웹툰 연출 / 각색"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/webtoon/background">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_10.webp"
+                  alt="웹툰배경"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/webtoon/story">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_11.webp"
+                  alt="웹툰스토리 ( 원고 / 작가 )"
                 />
               </Link>
             </li>
             <li>
               <Link href="/artwork">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_04.webp"
-                  alt="디지털드로잉과정"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_12.webp"
+                  alt="디지털드로잉"
                 />
               </Link>
             </li>
-          </MgnbNav>
-          <MgnbNav2>
             <li>
-              <Link href="/support">
+              <Link href="/artwork">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_05.webp"
-                  alt="국비/취업지원"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_13.webp"
+                  alt="원화 ( 아트웍 / 게임 )"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/artwork/game">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_14.webp"
+                  alt="이모티콘제작"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/artwork/emoticon">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_15.webp"
+                  alt="국민내일배움카드"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/support/system">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_16.webp"
+                  alt="취업시스템"
                 />
               </Link>
             </li>
             <li>
               <Link href="/academy">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_06.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_17.webp"
                   alt="아카데미소개"
                 />
               </Link>
             </li>
             <li>
-              <Link>
+              <Link href="/academy/features">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_07.webp"
-                  alt="일본취업지원"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_18.webp"
+                  alt="교육특성"
                 />
               </Link>
             </li>
             <li>
-              <Link>
+              <Link href="/cs/location">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_08.webp"
-                  alt="고객상담센터"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_19.webp"
+                  alt="오시는길 ( 위치조회 )"
                 />
               </Link>
             </li>
-          </MgnbNav2>
+            <li>
+              <Link href="/cs">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_20.webp"
+                  alt="수강료 / 시간표 조회"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link href="/cs">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_21.webp"
+                  alt="온라인 상담"
+                />
+              </Link>
+            </li>
+            {/* <li>
+              <Link href="#">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_22.webp"
+                  alt="업무제휴"
+                />
+              </Link>
+            </li> */}
+          </MgnbNav>
         </MgnbCon>
       </Mgnb>
     </>

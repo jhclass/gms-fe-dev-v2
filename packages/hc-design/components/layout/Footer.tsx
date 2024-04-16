@@ -25,8 +25,8 @@ export default function Footer() {
   return (
     <>
       <footer id="footer">
-        <div className="hidden md:block">
-          <div className="wrap" style={{ display: 'flex' }}>
+        <div className="wrap">
+          <div className="hidden md:flex">
             <p>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/footer_info.webp"
@@ -60,12 +60,13 @@ export default function Footer() {
               </li>
             </ShareBox> */}
           </div>
+          <div className="block md:hidden pb-[2rem]">
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/footer_info.webp"
+              alt="H ACADEMY ㅣ 대표 : 윤명노 ㅣ 사업자등록번호 : 641-88-00207 | 개인정보보호책임자 : 윤명노 ㅣ E-mail : highclass.yoon@gmail.com |Tel: 02-393-4321 ㅣ Fax : 02-365-5880 ㅣ 주소 : 서울 서대문구 신촌로 141(대현동,은하빌딩) | ⓒ 2023. H ACADEMY Co. All rights reserved."
+            />
+          </div>
         </div>
-        <img
-          className="block md:hidden"
-          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/footer_info.webp"
-          alt="H ACADEMY ㅣ 대표 : 윤명노 ㅣ 사업자등록번호 : 641-88-00207 | 개인정보보호책임자 : 윤명노 ㅣ E-mail : highclass.yoon@gmail.com |Tel: 02-393-4321 ㅣ Fax : 02-365-5880 ㅣ 주소 : 서울 서대문구 신촌로 141(대현동,은하빌딩) | ⓒ 2023. H ACADEMY Co. All rights reserved."
-        />
       </footer>
     </>
   )

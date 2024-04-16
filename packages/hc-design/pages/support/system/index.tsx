@@ -64,17 +64,27 @@ export default function supportSystem() {
               "
             ></img>
             <Btnbox>
-              <Link href="">
-                <img
+              <Link href="/cs/curriculum">
+                {/* <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn01.webp"
                   alt="취업현황 확인하기"
                   style={{ width: '19.8611VW', maxWidth: '286px' }}
+                ></img> */}
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn03.webp"
+                  alt="전체과정 확인하기"
+                  style={{ width: '19.8611VW', maxWidth: '286px' }}
                 ></img>
               </Link>
-              <Link href="">
-                <img
+              <Link href="/cs">
+                {/* <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn02.webp"
                   alt="채용정보 확인하기"
+                  style={{ width: '19.8611VW', maxWidth: '286px' }}
+                ></img> */}
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn04.webp"
+                  alt="시간표조회 확인하기"
                   style={{ width: '19.8611VW', maxWidth: '286px' }}
                 ></img>
               </Link>
@@ -86,19 +96,30 @@ export default function supportSystem() {
           </div>
           <div className="block w-full wmd:hidden">
             <Btnbox>
-              <Link href="">
+              <Link href="/cs/curriculum">
                 <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn03.webp"
+                  alt="전체과정 확인하기"
+                  style={{ width: '46.8519VW' }}
+                ></img>
+
+                {/* <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn01.webp"
                   alt="취업현황 확인하기"
                   style={{ width: '46.8519VW' }}
-                ></img>
+                ></img> */}
               </Link>
-              <Link href="">
+              <Link href="/cs">
                 <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn04.webp"
+                  alt="시간표조회 확인하기"
+                  style={{ width: '46.8519VW' }}
+                ></img>
+                {/* <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn02.webp"
                   alt="채용정보 확인하기"
                   style={{ width: '46.8519VW' }}
-                ></img>
+                ></img> */}
               </Link>
             </Btnbox>
             <img

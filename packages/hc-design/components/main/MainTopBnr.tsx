@@ -68,7 +68,7 @@ export default function TopBnr() {
           </BnrArea>
           <BtnList>
             <BtnItme>
-              <Link href="#" onClick={handleClick}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn1.webp"
                   alt="수강료조회"
@@ -76,7 +76,7 @@ export default function TopBnr() {
               </Link>
             </BtnItme>
             <BtnItme>
-              <Link href="#" onClick={handleClick}>
+              <Link href="/cs/location">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn2.webp"
                   alt="위치조회"

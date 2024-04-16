@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const GnbBox = styled.div`
   border-top: 1px solid #c2c2c2;
   background-image: linear-gradient(rgba(242, 232, 255, 1), transparent);
-  background-color: transparent;
+  background-color: #fff;
 `
 
 const BnrBox = styled.div`
@@ -114,7 +114,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/design/graphics">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_03.webp"
                     alt="그래픽스운용기능사"
@@ -122,7 +122,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/design/webdesign">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_02_04.webp"
                     alt="웹디자인기능사"
@@ -160,7 +160,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/webtoon/story">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_03_04.webp"
                     alt="웹툰 스토리 (원고/작가)"
@@ -242,7 +242,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/cs/location">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_06_03.webp"
                     alt="오시는길"
@@ -256,7 +256,7 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="">
+                <Link href="/cs">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_01.webp"
                     alt="수강료 조회"
@@ -264,7 +264,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/cs">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_02.webp"
                     alt="시간표 조회"
@@ -272,7 +272,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/cs">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_03.webp"
                     alt="온라인 상담"
@@ -280,7 +280,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="">
+                <Link href="/cs/location">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_04.webp"
                     alt="위치 조회"

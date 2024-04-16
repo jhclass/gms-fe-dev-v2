@@ -19,7 +19,7 @@ export default function MainSilder() {
           className="mySwiper1"
         >
           <SwiperSlide>
-            <Link href="/detail/webtoon">
+            <Link href="/motiongraphic">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%]">
                   <img
@@ -27,7 +27,12 @@ export default function MainSilder() {
                     alt="영상편집&제작 2D/3D 모션그래픽 취업과정 과정상세보기"
                   />
                 </figure>
-                <video autoPlay loop muted poster="썸네일경로">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01_poster.webp"
+                >
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01.mp4"
                     type="video/mp4"
@@ -37,17 +42,45 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link href="/detail/webtoon">
+            <Link href="/webtoon">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] ">
                   <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01_tit.webp"
-                    alt="영상편집&제작 2D/3D 모션그래픽 취업과정 과정상세보기"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner02_tit.webp"
+                    alt="웹툰작가에게 배우는 webtoon 과정상세보기"
                   />
                 </figure>
-                <video autoPlay loop muted poster="썸네일경로">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner02_poster.webp"
+                >
                   <source
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01.mp4"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner02.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Link href="/webtoon/emoticon">
+              <div className="relative flex justify-center">
+                <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] ">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner03_tit.webp"
+                    alt="5주 완성! 이모티콘 크리에이터 되기! 배우는 webtoon 과정상세보기"
+                  />
+                </figure>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner03_poster.webp"
+                >
+                  <source
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner03.mp4"
                     type="video/mp4"
                   />
                 </video>
@@ -55,13 +88,13 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
         </Swiper>
-        <button className="main_prev w-[5%] absolute top-[50%] left-0 z-[5] -translate-y-[50%]">
+        <button className="main_prev w-[4vw] absolute top-[50%] left-0 z-[5] -translate-y-[50%]">
           <img
             className="w-full"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner_btn.png"
           />
         </button>
-        <button className="rotate-180 w-[5%] main_next absolute top-[50%] right-0 z-[5] -translate-y-[50%]">
+        <button className="rotate-180 w-[4vw] main_next absolute top-[50%] right-0 z-[5] -translate-y-[50%]">
           <img
             className="w-full"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner_btn.png"

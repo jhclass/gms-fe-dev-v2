@@ -3,10 +3,45 @@ import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 1.5278vw;
+  left: 1.5278vw;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  background: #fff;
+
+  a {
+    display: block;
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -61,6 +96,7 @@ export default function webtoonDrawing() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_drawing_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_drawing_bg.mp4"
               />
             </div>
@@ -71,10 +107,37 @@ export default function webtoonDrawing() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_drawing_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_drawing_bg.mp4"
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_01.webp"
                 alt="기초드로잉 (CLIP STUDIO) 과정소개 @BASIC DRAWING
@@ -93,7 +156,42 @@ export default function webtoonDrawing() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/webtoon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn01.webp"
+                    alt="웹툰캐릭터(클립스튜디오)"
+                  />
+                </Link>
+                <Link href="/webtoon/production">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn02.webp"
+                    alt="웹툰연출/각색"
+                  />
+                </Link>
+                <Link href="/webtoon/background">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn03.webp"
+                    alt="웹툰배경"
+                  />
+                </Link>
+                <Link href="/webtoon/story">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_top_btn04.webp"
+                    alt="웹툰 스토리(원고/작가)"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_02.webp"
               alt="Step .01 드로잉 기초 및 채색.01 | 클립스튜디오기초 - 인체 단순화 (몸통) - 인체 단순화 (하체) - 인체 단순화 (상하체),
@@ -110,7 +208,7 @@ export default function webtoonDrawing() {
               "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_drawing_btn.webp"
                   alt="수강료 조회"
@@ -147,7 +245,7 @@ export default function webtoonDrawing() {
               "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_drawing_btn.webp"
                   alt="수강료 조회"

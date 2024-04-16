@@ -57,18 +57,18 @@ export default function academyFeatures() {
                       alt=" Q. 에이치아카데미의 교육은 무엇이 다른가요? 만족도가 다릅니다.그리고 수강생의 결과가 다릅니다. 비전공자라도 취업이 가능하도록 만드는 아카데미.본원에 방문하시면 그 결과를 보여드립니다."
                     />
                     <p className="pl-[3rem]">
-                      <Link href={'#'}>
+                      <Link href="/support/system">
                         <img
-                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn02.webp"
+                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn01.webp"
                           alt="취업시스템 확인하기"
                         />
                       </Link>
                     </p>
                     <p className="pl-[3rem]">
-                      <Link href={'#'}>
+                      <Link href="/cs/curriculum">
                         <img
-                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn04.webp"
-                          alt="수강생후기 확인하기"
+                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn03.webp"
+                          alt="전체과정 확인하기"
                         />
                       </Link>
                     </p>
@@ -83,19 +83,19 @@ export default function academyFeatures() {
                       src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_03.webp"
                       alt=" Q. 배우면 뭐해?... 실무에서 아쓰는데?.. 현업에서 활동중인 디자이너가 직접 강의를 진행합니다. 배웠지만 사용할 수 없는 촌스러운 강의는 하지 않습니다. 수업에 참여만해도, 실력이 업그레이드 됩니다. 에이치아카데미 강의는 특별합니다."
                     />
-                    <p className="pr-[3rem]">
-                      <Link href={'#'}>
+                    <p className="pl-[3rem]">
+                      <Link href="/support">
                         <img
-                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn01.webp"
-                          alt="정규과정 확인하기"
+                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn02.webp"
+                          alt="국비지원 확인하기"
                         />
                       </Link>
                     </p>
-                    <p className="pr-[3rem]">
-                      <Link href={'#'}>
+                    <p className="pl-[3rem]">
+                      <Link href="/cs">
                         <img
-                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn03.webp"
-                          alt="국비지원 확인하기"
+                          src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn04.webp"
+                          alt="시간표조회 확인하기"
                         />
                       </Link>
                     </p>
@@ -124,7 +124,7 @@ export default function academyFeatures() {
             />
             <ConBtn>
               <p>
-                <Link href={'#'}>
+                <Link href="/cs/curriculum">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/academy_features_03_btn01.webp"
                     alt="정규과정 확인하기"
@@ -132,26 +132,26 @@ export default function academyFeatures() {
                 </Link>
               </p>
               <p>
-                <Link href={'#'}>
+                <Link href="/support/system">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/academy_features_03_btn02.webp"
                     alt="취업시스템 확인하기"
                   />
                 </Link>
               </p>
-              <p>
-                <Link href={'#'}>
+              <p className="mt-4">
+                <Link href="/support">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/academy_features_03_btn03.webp"
                     alt="국비지원 확인하기"
                   />
                 </Link>
               </p>
-              <p>
-                <Link href={'#'}>
+              <p className="mt-4">
+                <Link href="/cs">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/academy_features_03_btn04.webp"
-                    alt="수강생후기 확인하기"
+                    alt="시간표 조회 확인하기"
                   />
                 </Link>
               </p>

@@ -2,10 +2,45 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-const TopText = styled.p`
+const TopText = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+`
+
+const PCTopbtn = styled.div`
+  position: absolute;
+  top: 1.5278vw;
+  left: 1.5278vw;
+  display: flex;
+`
+
+const Btns = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  background: #fff;
+
+  a {
+    display: block;
+    width: 15.6944vw;
+    max-width: 226px;
+    background: #fff;
+  }
+`
+
+const TopBtn = styled.div`
+  position: absolute;
+  top: 3.7037vw;
+  left: 9.2593vw;
+  gap: 0.5rem;
+  display: none;
+
+  img {
+    width: 20.7407vw;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `
 
 const MoCon = styled.div`
@@ -59,6 +94,7 @@ export default function motiongraphicAfterEffect() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_ae_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_ae_bg.mp4"
               />
             </div>
@@ -69,10 +105,31 @@ export default function motiongraphicAfterEffect() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_ae_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_ae_bg.mp4"
               />
             </div>
             <TopText>
+              <TopBtn>
+                <Link href="/motiongraphic">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motionc_top_btn01.webp"
+                    alt="영상편집"
+                  />
+                </Link>
+                <Link href="/motiongraphic/afterEffect">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_top_btn02.webp"
+                    alt="2D모션그래픽"
+                  />
+                </Link>
+                <Link href="/artmotiongraphicwork/cinema">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_top_btn03.webp"
+                    alt="3D모션그래픽"
+                  />
+                </Link>
+              </TopBtn>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_01.webp"
                 alt="에프터이펙트 과정소개 @AFTER EFFECT
@@ -91,7 +148,36 @@ export default function motiongraphicAfterEffect() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
-          <div className="hidden w-full wmd:block">
+          <div className="relative hidden w-full wmd:block">
+            <PCTopbtn>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
+              <Btns>
+                <Link href="/artwork">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn01.webp"
+                    alt="영상편집"
+                  />
+                </Link>
+                <Link href="/artwork/game">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn02.webp"
+                    alt="2D모션그래픽"
+                  />
+                </Link>
+                <Link href="/artwork/emoticon">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn03.webp"
+                    alt="3D모션그래픽"
+                  />
+                </Link>
+              </Btns>
+              {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
+            </PCTopbtn>
+            <img
+              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_02.webp"
               alt="Step .01 인터페이스의 이해, 기본 조작 연습 Mask와 Shape Layer의 이해와 기초 | 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습,
@@ -111,7 +197,7 @@ export default function motiongraphicAfterEffect() {
               "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_btn.webp"
                   alt="수강료 조회"
@@ -151,7 +237,7 @@ export default function motiongraphicAfterEffect() {
               "
             ></img>
             <BtnSection>
-              <Link href={'#'}>
+              <Link href="/cs">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_btn.webp"
                   alt="수강료 조회"
