@@ -26,7 +26,7 @@ export default function Footer() {
     <>
       <footer id="footer">
         <div className="wrap">
-          <div className="hidden md:flex">
+          <div className="hidden md:flex pb-[3.5rem]">
             <p>
               <img
                 src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/footer_info.webp"

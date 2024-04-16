@@ -120,6 +120,11 @@ export default function motiongraphicAfterEffect() {
                 />
               </Link>
             </TopBtn>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -148,11 +153,6 @@ export default function motiongraphicAfterEffect() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_premiere_02.webp"
               alt="Step .01 프리미어 프로 UI 이해 및 활용 | 프리미어 프로 UI 기초 설명과 용어 정리 Sequence와 frame rate 등, 영상 설정에 대한 기본적인 이해

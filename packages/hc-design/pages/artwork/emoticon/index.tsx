@@ -144,6 +144,11 @@ export default function artworkEmoticon() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -172,11 +177,6 @@ export default function artworkEmoticon() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_emoticon_02.webp"
               alt="Step .01 이모티콘 제작의 이해 | 하드웨어 및 소프트웨어의 이해 (Tablet, Photoshop) 동시 작업을 위한 기초 작업과정 이해 이모티콘 제작에 사용되는 Tablet과 Photoshop을 사용하기 위한 환경설정과 활용예시 등을 통해 사용법과 기초 작업 틀을 구축합니다.,

@@ -143,6 +143,11 @@ export default function webtoonProduction() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -177,11 +182,6 @@ export default function webtoonProduction() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_02.webp"
               alt="Step .01 스토리 구성방식 | 스토리텔링을 위한 기획 및 스토리보딩 신속한 기획을 위한 플롯과 트리트먼트 적용 가상의 세계관 스토리 구성 시작하기 구성된 글과 스토리 바탕의 자료수집하기 스토리보드 제작하기,

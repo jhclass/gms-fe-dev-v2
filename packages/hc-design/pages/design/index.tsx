@@ -153,6 +153,11 @@ export default function designPhotoshop() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -187,11 +192,6 @@ export default function designPhotoshop() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_photoshop_02.webp"
               alt="Step .01 기초그래픽의 이해 브러시 / 성형 / 타이포 | 포토샵의 기본활용 방향 제시. 인터페이스 둘러보기 선택도구의 사용법 및 활용 / 컨텐트어웨어 / 퍼펫웝 사용 및 활용 브러시 활용 / 힐링브러시, 레드아이 툴 이해 리퀴파이를 사용한 올바른 성형 / 타이포 표현 및 필터활용 레이어스타일을 활용한 심볼제작,
