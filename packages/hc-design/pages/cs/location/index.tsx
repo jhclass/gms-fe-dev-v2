@@ -14,7 +14,7 @@ export default function Consult() {
           alt="HighClass"
           className="block w-full wmd:hidden"
         />
-        <div className="wrap">
+        <div className="max-w-[2000px] mx-auto my-0 relative">
           <img
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/center_top.webp"
             alt="HighClass"

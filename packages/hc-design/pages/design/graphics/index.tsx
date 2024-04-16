@@ -87,23 +87,15 @@ export default function designIllustrator() {
         <div>
           <div className="max-w-[2000px] mx-auto my-0 relative">
             <div className="hidden w-full wmd:block">
-              <ReactPlayer
-                width="100%"
-                height="100%"
-                muted={true}
-                loop={true}
-                playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/design_graphics_bg.mp4"
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_bg.png"
+                alt="웹디자인기능사"
               />
             </div>
             <div className="block w-full wmd:hidden">
-              <ReactPlayer
-                width="100%"
-                height="100%"
-                muted={true}
-                loop={true}
-                playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/design_graphics_bg.mp4"
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_bg.png"
+                alt="웹디자인기능사"
               />
             </div>
             <TopText>

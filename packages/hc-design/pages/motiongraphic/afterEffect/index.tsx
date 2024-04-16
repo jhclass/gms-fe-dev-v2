@@ -91,6 +91,7 @@ export default function motiongraphicAfterEffect() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_ae_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_ae_bg.mp4"
               />
             </div>
@@ -101,6 +102,7 @@ export default function motiongraphicAfterEffect() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_ae_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_ae_bg.mp4"
               />
             </div>

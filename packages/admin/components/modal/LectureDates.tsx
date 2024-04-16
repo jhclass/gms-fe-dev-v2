@@ -53,7 +53,12 @@ const DayCheck = styled.div`
   display: flex;
   gap: 1rem;
 `
-export default function LectureDates({ isOpen, onClose, setValue }) {
+export default function LectureDates({
+  isOpen,
+  onClose,
+  setValue,
+  setDatesSelected,
+}) {
   const startDate = new Date('2024-01-11')
   const endDate = new Date('2024-03-15')
   const [disabledDays, setDisabledDays] = useState([])
@@ -168,7 +173,8 @@ export default function LectureDates({ isOpen, onClose, setValue }) {
 
   const clickAdviceSubmit = () => {
     // setValue('adviceTypes', adviceTypeSelected)
-    // onClose()
+    setDatesSelected(selectedDates)
+    onClose()
   }
 
   return (
@@ -179,24 +185,24 @@ export default function LectureDates({ isOpen, onClose, setValue }) {
             <>
               <ModalHeader className="flex flex-col gap-1">
                 기간선택
+                <DayCheck>
+                  {['일', '월', '화', '수', '목', '금', '토'].map(
+                    (day, index) => (
+                      <label key={index}>
+                        <input
+                          type="checkbox"
+                          checked={disabledDays.includes(index)}
+                          onChange={() => toggleDay(index)}
+                        />
+                        {day}
+                      </label>
+                    ),
+                  )}
+                </DayCheck>
               </ModalHeader>
               <ModalBody>
                 <ScrollShadow className="scrollbar min-h-[10rem] max-h-[25rem]">
                   <DatePickerBox>
-                    <DayCheck>
-                      {['일', '월', '화', '수', '목', '금', '토'].map(
-                        (day, index) => (
-                          <label key={index}>
-                            <input
-                              type="checkbox"
-                              checked={disabledDays.includes(index)}
-                              onChange={() => toggleDay(index)}
-                            />
-                            {day}
-                          </label>
-                        ),
-                      )}
-                    </DayCheck>
                     <DatePicker
                       inline
                       locale="ko"
@@ -220,7 +226,7 @@ export default function LectureDates({ isOpen, onClose, setValue }) {
                 <Button
                   color="primary"
                   onPress={() => {
-                    // clickAdviceSubmit()
+                    clickAdviceSubmit()
                     // field.onChange(adviceTypeSelected)
                     clickDate()
                   }}

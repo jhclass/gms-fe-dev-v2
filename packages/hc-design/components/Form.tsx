@@ -149,7 +149,8 @@ export default function Form() {
     setMethodSelect(value)
   }
 
-  const handleRemoveItem = (index: number) => {
+  const handleRemoveItem = (e, index: number) => {
+    e.preventDefault()
     const updatedGroupSelected = groupSelected.filter((_, i) => i !== index)
     setValue('groupSelected', updatedGroupSelected)
     setGroupSelected(updatedGroupSelected)
@@ -266,7 +267,8 @@ export default function Form() {
                 >
                   <span>{item}</span>
                   <button
-                    onClick={() => handleRemoveItem(index)}
+                    type="button"
+                    onClick={e => handleRemoveItem(e, index)}
                     className="text-lg text-center text-primary"
                   >
                     <i className="xi-close-min" />
@@ -280,7 +282,8 @@ export default function Form() {
                 >
                   <span>{item}</span>
                   <button
-                    onClick={() => handleRemoveItem(index)}
+                    type="button"
+                    onClick={e => handleRemoveItem(e, index)}
                     className="text-lg text-center text-primary"
                   >
                     <i className="xi-close-min" />

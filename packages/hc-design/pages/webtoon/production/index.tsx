@@ -87,23 +87,15 @@ export default function webtoonProduction() {
         <div>
           <div className="max-w-[2000px] mx-auto my-0 relative">
             <div className="hidden w-full wmd:block">
-              <ReactPlayer
-                width="100%"
-                height="100%"
-                muted={true}
-                loop={true}
-                playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_production_bg.mp4"
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_bg.png"
+                alt="웹툰연출/각색"
               />
             </div>
             <div className="block w-full wmd:hidden">
-              <ReactPlayer
-                width="100%"
-                height="100%"
-                muted={true}
-                loop={true}
-                playing={true}
-                url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_production_bg.mp4"
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_bg.png"
+                alt="웹툰연출/각색"
               />
             </div>
             <TopText>

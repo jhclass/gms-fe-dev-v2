@@ -27,7 +27,12 @@ export default function MainSilder() {
                     alt="영상편집&제작 2D/3D 모션그래픽 취업과정 과정상세보기"
                   />
                 </figure>
-                <video autoPlay loop muted poster="썸네일경로">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01_poster.webp"
+                >
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01.mp4"
                     type="video/mp4"
@@ -37,17 +42,45 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link href="/motiongraphic">
+            <Link href="/webtoon">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] ">
                   <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01_tit.webp"
-                    alt="영상편집&제작 2D/3D 모션그래픽 취업과정 과정상세보기"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner02_tit.webp"
+                    alt="웹툰작가에게 배우는 webtoon 과정상세보기"
                   />
                 </figure>
-                <video autoPlay loop muted poster="썸네일경로">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner02_poster.webp"
+                >
                   <source
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner01.mp4"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner02.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Link href="/webtoon/emoticon">
+              <div className="relative flex justify-center">
+                <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] ">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner03_tit.webp"
+                    alt="5주 완성! 이모티콘 크리에이터 되기! 배우는 webtoon 과정상세보기"
+                  />
+                </figure>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner03_poster.webp"
+                >
+                  <source
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner03.mp4"
                     type="video/mp4"
                   />
                 </video>

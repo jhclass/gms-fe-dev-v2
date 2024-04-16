@@ -38,41 +38,47 @@ export default function CurriculumItems() {
       img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_01.webp',
       mimg: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_curr_01.webp',
       desc: '모션그래픽의 컨셉을 설정하고 그에 따른 프레임 연출과 이펙트 표현 등, 영상컨셉에 맞는 편집과 제작방법을 교육합니다.',
-      link: '/detail/webtoon',
+      link: '/motiongraphic',
     },
     {
       category: '시각디자인 / 포토샵, 일러스트, 디자인자격증',
       img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_02.webp',
       mimg: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_curr_02.webp',
       desc: '포토샵의 전문적인 보정 및 합성 방식. 그리고 일러스트레이션의 극대화를 통해 심플한 디자인과 3D에 버금가는 소스 제작.',
-      link: '/detail/emoticon',
+      link: '/design',
     },
     {
       category: '웹툰 / WEBTOON, EMOTICON',
       img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_03.webp',
       mimg: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_curr_03.webp',
       desc: '웹툰작가에게 배우는 WEBTOON!! 드로잉의 이해부터 단편웹툰 제작까지! 최고의 강사진이 웹툰의 모든것을 알려드립니다',
-      link: '/detail/motion',
+      link: '/webtoon',
     },
     {
       category: '디지털 드로잉 / DIGITAL DRAWING',
       img: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_curr_04.webp',
       mimg: 'https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_curr_04.webp',
       desc: '디지털 일러스트레이션의 다양한 완성, 분야별 컨셉파악부터 스토리에 따른 개인별 작품완성까지!!',
-      link: '/detail/emoticon',
+      link: '/artwork',
     },
   ]
   return (
     <div className="wrap">
       <List>
-        <div className="grid grid-cols-1 gap-20 md:gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-10 xl:grid-cols-4 xl:gap-40">
+        <div className="grid grid-cols-1 gap-10 md:gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-10 xl:grid-cols-4 xl:gap-40">
           {list.map((item, index) => (
             <ListCon key={index}>
               <CurriculumItem itemData={item}></CurriculumItem>
               {index !== 3 && (
-                <Deco className="hidden xl:block">
-                  <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.png" />
-                </Deco>
+                <>
+                  <Deco className="hidden xl:block">
+                    <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.png" />
+                  </Deco>
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.png"
+                    className="block mx-auto my-0 w-[15.8333vw] mt-10 md:hiddne lg:hidden xl:hidden"
+                  />
+                </>
               )}
             </ListCon>
           ))}

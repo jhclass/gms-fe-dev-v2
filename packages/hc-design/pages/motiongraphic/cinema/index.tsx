@@ -92,6 +92,7 @@ export default function motiongraphicChinema4D() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_cinema_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/motion_cinema_bg.mp4"
               />
             </div>
@@ -102,6 +103,7 @@ export default function motiongraphicChinema4D() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_cinema_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/motion_cinema_bg.mp4"
               />
             </div>

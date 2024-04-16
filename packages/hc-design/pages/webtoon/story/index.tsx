@@ -93,6 +93,7 @@ export default function webtoonBackground() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_story_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/webtoon_story_bg.mp4"
               />
             </div>
@@ -103,6 +104,7 @@ export default function webtoonBackground() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_story_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/webtoon_story_bg.mp4"
               />
             </div>

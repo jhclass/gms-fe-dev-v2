@@ -43,12 +43,12 @@ export default function Aside() {
     <>
       <aside
         id="aside"
-        className="bottom-[8rem] rounded-s-lg left-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
+        className="bottom-[8rem] rounded-s-lg left-[1rem] lg:left-auto lg:right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
       >
         <div className="w-[5rem]">
           <Link
-            href="/consult"
-            as="/consult"
+            href="/cs"
+            as="/cs"
             className="flex items-center justify-center w-full h-full"
           >
             <img

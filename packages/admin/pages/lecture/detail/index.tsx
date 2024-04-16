@@ -108,9 +108,11 @@ const ColFlexBox = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
+  align-items: flex-end;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: stretch;
   }
 `
 const AreaBox = styled.div`
@@ -125,6 +127,12 @@ const TimeBox = styled.div`
     height: 40px;
     line-height: 40px;
   }
+`
+
+const SText = styled.p`
+  font-size: 0.875rem;
+  height: 40px;
+  line-height: 40px;
 `
 
 const DatePickerBox = styled.div`
@@ -163,17 +171,10 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
-const BtnBox = styled.div<{ $isMaster: boolean }>`
+const BtnBox = styled.div`
   display: flex;
   gap: 1rem;
   justify-content: center;
-
-  @media (max-width: 768px) {
-    ${props => props.$isMaster && 'flex-wrap:wrap;'}
-    button {
-      ${props => props.$isMaster && ' width: calc(50% - 0.5rem);'}
-    }
-  }
 `
 
 export default function SubjectDetail() {
@@ -188,12 +189,13 @@ export default function SubjectDetail() {
   const [teacher, setTeacher] = useState('강사명 없음')
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
+  const [datesSelected, setDatesSelected] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const [expStartDate, setExpStartDate] = useState(null)
   const [expEndDate, setExpEndDate] = useState(null)
   const [sjStartDate, setSjStartDate] = useState(null)
   const [sjEndDate, setSjEndDate] = useState(null)
-  const [isReport, setIsReport] = useState('N')
+  const [isReport, setIsReport] = useState('Y')
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 선택하세요.')
 
@@ -314,7 +316,11 @@ export default function SubjectDetail() {
                       }
                     }}
                   >
-                    {Object.entries(subStatus).map(([key, item]) => (
+                    {Object.entries({
+                      ...subStatus,
+                      실업자: '실업자',
+                      재직자: '재직자',
+                    }).map(([key, item]) => (
                       <SelectItem key={item} value={item}>
                         {item}
                       </SelectItem>
@@ -363,7 +369,11 @@ export default function SubjectDetail() {
                           onFocus={e => e.target.blur()}
                           customInput={
                             <Input
-                              label="승인 유효기간(시작일)"
+                              label={
+                                <FilterLabel>
+                                  강의배정 년월<span>*</span>
+                                </FilterLabel>
+                              }
                               labelPlacement="outside"
                               variant="bordered"
                               type="text"
@@ -633,9 +643,16 @@ export default function SubjectDetail() {
                   <FilterLabel>
                     요일선택<span>*</span>
                   </FilterLabel>
-                  <Button color={'primary'} onClick={onOpen}>
-                    요일선택
-                  </Button>
+                  <div className="flex items-end gap-3">
+                    <Button color={'primary'} onClick={onOpen}>
+                      요일선택
+                    </Button>
+                    {datesSelected !== null && (
+                      <SText>
+                        총 수업 일수 <b>{datesSelected.length}</b>일
+                      </SText>
+                    )}
+                  </div>
                 </AreaBox>
               </FlexBox>
               <FlexBox>
@@ -671,100 +688,114 @@ export default function SubjectDetail() {
                   </RadioBox>
                 </AreaBox>
               </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="숫자만 입력해주세요"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="승인인원"
-                    defaultValue={subjectState?.roomNum}
-                    onChange={e => {
-                      register('roomNum').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('roomNum', {
-                      pattern: {
-                        value: /^[가-힣a-zA-Z0-9\s]*$/,
-                        message: '한글, 영어, 숫자만 사용 가능합니다.',
-                      },
-                    })}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="숫자만 입력해주세요"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="확정인원"
-                    defaultValue={subjectState?.roomNum}
-                    onChange={e => {
-                      register('roomNum').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('roomNum', {
-                      pattern: {
-                        value: /^[가-힣a-zA-Z0-9\s]*$/,
-                        message: '한글, 영어, 숫자만 사용 가능합니다.',
-                      },
-                    })}
-                  />
-                </AreaBox>
-                <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="숫자만 입력해주세요"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="교육회차"
-                    defaultValue={subjectState?.roomNum}
-                    onChange={e => {
-                      register('roomNum').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('roomNum', {
-                      pattern: {
-                        value: /^[가-힣a-zA-Z0-9\s]*$/,
-                        message: '한글, 영어, 숫자만 사용 가능합니다.',
-                      },
-                    })}
-                  />
-                </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <FilterLabel>
-                    훈련시간표 첨부<span>*</span>
-                  </FilterLabel>
-                  <TimeBox>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      style={{ display: 'none' }}
-                      onChange={handleFileChange}
-                    />
-                    <Button color={'primary'} onClick={handleButtonClick}>
-                      파일 선택
-                    </Button>
-                    <Input
-                      readOnly={true}
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label=""
-                      value={fileName}
-                    />
-                  </TimeBox>
-                </AreaBox>
-              </FlexBox>
-              <BtnBox $isMaster={mGrade < grade.general}>
+              {isReport === 'Y' && (
+                <>
+                  <FlexBox>
+                    <AreaBox>
+                      <Input
+                        labelPlacement="outside"
+                        placeholder="숫자만 입력해주세요"
+                        variant="bordered"
+                        radius="md"
+                        type="text"
+                        label={
+                          <FilterLabel>
+                            승인인원<span>*</span>
+                          </FilterLabel>
+                        }
+                        defaultValue={subjectState?.roomNum}
+                        onChange={e => {
+                          register('roomNum').onChange(e)
+                        }}
+                        className="w-full"
+                        {...register('roomNum', {
+                          pattern: {
+                            value: /^[가-힣a-zA-Z0-9\s]*$/,
+                            message: '한글, 영어, 숫자만 사용 가능합니다.',
+                          },
+                        })}
+                      />
+                    </AreaBox>
+                    <AreaBox>
+                      <Input
+                        labelPlacement="outside"
+                        placeholder="숫자만 입력해주세요"
+                        variant="bordered"
+                        radius="md"
+                        type="text"
+                        label={
+                          <FilterLabel>
+                            확정인원<span>*</span>
+                          </FilterLabel>
+                        }
+                        defaultValue={subjectState?.roomNum}
+                        onChange={e => {
+                          register('roomNum').onChange(e)
+                        }}
+                        className="w-full"
+                        {...register('roomNum', {
+                          pattern: {
+                            value: /^[가-힣a-zA-Z0-9\s]*$/,
+                            message: '한글, 영어, 숫자만 사용 가능합니다.',
+                          },
+                        })}
+                      />
+                    </AreaBox>
+                    <AreaBox>
+                      <Input
+                        labelPlacement="outside"
+                        placeholder="숫자만 입력해주세요"
+                        variant="bordered"
+                        radius="md"
+                        type="text"
+                        label={
+                          <FilterLabel>
+                            교육회차<span>*</span>
+                          </FilterLabel>
+                        }
+                        defaultValue={subjectState?.roomNum}
+                        onChange={e => {
+                          register('roomNum').onChange(e)
+                        }}
+                        className="w-full"
+                        {...register('roomNum', {
+                          pattern: {
+                            value: /^[가-힣a-zA-Z0-9\s]*$/,
+                            message: '한글, 영어, 숫자만 사용 가능합니다.',
+                          },
+                        })}
+                      />
+                    </AreaBox>
+                  </FlexBox>
+                  <FlexBox>
+                    <AreaBox>
+                      <FilterLabel>훈련시간표 첨부</FilterLabel>
+                      <TimeBox>
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          style={{ display: 'none' }}
+                          onChange={handleFileChange}
+                        />
+                        <Button color={'primary'} onClick={handleButtonClick}>
+                          파일 선택
+                        </Button>
+                        <Input
+                          readOnly={true}
+                          labelPlacement="outside"
+                          placeholder=" "
+                          variant="faded"
+                          radius="md"
+                          type="text"
+                          label=""
+                          value={fileName}
+                        />
+                      </TimeBox>
+                    </AreaBox>
+                  </FlexBox>
+                </>
+              )}
+              <BtnBox>
                 <Button2
                   buttonType="submit"
                   width="100%"
@@ -801,7 +832,12 @@ export default function SubjectDetail() {
         setValue={setValue}
         radio={true}
       />
-      <LectureDates isOpen={isOpen} onClose={onClose} setValue={setValue} />
+      <LectureDates
+        isOpen={isOpen}
+        onClose={onClose}
+        setValue={setValue}
+        setDatesSelected={setDatesSelected}
+      />
     </>
   )
 }

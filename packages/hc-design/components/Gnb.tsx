@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const GnbBox = styled.div`
   border-top: 1px solid #c2c2c2;
   background-image: linear-gradient(rgba(242, 232, 255, 1), transparent);
-  background-color: transparent;
+  background-color: #fff;
 `
 
 const BnrBox = styled.div`

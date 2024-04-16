@@ -91,6 +91,7 @@ export default function artworkGame() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_game_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_game_bg.mp4"
               />
             </div>
@@ -101,6 +102,7 @@ export default function artworkGame() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_game_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_game_bg.mp4"
               />
             </div>

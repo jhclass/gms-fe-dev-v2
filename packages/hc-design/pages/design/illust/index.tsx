@@ -93,6 +93,7 @@ export default function designIllustrator() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/design_illust_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/design_illust_bg.mp4"
               />
             </div>
@@ -103,6 +104,7 @@ export default function designIllustrator() {
                 muted={true}
                 loop={true}
                 playing={true}
+                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/design_illust_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/design_illust_bg.mp4"
               />
             </div>

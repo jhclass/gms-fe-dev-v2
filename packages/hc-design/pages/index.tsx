@@ -1,11 +1,10 @@
 import WideSlider from '@/components/main/WideSlider'
 import WideSliderMo from '@/components/main/WideSliderMo'
-import QuickMenu from '@/components/main/QuickMenu'
 import { styled } from 'styled-components'
 import Curriculum from '@/components/main/Curriculum'
-import Review from '@/components/main/Review'
 import { Link } from '@nextui-org/react'
 import LoopDeco from '@/components/items/LoopDeco'
+import BottomSlider from '@/components/main/BottomSlider'
 
 const MainCon = styled.div`
   padding-bottom: 3.5rem;
@@ -32,8 +31,10 @@ const ItemArea = styled.div`
 `
 const MainBnr = styled.div`
   padding: 8rem 0;
+
   @media (max-width: 640px) {
     background: none;
+    padding: 5rem 0;
   }
 `
 const MainBtn = styled.div`
@@ -65,7 +66,7 @@ export default function Home() {
 
       <LoopDeco />
       <MainBtn>
-        <Link href="">
+        <Link href="/cs/curriculum">
           <img
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_btn01.webp"
             alt="H ACADEMY 전체 과정보기"
@@ -92,10 +93,6 @@ export default function Home() {
           <Curriculum />
         </ItemArea>
       </SectionArea>
-      <img
-        className="block mb-20 md:hidden"
-        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco01.webp"
-      />
       <SectionArea>
         <Wrap>
           <img
@@ -104,7 +101,7 @@ export default function Home() {
             alt="RealFeedback / @student review"
           />
           <img
-            className="block md:hidden"
+            className="block mt-[5rem] md:hidden"
             src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_tit.webp"
             alt="RealFeedback / @student review"
           />
@@ -113,16 +110,18 @@ export default function Home() {
         <ItemArea>
           <Wrap>
             <img
+              className="hidden md:block"
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_01.webp"
+              alt="후기"
+            />
+            <img
+              className="block md:hidden"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_revi_01.webp"
               alt="후기"
             />
           </Wrap>
         </ItemArea>
       </SectionArea>
-      <img
-        className="block mb-20 md:hidden"
-        src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/mo/main_deco02.webp"
-      />
       <MainBnr>
         <Wrap>
           <Link href="/support">
@@ -155,12 +154,9 @@ export default function Home() {
         </Wrap>
         <LoopDeco />
         <ItemArea>
-          <Wrap>
-            {/* <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_revi_01.webp"
-              alt="후기"
-            /> */}
-          </Wrap>
+          <div className="relative max-w-[2000px] mx-auto my-0">
+            <BottomSlider />
+          </div>
         </ItemArea>
       </SectionArea>
     </MainCon>
