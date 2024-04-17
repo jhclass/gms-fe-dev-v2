@@ -389,7 +389,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/artwork">
+              <Link href="/artwork/game">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_13.webp"
                   alt="원화 ( 아트웍 / 게임 )"
@@ -397,7 +397,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/artwork/game">
+              <Link href="/artwork/emoticon">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_14.webp"
                   alt="이모티콘제작"
@@ -405,7 +405,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/artwork/emoticon">
+              <Link href="/support">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_15.webp"
                   alt="국민내일배움카드"
