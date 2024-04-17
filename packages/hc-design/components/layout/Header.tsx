@@ -266,8 +266,8 @@ export default function Header() {
             onMouseLeave={() => {
               setHoverIndex(null)
             }}
-            // style={{ display: hoverIndex ? 'block' : 'none' }}
-            style={{ display: 'block' }}
+            style={{ display: hoverIndex ? 'block' : 'none' }}
+            // style={{ display: 'block' }}
             className="hidden lg:block"
           >
             <Gnb setHoverIndex={setHoverIndex} />
