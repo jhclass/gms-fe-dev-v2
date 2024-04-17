@@ -47,7 +47,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 dataLayer.push(arguments);
               }
               gtag('js', new Date());
-              gtag('config', 'G-WP8Q4MBES6');
+              gtag('config', 'G-WP8Q4MBES6',{
+                  page_path: window.location.pathname,
+                });
             `,
                 }}
               />
