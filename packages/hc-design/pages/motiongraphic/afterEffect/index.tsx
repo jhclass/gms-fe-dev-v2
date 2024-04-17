@@ -1,3 +1,4 @@
+import Form from '@/components/Form'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -115,7 +116,7 @@ export default function motiongraphicAfterEffect() {
               <TopBtn>
                 <Link href="/motiongraphic">
                   <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motionc_top_btn01.webp"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_top_btn01.webp"
                     alt="영상편집"
                   />
                 </Link>
@@ -125,7 +126,7 @@ export default function motiongraphicAfterEffect() {
                     alt="2D모션그래픽"
                   />
                 </Link>
-                <Link href="/artmotiongraphicwork/cinema">
+                <Link href="/motiongraphic/cinema">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_top_btn03.webp"
                     alt="3D모션그래픽"
@@ -159,19 +160,19 @@ export default function motiongraphicAfterEffect() {
             <PCTopbtn>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco_s.webp" /> */}
               <Btns>
-                <Link href="/artwork">
+                <Link href="/motiongraphic">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn01.webp"
                     alt="영상편집"
                   />
                 </Link>
-                <Link href="/artwork/game">
+                <Link href="/motiongraphic/afterEffect">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn02.webp"
                     alt="2D모션그래픽"
                   />
                 </Link>
-                <Link href="/artwork/emoticon">
+                <Link href="/motiongraphic/cinema">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_top_btn03.webp"
                     alt="3D모션그래픽"
@@ -255,6 +256,9 @@ export default function motiongraphicAfterEffect() {
             </BtnSection>
           </MoCon>
         </div>
+      </section>
+      <section className="mt-[-3rem] pb-[6rem]">
+        <Form />
       </section>
     </>
   )

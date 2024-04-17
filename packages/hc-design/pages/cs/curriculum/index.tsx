@@ -18,7 +18,7 @@ export default function Consult() {
           />
         </div>
         <div className="wrap">
-          <div className="relative mt-[6rem]">
+          <div className="relative mt-[3rem] wmd:mt-[6rem]">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/catebg_01.webp"
               alt="영상편집 / 2D,3D 모션그래픽 MOTION GRAPHICS 모션그래픽 컨셉을 설정하고 그에따른 기법, 푸티지를 녹인 모션그래픽 연출을 교육합니다."
@@ -74,7 +74,7 @@ export default function Consult() {
               </li>
             </ul>
           </div>
-          <div className="relative mt-[6rem]">
+          <div className="relative mt-[3rem] wmd:mt-[6rem]">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/catebg_02.webp"
               alt="시각디자인 visual design 디자인 표현의 근간을 이루는 기초시각디자인 및 다양한 표현기법을 다룹니다."
@@ -146,7 +146,7 @@ export default function Consult() {
               </li>
             </ul>
           </div>
-          <div className="relative mt-[6rem]">
+          <div className="relative mt-[3rem] wmd:mt-[6rem]">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/catebg_03.webp"
               alt="웹툰 캐릭터 / 연출 / 각색 / 배경 / 스토리 (원고, 작가데뷔) webtoon 웹툰작가님이 직접 교육해주는 기획부터 포트폴리오, 작가데뷔까지 가능한 수업입니다."
@@ -218,7 +218,7 @@ export default function Consult() {
               </li>
             </ul>
           </div>
-          <div className="relative mt-[6rem]">
+          <div className="relative mt-[3rem] wmd:mt-[6rem]">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/catebg_04.webp"
               alt="디지털드로잉 / 이모티콘 제작 digital drawing 디지털 일러스트레이션의 다양한 완성, 그리고 5주만의 이모티콘 크리에이터까지!!"

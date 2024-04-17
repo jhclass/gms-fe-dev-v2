@@ -19,7 +19,6 @@ const HeaderBox = styled.div`
   }
 `
 const Logo = styled.div`
-  width: 21.5278vw;
   @media (max-width: 960px) {
     width: 13rem;
   }
@@ -34,7 +33,6 @@ const Nav = styled.ul`
   > li {
     position: relative;
     cursor: pointer;
-    padding-right: 1vw;
   }
 
   @media (max-width: 960px) {
@@ -103,25 +101,6 @@ const MgnbNav = styled.ul`
 
     img {
       /* width: 14rem; */
-    }
-  }
-`
-const MgnbNav2 = styled.ul`
-  margin-top: 1rem;
-  padding-left: 1rem;
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  li {
-    width: calc(50% - 1rem);
-  }
-  a {
-    display: block;
-    width: 100%;
-    height: 100%;
-
-    img {
-      width: 10rem;
     }
   }
 `
@@ -239,19 +218,35 @@ export default function Header() {
                   setHoverIndex(null)
                 }}
               >
-                {cate.map((item, index) => (
-                  <li
-                    key={index}
-                    onMouseEnter={() => {
-                      setHoverIndex(index + 1)
-                    }}
-                  >
-                    <img
-                      src={hoverIndex - 1 === index ? item.on : item.off}
-                      alt={item.alt}
-                    />
-                  </li>
-                ))}
+                {cate.map((item, index) =>
+                  index < 4 ? (
+                    <li
+                      key={index}
+                      onMouseEnter={() => {
+                        setHoverIndex(index + 1)
+                      }}
+                    >
+                      <Link href="/cs/curriculum">
+                        <img
+                          src={hoverIndex - 1 === index ? item.on : item.off}
+                          alt={item.alt}
+                        />
+                      </Link>
+                    </li>
+                  ) : (
+                    <li
+                      key={index}
+                      onMouseEnter={() => {
+                        setHoverIndex(index + 1)
+                      }}
+                    >
+                      <img
+                        src={hoverIndex - 1 === index ? item.on : item.off}
+                        alt={item.alt}
+                      />
+                    </li>
+                  ),
+                )}
               </Nav>
               <GnbBtn onClick={handleButtonClick}>
                 <img

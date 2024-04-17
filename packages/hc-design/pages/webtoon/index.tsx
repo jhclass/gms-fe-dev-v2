@@ -1,3 +1,4 @@
+import Form from '@/components/Form'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Suspense, lazy } from 'react'
@@ -263,6 +264,9 @@ export default function webtoonDrawing() {
             </BtnSection>
           </MoCon>
         </div>
+      </section>
+      <section className="mt-[-15rem] pb-[6rem]">
+        <Form />
       </section>
     </>
   )
