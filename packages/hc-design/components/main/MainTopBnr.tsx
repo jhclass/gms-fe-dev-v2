@@ -84,7 +84,7 @@ export default function TopBnr() {
               </Link>
             </BtnItme>
             <BtnItme>
-              <Link href="tel:02-393-4321">
+              <Link id="callBtn" href="tel:02-393-4321">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
                   alt="02)393-4321"
