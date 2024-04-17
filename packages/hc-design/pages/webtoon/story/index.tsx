@@ -215,7 +215,7 @@ export default function webtoonBackground() {
               "
             ></img>
             <BtnSection>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_btn.webp"
                   alt="수강료 조회"
@@ -252,7 +252,7 @@ export default function webtoonBackground() {
               "
             ></img>
             <BtnSection>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_background_btn.webp"
                   alt="수강료 조회"

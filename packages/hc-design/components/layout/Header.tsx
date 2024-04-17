@@ -445,7 +445,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_20.webp"
                   alt="수강료 / 시간표 조회"
@@ -453,7 +453,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/mo/nav_21.webp"
                   alt="온라인 상담"

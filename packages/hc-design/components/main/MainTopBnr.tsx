@@ -68,7 +68,7 @@ export default function TopBnr() {
           </BnrArea>
           <BtnList>
             <BtnItme>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn1.webp"
                   alt="수강료조회"

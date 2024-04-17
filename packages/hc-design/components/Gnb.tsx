@@ -259,7 +259,7 @@ export default function Gnb({ setHoverIndex }) {
               }}
             >
               <li>
-                <Link href="/cs">
+                <Link href="/cs/consult">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_01.webp"
                     alt="수강료 조회"
@@ -267,7 +267,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="/cs">
+                <Link href="/cs/consult">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_02.webp"
                     alt="시간표 조회"
@@ -275,7 +275,7 @@ export default function Gnb({ setHoverIndex }) {
                 </Link>
               </li>
               <li>
-                <Link href="/cs">
+                <Link href="/cs/consult">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/nav/nav_07_03.webp"
                     alt="온라인 상담"

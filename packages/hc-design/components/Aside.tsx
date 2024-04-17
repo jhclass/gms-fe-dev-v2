@@ -47,8 +47,8 @@ export default function Aside() {
       >
         <div className="w-[5rem]">
           <Link
-            href="/cs"
-            as="/cs"
+            href="/cs/consult"
+            as="/cs/consult"
             className="flex items-center justify-center w-full h-full"
           >
             <img

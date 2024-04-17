@@ -76,7 +76,7 @@ export default function supportSystem() {
                   style={{ width: '19.8611VW', maxWidth: '286px' }}
                 ></img>
               </Link>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 {/* <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/support_system_btn02.webp"
                   alt="채용정보 확인하기"
@@ -109,7 +109,7 @@ export default function supportSystem() {
                   style={{ width: '46.8519VW' }}
                 ></img> */}
               </Link>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/support_system_btn04.webp"
                   alt="시간표조회 확인하기"
