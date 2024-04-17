@@ -173,7 +173,7 @@ export default function motiongraphicAfterEffect() {
               className="hidden w-full wmd:block"
             ></img>
             <BtnSection>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_btn.webp"
                   alt="수강료 조회"
@@ -218,7 +218,7 @@ export default function motiongraphicAfterEffect() {
               className="block w-full wmd:hidden"
             ></img>
             <BtnSection>
-              <Link href="/cs">
+              <Link href="/cs/consult">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_btn.webp"
                   alt="수강료 조회"

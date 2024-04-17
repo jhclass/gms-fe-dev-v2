@@ -92,7 +92,7 @@ export default function academyFeatures() {
                       </Link>
                     </p>
                     <p className="pl-[3rem]">
-                      <Link href="/cs">
+                      <Link href="/cs/consult">
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn04.webp"
                           alt="시간표조회 확인하기"
@@ -148,7 +148,7 @@ export default function academyFeatures() {
                 </Link>
               </p>
               <p className="mt-4">
-                <Link href="/cs">
+                <Link href="/cs/consult">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/academy_features_03_btn04.webp"
                     alt="시간표 조회 확인하기"
