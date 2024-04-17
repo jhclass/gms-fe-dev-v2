@@ -93,6 +93,7 @@ export default function artworkGame() {
                 height="100%"
                 muted={true}
                 loop={true}
+                playsinline={true}
                 playing={true}
                 poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_game_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_game_bg.mp4"
@@ -104,6 +105,7 @@ export default function artworkGame() {
                 height="100%"
                 muted={true}
                 loop={true}
+                playsinline={true}
                 playing={true}
                 poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_game_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_game_bg.mp4"
@@ -143,6 +145,11 @@ export default function artworkGame() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -171,11 +178,6 @@ export default function artworkGame() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_game_02.webp"
               alt="Step .01 게임원화 이해 | 빛과 그림자 개념 이해 및 표현 입체표현 원리 이해 컨셉 조사 및 이미지 매칭 모작,

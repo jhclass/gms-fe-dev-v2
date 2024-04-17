@@ -93,6 +93,7 @@ export default function webtoonBackground() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -104,6 +105,7 @@ export default function webtoonBackground() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -157,6 +159,11 @@ export default function webtoonBackground() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -191,11 +198,6 @@ export default function webtoonBackground() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_02.png"
               alt="Step .01 트렌드 / 글로벌 웹툰기획 TIP | 썸네일 기획 및 작성 - 장르 선택 및 트리트먼트 작성 단편 분량 1~3화 준비하기,

@@ -92,6 +92,7 @@ export default function motiongraphicChinema4D() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -103,6 +104,7 @@ export default function motiongraphicChinema4D() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -148,6 +150,11 @@ export default function motiongraphicChinema4D() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -175,9 +182,9 @@ export default function motiongraphicChinema4D() {
                 </Link>
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
-            </PCTopbtn>
+            </PCTopbtn>{' '}
             <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
               alt=""
             />

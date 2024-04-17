@@ -91,6 +91,7 @@ export default function motiongraphicAfterEffect() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -102,6 +103,7 @@ export default function motiongraphicAfterEffect() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -145,6 +147,11 @@ export default function motiongraphicAfterEffect() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -173,11 +180,6 @@ export default function motiongraphicAfterEffect() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_02.webp"
               alt="Step .01 인터페이스의 이해, 기본 조작 연습 Mask와 Shape Layer의 이해와 기초 | 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습 컴포지션(작업창) 옵션들의 이해 기본 단축키 숙지와 연습,

@@ -21,7 +21,7 @@ const HeaderBox = styled.div`
 const Logo = styled.div`
   width: 21.5278vw;
   @media (max-width: 960px) {
-    width: 10rem;
+    width: 13rem;
   }
 `
 
@@ -212,7 +212,7 @@ export default function Header() {
             headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'
           } flex-col w-full  max-w-full px-0`}
         >
-          <div className="bg-[#040033] lg:bg-white">
+          <div className="bg-[#000] lg:bg-white">
             <MainTopBnr />
 
             <HeaderBox className="wrap ">
@@ -224,8 +224,8 @@ export default function Header() {
                     alt="H ACADEMY | H아카데미"
                   />
                   <img
-                    className="w-[12rem] block lg:hidden"
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.webp"
+                    className="block lg:hidden"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.png"
                     alt="H ACADEMY | H아카데미"
                   />
                 </Link>

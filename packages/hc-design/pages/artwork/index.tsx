@@ -93,6 +93,7 @@ export default function artworkDigitalDrawing() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -104,6 +105,7 @@ export default function artworkDigitalDrawing() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -145,6 +147,11 @@ export default function artworkDigitalDrawing() {
                 className="block w-full wmd:hidden"
               ></img>
             </TopText>
+            <img
+              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
+              alt=""
+            />
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto my-0">
@@ -173,11 +180,6 @@ export default function artworkDigitalDrawing() {
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
-            <img
-              className="absolute hidden w-full md:block top-[2.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_02.webp"
               alt="Step .01 라인드로잉의 중요성 | 타블렛 이용시 주의사항 및 사용방법 디지털 라인드로잉 강의(브러시기능 이해) -직선/정원/타원/프리커브 라인드로잉 연습 & 개인별 트레이닝,

@@ -28,6 +28,7 @@ export default function MainSilder() {
                   />
                 </figure>
                 <video
+                  playsInline
                   autoPlay
                   loop
                   muted
@@ -51,6 +52,7 @@ export default function MainSilder() {
                   />
                 </figure>
                 <video
+                  playsInline
                   autoPlay
                   loop
                   muted
@@ -74,6 +76,7 @@ export default function MainSilder() {
                   />
                 </figure>
                 <video
+                  playsInline
                   autoPlay
                   loop
                   muted
