@@ -1,3 +1,4 @@
+import Form from '@/components/Form'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -255,6 +256,9 @@ export default function motiongraphicAfterEffect() {
             </BtnSection>
           </MoCon>
         </div>
+      </section>
+      <section className="mt-[-3rem] pb-[6rem]">
+        <Form />
       </section>
     </>
   )

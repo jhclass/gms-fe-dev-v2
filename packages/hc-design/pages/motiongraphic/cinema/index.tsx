@@ -1,3 +1,4 @@
+import Form from '@/components/Form'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Suspense, lazy } from 'react'
@@ -182,12 +183,7 @@ export default function motiongraphicChinema4D() {
                 </Link>
               </Btns>
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
-            </PCTopbtn>{' '}
-            <img
-              className="absolute hidden w-full md:block bottom-[-4.0833vw] z-[-1]"
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/loopDeco.webp"
-              alt=""
-            />
+            </PCTopbtn>
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_cinema_02.webp"
               alt="Step .01 기초 UI활용 Modeling | 시포디 인터페이스의 이해 모션그래픽 및 영상제작 파이프라인 소개, 툴 설명 Nerbs 및 Spline 활용한 모델링 기초 모델링의 기본 이해, 제품디자인 ( Line/ Round/ Shape ),
@@ -267,6 +263,9 @@ export default function motiongraphicChinema4D() {
             </BtnSection>
           </MoCon>
         </div>
+      </section>
+      <section className="mt-[-3rem] pb-[6rem]">
+        <Form />
       </section>
     </>
   )

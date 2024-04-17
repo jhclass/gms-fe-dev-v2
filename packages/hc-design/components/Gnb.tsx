@@ -10,7 +10,7 @@ const GnbBox = styled.div`
 `
 
 const BnrBox = styled.div`
-  width: 21.5278vw;
+  /* width: 21.5278vw; */
 `
 const LavList = styled.div`
   display: flex;
@@ -29,7 +29,6 @@ const LavBox = styled.ul`
   > li {
     width: 100%;
     text-align: center;
-    padding-right: 1vw;
   }
   a {
     display: block;
@@ -53,7 +52,11 @@ export default function Gnb({ setHoverIndex }) {
       <GnbBox>
         <div
           className="wrap"
-          style={{ display: 'flex', justifyContent: 'space-between' }}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '0.5rem',
+          }}
         >
           <BnrBox>
             <img
