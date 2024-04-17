@@ -115,6 +115,11 @@ export default function Form() {
           },
           onCompleted: result => {
             if (result.createStudentState.ok) {
+              window.gtag('event', '상담신청완료', {
+                event_category: 'Form',
+                event_label: 'Submit',
+                value: 1,
+              })
               alert('상담신청이 완료되었습니다. 😊')
             }
           },
