@@ -91,6 +91,7 @@ export default function motiongraphicAfterEffect() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}
@@ -102,6 +103,7 @@ export default function motiongraphicAfterEffect() {
               <ReactPlayer
                 width="100%"
                 height="100%"
+                playsinline={true}
                 muted={true}
                 loop={true}
                 playing={true}

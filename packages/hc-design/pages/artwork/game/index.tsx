@@ -93,6 +93,7 @@ export default function artworkGame() {
                 height="100%"
                 muted={true}
                 loop={true}
+                playsinline={true}
                 playing={true}
                 poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_game_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_game_bg.mp4"
@@ -104,6 +105,7 @@ export default function artworkGame() {
                 height="100%"
                 muted={true}
                 loop={true}
+                playsinline={true}
                 playing={true}
                 poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_game_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_game_bg.mp4"

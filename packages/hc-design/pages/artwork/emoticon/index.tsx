@@ -93,6 +93,7 @@ export default function artworkEmoticon() {
                 width="100%"
                 height="100%"
                 muted={true}
+                playsinline={true}
                 loop={true}
                 playing={true}
                 poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/artwork_emoticon_poster.webp"
@@ -105,6 +106,7 @@ export default function artworkEmoticon() {
                 height="100%"
                 muted={true}
                 loop={true}
+                playsinline={true}
                 playing={true}
                 poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_emoticon_poster.webp"
                 url="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/mo/artwork_emoticon_bg.mp4"

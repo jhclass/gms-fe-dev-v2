@@ -53,6 +53,7 @@ export default function WideSliderMo() {
                 />
               </figure>
               <video
+                playsInline
                 autoPlay
                 loop
                 muted
@@ -79,6 +80,7 @@ export default function WideSliderMo() {
                 />
               </figure>
               <video
+                playsInline
                 autoPlay
                 loop
                 muted
@@ -105,6 +107,7 @@ export default function WideSliderMo() {
                 />
               </figure>
               <video
+                playsInline
                 autoPlay
                 loop
                 muted
