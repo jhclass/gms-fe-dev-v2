@@ -269,7 +269,7 @@ export default function webtoonBackground() {
           </MoCon>
         </div>
       </section>
-      <section className="mt-[-10rem] pb-[6rem]">
+      <section className="mt-[-7rem] wmd:mt-[-10rem] pb-[6rem]">
         <Form />
       </section>
     </>

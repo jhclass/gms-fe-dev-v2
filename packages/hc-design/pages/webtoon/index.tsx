@@ -265,7 +265,7 @@ export default function webtoonDrawing() {
           </MoCon>
         </div>
       </section>
-      <section className="mt-[-15rem] pb-[6rem]">
+      <section className="mt-[-10rem] wmd:mt-[-15rem] pb-[6rem]">
         <Form />
       </section>
     </>

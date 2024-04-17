@@ -265,7 +265,7 @@ export default function designIllustrator() {
           </MoCon>
         </div>
       </section>
-      <section className="mt-[-12rem] pb-[6rem]">
+      <section className="wmd:mt-[-12rem] pb-[6rem]">
         <Form />
       </section>
     </>

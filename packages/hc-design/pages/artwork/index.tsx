@@ -261,7 +261,7 @@ export default function artworkDigitalDrawing() {
           </MoCon>
         </div>
       </section>
-      <section className="mt-[-14rem] pb-[6rem]">
+      <section className="mt-[-7rem] wmd:mt-[-14rem] pb-[6rem]">
         <Form />
       </section>
     </>
