@@ -33,6 +33,9 @@ const Nav = styled.ul`
   > li {
     position: relative;
     cursor: pointer;
+    a {
+      opacity: 1 !important;
+    }
   }
 
   @media (max-width: 960px) {
@@ -226,7 +229,7 @@ export default function Header() {
                         setHoverIndex(index + 1)
                       }}
                     >
-                      <Link href="/cs/curriculum">
+                      <Link href="/cs/curriculum" className="block">
                         <img
                           src={hoverIndex - 1 === index ? item.on : item.off}
                           alt={item.alt}
