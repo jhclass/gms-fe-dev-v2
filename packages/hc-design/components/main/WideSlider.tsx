@@ -67,7 +67,7 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link href="/webtoon/emoticon">
+            <Link href="/artwork/emoticon">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] ">
                   <img

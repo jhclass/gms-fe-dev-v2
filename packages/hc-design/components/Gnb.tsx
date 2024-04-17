@@ -24,7 +24,7 @@ const LavBox = styled.ul`
   flex-direction: column;
   border-left: 1px solid #c2c2c2;
   align-items: center;
-  gap: 0.3rem;
+  gap: 1rem;
 
   > li {
     width: 100%;
