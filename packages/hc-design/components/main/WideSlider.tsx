@@ -14,6 +14,7 @@ export default function MainSilder() {
           autoplay={{
             delay: 5000,
           }}
+          loop={true}
           navigation={{ nextEl: '.main_next', prevEl: '.main_prev' }}
           modules={[Autoplay, Navigation]}
           className="mySwiper1"
