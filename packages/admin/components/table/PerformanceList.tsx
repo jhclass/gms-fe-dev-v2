@@ -135,7 +135,11 @@ export default function PerformanceList({ ids, dateRange }) {
         ))}
       </ListBox>
       <ListBox>
-        <PerformanceBox currentPage={undefined} setCurrentPage={undefined} />
+        <PerformanceBox
+          managerData={undefined}
+          dateRange={undefined}
+          totalCount={undefined}
+        />
       </ListBox>
     </>
   )
