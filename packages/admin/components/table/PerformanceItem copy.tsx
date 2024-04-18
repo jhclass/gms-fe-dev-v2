@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 
 type ConsultItemProps = {
@@ -58,44 +59,66 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
-  padding: 0.5rem;
+  width: 7%;
+  padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${600 * 0.15}px;
-`
-const TcreatedAt = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${600 * 0.2}px;
-`
-const TSubject = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 40%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${600 * 0.4}px;
+  min-width: ${1200 * 0.07}px;
 `
 const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  padding: 0.5rem;
+  width: 11%;
+  padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${600 * 0.25}px;
-  span {
-    color: red;
+  min-width: ${1200 * 0.11}px;
+  color: #043999;
+
+  &.refund {
+    color: #ff5900;
   }
+`
+const Tname = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+const Tsubject = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.4}px;
+`
+const TcreatedAt = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 11%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.11}px;
+`
+const Tmanager = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.1}px;
 `
 const EllipsisBox = styled.p`
   overflow: hidden;
@@ -106,9 +129,10 @@ const EllipsisBox = styled.p`
 `
 
 export default function PerformanceItem(props) {
+  const router = useRouter()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
-  const paymentData = props.tableData
+  const payment = props.tableData
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -119,26 +143,56 @@ export default function PerformanceItem(props) {
     return result
   }
 
+  const clickLink = e => {
+    if (payment?.refundApproval) {
+      e.preventDefault()
+    } else {
+      router.push(`/students/edit/payment/${payment.id}`, undefined, {
+        shallow: true,
+      })
+    }
+  }
+
   return (
     <>
       <TableItem>
         <TableRow>
           <ClickBox>
-            <Tnum> {(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
+            <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
             <TcreatedAt>
-              <EllipsisBox>{getDate(paymentData?.createdAt)}</EllipsisBox>
-            </TcreatedAt>
-            <TSubject>
-              {/* <EllipsisBox>{paymentData?.subject.subjectName}</EllipsisBox> */}
-            </TSubject>
-            <Tamount>
               <EllipsisBox>
-                {paymentData?.actualAmount === null ||
-                paymentData?.actualAmount === 0 ? (
-                  <span>0</span>
-                ) : (
-                  feeFormet(paymentData?.actualAmount)
-                )}
+                {payment?.paymentDate ? getDate(payment?.paymentDate) : '-'}
+              </EllipsisBox>
+            </TcreatedAt>
+            <Tname>
+              <EllipsisBox>{payment?.stName}</EllipsisBox>
+            </Tname>
+            <Tmanager>
+              <EllipsisBox>{payment?.receiver?.mUsername}</EllipsisBox>
+            </Tmanager>
+            <Tsubject>
+              <EllipsisBox>{`[${payment?.studentPayment?.subject?.round}회차] ${payment?.studentPayment.subject?.subjectName}`}</EllipsisBox>
+            </Tsubject>
+            <Tamount className={payment?.refundApproval ? 'refund' : ''}>
+              <EllipsisBox>
+                {payment?.amountPayment === undefined ||
+                payment?.amountPayment === null ||
+                payment?.amountPayment === 0
+                  ? '0'
+                  : payment?.refundApproval
+                  ? `-${feeFormet(payment?.amountPayment)}`
+                  : feeFormet(payment?.amountPayment)}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className={payment?.refundApproval ? 'refund' : ''}>
+              <EllipsisBox>
+                {payment?.depositAmount === undefined ||
+                payment?.depositAmount === null ||
+                payment?.depositAmount === 0
+                  ? '0'
+                  : payment?.refundApproval
+                  ? `-${feeFormet(payment?.depositAmount)}`
+                  : feeFormet(payment?.depositAmount)}
               </EllipsisBox>
             </Tamount>
           </ClickBox>

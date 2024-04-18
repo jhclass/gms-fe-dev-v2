@@ -1,6 +1,5 @@
-import { styled } from 'styled-components'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { styled } from 'styled-components'
 
 type ConsultItemProps = {
   tableData: {
@@ -32,18 +31,15 @@ const TableItem = styled.div`
   display: table;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #e4e4e7;
+  border: 1px solid #e4e4e7;
+  border-bottom: 0;
   color: #71717a;
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
   overflow: hidden;
-
-  &:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
-  }
 `
+
 const TableRow = styled.div`
   position: relative;
   display: table-row;
@@ -132,7 +128,7 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function StudentsItem(props) {
+export default function PerformanceItem(props) {
   const router = useRouter()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
