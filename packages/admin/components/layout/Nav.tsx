@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 import Category from '@/components/layout/Category'
 import useMmeQuery from '@/utils/mMe'
+import { ScrollShadow } from '@nextui-org/react'
 
 const NavSec = styled(motion.div)<{ $navOpen: boolean }>`
   display: flex;
@@ -26,7 +27,6 @@ const NavSec = styled(motion.div)<{ $navOpen: boolean }>`
 `
 
 const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
-  overflow-y: auto;
   row-gap: 1.25rem;
   flex-direction: column;
   flex-grow: 1;
@@ -53,12 +53,17 @@ const Logo = styled(motion.h1)<{ $navOpen: boolean }>`
   overflow: hidden;
 `
 const LogoImg = styled(motion.img)<{ $navOpen: boolean }>`
-  max-width: ${props => (props.$navOpen ? 'none' : '100%')};
+  max-width: ${props => (props.$navOpen ? '80%' : '100%')};
   height: ${props => (props.$navOpen ? '3rem' : '2rem')};
 
   @media screen and (max-width: 1024px) {
     max-width: none;
-    height: 3rem;
+    height: 2rem;
+  }
+
+  @media screen and (max-width: 520px) {
+    max-width: none;
+    height: 1.5rem;
   }
 `
 
@@ -117,29 +122,31 @@ export default function Header() {
   return (
     <>
       <NavSec $navOpen={navOpen}>
-        <NavWrap $navOpen={navOpen}>
-          <Logo $navOpen={navOpen}>
-            <Link href={'/'}>
-              <LogoImg
-                $navOpen={navOpen}
-                src={
-                  navOpen
-                    ? 'https://highclass-image.s3.amazonaws.com/admin/common/H_logo.svg'
-                    : 'https://highclass-image.s3.amazonaws.com/admin/common/H_simbol_color.svg'
-                }
-                alt="H ACADEMY Admin"
-              />
-            </Link>
-          </Logo>
-          <DimBtn onClick={toggleNav}>
-            <i className="xi-close" />
-          </DimBtn>
-          <ConBox>
-            <CateBox>
-              <Category />
-            </CateBox>
-          </ConBox>
-        </NavWrap>
+        <ScrollShadow className="w-full scrollbar">
+          <NavWrap $navOpen={navOpen}>
+            <Logo $navOpen={navOpen}>
+              <Link href={'/'}>
+                <LogoImg
+                  $navOpen={navOpen}
+                  src={
+                    navOpen
+                      ? 'https://highclass-image.s3.amazonaws.com/admin/common/H_logo_b.svg'
+                      : 'https://highclass-image.s3.amazonaws.com/admin/common/H_simbol_b.svg'
+                  }
+                  alt="H ACADEMY Admin"
+                />
+              </Link>
+            </Logo>
+            <DimBtn onClick={toggleNav}>
+              <i className="xi-close" />
+            </DimBtn>
+            <ConBox>
+              <CateBox>
+                <Category />
+              </CateBox>
+            </ConBox>
+          </NavWrap>
+        </ScrollShadow>
       </NavSec>
       {navOpen && <Dim onClick={toggleNav} />}
     </>

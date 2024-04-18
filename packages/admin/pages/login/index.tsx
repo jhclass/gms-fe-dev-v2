@@ -18,7 +18,7 @@ type LoginForm = {
 }
 
 const Logo = styled.h1`
-  width: 15rem;
+  width: 70%;
   margin: 0 auto 3rem;
 `
 

@@ -44,6 +44,7 @@ const TableItem = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
+  margin-top: 0.5rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -109,34 +110,29 @@ export default function PerformanceTotal({
     <>
       <FlexBox>
         <AreaBoxS>
-          <div>
-            <FilterLabel>순위</FilterLabel>
-            <FlatBox>{totalCount === 0 ? '-' : ranking + 1}</FlatBox>
-          </div>
+          <FlatBox>{totalCount === 0 ? '-' : ranking + 1}</FlatBox>
         </AreaBoxS>
         <AreaBox>
-          <div>
-            <FilterLabel>이름</FilterLabel>
-            <FlatBox>
-              {managerList.find(user => user.id === managerId).mUsername}
-            </FlatBox>
-          </div>
+          <FlatBox>
+            {managerList.find(user => user.id === managerId).mUsername}
+          </FlatBox>
         </AreaBox>
         <AreaBox>
-          <div>
-            <FilterLabel>총 영업 건수</FilterLabel>
-            <FlatBox>{totalCount}</FlatBox>
-          </div>
+          <FlatBox>{totalCount}</FlatBox>
         </AreaBox>
         <AreaBox>
-          <div>
-            <FilterLabel>총 금액</FilterLabel>
-            <FlatBox>
-              {totalAmount === undefined || totalAmount === null
-                ? '0'
-                : feeFormet(totalAmount)}
-            </FlatBox>
-          </div>
+          <FlatBox>
+            {totalAmount === undefined || totalAmount === null
+              ? '0'
+              : feeFormet(totalAmount)}
+          </FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FlatBox>
+            {totalAmount === undefined || totalAmount === null
+              ? '0'
+              : feeFormet(totalAmount)}
+          </FlatBox>
         </AreaBox>
       </FlexBox>
     </>

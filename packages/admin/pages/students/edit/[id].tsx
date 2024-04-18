@@ -143,7 +143,7 @@ export default function StudentsEditInfo() {
   const [birthdayDate, setBirthdayDate] = useState(null)
   const [noDouble, setNoDouble] = useState(true)
   const [noDoubleError, setNoDoubleError] = useState(false)
-  const years = _.range(1970, getYear(new Date()) + 1, 1)
+  const years = _.range(1950, getYear(new Date()) + 1, 1)
 
   useEffect(() => {
     searchStudentBasic({

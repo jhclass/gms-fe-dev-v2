@@ -134,7 +134,7 @@ export default function StudentsWrite() {
   const [birthdayDate, setBirthdayDate] = useState(null)
   const [noDouble, setNoDouble] = useState(null)
   const [noDoubleError, setNoDoubleError] = useState(false)
-  const years = _.range(1970, getYear(new Date()) + 1, 1)
+  const years = _.range(1950, getYear(new Date()) + 1, 1)
 
   const onSubmit = data => {
     createStudent({
@@ -353,9 +353,10 @@ export default function StudentsWrite() {
                             showYearDropdown
                             selected={
                               birthdayDate === null
-                                ? new Date('2000')
+                                ? null
                                 : new Date(birthdayDate)
                             }
+                            openToDate={new Date('2000/04/11')}
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
