@@ -24,37 +24,6 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-const AreaBox = styled.div`
-  flex: 1;
-  width: 100%;
-`
-const AreaBoxS = styled.div`
-  min-width: 5%;
-  text-align: center;
-  @media (max-width: 768px) {
-    min-width: 100%;
-    text-align: left;
-  }
-`
-const FlexBox = styled.div`
-  display: flex;
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`
-const FilterLabel = styled.label`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #11181c;
-  display: block;
-  padding-bottom: 0.375rem;
-  span {
-    color: red;
-  }
-`
 
 export default function PerformanceList({ ids, dateRange }) {
   const [salesStatistics] = useMutation(SALES_STATISTICS_MUTATION)
@@ -98,45 +67,31 @@ export default function PerformanceList({ ids, dateRange }) {
           totalCount={countTotal}
         />
       </div>
-      <ListBox>
-        <FlexBox>
-          <AreaBoxS>
-            <FilterLabel>순위</FilterLabel>
-          </AreaBoxS>
-          <AreaBox>
-            <FilterLabel>이름</FilterLabel>
-          </AreaBox>
-          <AreaBox>
-            <FilterLabel>총 결제 건수</FilterLabel>
-          </AreaBox>
-          <AreaBox>
-            <FilterLabel>총 매출액</FilterLabel>
-          </AreaBox>
-          <AreaBox>
-            <FilterLabel>총 환불액</FilterLabel>
-          </AreaBox>
-        </FlexBox>
-        {allData?.map((item, index) => (
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PerformanceTotal
-              key={index}
-              ranking={index}
-              managerId={item.processingManagerId}
-              totalAmount={item.totalActualAmount}
-              totalCount={item.totalCount}
-            />
-          </Suspense>
-        ))}
-      </ListBox>
-      <ListBox>
-        <PerformanceBox currentPage={undefined} setCurrentPage={undefined} />
-      </ListBox>
+      {allData?.map((item, index) => (
+        <ListBox key={index}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <PerformanceTotal
+                ranking={index}
+                managerId={item.processingManagerId}
+                totalAmount={item.totalActualAmount}
+                totalCount={item.totalCount}
+              />
+            </Suspense>
+          </div>
+          {/* <PerformanceBox
+            managerData={item}
+            dateRange={dateRange}
+            totalCount={item.totalCount}
+          /> */}
+        </ListBox>
+      ))}
     </>
   )
 }

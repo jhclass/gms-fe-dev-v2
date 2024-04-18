@@ -80,6 +80,11 @@ export default function PerformanceChartCon({
         type: 'line',
         data: totalAmount,
       },
+      {
+        name: '총 환불',
+        type: 'column',
+        data: totalAmount,
+      },
     ],
     options: {
       chart: {
@@ -95,7 +100,7 @@ export default function PerformanceChartCon({
         },
       },
       stroke: {
-        width: [0, 1, 1],
+        width: [0, 0, 1, 0],
       },
       dataLabels: {
         enabled: true,
@@ -154,11 +159,22 @@ export default function PerformanceChartCon({
           show: false,
           max: maxAmountValue,
         },
+        {
+          labels: {
+            formatter: function (value) {
+              return (value / 10000).toFixed(0).toLocaleString()
+            },
+          },
+          show: false,
+          max: maxAmountValue,
+        },
       ],
       colors: [
         'rgba(46,147,250,0.85)',
         'rgba(0,227,150,0.85)',
         'rgba(0,227,150,0.85)',
+        'rgba(255,89,0,0.85)',
+        ,
       ],
     },
   }
