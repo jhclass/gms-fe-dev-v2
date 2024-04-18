@@ -72,10 +72,10 @@ export default function CurriculumItems() {
               {index !== 3 && (
                 <>
                   <Deco className="hidden xl:block">
-                    <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.png" />
+                    <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.webp" />
                   </Deco>
                   <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.png"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/H_simbol_color.webp"
                     className="block mx-auto my-0 w-[15.8333vw] mt-10 md:hiddne lg:hidden xl:hidden"
                   />
                 </>

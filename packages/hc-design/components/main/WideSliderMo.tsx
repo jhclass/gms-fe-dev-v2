@@ -128,10 +128,10 @@ export default function WideSliderMo() {
           </SwiperSlide>
         </Swiper>
         <button className="main_prev z-[10] w-[10%] absolute top-[50%] left-0  -translate-y-[50%]">
-          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner_btn.png" />
+          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner_btn.webp" />
         </button>
         <button className="rotate-180  w-[10%] main_next absolute top-[50%] right-0 z-[10] -translate-y-[50%]">
-          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner_btn.png" />
+          <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner_btn.webp" />
         </button>
       </div>
     </>

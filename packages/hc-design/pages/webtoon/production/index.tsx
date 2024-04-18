@@ -92,13 +92,13 @@ export default function webtoonProduction() {
           <div className="max-w-[2000px] mx-auto my-0 relative">
             <div className="hidden w-full wmd:block">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_bg.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_bg.webp"
                 alt="웹툰연출/각색"
               />
             </div>
             <div className="block w-full wmd:hidden">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_bg.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_bg.webp"
                 alt="웹툰연출/각색"
               />
             </div>
@@ -201,7 +201,7 @@ export default function webtoonProduction() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_production_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
@@ -216,7 +216,7 @@ export default function webtoonProduction() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_top_deco.webp"
                 alt=""
               />
             </MoDeco>
@@ -238,7 +238,7 @@ export default function webtoonProduction() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_production_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>

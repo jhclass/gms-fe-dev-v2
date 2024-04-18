@@ -204,7 +204,7 @@ export default function artworkDigitalDrawing() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/artwork_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
@@ -219,7 +219,7 @@ export default function artworkDigitalDrawing() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_top_deco.webp"
                 alt=""
               />
             </MoDeco>
@@ -246,7 +246,7 @@ export default function artworkDigitalDrawing() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/artwork_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>

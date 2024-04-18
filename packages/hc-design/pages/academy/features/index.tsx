@@ -169,6 +169,9 @@ export default function academyFeatures() {
           </div>
         </div>
       </section>
+      <section className="pb-[6rem]">
+        <Form />
+      </section>
     </>
   )
 }

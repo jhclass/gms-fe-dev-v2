@@ -92,13 +92,13 @@ export default function designIllustrator() {
           <div className="max-w-[2000px] mx-auto my-0 relative">
             <div className="hidden w-full wmd:block">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_bg.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_bg.webp"
                 alt="웹디자인기능사"
               />
             </div>
             <div className="block w-full wmd:hidden">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_bg.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_bg.webp"
                 alt="웹디자인기능사"
               />
             </div>
@@ -188,7 +188,7 @@ export default function designIllustrator() {
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_02.webp"
               alt="Step .01 HTML5, CSS | HTML5의 정의. 문서를 구성하는 기본요소 파악 구조를 나타내는 요소 정의 요소를 활용한 레이아웃 작업 CSS정의 및 속성,
               Step .02 J-Query기초 및 활용 | J-Query 기본 문법 J-Query 메소드 마우스이벤트 소개 J-Query 응용,
               Step .03 기출문제 풀이1 | 웹디자인기능사 기출문제풀이,
@@ -204,12 +204,12 @@ export default function designIllustrator() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_illust_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_webdesign_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -219,12 +219,12 @@ export default function designIllustrator() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_illust_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_top_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_02.webp"
               alt="Step .01 HTML5, CSS | HTML5의 정의. 문서를 구성하는 기본요소 파악 구조를 나타내는 요소 정의 요소를 활용한 레이아웃 작업 CSS정의 및 속성,
               Step .02 J-Query기초 및 활용 | J-Query 기본 문법 J-Query 메소드 마우스이벤트 소개 J-Query 응용,
               Step .03 기출문제 풀이1 | 웹디자인기능사 기출문제풀이,
@@ -240,13 +240,13 @@ export default function designIllustrator() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_illust_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_webdesign_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

@@ -1,3 +1,5 @@
+import Form from '@/components/Form'
+
 export default function support() {
   return (
     <>
@@ -34,6 +36,9 @@ export default function support() {
             className="block w-full wmd:hidden"
           ></img>
         </div>
+      </section>
+      <section className="mt-[-3rem] wmd:mt-[-7rem] pb-[6rem]">
+        <Form />
       </section>
     </>
   )
