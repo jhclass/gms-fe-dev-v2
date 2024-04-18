@@ -200,7 +200,7 @@ export default function webtoonBackground() {
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_02.webp"
               alt="Step .01 트렌드 / 글로벌 웹툰기획 TIP | 썸네일 기획 및 작성 - 장르 선택 및 트리트먼트 작성 단편 분량 1~3화 준비하기,
               Step .02 웹툰작가 능력강화 | 캐릭터 연구(시트제작, 드로잉, 채색) 배경작업 (스케치업, 사진보정 및 편집 등) 콘티 (원고로 옮기기 및 스케치),
               Step .03 웹툰 편집, 각색 방법론 | 웹툰 도전작 원고 완성도 기준 설정 채색 및 배경 각색 노하우 휭 스크롤( 페이지 ) 콘티 제작 최종 작품기획서 작성, 
@@ -217,12 +217,12 @@ export default function webtoonBackground() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_background_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/webtoon_story_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -232,12 +232,12 @@ export default function webtoonBackground() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_top_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_02.webp"
               alt="Step .01 트렌드 / 글로벌 웹툰기획 TIP | 썸네일 기획 및 작성 - 장르 선택 및 트리트먼트 작성 단편 분량 1~3화 준비하기,
               Step .02 웹툰작가 능력강화 | 캐릭터 연구(시트제작, 드로잉, 채색) 배경작업 (스케치업, 사진보정 및 편집 등) 콘티 (원고로 옮기기 및 스케치),
               Step .03 웹툰 편집, 각색 방법론 | 웹툰 도전작 원고 완성도 기준 설정 채색 및 배경 각색 노하우 휭 스크롤( 페이지 ) 콘티 제작 최종 작품기획서 작성, 
@@ -254,13 +254,13 @@ export default function webtoonBackground() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_background_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/webtoon_story_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

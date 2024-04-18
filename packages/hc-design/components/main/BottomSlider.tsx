@@ -64,49 +64,49 @@ export default function MainSilder() {
         >
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom01.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom01.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom02.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom02.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom03.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom03.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom04.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom04.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom01.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom01.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom02.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom02.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom03.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom03.webp"
               alt="시설과환경"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom04.jpg"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/main/main_bottom04.webp"
               alt="시설과환경"
             />
           </SwiperSlide>

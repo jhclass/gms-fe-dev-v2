@@ -25,6 +25,9 @@ export default function academy() {
           ></img>
         </div>
       </section>
+      <section className="pb-[6rem]">
+        <Form />
+      </section>
     </>
   )
 }

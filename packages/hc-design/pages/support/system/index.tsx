@@ -1,3 +1,4 @@
+import Form from '@/components/Form'
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -128,6 +129,9 @@ export default function supportSystem() {
             ></img>
           </div>
         </div>
+      </section>
+      <section className="mt-[-7rem] pb-[6rem]">
+        <Form />
       </section>
     </>
   )

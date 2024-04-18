@@ -96,7 +96,7 @@ export default function motiongraphicAfterEffect() {
             </div>
             <div className="block w-full wmd:hidden">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_premiere_01.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_premiere_01.webp"
                 alt="프리미어 과정소개 @Premiere Pro 영상 편집의 바이블, 프리미어 프로를 활용해 나만의 영상 만들기!! 날이 갈수록 점점 늘어나는 1인 크리에이터의 시대! 영상 편집에 가장 많이 사용되는 프로그램인 프리미어 프로를 A부터 Z까지 모두 가르쳐드리며 크리에이터로서 영상을 만들 수 있는 기초를 다지는 수업입니다."
               ></img>
             </div>
@@ -175,7 +175,7 @@ export default function motiongraphicAfterEffect() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/motion_ae_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
@@ -194,12 +194,12 @@ export default function motiongraphicAfterEffect() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_top_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_premiere_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_premiere_02.webp"
               alt="프리미어 과정소개 @Premiere Pro 영상 편집의 바이블, 프리미어 프로를 활용해 나만의 영상 만들기!! 날이 갈수록 점점 늘어나는 1인 크리에이터의 시대! 영상 편집에 가장 많이 사용되는 프로그램인 프리미어 프로를 A부터 Z까지 모두 가르쳐드리며 크리에이터로서 영상을 만들 수 있는 기초를 다지는 수업입니다.
               Step .01 프리미어 프로 UI 이해 및 활용 | 프리미어 프로 UI 기초 설명과 용어 정리 Sequence와 frame rate 등, 영상 설정에 대한 기본적인 이해
               Step .02 편집 기초 |자르기 툴과 잔물결 제거를 통한 효율적인 컷 작업 트랜지션의 기초와 기본적인 이론 설명
@@ -220,13 +220,13 @@ export default function motiongraphicAfterEffect() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_ae_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_premiere_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/motion_premiere_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

@@ -51,9 +51,11 @@ const BtnItme = styled.li`
 `
 
 export default function TopBnr() {
-  function handleClick(event) {
-    event.preventDefault() // 기본 동작 방지
-    alert('🚧 준비중입니다. 🚧')
+  const clickCall = () => {
+    window.gtag('event', '전화상담클릭', {
+      event_category: 'Phone Call',
+      event_label: '02-393-4321',
+    })
   }
 
   return (
@@ -84,7 +86,7 @@ export default function TopBnr() {
               </Link>
             </BtnItme>
             <BtnItme>
-              <Link id="callBtn" href="tel:02-393-4321">
+              <Link onClick={clickCall} href="tel:02-393-4321">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
                   alt="02)393-4321"

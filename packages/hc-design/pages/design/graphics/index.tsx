@@ -92,13 +92,13 @@ export default function designIllustrator() {
           <div className="max-w-[2000px] mx-auto my-0 relative">
             <div className="hidden w-full wmd:block">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_bg.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_bg.webp"
                 alt="웹디자인기능사"
               />
             </div>
             <div className="block w-full wmd:hidden">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_bg.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_bg.webp"
                 alt="웹디자인기능사"
               />
             </div>
@@ -190,11 +190,11 @@ export default function designIllustrator() {
               {/* <img src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_deco.webp" /> */}
             </PCTopbtn>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_02.webp"
               alt="Step .01 시험소개, 문제 유형 파악 | 컴퓨터그래픽스운용기능사 소개 시험시 주의사항 학습 기출문제 풀이,
               Step .02 일러스트 이해 | 출제유형에 맞는 일러스트레이터 실기 유형 파악 및 이해 기출문제 풀이,
               Step .03 포토샵 이해 | 출제유형에 맞는 포토샵 실기 유형 파악 및 이해 기출문제 풀이,
-              Step .04 인디자인 이해(출력) |인디자인 재단선 작성 및 출력 이해 사기출문제 풀이,
+              Step .04 인디자인 이해(출력) | 인디자인 재단선 작성 및 출력 이해 기출문제 풀이,
               
               CLASS FOCUS 에이치아카데미는 개인 맞춤형 수업을 추구합니다.
               일러스트 | 시험유형에 맞는 일러스트 오브젝트 표현능력을 향상합니다.
@@ -205,12 +205,12 @@ export default function designIllustrator() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_illust_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/design_graphics_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "
@@ -220,16 +220,16 @@ export default function designIllustrator() {
           <MoCon>
             <MoDeco>
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_illust_deco.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_top_deco.webp"
                 alt=""
               />
             </MoDeco>
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_02.png"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_02.webp"
               alt="Step .01 시험소개, 문제 유형 파악 | 컴퓨터그래픽스운용기능사 소개 시험시 주의사항 학습 기출문제 풀이,
               Step .02 일러스트 이해 | 출제유형에 맞는 일러스트레이터 실기 유형 파악 및 이해 기출문제 풀이,
               Step .03 포토샵 이해 | 출제유형에 맞는 포토샵 실기 유형 파악 및 이해 기출문제 풀이,
-              Step .04 인디자인 이해(출력) |인디자인 재단선 작성 및 출력 이해 사기출문제 풀이,
+              Step .04 인디자인 이해(출력) | 인디자인 재단선 작성 및 출력 이해 기출문제 풀이,
               
               CLASS FOCUS 에이치아카데미는 개인 맞춤형 수업을 추구합니다.
               일러스트 | 시험유형에 맞는 일러스트 오브젝트 표현능력을 향상합니다.
@@ -240,13 +240,13 @@ export default function designIllustrator() {
             <BtnSection>
               <Link href="/cs/consult">
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_illust_btn.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/detail_consult_btn.webp"
                   alt="수강료 조회"
                 ></img>
               </Link>
 
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_03.png"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/design_graphics_03.webp"
                 alt="에이치아카데미 교육특성 @ 포트폴리오의 질이 다른 이유? 결과가 증명합니다.
                 현업 디자이너 중심의 전문강사진 운영, 기획이 반영된 포트폴리오 & 개인별 맞춤 취업지원, 디자이너 실무자를 초청한 트렌드 파악시간 제공, 포트폴리오 제작을 위한 쾌적한 환경제공
                 "

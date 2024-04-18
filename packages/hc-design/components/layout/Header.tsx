@@ -207,7 +207,7 @@ export default function Header() {
                   />
                   <img
                     className="block lg:hidden"
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.png"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/mo/header_logo.webp"
                     alt="H ACADEMY | H아카데미"
                   />
                 </Link>
