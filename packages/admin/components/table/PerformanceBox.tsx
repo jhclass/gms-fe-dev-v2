@@ -46,41 +46,61 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
-  padding: 0.5rem;
+  width: 7%;
+  padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${600 * 0.15}px;
-`
-const TcreatedAt = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${600 * 0.2}px;
-`
-const TSubject = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 40%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${600 * 0.4}px;
+  min-width: ${1200 * 0.07}px;
 `
 const Tamount = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  padding: 0.5rem;
+  width: 11%;
+  padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${600 * 0.25}px;
+  min-width: ${1200 * 0.11}px;
+`
+const Tname = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+const Tsubject = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.4}px;
+`
+const TcreatedAt = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 11%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.11}px;
+`
+const Tmanager = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.1}px;
 `
 const Nolist = styled.div`
   display: flex;
@@ -103,27 +123,28 @@ export default function PerformanceBox({ managerData, dateRange, totalCount }) {
   const [currentLimit] = useState(5)
   const [detailData, setDetailData] = useState(null)
 
-  useEffect(() => {
-    if (currentPage !== 1) {
-      setCurrentPage(1)
-    }
-  }, [dateRange, managerData])
+  // useEffect(() => {
+  //   if (currentPage !== 1) {
+  //     setCurrentPage(1)
+  //   }
+  // }, [dateRange, managerData])
 
-  useEffect(() => {
-    salesStatisticsList({
-      variables: {
-        period: dateRange,
-        processingManagerId: managerData.processingManagerId,
-        page: currentPage,
-        limit: currentLimit,
-      },
-      onCompleted: result => {
-        if (result.salesStatisticsList.ok) {
-          setDetailData(result.salesStatisticsList.data)
-        }
-      },
-    })
-  }, [currentPage])
+  // useEffect(() => {
+  //   salesStatisticsList({
+  //     variables: {
+  //       period: dateRange,
+  //       processingManagerId: managerData.processingManagerId,
+  //       page: currentPage,
+  //       limit: currentLimit,
+  //     },
+  //     onCompleted: result => {
+  //       if (result.salesStatisticsList.ok) {
+  //         setDetailData(result.salesStatisticsList.data)
+  //       }
+  //     },
+  //   })
+  // }, [currentPage])
+  // console.log('1', managerData)
 
   return (
     managerData && (
@@ -134,9 +155,12 @@ export default function PerformanceBox({ managerData, dateRange, totalCount }) {
               <Theader>
                 <TheaderBox>
                   <Tnum>No</Tnum>
-                  <TcreatedAt>등록일시</TcreatedAt>
-                  <TSubject>과정명</TSubject>
-                  <Tamount>실 수강료</Tamount>
+                  <TcreatedAt>결제 일시</TcreatedAt>
+                  <Tname>수강생명</Tname>
+                  <Tmanager>수납 담당자</Tmanager>
+                  <Tsubject>수강과정</Tsubject>
+                  <Tamount className="amount">카드 결제액</Tamount>
+                  <Tamount className="amount">현금 결제액</Tamount>
                 </TheaderBox>
               </Theader>
               {totalCount !== 0 && (

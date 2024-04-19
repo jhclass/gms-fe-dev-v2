@@ -198,6 +198,22 @@ const category: Category[] = [
     isWrite: '/students/write',
     children: [
       {
+        href: '/',
+        name: '수강생 목록',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+      },
+      {
+        href: '/Unallocated',
+        name: '미배정 목록',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+      },
+      {
         href: '/detail',
         name: '수강생 상세',
         exposure: false,

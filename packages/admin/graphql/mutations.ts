@@ -1440,12 +1440,18 @@ export const SALES_STATISTICS_LIST_MUTATION = gql`
       message
       error
       data {
-        actualAmount
-        createdAt
+        paymentDetail {
+          amountPayment
+          depositAmount
+          id
+          paymentDate
+          refundApproval
+          stName
+        }
         subject {
           id
-          subjectName
           subjectCode
+          round
         }
       }
     }

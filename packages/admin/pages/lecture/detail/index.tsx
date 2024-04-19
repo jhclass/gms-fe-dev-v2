@@ -261,6 +261,13 @@ export default function SubjectDetail() {
     fileInputRef.current.click()
   }
 
+  const renderMonthContent = (shortMonth, longMonth, day) => {
+    const fullYear = new Date(day).getFullYear()
+    const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`
+
+    return <span title={tooltipText}>{shortMonth + 1}</span>
+  }
+
   return (
     <>
       <MainWrap>
@@ -335,22 +342,8 @@ export default function SubjectDetail() {
                       defaultValue={subjectState?.expiresDateStart}
                       render={({ field }) => (
                         <DatePicker
-                          renderCustomHeader={({
-                            date,
-                            changeYear,
-                            changeMonth,
-                            decreaseMonth,
-                            increaseMonth,
-                          }) => (
-                            <DatePickerHeader
-                              rangeYears={years}
-                              clickDate={date}
-                              changeYear={changeYear}
-                              changeMonth={changeMonth}
-                              decreaseMonth={decreaseMonth}
-                              increaseMonth={increaseMonth}
-                            />
-                          )}
+                          renderMonthContent={renderMonthContent}
+                          showMonthYearPicker
                           locale="ko"
                           showYearDropdown
                           selected={
@@ -364,7 +357,7 @@ export default function SubjectDetail() {
                             field.onChange(date)
                             setExpStartDate(date)
                           }}
-                          dateFormat="yyyy/MM/dd"
+                          dateFormat="yyyy/MM"
                           onChangeRaw={e => e.preventDefault()}
                           onFocus={e => e.target.blur()}
                           customInput={
