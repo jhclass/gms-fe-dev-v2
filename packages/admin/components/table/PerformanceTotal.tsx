@@ -65,6 +65,9 @@ const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
+const Refund = styled.span`
+  color: #ff5900;
+`
 const AreaBoxS = styled.div`
   min-width: 5%;
   text-align: center;
@@ -90,8 +93,11 @@ type seeManagerQuery = {
 export default function PerformanceTotal({
   ranking,
   managerId,
+  totalActualAmount,
   totalAmount,
-  totalCount,
+  totalPaymentCount,
+  totalRefundAmount,
+  totalRefundCount,
 }) {
   const { error, data: managerData } =
     useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
@@ -110,17 +116,21 @@ export default function PerformanceTotal({
     <>
       <FlexBox>
         <AreaBoxS>
-          <FlatBox>{totalCount === 0 ? '-' : ranking + 1}</FlatBox>
+          <FilterLabel>순위</FilterLabel>
+          <FlatBox>{totalPaymentCount === 0 ? '-' : ranking + 1}</FlatBox>
         </AreaBoxS>
         <AreaBox>
+          <FilterLabel>이름</FilterLabel>
           <FlatBox>
-            {managerList.find(user => user.id === managerId).mUsername}
+            {managerList?.find(user => user.id === managerId).mUsername}
           </FlatBox>
         </AreaBox>
         <AreaBox>
-          <FlatBox>{totalCount}</FlatBox>
+          <FilterLabel>총 결제건수</FilterLabel>
+          <FlatBox>{totalPaymentCount}</FlatBox>
         </AreaBox>
         <AreaBox>
+          <FilterLabel>총 결제액</FilterLabel>
           <FlatBox>
             {totalAmount === undefined || totalAmount === null
               ? '0'
@@ -128,10 +138,25 @@ export default function PerformanceTotal({
           </FlatBox>
         </AreaBox>
         <AreaBox>
+          <FilterLabel>총 환불건수</FilterLabel>
+          <FlatBox>{totalRefundCount}</FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>총 환불액</FilterLabel>
           <FlatBox>
-            {totalAmount === undefined || totalAmount === null
+            <Refund>
+              {totalRefundAmount === undefined || totalRefundAmount === null
+                ? '0'
+                : feeFormet(totalRefundAmount)}
+            </Refund>
+          </FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>실제 총액</FilterLabel>
+          <FlatBox>
+            {totalActualAmount === undefined || totalActualAmount === null
               ? '0'
-              : feeFormet(totalAmount)}
+              : feeFormet(totalActualAmount)}
           </FlatBox>
         </AreaBox>
       </FlexBox>

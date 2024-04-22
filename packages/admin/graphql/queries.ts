@@ -271,7 +271,7 @@ export const SEE_AMOUNT_STUDENT_QUERY = gql`
 
 // 회계
 export const SEE_PAYMENT_QUERY = gql`
-  query Query($page: Int, $limit: Int) {
+  query SeeStudentPayment($page: Int, $limit: Int) {
     seeStudentPayment(page: $page, limit: $limit) {
       totalCount
       ok
@@ -293,8 +293,8 @@ export const SEE_PAYMENT_QUERY = gql`
           mUsername
         }
         student {
-          id
           name
+          id
         }
         id
       }
@@ -313,6 +313,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
         cashOrCard
         amountPayment
         ApprovalNum
+        accountingManager
         paymentDate
         depositAmount
         studentPaymentId

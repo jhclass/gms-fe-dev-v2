@@ -10,7 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRecoilValue } from 'recoil'
@@ -24,6 +24,8 @@ import Button2 from '@/components/common/Button'
 import Layout from '@/pages/students/layout'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { ManageUser } from '@/src/generated/graphql'
 
 const ConArea = styled.div`
   width: 100%;
@@ -153,11 +155,17 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
+type manageUser = {
+  seeManageUser: ManageUser[]
+}
+
 export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const paymentDetailId =
     typeof router.query.id === 'string' ? router.query.id : null
+  const { error, data } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
+  const managerList = data?.seeManageUser || []
   const [updatePaymentDetail] = useMutation(UPDATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const [searchPaymentDetailMutation] = useMutation(
@@ -177,6 +185,7 @@ export default function StudentsWritePayment() {
   const [paymentDetailData, setPaymentDetailData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [paymentType, setPaymentType] = useState('카드')
+  const [receiver, setReceiver] = useState('담당자 지정필요')
   const [cardName, setCardName] = useState('카드사 선택')
   const [bankName, setBankName] = useState('은행 선택')
   const [cashReceiptType, setCashReceiptType] = useState('휴대폰번호')
@@ -205,6 +214,8 @@ export default function StudentsWritePayment() {
   useEffect(() => {
     if (paymentDetailData !== null) {
       setPaymentType(paymentDetailData.cashOrCard)
+      setReceiver(String(paymentDetailData.receiverId))
+      setValue('receiverId', paymentDetailData.receiverId)
       if (paymentDetailData.cashOrCard === '카드') {
         setCardName(paymentDetailData.cardCompany)
         const cardNum = paymentDetailData.cardNum
@@ -328,6 +339,7 @@ export default function StudentsWritePayment() {
                   : typeof data.paymentDate === 'string'
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
+              receiverId: parseInt(data.receiverId),
             },
             onCompleted: result => {
               if (!result.editPaymentDetail.ok) {
@@ -382,6 +394,7 @@ export default function StudentsWritePayment() {
                   : typeof data.paymentDate === 'string'
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
+              receiverId: parseInt(data.receiverId),
             },
             onCompleted: result => {
               if (!result.editPaymentDetail.ok) {
@@ -423,6 +436,10 @@ export default function StudentsWritePayment() {
 
   const handleCardChange = e => {
     setCardName(e.target.value)
+  }
+  const handleSubManagerChange = e => {
+    setReceiver(e.target.value)
+    setValue('receiverId', parseInt(e.target.value))
   }
   const handleBankChange = e => {
     setBankName(e.target.value)
@@ -558,6 +575,59 @@ export default function StudentsWritePayment() {
                         />
                       </RadioBox>
                     </AreaBox>
+                    <AreaBox>
+                      <Controller
+                        control={control}
+                        name="receiverId"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '영업담당자를 선택해주세요.',
+                          },
+                        }}
+                        render={({ field, fieldState }) => (
+                          <Select
+                            labelPlacement="outside"
+                            label={
+                              <FilterLabel>
+                                영업 담당자<span>*</span>
+                              </FilterLabel>
+                            }
+                            placeholder=" "
+                            className="w-full"
+                            variant="bordered"
+                            defaultValue={studentPaymentData?.receiverId}
+                            selectedKeys={[receiver]}
+                            onChange={value => {
+                              if (value.target.value !== '') {
+                                field.onChange(value)
+                                handleSubManagerChange(value)
+                              }
+                            }}
+                          >
+                            {[
+                              {
+                                mUsername: '담당자 지정필요',
+                                id: '담당자 지정필요',
+                              },
+                              ...managerList?.filter(manager =>
+                                manager.mPart.includes('영업팀'),
+                              ),
+                            ].map(item => (
+                              <SelectItem key={item.id} value={item.id}>
+                                {item.mUsername}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                        )}
+                      />
+                      {errors.receiverId && (
+                        <p className="px-2 pt-2 text-xs text-red-500">
+                          {String(errors.receiverId.message)}
+                        </p>
+                      )}
+                    </AreaBox>
+                    <AreaBox></AreaBox>
                   </FlexBox>
                   {paymentDetailData.cashOrCard === '카드' && (
                     <>

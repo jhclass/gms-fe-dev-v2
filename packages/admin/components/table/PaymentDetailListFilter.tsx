@@ -130,10 +130,10 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 33%;
+  width: 24%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.33}px;
+  min-width: ${1200 * 0.24}px;
 `
 const Tapproval = styled.div`
   display: table-cell;
@@ -245,7 +245,8 @@ export default function PaymentDetailFilterTable({ studentFilter }) {
                 <Tnum>No</Tnum>
                 <TcreatedAt>결제 일시</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>수납 담당자</Tmanager>
+                <Tmanager>영업 담당자</Tmanager>
+                <Tmanager>회계 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
                 <Tapproval>카드승인번호</Tapproval>
                 <Tamount className="amount">카드 결제액</Tamount>

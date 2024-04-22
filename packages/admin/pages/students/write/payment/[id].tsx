@@ -18,7 +18,7 @@ import {
   SelectItem,
   Textarea,
 } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 
@@ -32,6 +32,8 @@ import { useRecoilValue } from 'recoil'
 import { bankNameState, cardNameState } from '@/lib/recoilAtoms'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { ManageUser } from '@/src/generated/graphql'
 
 const ConArea = styled.div`
   width: 100%;
@@ -160,10 +162,16 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
+type manageUser = {
+  seeManageUser: ManageUser[]
+}
+
 export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
+  const { error, data } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
+  const managerList = data?.seeManageUser || []
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [createPaymentDetail] = useMutation(CREATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
@@ -188,6 +196,7 @@ export default function StudentsWritePayment() {
   const [cashReceiptType, setCashReceiptType] = useState('휴대폰번호')
   const [cardPaymentDate, setCardPaymentDate] = useState(null)
   const [cashPaymentDate, setCashPaymentDate] = useState(null)
+  const [receiver, setReceiver] = useState('담당자 지정필요')
   const cardNames = useRecoilValue(cardNameState)
   const bankNames = useRecoilValue(bankNameState)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -290,6 +299,7 @@ export default function StudentsWritePayment() {
           installment: data.installment === '' ? 0 : parseInt(data.installment),
           approvalNum: data.approvalNum === '' ? null : data.approvalNum.trim(),
           paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
+          receiverId: parseInt(data.receiverId),
         },
         onCompleted: result => {
           if (!result.createPaymentDetail.ok) {
@@ -352,6 +362,7 @@ export default function StudentsWritePayment() {
             data.cashReceiptApprovalNum,
           ],
           paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
+          receiverId: parseInt(data.receiverId),
         },
         onCompleted: result => {
           if (!result.createPaymentDetail.ok) {
@@ -408,6 +419,9 @@ export default function StudentsWritePayment() {
   }
   const handleCardChange = e => {
     setCardName(e.target.value)
+  }
+  const handleSubManagerChange = e => {
+    setReceiver(e.target.value)
   }
   const handleBankChange = e => {
     setBankName(e.target.value)
@@ -543,6 +557,58 @@ export default function StudentsWritePayment() {
                       />
                     </RadioBox>
                   </AreaBox>
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="receiverId"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '영업담당자를 선택해주세요.',
+                        },
+                      }}
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label={
+                            <FilterLabel>
+                              영업 담당자<span>*</span>
+                            </FilterLabel>
+                          }
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[receiver]}
+                          onChange={value => {
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleSubManagerChange(value)
+                            }
+                          }}
+                        >
+                          {[
+                            {
+                              mUsername: '담당자 지정필요',
+                              id: '담당자 지정필요',
+                            },
+                            ...managerList?.filter(manager =>
+                              manager.mPart.includes('영업팀'),
+                            ),
+                          ].map(item => (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.mUsername}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      )}
+                    />
+                    {errors.receiverId && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.receiverId.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox></AreaBox>
                 </FlexBox>
                 {paymentType === '카드' && (
                   <>

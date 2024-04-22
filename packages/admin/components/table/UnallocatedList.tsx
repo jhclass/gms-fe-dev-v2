@@ -1,12 +1,16 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { styled } from 'styled-components'
-import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
-import router from 'next/router'
-import { PaymentDetailResult } from '@/src/generated/graphql'
-import PaymentDetailItem from '@/components/table/PaymentDetailItem'
-import PerformanceItem from '@/components/table/PerformanceItem'
+import { useRecoilState } from 'recoil'
+import { consultPageState } from '@/lib/recoilAtoms'
+import LectureItem from '@/components/table/LectureItem'
+import {
+  ManageUser,
+  StudentState,
+  StudentStateResponse,
+} from '@/src/generated/graphql'
+import UnallocatedItem from './UnallocatedItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -28,6 +32,7 @@ const Ttotal = styled.p`
 const ColorHelp = styled.div`
   display: flex;
 `
+
 const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
@@ -63,57 +68,59 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
+const Tflag = styled.div`
+  display: table-cell;
+  width: 0.5rem;
+  height: 100%;
+  min-width: 7px;
+`
+
+const ClickBox = styled.div`
+  display: flex;
+  width: 100%;
+`
 const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 6%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.06}px;
 `
-const Tamount = styled.div`
+const TsubDiv = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.08}px;
 `
+const TsubjectName = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 61%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.61}px;
+`
+const Tdate = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+
 const Tname = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const Tsubject = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 40%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.4}px;
-`
-const TcreatedAt = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 11%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.11}px;
-`
-const Tmanager = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -122,6 +129,16 @@ const Tmanager = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
+`
+const Tbtn = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.15}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -136,87 +153,55 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-
-type SeePaymentDetailQuery = {
-  seePaymentDetail: PaymentDetailResult
+type seeStudentState = {
+  seeStudentState: StudentStateResponse
+}
+type mmeFavoQuery = {
+  mMe: ManageUser
+}
+type seeFavoriteState = {
+  seeFavorite: StudentState[]
 }
 
-export default function PaymentDetailTable({ currentPage, setCurrentPage }) {
+export default function LectureList() {
+  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { error, data, refetch } = useSuspenseQuery<SeePaymentDetailQuery>(
-    SEE_PAYMENT_DETAIL_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
-  )
-  const studentsData = data?.seePaymentDetail
-  const students = studentsData.PaymentDetail
+
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  useEffect(() => {
-    setTotalCount(studentsData.totalCount)
-  }, [studentsData, totalCount])
-
-  useEffect(() => {
-    handleScrollTop()
-  }, [currentPage])
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      refetch()
-    }
-
-    router.events.on('routeChangeComplete', handleRouteChange)
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
-
-  if (error) {
-    console.log(error)
   }
 
   return (
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{totalCount}</span>건
+          총 <span>23</span>건
         </Ttotal>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 환불
-          </ColorCip>
-        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <Tnum>No</Tnum>
-                <TcreatedAt>결제 일시</TcreatedAt>
-                <Tname>수강생명</Tname>
-                <Tmanager>수납 담당자</Tmanager>
-                <Tsubject>수강과정</Tsubject>
-                <Tamount className="amount">카드 결제액</Tamount>
-                <Tamount className="amount">현금 결제액</Tamount>
+                <Tflag
+                  style={{
+                    background: 'transparent',
+                  }}
+                ></Tflag>
+                <ClickBox>
+                  <Tnum>No</Tnum>
+                  <Tdate>등록일자</Tdate>
+                  <Tname>수강생명</Tname>
+                  <TsubDiv>수강구분</TsubDiv>
+                  <TsubjectName>과정명</TsubjectName>
+                  <Tbtn></Tbtn>
+                </ClickBox>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              students?.map((item, index) => (
-                <PerformanceItem
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                />
-              ))}
-            {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
+            <UnallocatedItem />
+            <UnallocatedItem />
+            {totalCount === 0 && <Nolist>미배정 수강생이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
         {totalCount > 0 && (

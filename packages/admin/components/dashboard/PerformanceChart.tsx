@@ -22,6 +22,7 @@ export default function PerformanceChart({
   managerIds,
   totalAmount,
   totalCount,
+  totalRefundAmount,
 }) {
   return (
     <Suspense
@@ -35,6 +36,7 @@ export default function PerformanceChart({
         managerIds={managerIds}
         totalAmount={totalAmount}
         totalCount={totalCount}
+        totalRefundAmount={totalRefundAmount}
       />
     </Suspense>
   )

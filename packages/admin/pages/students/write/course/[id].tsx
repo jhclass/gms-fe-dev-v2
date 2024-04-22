@@ -1043,7 +1043,7 @@ export default function StudentsWriteCourse() {
                       rules={{
                         required: {
                           value: true,
-                          message: '수강담당자를 선택해주세요.',
+                          message: '영업담당자를 선택해주세요.',
                         },
                       }}
                       render={({ field, fieldState }) => (
@@ -1051,7 +1051,7 @@ export default function StudentsWriteCourse() {
                           labelPlacement="outside"
                           label={
                             <FilterLabel>
-                              수강 담당자<span>*</span>
+                              영업 담당자<span>*</span>
                             </FilterLabel>
                           }
                           placeholder=" "

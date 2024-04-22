@@ -50,6 +50,7 @@ export default function PerformanceChartCon({
   managerIds,
   totalAmount,
   totalCount,
+  totalRefundAmount,
 }) {
   const { error, data: managerData } =
     useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
@@ -83,7 +84,7 @@ export default function PerformanceChartCon({
       {
         name: '총 환불',
         type: 'column',
-        data: totalAmount,
+        data: totalRefundAmount,
       },
     ],
     options: {
