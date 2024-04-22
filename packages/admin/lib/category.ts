@@ -206,7 +206,7 @@ const category: Category[] = [
         isWrite: '',
       },
       {
-        href: '/Unallocated',
+        href: '/unallocated',
         name: '미배정 목록',
         exposure: true,
         isBreadcrumb: true,

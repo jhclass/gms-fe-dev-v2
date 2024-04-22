@@ -95,10 +95,10 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 50%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.4}px;
+  min-width: ${1200 * 0.5}px;
 `
 const TcreatedAt = styled.div`
   display: table-cell;
@@ -109,16 +109,6 @@ const TcreatedAt = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.11}px;
-`
-const Tmanager = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
 `
 const EllipsisBox = styled.p`
   overflow: hidden;
@@ -134,8 +124,13 @@ export default function PerformanceItem(props) {
   const conIndex = props.itemIndex
   const payment = props.tableData
 
-  const getDate = (DataDate: string): string => {
-    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+  const getDate = (DataDate: string, refund: boolean): string => {
+    let LocalDdate
+    if (refund) {
+      LocalDdate = new Date(DataDate).toLocaleDateString()
+    } else {
+      LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    }
     return LocalDdate
   }
   const feeFormet = fee => {
@@ -154,6 +149,7 @@ export default function PerformanceItem(props) {
   }
 
   console.log(payment)
+
   return (
     <>
       <TableItem>
@@ -162,46 +158,43 @@ export default function PerformanceItem(props) {
             <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
             <TcreatedAt>
               <EllipsisBox>
-                {payment?.paymentDetail.paymentDate
-                  ? getDate(payment?.paymentDetail.paymentDate)
+                {payment?.refundApproval
+                  ? payment?.reqRefundDate
+                    ? getDate(payment?.reqRefundDate, payment?.refundApproval)
+                    : '-'
+                  : payment?.paymentDate
+                  ? getDate(payment?.paymentDate, payment?.refundApproval)
                   : '-'}
               </EllipsisBox>
             </TcreatedAt>
-            <Tname>
-              <EllipsisBox>{payment?.paymentDetail.stName}</EllipsisBox>
-            </Tname>
-            <Tmanager>
-              {/* <EllipsisBox>{payment?.receiver?.mUsername}</EllipsisBox> */}
-            </Tmanager>
+            <Tamount className={payment?.refundApproval ? 'refund' : ''}>
+              <EllipsisBox>
+                {payment?.amountPayment === undefined ||
+                payment?.amountPayment === null ||
+                payment?.amountPayment === 0
+                  ? '0'
+                  : payment?.refundApproval
+                  ? `-${feeFormet(payment?.amountPayment)}`
+                  : feeFormet(payment?.amountPayment)}
+              </EllipsisBox>
+            </Tamount>
+            <Tamount className={payment?.refundApproval ? 'refund' : ''}>
+              <EllipsisBox>
+                {payment?.depositAmount === undefined ||
+                payment?.depositAmount === null ||
+                payment?.depositAmount === 0
+                  ? '0'
+                  : payment?.refundApproval
+                  ? `-${feeFormet(payment?.depositAmount)}`
+                  : feeFormet(payment?.depositAmount)}
+              </EllipsisBox>
+            </Tamount>
             <Tsubject>
-              <EllipsisBox>{`[${payment?.subject?.round}회차] ${payment?.subject?.subjectName}`}</EllipsisBox>
+              <EllipsisBox>{`[${payment?.studentPayment?.subject?.round}회차] ${payment?.studentPayment?.subject?.subjectName}`}</EllipsisBox>
             </Tsubject>
-            <Tamount
-              className={payment?.paymentDetail.refundApproval ? 'refund' : ''}
-            >
-              <EllipsisBox>
-                {payment?.paymentDetail.amountPayment === undefined ||
-                payment?.paymentDetail.amountPayment === null ||
-                payment?.paymentDetail.amountPayment === 0
-                  ? '0'
-                  : payment?.paymentDetail.refundApproval
-                  ? `-${feeFormet(payment?.paymentDetail.amountPayment)}`
-                  : feeFormet(payment?.paymentDetail.amountPayment)}
-              </EllipsisBox>
-            </Tamount>
-            <Tamount
-              className={payment?.paymentDetail.refundApproval ? 'refund' : ''}
-            >
-              <EllipsisBox>
-                {payment?.paymentDetail.depositAmount === undefined ||
-                payment?.paymentDetail.depositAmount === null ||
-                payment?.paymentDetail.depositAmount === 0
-                  ? '0'
-                  : payment?.paymentDetail.refundApproval
-                  ? `-${feeFormet(payment?.paymentDetail.depositAmount)}`
-                  : feeFormet(payment?.paymentDetail.depositAmount)}
-              </EllipsisBox>
-            </Tamount>
+            <Tname>
+              <EllipsisBox>{payment?.stName}</EllipsisBox>
+            </Tname>
           </ClickBox>
         </TableRow>
       </TableItem>

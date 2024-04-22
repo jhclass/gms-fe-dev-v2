@@ -313,6 +313,7 @@ export const SEE_PAYMENT_DETAIL_QUERY = gql`
         cashOrCard
         amountPayment
         ApprovalNum
+        accountingManager
         paymentDate
         depositAmount
         studentPaymentId

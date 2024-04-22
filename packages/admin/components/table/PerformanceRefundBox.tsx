@@ -6,19 +6,20 @@ import PerformanceItem from './PerformanceItem'
 import { SALES_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div``
+
 const Title = styled.h2`
   position: relative;
   font-size: 1.2rem;
   font-weight: 600;
   padding-left: 1rem;
-  margin-top: 3rem;
+  margin-top: 1rem;
   margin-bottom: 0.5rem;
 
   &:after {
     content: '';
     width: 0.3rem;
     height: 100%;
-    background: #007de9;
+    background: #ff5900;
     position: absolute;
     top: 0;
     left: 0;
@@ -112,16 +113,16 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-export default function PerformanceBox({
+export default function PerformanceRefundBox({
   managerData,
   dateRange,
-  totalPaymentCount,
+  totalRefundCount,
   filterSearch,
 }) {
   const [salesStatisticsList] = useMutation(SALES_STATISTICS_LIST_MUTATION)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(5)
-  const [detailData, setDetailData] = useState(null)
+  const [detailRefund, setDetailRefund] = useState(null)
 
   useEffect(() => {
     if (filterSearch) {
@@ -137,9 +138,8 @@ export default function PerformanceBox({
           },
           onCompleted: result => {
             if (result.salesStatisticsList.ok) {
-              console.log(result)
-              const { paymentData } = result.salesStatisticsList
-              setDetailData(paymentData)
+              const { refundData } = result.salesStatisticsList
+              setDetailRefund(refundData)
             }
           },
         })
@@ -157,8 +157,8 @@ export default function PerformanceBox({
       },
       onCompleted: result => {
         if (result.salesStatisticsList.ok) {
-          const { paymentData } = result.salesStatisticsList
-          setDetailData(paymentData)
+          const { refundData } = result.salesStatisticsList
+          setDetailRefund(refundData)
         }
       },
     })
@@ -167,24 +167,24 @@ export default function PerformanceBox({
   return (
     managerData && (
       <>
-        <Title>결제내역</Title>
+        <Title>횐불 내역</Title>
         <TableArea>
           <ScrollShadow orientation="horizontal" className="scrollbar">
             <TableWrap>
               <Theader>
                 <TheaderBox>
                   <Tnum>No</Tnum>
-                  <TcreatedAt>결제 일시</TcreatedAt>
+                  <TcreatedAt>환불 일시</TcreatedAt>
                   <Tamount className="amount">카드 결제액</Tamount>
                   <Tamount className="amount">현금 결제액</Tamount>
                   <Tsubject>수강과정</Tsubject>
                   <Tname>수강생명</Tname>
                 </TheaderBox>
               </Theader>
-              {totalPaymentCount !== 0 && (
+              {totalRefundCount !== 0 && (
                 <>
-                  {detailData &&
-                    detailData.map((item, index) => (
+                  {detailRefund &&
+                    detailRefund.map((item, index) => (
                       <PerformanceItem
                         key={index}
                         currentPage={currentPage}
@@ -195,17 +195,19 @@ export default function PerformanceBox({
                     ))}
                 </>
               )}
-              {detailData?.length === 0 && <Nolist>데이터가 없습니다.</Nolist>}
+              {detailRefund?.length === 0 && (
+                <Nolist>데이터가 없습니다.</Nolist>
+              )}
             </TableWrap>
           </ScrollShadow>
-          {totalPaymentCount !== 0 && (
+          {totalRefundCount !== 0 && (
             <PagerWrap>
               <Pagination
                 variant="light"
                 showControls
                 initialPage={currentPage}
                 page={currentPage}
-                total={Math.ceil(totalPaymentCount / currentLimit)}
+                total={Math.ceil(totalRefundCount / currentLimit)}
                 onChange={newPage => {
                   setCurrentPage(newPage)
                 }}

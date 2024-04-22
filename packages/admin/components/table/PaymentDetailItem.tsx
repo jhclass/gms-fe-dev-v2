@@ -104,10 +104,10 @@ const Tsubject = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 33%;
+  width: 24%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.33}px;
+  min-width: ${1200 * 0.24}px;
 `
 const Tapproval = styled.div`
   display: table-cell;
@@ -200,6 +200,13 @@ export default function StudentsItem(props) {
               </Tname>
               <Tmanager>
                 <EllipsisBox>{payment?.receiver?.mUsername}</EllipsisBox>
+              </Tmanager>
+              <Tmanager>
+                <EllipsisBox>
+                  {payment?.accountingManager
+                    ? payment?.accountingManager
+                    : '-'}
+                </EllipsisBox>
               </Tmanager>
               <Tsubject>
                 <EllipsisBox>{`[${payment?.studentPayment?.subject?.round}회차] ${payment?.studentPayment.subject?.subjectName}`}</EllipsisBox>

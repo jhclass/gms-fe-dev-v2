@@ -1,6 +1,6 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import Layout from '@/pages/students/layout'
+import Layout from '@/pages/students/unallocated/layout'
 import StudentsTable from '@/components/table/StudentsList'
 import StudentsFilterTable from '@/components/table/StudentsListFilter'
 import { styled } from 'styled-components'

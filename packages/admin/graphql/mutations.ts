@@ -1078,6 +1078,7 @@ export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
     $depositorName: String
     $bankName: String
     $cashReceipts: [String]
+    $receiverId: Int
   ) {
     createPaymentDetail(
       cashOrCard: $cashOrCard
@@ -1093,6 +1094,7 @@ export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
       depositorName: $depositorName
       bankName: $bankName
       cashReceipts: $cashReceipts
+      receiverId: $receiverId
     ) {
       ok
       error
@@ -1116,6 +1118,7 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
     $depositAmount: Int
     $depositDate: String
     $cashReceipts: [String]
+    $receiverId: Int
   ) {
     editPaymentDetail(
       id: $editPaymentDetailId
@@ -1132,6 +1135,7 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
       depositAmount: $depositAmount
       depositDate: $depositDate
       cashReceipts: $cashReceipts
+      receiverId: $receiverId
     ) {
       ok
       error
@@ -1251,6 +1255,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
       error
       PaymentDetail {
         ApprovalNum
+        accountingManager
         amountPayment
         bankName
         cardCompany
@@ -1406,53 +1411,70 @@ export const CLASS_CHECK_MUTATION = gql`
 `
 // statistics
 export const SALES_STATISTICS_MUTATION = gql`
-  mutation Mutation($period: [String]!, $processingManagerId: [Int]!) {
-    salesStatistics(
-      period: $period
-      processingManagerId: $processingManagerId
-    ) {
-      data {
-        totalCount
-        totalActualAmount
-        processingManagerId
-      }
-      error
-      message
+  mutation SalesStatistics($period: [String]!, $receiverId: [Int]!) {
+    salesStatistics(period: $period, receiverId: $receiverId) {
       ok
+      message
+      error
+      data {
+        receiverId
+        totalActualAmount
+        totalAmount
+        totalPaymentCount
+        totalRefundAmount
+        totalRefundCount
+      }
     }
   }
 `
 export const SALES_STATISTICS_LIST_MUTATION = gql`
-  mutation SalesStatisticsList(
+  mutation Mutation(
     $period: [String]!
-    $processingManagerId: Int!
+    $receiverId: Int!
     $page: Int
     $limit: Int
   ) {
     salesStatisticsList(
       period: $period
-      processingManagerId: $processingManagerId
+      receiverId: $receiverId
       page: $page
       limit: $limit
     ) {
-      processingManagerId
-      ok
-      message
       error
-      data {
-        paymentDetail {
-          amountPayment
-          depositAmount
-          id
-          paymentDate
-          refundApproval
-          stName
+      message
+      ok
+      receiverId
+      paymentData {
+        amountPayment
+        cashOrCard
+        depositAmount
+        paymentDate
+        stName
+        studentPayment {
+          subject {
+            round
+            subjectName
+          }
         }
-        subject {
-          id
-          subjectCode
-          round
+        accountingManager
+        refundApproval
+      }
+      refundData {
+        amountPayment
+        cashOrCard
+        depositAmount
+        id
+        paymentDate
+        stName
+        studentPayment {
+          subject {
+            subjectName
+            round
+          }
         }
+        reqRefundDate
+        reqRefundManager
+        refundApproval
       }
     }
   }

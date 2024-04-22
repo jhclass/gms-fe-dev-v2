@@ -103,7 +103,10 @@ export default function Statistics() {
               </LodingDiv>
             }
           >
-            <StatisticsList performanceFilter={performanceFilter} />
+            <StatisticsList
+              performanceFilter={performanceFilter}
+              filterSearch={filterSearch}
+            />
           </Suspense>
         </ConBox>
       </MainWrap>

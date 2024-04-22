@@ -187,6 +187,7 @@ export default function SubjectDetail() {
   const subStatus = useRecoilValue(subStatusState)
   const [sub, setSub] = useState('없음')
   const [teacher, setTeacher] = useState('강사명 없음')
+  const [room, setRoom] = useState('강의실 없음')
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [datesSelected, setDatesSelected] = useState(null)
@@ -454,29 +455,48 @@ export default function SubjectDetail() {
                   />
                 </AreaBox>
                 <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="예) 204호 또는 별관 204호"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label="강의실"
-                    defaultValue={subjectState?.roomNum}
-                    onChange={e => {
-                      register('roomNum').onChange(e)
-                    }}
-                    className="w-full"
-                    {...register('roomNum', {
-                      pattern: {
-                        value: /^[가-힣a-zA-Z0-9\s]*$/,
-                        message: '한글, 영어, 숫자만 사용 가능합니다.',
-                      },
-                    })}
+                  <Controller
+                    control={control}
+                    name="roomNum"
+                    defaultValue={subjectState?.teacherName}
+                    render={({ field }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label="강의실"
+                        placeholder=" "
+                        className="w-full"
+                        variant="bordered"
+                        defaultValue={subjectState?.teacherName}
+                        selectedKeys={[room]}
+                        onChange={value => {
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleTeacherChange(value)
+                          }
+                        }}
+                      >
+                        <SelectItem key={'강의실 없음'} value={'강의실 없음'}>
+                          {'강의실 없음'}
+                        </SelectItem>
+                        <SelectItem key={'201호'} value={'201호'}>
+                          201호
+                        </SelectItem>
+                        <SelectItem key={'202호'} value={'202호'}>
+                          202호
+                        </SelectItem>
+                        <SelectItem key={'203호'} value={'203호'}>
+                          203호
+                        </SelectItem>
+                        <SelectItem key={'204호'} value={'204호'}>
+                          204호
+                        </SelectItem>
+                      </Select>
+                    )}
                   />
                 </AreaBox>
                 <AreaBox>
                   <TimeBox>
-                    <Input
+                    {/* <Input
                       labelPlacement="outside"
                       placeholder="시작시간 09:00"
                       variant="bordered"
@@ -494,26 +514,124 @@ export default function SubjectDetail() {
                           message: '한글, 영어, 숫자만 사용 가능합니다.',
                         },
                       })}
-                    />
+                    /> */}
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="startTime"
+                        defaultValue={subjectState?.endDate}
+                        render={({ field }) => (
+                          <DatePicker
+                            renderCustomHeader={({
+                              date,
+                              changeYear,
+                              changeMonth,
+                              decreaseMonth,
+                              increaseMonth,
+                            }) => (
+                              <DatePickerHeader
+                                rangeYears={years}
+                                clickDate={date}
+                                changeYear={changeYear}
+                                changeMonth={changeMonth}
+                                decreaseMonth={decreaseMonth}
+                                increaseMonth={increaseMonth}
+                              />
+                            )}
+                            locale="ko"
+                            selected={
+                              sjEndDate === null ? null : new Date(sjEndDate)
+                            }
+                            placeholderText="시작시간"
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setSjEndDate(date)
+                            }}
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={10}
+                            timeCaption="Time"
+                            dateFormat="HH:mm"
+                            onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
+                            customInput={
+                              <Input
+                                label="강의 시간"
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                classNames={{
+                                  input: 'caret-transparent',
+                                }}
+                                isReadOnly={true}
+                                startContent={<i className="xi-time-o" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
                     <p>-</p>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="종료시간 18:00"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      defaultValue={subjectState?.roomNum}
-                      onChange={e => {
-                        register('roomNum').onChange(e)
-                      }}
-                      className="w-[50%]"
-                      {...register('roomNum', {
-                        pattern: {
-                          value: /^[가-힣a-zA-Z0-9\s]*$/,
-                          message: '한글, 영어, 숫자만 사용 가능합니다.',
-                        },
-                      })}
-                    />
+                    <DatePickerBox>
+                      <Controller
+                        control={control}
+                        name="endTime"
+                        defaultValue={subjectState?.endDate}
+                        render={({ field }) => (
+                          <DatePicker
+                            renderCustomHeader={({
+                              date,
+                              changeYear,
+                              changeMonth,
+                              decreaseMonth,
+                              increaseMonth,
+                            }) => (
+                              <DatePickerHeader
+                                rangeYears={years}
+                                clickDate={date}
+                                changeYear={changeYear}
+                                changeMonth={changeMonth}
+                                decreaseMonth={decreaseMonth}
+                                increaseMonth={increaseMonth}
+                              />
+                            )}
+                            locale="ko"
+                            selected={
+                              sjEndDate === null ? null : new Date(sjEndDate)
+                            }
+                            placeholderText="종료시간"
+                            isClearable
+                            onChange={date => {
+                              field.onChange(date)
+                              setSjEndDate(date)
+                            }}
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={10}
+                            timeCaption="Time"
+                            dateFormat="HH:mm"
+                            onChangeRaw={e => e.preventDefault()}
+                            onFocus={e => e.target.blur()}
+                            customInput={
+                              <Input
+                                label=" "
+                                labelPlacement="outside"
+                                type="text"
+                                variant="bordered"
+                                id="date"
+                                classNames={{
+                                  input: 'caret-transparent',
+                                }}
+                                isReadOnly={true}
+                                startContent={<i className="xi-time-o" />}
+                              />
+                            }
+                          />
+                        )}
+                      />
+                    </DatePickerBox>
                   </TimeBox>
                 </AreaBox>
               </FlexBox>

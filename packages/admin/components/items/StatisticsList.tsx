@@ -9,7 +9,7 @@ type manageUser = {
   seeManageUser: ManageUser[]
 }
 
-export default function StatisticsList({ performanceFilter }) {
+export default function StatisticsList({ performanceFilter, filterSearch }) {
   const router = useRouter()
   const { data, error } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
   const managerList = data?.seeManageUser.filter(user =>
@@ -36,5 +36,14 @@ export default function StatisticsList({ performanceFilter }) {
     console.log(error)
   }
 
-  return ids && dateRange && <PerformanceList ids={ids} dateRange={dateRange} />
+  return (
+    ids &&
+    dateRange && (
+      <PerformanceList
+        ids={ids}
+        dateRange={dateRange}
+        filterSearch={filterSearch}
+      />
+    )
+  )
 }

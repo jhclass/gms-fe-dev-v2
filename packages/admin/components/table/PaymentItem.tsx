@@ -152,6 +152,7 @@ export default function StudentsItem(props) {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
   }
+
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
@@ -174,7 +175,9 @@ export default function StudentsItem(props) {
               </Tname>
               <Tmanager>
                 <EllipsisBox>
-                  {payment?.processingManager?.mUsername}
+                  {payment?.accountingManager
+                    ? payment?.accountingManager
+                    : '-'}
                 </EllipsisBox>
               </Tmanager>
               <Tsubject>

@@ -211,7 +211,7 @@ export default function PaymentTable() {
                 <Tnum>No</Tnum>
                 <TcreatedAt>최근 업데이트</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>수강 담당자</Tmanager>
+                <Tmanager>회계 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
                 <Tamount className="fee">수강료</Tamount>
                 <Tamount className="discount">할인금액</Tamount>
@@ -220,15 +220,15 @@ export default function PaymentTable() {
                 <Tamount className="amount">총 결제액</Tamount>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              students?.map((item, index) => (
-                <Suspense
-                  fallback={
-                    <LodingDiv>
-                      <i className="xi-spinner-2" />
-                    </LodingDiv>
-                  }
-                >
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              {totalCount > 0 &&
+                students?.map((item, index) => (
                   <PaymentItem
                     key={index}
                     tableData={item}
@@ -236,8 +236,8 @@ export default function PaymentTable() {
                     currentPage={currentPage}
                     limit={currentLimit}
                   />
-                </Suspense>
-              ))}
+                ))}
+            </Suspense>
             {totalCount === 0 && <Nolist>등록된 수강생이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>

@@ -5,12 +5,19 @@ import PerformanceBox from './PerformanceBox'
 import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
 import PerformanceTotal from '@/components/table/PerformanceTotal'
 import PerformanceChart from '@/components/dashboard/PerformanceChart'
+import PerformanceRefundBox from './PerformanceRefundBox'
 
 const ListBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
+`
+
+const TotalList = styled.div`
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e4e4e7;
+  margin-bottom: 1.5rem;
 `
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -25,33 +32,48 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function PerformanceList({ ids, dateRange }) {
+export default function PerformanceList({ ids, dateRange, filterSearch }) {
   const [salesStatistics] = useMutation(SALES_STATISTICS_MUTATION)
   const [allData, setAllData] = useState([])
+  const [totalActualAmount, setTotalActualAmount] = useState([])
   const [totalAmount, setTotalAmount] = useState([])
-  const [countTotal, setCountTotal] = useState([])
+  const [totalCount, setTotalCount] = useState([])
+  const [totalRefundAmount, setTotalRefundAmount] = useState([])
+  const [totalRefundCount, setTotalRefundCount] = useState([])
   const [idList, setIdList] = useState([])
 
   useEffect(() => {
     salesStatistics({
       variables: {
         period: dateRange,
-        processingManagerId: ids,
+        receiverId: ids,
       },
       onCompleted: result => {
         if (result.salesStatistics.ok) {
           setAllData(result.salesStatistics.data)
           const managerId = result.salesStatistics.data?.map(
-            item => item.processingManagerId,
+            item => item.receiverId,
           )
-          const totalAmount = result.salesStatistics.data?.map(
+          const totalActualAmount = result.salesStatistics.data?.map(
             item => item.totalActualAmount,
           )
-          const totalCount = result.salesStatistics.data?.map(
-            item => item.totalCount,
+          const totalAmount = result.salesStatistics.data?.map(
+            item => item.totalAmount,
           )
+          const totalCount = result.salesStatistics.data?.map(
+            item => item.totalPaymentCount,
+          )
+          const totalRefundAmount = result.salesStatistics.data?.map(
+            item => item.totalRefundAmount,
+          )
+          const totalRefundCount = result.salesStatistics.data?.map(
+            item => item.totalRefundCount,
+          )
+          setTotalActualAmount(totalActualAmount)
           setTotalAmount(totalAmount)
-          setCountTotal(totalCount)
+          setTotalCount(totalCount)
+          setTotalRefundAmount(totalRefundAmount)
+          setTotalRefundCount(totalRefundCount)
           setIdList(managerId)
         }
       },
@@ -64,12 +86,13 @@ export default function PerformanceList({ ids, dateRange }) {
         <PerformanceChart
           managerIds={idList}
           totalAmount={totalAmount}
-          totalCount={countTotal}
+          totalCount={totalCount}
+          totalRefundAmount={totalRefundAmount}
         />
       </div>
       {allData?.map((item, index) => (
         <ListBox key={index}>
-          <div style={{ marginBottom: '1.5rem' }}>
+          <TotalList>
             <Suspense
               fallback={
                 <LodingDiv>
@@ -79,16 +102,26 @@ export default function PerformanceList({ ids, dateRange }) {
             >
               <PerformanceTotal
                 ranking={index}
-                managerId={item.processingManagerId}
-                totalAmount={item.totalActualAmount}
-                totalCount={item.totalCount}
+                managerId={item.receiverId}
+                totalActualAmount={item.totalActualAmount}
+                totalAmount={item.totalAmount}
+                totalPaymentCount={item.totalPaymentCount}
+                totalRefundAmount={item.totalRefundAmount}
+                totalRefundCount={item.totalRefundCount}
               />
             </Suspense>
-          </div>
+          </TotalList>
           <PerformanceBox
             managerData={item}
             dateRange={dateRange}
-            totalCount={item.totalCount}
+            filterSearch={filterSearch}
+            totalPaymentCount={item.totalPaymentCount - item.totalRefundCount}
+          />
+          <PerformanceRefundBox
+            managerData={item}
+            dateRange={dateRange}
+            filterSearch={filterSearch}
+            totalRefundCount={item.totalRefundCount}
           />
         </ListBox>
       ))}
