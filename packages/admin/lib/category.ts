@@ -195,7 +195,6 @@ const category: Category[] = [
     exposure: true,
     isBreadcrumb: true,
     isFilter: true,
-    isWrite: '/students/write',
     children: [
       {
         href: '/',
@@ -203,7 +202,7 @@ const category: Category[] = [
         exposure: true,
         isBreadcrumb: true,
         isFilter: true,
-        isWrite: '',
+        isWrite: '/students/write',
       },
       {
         href: '/unallocated',
