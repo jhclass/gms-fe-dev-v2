@@ -154,7 +154,13 @@ export const additionalAmountState = atom({
 
 export const classRoomState = atom({
   key: 'classRoom',
-  default: [201, 202, 203, 204, 205, 206],
+  default: {
+    0: '강의실 없음',
+    201: '201호',
+    202: '202호',
+    203: '203호',
+    204: '204호',
+  },
 })
 
 export const receiptStatusState = atom({
@@ -334,7 +340,7 @@ export const paymentDetailFilterPageState = atom<number>({
 export const paymentDetailSearchState = atom({
   key: 'paymentSearch',
   default: {} as {
-    period: []
+    paymentDate: []
     stName: string
     approvalNum: string
   },

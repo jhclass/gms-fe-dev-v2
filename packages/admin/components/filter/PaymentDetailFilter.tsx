@@ -133,7 +133,7 @@ export default function PaymentFilter({
   } = useForm({
     defaultValues: {
       stName: '',
-      period: undefined,
+      paymentDate: undefined,
       approvalNum: '',
     },
   })
@@ -149,11 +149,14 @@ export default function PaymentFilter({
     }
     if (
       Object.keys(studentFilter).length === 0 ||
-      studentFilter?.period === null
+      studentFilter?.paymentDate === null
     ) {
       setPaymentDateRange([null, null])
     } else {
-      setPaymentDateRange([studentFilter?.period[0], studentFilter?.period[1]])
+      setPaymentDateRange([
+        studentFilter?.paymentDate[0],
+        studentFilter?.paymentDate[1],
+      ])
     }
     if (
       Object.keys(studentFilter).length === 0 ||
@@ -180,13 +183,13 @@ export default function PaymentFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.period,
+        data.paymentDate,
         '결제일시의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
           stName: data.stName === '' ? null : data.stName,
-          period: data.period === undefined ? null : data.period,
+          paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
           approvalNum: data.approvalNum === '' ? null : data.approvalNum,
         }
         setStudentFilter(filter)
@@ -199,7 +202,7 @@ export default function PaymentFilter({
     setPaymentDateRange([start, end])
     const setStart = new Date(start.setHours(0, 0, 0, 0))
     const setEnd = new Date(end.setHours(23, 59, 59, 999))
-    setValue('period', [setStart, setEnd], { shouldDirty: true })
+    setValue('paymentDate', [setStart, setEnd], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -248,7 +251,7 @@ export default function PaymentFilter({
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="period"
+                  name="paymentDate"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -302,7 +305,7 @@ export default function PaymentFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('period')}
+                          {...register('paymentDate')}
                         />
                       }
                     />

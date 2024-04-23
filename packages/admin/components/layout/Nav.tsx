@@ -122,7 +122,7 @@ export default function Header() {
   return (
     <>
       <NavSec $navOpen={navOpen}>
-        <ScrollShadow className="w-full scrollbar">
+        <ScrollShadow className="w-full scrollbar_g">
           <NavWrap $navOpen={navOpen}>
             <Logo $navOpen={navOpen}>
               <Link href={'/'}>

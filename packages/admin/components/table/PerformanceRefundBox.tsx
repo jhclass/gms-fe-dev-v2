@@ -128,7 +128,6 @@ export default function PerformanceRefundBox({
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(5)
   const [detailRefund, setDetailRefund] = useState(null)
-  const [total, setTotal] = useState(null)
 
   useEffect(() => {
     if (filterSearch) {
@@ -139,15 +138,16 @@ export default function PerformanceRefundBox({
           variables: {
             receiverId: managerData.receiverId,
             refundApprovalDate: dateRange,
+            reqRefund: true,
+            refundApproval: true,
             sortOf: 'refundApprovalDate',
             page: currentPage,
             limit: currentLimit,
           },
           onCompleted: result => {
             if (result.searchPaymentDetail.ok) {
-              const { PaymentDetail, totalCount } = result.searchPaymentDetail
+              const { PaymentDetail } = result.searchPaymentDetail
               setDetailRefund(PaymentDetail)
-              setTotal(totalCount)
             }
           },
         })
@@ -161,21 +161,21 @@ export default function PerformanceRefundBox({
         receiverId: managerData.receiverId,
         refundApprovalDate: dateRange,
         sortOf: 'refundApprovalDate',
+        reqRefund: true,
+        refundApproval: true,
         page: currentPage,
         limit: currentLimit,
       },
       onCompleted: result => {
         if (result.searchPaymentDetail.ok) {
-          const { PaymentDetail, totalCount } = result.searchPaymentDetail
+          const { PaymentDetail } = result.searchPaymentDetail
           setDetailRefund(PaymentDetail)
-          setTotal(totalCount)
         }
       },
     })
   }, [currentPage])
-
   return (
-    managerData && (
+    detailRefund && (
       <>
         <Title>횐불 내역</Title>
         <TableArea>
@@ -191,7 +191,7 @@ export default function PerformanceRefundBox({
                   <Tname>수강생명</Tname>
                 </TheaderBox>
               </Theader>
-              {totalRefundCount !== 0 && (
+              {detailRefund.length !== 0 && (
                 <>
                   {detailRefund &&
                     detailRefund.map((item, index) => (
@@ -205,12 +205,10 @@ export default function PerformanceRefundBox({
                     ))}
                 </>
               )}
-              {detailRefund?.length === 0 && (
-                <Nolist>데이터가 없습니다.</Nolist>
-              )}
+              {detailRefund.length === 0 && <Nolist>데이터가 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
-          {totalRefundCount !== 0 && (
+          {detailRefund.length !== 0 && (
             <PagerWrap>
               <Pagination
                 variant="light"

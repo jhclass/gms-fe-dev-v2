@@ -1224,7 +1224,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
   mutation Mutation(
     $stName: String
     $sortOf: String
-    $period: [String]
+    $paymentDate: [String]
     $page: Int
     $limit: Int
     $reqRefund: Boolean
@@ -1236,7 +1236,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
     searchPaymentDetail(
       stName: $stName
       sortOf: $sortOf
-      period: $period
+      paymentDate: $paymentDate
       page: $page
       limit: $limit
       reqRefund: $reqRefund
@@ -1424,53 +1424,41 @@ export const SALES_STATISTICS_MUTATION = gql`
   }
 `
 export const SALES_STATISTICS_LIST_MUTATION = gql`
-  mutation Mutation(
-    $period: [String]!
-    $receiverId: Int!
+  mutation SearchPaymentDetail(
+    $receiverId: Int
     $page: Int
     $limit: Int
+    $sortOf: String
+    $refundApproval: Boolean
+    $paymentDate: [String]
   ) {
-    salesStatisticsList(
-      period: $period
+    searchPaymentDetail(
       receiverId: $receiverId
       page: $page
       limit: $limit
+      sortOf: $sortOf
+      refundApproval: $refundApproval
+      paymentDate: $paymentDate
     ) {
-      error
-      message
+      totalCount
       ok
-      receiverId
-      paymentData {
+      message
+      error
+      PaymentDetail {
         amountPayment
         cashOrCard
-        depositAmount
         paymentDate
-        stName
-        studentPayment {
-          subject {
-            round
-            subjectName
-          }
-        }
-        accountingManager
-        refundApproval
-      }
-      refundData {
-        amountPayment
-        cashOrCard
         depositAmount
         id
-        paymentDate
         stName
+        refundApproval
         studentPayment {
           subject {
-            subjectName
             round
+            id
+            subjectName
           }
         }
-        reqRefundDate
-        reqRefundManager
-        refundApproval
       }
     }
   }
@@ -1481,15 +1469,19 @@ export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
     $receiverId: Int
     $page: Int
     $limit: Int
-    $refundApprovalDate: [String]
     $sortOf: String
+    $reqRefund: Boolean
+    $refundApproval: Boolean
+    $refundApprovalDate: [String]
   ) {
     searchPaymentDetail(
       receiverId: $receiverId
       page: $page
       limit: $limit
-      refundApprovalDate: $refundApprovalDate
       sortOf: $sortOf
+      reqRefund: $reqRefund
+      refundApproval: $refundApproval
+      refundApprovalDate: $refundApprovalDate
     ) {
       totalCount
       ok
@@ -1499,9 +1491,9 @@ export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
         amountPayment
         cashOrCard
         depositAmount
+        refundApprovalDate
         id
         stName
-        refundApprovalDate
         refundApproval
         studentPayment {
           subject {

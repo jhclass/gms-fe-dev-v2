@@ -130,16 +130,17 @@ export default function PerformanceBox({
       } else {
         salesStatisticsList({
           variables: {
-            period: dateRange,
             receiverId: managerData.receiverId,
+            paymentDate: dateRange,
+            sortOf: 'paymentDate',
+            refundApproval: false,
             page: currentPage,
             limit: currentLimit,
           },
           onCompleted: result => {
-            if (result.salesStatisticsList.ok) {
-              console.log(result)
-              const { paymentData } = result.salesStatisticsList
-              setDetailData(paymentData)
+            if (result.searchPaymentDetail.ok) {
+              const { PaymentDetail } = result.searchPaymentDetail
+              setDetailData(PaymentDetail)
             }
           },
         })
@@ -150,22 +151,24 @@ export default function PerformanceBox({
   useEffect(() => {
     salesStatisticsList({
       variables: {
-        period: dateRange,
         receiverId: managerData.receiverId,
+        paymentDate: dateRange,
+        sortOf: 'paymentDate',
+        refundApproval: false,
         page: currentPage,
         limit: currentLimit,
       },
       onCompleted: result => {
-        if (result.salesStatisticsList.ok) {
-          const { paymentData } = result.salesStatisticsList
-          setDetailData(paymentData)
+        if (result.searchPaymentDetail.ok) {
+          const { PaymentDetail } = result.searchPaymentDetail
+          setDetailData(PaymentDetail)
         }
       },
     })
   }, [currentPage])
 
   return (
-    managerData && (
+    detailData && (
       <>
         <Title>결제내역</Title>
         <TableArea>
@@ -181,7 +184,7 @@ export default function PerformanceBox({
                   <Tname>수강생명</Tname>
                 </TheaderBox>
               </Theader>
-              {totalPaymentCount !== 0 && (
+              {detailData.length !== 0 && (
                 <>
                   {detailData &&
                     detailData.map((item, index) => (
@@ -195,10 +198,10 @@ export default function PerformanceBox({
                     ))}
                 </>
               )}
-              {detailData?.length === 0 && <Nolist>데이터가 없습니다.</Nolist>}
+              {detailData.length === 0 && <Nolist>데이터가 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
-          {totalPaymentCount !== 0 && (
+          {detailData.length !== 0 && (
             <PagerWrap>
               <Pagination
                 variant="light"

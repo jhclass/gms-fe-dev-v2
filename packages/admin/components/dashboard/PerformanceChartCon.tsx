@@ -67,11 +67,6 @@ export default function PerformanceChartCon({
   const chartData = {
     series: [
       {
-        name: '총 건수',
-        type: 'column',
-        data: totalCount,
-      },
-      {
         name: '총 매출',
         type: 'column',
         data: totalAmount,
@@ -101,7 +96,7 @@ export default function PerformanceChartCon({
         },
       },
       stroke: {
-        width: [0, 0, 1, 0],
+        width: [0, 1, 0],
       },
       dataLabels: {
         enabled: true,
@@ -140,13 +135,6 @@ export default function PerformanceChartCon({
       yaxis: [
         {
           title: {
-            text: '총 건수',
-          },
-          max: maxCountValue,
-        },
-        {
-          opposite: true,
-          title: {
             text: '총 금액 (1만원 단위)',
           },
           labels: {
@@ -172,8 +160,7 @@ export default function PerformanceChartCon({
       ],
       colors: [
         'rgba(46,147,250,0.85)',
-        'rgba(0,227,150,0.85)',
-        'rgba(0,227,150,0.85)',
+        'rgba(46,147,250,0.85)',
         'rgba(255,89,0,0.85)',
         ,
       ],
