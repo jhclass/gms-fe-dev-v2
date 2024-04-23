@@ -3,7 +3,10 @@ import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import PerformanceItem from './PerformanceItem'
-import { SALES_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
+import {
+  SALES_STATISTICS_LIST_MUTATION,
+  SALES_STATISTICS_REFUND_LIST_MUTATION,
+} from '@/graphql/mutations'
 
 const TableArea = styled.div``
 
@@ -119,10 +122,13 @@ export default function PerformanceRefundBox({
   totalRefundCount,
   filterSearch,
 }) {
-  const [salesStatisticsList] = useMutation(SALES_STATISTICS_LIST_MUTATION)
+  const [salesStatisticsList] = useMutation(
+    SALES_STATISTICS_REFUND_LIST_MUTATION,
+  )
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(5)
   const [detailRefund, setDetailRefund] = useState(null)
+  const [total, setTotal] = useState(null)
 
   useEffect(() => {
     if (filterSearch) {
@@ -131,15 +137,17 @@ export default function PerformanceRefundBox({
       } else {
         salesStatisticsList({
           variables: {
-            period: dateRange,
             receiverId: managerData.receiverId,
+            refundApprovalDate: dateRange,
+            sortOf: 'refundApprovalDate',
             page: currentPage,
             limit: currentLimit,
           },
           onCompleted: result => {
-            if (result.salesStatisticsList.ok) {
-              const { refundData } = result.salesStatisticsList
-              setDetailRefund(refundData)
+            if (result.searchPaymentDetail.ok) {
+              const { PaymentDetail, totalCount } = result.searchPaymentDetail
+              setDetailRefund(PaymentDetail)
+              setTotal(totalCount)
             }
           },
         })
@@ -150,15 +158,17 @@ export default function PerformanceRefundBox({
   useEffect(() => {
     salesStatisticsList({
       variables: {
-        period: dateRange,
         receiverId: managerData.receiverId,
+        refundApprovalDate: dateRange,
+        sortOf: 'refundApprovalDate',
         page: currentPage,
         limit: currentLimit,
       },
       onCompleted: result => {
-        if (result.salesStatisticsList.ok) {
-          const { refundData } = result.salesStatisticsList
-          setDetailRefund(refundData)
+        if (result.searchPaymentDetail.ok) {
+          const { PaymentDetail, totalCount } = result.searchPaymentDetail
+          setDetailRefund(PaymentDetail)
+          setTotal(totalCount)
         }
       },
     })
