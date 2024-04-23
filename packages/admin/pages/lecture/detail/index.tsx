@@ -496,25 +496,6 @@ export default function SubjectDetail() {
                 </AreaBox>
                 <AreaBox>
                   <TimeBox>
-                    {/* <Input
-                      labelPlacement="outside"
-                      placeholder="시작시간 09:00"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="강의시간"
-                      defaultValue={subjectState?.roomNum}
-                      onChange={e => {
-                        register('roomNum').onChange(e)
-                      }}
-                      className="w-[50%]"
-                      {...register('roomNum', {
-                        pattern: {
-                          value: /^[가-힣a-zA-Z0-9\s]*$/,
-                          message: '한글, 영어, 숫자만 사용 가능합니다.',
-                        },
-                      })}
-                    /> */}
                     <DatePickerBox>
                       <Controller
                         control={control}
