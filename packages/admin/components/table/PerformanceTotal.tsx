@@ -152,7 +152,7 @@ export default function PerformanceTotal({
           </FlatBox>
         </AreaBox>
         <AreaBox>
-          <FilterLabel>실제 총액</FilterLabel>
+          <FilterLabel>실 결제액</FilterLabel>
           <FlatBox>
             {totalActualAmount === undefined || totalActualAmount === null
               ? '0'
