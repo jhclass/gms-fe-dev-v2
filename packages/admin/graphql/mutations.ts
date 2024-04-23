@@ -1064,41 +1064,37 @@ export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
   }
 `
 export const CREATE_PAYMENT_DETAIL_MUTATION = gql`
-  mutation Mutation(
+  mutation CreatePaymentDetail(
     $cashOrCard: String!
     $studentPaymentId: Int!
+    $receiverId: Int!
     $cardCompany: String
     $cardNum: String
     $installment: Int
     $approvalNum: String
     $amountPayment: Int
     $paymentDate: String
-    $depositDate: String
-    $depositAmount: Int
-    $depositorName: String
     $bankName: String
-    $cashReceipts: [String]
-    $receiverId: Int
+    $depositorName: String
+    $depositAmount: Int
   ) {
     createPaymentDetail(
       cashOrCard: $cashOrCard
       studentPaymentId: $studentPaymentId
+      receiverId: $receiverId
       cardCompany: $cardCompany
       cardNum: $cardNum
       installment: $installment
       ApprovalNum: $approvalNum
       amountPayment: $amountPayment
       paymentDate: $paymentDate
-      depositDate: $depositDate
-      depositAmount: $depositAmount
-      depositorName: $depositorName
       bankName: $bankName
-      cashReceipts: $cashReceipts
-      receiverId: $receiverId
+      depositorName: $depositorName
+      depositAmount: $depositAmount
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `
@@ -1475,6 +1471,45 @@ export const SALES_STATISTICS_LIST_MUTATION = gql`
         reqRefundDate
         reqRefundManager
         refundApproval
+      }
+    }
+  }
+`
+
+export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
+  mutation SearchPaymentDetail(
+    $receiverId: Int
+    $page: Int
+    $limit: Int
+    $refundApprovalDate: [String]
+    $sortOf: String
+  ) {
+    searchPaymentDetail(
+      receiverId: $receiverId
+      page: $page
+      limit: $limit
+      refundApprovalDate: $refundApprovalDate
+      sortOf: $sortOf
+    ) {
+      totalCount
+      ok
+      message
+      error
+      PaymentDetail {
+        amountPayment
+        cashOrCard
+        depositAmount
+        id
+        stName
+        refundApprovalDate
+        refundApproval
+        studentPayment {
+          subject {
+            round
+            id
+            subjectName
+          }
+        }
       }
     }
   }

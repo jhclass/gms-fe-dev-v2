@@ -148,8 +148,6 @@ export default function PerformanceItem(props) {
     }
   }
 
-  console.log(payment)
-
   return (
     <>
       <TableItem>
@@ -159,8 +157,11 @@ export default function PerformanceItem(props) {
             <TcreatedAt>
               <EllipsisBox>
                 {payment?.refundApproval
-                  ? payment?.reqRefundDate
-                    ? getDate(payment?.reqRefundDate, payment?.refundApproval)
+                  ? payment?.refundApprovalDate
+                    ? getDate(
+                        payment?.refundApprovalDate,
+                        payment?.refundApproval,
+                      )
                     : '-'
                   : payment?.paymentDate
                   ? getDate(payment?.paymentDate, payment?.refundApproval)
