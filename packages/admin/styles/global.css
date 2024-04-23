@@ -35,6 +35,28 @@
   .scrollbar::-webkit-scrollbar-track {
     background: rgb(0, 125, 233, 0.1);
   }
+
+  .scrollbar_g {
+    overflow-y: overlay;
+  }
+
+  .scrollbar_g::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .scrollbar_g::-webkit-scrollbar-thumb {
+    background: lightgray;
+    /* background: rgb(0, 125, 233); */
+    border-radius: 0.75rem;
+  }
+
+  .scrollbar_g::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .scrollbar_g::-webkit-scrollbar-thumb:hover {
+    background: gray;
+  }
 }
 
 @layer utilities {

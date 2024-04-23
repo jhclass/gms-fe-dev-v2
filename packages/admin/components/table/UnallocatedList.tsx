@@ -78,6 +78,7 @@ const Tflag = styled.div`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `
 const Tnum = styled.div`
   display: table-cell;

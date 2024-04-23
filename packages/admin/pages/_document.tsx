@@ -44,7 +44,7 @@ export default class MyDocument extends Document {
           />
           <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" />
         </Head>
-        <body>
+        <body className="scrollbar_g">
           <Main />
           <NextScript />
         </body>

@@ -20,7 +20,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { gradeState, subStatusState } from '@/lib/recoilAtoms'
+import { classRoomState, gradeState, subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
@@ -182,6 +182,7 @@ export default function SubjectDetail() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const classRoom = useRecoilValue(classRoomState)
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const subStatus = useRecoilValue(subStatusState)
@@ -219,13 +220,6 @@ export default function SubjectDetail() {
     formState,
   } = useForm()
 
-  const handleSubChange = e => {
-    setSub(e.target.value)
-  }
-  const handleTeacherChange = e => {
-    setTeacher(e.target.value)
-  }
-
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -247,6 +241,18 @@ export default function SubjectDetail() {
     }
   }
 
+  const handleSubChange = e => {
+    setSub(e.target.value)
+  }
+
+  const handleTeacherChange = e => {
+    setTeacher(e.target.value)
+  }
+
+  const handleRoomChange = e => {
+    setRoom(e.target.value)
+  }
+
   const handleTypeChange = value => {
     setIsReport(value)
   }
@@ -257,7 +263,6 @@ export default function SubjectDetail() {
       setFileName(file.name)
     }
   }
-
   const handleButtonClick = () => {
     fileInputRef.current.click()
   }
@@ -471,25 +476,15 @@ export default function SubjectDetail() {
                         onChange={value => {
                           if (value.target.value !== '') {
                             field.onChange(value)
-                            handleTeacherChange(value)
+                            handleRoomChange(value)
                           }
                         }}
                       >
-                        <SelectItem key={'강의실 없음'} value={'강의실 없음'}>
-                          {'강의실 없음'}
-                        </SelectItem>
-                        <SelectItem key={'201호'} value={'201호'}>
-                          201호
-                        </SelectItem>
-                        <SelectItem key={'202호'} value={'202호'}>
-                          202호
-                        </SelectItem>
-                        <SelectItem key={'203호'} value={'203호'}>
-                          203호
-                        </SelectItem>
-                        <SelectItem key={'204호'} value={'204호'}>
-                          204호
-                        </SelectItem>
+                        {Object.entries(classRoom).map(([key, item]) => (
+                          <SelectItem key={item} value={key}>
+                            {item}
+                          </SelectItem>
+                        ))}
                       </Select>
                     )}
                   />
@@ -797,15 +792,15 @@ export default function SubjectDetail() {
                         }
                         defaultValue={subjectState?.roomNum}
                         onChange={e => {
-                          register('roomNum').onChange(e)
+                          // register('roomNum').onChange(e)
                         }}
                         className="w-full"
-                        {...register('roomNum', {
-                          pattern: {
-                            value: /^[가-힣a-zA-Z0-9\s]*$/,
-                            message: '한글, 영어, 숫자만 사용 가능합니다.',
-                          },
-                        })}
+                        // {...register('roomNum', {
+                        //   pattern: {
+                        //     value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        //     message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        //   },
+                        // })}
                       />
                     </AreaBox>
                     <AreaBox>
@@ -822,15 +817,15 @@ export default function SubjectDetail() {
                         }
                         defaultValue={subjectState?.roomNum}
                         onChange={e => {
-                          register('roomNum').onChange(e)
+                          // register('roomNum').onChange(e)
                         }}
                         className="w-full"
-                        {...register('roomNum', {
-                          pattern: {
-                            value: /^[가-힣a-zA-Z0-9\s]*$/,
-                            message: '한글, 영어, 숫자만 사용 가능합니다.',
-                          },
-                        })}
+                        // {...register('roomNum', {
+                        //   pattern: {
+                        //     value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        //     message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        //   },
+                        // })}
                       />
                     </AreaBox>
                     <AreaBox>
