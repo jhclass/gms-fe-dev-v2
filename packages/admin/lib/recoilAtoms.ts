@@ -152,6 +152,11 @@ export const additionalAmountState = atom({
   },
 })
 
+export const classRoomState = atom({
+  key: 'classRoom',
+  default: [201, 202, 203, 204, 205, 206],
+})
+
 export const receiptStatusState = atom({
   key: 'receiptStatus',
   default: {
