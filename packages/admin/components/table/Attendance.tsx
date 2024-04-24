@@ -33,6 +33,30 @@ const BtnCell = styled.div`
   justify-content: center;
 `
 
+const BtnBox = styled.div`
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`
+
+const TodayTag = styled.span`
+  display: inline-block;
+  background: #07bbae;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 0.8rem;
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.5rem;
+  vertical-align: middle;
+`
+
 export default function TestCate() {
   const nodes = [
     {
@@ -215,16 +239,16 @@ export default function TestCate() {
 
   const today = new Date().toISOString().split('T')[0]
   const datesArray = [
+    '2024-04-21',
     '2024-04-22',
     '2024-04-23',
     '2024-04-24',
     '2024-04-25',
-    '2024-04-26',
   ]
   const todayIndex = datesArray.indexOf(today)
 
-  let gridTemplateColumns = '70px 70px 100px 100px repeat(4, 70px)'
-  let gridTemplateColumnsMo = '70px 70px 100px'
+  let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
+  let gridTemplateColumnsMo = '100px'
   if (todayIndex !== 0) {
     for (let i = 0; i < todayIndex; i++) {
       gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
@@ -237,7 +261,7 @@ export default function TestCate() {
     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
-  console.log(gridTemplateColumns)
+
   const [data, setData] = useState({ nodes })
   const test = e => {
     console.log(e)
@@ -279,58 +303,67 @@ export default function TestCate() {
       `,
       BaseCell: `
         padding: 1rem;
-        min-width: 70px;
-        &:nth-of-type(${8 + todayIndex}) {
+        // min-width: 70px;
+     
+        &:nth-of-type(${9 + todayIndex}) {
           // background:rgba(0, 125, 233, 0.15);
-
+          border-left: 0.2rem solid #07bbae;
+          border-right: 0.2rem solid #07bbae;
         }
         &:nth-of-type(1) {
           position: sticky;
           left: 0;
           border-radius: 0.5rem 0 0 0.5rem;
           z-index: 2;
+           @media (max-width: 768px) {
+            display:none;
+          }
         }
 
         &:nth-of-type(2) {
-          left: 70px;
-
+          left: 50px;
+           @media (max-width: 768px) {
+            display:none;
+          }
         }
         &:nth-of-type(3) {
-          left: 140px;
+          left: 100px;
+           @media (max-width: 768px) {
+            left: 0;
+          }
 
-          @media (max-width: 768px) {
-            display:none;
-          } 
         }
         &:nth-of-type(4) {
-          left: 240px;
+          left: 200px;
             @media (max-width: 768px) {
             display:none;
           }
         }
         &:nth-of-type(5) {
-          left: 340px;
+          left: 300px;
           font-weight: bold;
           @media (max-width: 768px) {
             display:none;
           }
         }
         &:nth-of-type(6) {
-          left: 410px;
+          left: 370px;
           font-weight: bold;
+          color: #007de9;
           @media (max-width: 768px) {
             display:none;
           }
         }
           &:nth-of-type(7) {
-          left: 480px;
+          left: 440px;
           font-weight: bold;
+              color: #ff5900;
           @media (max-width: 768px) {
             display:none;
           }
         }
            &:nth-of-type(8) {
-          left: 550px;
+          left: 510px;
           font-weight: bold;
 
           @media (max-width: 768px) {
@@ -356,11 +389,28 @@ export default function TestCate() {
         font-weight: 600;
         color:#111;
         border-bottom: 1px solid #e4e4e7;
+
+          &:nth-of-type(${9 + todayIndex}) {
+            border-radius: 0.5rem 0.5rem  0 0;
+            border-top: 0.2rem solid #07bbae;
+          }
+
+          span {
+            display: inline-block;
+            vertical-align:middle;
+          }
       `,
       Row: `
         background:#fff;
         &:nth-of-type(even){
           background:#e2eafc;
+        }
+
+         &:last-of-type{
+          > td:nth-of-type(${9 + todayIndex}) {
+            border-radius: 0 0 0.5rem 0.5rem;
+            border-bottom: 0.2rem solid #07bbae;
+          }
         }
 
         &:hover {
@@ -397,7 +447,10 @@ export default function TestCate() {
                     <HeaderCell pinLeft>결석 일수</HeaderCell>
                     <HeaderCell pinLeft>출석률</HeaderCell>
                     {datesArray.map((item, index) => (
-                      <HeaderCell key={index}>{item}</HeaderCell>
+                      <HeaderCell key={index}>
+                        <span>{item}</span>
+                        {index === todayIndex && <TodayTag>Today</TodayTag>}
+                      </HeaderCell>
                     ))}
                   </HeaderRow>
                 </Header>
@@ -679,6 +732,26 @@ export default function TestCate() {
               </>
             )}
           </Table>
+          <BtnBox>
+            <Button
+              size="sm"
+              variant="solid"
+              color="primary"
+              className="w-full text-white"
+              // onClick={() => setIsOpen(!isOpen)}
+            >
+              카카오톡발송
+            </Button>
+            <Button
+              size="sm"
+              variant="bordered"
+              color="primary"
+              className="w-full"
+              // onClick={() => clickCancelReq(item)}
+            >
+              SMS발송
+            </Button>
+          </BtnBox>
         </div>
         <PagerWrap>
           <Pagination
