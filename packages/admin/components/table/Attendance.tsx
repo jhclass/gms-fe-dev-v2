@@ -8,6 +8,11 @@ import {
   HeaderCell,
   Cell,
 } from '@table-library/react-table-library/table'
+import {
+  CellSelect,
+  HeaderCellSelect,
+  useRowSelect,
+} from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { useState } from 'react'
 import { Button, Pagination } from '@nextui-org/react'
@@ -210,32 +215,41 @@ export default function TestCate() {
 
   const today = new Date().toISOString().split('T')[0]
   const datesArray = [
-    '2024-04-11',
-    '2024-04-12',
-    '2024-04-15',
-    '2024-04-16',
-    '2024-04-17',
+    '2024-04-22',
+    '2024-04-23',
+    '2024-04-24',
+    '2024-04-25',
+    '2024-04-26',
   ]
   const todayIndex = datesArray.indexOf(today)
 
-  let gridTemplateColumns = '50px 100px 100px repeat(4, 70px)'
-  let gridTemplateColumnsMo = '50px 100px'
-  for (let i = 1; i < todayIndex + 1; i++) {
-    gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-    gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+  let gridTemplateColumns = '70px 70px 100px 100px repeat(4, 70px)'
+  let gridTemplateColumnsMo = '70px 70px 100px'
+  if (todayIndex !== 0) {
+    for (let i = 0; i < todayIndex; i++) {
+      gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+      gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+    }
   }
   gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
   gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-  for (let i = todayIndex + 1; i <= 4; i++) {
+  for (let i = 0; i < 4 - todayIndex; i++) {
     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
-
+  console.log(gridTemplateColumns)
+  const [data, setData] = useState({ nodes })
   const test = e => {
     console.log(e)
   }
 
-  const [data, setData] = useState({ nodes })
+  const select = useRowSelect(data, {
+    onChange: onSelectChange,
+  })
+
+  function onSelectChange(action, state) {
+    console.log(action, state)
+  }
 
   const handleUpdate = (value, id, property) => {
     setData(state => ({
@@ -264,55 +278,61 @@ export default function TestCate() {
           }
       `,
       BaseCell: `
-        padding: 0.5rem;
+        padding: 1rem;
         min-width: 70px;
         &:nth-of-type(${8 + todayIndex}) {
-          background:rgba(0, 125, 233, 0.15);
+          // background:rgba(0, 125, 233, 0.15);
 
-          select {
-            // background:rgba(0, 125, 233, 0.15);
-          }
         }
         &:nth-of-type(1) {
-          left: 0px;
+          position: sticky;
+          left: 0;
           border-radius: 0.5rem 0 0 0.5rem;
-            background:hsl(240 5% 98%);
+          z-index: 2;
         }
+
         &:nth-of-type(2) {
-          left: 50px;
-            background:hsl(240 5% 98%);
+          left: 70px;
+
         }
         &:nth-of-type(3) {
-          left: 150px;
-          background:hsl(240 5% 98%);
+          left: 140px;
+
           @media (max-width: 768px) {
             display:none;
           } 
         }
         &:nth-of-type(4) {
-          left: 250px;
-            background:hsl(240 5% 98%);
+          left: 240px;
             @media (max-width: 768px) {
             display:none;
           }
         }
         &:nth-of-type(5) {
-          left: 320px;
-          background:hsl(240 5% 98%);
+          left: 340px;
+          font-weight: bold;
           @media (max-width: 768px) {
             display:none;
           }
         }
         &:nth-of-type(6) {
-          left: 390px;
-          background:hsl(240 5% 98%);
+          left: 410px;
+          font-weight: bold;
           @media (max-width: 768px) {
             display:none;
           }
         }
           &:nth-of-type(7) {
-          left: 460px;
-          background:hsl(240 5% 98%);
+          left: 480px;
+          font-weight: bold;
+          @media (max-width: 768px) {
+            display:none;
+          }
+        }
+           &:nth-of-type(8) {
+          left: 550px;
+          font-weight: bold;
+
           @media (max-width: 768px) {
             display:none;
           }
@@ -335,6 +355,17 @@ export default function TestCate() {
         padding: 1rem;
         font-weight: 600;
         color:#111;
+        border-bottom: 1px solid #e4e4e7;
+      `,
+      Row: `
+        background:#fff;
+        &:nth-of-type(even){
+          background:#e2eafc;
+        }
+
+        &:hover {
+          background:#f7fafc;
+        }
       `,
     },
   ])
@@ -351,11 +382,13 @@ export default function TestCate() {
               horizontalScroll: true,
               fixedHeader: true,
             }}
+            select={select}
           >
             {tableList => (
               <>
                 <Header>
                   <HeaderRow>
+                    <HeaderCellSelect pinLeft />
                     <HeaderCell pinLeft>No</HeaderCell>
                     <HeaderCell pinLeft>이름</HeaderCell>
                     <HeaderCell pinLeft>수강구분</HeaderCell>
@@ -363,17 +396,16 @@ export default function TestCate() {
                     <HeaderCell pinLeft>출석 일수</HeaderCell>
                     <HeaderCell pinLeft>결석 일수</HeaderCell>
                     <HeaderCell pinLeft>출석률</HeaderCell>
-                    <HeaderCell>24-01-11</HeaderCell>
-                    <HeaderCell>24-01-12</HeaderCell>
-                    <HeaderCell>24-01-15</HeaderCell>
-                    <HeaderCell>24-01-16</HeaderCell>
-                    <HeaderCell>24-01-17</HeaderCell>
+                    {datesArray.map((item, index) => (
+                      <HeaderCell key={index}>{item}</HeaderCell>
+                    ))}
                   </HeaderRow>
                 </Header>
 
                 <Body>
                   {tableList.map((item, index) => (
                     <Row key={item.id} item={item}>
+                      <CellSelect item={item} />
                       <Cell pinLeft>{index + 1}</Cell>
                       <Cell pinLeft>{item.name}</Cell>
                       <Cell pinLeft>{item.subDiv}</Cell>
@@ -529,6 +561,7 @@ export default function TestCate() {
                       nodes: [],
                     }}
                   >
+                    <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
