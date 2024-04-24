@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button, Chip } from '@nextui-org/react'
+import { Button, Chip, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
 import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
@@ -203,16 +203,36 @@ export default function StudentsWrite() {
                 교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지 않습니다.
               </Noti>
               <FlexChipBox>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
-                <Chip color="primary">Primary</Chip>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
+                <Link href="">
+                  <Chip color="primary">Primary</Chip>
+                </Link>
               </FlexChipBox>
             </DetailDiv>
           </DetailBox>
