@@ -14,7 +14,7 @@ import {
   useRowSelect,
 } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Pagination } from '@nextui-org/react'
 
 const PagerWrap = styled.div`
@@ -239,11 +239,11 @@ export default function TestCate() {
 
   const today = new Date().toISOString().split('T')[0]
   const datesArray = [
-    '2024-04-21',
     '2024-04-22',
     '2024-04-23',
     '2024-04-24',
     '2024-04-25',
+    '2024-04-26',
   ]
   const todayIndex = datesArray.indexOf(today)
 
@@ -261,8 +261,18 @@ export default function TestCate() {
     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
-
+  const tableRef = useRef(null)
   const [data, setData] = useState({ nodes })
+
+  useEffect(() => {
+    if (todayIndex > 2 && tableRef.current) {
+      setTimeout(() => {
+        const scrollWidth = tableRef.current.scrollWidth
+        tableRef.current.scrollLeft = scrollWidth
+      }, 0)
+    }
+  }, [todayIndex])
+
   const test = e => {
     console.log(e)
   }
@@ -287,7 +297,7 @@ export default function TestCate() {
       }),
     }))
   }
-
+  //  background: linear-gradient(-90deg, rgba(0,0,0,0.1) calc(100% - 40px), transparent);
   const theme = useTheme([
     // getTheme(),
     {
@@ -313,7 +323,6 @@ export default function TestCate() {
         &:nth-of-type(1) {
           position: sticky;
           left: 0;
-          border-radius: 0.5rem 0 0 0.5rem;
           z-index: 2;
            @media (max-width: 768px) {
             display:none;
@@ -362,16 +371,15 @@ export default function TestCate() {
             display:none;
           }
         }
-           &:nth-of-type(8) {
+        &:nth-of-type(8) {
           left: 510px;
           font-weight: bold;
+          box-shadow: 5px 0 20px -15px rgba(0, 0, 0, 0.7);
+          
 
           @media (max-width: 768px) {
             display:none;
           }
-        }
-        &:nth-last-of-type(1) {
-          border-radius: 0 0.5rem 0.5rem 0;
         }
 
         > div {
@@ -425,6 +433,7 @@ export default function TestCate() {
       <>
         <div>
           <Table
+            ref={tableRef}
             data={data}
             theme={theme}
             layout={{
@@ -433,6 +442,7 @@ export default function TestCate() {
               fixedHeader: true,
             }}
             select={select}
+            className="pb-2 scrollbar"
           >
             {tableList => (
               <>
@@ -622,111 +632,29 @@ export default function TestCate() {
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
-                    <Cell>
-                      <BtnCell>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          color="primary"
-                          onClick={() => test('24.04.01')}
-                        >
-                          일지
-                        </Button>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          className="text-white bg-flag1"
-                        >
-                          저장
-                        </Button>
-                      </BtnCell>
-                    </Cell>
-                    <Cell>
-                      <BtnCell>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          color="primary"
-                          onClick={() => test('24.04.01')}
-                        >
-                          일지
-                        </Button>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          className="text-white bg-flag1"
-                        >
-                          저장
-                        </Button>
-                      </BtnCell>
-                    </Cell>
-                    <Cell>
-                      <BtnCell>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          color="primary"
-                          onClick={() => test('24.04.01')}
-                        >
-                          일지
-                        </Button>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          className="text-white bg-flag1"
-                        >
-                          저장
-                        </Button>
-                      </BtnCell>
-                    </Cell>
-                    <Cell>
-                      <BtnCell>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          color="primary"
-                          onClick={() => test('24.04.01')}
-                        >
-                          일지
-                        </Button>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          className="text-white bg-flag1"
-                        >
-                          저장
-                        </Button>
-                      </BtnCell>
-                    </Cell>
-                    <Cell>
-                      <BtnCell>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          color="primary"
-                          onClick={() => test('24.04.01')}
-                        >
-                          일지
-                        </Button>
-                        <Button
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          className="text-white bg-flag1"
-                        >
-                          저장
-                        </Button>
-                      </BtnCell>
-                    </Cell>
+                    {datesArray.map((item, index) => (
+                      <Cell key={index}>
+                        <BtnCell>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            onClick={() => test(index)}
+                          >
+                            일지
+                          </Button>
+                          <Button
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            className="text-white bg-[#07bbae]"
+                          >
+                            저장
+                          </Button>
+                        </BtnCell>
+                      </Cell>
+                    ))}
                   </Row>
                 </Body>
               </>
@@ -734,16 +662,16 @@ export default function TestCate() {
           </Table>
           <BtnBox>
             <Button
-              size="sm"
+              size="md"
               variant="solid"
-              color="primary"
-              className="w-full text-white"
+              className="w-full text-[#000] bg-[#FEE500]"
               // onClick={() => setIsOpen(!isOpen)}
             >
+              <i className="xi-kakaotalk text-[1.5rem]" />
               카카오톡발송
             </Button>
             <Button
-              size="sm"
+              size="md"
               variant="bordered"
               color="primary"
               className="w-full"
