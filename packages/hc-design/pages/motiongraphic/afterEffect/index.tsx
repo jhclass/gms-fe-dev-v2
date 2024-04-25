@@ -1,5 +1,6 @@
 import Form from '@/components/Form'
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -85,6 +86,10 @@ export default function motiongraphicAfterEffect() {
   const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   return (
     <>
+      <Head>
+        <title>HART | 2D모션그래픽</title>
+        <meta name="description" content="2D모션그래픽" />
+      </Head>
       <section>
         <div>
           <div className="max-w-[2000px] mx-auto my-0 relative">

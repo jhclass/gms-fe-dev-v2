@@ -1,4 +1,5 @@
 import Form from '@/components/Form'
+import Head from 'next/head'
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -19,6 +20,10 @@ const Btnbox = styled.div`
 export default function supportSystem() {
   return (
     <>
+      <Head>
+        <title>HART | 취업시스템</title>
+        <meta name="description" content="취업시스템" />
+      </Head>
       <section>
         <div>
           <div className="max-w-[2000px] mx-auto my-0">

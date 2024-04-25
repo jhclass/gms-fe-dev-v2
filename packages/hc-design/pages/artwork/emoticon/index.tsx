@@ -1,5 +1,6 @@
 import Form from '@/components/Form'
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import Link from 'next/link'
 import { Suspense, lazy } from 'react'
 import styled from 'styled-components'
@@ -86,6 +87,10 @@ export default function artworkEmoticon() {
 
   return (
     <>
+      <Head>
+        <title>HART | 이모티콘</title>
+        <meta name="description" content="이모티콘" />
+      </Head>
       <section>
         <div>
           <div className="max-w-[2000px] mx-auto my-0 relative">
