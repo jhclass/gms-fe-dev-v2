@@ -239,11 +239,11 @@ export default function TestCate() {
 
   const today = new Date().toISOString().split('T')[0]
   const datesArray = [
-    '2024-04-21',
     '2024-04-22',
     '2024-04-23',
     '2024-04-24',
     '2024-04-25',
+    '2024-04-26',
   ]
   const todayIndex = datesArray.indexOf(today)
 
