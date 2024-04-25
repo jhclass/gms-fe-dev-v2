@@ -1,8 +1,13 @@
 import Form from '@/components/Form'
+import Head from 'next/head'
 
 export default function Consult() {
   return (
     <>
+      <Head>
+        <title>HART | 수강료조회</title>
+        <meta name="description" content="수강료조회" />
+      </Head>
       <section id="consult" className="pb-16">
         <img
           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/center_top.webp"

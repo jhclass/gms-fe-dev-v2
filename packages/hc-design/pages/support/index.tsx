@@ -1,8 +1,13 @@
 import Form from '@/components/Form'
+import Head from 'next/head'
 
 export default function support() {
   return (
     <>
+      <Head>
+        <title>HART | 국민내일배움카드</title>
+        <meta name="description" content="국민내일배움카드" />
+      </Head>
       <section>
         <div className="bg-[#c9f237]">
           <div className="max-w-[1440px] mx-auto my-0">

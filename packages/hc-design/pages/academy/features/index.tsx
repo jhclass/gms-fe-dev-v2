@@ -1,4 +1,5 @@
 import Form from '@/components/Form'
+import Head from 'next/head'
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -37,6 +38,10 @@ const ConBtn = styled.div`
 export default function academyFeatures() {
   return (
     <>
+      <Head>
+        <title>HART | 교육특성</title>
+        <meta name="description" content="교육특성" />
+      </Head>
       <section>
         <div className="max-w-[2000px] mx-auto my-0 bg-[#2a2a2c]">
           <div className="hidden w-full wmd:block">

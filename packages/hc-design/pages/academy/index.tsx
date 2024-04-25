@@ -1,8 +1,13 @@
 import Form from '@/components/Form'
+import Head from 'next/head'
 
 export default function academy() {
   return (
     <>
+      <Head>
+        <title>HART | 아카데미소개</title>
+        <meta name="description" content="아카데미소개" />
+      </Head>
       <section className="bg-[#f9f9f9]">
         <div className="max-w-[1440px] mx-auto my-0">
           <img

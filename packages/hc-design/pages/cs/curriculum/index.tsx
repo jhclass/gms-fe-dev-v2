@@ -1,9 +1,14 @@
 import Form from '@/components/Form'
+import Head from 'next/head'
 import Link from 'next/link'
 
 export default function Consult() {
   return (
     <>
+      <Head>
+        <title>HART | 전체과정보기</title>
+        <meta name="description" content="전체과정보기" />
+      </Head>
       <section id="consult" className="pb-16">
         <div className="max-w-[2000px] mx-auto my-0 relative">
           <img
