@@ -15,7 +15,8 @@ import {
 } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Pagination } from '@nextui-org/react'
+import { Button, Pagination, useDisclosure } from '@nextui-org/react'
+import WorksLogs from '../modal/WorksLogs'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -236,6 +237,7 @@ export default function TestCate() {
     },
   ]
   // const data = { nodes }
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const today = new Date().toISOString().split('T')[0]
   const datesArray = [
@@ -314,7 +316,7 @@ export default function TestCate() {
       BaseCell: `
         padding: 1rem;
         // min-width: 70px;
-     
+
         &:nth-of-type(${9 + todayIndex}) {
           // background:rgba(0, 125, 233, 0.15);
           border-left: 0.2rem solid #07bbae;
@@ -324,20 +326,20 @@ export default function TestCate() {
           position: sticky;
           left: 0;
           z-index: 2;
-           @media (max-width: 768px) {
+          @media (max-width: 768px) {
             display:none;
           }
         }
 
         &:nth-of-type(2) {
           left: 50px;
-           @media (max-width: 768px) {
+          @media (max-width: 768px) {
             display:none;
           }
         }
         &:nth-of-type(3) {
           left: 100px;
-           @media (max-width: 768px) {
+          @media (max-width: 768px) {
             left: 0;
           }
 
@@ -414,7 +416,7 @@ export default function TestCate() {
           background:#e2eafc;
         }
 
-         &:last-of-type{
+        &:last-of-type{
           > td:nth-of-type(${9 + todayIndex}) {
             border-radius: 0 0 0.5rem 0.5rem;
             border-bottom: 0.2rem solid #07bbae;
@@ -640,7 +642,7 @@ export default function TestCate() {
                             radius="sm"
                             variant="solid"
                             color="primary"
-                            onClick={() => test(index)}
+                            onClick={onOpen}
                           >
                             일지
                           </Button>
@@ -693,6 +695,7 @@ export default function TestCate() {
             // }}
           />
         </PagerWrap>
+        <WorksLogs isOpen={isOpen} onClose={onClose} />
       </>
     )
   )
