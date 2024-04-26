@@ -52,6 +52,10 @@ export default class MyDocument extends Document {
           <meta property="og:type" content="website" />
           <meta property="og:title" content="H ACADEMY | 에이치 아카데미" />
           <meta
+            property="og:image"
+            content="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/common/H_LOGO_SNS.png"
+          />
+          <meta
             property="og:description"
             content="모션그래픽, 웹툰, 이모티콘, 시네마4D, 에프터이펙트, 3D 블렌더, 클립스튜디오 국비지원 학원."
           />

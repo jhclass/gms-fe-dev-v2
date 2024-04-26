@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
+import { gradeState, progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
@@ -9,6 +9,7 @@ import { Button, Checkbox } from '@nextui-org/react'
 import { useState } from 'react'
 import LectureReportList from './LectureReportList'
 import { useRouter } from 'next/router'
+import useMmeQuery from '@/utils/mMe'
 
 const TableItem = styled.div`
   position: relative;
@@ -173,7 +174,11 @@ const EllipsisBox = styled.p`
 `
 
 export default function ConsolutItem(props) {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
@@ -277,18 +282,20 @@ export default function ConsolutItem(props) {
               </Tteacher>
               <Tbtn>
                 <BtnBox>
-                  <Button
-                    size="sm"
-                    variant="solid"
-                    color="primary"
-                    className="w-full text-white"
-                    onClick={e => {
-                      e.preventDefault()
-                      router.push('/lecture/detail')
-                    }}
-                  >
-                    강의 수정
-                  </Button>
+                  {(mGrade < grade.general || mPart.includes('교무팀')) && (
+                    <Button
+                      size="sm"
+                      variant="solid"
+                      color="primary"
+                      className="w-full text-white"
+                      onClick={e => {
+                        e.preventDefault()
+                        router.push('/lecture/detail')
+                      }}
+                    >
+                      강의 수정
+                    </Button>
+                  )}
                   <Button
                     size="sm"
                     variant="bordered"
