@@ -138,6 +138,7 @@ export default function AdviceTypeCon() {
               options={donutData.options}
               series={donutData.series}
               type="donut"
+              width="300"
             />
           </Content>
         </>
