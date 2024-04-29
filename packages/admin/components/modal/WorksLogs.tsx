@@ -13,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   ScrollShadow,
+  Textarea,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
@@ -20,40 +21,30 @@ import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
 import SubjectItem from '@/components/table/SubjectItem'
 import { useForm } from 'react-hook-form'
+import WorksSchedule from '../table/WorksSchedule'
+import WorksTime from '../table/WorksTime'
+import WorksRemark from '../table/WorksRemark'
 
-const DetailBox = styled.div`
-  margin-top: 2rem;
-  background: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-`
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
+const DatailBody = styled.div`
   @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
+    /* overflow-y: auto; */
+    overflow-x: hidden;
+    height: 60vh;
   }
 `
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
-const UpdateTime = styled.p`
-  span {
-    color: #555;
-  }
-`
+
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   @media (max-width: 768px) {
     gap: 1rem;
+  }
+
+  &.scroll {
+    margin-top: 1rem;
+    height: 40vh;
+    overflow-x: hidden;
   }
 `
 const FlexBox = styled.div`
@@ -64,20 +55,38 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
+
 const AreaTitle = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   h4 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
   }
 `
+const AreaSection = styled.div`
+  flex: 1;
+  width: 100%;
+  margin-top: 1.5rem;
+`
+
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
+
+const FlexAreaBox = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+
+  > div {
+    flex: 1;
+  }
+`
+
 const LineBox = styled.div`
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -195,28 +204,98 @@ export default function SubjectModal({
                 업무일지
               </ModalHeader>
               <ModalBody>
-                <DetailDiv>
-                  <FlexBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>훈련과정명</FilterLabel>
-                        <LineBox>웹툰콘텐츠 제작</LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>훈련기간</FilterLabel>
-                        <LineBox>2024-01-02 ~2024-02-01</LineBox>
-                      </div>
-                    </AreaBox>
-                    <AreaBox>
-                      <div>
-                        <FilterLabel>훈련일자</FilterLabel>
-                        <LineBox>2024-02-12 금요일 (2일/20일)</LineBox>
-                      </div>
-                    </AreaBox>
-                  </FlexBox>
-                </DetailDiv>
+                <DatailBody>
+                  <ScrollShadow orientation="vertical" className="scrollbar">
+                    <DetailDiv>
+                      <FlexBox>
+                        <AreaBox>
+                          <div>
+                            <FilterLabel>훈련과정명</FilterLabel>
+                            <LineBox>웹툰콘텐츠 제작</LineBox>
+                          </div>
+                        </AreaBox>
+                        <AreaBox>
+                          <div>
+                            <FilterLabel>훈련기간</FilterLabel>
+                            <LineBox>2024-01-02 ~2024-02-01</LineBox>
+                          </div>
+                        </AreaBox>
+                        <AreaBox>
+                          <div>
+                            <FilterLabel>훈련일자</FilterLabel>
+                            <LineBox>2024-02-12 금요일 (2일/20일)</LineBox>
+                          </div>
+                        </AreaBox>
+                      </FlexBox>
+                      <FlexBox>
+                        <FlexAreaBox>
+                          <div>
+                            <FilterLabel>재적</FilterLabel>
+                            <LineBox>0명</LineBox>
+                          </div>
+                          <div>
+                            <FilterLabel>출석</FilterLabel>
+                            <LineBox>0명</LineBox>
+                          </div>
+                          <div>
+                            <FilterLabel>결석</FilterLabel>
+                            <LineBox>0명</LineBox>
+                          </div>
+                        </FlexAreaBox>
+                        <FlexAreaBox>
+                          <div>
+                            <FilterLabel>지각</FilterLabel>
+                            <LineBox>0명</LineBox>
+                          </div>
+                          <div>
+                            <FilterLabel>조퇴</FilterLabel>
+                            <LineBox>0명</LineBox>
+                          </div>
+                          <div>
+                            <FilterLabel>외출</FilterLabel>
+                            <LineBox>0명</LineBox>
+                          </div>
+                        </FlexAreaBox>
+                      </FlexBox>
+                    </DetailDiv>
+                    <DetailDiv className="scroll">
+                      <ScrollShadow
+                        orientation="vertical"
+                        className="scrollbar"
+                      >
+                        <AreaSection>
+                          <AreaTitle>
+                            <h4>훈련사항</h4>
+                          </AreaTitle>
+                          <WorksSchedule />
+                        </AreaSection>
+                        <AreaSection>
+                          <AreaTitle>
+                            <h4>훈련시간</h4>
+                          </AreaTitle>
+                          <WorksTime />
+                        </AreaSection>
+                        <AreaSection>
+                          <AreaTitle>
+                            <h4>지시사항</h4>
+                          </AreaTitle>
+                          <Textarea
+                            label=""
+                            placeholder="내용을 작성해주세요."
+                            className="w-full"
+                            variant="bordered"
+                          />
+                        </AreaSection>
+                        <AreaSection>
+                          <AreaTitle>
+                            <h4>특이사항</h4>
+                          </AreaTitle>
+                          <WorksRemark />
+                        </AreaSection>
+                      </ScrollShadow>
+                    </DetailDiv>
+                  </ScrollShadow>
+                </DatailBody>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={sbjClose}>
