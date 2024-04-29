@@ -37,6 +37,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta charSet="UTF-8" />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="stylesheet"

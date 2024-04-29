@@ -55,7 +55,7 @@ export default function NotFound() {
     <>
       <Layout>
         <HomeArea>
-          <Title>4🥹4</Title>
+          <Title>4&#x1F97A;4</Title>
           <TextCon>앗! 페이지가 없어요. ㅜ_ㅜ</TextCon>
           <SemiText>
             요청하신 페이지가 존재하지 않거나,
