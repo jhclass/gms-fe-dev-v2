@@ -57,6 +57,38 @@ const Content = styled.div`
   justify-content: center;
   width: 100%;
   min-height: 190px;
+
+  .apexcharts-legend {
+    max-width: 87px;
+    overflow-y: hidden;
+    overflow-x: overlay;
+    white-space: nowrap;
+    padding: 0;
+
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgb(0, 125, 233);
+      border-radius: 0.75rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgb(0, 125, 233, 0.1);
+    }
+
+    /* > div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 479px) {
+      max-width: 100%;
+      width: auto;
+    } */
+  }
 `
 type DashboardAT = {
   dashboardAT: DashboardAtResult
@@ -71,17 +103,23 @@ export default function AdviceTypeCon() {
   const donutData = {
     series: adviceTypeData?.count || [],
     options: {
+      chart: { offsetX: -10 },
       labels: adviceTypeData?.topFiveName || [],
       responsive: [
         {
           breakpoint: 480,
           options: {
+            chart: { offsetX: 0 },
             legend: {
               position: 'bottom',
+              offsetX: 0,
             },
           },
         },
       ],
+      legend: {
+        offsetX: -20,
+      },
       plotOptions: {
         pie: {
           donut: {
