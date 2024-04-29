@@ -55,7 +55,7 @@ export default function NotFound() {
     <>
       <Layout>
         <HomeArea>
-          <Title>5😱2</Title>
+          <Title>5&#x1F631;2</Title>
           <TextCon>앗! 뭔가 문제가 생겼어요...</TextCon>
           <SemiText>
             서버와의 연결이 끊겼거나,
