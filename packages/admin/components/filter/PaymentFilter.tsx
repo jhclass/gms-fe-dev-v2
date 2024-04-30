@@ -117,7 +117,12 @@ export default function PaymentFilter({
 }) {
   const router = useRouter()
   const paymentPage = useResetRecoilState(paymentPageState)
-  const [paymentDateRange, setPaymentDateRange] = useState([null, null])
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
+  const [paymentDateRange, setPaymentDateRange] = useState([
+    lastSixMonths,
+    today,
+  ])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
   const [name, setName] = useState('')
@@ -149,7 +154,7 @@ export default function PaymentFilter({
       Object.keys(studentFilter).length === 0 ||
       studentFilter?.period === null
     ) {
-      setPaymentDateRange([null, null])
+      setPaymentDateRange([lastSixMonths, today])
     } else {
       setPaymentDateRange([studentFilter?.period[0], studentFilter?.period[1]])
     }
@@ -176,7 +181,7 @@ export default function PaymentFilter({
       if (paymentDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
-          period: data.period === undefined ? null : data.period,
+          period: data.period === undefined ? paymentDateRange : data.period,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -220,7 +225,7 @@ export default function PaymentFilter({
   }
 
   const handleReset = () => {
-    setPaymentDateRange([null, null])
+    setPaymentDateRange([lastSixMonths, today])
     reset()
   }
 

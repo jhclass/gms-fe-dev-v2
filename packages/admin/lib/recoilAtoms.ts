@@ -51,6 +51,7 @@ export const gradeState = atom({
     dev: 0,
     master: 1,
     general: 10,
+    teacher: 20,
     guest: 99,
   },
 })

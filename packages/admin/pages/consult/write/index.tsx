@@ -525,10 +525,10 @@ export default function ConsultWirte() {
                           mUsername: '담당자 지정필요',
                           mUserId: '담당자 지정필요',
                         }}
-                        filter={manager =>
-                          manager.mGrade === grade.master ||
-                          manager.mPart.includes('영업팀')
-                        }
+                        filter={{
+                          // mGrade: grade.master,
+                          mPart: '영업팀',
+                        }}
                       />
                     </Suspense>
                   )}

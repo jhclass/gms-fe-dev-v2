@@ -25,6 +25,23 @@ export type AdviceType = {
   updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
+export type Attendance = {
+  __typename?: 'Attendance';
+  attendanceDate?: Maybe<Scalars['String']['output']>;
+  attendanceState?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['String']['output']>;
+  fastCompletion?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  leavingOut?: Maybe<Scalars['String']['output']>;
+  lectures?: Maybe<Lectures>;
+  lecturesId?: Maybe<Scalars['Int']['output']>;
+  student?: Maybe<Student>;
+  studentId?: Maybe<Scalars['Int']['output']>;
+  studentPayment?: Maybe<StudentPayment>;
+  studentPaymentId: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['String']['output']>;
+};
+
 export type AuthEmailResult = {
   __typename?: 'AuthEmailResult';
   code?: Maybe<Scalars['Int']['output']>;
@@ -217,6 +234,29 @@ export type IsMeResult = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type Lectures = {
+  __typename?: 'Lectures';
+  ApprovedNum: Scalars['Int']['output'];
+  WorkLogs?: Maybe<Array<Maybe<WorkLogs>>>;
+  campus: Scalars['String']['output'];
+  confirmedNum: Scalars['Int']['output'];
+  createdAt: Scalars['String']['output'];
+  eduStatusReport: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  lectureDetails: Array<Maybe<Scalars['String']['output']>>;
+  lecturePeriod: Array<Maybe<Scalars['String']['output']>>;
+  lectureTime: Array<Maybe<Scalars['String']['output']>>;
+  roomNum: Scalars['String']['output'];
+  sessionNum: Scalars['Int']['output'];
+  subDiv?: Maybe<Scalars['String']['output']>;
+  subject?: Maybe<Subject>;
+  subjectId: Scalars['Int']['output'];
+  teachers: Array<Maybe<ManageUser>>;
+  temporaryName: Scalars['String']['output'];
+  timetableAttached?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['String']['output'];
+};
+
 export type Like = {
   __typename?: 'Like';
   UpdatedAt: Scalars['String']['output'];
@@ -236,6 +276,12 @@ export type LoginResult = {
 export type ManageUser = {
   __typename?: 'ManageUser';
   ConsultationMemo?: Maybe<Array<Maybe<ConsultationMemo>>>;
+  Lectures?: Maybe<Array<Maybe<Lectures>>>;
+  PaymentDetail?: Maybe<Array<Maybe<PaymentDetail>>>;
+  Stamp?: Maybe<Array<Maybe<Stamp>>>;
+  Student?: Maybe<Array<Maybe<Student>>>;
+  StudentMemo?: Maybe<Array<Maybe<StudentMemo>>>;
+  StudentPayment?: Maybe<Array<Maybe<StudentPayment>>>;
   StudentStates?: Maybe<Array<Maybe<StudentState>>>;
   createdAt?: Maybe<Scalars['String']['output']>;
   favoriteStudentState?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
@@ -253,6 +299,7 @@ export type ManageUser = {
   mRank?: Maybe<Scalars['String']['output']>;
   mUserId: Scalars['String']['output'];
   mUsername: Scalars['String']['output'];
+  resign?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
@@ -278,20 +325,25 @@ export type Mutation = {
   classCancellation?: Maybe<CommonResponse>;
   createAccount?: Maybe<CreateAccountResult>;
   createAdviceType?: Maybe<CommonResponse>;
+  createAttendance?: Maybe<CommonResponse>;
   createComment: MutationResponse;
   createConsultationMemo?: Maybe<CreateConsultationMemoResult>;
+  createLectures?: Maybe<CommonResponse>;
   createManagerAccount?: Maybe<CreateManagerAccountResult>;
   createPaymentDetail?: Maybe<CommonResponse>;
   createReplyComment: CreateReplyCommentResult;
+  createStamp?: Maybe<CommonResponse>;
   createStudent?: Maybe<CommonResponse>;
   createStudentMemo?: Maybe<CommonResponse>;
   createStudentPayment?: Maybe<CommonResponse>;
   createStudentState?: Maybe<CommonResponse>;
   createSubject?: Maybe<CommonResponse>;
   createUserActivityLogs?: Maybe<CommonResponse>;
+  createWorkLogs?: Maybe<CommonResponse>;
   deleteAdviceType?: Maybe<CommonResponse>;
   deleteComment: MutationResponse;
   deleteConsultationMemo?: Maybe<DeleteConsultationMemoResult>;
+  deleteLectures?: Maybe<CommonResponse>;
   deleteMessage: MutationResponse;
   deletePhoto: DeletePhotoResult;
   deleteStudentMemo?: Maybe<CommonResponse>;
@@ -301,7 +353,9 @@ export type Mutation = {
   devEditManageUser?: Maybe<CommonResponse>;
   doubleCheck?: Maybe<CommonResponse>;
   duplicateCheck?: Maybe<CommonResponse>;
+  editAttendance?: Maybe<CommonResponse>;
   editComment: MutationResponse;
+  editLectures?: Maybe<CommonResponse>;
   editManageUser?: Maybe<CommonResponse>;
   editPaymentDetail?: Maybe<CommonResponse>;
   editPhoto: EditPhotoResult;
@@ -309,6 +363,7 @@ export type Mutation = {
   editStudent?: Maybe<CommonResponse>;
   editStudentMemo?: Maybe<CommonResponse>;
   editStudentPayment?: Maybe<CommonResponse>;
+  editWorkLogs?: Maybe<CommonResponse>;
   followUser?: Maybe<FollowUserResult>;
   getHourlySalesData?: Maybe<HourlySalesData>;
   getSalesData?: Maybe<Array<SalesData>>;
@@ -319,11 +374,13 @@ export type Mutation = {
   reqRefund?: Maybe<CommonResponse>;
   salesStatistics?: Maybe<SalesStatisticsResult>;
   salesStatisticsList?: Maybe<SalesStatisticsListResult>;
+  searchLectures?: Maybe<SearchLecturesResult>;
   searchPaymentDetail?: Maybe<PaymentDetailResult>;
   searchStudent?: Maybe<SearchStudentResult>;
   searchStudentPayment?: Maybe<SearchStudentPaymentResult>;
   searchStudentState?: Maybe<SearchStudentStateResult>;
   searchSubject?: Maybe<SearchSubjectResult>;
+  seeAttendance?: Maybe<SeeAttendanceResult>;
   sendMessage: MutationResponse;
   toggleLike: ToggleLikeResult;
   unfollowUser?: Maybe<UnfollowUserResult>;
@@ -370,6 +427,14 @@ export type MutationCreateAdviceTypeArgs = {
 };
 
 
+export type MutationCreateAttendanceArgs = {
+  attendanceDate: Scalars['String']['input'];
+  lecturesId: Scalars['Int']['input'];
+  studentId: Scalars['Int']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+};
+
+
 export type MutationCreateCommentArgs = {
   payload: Scalars['String']['input'];
   photoId: Scalars['Int']['input'];
@@ -379,6 +444,25 @@ export type MutationCreateCommentArgs = {
 export type MutationCreateConsultationMemoArgs = {
   content: Scalars['String']['input'];
   studentStateId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateLecturesArgs = {
+  ApprovedNum: Scalars['Int']['input'];
+  campus: Scalars['String']['input'];
+  confirmedNum: Scalars['Int']['input'];
+  eduStatusReport: Scalars['String']['input'];
+  lectureDetails: Array<InputMaybe<Scalars['String']['input']>>;
+  lecturePeriodEnd: Scalars['String']['input'];
+  lecturePeriodStart: Scalars['String']['input'];
+  lectureTime: Array<InputMaybe<Scalars['String']['input']>>;
+  roomNum: Scalars['String']['input'];
+  sessionNum: Scalars['Int']['input'];
+  subDiv: Scalars['String']['input'];
+  subjectId: Scalars['Int']['input'];
+  teachersId: Array<InputMaybe<Scalars['Int']['input']>>;
+  temporaryName: Scalars['String']['input'];
+  timetableAttached?: InputMaybe<Scalars['Upload']['input']>;
 };
 
 
@@ -411,6 +495,7 @@ export type MutationCreatePaymentDetailArgs = {
   depositorName?: InputMaybe<Scalars['String']['input']>;
   installment?: InputMaybe<Scalars['Int']['input']>;
   paymentDate?: InputMaybe<Scalars['String']['input']>;
+  receiverId: Scalars['Int']['input'];
   studentPaymentId: Scalars['Int']['input'];
 };
 
@@ -418,6 +503,11 @@ export type MutationCreatePaymentDetailArgs = {
 export type MutationCreateReplyCommentArgs = {
   commentId: Scalars['Int']['input'];
   payload: Scalars['String']['input'];
+};
+
+
+export type MutationCreateStampArgs = {
+  manageUserId: Scalars['Int']['input'];
 };
 
 
@@ -510,6 +600,13 @@ export type MutationCreateUserActivityLogsArgs = {
 };
 
 
+export type MutationCreateWorkLogsArgs = {
+  lecturesId: Scalars['Int']['input'];
+  teacherName: Scalars['String']['input'];
+  workLogsDate: Scalars['String']['input'];
+};
+
+
 export type MutationDeleteAdviceTypeArgs = {
   id: Scalars['Int']['input'];
 };
@@ -521,6 +618,11 @@ export type MutationDeleteCommentArgs = {
 
 
 export type MutationDeleteConsultationMemoArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteLecturesArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -584,9 +686,37 @@ export type MutationDuplicateCheckArgs = {
 };
 
 
+export type MutationEditAttendanceArgs = {
+  attendanceState: Scalars['String']['input'];
+  fastCompletion?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  leavingOut?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationEditCommentArgs = {
   id: Scalars['Int']['input'];
   payload: Scalars['String']['input'];
+};
+
+
+export type MutationEditLecturesArgs = {
+  ApprovedNum?: InputMaybe<Scalars['Int']['input']>;
+  campus?: InputMaybe<Scalars['String']['input']>;
+  confirmedNum?: InputMaybe<Scalars['Int']['input']>;
+  eduStatusReport?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lectureDetails?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  lecturePeriodEnd?: InputMaybe<Scalars['String']['input']>;
+  lecturePeriodStart?: InputMaybe<Scalars['String']['input']>;
+  lectureTime?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  roomNum?: InputMaybe<Scalars['String']['input']>;
+  sessionNum?: InputMaybe<Scalars['Int']['input']>;
+  subDiv?: InputMaybe<Scalars['String']['input']>;
+  subjectId?: InputMaybe<Scalars['Int']['input']>;
+  teachersId?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  temporaryName?: InputMaybe<Scalars['String']['input']>;
+  timetableAttached?: InputMaybe<Scalars['Upload']['input']>;
 };
 
 
@@ -620,6 +750,7 @@ export type MutationEditPaymentDetailArgs = {
   id: Scalars['Int']['input'];
   installment?: InputMaybe<Scalars['Int']['input']>;
   paymentDate?: InputMaybe<Scalars['String']['input']>;
+  receiverId: Scalars['Int']['input'];
   studentPaymentId: Scalars['Int']['input'];
 };
 
@@ -684,6 +815,29 @@ export type MutationEditStudentPaymentArgs = {
 };
 
 
+export type MutationEditWorkLogsArgs = {
+  absentSt?: InputMaybe<Scalars['String']['input']>;
+  attendanceCount?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  etc?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  instruction?: InputMaybe<Scalars['String']['input']>;
+  leaveEarlySt?: InputMaybe<Scalars['String']['input']>;
+  lecturesId?: InputMaybe<Scalars['Int']['input']>;
+  tardySt?: InputMaybe<Scalars['String']['input']>;
+  trainingInfoEight?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoFive?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoFour?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoOne?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoSeven?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoSix?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoThree?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingInfoTwo?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  trainingTimeOneday?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  trainingTimeTotal?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  workLogsDate?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationFollowUserArgs = {
   username?: InputMaybe<Scalars['String']['input']>;
 };
@@ -734,7 +888,7 @@ export type MutationReqRefundArgs = {
 
 export type MutationSalesStatisticsArgs = {
   period: Array<InputMaybe<Scalars['String']['input']>>;
-  processingManagerId: Array<InputMaybe<Scalars['Int']['input']>>;
+  receiverId: Array<InputMaybe<Scalars['Int']['input']>>;
 };
 
 
@@ -742,7 +896,16 @@ export type MutationSalesStatisticsListArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   period: Array<InputMaybe<Scalars['String']['input']>>;
-  processingManagerId: Scalars['Int']['input'];
+  receiverId: Scalars['Int']['input'];
+};
+
+
+export type MutationSearchLecturesArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  periodEnd?: InputMaybe<Scalars['String']['input']>;
+  periodStart?: InputMaybe<Scalars['String']['input']>;
+  subjectId?: InputMaybe<Scalars['Int']['input']>;
+  temporaryName?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -751,7 +914,9 @@ export type MutationSearchPaymentDetailArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  paymentDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  receiverId?: InputMaybe<Scalars['Int']['input']>;
   refundApproval?: InputMaybe<Scalars['Boolean']['input']>;
   refundApprovalDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   reqRefund?: InputMaybe<Scalars['Boolean']['input']>;
@@ -805,6 +970,12 @@ export type MutationSearchSubjectArgs = {
   subDiv?: InputMaybe<Scalars['String']['input']>;
   subjectCode?: InputMaybe<Scalars['String']['input']>;
   subjectName?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationSeeAttendanceArgs = {
+  attendanceDate: Scalars['String']['input'];
+  lecturesId: Scalars['Int']['input'];
 };
 
 
@@ -894,6 +1065,7 @@ export type MutationResponse = {
 export type PaymentDetail = {
   __typename?: 'PaymentDetail';
   ApprovalNum?: Maybe<Scalars['String']['output']>;
+  accountingManager?: Maybe<Scalars['String']['output']>;
   amountPayment?: Maybe<Scalars['Int']['output']>;
   bankName?: Maybe<Scalars['String']['output']>;
   cardCompany?: Maybe<Scalars['String']['output']>;
@@ -950,9 +1122,12 @@ export type Photo = {
 
 export type ProcessingManagerGroupResult = {
   __typename?: 'ProcessingManagerGroupResult';
-  processingManagerId?: Maybe<Scalars['Int']['output']>;
+  receiverId?: Maybe<Scalars['Int']['output']>;
   totalActualAmount?: Maybe<Scalars['Int']['output']>;
-  totalCount?: Maybe<Scalars['Int']['output']>;
+  totalAmount?: Maybe<Scalars['Int']['output']>;
+  totalPaymentCount?: Maybe<Scalars['Int']['output']>;
+  totalRefundAmount?: Maybe<Scalars['Int']['output']>;
+  totalRefundCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Query = {
@@ -965,6 +1140,8 @@ export type Query = {
   isMme?: Maybe<IsMeResult>;
   mMe?: Maybe<ManageUser>;
   me?: Maybe<User>;
+  searchAttendance?: Maybe<SearchAttendanceResult>;
+  searchManageUser?: Maybe<SearchManageUserResult>;
   searchPhotos?: Maybe<Array<Maybe<Photo>>>;
   searchUsers?: Maybe<Array<Maybe<User>>>;
   seeAdviceType?: Maybe<ResultAdviceType>;
@@ -973,6 +1150,7 @@ export type Query = {
   seeFollowing: SeeFollowingResult;
   seeFollows: SeeFollowsResult;
   seeHashtag?: Maybe<Hashtag>;
+  seeLectures?: Maybe<SeeLecturesResult>;
   seeManageUser?: Maybe<Array<Maybe<ManageUser>>>;
   seePaymentDetail?: Maybe<PaymentDetailResult>;
   seePhoto?: Maybe<Photo>;
@@ -992,6 +1170,27 @@ export type Query = {
 
 export type QueryIsMmeArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QuerySearchAttendanceArgs = {
+  attendanceDate?: InputMaybe<Scalars['String']['input']>;
+  attendanceState?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  lecturesId?: InputMaybe<Scalars['Int']['input']>;
+  studentId?: InputMaybe<Scalars['Int']['input']>;
+  studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySearchManageUserArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  mGrade?: InputMaybe<Scalars['Int']['input']>;
+  mPart?: InputMaybe<Scalars['String']['input']>;
+  mPhoneNum?: InputMaybe<Scalars['String']['input']>;
+  mRank?: InputMaybe<Scalars['String']['input']>;
+  mUserId?: InputMaybe<Scalars['String']['input']>;
+  mUsername?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -1030,6 +1229,12 @@ export type QuerySeeFollowsArgs = {
 
 export type QuerySeeHashtagArgs = {
   hashtag: Scalars['String']['input'];
+};
+
+
+export type QuerySeeLecturesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1138,11 +1343,12 @@ export type SalesData = {
 
 export type SalesStatisticsListResult = {
   __typename?: 'SalesStatisticsListResult';
-  data?: Maybe<Array<Maybe<StudentPayment>>>;
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok?: Maybe<Scalars['Boolean']['output']>;
-  processingManagerId?: Maybe<Scalars['Int']['output']>;
+  paymentData?: Maybe<Array<Maybe<PaymentDetail>>>;
+  receiverId?: Maybe<Scalars['Int']['output']>;
+  refundData?: Maybe<Array<Maybe<PaymentDetail>>>;
 };
 
 export type SalesStatisticsResult = {
@@ -1151,6 +1357,33 @@ export type SalesStatisticsResult = {
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type SearchAttendanceResult = {
+  __typename?: 'SearchAttendanceResult';
+  data?: Maybe<Array<Maybe<Attendance>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SearchLecturesResult = {
+  __typename?: 'SearchLecturesResult';
+  data?: Maybe<Array<Maybe<Lectures>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SearchManageUserResult = {
+  __typename?: 'SearchManageUserResult';
+  data?: Maybe<Array<Maybe<ManageUser>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type SearchStudentPaymentResult = {
@@ -1189,11 +1422,37 @@ export type SearchSubjectResult = {
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
+export type SeeAttendanceResult = {
+  __typename?: 'SeeAttendanceResult';
+  absentCount?: Maybe<Scalars['Int']['output']>;
+  absentData?: Maybe<Array<Maybe<Attendance>>>;
+  attendanceCount?: Maybe<Scalars['Int']['output']>;
+  attendanceData?: Maybe<Array<Maybe<Attendance>>>;
+  enrollCount?: Maybe<Scalars['Int']['output']>;
+  enrollData?: Maybe<Array<Maybe<Attendance>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  leaveEarlyCount?: Maybe<Scalars['Int']['output']>;
+  leaveEarlyData?: Maybe<Array<Maybe<Attendance>>>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
+  outingCount?: Maybe<Scalars['Int']['output']>;
+  outingData?: Maybe<Array<Maybe<Attendance>>>;
+};
+
 export type SeeFollowingResult = {
   __typename?: 'SeeFollowingResult';
   error?: Maybe<Scalars['String']['output']>;
   following?: Maybe<Array<Maybe<User>>>;
   ok: Scalars['Boolean']['output'];
+};
+
+export type SeeLecturesResult = {
+  __typename?: 'SeeLecturesResult';
+  data?: Maybe<Array<Maybe<Lectures>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type SeeStudentResult = {
@@ -1212,6 +1471,16 @@ export type SeeSubjectResult = {
   ok: Scalars['Boolean']['output'];
   subject?: Maybe<Array<Maybe<Subject>>>;
   totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Stamp = {
+  __typename?: 'Stamp';
+  Manager?: Maybe<ManageUser>;
+  createdAt?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  manageUserId?: Maybe<Scalars['Int']['output']>;
+  updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
 export type Student = {
@@ -1247,6 +1516,7 @@ export type StudentPayment = {
   __typename?: 'StudentPayment';
   actualAmount?: Maybe<Scalars['Int']['output']>;
   amountReceived?: Maybe<Scalars['Int']['output']>;
+  attendance?: Maybe<Array<Maybe<Attendance>>>;
   campus?: Maybe<Scalars['String']['output']>;
   cardAmount?: Maybe<Scalars['Int']['output']>;
   cashAmount?: Maybe<Scalars['Int']['output']>;
@@ -1324,6 +1594,7 @@ export type StudentStateResponse = {
 
 export type Subject = {
   __typename?: 'Subject';
+  StudentPayment?: Maybe<Array<Maybe<StudentPayment>>>;
   createdAt?: Maybe<Scalars['String']['output']>;
   endDate?: Maybe<Scalars['String']['output']>;
   expiresDateEnd?: Maybe<Scalars['String']['output']>;
@@ -1331,6 +1602,7 @@ export type Subject = {
   exposure?: Maybe<Scalars['Boolean']['output']>;
   fee?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+  lectures?: Maybe<Lectures>;
   roomNum?: Maybe<Scalars['String']['output']>;
   round?: Maybe<Scalars['Int']['output']>;
   startDate?: Maybe<Scalars['String']['output']>;
@@ -1418,6 +1690,35 @@ export type UserActivityLogsResponse = {
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
   userActivityLogs?: Maybe<Array<Maybe<UserActivityLogs>>>;
+};
+
+export type WorkLogs = {
+  __typename?: 'WorkLogs';
+  absentSt?: Maybe<Scalars['String']['output']>;
+  attendanceCount?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
+  createdAt: Scalars['String']['output'];
+  etc?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  instruction?: Maybe<Scalars['String']['output']>;
+  leaveEarlySt?: Maybe<Scalars['String']['output']>;
+  lecture?: Maybe<Lectures>;
+  lecturesId: Scalars['Int']['output'];
+  paymentOne?: Maybe<Scalars['String']['output']>;
+  paymentThree?: Maybe<Scalars['String']['output']>;
+  paymentTwo?: Maybe<Scalars['String']['output']>;
+  tardySt?: Maybe<Scalars['String']['output']>;
+  trainingInfoEight: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoFive: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoFour: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoOne: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoSeven: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoSix: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoThree: Array<Maybe<Scalars['String']['output']>>;
+  trainingInfoTwo: Array<Maybe<Scalars['String']['output']>>;
+  trainingTimeOneday: Array<Maybe<Scalars['Int']['output']>>;
+  trainingTimeTotal: Array<Maybe<Scalars['Int']['output']>>;
+  updatedAt: Scalars['String']['output'];
+  workLogsDate: Scalars['String']['output'];
 };
 
 export type CreateManagerAccountResult = {

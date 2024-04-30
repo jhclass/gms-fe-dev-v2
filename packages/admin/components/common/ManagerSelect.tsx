@@ -1,7 +1,14 @@
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEE_MANAGEUSER_QUERY,
+} from '@/graphql/queries'
+import { ManageUser, SearchManageUserResult } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
+
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
+}
 
 type seeManagerQuery = {
   seeManageUser: ManageUser[]
@@ -16,15 +23,30 @@ export default function managerSelect({
   optionDefualt,
   filter,
 }) {
-  const { error: seeManagerError, data: seeManagerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
+  // const { error: seeManagerError, data: seeManagerData } =
+  //   useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
+  // const managerList = [
+  //   optionDefualt,
+  //   ...seeManagerData?.seeManageUser?.filter(filter),
+  // ]
+
+  const { error: searchManager, data: searchManagerData } =
+    useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+      variables: {
+        mGrade: filter.mGrade,
+        mRank: filter.mRank,
+        mPart: filter.mPart,
+        searchManageUserId: filter.id,
+        resign: 'N',
+      },
+    })
   const managerList = [
     optionDefualt,
-    ...seeManagerData?.seeManageUser?.filter(filter),
+    ...searchManagerData?.searchManageUser.data,
   ]
 
-  if (seeManagerError) {
-    console.log(seeManagerError)
+  if (searchManager) {
+    console.log(searchManager)
   }
 
   return (

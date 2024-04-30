@@ -1,10 +1,17 @@
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEE_MANAGEUSER_QUERY,
+} from '@/graphql/queries'
+import { ManageUser, SearchManageUserResult } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
 
 type seeManagerQuery = {
   seeManageUser: ManageUser[]
+}
+
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
 
 export default function managerSelect({
@@ -16,15 +23,23 @@ export default function managerSelect({
   optionDefualt,
   filter,
 }) {
-  const { error: seeManagerError, data: seeManagerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
+  const { error: searchManager, data: searchManagerData } =
+    useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+      variables: {
+        mGrade: filter.mGrade,
+        mRank: filter.mRank,
+        mPart: filter.mPart,
+        searchManageUserId: filter.id,
+        resign: 'N',
+      },
+    })
   const managerList = [
     optionDefualt,
-    ...seeManagerData?.seeManageUser?.filter(filter),
+    ...searchManagerData?.searchManageUser.data,
   ]
 
-  if (seeManagerError) {
-    console.log(seeManagerError)
+  if (searchManager) {
+    console.log(searchManager)
   }
 
   return (
@@ -45,7 +60,7 @@ export default function managerSelect({
         }}
       >
         {managerList.map(item => (
-          <SelectItem key={item.mUserId} value={item.mUserId}>
+          <SelectItem key={item.id} value={item.id}>
             {item.mUsername}
           </SelectItem>
         ))}

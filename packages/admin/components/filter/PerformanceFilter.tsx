@@ -6,7 +6,7 @@ import { Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { subDays, getYear, addMonths } from 'date-fns'
+import { subDays, getYear, addMonths, subMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -140,7 +140,9 @@ export default function PerformanceFilter({
   const { error, data: managerData } =
     useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
   const managerList = managerData?.seeManageUser
-  const [searchDateRange, setSearchDateRange] = useState([null, null])
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
+  const [searchDateRange, setSearchDateRange] = useState([lastSixMonths, today])
   const [startDate, endDate] = searchDateRange
   const [manager, setManager] = useState(new Set([]))
   const years = _.range(1970, getYear(new Date()) + 1, 1)
@@ -151,10 +153,11 @@ export default function PerformanceFilter({
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      period: '',
+      period: [null, null],
       processingManagerId: '',
     },
   })
@@ -162,7 +165,8 @@ export default function PerformanceFilter({
   useEffect(() => {
     if (performanceFilter === null || clickReset) {
       setManager(new Set([]))
-      setSearchDateRange([null, null])
+      setSearchDateRange([lastSixMonths, today])
+      setValue('period', [lastSixMonths, today], { shouldDirty: true })
       reset()
     }
   }, [router, clickReset])
@@ -212,7 +216,7 @@ export default function PerformanceFilter({
   }
 
   const handleReset = () => {
-    setSearchDateRange([null, null])
+    setSearchDateRange([lastSixMonths, today])
     setManager(new Set([]))
     reset()
   }

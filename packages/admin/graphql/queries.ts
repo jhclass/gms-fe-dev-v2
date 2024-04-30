@@ -161,6 +161,39 @@ export const SEE_MANAGEUSER_QUERY = gql`
     }
   }
 `
+export const SEARCH_MANAGEUSER_QUERY = gql`
+  query SearchManageUser(
+    $mGrade: Int
+    $mRank: String
+    $searchManageUserId: Int
+    $mPart: String
+    $resign: String
+  ) {
+    searchManageUser(
+      mGrade: $mGrade
+      mRank: $mRank
+      id: $searchManageUserId
+      mPart: $mPart
+      resign: $resign
+    ) {
+      ok
+      message
+      error
+      data {
+        id
+        mGrade
+        mUsername
+        mUserId
+        resign
+        mPart
+        Stamp {
+          imageUrl
+          id
+        }
+      }
+    }
+  }
+`
 
 export const SEE_FAVORITESTATE_QUERY = gql`
   query Query {

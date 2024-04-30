@@ -54,6 +54,12 @@ const FlexBox = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
+
+  &.reverse {
+    @media (max-width: 768px) {
+      flex-direction: column-reverse;
+    }
+  }
 `
 
 const AreaTitle = styled.div`
@@ -86,6 +92,16 @@ const FlexAreaBox = styled.div`
     flex: 1;
   }
 `
+const FlexColBox = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  > div {
+    flex: 1;
+  }
+`
 
 const LineBox = styled.div`
   padding-left: 0.25rem;
@@ -95,6 +111,29 @@ const LineBox = styled.div`
   line-height: 40px;
   font-size: 0.875rem;
 `
+
+const StempBox = styled.div`
+  display: flex;
+  padding: 0.6rem 0;
+  height: 5.1rem;
+  border-bottom: 2px solid hsl(240 6% 90%);
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    height: 100%;
+  }
+`
+const BtnBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid hsl(240 6% 90%);
+  height: 40px;
+  line-height: 40px;
+  font-size: 0.875rem;
+`
+
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -207,23 +246,77 @@ export default function SubjectModal({
                 <DatailBody>
                   <ScrollShadow orientation="vertical" className="scrollbar">
                     <DetailDiv>
+                      <FlexBox className="reverse">
+                        <FlexColBox>
+                          <AreaBox>
+                            <div>
+                              <FilterLabel>훈련기간</FilterLabel>
+                              <LineBox>2024-01-02 ~2024-02-01</LineBox>
+                            </div>
+                          </AreaBox>
+                          <AreaBox>
+                            <div>
+                              <FilterLabel>훈련일자</FilterLabel>
+                              <LineBox>2024-02-12 금요일 (2일/20일)</LineBox>
+                            </div>
+                          </AreaBox>
+                        </FlexColBox>
+                        <FlexAreaBox>
+                          <AreaBox>
+                            <div>
+                              <FilterLabel>강사</FilterLabel>
+                              <StempBox>
+                                <img
+                                  src="https://instaclone-uploadsss.s3.ap-northeast-2.amazonaws.com/stamps/2-1714446421459-stamp.png"
+                                  alt="Description of image"
+                                />
+                              </StempBox>
+                              <BtnBox>2024.02.01</BtnBox>
+                            </div>
+                          </AreaBox>
+                          <AreaBox>
+                            <div>
+                              <FilterLabel>팀장</FilterLabel>
+                              <StempBox></StempBox>
+                              <BtnBox>
+                                <Button size="sm" color="primary">
+                                  확인
+                                </Button>
+                              </BtnBox>
+                            </div>
+                          </AreaBox>
+                          <AreaBox>
+                            <div>
+                              <FilterLabel>원장</FilterLabel>
+                              <StempBox></StempBox>
+                              <BtnBox>
+                                <Button size="sm" color="primary">
+                                  확인
+                                </Button>
+                              </BtnBox>
+                            </div>
+                          </AreaBox>
+                        </FlexAreaBox>
+                      </FlexBox>
                       <FlexBox>
                         <AreaBox>
                           <div>
-                            <FilterLabel>훈련과정명</FilterLabel>
-                            <LineBox>웹툰콘텐츠 제작</LineBox>
-                          </div>
-                        </AreaBox>
-                        <AreaBox>
-                          <div>
-                            <FilterLabel>훈련기간</FilterLabel>
-                            <LineBox>2024-01-02 ~2024-02-01</LineBox>
-                          </div>
-                        </AreaBox>
-                        <AreaBox>
-                          <div>
-                            <FilterLabel>훈련일자</FilterLabel>
-                            <LineBox>2024-02-12 금요일 (2일/20일)</LineBox>
+                            <Textarea
+                              label="훈련과정명"
+                              isDisabled={true}
+                              isReadOnly={true}
+                              labelPlacement="outside"
+                              defaultValue={
+                                '과정명엄청길다길다길다과정명엄청길다길다길다과정명엄청길다길다길다과정명엄청길다길다길다과정명엄청길다길다길다'
+                              }
+                              minRows={1}
+                              variant="underlined"
+                              size="md"
+                              radius="sm"
+                              classNames={{
+                                base: 'opacity-1',
+                              }}
+                            ></Textarea>
                           </div>
                         </AreaBox>
                       </FlexBox>
