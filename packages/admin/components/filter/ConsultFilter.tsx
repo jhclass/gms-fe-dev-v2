@@ -319,7 +319,10 @@ export default function ConsultFilter({
               : data.createdAt,
           stVisit: data.stVisit === undefined ? null : data.stVisit,
           stName: data.stName === '' ? null : data.stName,
-          progress: data.progress.length === 0 ? null : data.progress,
+          progress:
+            data.progress === undefined || data.progress.length === 0
+              ? null
+              : data.progress,
           phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
           adviceType: data.adviceType === '-' ? null : data.adviceType,
         }

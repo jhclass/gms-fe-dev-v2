@@ -3,6 +3,24 @@ import { ManageUser } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
 
+// type searchManageUserQuery = {
+//   searchManageUser: SearchManageUserResult
+// }
+
+// const { error: searchManager, data: searchManagerData } =
+//     useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+//       variables: {
+//         mGrade: filter.mGrade,
+//         mRank: filter.mRank,
+//         mPart: filter.mPart,
+//         searchManageUserId: filter.id,
+//       },
+//     })
+//   const managerList = [
+//     optionDefualt,
+//     ...searchManagerData?.searchManageUser.data,
+//   ]
+
 type seeManagerQuery = {
   seeManageUser: ManageUser[]
 }
