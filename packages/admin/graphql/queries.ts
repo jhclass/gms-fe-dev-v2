@@ -180,7 +180,7 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
       message
       error
       data {
-        담당자 지정필요
+        id
         mGrade
         mUsername
         mUserId
