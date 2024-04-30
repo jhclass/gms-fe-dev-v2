@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -31,12 +31,25 @@ import { useRecoilValue } from 'recoil'
 import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
 import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { ManageUser } from '@/src/generated/graphql'
+import ManagerSelectID from '../common/ManagerSelectID'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailDiv = styled.div`
   display: flex;
@@ -1149,39 +1162,62 @@ export default function StudentPaymentForm({
                       },
                     }}
                     render={({ field, fieldState }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label={
-                          <FilterLabel>
-                            수강 담당자<span>*</span>
-                          </FilterLabel>
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
                         }
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        defaultValue={studentPaymentData?.processingManagerId}
-                        selectedKeys={[subjectManager]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleSubManagerChange(value)
-                          }
-                        }}
                       >
-                        {[
-                          {
-                            mUsername: '담당자 지정필요',
+                        <ManagerSelectID
+                          selecedKey={subjectManager}
+                          field={field}
+                          label={'수강 담당자'}
+                          defaultValue={studentPaymentData?.processingManagerId}
+                          handleChange={handleSubManagerChange}
+                          optionDefualt={{
                             id: '담당자 지정필요',
-                          },
-                          ...managerList?.filter(manager =>
-                            manager.mPart.includes('영업팀'),
-                          ),
-                        ].map(item => (
-                          <SelectItem key={item.id} value={item.id}>
-                            {item.mUsername}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                            mUsername: '담당자 지정필요',
+                          }}
+                          filter={{
+                            mPart: '영업팀',
+                          }}
+                        />
+                      </Suspense>
+
+                      // <Select
+                      //   labelPlacement="outside"
+                      //   label={
+                      //     <FilterLabel>
+                      //       수강 담당자<span>*</span>
+                      //     </FilterLabel>
+                      //   }
+                      //   placeholder=" "
+                      //   className="w-full"
+                      //   variant="bordered"
+                      //   defaultValue={studentPaymentData?.processingManagerId}
+                      //   selectedKeys={[subjectManager]}
+                      //   onChange={value => {
+                      //     if (value.target.value !== '') {
+                      //       field.onChange(value)
+                      //       handleSubManagerChange(value)
+                      //     }
+                      //   }}
+                      // >
+                      //   {[
+                      //     {
+                      //       mUsername: '담당자 지정필요',
+                      //       id: '담당자 지정필요',
+                      //     },
+                      //     ...managerList?.filter(manager =>
+                      //       manager.mPart.includes('영업팀'),
+                      //     ),
+                      //   ].map(item => (
+                      //     <SelectItem key={item.id} value={item.id}>
+                      //       {item.mUsername}
+                      //     </SelectItem>
+                      //   ))}
+                      // </Select>
                     )}
                   />
                   {errors.processingManagerId && (

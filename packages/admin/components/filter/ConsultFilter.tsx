@@ -446,10 +446,14 @@ export default function ConsultFilter({
                         mUsername: '-',
                         mUserId: '-',
                       }}
-                      filter={manager =>
-                        manager?.mGrade === grade.master ||
-                        manager?.mPart.includes('영업팀')
-                      }
+                      // filter={manager =>
+                      //   manager?.mGrade === grade.master ||
+                      //   manager?.mPart.includes('영업팀')
+                      // }
+                      filter={{
+                        // mGrade: grade.master,
+                        mPart: '영업팀',
+                      }}
                     />
                   </Suspense>
                 )}

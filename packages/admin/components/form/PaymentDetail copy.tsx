@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -29,10 +29,23 @@ import {
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
+import ManagerSelectID from '../common/ManagerSelectID'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -832,39 +845,62 @@ export default function StudentsWriteCourse({
                       },
                     }}
                     render={({ field, fieldState }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="수강 담당자"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        defaultValue={studentPaymentData?.processingManagerId}
-                        selectedKeys={[subjectManager]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleSubManagerChange(value)
-                          }
-                        }}
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
+                        }
                       >
-                        <SelectItem
-                          key={'담당자 지정필요'}
-                          value={'담당자 지정필요'}
-                        >
-                          {'담당자 지정필요'}
-                        </SelectItem>
-                        {managerList
-                          ?.filter(
-                            manager =>
-                              manager.mGrade > grade.master ||
-                              manager.mPart.includes('영업팀'),
-                          )
-                          .map(item => (
-                            <SelectItem key={item.id} value={item.id}>
-                              {item.mUsername}
-                            </SelectItem>
-                          ))}
-                      </Select>
+                        <ManagerSelectID
+                          selecedKey={subjectManager}
+                          field={field}
+                          label={'수강 담당자'}
+                          defaultValue={studentPaymentData?.processingManagerId}
+                          handleChange={handleSubManagerChange}
+                          optionDefualt={{
+                            mUserId: '담당자 지정필요',
+                            mUsername: '담당자 지정필요',
+                          }}
+                          filter={{
+                            mPart: '영업팀',
+                          }}
+                        />
+                      </Suspense>
+
+                      // <Select
+                      //   labelPlacement="outside"
+                      //   label="수강 담당자"
+                      //   placeholder=" "
+                      //   className="w-full"
+                      //   variant="bordered"
+                      //   defaultValue={studentPaymentData?.processingManagerId}
+                      //   selectedKeys={[subjectManager]}
+                      //   onChange={value => {
+                      //     if (value.target.value !== '') {
+                      //       field.onChange(value)
+                      //       handleSubManagerChange(value)
+                      //     }
+                      //   }}
+                      // >
+                      //   <SelectItem
+                      //     key={'담당자 지정필요'}
+                      //     value={'담당자 지정필요'}
+                      //   >
+                      //     {'담당자 지정필요'}
+                      //   </SelectItem>
+                      //   {managerList
+                      //     ?.filter(
+                      //       manager =>
+                      //         manager.mGrade > grade.master ||
+                      //         manager.mPart.includes('영업팀'),
+                      //     )
+                      //     .map(item => (
+                      //       <SelectItem key={item.id} value={item.id}>
+                      //         {item.mUsername}
+                      //       </SelectItem>
+                      //     ))}
+                      // </Select>
                     )}
                   />
                   {errors.processingManagerId && (
