@@ -104,9 +104,15 @@ export default function ReqRefundFilter({
   onFilterSearch,
   setStudentFilter,
 }) {
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
   const reqRefund = useResetRecoilState(reqRefundPageState)
-  const [paymentDateRange, setPaymentDateRange] = useState([null, null])
+  const [paymentDateRange, setPaymentDateRange] = useState([
+    lastSixMonths,
+    today,
+  ])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
+
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
@@ -145,7 +151,9 @@ export default function ReqRefundFilter({
         const filter = {
           stName: data.stName === '' ? null : data.stName,
           reqRefundDate:
-            data.reqRefundDate === undefined ? null : data.reqRefundDate,
+            data.reqRefundDate === undefined
+              ? paymentDateRange
+              : data.reqRefundDate,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -189,7 +197,7 @@ export default function ReqRefundFilter({
   }
 
   const handleReset = () => {
-    setPaymentDateRange([null, null])
+    setPaymentDateRange([lastSixMonths, today])
     reset()
   }
 

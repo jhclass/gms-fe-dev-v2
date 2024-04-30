@@ -238,6 +238,7 @@ export default function ConsolutationFilterTable({ studentFilter }) {
   const favoTotal = favoData?.length || 0
 
   useEffect(() => {
+    console.log(studentFilter)
     searchStudentStateMutation({
       variables: {
         ...studentFilter,

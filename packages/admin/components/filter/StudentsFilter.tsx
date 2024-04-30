@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
+import { getYear, subMonths } from 'date-fns'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRouter } from 'next/router'
 registerLocale('ko', ko)
@@ -112,6 +112,8 @@ export default function StudentsFilter({
   const [startCreatDate, endCreatDate] = creatDateRange
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
@@ -195,7 +197,10 @@ export default function StudentsFilter({
           studentName: data.studentName === '' ? null : data.studentName,
           phoneNum: data.phoneNum === '' ? null : data.phoneNum,
           birthday: data.birthday === undefined ? null : data.birthday,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          createdAt:
+            data.createdAt === undefined
+              ? [lastSixMonths, today]
+              : data.createdAt,
         }
         setStudentFilter(filter)
         onFilterSearch(true)

@@ -16,7 +16,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { getYear } from 'date-fns'
+import { getYear, subMonths } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -108,6 +108,8 @@ export default function ConsultFilter({
 }) {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
   const receiptStatus = useRecoilValue(receiptStatusState)
@@ -272,7 +274,10 @@ export default function ConsultFilter({
           receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
           subDiv: data.subDiv === '-' ? null : data.subDiv,
           pic: data.pic === '-' ? null : data.pic,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          createdAt:
+            data.createdAt === undefined
+              ? [lastSixMonths, today]
+              : data.createdAt,
           stVisit: data.stVisit === undefined ? null : data.stVisit,
           stName: data.stName === '' ? null : data.stName,
           progress: data.progress,
