@@ -303,7 +303,7 @@ export default function PaymentInfo({
         </AreaBox>
         <AreaBox>
           <div>
-            <FilterLabel>수강담당자</FilterLabel>
+            <FilterLabel>영업담당자</FilterLabel>
             <Suspense
               fallback={
                 <LodingDiv>

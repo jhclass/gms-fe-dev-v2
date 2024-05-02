@@ -1,9 +1,9 @@
 import { styled } from 'styled-components'
 import dynamic from 'next/dynamic'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { ScrollShadow } from '@nextui-org/react'
-import { ManageUser } from '@/src/generated/graphql'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const ConArea = styled.div`
@@ -42,8 +42,8 @@ const ChartWrap = styled.div`
   min-width: 700px;
 `
 
-type manageUser = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
 
 export default function PerformanceChartCon({
@@ -52,9 +52,17 @@ export default function PerformanceChartCon({
   totalCount,
   totalRefundAmount,
 }) {
-  const { error, data: managerData } =
-    useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
+  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
+  )
+  const managerList = managerData?.searchManageUser.data
+
   const managerUsernames = managerIds.map(
     id => managerList.find(user => user.id === id)?.mUsername,
   )

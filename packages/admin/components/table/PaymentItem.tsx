@@ -175,8 +175,8 @@ export default function StudentsItem(props) {
               </Tname>
               <Tmanager>
                 <EllipsisBox>
-                  {payment?.accountingManager
-                    ? payment?.accountingManager
+                  {payment?.processingManager.mUsername
+                    ? payment?.processingManager.mUsername
                     : '-'}
                 </EllipsisBox>
               </Tmanager>

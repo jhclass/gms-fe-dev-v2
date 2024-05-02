@@ -193,7 +193,7 @@ export default function PaymentFilterTable({ studentFilter }) {
                 <Tnum>No</Tnum>
                 <TcreatedAt>최근 업데이트</TcreatedAt>
                 <Tname>수강생명</Tname>
-                <Tmanager>회계 담당자</Tmanager>
+                <Tmanager>영업 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>
                 <Tamount className="fee">수강료</Tamount>
                 <Tamount className="discount">할인금액</Tamount>

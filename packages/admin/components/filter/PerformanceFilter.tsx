@@ -9,10 +9,10 @@ import ko from 'date-fns/locale/ko'
 import { subDays, getYear, addMonths, subMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { ManageUser } from '@/src/generated/graphql'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -125,8 +125,8 @@ const FilterVariants = {
     },
   },
 }
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
 export default function PerformanceFilter({
   isActive,
@@ -137,9 +137,16 @@ export default function PerformanceFilter({
   setClickReset,
 }) {
   const router = useRouter()
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser
+  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
+  )
+  const managerList = managerData?.searchManageUser.data
   const today = new Date()
   const lastSixMonths = subMonths(new Date(), 6)
   const [searchDateRange, setSearchDateRange] = useState([lastSixMonths, today])
@@ -366,13 +373,11 @@ export default function PerformanceFilter({
                       }
                     }}
                   >
-                    {managerList
-                      ?.filter(manager => manager.mPart.includes('영업팀'))
-                      .map(item => (
-                        <SelectItem key={item.id} value={item.mUsername}>
-                          {item.mUsername}
-                        </SelectItem>
-                      ))}
+                    {managerList.map(item => (
+                      <SelectItem key={item.id} value={item.mUsername}>
+                        {item.mUsername}
+                      </SelectItem>
+                    ))}
                   </Select>
                 )}
               />

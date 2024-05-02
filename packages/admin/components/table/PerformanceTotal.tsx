@@ -1,8 +1,7 @@
 import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
-
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 type ConsultItemProps = {
   tableData: {
     adviceTypes: any
@@ -87,9 +86,10 @@ const FlatBox = styled.div`
   font-weight: bold;
 `
 
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
+
 export default function PerformanceTotal({
   ranking,
   managerId,
@@ -99,9 +99,16 @@ export default function PerformanceTotal({
   totalRefundAmount,
   totalRefundCount,
 }) {
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser || []
+  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
+  )
+  const managerList = managerData?.searchManageUser.data
 
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')

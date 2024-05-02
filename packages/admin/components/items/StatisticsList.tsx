@@ -1,20 +1,26 @@
 import PerformanceList from '@/components/table/PerformanceList'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { ManageUser } from '@/src/generated/graphql'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 
-type manageUser = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
 
 export default function StatisticsList({ performanceFilter, filterSearch }) {
   const router = useRouter()
-  const { data, error } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
-  const managerList = data?.seeManageUser.filter(user =>
-    user.mPart.includes('영업팀'),
+  const { data, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
   )
+  const managerList = data?.searchManageUser.data
   const [ids, setIds] = useState(null)
   const [dateRange, setDateRange] = useState(null)
 

@@ -1,14 +1,7 @@
-import {
-  SEARCH_MANAGEUSER_QUERY,
-  SEE_MANAGEUSER_QUERY,
-} from '@/graphql/queries'
-import { ManageUser, SearchManageUserResult } from '@/src/generated/graphql'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
-
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
-}
 
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult

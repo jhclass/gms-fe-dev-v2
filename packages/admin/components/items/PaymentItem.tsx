@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 
 const FlexCardBox = styled.div`
   display: flex;
@@ -73,15 +73,22 @@ const FlatBox = styled.div`
   border-radius: 0.5rem;
   font-size: 0.875rem;
 `
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
-
 export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const router = useRouter()
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser
+
+  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
+  )
+  const managerList = managerData?.searchManageUser.data
 
   const Color1 = '#FF5900'
   const Color2 = '#0D9488'
@@ -202,7 +209,7 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
           </AreaGroup>
           <AreaBox>
             <div>
-              <FilterLabel>수강담당자</FilterLabel>
+              <FilterLabel>영업담당자</FilterLabel>
               <FlatBox>
                 {
                   managerList.find(

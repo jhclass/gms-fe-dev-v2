@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -10,7 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRecoilValue } from 'recoil'
@@ -24,12 +24,23 @@ import Button2 from '@/components/common/Button'
 import Layout from '@/pages/students/layout'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
+import ManagerSelectID from '@/components/common/ManagerSelectID'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -155,17 +166,11 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-type manageUser = {
-  seeManageUser: ManageUser[]
-}
-
 export default function StudentsWritePayment() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const paymentDetailId =
     typeof router.query.id === 'string' ? router.query.id : null
-  const { error, data } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
-  const managerList = data?.seeManageUser || []
   const [updatePaymentDetail] = useMutation(UPDATE_PAYMENT_DETAIL_MUTATION)
   const [updateReceived] = useMutation(UPDATE_STUDENT_RECEIVED_MUTATION)
   const [searchPaymentDetailMutation] = useMutation(
@@ -586,39 +591,28 @@ export default function StudentsWritePayment() {
                           },
                         }}
                         render={({ field, fieldState }) => (
-                          <Select
-                            labelPlacement="outside"
-                            label={
-                              <FilterLabel>
-                                영업 담당자<span>*</span>
-                              </FilterLabel>
+                          <Suspense
+                            fallback={
+                              <LodingDiv>
+                                <i className="xi-spinner-2" />
+                              </LodingDiv>
                             }
-                            placeholder=" "
-                            className="w-full"
-                            variant="bordered"
-                            defaultValue={studentPaymentData?.receiverId}
-                            selectedKeys={[receiver]}
-                            onChange={value => {
-                              if (value.target.value !== '') {
-                                field.onChange(value)
-                                handleSubManagerChange(value)
-                              }
-                            }}
                           >
-                            {[
-                              {
-                                mUsername: '담당자 지정필요',
+                            <ManagerSelectID
+                              selecedKey={receiver}
+                              field={field}
+                              label={'영업 담당자'}
+                              handleChange={handleSubManagerChange}
+                              defaultValue={studentPaymentData?.receiverId}
+                              optionDefualt={{
                                 id: '담당자 지정필요',
-                              },
-                              ...managerList?.filter(manager =>
-                                manager.mPart.includes('영업팀'),
-                              ),
-                            ].map(item => (
-                              <SelectItem key={item.id} value={item.id}>
-                                {item.mUsername}
-                              </SelectItem>
-                            ))}
-                          </Select>
+                                mUsername: '담당자 지정필요',
+                              }}
+                              filter={{
+                                mPart: '영업팀',
+                              }}
+                            />
+                          </Suspense>
                         )}
                       />
                       {errors.receiverId && (
