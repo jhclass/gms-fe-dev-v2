@@ -7,6 +7,7 @@ import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import { consultPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
+import { subMonths } from 'date-fns'
 import { ManageUser, StudentState } from '@/src/generated/graphql'
 
 const TableArea = styled.div`
@@ -236,11 +237,17 @@ export default function ConsolutationFilterTable({ studentFilter }) {
   )
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
+    const adjustedStudentFilter = {
+      ...studentFilter,
+      createdAt: studentFilter.createdAt || [lastSixMonths, today],
+    }
     searchStudentStateMutation({
       variables: {
-        ...studentFilter,
+        ...adjustedStudentFilter,
         page: currentPage,
         perPage: currentLimit,
       },

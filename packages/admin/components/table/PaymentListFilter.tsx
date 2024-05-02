@@ -6,6 +6,7 @@ import PaymentItem from '@/components/table/PaymentItem'
 import { useRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
 import { SEARCH_PAYMENT_FILTER_MUTATION } from '@/graphql/mutations'
+import { subMonths } from 'date-fns'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -148,8 +149,14 @@ export default function PaymentFilterTable({ studentFilter }) {
     SEARCH_PAYMENT_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
+    const adjustedStudentFilter = {
+      ...studentFilter,
+      period: studentFilter.period || [lastSixMonths, today],
+    }
     searchPaymentFilterMutation({
       variables: {
         ...studentFilter,

@@ -18,6 +18,12 @@ const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
 `
+const Noti = styled.p`
+  font-size: 0.8rem;
+  span {
+    color: red;
+  }
+`
 const FilterForm = styled.form`
   display: flex;
   width: 100%;
@@ -112,13 +118,8 @@ export default function RefundFilter({
   onFilterSearch,
   setStudentFilter,
 }) {
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
   const refundPage = useResetRecoilState(refundPageState)
-  const [paymentDateRange, setPaymentDateRange] = useState([
-    lastSixMonths,
-    today,
-  ])
+  const [paymentDateRange, setPaymentDateRange] = useState([null, null])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
@@ -159,7 +160,7 @@ export default function RefundFilter({
           stName: data.stName === '' ? null : data.stName,
           refundApprovalDate:
             data.refundApprovalDate === undefined
-              ? paymentDateRange
+              ? null
               : data.refundApprovalDate,
         }
 
@@ -205,7 +206,7 @@ export default function RefundFilter({
   }
 
   const handleReset = () => {
-    setPaymentDateRange([lastSixMonths, today])
+    setPaymentDateRange([null, null])
     reset()
   }
 
@@ -217,6 +218,10 @@ export default function RefundFilter({
         animate={isActive ? 'visible' : 'hidden'}
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
+          <Noti>
+            <span>*</span>승인 일시를 선택하지 않을 경우 최근 6개월로
+            검색됩니다.
+          </Noti>
           <BoxTop>
             <ItemBox>
               <DatePickerBox>

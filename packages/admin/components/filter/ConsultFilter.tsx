@@ -18,7 +18,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '../common/DatePickerHeader'
-import { getYear, subMonths } from 'date-fns'
+import { getYear } from 'date-fns'
 import ManagerSelect from '@/components/common/ManagerSelect'
 import AdviceSelect from '@/components//common/AdviceSelect'
 registerLocale('ko', ko)
@@ -27,6 +27,12 @@ const _ = require('lodash')
 const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
+`
+const Noti = styled.p`
+  font-size: 0.8rem;
+  span {
+    color: red;
+  }
 `
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -147,8 +153,6 @@ export default function ConsultFilter({
 }) {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
   const receiptStatus = useRecoilValue(receiptStatusState)
@@ -313,10 +317,7 @@ export default function ConsultFilter({
           receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
           subDiv: data.subDiv === '-' ? null : data.subDiv,
           pic: data.pic === '-' ? null : data.pic,
-          createdAt:
-            data.createdAt === undefined
-              ? [lastSixMonths, today]
-              : data.createdAt,
+          createdAt: data.createdAt === undefined ? null : data.createdAt,
           stVisit: data.stVisit === undefined ? null : data.stVisit,
           stName: data.stName === '' ? null : data.stName,
           progress:
@@ -351,6 +352,10 @@ export default function ConsultFilter({
         animate={isActive ? 'visible' : 'hidden'}
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
+          <Noti>
+            <span>*</span>등록 일시를 선택하지 않을 경우 최근 6개월로
+            검색됩니다.
+          </Noti>
           <BoxTop>
             <ItemBox>
               <Controller

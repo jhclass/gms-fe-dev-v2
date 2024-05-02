@@ -5,6 +5,7 @@ import { styled } from 'styled-components'
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 import StudentItem from './StudentItem'
 import { useRecoilState } from 'recoil'
+import { subMonths } from 'date-fns'
 import { studentPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
@@ -191,11 +192,17 @@ export default function StudentsFilterTable({ studentFilter }) {
     SEARCH_STUDENT_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
+    const adjustedStudentFilter = {
+      ...studentFilter,
+      createdAt: studentFilter.createdAt || [lastSixMonths, today],
+    }
     searchStudentFilterMutation({
       variables: {
-        ...studentFilter,
+        ...adjustedStudentFilter,
         page: currentPage,
         perPage: currentLimit,
       },
