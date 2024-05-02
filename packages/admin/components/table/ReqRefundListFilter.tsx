@@ -12,6 +12,7 @@ import {
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
+import { subMonths } from 'date-fns'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -253,11 +254,17 @@ export default function ReqRefundFilterTable({ studentFilter }) {
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
+    const adjustedStudentFilter = {
+      ...studentFilter,
+      reqRefundDate: studentFilter.reqRefundDate || [lastSixMonths, today],
+    }
     searchPaymentDetailFilterMutation({
       variables: {
-        ...studentFilter,
+        ...adjustedStudentFilter,
         reqRefund: true,
         refundApproval: false,
         sortOf: 'reqRefundDate',

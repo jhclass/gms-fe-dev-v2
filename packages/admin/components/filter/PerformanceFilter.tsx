@@ -6,13 +6,13 @@ import { Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { subDays, getYear, addMonths, subMonths } from 'date-fns'
+import { subDays, getYear, addMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { ManageUser } from '@/src/generated/graphql'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -125,8 +125,8 @@ const FilterVariants = {
     },
   },
 }
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
 export default function PerformanceFilter({
   isActive,
@@ -137,12 +137,17 @@ export default function PerformanceFilter({
   setClickReset,
 }) {
   const router = useRouter()
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
-  const [searchDateRange, setSearchDateRange] = useState([lastSixMonths, today])
+  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
+  )
+  const managerList = managerData?.searchManageUser.data
+  const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
   const [manager, setManager] = useState(new Set([]))
   const years = _.range(1970, getYear(new Date()) + 1, 1)
@@ -165,8 +170,8 @@ export default function PerformanceFilter({
   useEffect(() => {
     if (performanceFilter === null || clickReset) {
       setManager(new Set([]))
-      setSearchDateRange([lastSixMonths, today])
-      setValue('period', [lastSixMonths, today], { shouldDirty: true })
+      setSearchDateRange([null, null])
+      setValue('period', [null, null], { shouldDirty: true })
       reset()
     }
   }, [router, clickReset])
@@ -216,7 +221,7 @@ export default function PerformanceFilter({
   }
 
   const handleReset = () => {
-    setSearchDateRange([lastSixMonths, today])
+    setSearchDateRange([null, null])
     setManager(new Set([]))
     reset()
   }
@@ -366,13 +371,11 @@ export default function PerformanceFilter({
                       }
                     }}
                   >
-                    {managerList
-                      ?.filter(manager => manager.mPart.includes('영업팀'))
-                      .map(item => (
-                        <SelectItem key={item.id} value={item.mUsername}>
-                          {item.mUsername}
-                        </SelectItem>
-                      ))}
+                    {managerList.map(item => (
+                      <SelectItem key={item.id} value={item.mUsername}>
+                        {item.mUsername}
+                      </SelectItem>
+                    ))}
                   </Select>
                 )}
               />

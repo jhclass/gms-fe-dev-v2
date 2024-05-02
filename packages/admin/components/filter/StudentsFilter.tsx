@@ -19,6 +19,12 @@ const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
 `
+const Noti = styled.p`
+  font-size: 0.8rem;
+  span {
+    color: red;
+  }
+`
 const FilterForm = styled.form`
   display: flex;
   width: 100%;
@@ -112,8 +118,6 @@ export default function StudentsFilter({
   const [startCreatDate, endCreatDate] = creatDateRange
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
@@ -171,6 +175,7 @@ export default function StudentsFilter({
   }, [router, studentFilter])
 
   const onSubmit = data => {
+    console.log(isDirty)
     if (isDirty || data.progress !== undefined) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
@@ -197,10 +202,7 @@ export default function StudentsFilter({
           studentName: data.studentName === '' ? null : data.studentName,
           phoneNum: data.phoneNum === '' ? null : data.phoneNum,
           birthday: data.birthday === undefined ? null : data.birthday,
-          createdAt:
-            data.createdAt === undefined
-              ? [lastSixMonths, today]
-              : data.createdAt,
+          createdAt: data.createdAt === undefined ? null : data.createdAt,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -223,6 +225,10 @@ export default function StudentsFilter({
         animate={isActive ? 'visible' : 'hidden'}
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
+          <Noti>
+            <span>*</span>등록 일시를 선택하지 않을 경우 최근 6개월로
+            검색됩니다.
+          </Noti>
           <BoxTop>
             <ItemBox>
               <Input

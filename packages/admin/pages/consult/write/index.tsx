@@ -25,20 +25,16 @@ import {
   gradeState,
 } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
+import { SEE_STUDENT_STATE_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/consult/layout'
-import { ManageUser } from '@/src/generated/graphql'
 import ManagerSelect from '@/components/common/ManagerSelect'
 
 const ConArea = styled.div`

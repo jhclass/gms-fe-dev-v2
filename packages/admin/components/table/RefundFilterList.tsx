@@ -6,6 +6,7 @@ import RefundItem from '@/components/table/RefundItem'
 import { refundPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
 import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
+import { subMonths } from 'date-fns'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -249,11 +250,20 @@ export default function RefundFilterTable({ studentFilter }) {
     SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
+  const today = new Date()
+  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
+    const adjustedStudentFilter = {
+      ...studentFilter,
+      refundApprovalDate: studentFilter.refundApprovalDate || [
+        lastSixMonths,
+        today,
+      ],
+    }
     searchPaymentDetailFilterMutation({
       variables: {
-        ...studentFilter,
+        ...adjustedStudentFilter,
         reqRefund: true,
         refundApproval: true,
         sortOf: 'refundApprovalDate',

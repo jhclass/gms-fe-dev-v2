@@ -19,8 +19,8 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -29,8 +29,6 @@ import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '../common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
 import ManagerSelectID from '../common/ManagerSelectID'
 
 const DetailBox = styled.div`
@@ -173,10 +171,6 @@ const extractUnit = inputString => {
   }
 }
 
-type manageUser = {
-  seeManageUser: ManageUser[]
-}
-
 export default function StudentPaymentForm({
   studentData,
   studentSubjectData,
@@ -187,8 +181,6 @@ export default function StudentPaymentForm({
   const [isOpenClick, setIsOpenClick] = useState(false)
   const { userLogs } = useUserLogsMutation()
   const [updateStudentPayment] = useMutation(UPDATE_STUDENT_PAYMENT_MUTATION)
-  const { error, data } = useSuspenseQuery<manageUser>(SEE_MANAGEUSER_QUERY)
-  const managerList = data?.seeManageUser || []
   const {
     register,
     setValue,
@@ -571,10 +563,6 @@ export default function StudentPaymentForm({
         disCounCalculator(studentSubjectData?.fee)
       }
     }
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -1158,7 +1146,7 @@ export default function StudentPaymentForm({
                     rules={{
                       required: {
                         value: true,
-                        message: '수강담당자를 선택해주세요.',
+                        message: '영업담당자를 선택해주세요.',
                       },
                     }}
                     render={({ field, fieldState }) => (
@@ -1172,7 +1160,7 @@ export default function StudentPaymentForm({
                         <ManagerSelectID
                           selecedKey={subjectManager}
                           field={field}
-                          label={'수강 담당자'}
+                          label={'영업 담당자'}
                           defaultValue={studentPaymentData?.processingManagerId}
                           handleChange={handleSubManagerChange}
                           optionDefualt={{
@@ -1184,40 +1172,6 @@ export default function StudentPaymentForm({
                           }}
                         />
                       </Suspense>
-
-                      // <Select
-                      //   labelPlacement="outside"
-                      //   label={
-                      //     <FilterLabel>
-                      //       수강 담당자<span>*</span>
-                      //     </FilterLabel>
-                      //   }
-                      //   placeholder=" "
-                      //   className="w-full"
-                      //   variant="bordered"
-                      //   defaultValue={studentPaymentData?.processingManagerId}
-                      //   selectedKeys={[subjectManager]}
-                      //   onChange={value => {
-                      //     if (value.target.value !== '') {
-                      //       field.onChange(value)
-                      //       handleSubManagerChange(value)
-                      //     }
-                      //   }}
-                      // >
-                      //   {[
-                      //     {
-                      //       mUsername: '담당자 지정필요',
-                      //       id: '담당자 지정필요',
-                      //     },
-                      //     ...managerList?.filter(manager =>
-                      //       manager.mPart.includes('영업팀'),
-                      //     ),
-                      //   ].map(item => (
-                      //     <SelectItem key={item.id} value={item.id}>
-                      //       {item.mUsername}
-                      //     </SelectItem>
-                      //   ))}
-                      // </Select>
                     )}
                   />
                   {errors.processingManagerId && (

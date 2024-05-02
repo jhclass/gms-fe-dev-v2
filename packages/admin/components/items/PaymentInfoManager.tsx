@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser } from '@/src/generated/graphql'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 
 const LineBox = styled.div`
   padding-left: 0.25rem;
@@ -12,18 +12,21 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-type seeManagerQuery = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
 
 export default function PaymentInfoManager({ studentPaymentData }) {
-  const { error, data: managerData } =
-    useSuspenseQuery<seeManagerQuery>(SEE_MANAGEUSER_QUERY)
-  const managerList = managerData?.seeManageUser
-
-  if (error) {
-    console.log(error)
-  }
+  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
+    {
+      variables: {
+        mPart: '영업팀',
+        resign: 'N',
+      },
+    },
+  )
+  const managerList = managerData?.searchManageUser.data
 
   return (
     <>

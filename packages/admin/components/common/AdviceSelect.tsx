@@ -1,4 +1,4 @@
-import { SEE_ADVICE_TYPE_QUERY, SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'

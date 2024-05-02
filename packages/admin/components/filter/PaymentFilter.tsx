@@ -20,6 +20,12 @@ const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
 `
+const Noti = styled.p`
+  font-size: 0.8rem;
+  span {
+    color: red;
+  }
+`
 const FilterForm = styled.form`
   display: flex;
   width: 100%;
@@ -117,12 +123,7 @@ export default function PaymentFilter({
 }) {
   const router = useRouter()
   const paymentPage = useResetRecoilState(paymentPageState)
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
-  const [paymentDateRange, setPaymentDateRange] = useState([
-    lastSixMonths,
-    today,
-  ])
+  const [paymentDateRange, setPaymentDateRange] = useState([null, null])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
   const [name, setName] = useState('')
@@ -154,7 +155,7 @@ export default function PaymentFilter({
       Object.keys(studentFilter).length === 0 ||
       studentFilter?.period === null
     ) {
-      setPaymentDateRange([lastSixMonths, today])
+      setPaymentDateRange([null, null])
     } else {
       setPaymentDateRange([studentFilter?.period[0], studentFilter?.period[1]])
     }
@@ -181,7 +182,7 @@ export default function PaymentFilter({
       if (paymentDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
-          period: data.period === undefined ? paymentDateRange : data.period,
+          period: data.period === undefined ? null : data.period,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -225,7 +226,7 @@ export default function PaymentFilter({
   }
 
   const handleReset = () => {
-    setPaymentDateRange([lastSixMonths, today])
+    setPaymentDateRange([null, null])
     reset()
   }
 
@@ -237,6 +238,10 @@ export default function PaymentFilter({
         animate={isActive ? 'visible' : 'hidden'}
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
+          <Noti>
+            <span>*</span>업데이트 일시를 선택하지 않을 경우 최근 6개월로
+            검색됩니다.
+          </Noti>
           <BoxTop>
             <ItemBox>
               <DatePickerBox>
