@@ -214,7 +214,7 @@ export default function ConsolutItem(props) {
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>
               </Tname>
               <Tpart>
-                <EllipsisBox>{managerData.mPart}</EllipsisBox>
+                <EllipsisBox>{managerData.mPart.join(',')}</EllipsisBox>
               </Tpart>
               <Trank>
                 <EllipsisBox>{managerData.mRank}</EllipsisBox>
