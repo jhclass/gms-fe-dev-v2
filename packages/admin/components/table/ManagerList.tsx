@@ -72,6 +72,18 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
+const Tid = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: #07bbae;
+  min-width: ${1200 * 0.1}px;
+  font-weight: 600;
+`
 const Tname = styled.div`
   position: relative;
   display: table-cell;
@@ -107,21 +119,21 @@ const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.12}px;
+  min-width: ${1200 * 0.1}px;
 `
 const Temail = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 18%;
+  width: 15%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.18}px;
+  min-width: ${1200 * 0.15}px;
 `
 const TjoiningDate = styled.div`
   display: table-cell;
@@ -132,6 +144,17 @@ const TjoiningDate = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
+`
+const Tdate = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 7%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.07}px;
+  font-weight: 600;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -197,6 +220,7 @@ export default function ConsolutationTable() {
                   <Tphone>연락처</Tphone>
                   <Temail>이메일</Temail>
                   <TjoiningDate>입사일</TjoiningDate>
+                  <Tdate>근속일</Tdate>
                 </ClickBox>
               </TheaderBox>
             </Theader>

@@ -7,7 +7,7 @@ import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 import { Checkbox } from '@nextui-org/react'
 
-const TableItem = styled.div`
+const TableItem = styled.div<{ $resign: string }>`
   position: relative;
   width: 100%;
   min-width: fit-content;
@@ -15,8 +15,8 @@ const TableItem = styled.div`
   color: #71717a;
   font-size: 0.875rem;
   border-radius: 0.5rem;
-  background: #fff;
   overflow: hidden;
+  background: ${props => (props.$resign === 'Y' ? '#e4e4e7' : '#fff')};
 
   &:hover {
     cursor: pointer;
@@ -26,7 +26,7 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table-row;
+  display: table;
   width: 100%;
   min-width: fit-content;
   text-align: center;
@@ -50,6 +50,18 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
+const Tid = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  color: #07bbae;
+  min-width: ${1200 * 0.1}px;
+  font-weight: 600;
+`
 const Tname = styled.div`
   position: relative;
   display: table-cell;
@@ -58,6 +70,7 @@ const Tname = styled.div`
   width: 10%;
   padding: 1rem;
   font-size: inherit;
+  color: #007de9;
   min-width: ${1200 * 0.1}px;
   font-weight: 600;
 `
@@ -85,21 +98,22 @@ const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.12}px;
+  min-width: ${1200 * 0.1}px;
+  font-weight: 600;
 `
 const Temail = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 18%;
+  width: 15%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.18}px;
+  min-width: ${1200 * 0.15}px;
 `
 const TjoiningDate = styled.div`
   display: table-cell;
@@ -110,6 +124,17 @@ const TjoiningDate = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
+`
+const Tdate = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 7%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.07}px;
+  font-weight: 600;
 `
 const EllipsisBox = styled.p`
   white-space: nowrap;
@@ -166,16 +191,25 @@ export default function ConsolutItem(props) {
     }
   }
 
+  const calculateDday = date => {
+    const timestamp = parseInt(date, 10)
+    const joiningDate = new Date(timestamp)
+    const today = new Date()
+    const timeDiff = today.getTime() - joiningDate.getTime()
+    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
+    return '+' + daysDiff
+  }
+  console.log(managerData.resign)
   return (
     <>
-      <TableItem>
+      <TableItem $resign={managerData.resign}>
         <TableRow>
           <Link href={`#`}>
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
-              <Tname>
+              <Tid>
                 <EllipsisBox>{managerData.mUserId}</EllipsisBox>
-              </Tname>
+              </Tid>
               <Tname>
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>
               </Tname>
@@ -209,6 +243,11 @@ export default function ConsolutItem(props) {
                     : '-'}
                 </EllipsisBox>
               </TjoiningDate>
+              <Tdate>
+                {managerData.mJoiningDate
+                  ? calculateDday(managerData.mJoiningDate)
+                  : '-'}
+              </Tdate>
             </ClickBox>
           </Link>
         </TableRow>

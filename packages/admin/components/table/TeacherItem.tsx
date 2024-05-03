@@ -7,7 +7,7 @@ import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 import { Checkbox } from '@nextui-org/react'
 
-const TableItem = styled.div`
+const TableItem = styled.div<{ $resign: string }>`
   position: relative;
   width: 100%;
   min-width: fit-content;
@@ -15,8 +15,8 @@ const TableItem = styled.div`
   color: #71717a;
   font-size: 0.875rem;
   border-radius: 0.5rem;
-  background: #fff;
   overflow: hidden;
+  background: ${props => (props.$resign === 'Y' ? '#e4e4e7' : '#fff')};
 
   &:hover {
     cursor: pointer;
@@ -26,7 +26,7 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table-row;
+  display: table;
   width: 100%;
   min-width: fit-content;
   text-align: center;
@@ -49,6 +49,18 @@ const Tnum = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.06}px;
+`
+const Tid = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 12%;
+  padding: 1rem;
+  font-size: inherit;
+  color: #07bbae;
+  min-width: ${1200 * 0.12}px;
+  font-weight: 600;
 `
 const Tname = styled.div`
   position: relative;
@@ -168,14 +180,14 @@ export default function ConsolutItem(props) {
 
   return (
     <>
-      <TableItem>
+      <TableItem $resign={managerData.resign}>
         <TableRow>
           <Link href={`/hr/teacherDetail`}>
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
-              <Tname>
+              <Tid>
                 <EllipsisBox>{managerData.mUserId}</EllipsisBox>
-              </Tname>
+              </Tid>
               <Tname>
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>
               </Tname>

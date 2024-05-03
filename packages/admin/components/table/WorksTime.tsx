@@ -34,6 +34,7 @@ const Theader = styled.div`
 
 const TheaderBox = styled.div`
   display: flex;
+  border-bottom: 1px solid #e4e4e7;
 `
 
 const ClickBox = styled.div`
@@ -55,7 +56,6 @@ const TableItem = styled.div`
   position: relative;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #e4e4e7;
   color: #71717a;
   font-size: 0.875rem;
   border-radius: 0.5rem;
@@ -65,6 +65,9 @@ const TableItem = styled.div`
   &:hover {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.8);
+  }
+  &:nth-child(odd) {
+    background: #e2eafc;
   }
 `
 
@@ -160,6 +163,11 @@ export default function WorksTime() {
                         type="text"
                         placeholder=" "
                         className="w-full"
+                        classNames={{
+                          inputWrapper: `${
+                            index % 2 === 0 ? '' : 'border-default-300'
+                          }  `,
+                        }}
                       />
                     </Tnum>
                     <Tnum>
@@ -171,6 +179,11 @@ export default function WorksTime() {
                         type="text"
                         placeholder=" "
                         className="w-full"
+                        classNames={{
+                          inputWrapper: `${
+                            index % 2 === 0 ? '' : 'border-default-300'
+                          }  `,
+                        }}
                       />
                     </Tnum>
                     <Tnum>
@@ -182,6 +195,11 @@ export default function WorksTime() {
                         type="text"
                         placeholder=" "
                         className="w-full"
+                        classNames={{
+                          inputWrapper: `${
+                            index % 2 === 0 ? '' : 'border-default-300'
+                          }  `,
+                        }}
                       />
                     </Tnum>
                     <Tnum>
@@ -193,6 +211,11 @@ export default function WorksTime() {
                         type="text"
                         placeholder=" "
                         className="w-full"
+                        classNames={{
+                          inputWrapper: `${
+                            index % 2 === 0 ? '' : 'border-default-300'
+                          }  `,
+                        }}
                       />
                     </Tnum>
                     <Tnum>
@@ -204,6 +227,11 @@ export default function WorksTime() {
                         type="text"
                         placeholder=" "
                         className="w-full"
+                        classNames={{
+                          inputWrapper: `${
+                            index % 2 === 0 ? '' : 'border-default-300'
+                          }  `,
+                        }}
                       />
                     </Tnum>
                   </ClickBox>

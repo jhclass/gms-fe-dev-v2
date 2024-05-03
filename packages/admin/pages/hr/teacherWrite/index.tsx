@@ -180,7 +180,7 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="아이디"
+                      placeholder="이름영문 예) gildong[홍길동]"
                       variant={'bordered'}
                       radius="md"
                       type="text"
@@ -213,10 +213,10 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="비밀번호"
+                      placeholder="hc+입사년월일 예) hc240101"
                       variant={'bordered'}
                       radius="md"
-                      type="text"
+                      type="password"
                       label={
                         <FilterLabel>
                           비밀번호<span>*</span>
@@ -230,19 +230,53 @@ export default function StudentsWrite() {
                       {...register('phoneNum1', {
                         required: {
                           value: true,
-                          message: '휴대폰번호를 입력해주세요.',
+                          message: '비밀번호를 입력해주세요.',
                         },
                         maxLength: {
-                          value: 11,
-                          message: '최대 11자리까지 입력 가능합니다.',
+                          value: 8,
+                          message: '최대 8자리까지 입력 가능합니다.',
                         },
                         minLength: {
-                          value: 10,
-                          message: '최소 10자리 이상이어야 합니다.',
+                          value: 3,
+                          message: '최소 3자리 이상이어야 합니다.',
                         },
-                        pattern: {
-                          value: /^010[0-9]{7,8}$/,
-                          message: '010으로 시작해주세요.',
+                      })}
+                    />
+                    {errors.phoneNum1 && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.phoneNum1.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="비밀번호 확인"
+                      variant={'bordered'}
+                      radius="md"
+                      type="password"
+                      label={
+                        <FilterLabel>
+                          비밀번호확인<span>*</span>
+                        </FilterLabel>
+                      }
+                      className="w-full"
+                      onChange={e => {
+                        register('phoneNum1').onChange(e)
+                      }}
+                      maxLength={11}
+                      {...register('phoneNum1', {
+                        required: {
+                          value: true,
+                          message: '비밀번호를 입력해주세요.',
+                        },
+                        maxLength: {
+                          value: 8,
+                          message: '최대 8자리까지 입력 가능합니다.',
+                        },
+                        minLength: {
+                          value: 3,
+                          message: '최소 3자리 이상이어야 합니다.',
                         },
                       })}
                     />
