@@ -149,6 +149,7 @@ export const SEE_MANAGEUSER_QUERY = gql`
       mAddresses
       createdAt
       updatedAt
+      resign
       ConsultationMemo {
         id
         content

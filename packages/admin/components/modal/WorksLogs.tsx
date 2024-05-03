@@ -25,6 +25,23 @@ import WorksSchedule from '../table/WorksSchedule'
 import WorksTime from '../table/WorksTime'
 import WorksRemark from '../table/WorksRemark'
 
+const Title = styled.h2`
+  position: relative;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-left: 1rem;
+
+  &:after {
+    content: '';
+    width: 0.3rem;
+    height: 100%;
+    background: #07bbae;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 0.3rem;
+  }
+`
 const DatailBody = styled.div`
   @media (max-width: 768px) {
     /* overflow-y: auto; */
@@ -116,7 +133,8 @@ const StempBox = styled.div`
   display: flex;
   padding: 0.6rem 0;
   height: 5.1rem;
-  border-bottom: 2px solid hsl(240 6% 90%);
+  border: 2px solid hsl(240 6% 90%);
+  border-radius: 0.5rem;
   justify-content: center;
   align-items: center;
 
@@ -128,7 +146,6 @@ const BtnBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px solid hsl(240 6% 90%);
   height: 40px;
   line-height: 40px;
   font-size: 0.875rem;
@@ -143,6 +160,10 @@ const FilterLabel = styled.label`
   padding-bottom: 0.375rem;
   span {
     color: red;
+  }
+
+  &.color {
+    color: inherit;
   }
 `
 
@@ -240,7 +261,7 @@ export default function SubjectModal({
           {sbjClose => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                업무일지
+                <Title>업무일지</Title>
               </ModalHeader>
               <ModalBody>
                 <DatailBody>
@@ -280,7 +301,7 @@ export default function SubjectModal({
                               <StempBox></StempBox>
                               <BtnBox>
                                 <Button size="sm" color="primary">
-                                  확인
+                                  서명
                                 </Button>
                               </BtnBox>
                             </div>
@@ -291,7 +312,7 @@ export default function SubjectModal({
                               <StempBox></StempBox>
                               <BtnBox>
                                 <Button size="sm" color="primary">
-                                  확인
+                                  서명
                                 </Button>
                               </BtnBox>
                             </div>
@@ -322,31 +343,43 @@ export default function SubjectModal({
                       </FlexBox>
                       <FlexBox>
                         <FlexAreaBox>
-                          <div>
-                            <FilterLabel>재적</FilterLabel>
-                            <LineBox>0명</LineBox>
+                          <div className="text-[#07bbae]">
+                            <FilterLabel className="color">재적</FilterLabel>
+                            <LineBox>
+                              <b>0</b>명
+                            </LineBox>
                           </div>
-                          <div>
-                            <FilterLabel>출석</FilterLabel>
-                            <LineBox>0명</LineBox>
+                          <div className="text-[#007de9]">
+                            <FilterLabel className="color">출석</FilterLabel>
+                            <LineBox>
+                              <b>0</b>명
+                            </LineBox>
                           </div>
-                          <div>
-                            <FilterLabel>결석</FilterLabel>
-                            <LineBox>0명</LineBox>
+                          <div className="text-[#ff5900]">
+                            <FilterLabel className="color">결석</FilterLabel>
+                            <LineBox>
+                              <b>0</b>명
+                            </LineBox>
                           </div>
                         </FlexAreaBox>
                         <FlexAreaBox>
                           <div>
                             <FilterLabel>지각</FilterLabel>
-                            <LineBox>0명</LineBox>
+                            <LineBox>
+                              <b>0</b>명
+                            </LineBox>
                           </div>
                           <div>
                             <FilterLabel>조퇴</FilterLabel>
-                            <LineBox>0명</LineBox>
+                            <LineBox>
+                              <b>0</b>명
+                            </LineBox>
                           </div>
                           <div>
                             <FilterLabel>외출</FilterLabel>
-                            <LineBox>0명</LineBox>
+                            <LineBox>
+                              <b>0</b>명
+                            </LineBox>
                           </div>
                         </FlexAreaBox>
                       </FlexBox>
