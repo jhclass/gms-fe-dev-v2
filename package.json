@@ -20,8 +20,5 @@
     "test:hc-design": "cd packages/hc-design && npm test",
     "test:admin": "cd packages/admin && npm test",
     "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "prettier": "^3.0.3"
   }
 }
