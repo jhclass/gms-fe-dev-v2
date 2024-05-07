@@ -130,7 +130,6 @@ export const SEE_ADVICE_TYPE_QUERY = gql`
     }
   }
 `
-
 export const SEE_MANAGEUSER_QUERY = gql`
   query SeeManageUser {
     seeManageUser {
@@ -182,11 +181,21 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
       error
       data {
         id
+        mPhoneNumInside
+        mPhoneNumFriend
+        mPhoneNumCompany
+        mPhoneNum
+        email
+        mAddresses
+        mAvatar
         mGrade
+        mJoiningDate
+        mPart
+        updatedAt
+        resign
         mUsername
         mUserId
-        resign
-        mPart
+        mRank
         Stamp {
           imageUrl
           id

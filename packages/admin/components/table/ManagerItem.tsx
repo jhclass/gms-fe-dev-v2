@@ -233,7 +233,7 @@ export default function ConsolutItem(props) {
               </Tphone>
               <Temail>
                 <EllipsisBox>
-                  {managerData.mAddresses ? managerData.mAddresses : '-'}
+                  {managerData.email ? managerData.email : '-'}
                 </EllipsisBox>
               </Temail>
               <TjoiningDate>
