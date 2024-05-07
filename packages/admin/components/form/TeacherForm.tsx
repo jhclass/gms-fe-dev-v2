@@ -222,7 +222,7 @@ export default function StudentsWrite({ managerId }) {
         try {
           const result = await devEditManager({
             variables: {
-              mUserId: managerData.mUserId,
+              mUserId: [managerData.mUserId],
               mUsername: data.mUsername.trim(),
               mPassword: managerData.mPassword,
               mPhoneNum: data.mPhoneNum.trim(),
