@@ -52,7 +52,6 @@ export const MME_QUERY = gql`
       id
       mUserId
       mUsername
-      mPassword
       mGrade
       mRank
       mPhoneNum
@@ -131,6 +130,16 @@ export const SEE_ADVICE_TYPE_QUERY = gql`
   }
 `
 
+export const CREATE_STAMP_QUERY = gql`
+  query Query($manageUserId: Int!) {
+    createStamp(manageUserId: $manageUserId) {
+      error
+      message
+      ok
+    }
+  }
+`
+
 export const SEE_MANAGEUSER_QUERY = gql`
   query SeeManageUser {
     seeManageUser {
@@ -146,6 +155,7 @@ export const SEE_MANAGEUSER_QUERY = gql`
       mPart
       mAvatar
       mJoiningDate
+      email
       mAddresses
       createdAt
       updatedAt
@@ -164,29 +174,49 @@ export const SEE_MANAGEUSER_QUERY = gql`
 `
 export const SEARCH_MANAGEUSER_QUERY = gql`
   query SearchManageUser(
+    $mUsername: String
+    $searchManageUserId: Int
+    $mUserId: String
     $mGrade: Int
     $mRank: String
-    $searchManageUserId: Int
+    $mPhoneNum: String
     $mPart: String
     $resign: String
+    $mJoiningDate: [String]
   ) {
     searchManageUser(
+      mUsername: $mUsername
+      id: $searchManageUserId
+      mUserId: $mUserId
       mGrade: $mGrade
       mRank: $mRank
-      id: $searchManageUserId
+      mPhoneNum: $mPhoneNum
       mPart: $mPart
       resign: $resign
+      mJoiningDate: $mJoiningDate
     ) {
       ok
       message
+      totalCount
       error
       data {
         id
+        mPhoneNumInside
+        mPhoneNumFriend
+        mPhoneNumCompany
+        mPhoneNum
+        email
+        mAddresses
+        mAvatar
         mGrade
+        mJoiningDate
+        mPart
+        email
+        updatedAt
+        resign
         mUsername
         mUserId
-        resign
-        mPart
+        mRank
         Stamp {
           imageUrl
           id

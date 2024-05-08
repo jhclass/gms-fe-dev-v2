@@ -1,10 +1,11 @@
-import { useSuspenseQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { useLazyQuery, useSuspenseQuery } from '@apollo/client'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { Fragment, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import {
   MME_FAVO_QUERY,
+  SEARCH_MANAGEUSER_QUERY,
   SEE_FAVORITESTATE_QUERY,
   SEE_MANAGEUSER_QUERY,
   SEE_STUDENT_STATE_QUERY,
@@ -15,10 +16,12 @@ import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
 import {
   ManageUser,
+  SearchManageUserResult,
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
 import ManagerItem from './ManagerItem'
+import TeacherItem from './TeacherItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -54,7 +57,16 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
 const TheaderBox = styled.div`
   display: flex;
 `
@@ -72,60 +84,18 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
-const Tid = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: #07bbae;
-  min-width: ${1200 * 0.1}px;
-  font-weight: 600;
-`
 const Tname = styled.div`
   position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 12%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.12}px;
   font-weight: 600;
 `
 const Tpart = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.14}px;
-`
-const Trank = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const Temail = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -135,26 +105,45 @@ const Temail = styled.div`
   color: inherit;
   min-width: ${1200 * 0.15}px;
 `
+const Trank = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 9%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.09}px;
+`
+const Tphone = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 14%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.14}px;
+`
+const Temail = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.2}px;
+`
 const TjoiningDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 12%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const Tdate = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 7%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.07}px;
-  font-weight: 600;
+  min-width: ${1200 * 0.12}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -169,30 +158,48 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-type seeManageUser = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
-
-export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
-  const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { error, data, refetch } = useSuspenseQuery<seeManageUser>(
-    SEE_MANAGEUSER_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
+export default function TeacherFilterTable({ teacherFilter }) {
+  const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
+    SEARCH_MANAGEUSER_QUERY,
+    {},
   )
-
-  const managerData = data?.seeManageUser.filter(manager => manager.mGrade < 20)
+  // const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
+  //   SEARCH_MANAGEUSER_QUERY,
+  //   {
+  //     variables: {
+  //       ...teacherFilter,
+  //       mGrade: 20,
+  //     },
+  //   },
+  // )
+  const [managerData, setManagerData] = useState(null)
+  const [managerTotal, setManagerTotal] = useState(0)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
   useEffect(() => {
-    refetch()
-  }, [])
+    if (teacherFilter) {
+      searchManager({
+        variables: {
+          ...teacherFilter,
+          mGrade: 20,
+        },
+        onCompleted: result => {
+          console.log(result)
+          setManagerData(result?.searchManageUser.data)
+          setManagerTotal(result?.searchManageUser.totalCount)
+        },
+      })
+    }
+  }, [teacherFilter])
+
+  const resetList = () => {
+    window.location.href = '/hr/teacher'
+  }
 
   if (error) {
     console.log(error)
@@ -202,9 +209,15 @@ export default function ConsolutationTable() {
     managerData && (
       <>
         <TTopic>
-          <Ttotal>
-            총 <span>{managerData.length}</span>건
-          </Ttotal>
+          <TopBox>
+            <Ttotal>
+              총<span>{managerTotal === null ? 0 : managerTotal}</span>
+              건이 검색되었습니다.
+            </Ttotal>
+            <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+              전체보기
+            </Button>
+          </TopBox>
         </TTopic>
         <TableArea>
           <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -215,30 +228,24 @@ export default function ConsolutationTable() {
                     <Tnum>No</Tnum>
                     <Tname>아이디</Tname>
                     <Tname>이름</Tname>
-                    <Tpart>부서</Tpart>
-                    <Trank>직책/직위</Trank>
-                    <Tphone>내선번호</Tphone>
+                    <Tpart>강의 분야</Tpart>
+                    <Trank>직책</Trank>
                     <Tphone>연락처</Tphone>
                     <Temail>이메일</Temail>
                     <TjoiningDate>입사일</TjoiningDate>
-                    <Tdate>근속일</Tdate>
                   </ClickBox>
                 </TheaderBox>
               </Theader>
               {managerData.length > 0 &&
                 managerData?.map((item, index) => (
-                  <ManagerItem
+                  <TeacherItem
                     forName="student"
                     key={index}
                     tableData={item}
                     itemIndex={index}
-                    currentPage={currentPage}
-                    limit={currentLimit}
                   />
                 ))}
-              {managerData.length === 0 && (
-                <Nolist>등록된 직원이 없습니다.</Nolist>
-              )}
+              {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
         </TableArea>

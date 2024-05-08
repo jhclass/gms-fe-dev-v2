@@ -51,6 +51,8 @@ export default function Statistics() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={false}
           rightArea={true}
         />
         <RecruitmentFilter

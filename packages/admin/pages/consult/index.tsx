@@ -46,6 +46,8 @@ export default function Consult() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={false}
           rightArea={true}
         />
         <Suspense

@@ -282,7 +282,7 @@ export default function SubjectDetail() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb rightArea={true} />
+          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
             <TopInfo>
               <Noti>

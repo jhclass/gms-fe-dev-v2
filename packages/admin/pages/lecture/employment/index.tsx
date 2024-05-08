@@ -35,6 +35,8 @@ export default function Employment() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={false}
           rightArea={true}
         />
         <Suspense

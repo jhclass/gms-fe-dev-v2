@@ -23,39 +23,108 @@ export const USER_LOGS_MUTATION = gql`
 `
 
 // manager
+export const CREATE_MANAGE_USER_MUTATION = gql`
+  mutation Mutation(
+    $mUserId: String!
+    $mUsername: String!
+    $mPassword: String!
+    $mGrade: Int
+    $mRank: String
+    $mPart: [String]
+    $mPhoneNum: String
+    $mPhoneNumCompany: String
+    $mPhoneNumFriend: String
+    $mPhoneNumInside: String
+    $mJoiningDate: String
+    $mAddresses: String
+    $email: String
+  ) {
+    createManagerAccount(
+      mUserId: $mUserId
+      mUsername: $mUsername
+      mPassword: $mPassword
+      mGrade: $mGrade
+      mRank: $mRank
+      mPart: $mPart
+      mPhoneNum: $mPhoneNum
+      mPhoneNumCompany: $mPhoneNumCompany
+      mPhoneNumFriend: $mPhoneNumFriend
+      mPhoneNumInside: $mPhoneNumInside
+      mJoiningDate: $mJoiningDate
+      mAddresses: $mAddresses
+      email: $email
+    ) {
+      error
+      ok
+    }
+  }
+`
+
 export const EDIT_MANAGE_USER_MUTATION = gql`
   mutation Mutation(
     $mUsername: String
-    $mGrade: Int
-    $mRank: String
     $mPhoneNum: String
     $mPhoneNumCompany: String
     $mPhoneNumInside: String
     $mPhoneNumFriend: String
-    $mPart: [String]
     $mAvatar: String
-    $mJoiningDate: String
     $mAddresses: String
+    $email: String
   ) {
     editManageUser(
       mUsername: $mUsername
-      mGrade: $mGrade
-      mRank: $mRank
       mPhoneNum: $mPhoneNum
       mPhoneNumCompany: $mPhoneNumCompany
       mPhoneNumInside: $mPhoneNumInside
       mPhoneNumFriend: $mPhoneNumFriend
-      mPart: $mPart
       mAvatar: $mAvatar
-      mJoiningDate: $mJoiningDate
       mAddresses: $mAddresses
+      email: $email
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `
+export const DEV_EDIT_MANAGE_USER_MUTATION = gql`
+  mutation Mutation(
+    $mUserId: [String]
+    $mUsername: String
+    $mPassword: String
+    $mPhoneNumCompany: String
+    $mPhoneNum: String
+    $mPhoneNumFriend: String
+    $mPart: [String]
+    $mPhoneNumInside: String
+    $mAvatar: String
+    $mJoiningDate: String
+    $mAddresses: String
+    $resign: String
+    $email: String
+  ) {
+    devEditManageUser(
+      mUserId: $mUserId
+      mUsername: $mUsername
+      mPassword: $mPassword
+      mPhoneNumCompany: $mPhoneNumCompany
+      mPhoneNum: $mPhoneNum
+      mPhoneNumFriend: $mPhoneNumFriend
+      mPart: $mPart
+      mPhoneNumInside: $mPhoneNumInside
+      mAvatar: $mAvatar
+      mJoiningDate: $mJoiningDate
+      mAddresses: $mAddresses
+      resign: $resign
+      email: $email
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+
 export const UPDATE_FAVORITE_MUTATION2 = gql`
   mutation Mutation($updateFavoriteId: Int!) {
     updateFavorite(id: $updateFavoriteId) {

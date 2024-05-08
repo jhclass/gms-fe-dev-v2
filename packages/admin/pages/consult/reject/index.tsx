@@ -74,6 +74,8 @@ export default function ConsultReject() {
     <>
       <MainWrap>
         <Breadcrumb
+          isFilter={false}
+          isWrite={false}
           rightArea={mGrade < grade.general ? true : false}
           addRender={
             <DeleteDiv>

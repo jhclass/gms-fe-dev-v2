@@ -10,7 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { Button, Input, Radio, RadioGroup, Switch } from '@nextui-org/react'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -179,18 +179,21 @@ export default function StudentsWrite() {
       const parts = data.mPart.split(',').map(part => part.trim())
       setValue('mPart', parts)
     }
-
     createManager({
       variables: {
         mUserId: data.mUserId.trim(),
         mUsername: data.mUsername.trim(),
         mPassword: data.mPassword.trim(),
-        mGrade: 20,
-        mRank: '강사',
+        mGrade: 10,
+        mRank: data.mRank === '' ? null : data.mRank,
         mPart: data.mPart === '' ? null : data.mPart,
         mPhoneNum: data.mPhoneNum.trim(),
         mPhoneNumFriend:
           data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend.trim(),
+        mPhoneNumCompany:
+          data.mPhoneNumCompany === '' ? null : data.mPhoneNumCompany.trim(),
+        mPhoneNumInside:
+          data.mPhoneNumInside === '' ? null : data.mPhoneNumInside.trim(),
         mJoiningDate:
           data.mJoiningDate === undefined ? null : new Date(data.mJoiningDate),
         mAddresses: data.mAddresses === '' ? null : data.mAddresses.trim(),
@@ -198,7 +201,7 @@ export default function StudentsWrite() {
       },
       onCompleted: result => {
         if (result.createManagerAccount.ok) {
-          userLogs(`${data.mUsername}강사 등록`)
+          userLogs(`${data.mUsername}직원 등록`)
           alert('등록되었습니다.')
           router.back()
         }
@@ -311,7 +314,7 @@ export default function StudentsWrite() {
                       {...register('mPassword1', {
                         required: {
                           value: true,
-                          message: '비밀번호 확인을 입력해주세요.',
+                          message: '비밀번호를 입력해주세요.',
                         },
                       })}
                     />
@@ -398,6 +401,106 @@ export default function StudentsWrite() {
                       </p>
                     )}
                   </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="주소"
+                      className="w-full"
+                      onChange={e => {
+                        register('mAddresses').onChange(e)
+                      }}
+                      {...register('mAddresses')}
+                    />
+                    {errors.mAddresses && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mAddresses.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="이메일"
+                      className="w-full"
+                      onChange={e => {
+                        register('email').onChange(e)
+                      }}
+                      {...register('email', {
+                        pattern: {
+                          value:
+                            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                          message: '유효하지 않은 이메일 형식입니다.',
+                        },
+                      })}
+                    />
+                    {errors.email && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.email.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="직통번호"
+                      variant={'bordered'}
+                      radius="md"
+                      type="text"
+                      label="직통번호"
+                      className="w-full"
+                      onChange={e => {
+                        register('mPhoneNumCompany').onChange(e)
+                      }}
+                      {...register('mPhoneNumCompany', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumCompany && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumCompany.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="ex)503"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="내선번호"
+                      className="w-full"
+                      onChange={e => {
+                        register('mPhoneNumInside').onChange(e)
+                      }}
+                      {...register('mPhoneNumInside', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumInside && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumInside.message)}
+                      </p>
+                    )}
+                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
@@ -433,68 +536,72 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="주소"
-                      className="w-full"
-                      onChange={e => {
-                        register('mAddresses').onChange(e)
-                      }}
-                      {...register('mAddresses')}
-                    />
-                    {errors.mAddresses && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.mAddresses.message)}
-                      </p>
-                    )}
-                  </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="이메일"
-                      className="w-full"
-                      {...register('email', {
-                        pattern: {
-                          value:
-                            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                          message: '유효하지 않은 이메일 형식입니다.',
-                        },
-                      })}
-                    />
-                    {errors.email && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.email.message)}
-                      </p>
-                    )}
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="강의분야"
+                      placeholder="ex) 교무팀,인사팀"
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      label="강의 분야"
+                      label={
+                        <FilterLabel>
+                          부서명<span>*</span>
+                        </FilterLabel>
+                      }
                       className="w-full"
                       onChange={e => {
                         register('mPart').onChange(e)
                       }}
-                      {...register('mPart')}
+                      {...register('mPart', {
+                        required: {
+                          value: true,
+                          message: '강의분야를 입력해주세요.',
+                        },
+                        pattern: {
+                          value: /^[가-힣a-zA-Z0-9\s]*$/,
+                          message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        },
+                      })}
                     />
+                    {errors.mPart && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPart.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="ex) 팀장 or 대리"
+                      variant={'bordered'}
+                      radius="md"
+                      type="text"
+                      label={<FilterLabel>직책/직위</FilterLabel>}
+                      className="w-full"
+                      onChange={e => {
+                        register('mRank').onChange(e)
+                      }}
+                      {...register('mRank', {
+                        pattern: {
+                          value: /^[가-힣a-zA-Z0-9\s]*$/,
+                          message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mRank && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mRank.message)}
+                      </p>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <DatePickerBox>
                       <Controller
                         control={control}
                         name="mJoiningDate"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '입사일을 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <DatePicker
                             renderCustomHeader={({
@@ -533,7 +640,11 @@ export default function StudentsWrite() {
                             customInput={
                               <Input
                                 ref={field.ref}
-                                label="입사일"
+                                label={
+                                  <FilterLabel>
+                                    입사일<span>*</span>
+                                  </FilterLabel>
+                                }
                                 labelPlacement="outside"
                                 type="text"
                                 variant="bordered"
@@ -549,9 +660,9 @@ export default function StudentsWrite() {
                         )}
                       />
                     </DatePickerBox>
-                    {errors.joiningDate && (
+                    {errors.mJoiningDate && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.joiningDate.message)}
+                        {String(errors.mJoiningDate.message)}
                       </p>
                     )}
                   </AreaBox>

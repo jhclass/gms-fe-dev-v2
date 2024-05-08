@@ -5,6 +5,7 @@ import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import {
   MME_FAVO_QUERY,
+  SEARCH_MANAGEUSER_QUERY,
   SEE_FAVORITESTATE_QUERY,
   SEE_MANAGEUSER_QUERY,
   SEE_STUDENT_STATE_QUERY,
@@ -15,6 +16,7 @@ import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
 import {
   ManageUser,
+  SearchManageUserResult,
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
@@ -147,30 +149,29 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-type seeManageUser = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
-
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
-  const { error, data, refetch } = useSuspenseQuery<seeManageUser>(
-    SEE_MANAGEUSER_QUERY,
+  const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
+    SEARCH_MANAGEUSER_QUERY,
     {
-      variables: { page: currentPage, limit: currentLimit },
+      variables: { mGrade: 20 },
     },
   )
-
-  const managerData = data?.seeManageUser
+  const managerData = data?.searchManageUser.data
+  const managerTotal = data?.searchManageUser.totalCount
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
-    handleScrollTop()
-  }, [currentPage])
+    refetch()
+  }, [])
 
   if (error) {
     console.log(error)
@@ -180,7 +181,7 @@ export default function ConsolutationTable() {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>10</span>건
+          총 <span>{managerTotal}</span>건
         </Ttotal>
       </TTopic>
       <TableArea>

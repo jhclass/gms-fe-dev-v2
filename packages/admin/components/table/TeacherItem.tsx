@@ -70,6 +70,7 @@ const Tname = styled.div`
   width: 12%;
   padding: 1rem;
   font-size: inherit;
+  color: #007de9;
   min-width: ${1200 * 0.12}px;
   font-weight: 600;
 `
@@ -182,9 +183,9 @@ export default function ConsolutItem(props) {
     <>
       <TableItem $resign={managerData.resign}>
         <TableRow>
-          <Link href={`/hr/teacherDetail`}>
+          <Link href={`/hr/teacherDetail/${managerData.id}`}>
             <ClickBox>
-              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
+              <Tnum>{conIndex + 1}</Tnum>
               <Tid>
                 <EllipsisBox>{managerData.mUserId}</EllipsisBox>
               </Tid>
@@ -192,7 +193,7 @@ export default function ConsolutItem(props) {
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>
               </Tname>
               <Tpart>
-                <EllipsisBox>{managerData.mPart}</EllipsisBox>
+                <EllipsisBox>{managerData.mPart.join(',')}</EllipsisBox>
               </Tpart>
               <Trank>
                 <EllipsisBox>{managerData.mRank}</EllipsisBox>
@@ -204,7 +205,7 @@ export default function ConsolutItem(props) {
               </Tphone>
               <Temail>
                 <EllipsisBox>
-                  {managerData.mAddresses ? managerData.mAddresses : '-'}
+                  {managerData.email ? managerData.email : '-'}
                 </EllipsisBox>
               </Temail>
               <TjoiningDate>

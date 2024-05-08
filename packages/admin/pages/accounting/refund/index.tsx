@@ -29,6 +29,8 @@ export default function Refund() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={false}
           rightArea={true}
         />
         <RefundFilter

@@ -42,6 +42,8 @@ export default function Outstanding() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={false}
           rightArea={true}
         />
         <PaymentFilter

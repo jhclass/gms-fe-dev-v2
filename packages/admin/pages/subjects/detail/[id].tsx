@@ -459,6 +459,8 @@ export default function SubjectDetail() {
         <MainWrap>
           <ConArea>
             <Breadcrumb
+              isFilter={false}
+              isWrite={false}
               rightArea={true}
               addRender={
                 <SwitchDiv>

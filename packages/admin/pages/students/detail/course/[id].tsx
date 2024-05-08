@@ -511,7 +511,7 @@ export default function StudentsWrite() {
       {studentData !== null && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb rightArea={false} />
+            <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
               <TopInfo>
                 <Noti>

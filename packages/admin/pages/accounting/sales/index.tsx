@@ -21,6 +21,8 @@ export default function Sales() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={false}
+          isWrite={false}
           rightArea={false}
         />
         <SalesFilter

@@ -1,23 +1,9 @@
-import { useSuspenseQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { Fragment, useEffect, useState } from 'react'
+import { useLazyQuery } from '@apollo/client'
+import { Button, ScrollShadow } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import ConsultItem from '@/components/table/ConsultItem'
-import {
-  MME_FAVO_QUERY,
-  SEE_FAVORITESTATE_QUERY,
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
-import router from 'next/router'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
-import {
-  ManageUser,
-  StudentState,
-  StudentStateResponse,
-} from '@/src/generated/graphql'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 import ManagerItem from './ManagerItem'
 
 const TableArea = styled.div`
@@ -54,7 +40,16 @@ const Theader = styled.div`
   border-bottom: 1px solid #e4e4e7;
   text-align: center;
 `
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
 const TheaderBox = styled.div`
   display: flex;
 `
@@ -169,30 +164,46 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-type seeManageUser = {
-  seeManageUser: ManageUser[]
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
 }
-
-export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
-  const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { error, data, refetch } = useSuspenseQuery<seeManageUser>(
-    SEE_MANAGEUSER_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
+export default function ManagerFilterTable({ managerFilter }) {
+  const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
+    SEARCH_MANAGEUSER_QUERY,
+    {},
   )
-
-  const managerData = data?.seeManageUser.filter(manager => manager.mGrade < 20)
+  // const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
+  //   SEARCH_MANAGEUSER_QUERY,
+  //   {
+  //     variables: {
+  //       ...teacherFilter,
+  //       mGrade: 20,
+  //     },
+  //   },
+  // )
+  const [managerData, setManagerData] = useState(null)
+  const [managerTotal, setManagerTotal] = useState(0)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
   useEffect(() => {
-    refetch()
-  }, [])
+    if (managerFilter) {
+      searchManager({
+        variables: {
+          ...managerFilter,
+        },
+        onCompleted: result => {
+          setManagerData(result?.searchManageUser.data)
+          setManagerTotal(result?.searchManageUser.totalCount)
+        },
+      })
+    }
+  }, [managerFilter])
+
+  const resetList = () => {
+    window.location.href = '/hr'
+  }
 
   if (error) {
     console.log(error)
@@ -202,9 +213,15 @@ export default function ConsolutationTable() {
     managerData && (
       <>
         <TTopic>
-          <Ttotal>
-            총 <span>{managerData.length}</span>건
-          </Ttotal>
+          <TopBox>
+            <Ttotal>
+              총<span>{managerTotal === null ? 0 : managerTotal}</span>
+              건이 검색되었습니다.
+            </Ttotal>
+            <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+              전체보기
+            </Button>
+          </TopBox>
         </TTopic>
         <TableArea>
           <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -232,13 +249,9 @@ export default function ConsolutationTable() {
                     key={index}
                     tableData={item}
                     itemIndex={index}
-                    currentPage={currentPage}
-                    limit={currentLimit}
                   />
                 ))}
-              {managerData.length === 0 && (
-                <Nolist>등록된 직원이 없습니다.</Nolist>
-              )}
+              {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
         </TableArea>
