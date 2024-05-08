@@ -175,7 +175,6 @@ export default function StudentsFilter({
   }, [router, studentFilter])
 
   const onSubmit = data => {
-    console.log(isDirty)
     if (isDirty || data.progress !== undefined) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {

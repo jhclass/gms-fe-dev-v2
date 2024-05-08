@@ -309,9 +309,6 @@ export default function StudentsWriteCourse({
                 ? parseInt(data.unCollectedAmount.replace(/,/g, ''), 10)
                 : data.unCollectedAmount,
           },
-          onCompleted: rr => {
-            // console.log(rr)
-          },
         })
         const dirtyFieldsArray = [...Object.keys(dirtyFields)]
         userLogs(

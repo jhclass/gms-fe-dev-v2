@@ -16,7 +16,7 @@ export default function managerSelect({
   optionDefualt,
   filter,
 }) {
-  const { error: searchManager, data: searchManagerData } =
+  const { error: searchManagerError, data: searchManagerData } =
     useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
       variables: {
         mGrade: filter.mGrade,
@@ -31,8 +31,8 @@ export default function managerSelect({
     ...searchManagerData?.searchManageUser.data,
   ]
 
-  if (searchManager) {
-    console.log(searchManager)
+  if (searchManagerError) {
+    console.log(searchManagerError)
   }
 
   return (

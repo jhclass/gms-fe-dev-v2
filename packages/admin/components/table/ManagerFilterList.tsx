@@ -189,7 +189,6 @@ export default function ManagerFilterTable({ managerFilter }) {
   }
   useEffect(() => {
     if (managerFilter) {
-      console.log(managerFilter)
       searchManager({
         variables: {
           ...managerFilter,
