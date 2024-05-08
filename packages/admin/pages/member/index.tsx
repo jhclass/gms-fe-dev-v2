@@ -2,7 +2,7 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Input, Button } from '@nextui-org/react'
+import { Input, Button, useDisclosure } from '@nextui-org/react'
 import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { MME_QUERY } from '@/graphql/queries'
@@ -11,6 +11,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import Layout from '@/pages/member/layout'
 import { ManageUser } from '@/src/generated/graphql'
+import ChangePassword from '@/components/modal/ChangePassword'
 
 const ConArea = styled.div`
   width: 100%;
@@ -58,15 +59,16 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-type mmeFavoQuery = {
+type mmeQuery = {
   mMe: ManageUser
 }
 export default function Profile() {
   const router = useRouter()
-  const { error, data } = useSuspenseQuery<mmeFavoQuery>(MME_QUERY)
+  const { error, data } = useSuspenseQuery<mmeQuery>(MME_QUERY)
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const mMeData = data?.mMe
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const { register, handleSubmit, formState } = useForm()
   const { errors, isDirty, dirtyFields } = formState
 
@@ -75,17 +77,13 @@ export default function Profile() {
       editManager({
         variables: {
           mUsername: data.mUsername === '' ? null : data.mUsername,
-          mGrade: mMeData.mGrade,
-          mRank: mMeData.mRank,
           mPhoneNum: data.mPhoneNum === '' ? null : data.mPhoneNum,
           mPhoneNumCompany: mMeData.mPhoneNumCompany,
           mPhoneNumInside: mMeData.mPhoneNumInside,
           mPhoneNumFriend:
             data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend,
-          mPart: mMeData.mPart,
-          mAvatar: mMeData.mAvatar,
-          mJoiningDate: mMeData.mJoiningDate,
           mAddresses: data.mAddresses === '' ? null : data.mAddresses,
+          email: data.email === '' ? null : data.email,
         },
         refetchQueries: [
           {
@@ -119,10 +117,6 @@ export default function Profile() {
     return formatted
   }
 
-  const clickAdmin = () => {
-    alert(`비밀번호변경은 관리자에게 문의주세요.😀\nkkalim4913@gmail.com`)
-  }
-
   if (error) {
     console.log(error)
   }
@@ -131,33 +125,41 @@ export default function Profile() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb rightArea={false} />
+          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox>
                   <Input
                     labelPlacement="outside"
-                    placeholder=" "
-                    variant="bordered"
+                    placeholder="이름"
+                    variant={'bordered'}
                     radius="md"
                     type="text"
-                    label="이름"
                     defaultValue={mMeData?.mUsername}
+                    label={
+                      <FilterLabel>
+                        이름<span>*</span>
+                      </FilterLabel>
+                    }
+                    className="w-full"
                     onChange={e => {
                       register('mUsername').onChange(e)
                     }}
-                    className="w-full"
                     {...register('mUsername', {
                       required: {
                         value: true,
                         message: '이름을 입력해주세요.',
                       },
+                      pattern: {
+                        value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        message: '한글, 영어, 숫자만 사용 가능합니다.',
+                      },
                     })}
                   />
                   {errors.mUsername && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.mUsername?.message)}
+                      {String(errors.mUsername.message)}
                     </p>
                   )}
                 </AreaBox>
@@ -168,72 +170,132 @@ export default function Profile() {
                     radius="md"
                     variant="solid"
                     className="w-full text-white bg-flag1"
-                    onClick={clickAdmin}
+                    onClick={onOpen}
                   >
                     비밀번호 변경
                   </Button>
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    isReadOnly
-                    defaultValue={mMeData?.mPhoneNumInside}
                     labelPlacement="outside"
-                    placeholder=" "
-                    variant="faded"
+                    placeholder="ex)503"
+                    variant="bordered"
                     radius="md"
                     type="text"
                     label="내선번호"
                     className="w-full"
-                    {...register('mPhoneNumInside')}
+                    defaultValue={mMeData.mPhoneNumInside}
+                    onChange={e => {
+                      register('mPhoneNumInside').onChange(e)
+                    }}
+                    {...register('mPhoneNumInside', {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: '숫자만 입력 가능합니다.',
+                      },
+                    })}
                   />
+                  {errors.mPhoneNumInside && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.mPhoneNumInside.message)}
+                    </p>
+                  )}
                 </AreaBox>
-              </FlexBox>
-              <FlexBox>
-                <Input
-                  defaultValue={mMeData?.mAddresses}
-                  labelPlacement="outside"
-                  placeholder=" "
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label="주소"
-                  onChange={e => {
-                    register('mAddresses').onChange(e)
-                  }}
-                  className="w-full"
-                  {...register('mAddresses')}
-                />
               </FlexBox>
               <FlexBox>
                 <AreaBox>
                   <Input
-                    isReadOnly
-                    defaultValue={mMeData?.mPhoneNumCompany}
                     labelPlacement="outside"
                     placeholder=" "
-                    variant="faded"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label="주소"
+                    className="w-full"
+                    defaultValue={mMeData.mAddresses}
+                    onChange={e => {
+                      register('mAddresses').onChange(e)
+                    }}
+                    {...register('mAddresses')}
+                  />
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder=" "
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    // defaultValue={mMeData?.email}
+                    label="이메일"
+                    className="w-full"
+                    onChange={e => {
+                      register('email').onChange(e)
+                    }}
+                    {...register('email', {
+                      pattern: {
+                        value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                        message: '유효하지 않은 이메일 형식입니다.',
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.email.message)}
+                    </p>
+                  )}
+                </AreaBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="직통번호"
+                    variant={'bordered'}
+                    defaultValue={mMeData?.mPhoneNumCompany}
                     radius="md"
                     type="text"
                     label="직통번호"
                     className="w-full"
-                    {...register('mPhoneNumCompany')}
+                    onChange={e => {
+                      register('mPhoneNumCompany').onChange(e)
+                    }}
+                    {...register('mPhoneNumCompany', {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: '숫자만 입력 가능합니다.',
+                      },
+                    })}
                   />
+                  {errors.mPhoneNumCompany && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.mPhoneNumCompany.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    defaultValue={mMeData?.mPhoneNum}
                     labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
-                    variant="bordered"
+                    placeholder="연락처"
+                    variant={'bordered'}
                     radius="md"
                     type="text"
-                    label="휴대폰번호"
+                    defaultValue={mMeData?.mPhoneNum}
+                    label={
+                      <FilterLabel>
+                        연락처<span>*</span>
+                      </FilterLabel>
+                    }
+                    className="w-full"
                     onChange={e => {
                       register('mPhoneNum').onChange(e)
                     }}
-                    className="w-full"
                     maxLength={11}
                     {...register('mPhoneNum', {
+                      required: {
+                        value: true,
+                        message: '휴대폰번호를 입력해주세요.',
+                      },
                       maxLength: {
                         value: 11,
                         message: '최대 11자리까지 입력 가능합니다.',
@@ -248,29 +310,34 @@ export default function Profile() {
                       },
                     })}
                   />
-                  {errors.phoneNum1 && (
+                  {errors.mPhoneNum && (
                     <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.phoneNum1.message)}
+                      {String(errors.mPhoneNum.message)}
                     </p>
                   )}
                 </AreaBox>
                 <AreaBox>
                   <Input
-                    defaultValue={mMeData?.mPhoneNumFriend}
                     labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
+                    placeholder="비상 연락망"
                     variant="bordered"
                     radius="md"
                     type="text"
-                    label="기타번호"
+                    label="기타 연락처"
+                    className="w-full"
+                    maxLength={12}
+                    defaultValue={mMeData?.mPhoneNumFriend}
                     onChange={e => {
                       register('mPhoneNumFriend').onChange(e)
                     }}
-                    className="w-full"
                     {...register('mPhoneNumFriend', {
                       pattern: {
                         value: /^[0-9]+$/,
                         message: '숫자만 입력 가능합니다.',
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: '최대 12자리까지 입력 가능합니다.',
                       },
                     })}
                   />
@@ -359,6 +426,7 @@ export default function Profile() {
           </DetailBox>
         </ConArea>
       </MainWrap>
+      <ChangePassword isOpen={isOpen} onClose={onClose} managerData={mMeData} />
     </>
   )
 }
