@@ -9,6 +9,10 @@ import ManagerList from '@/components/table/ManagerList'
 import ManagerFilter from '@/components/filter/ManagerFilter'
 import TeacherList from '@/components/table/TeacherList'
 import TeacherFilter from '@/components/filter/TeacherFilter'
+import TeacherFilterList from '@/components/table/TeacherFilterList'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import useMmeQuery from '@/utils/mMe'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -28,10 +32,14 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function Lecture() {
+export default function Teacher() {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
+  const [teacherFilter, setTeacherFilter] = useState()
 
   return (
     <>
@@ -39,6 +47,10 @@ export default function Lecture() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={false}
+          isWrite={
+            mGrade < grade.general || mPart.includes('교무팀') ? true : false
+          }
           rightArea={true}
         />
         <Suspense
@@ -50,9 +62,8 @@ export default function Lecture() {
         >
           <TeacherFilter
             isActive={filterActive}
-            // studentFilter={studentFilter}
-            // onFilterSearch={setFilterSearch}
-            // setStudentFilter={setStudentFilter}
+            onFilterSearch={setFilterSearch}
+            setTeacherFilter={setTeacherFilter}
           />
         </Suspense>
         <ConBox>
@@ -64,7 +75,7 @@ export default function Lecture() {
                 </LodingDiv>
               }
             >
-              {/* <ConsultationFilter studentFilter={studentFilter} /> */}
+              <TeacherFilterList teacherFilter={teacherFilter} />
             </Suspense>
           ) : (
             <Suspense
@@ -82,4 +93,4 @@ export default function Lecture() {
     </>
   )
 }
-Lecture.getLayout = page => <Layout>{page}</Layout>
+Teacher.getLayout = page => <Layout>{page}</Layout>

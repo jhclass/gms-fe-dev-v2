@@ -7,6 +7,10 @@ import LectureList from '@/components/table/LectureList'
 import LectureFilter from '@/components/filter/LectureFilter'
 import ManagerList from '@/components/table/ManagerList'
 import ManagerFilter from '@/components/filter/ManagerFilter'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import useMmeQuery from '@/utils/mMe'
+import ManagerFilterList from '@/components/table/ManagerFilterList'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -27,9 +31,12 @@ const LodingDiv = styled.div`
 `
 
 export default function Lecture() {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
+  const [managerFilter, setManagerFilter] = useState()
 
   return (
     <>
@@ -37,6 +44,8 @@ export default function Lecture() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={false}
+          isWrite={mGrade < grade.general ? true : false}
           rightArea={true}
         />
         <Suspense
@@ -48,9 +57,8 @@ export default function Lecture() {
         >
           <ManagerFilter
             isActive={filterActive}
-            // studentFilter={studentFilter}
-            // onFilterSearch={setFilterSearch}
-            // setStudentFilter={setStudentFilter}
+            onFilterSearch={setFilterSearch}
+            setManagerFilter={setManagerFilter}
           />
         </Suspense>
         <ConBox>
@@ -62,7 +70,7 @@ export default function Lecture() {
                 </LodingDiv>
               }
             >
-              {/* <ConsultationFilter studentFilter={studentFilter} /> */}
+              <ManagerFilterList managerFilter={managerFilter} />
             </Suspense>
           ) : (
             <Suspense

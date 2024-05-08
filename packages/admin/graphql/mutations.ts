@@ -63,33 +63,27 @@ export const CREATE_MANAGE_USER_MUTATION = gql`
 export const EDIT_MANAGE_USER_MUTATION = gql`
   mutation Mutation(
     $mUsername: String
-    $mGrade: Int
-    $mRank: String
     $mPhoneNum: String
     $mPhoneNumCompany: String
     $mPhoneNumInside: String
     $mPhoneNumFriend: String
-    $mPart: [String]
     $mAvatar: String
-    $mJoiningDate: String
     $mAddresses: String
+    $email: String
   ) {
     editManageUser(
       mUsername: $mUsername
-      mGrade: $mGrade
-      mRank: $mRank
       mPhoneNum: $mPhoneNum
       mPhoneNumCompany: $mPhoneNumCompany
       mPhoneNumInside: $mPhoneNumInside
       mPhoneNumFriend: $mPhoneNumFriend
-      mPart: $mPart
       mAvatar: $mAvatar
-      mJoiningDate: $mJoiningDate
       mAddresses: $mAddresses
+      email: $email
     ) {
-      ok
       error
       message
+      ok
     }
   }
 `

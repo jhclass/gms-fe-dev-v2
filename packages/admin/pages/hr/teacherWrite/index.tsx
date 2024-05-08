@@ -152,8 +152,8 @@ export default function StudentsWrite() {
   } = useForm()
   const { errors } = formState
   const [joiningDate, setJoiningDate] = useState(null)
-  const [isSelected, setIsSelected] = useState(false)
   const years = _.range(1950, getYear(new Date()) + 1, 1)
+
   const password = watch('mPassword')
   const confirmPassword = watch('mPassword1')
   const checkPassword = (password1, password2) => {
@@ -174,7 +174,6 @@ export default function StudentsWrite() {
   }, [password, confirmPassword, setError, clearErrors])
 
   const onSubmit = data => {
-    console.log(data)
     checkPassword(data.mPassword, data.mPassword1)
     if (data.mPart) {
       const parts = data.mPart.split(',').map(part => part.trim())
@@ -211,7 +210,7 @@ export default function StudentsWrite() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb rightArea={false} />
+          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
             <TopInfo>
               <Noti>
@@ -270,7 +269,7 @@ export default function StudentsWrite() {
                       onChange={e => {
                         register('mPassword').onChange(e)
                       }}
-                      maxLength={11}
+                      maxLength={8}
                       {...register('mPassword', {
                         required: {
                           value: true,
@@ -308,7 +307,7 @@ export default function StudentsWrite() {
                       onChange={e => {
                         register('mPassword1').onChange(e)
                       }}
-                      maxLength={11}
+                      maxLength={8}
                       {...register('mPassword1', {
                         required: {
                           value: true,
@@ -402,13 +401,16 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="기타 연락처"
+                      placeholder="비상 연락망"
                       variant="bordered"
                       radius="md"
                       type="text"
                       label="기타 연락처"
                       className="w-full"
                       maxLength={12}
+                      onChange={e => {
+                        register('mPhoneNumFriend').onChange(e)
+                      }}
                       {...register('mPhoneNumFriend', {
                         pattern: {
                           value: /^[0-9]+$/,
@@ -437,6 +439,9 @@ export default function StudentsWrite() {
                       type="text"
                       label="주소"
                       className="w-full"
+                      onChange={e => {
+                        register('mAddresses').onChange(e)
+                      }}
                       {...register('mAddresses')}
                     />
                     {errors.mAddresses && (

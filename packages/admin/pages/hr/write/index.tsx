@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -140,35 +140,68 @@ export default function StudentsWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
-  const { register, getValues, control, handleSubmit, formState, reset } =
-    useForm()
-  const { errors, isDirty } = formState
-  const [birthdayDate, setBirthdayDate] = useState(null)
-  const [isSelected, setIsSelected] = useState(false)
+  const {
+    register,
+    setValue,
+    clearErrors,
+    setError,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+  } = useForm()
+  const { errors } = formState
+  const [joiningDate, setJoiningDate] = useState(null)
   const years = _.range(1950, getYear(new Date()) + 1, 1)
 
-  const onSubmit = data => {
-    console.log(data)
+  const password = watch('mPassword')
+  const confirmPassword = watch('mPassword1')
+  const checkPassword = (password1, password2) => {
+    if (password1 && password2) {
+      if (password1 !== password2 || password1.length !== password2.length) {
+        setError('mPassword1', {
+          type: 'manual',
+          message: '비밀번호가 일치하지 않습니다.',
+        })
+      } else {
+        clearErrors('mPassword1')
+      }
+    }
+  }
 
+  useEffect(() => {
+    checkPassword(password, confirmPassword)
+  }, [password, confirmPassword, setError, clearErrors])
+
+  const onSubmit = data => {
+    checkPassword(data.mPassword, data.mPassword1)
+    if (data.mPart) {
+      const parts = data.mPart.split(',').map(part => part.trim())
+      setValue('mPart', parts)
+    }
     createManager({
       variables: {
         mUserId: data.mUserId.trim(),
         mUsername: data.mUsername.trim(),
         mPassword: data.mPassword.trim(),
-        mGrade: 20,
-        mRank: data.mRank,
-        mPart: null,
+        mGrade: 10,
+        mRank: data.mRank === '' ? null : data.mRank,
+        mPart: data.mPart === '' ? null : data.mPart,
         mPhoneNum: data.mPhoneNum.trim(),
-        mPhoneNumCompany: data.mPhoneNumCompany.trim(),
-        mPhoneNumFriend: data.mPhoneNumFriend.trim(),
-        mPhoneNumInside: data.mPhoneNumInside.trim(),
-        mJoiningDate: null,
-        mAddresses: data.mAddresses.trim(),
-        email: data.email.trim(),
+        mPhoneNumFriend:
+          data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend.trim(),
+        mPhoneNumCompany:
+          data.mPhoneNumCompany === '' ? null : data.mPhoneNumCompany.trim(),
+        mPhoneNumInside:
+          data.mPhoneNumInside === '' ? null : data.mPhoneNumInside.trim(),
+        mJoiningDate:
+          data.mJoiningDate === undefined ? null : new Date(data.mJoiningDate),
+        mAddresses: data.mAddresses === '' ? null : data.mAddresses.trim(),
+        email: data.email === '' ? null : data.email.trim(),
       },
       onCompleted: result => {
         if (result.createManagerAccount.ok) {
-          userLogs(`${data.mUsername}강사 등록`)
+          userLogs(`${data.mUsername}직원 등록`)
           alert('등록되었습니다.')
           router.back()
         }
@@ -180,19 +213,7 @@ export default function StudentsWrite() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb
-            rightArea={true}
-            addRender={
-              <SwitchDiv>
-                <SwitchText>퇴사여부</SwitchText>
-                <Switch
-                  size="md"
-                  isSelected={isSelected}
-                  onValueChange={setIsSelected}
-                />
-              </SwitchDiv>
-            }
-          />
+          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
             <TopInfo>
               <Noti>
@@ -251,7 +272,7 @@ export default function StudentsWrite() {
                       onChange={e => {
                         register('mPassword').onChange(e)
                       }}
-                      maxLength={11}
+                      maxLength={8}
                       {...register('mPassword', {
                         required: {
                           value: true,
@@ -269,7 +290,7 @@ export default function StudentsWrite() {
                     />
                     {errors.mPassword && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.phoneNum1.message)}
+                        {String(errors.mPassword.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -289,25 +310,17 @@ export default function StudentsWrite() {
                       onChange={e => {
                         register('mPassword1').onChange(e)
                       }}
-                      maxLength={11}
+                      maxLength={8}
                       {...register('mPassword1', {
                         required: {
                           value: true,
                           message: '비밀번호를 입력해주세요.',
                         },
-                        maxLength: {
-                          value: 8,
-                          message: '최대 8자리까지 입력 가능합니다.',
-                        },
-                        minLength: {
-                          value: 3,
-                          message: '최소 3자리 이상이어야 합니다.',
-                        },
                       })}
                     />
                     {errors.mPassword1 && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.phoneNum1.message)}
+                        {String(errors.mPassword1.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -388,16 +401,119 @@ export default function StudentsWrite() {
                       </p>
                     )}
                   </AreaBox>
+                </FlexBox>
+                <FlexBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="기타 연락처"
+                      placeholder=" "
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="주소"
+                      className="w-full"
+                      onChange={e => {
+                        register('mAddresses').onChange(e)
+                      }}
+                      {...register('mAddresses')}
+                    />
+                    {errors.mAddresses && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mAddresses.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="이메일"
+                      className="w-full"
+                      onChange={e => {
+                        register('email').onChange(e)
+                      }}
+                      {...register('email', {
+                        pattern: {
+                          value:
+                            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                          message: '유효하지 않은 이메일 형식입니다.',
+                        },
+                      })}
+                    />
+                    {errors.email && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.email.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="직통번호"
+                      variant={'bordered'}
+                      radius="md"
+                      type="text"
+                      label="직통번호"
+                      className="w-full"
+                      onChange={e => {
+                        register('mPhoneNumCompany').onChange(e)
+                      }}
+                      {...register('mPhoneNumCompany', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumCompany && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumCompany.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="ex)503"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="내선번호"
+                      className="w-full"
+                      onChange={e => {
+                        register('mPhoneNumInside').onChange(e)
+                      }}
+                      {...register('mPhoneNumInside', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumInside && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumInside.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="비상 연락망"
                       variant="bordered"
                       radius="md"
                       type="text"
                       label="기타 연락처"
                       className="w-full"
                       maxLength={12}
+                      onChange={e => {
+                        register('mPhoneNumFriend').onChange(e)
+                      }}
                       {...register('mPhoneNumFriend', {
                         pattern: {
                           value: /^[0-9]+$/,
@@ -420,13 +536,13 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="강의분야"
+                      placeholder="ex) 교무팀,인사팀"
                       variant={'bordered'}
                       radius="md"
                       type="text"
                       label={
                         <FilterLabel>
-                          강의 분야<span>*</span>
+                          부서명<span>*</span>
                         </FilterLabel>
                       }
                       className="w-full"
@@ -453,25 +569,25 @@ export default function StudentsWrite() {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="직책"
+                      placeholder="ex) 팀장 or 대리"
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      label={<FilterLabel>직책</FilterLabel>}
+                      label={<FilterLabel>직책/직위</FilterLabel>}
                       className="w-full"
                       onChange={e => {
-                        register('name').onChange(e)
+                        register('mRank').onChange(e)
                       }}
-                      {...register('name', {
+                      {...register('mRank', {
                         pattern: {
                           value: /^[가-힣a-zA-Z0-9\s]*$/,
                           message: '한글, 영어, 숫자만 사용 가능합니다.',
                         },
                       })}
                     />
-                    {errors.name && (
+                    {errors.mRank && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.name.message)}
+                        {String(errors.mRank.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -479,7 +595,7 @@ export default function StudentsWrite() {
                     <DatePickerBox>
                       <Controller
                         control={control}
-                        name="birthday"
+                        name="mJoiningDate"
                         rules={{
                           required: {
                             value: true,
@@ -507,16 +623,16 @@ export default function StudentsWrite() {
                             locale="ko"
                             showYearDropdown
                             selected={
-                              birthdayDate === null
+                              joiningDate === null
                                 ? null
-                                : new Date(birthdayDate)
+                                : new Date(joiningDate)
                             }
                             openToDate={new Date('2000/04/11')}
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
                               field.onChange(date)
-                              setBirthdayDate(date)
+                              setJoiningDate(date)
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -544,26 +660,22 @@ export default function StudentsWrite() {
                         )}
                       />
                     </DatePickerBox>
-                    {errors.birthday && (
+                    {errors.mJoiningDate && (
                       <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.birthday.message)}
+                        {String(errors.mJoiningDate.message)}
                       </p>
                     )}
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    {/* <FilterLabel>
-                      도장<span>*</span>
-                    </FilterLabel> */}
-                    <div className="flex items-start gap-3">
-                      <Button color={'primary'}>도장 생성</Button>
-                      <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
-                        <img
-                          src="https://instaclone-uploadsss.s3.ap-northeast-2.amazonaws.com/stamps/2-1714446421459-stamp.png"
-                          alt="Description of image"
-                        />
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <Button isDisabled={true} color={'primary'}>
+                        도장 생성
+                      </Button>
+                      <Noti>
+                        <span>*</span> 도장 생성은 아이디 생성 후 진행해주세요.
+                      </Noti>
                     </div>
                     <div></div>
                   </AreaBox>

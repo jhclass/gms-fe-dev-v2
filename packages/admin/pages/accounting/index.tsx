@@ -46,6 +46,8 @@ export default function Accounting() {
     <>
       <MainWrap>
         <Breadcrumb
+          isFilter={true}
+          isWrite={false}
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           rightArea={true}

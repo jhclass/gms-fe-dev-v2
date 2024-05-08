@@ -35,6 +35,8 @@ export default function Lecture() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={true}
           rightArea={true}
         />
         <Suspense

@@ -164,7 +164,7 @@ export default function Breadcrumb(props) {
           </CateTitle>
           {props.rightArea && (
             <BoxRt>
-              {currentCate.isFilter && (
+              {props.isFilter && (
                 <FilterBtn
                   variants={FilterVariants}
                   initial="initial"
@@ -182,7 +182,7 @@ export default function Breadcrumb(props) {
                   Filter
                 </FilterBtn>
               )}
-              {currentCate.isWrite !== '' && (
+              {props.isWrite && (
                 <Button
                   size="sm"
                   radius="sm"

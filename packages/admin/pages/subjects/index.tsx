@@ -67,6 +67,8 @@ export default function Subjects() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={true}
+          isWrite={true}
           rightArea={true}
           addRender={
             mGrade < grade.general && (

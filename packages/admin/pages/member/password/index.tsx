@@ -91,7 +91,7 @@ export default function Profile() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb rightArea={false} />
+          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>

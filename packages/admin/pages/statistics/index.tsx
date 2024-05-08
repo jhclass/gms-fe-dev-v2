@@ -57,6 +57,8 @@ export default function Statistics() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
+          isFilter={false}
+          isWrite={false}
           rightArea={true}
           addRender={
             <DeleteDiv>

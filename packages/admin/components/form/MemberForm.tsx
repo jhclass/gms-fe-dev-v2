@@ -9,24 +9,21 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Button,
-  Input,
-  Radio,
-  RadioGroup,
-  Switch,
-  useDisclosure,
-} from '@nextui-org/react'
+import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
+import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser, Stamp } from '@/src/generated/graphql'
+import {
+  ManageUser,
+  // SearchManageUserResult,
+  Stamp,
+} from '@/src/generated/graphql'
 import ChangePassword from '../modal/ChangePassword'
-import { Controller, useForm } from 'react-hook-form'
 
 const ConArea = styled.div`
   width: 100%;
@@ -153,7 +150,7 @@ type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 
-export default function StudentsWrite({ managerId }) {
+export default function ManagerWrite({ managerId }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
@@ -176,13 +173,16 @@ export default function StudentsWrite({ managerId }) {
   const managerData = data?.searchManageUser.data[0]
   const [devEditManager] = useMutation(DEV_EDIT_MANAGE_USER_MUTATION)
 
-  const { register, control, handleSubmit, setValue, formState } = useForm({
+  const { register, setValue, control, handleSubmit, formState } = useForm({
     defaultValues: {
       mUserId: managerData.mUserId,
       mUsername: managerData.mUsername,
+      mPhoneNumCompany: managerData.mPhoneNumCompany,
       mPhoneNum: managerData.mPhoneNum,
       mPhoneNumFriend: managerData.mPhoneNumFriend,
       mPart: managerData.mPart,
+      mRank: managerData.mRank,
+      mPhoneNumInside: managerData.mPhoneNumInside,
       mAvatar: managerData.mAvatar,
       mJoiningDate: managerData.mJoiningDate,
       mAddresses: managerData.mAddresses,
@@ -208,6 +208,7 @@ export default function StudentsWrite({ managerId }) {
   }, [managerData])
 
   const onSubmit = async data => {
+    console.log(data)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       let part
@@ -223,12 +224,21 @@ export default function StudentsWrite({ managerId }) {
             variables: {
               mUserId: [managerData.mUserId],
               mUsername: data.mUsername.trim(),
-              mPhoneNum: data.mPhoneNum.trim(),
-              mPart: data.mPart === '' ? null : part,
+              mRank: data.mRank === null ? null : data.mRank,
+              mPart: data.mPart === null ? null : part,
+              mPhoneNum: data.mPhoneNum,
               mPhoneNumFriend:
-                data.mPhoneNumFriend === ''
+                data.mPhoneNumFriend === null || data.mPhoneNumFriend === ''
                   ? null
                   : data.mPhoneNumFriend.trim(),
+              mPhoneNumCompany:
+                data.mPhoneNumCompany === null || data.mPhoneNumCompany === ''
+                  ? null
+                  : data.mPhoneNumCompany.trim(),
+              mPhoneNumInside:
+                data.mPhoneNumInside === null || data.mPhoneNumInside === ''
+                  ? null
+                  : data.mPhoneNumInside.trim(),
               mJoiningDate:
                 data.mJoiningDate === null
                   ? null
@@ -236,25 +246,25 @@ export default function StudentsWrite({ managerId }) {
                   ? new Date(parseInt(data.mJoiningDate))
                   : new Date(data.mJoiningDate),
               mAddresses:
-                data.mAddresses === '' ? null : data.mAddresses.trim(),
-              email: data.email === '' ? null : data.email.trim(),
+                data.mAddresses === null ? null : data.mAddresses.trim(),
+              email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
 
           if (!result.data.devEditManageUser.ok) {
-            throw new Error('강사 정보 수정 실패')
+            throw new Error('직원 정보 수정 실패')
           }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
-            `${managerData.mUsername} 강사 정보 수정`,
+            `${managerData.mUsername} 직원 정보 수정`,
             dirtyFieldsArray.join(', '),
           )
           alert('수정되었습니다.')
-          router.push('/hr/teacher', undefined, { shallow: true })
+          router.push('/hr', undefined, { shallow: true })
         } catch (error) {
-          console.error('강사 정보 수정 중 에러 발생:', error)
-          alert('강사 정보 수정 처리 중 오류가 발생했습니다.')
+          console.error('직원 정보 수정 중 에러 발생:', error)
+          alert('직원 정보 수정 처리 중 오류가 발생했습니다.')
         }
       }
     }
@@ -269,8 +279,6 @@ export default function StudentsWrite({ managerId }) {
       <MainWrap>
         <ConArea>
           <Breadcrumb
-            isFilter={false}
-            isWrite={false}
             rightArea={true}
             addRender={
               <Controller
@@ -429,37 +437,6 @@ export default function StudentsWrite({ managerId }) {
                       </p>
                     )}
                   </AreaBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="비상 연락망"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="기타 연락처"
-                      defaultValue={managerData.mPhoneNumFriend}
-                      className="w-full"
-                      maxLength={12}
-                      onChange={e => {
-                        register('mPhoneNumFriend').onChange(e)
-                      }}
-                      {...register('mPhoneNumFriend', {
-                        pattern: {
-                          value: /^[0-9]+$/,
-                          message: '숫자만 입력 가능합니다.',
-                        },
-                        maxLength: {
-                          value: 12,
-                          message: '최대 12자리까지 입력 가능합니다.',
-                        },
-                      })}
-                    />
-                    {errors.mPhoneNumFriend && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.mPhoneNumFriend.message)}
-                      </p>
-                    )}
-                  </AreaBox>
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
@@ -510,21 +487,141 @@ export default function StudentsWrite({ managerId }) {
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
-                      placeholder="강의분야"
+                      placeholder="직통번호"
+                      variant={'bordered'}
+                      defaultValue={managerData.mPhoneNumCompany}
+                      radius="md"
+                      type="text"
+                      label="직통번호"
+                      className="w-full"
+                      onChange={e => {
+                        register('mPhoneNumCompany').onChange(e)
+                      }}
+                      {...register('mPhoneNumCompany', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumCompany && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumCompany.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="ex)503"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="내선번호"
+                      className="w-full"
+                      defaultValue={managerData.mPhoneNumInside}
+                      onChange={e => {
+                        register('mPhoneNumInside').onChange(e)
+                      }}
+                      {...register('mPhoneNumInside', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumInside && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumInside.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="비상 연락망"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="기타 연락처"
+                      className="w-full"
+                      maxLength={12}
+                      defaultValue={managerData.mPhoneNumFriend}
+                      onChange={e => {
+                        register('mPhoneNumFriend').onChange(e)
+                      }}
+                      {...register('mPhoneNumFriend', {
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: '숫자만 입력 가능합니다.',
+                        },
+                        maxLength: {
+                          value: 12,
+                          message: '최대 12자리까지 입력 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mPhoneNumFriend && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mPhoneNumFriend.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                </FlexBox>
+                <FlexBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="ex) 교무팀,인사팀"
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      label="강의 분야"
+                      label={
+                        <FilterLabel>
+                          부서명<span>*</span>
+                        </FilterLabel>
+                      }
                       defaultValue={managerData.mPart.join(',')}
                       className="w-full"
                       onChange={e => {
                         register('mPart').onChange(e)
                       }}
-                      {...register('mPart')}
+                      {...register('mPart', {
+                        required: {
+                          value: true,
+                          message: '부서를 입력해주세요.',
+                        },
+                      })}
                     />
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}
+                      </p>
+                    )}
+                  </AreaBox>
+                  <AreaBox>
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="ex) 팀장 or 대리"
+                      variant={'bordered'}
+                      radius="md"
+                      type="text"
+                      defaultValue={managerData.mRank}
+                      label={<FilterLabel>직책/직위</FilterLabel>}
+                      className="w-full"
+                      onChange={e => {
+                        register('mRank').onChange(e)
+                      }}
+                      {...register('mRank', {
+                        pattern: {
+                          value: /^[가-힣a-zA-Z0-9\s]*$/,
+                          message: '한글, 영어, 숫자만 사용 가능합니다.',
+                        },
+                      })}
+                    />
+                    {errors.mRank && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mRank.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -534,6 +631,12 @@ export default function StudentsWrite({ managerId }) {
                         control={control}
                         name="mJoiningDate"
                         defaultValue={managerData?.mJoiningDate}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '입사일을 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <DatePicker
                             renderCustomHeader={({
@@ -559,7 +662,6 @@ export default function StudentsWrite({ managerId }) {
                                 ? null
                                 : new Date(joiningDate)
                             }
-                            openToDate={new Date('2000/04/11')}
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
@@ -572,7 +674,11 @@ export default function StudentsWrite({ managerId }) {
                             customInput={
                               <Input
                                 ref={field.ref}
-                                label="입사일"
+                                label={
+                                  <FilterLabel>
+                                    입사일<span>*</span>
+                                  </FilterLabel>
+                                }
                                 labelPlacement="outside"
                                 type="text"
                                 variant="bordered"
@@ -588,6 +694,11 @@ export default function StudentsWrite({ managerId }) {
                         )}
                       />
                     </DatePickerBox>
+                    {errors.mJoiningDate && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mJoiningDate.message)}
+                      </p>
+                    )}
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>
@@ -655,4 +766,4 @@ export default function StudentsWrite({ managerId }) {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+ManagerWrite.getLayout = page => <Layout>{page}</Layout>

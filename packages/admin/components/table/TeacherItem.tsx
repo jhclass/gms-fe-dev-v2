@@ -185,7 +185,7 @@ export default function ConsolutItem(props) {
         <TableRow>
           <Link href={`/hr/teacherDetail/${managerData.id}`}>
             <ClickBox>
-              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
+              <Tnum>{conIndex + 1}</Tnum>
               <Tid>
                 <EllipsisBox>{managerData.mUserId}</EllipsisBox>
               </Tid>

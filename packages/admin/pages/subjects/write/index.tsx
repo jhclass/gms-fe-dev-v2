@@ -196,6 +196,8 @@ export default function SubjectWrite() {
       <MainWrap>
         <ConArea>
           <Breadcrumb
+            isFilter={false}
+            isWrite={false}
             rightArea={true}
             addRender={
               <SwitchDiv>

@@ -1,11 +1,12 @@
 import { styled } from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
+import { gradeState, progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 import { Checkbox } from '@nextui-org/react'
+import useMmeQuery from '@/utils/mMe'
 
 const TableItem = styled.div<{ $resign: string }>`
   position: relative;
@@ -103,7 +104,6 @@ const Tphone = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.1}px;
-  font-weight: 600;
 `
 const Temail = styled.div`
   display: table-cell;
@@ -157,11 +157,13 @@ const isDisplayFlag = (date: string, step: number): string => {
   }
 }
 
-export default function ConsolutItem(props) {
+export default function ManagerItem(props) {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const managerData = props.tableData
-
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -199,14 +201,16 @@ export default function ConsolutItem(props) {
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
     return '+' + daysDiff
   }
-  console.log(managerData.resign)
+
   return (
     <>
       <TableItem $resign={managerData.resign}>
         <TableRow>
-          <Link href={`#`}>
+          <Link
+            href={mGrade < grade.general ? `/hr/detail/${managerData.id}` : '#'}
+          >
             <ClickBox>
-              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
+              <Tnum>{conIndex + 1}</Tnum>
               <Tid>
                 <EllipsisBox>{managerData.mUserId}</EllipsisBox>
               </Tid>
@@ -221,14 +225,14 @@ export default function ConsolutItem(props) {
               </Trank>
               <Tphone>
                 <EllipsisBox>
-                  {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
+                  {managerData.mPhoneNumCompany
+                    ? managerData.mPhoneNumCompany
+                    : '-'}
                 </EllipsisBox>
               </Tphone>
               <Tphone>
                 <EllipsisBox>
-                  {managerData.mPhoneNumCompany
-                    ? managerData.mPhoneNumCompany
-                    : '-'}
+                  {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
                 </EllipsisBox>
               </Tphone>
               <Temail>

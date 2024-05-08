@@ -79,15 +79,10 @@ const Content = styled.div`
       background: rgb(0, 125, 233, 0.1);
     }
 
-    /* > div {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
     @media (max-width: 479px) {
       max-width: 100%;
       width: auto;
-    } */
+    }
   }
 `
 type DashboardAT = {

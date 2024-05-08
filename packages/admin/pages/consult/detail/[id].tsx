@@ -449,7 +449,7 @@ export default function ConsultDetail() {
       {studentState !== null && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb rightArea={false} />
+            <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
               <TopInfo>
                 <Noti>
