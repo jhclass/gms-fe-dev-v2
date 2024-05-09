@@ -92,31 +92,35 @@ export const DEV_EDIT_MANAGE_USER_MUTATION = gql`
     $mUserId: [String]
     $mUsername: String
     $mPassword: String
-    $mPhoneNumCompany: String
+    $mRank: String
     $mPhoneNum: String
+    $mPhoneNumCompany: String
+    $mPhoneNumInside: String
     $mPhoneNumFriend: String
     $mPart: [String]
-    $mPhoneNumInside: String
     $mAvatar: String
     $mJoiningDate: String
     $mAddresses: String
     $resign: String
     $email: String
+    $mGrade: Int
   ) {
     devEditManageUser(
       mUserId: $mUserId
       mUsername: $mUsername
       mPassword: $mPassword
-      mPhoneNumCompany: $mPhoneNumCompany
+      mRank: $mRank
       mPhoneNum: $mPhoneNum
+      mPhoneNumCompany: $mPhoneNumCompany
+      mPhoneNumInside: $mPhoneNumInside
       mPhoneNumFriend: $mPhoneNumFriend
       mPart: $mPart
-      mPhoneNumInside: $mPhoneNumInside
       mAvatar: $mAvatar
       mJoiningDate: $mJoiningDate
       mAddresses: $mAddresses
       resign: $resign
       email: $email
+      mGrade: $mGrade
     ) {
       error
       message

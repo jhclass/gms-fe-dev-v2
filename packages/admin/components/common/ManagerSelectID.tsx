@@ -7,7 +7,7 @@ type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 
-export default function managerSelect({
+export default function managerSelectID({
   defaultValue = null,
   selecedKey,
   field,

@@ -145,13 +145,9 @@ export default function ConsultFilter({
   // studentFilter,
   // setStudentFilter,
 }) {
-  const grade = useRecoilValue(gradeState)
-  const router = useRouter()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
   const subStatus = useRecoilValue(subStatusState)
-  const progressStatus = useRecoilValue(progressStatusState)
   const [receipt, setReceipt] = useState('-')
   const [sub, setSub] = useState('-')
   const [manager, setManager] = useState('-')

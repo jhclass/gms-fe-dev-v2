@@ -47,7 +47,7 @@ export default function Consult() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           isFilter={true}
-          isWrite={false}
+          isWrite={true}
           rightArea={true}
         />
         <Suspense
