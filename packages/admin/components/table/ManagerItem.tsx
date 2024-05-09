@@ -138,7 +138,7 @@ const Tdate = styled.div`
 `
 const ResignTag = styled.span`
   display: inline-block;
-  background: #171717;
+  background: #ff5900;
   border-radius: 0.5rem;
   color: #fff;
   font-size: 0.8rem;
@@ -147,7 +147,7 @@ const ResignTag = styled.span`
 `
 const DateTag = styled.span`
   display: inline-block;
-  background: #ff5900;
+  background: #007de9;
   border-radius: 0.5rem;
   color: #fff;
   font-size: 0.8rem;
