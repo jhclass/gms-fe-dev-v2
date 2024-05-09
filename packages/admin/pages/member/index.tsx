@@ -45,13 +45,14 @@ const AreaBox = styled.div`
   flex: 1;
 `
 
-const FilterLabel = styled.label`
+const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  line-height: 1.25rem;
   color: #11181c;
-  padding-bottom: 0.37rem;
-  display: block;
+
+  span {
+    color: red;
+  }
 `
 const BtnBox = styled.div`
   display: flex;
@@ -169,7 +170,7 @@ export default function Profile() {
                     size="md"
                     radius="md"
                     variant="solid"
-                    className="w-full text-white bg-flag1"
+                    className="w-full mt-1 text-white bg-flag1"
                     onClick={onOpen}
                   >
                     비밀번호 변경
@@ -358,7 +359,11 @@ export default function Profile() {
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="부서"
+                    label={
+                      <FilterLabel>
+                        부서명<span>*</span>
+                      </FilterLabel>
+                    }
                     className="w-full"
                     {...register('mPart')}
                   />
@@ -372,7 +377,7 @@ export default function Profile() {
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="직급/직책"
+                    label="직책/직위"
                     className="w-full"
                     maxLength={11}
                     {...register('mRank')}
@@ -391,7 +396,11 @@ export default function Profile() {
                     variant="faded"
                     radius="md"
                     type="text"
-                    label="입사일"
+                    label={
+                      <FilterLabel>
+                        입사일<span>*</span>
+                      </FilterLabel>
+                    }
                     startContent={<i className="xi-calendar" />}
                     className="w-full"
                     {...register('mJoiningDate')}
