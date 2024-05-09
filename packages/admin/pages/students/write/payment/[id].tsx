@@ -783,6 +783,7 @@ export default function StudentsWritePayment() {
                           variant="bordered"
                           radius="md"
                           type="text"
+                          maxLength={8}
                           label={
                             <FilterLabel>
                               승인번호<span>*</span>

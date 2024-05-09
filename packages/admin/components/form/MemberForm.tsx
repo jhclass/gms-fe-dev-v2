@@ -9,7 +9,14 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Select,
+  SelectItem,
+  Switch,
+  useDisclosure,
+} from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
@@ -24,6 +31,8 @@ import {
   Stamp,
 } from '@/src/generated/graphql'
 import ChangePassword from '../modal/ChangePassword'
+import { gradeState } from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
 
 const ConArea = styled.div`
   width: 100%;
@@ -180,6 +189,7 @@ export default function ManagerWrite({ managerId }) {
       mPhoneNumCompany: managerData.mPhoneNumCompany,
       mPhoneNum: managerData.mPhoneNum,
       mPhoneNumFriend: managerData.mPhoneNumFriend,
+      mGrade: managerData.mGrade,
       mPart: managerData.mPart,
       mRank: managerData.mRank,
       mPhoneNumInside: managerData.mPhoneNumInside,
@@ -190,12 +200,20 @@ export default function ManagerWrite({ managerId }) {
       email: managerData.email,
     },
   })
+  const grades = useRecoilValue(gradeState)
   const { errors, dirtyFields, isDirty } = formState
+  const [grade, setGrade] = useState('10')
   const [joiningDate, setJoiningDate] = useState(null)
   const years = _.range(1950, getYear(new Date()) + 1, 1)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
+    if (managerData?.mGrade === null || managerData?.mGrade === undefined) {
+      setGrade('10')
+    } else {
+      const date = parseInt(managerData?.mJoiningDate)
+      setGrade(String(managerData?.mGrade))
+    }
     if (
       managerData?.mJoiningDate === null ||
       managerData?.mJoiningDate === undefined
@@ -208,7 +226,6 @@ export default function ManagerWrite({ managerId }) {
   }, [managerData])
 
   const onSubmit = async data => {
-    console.log(data)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       let part
@@ -224,6 +241,7 @@ export default function ManagerWrite({ managerId }) {
             variables: {
               mUserId: [managerData.mUserId],
               mUsername: data.mUsername.trim(),
+              mGrade: parseInt(data.mGrade),
               mRank: data.mRank === null ? null : data.mRank,
               mPart: data.mPart === null ? null : part,
               mPhoneNum: data.mPhoneNum,
@@ -268,6 +286,10 @@ export default function ManagerWrite({ managerId }) {
         }
       }
     }
+  }
+
+  const handleGradeChange = e => {
+    setGrade(e.target.value)
   }
 
   const clickCreate = () => {
@@ -357,6 +379,47 @@ export default function ManagerWrite({ managerId }) {
                     >
                       비밀번호 변경
                     </Button>
+                  </AreaBox>
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="mGrade"
+                      defaultValue={managerData?.mGrade}
+                      render={({ field, fieldState }) => (
+                        <Select
+                          labelPlacement="outside"
+                          defaultValue={managerData?.mGrade}
+                          label={
+                            <FilterLabel>
+                              권한등급<span>*</span>
+                            </FilterLabel>
+                          }
+                          placeholder=" "
+                          className="w-full"
+                          variant="bordered"
+                          selectedKeys={[grade]}
+                          onChange={value => {
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleGradeChange(value)
+                            }
+                          }}
+                        >
+                          {Object.entries(grades)
+                            .filter(([key]) => key !== 'dev')
+                            .map(([key, item]) => (
+                              <SelectItem key={item} value={item}>
+                                {key}
+                              </SelectItem>
+                            ))}
+                        </Select>
+                      )}
+                    />
+                    {errors.mGrade && (
+                      <p className="px-2 pt-2 text-xs text-red-500">
+                        {String(errors.mGrade.message)}
+                      </p>
+                    )}
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>
