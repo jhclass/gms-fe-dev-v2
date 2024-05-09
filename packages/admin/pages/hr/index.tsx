@@ -44,7 +44,7 @@ export default function Lecture() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={false}
+          isFilter={true}
           isWrite={mGrade < grade.general ? true : false}
           rightArea={true}
         />
