@@ -8,6 +8,9 @@ import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
+import useMmeQuery from '@/utils/mMe'
+import { useDisclosure } from '@nextui-org/react'
+import RequestMessage from '../modal/RequestMessage'
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>
@@ -94,6 +97,22 @@ const HeaderRt = styled.div`
   gap: 1.8rem;
   align-items: center;
   position: relative;
+`
+const ReqBtn = styled.button`
+  display: flex;
+  align-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0.2rem;
+  position: relative;
+
+  @media screen and (max-width: 1024px) {
+    width: 2rem;
+    height: 2rem;
+  }
+  img {
+    width: 100%;
+  }
 
   &:after {
     content: '';
@@ -107,7 +126,6 @@ const HeaderRt = styled.div`
     transition: 0.3s;
   }
 `
-
 const NotiBtn = styled.button`
   display: flex;
   align-items: center;
@@ -119,6 +137,18 @@ const NotiBtn = styled.button`
   @media screen and (max-width: 1024px) {
     width: 2rem;
     height: 2rem;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 1.5rem;
+    top: 50%;
+    left: 3.1rem;
+    margin-top: -0.75rem;
+    background: #d4d4d8;
+    transition: 0.3s;
   }
 `
 
@@ -236,8 +266,8 @@ export default function Header() {
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
-  const { mUserId = '', mUsername = '' } = mMe || {}
-
+  const { mUserId = '', mUsername = '', mGrade = '' } = mMe || {}
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
@@ -335,7 +365,14 @@ export default function Header() {
             />
             <NotiNum>0</NotiNum>
           </NotiBtn>
-
+          {mGrade === 0 && (
+            <ReqBtn onClick={onOpen}>
+              <img
+                src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_help3.webp"
+                alt="알림"
+              />
+            </ReqBtn>
+          )}
           <UserBox onClick={toggleUserMenu}>
             <UserGrade>
               <span>{gradeStr(mUserId)}</span>
@@ -375,6 +412,12 @@ export default function Header() {
           </UserBox>
         </HeaderRt>
       </HeaderSec>
+      <RequestMessage
+        isOpen={isOpen}
+        onClose={onClose}
+        managerId={mUserId}
+        managerName={mUsername}
+      />
     </>
   )
 }
