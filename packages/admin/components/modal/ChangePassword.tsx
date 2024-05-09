@@ -96,6 +96,16 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
   const password = watch('mPassword')
   const confirmPassword = watch('mPassword1')
   const checkPassword = (password1, password2) => {
+    if (password1) {
+      if (password1.length < 7) {
+        setError('mPassword', {
+          type: 'manual',
+          message: '최소 8자리 이상이어야 합니다.',
+        })
+      } else {
+        clearErrors('mPassword')
+      }
+    }
     if (password1 && password2) {
       if (password1 !== password2 || password1.length !== password2.length) {
         setError('mPassword1', {
@@ -170,19 +180,14 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
                             onChange={e => {
                               register('mPassword').onChange(e)
                             }}
-                            maxLength={8}
                             {...register('mPassword', {
                               required: {
                                 value: true,
                                 message: '비밀번호를 입력해주세요.',
                               },
-                              maxLength: {
-                                value: 8,
-                                message: '최대 8자리까지 입력 가능합니다.',
-                              },
                               minLength: {
-                                value: 3,
-                                message: '최소 3자리 이상이어야 합니다.',
+                                value: 8,
+                                message: '최소 8자리 이상이어야 합니다.',
                               },
                             })}
                           />
@@ -208,11 +213,10 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
                             onChange={e => {
                               register('mPassword1').onChange(e)
                             }}
-                            maxLength={8}
                             {...register('mPassword1', {
                               required: {
                                 value: true,
-                                message: '비밀번호를 입력해주세요.',
+                                message: '비밀번호를 다시 한번 입력해주세요.',
                               },
                             })}
                           />

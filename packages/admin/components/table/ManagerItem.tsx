@@ -136,6 +136,24 @@ const Tdate = styled.div`
   min-width: ${1200 * 0.07}px;
   font-weight: 600;
 `
+const ResignTag = styled.span`
+  display: inline-block;
+  background: #171717;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.5rem;
+  vertical-align: middle;
+`
+const DateTag = styled.span`
+  display: inline-block;
+  background: #ff5900;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.5rem;
+  vertical-align: middle;
+`
 const EllipsisBox = styled.p`
   white-space: nowrap;
   overflow: hidden;
@@ -247,11 +265,19 @@ export default function ManagerItem(props) {
                     : '-'}
                 </EllipsisBox>
               </TjoiningDate>
-              <Tdate>
-                {managerData.mJoiningDate
-                  ? calculateDday(managerData.mJoiningDate)
-                  : '-'}
-              </Tdate>
+              {managerData.resign === 'Y' ? (
+                <Tdate>
+                  <ResignTag>퇴사</ResignTag>
+                </Tdate>
+              ) : (
+                <Tdate>
+                  <DateTag>
+                    {managerData.mJoiningDate
+                      ? calculateDday(managerData.mJoiningDate)
+                      : '-'}
+                  </DateTag>
+                </Tdate>
+              )}
             </ClickBox>
           </Link>
         </TableRow>

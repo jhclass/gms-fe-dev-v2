@@ -27,19 +27,20 @@ const NavSec = styled(motion.div)<{ $navOpen: boolean }>`
 `
 
 const NavWrap = styled(motion.div)<{ $navOpen: boolean }>`
-  row-gap: 1.25rem;
+  row-gap: 0.5rem;
   flex-direction: column;
   flex-grow: 1;
   display: flex;
-  padding: ${props => (props.$navOpen ? ' 0 1.5rem 1rem' : ' 0 0.7rem 1rem')};
+  padding: ${props =>
+    props.$navOpen ? ' 0 1.5rem 1.5rem' : ' 0 0.7rem 1.5rem'};
   transition: 0.3s;
 
   @media screen and (max-width: 1024px) {
-    padding: 0 1.5rem 1rem;
+    padding: 0 1.5rem 1.5rem;
   }
 
   @media screen and (max-width: 640px) {
-    padding: 0 1rem 0.5rem;
+    padding: 0 1rem 1rem;
   }
 `
 
