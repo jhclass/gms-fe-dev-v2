@@ -47,7 +47,7 @@ export default function Teacher() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={false}
+          isFilter={true}
           isWrite={
             mGrade < grade.general || mPart.includes('교무팀') ? true : false
           }
