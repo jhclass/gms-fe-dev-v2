@@ -67,7 +67,7 @@ const FilterLabel = styled.p`
   }
 `
 
-export default function LectureDates({
+export default function RequestMessage({
   isOpen,
   onClose,
   managerId,
@@ -127,7 +127,7 @@ export default function LectureDates({
             <>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalHeader className="flex flex-col gap-1">
-                  요청하기
+                  비밀번호 변경
                 </ModalHeader>
                 <ModalBody>
                   <ScrollShadow className="scrollbar min-h-[10rem] max-h-[25rem]">
@@ -195,7 +195,7 @@ export default function LectureDates({
                     Close
                   </Button>
                   <Button color="primary" type="submit">
-                    요청보내기
+                    비밀번호 변경
                   </Button>
                 </ModalFooter>
               </form>
