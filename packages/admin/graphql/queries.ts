@@ -49,21 +49,28 @@ export const DASHBOARD_RD_QUERY = gql`
 export const MME_QUERY = gql`
   query MMe {
     mMe {
-      id
-      mUserId
-      mUsername
+      Stamp {
+        id
+        imageUrl
+      }
+      mAddresses
+      mAvatar
       mGrade
-      mRank
+      mJoiningDate
+      mPart
+      mPassword
       mPhoneNum
       mPhoneNumCompany
-      mPhoneNumInside
       mPhoneNumFriend
-      mPart
-      mAvatar
-      mJoiningDate
-      mAddresses
-      createdAt
+      mPhoneNumInside
+      mRank
+      mUserId
+      mUsername
+      resign
       updatedAt
+      email
+      id
+      createdAt
       favoriteStudentState
       ConsultationMemo {
         id
@@ -174,53 +181,53 @@ export const SEE_MANAGEUSER_QUERY = gql`
 `
 export const SEARCH_MANAGEUSER_QUERY = gql`
   query SearchManageUser(
-    $mUsername: String
     $searchManageUserId: Int
-    $mUserId: String
-    $mGrade: Int
-    $mRank: String
-    $mPhoneNum: String
-    $mPart: String
-    $resign: String
     $mJoiningDate: [String]
+    $resign: String
+    $mPart: String
+    $mPhoneNum: String
+    $mRank: String
+    $mGrade: Int
+    $mUsername: String
+    $mUserId: String
   ) {
     searchManageUser(
-      mUsername: $mUsername
       id: $searchManageUserId
-      mUserId: $mUserId
-      mGrade: $mGrade
-      mRank: $mRank
-      mPhoneNum: $mPhoneNum
-      mPart: $mPart
-      resign: $resign
       mJoiningDate: $mJoiningDate
+      resign: $resign
+      mPart: $mPart
+      mPhoneNum: $mPhoneNum
+      mRank: $mRank
+      mGrade: $mGrade
+      mUsername: $mUsername
+      mUserId: $mUserId
     ) {
+      totalCount
       ok
       message
-      totalCount
       error
       data {
-        id
-        mPhoneNumInside
-        mPhoneNumFriend
-        mPhoneNumCompany
-        mPhoneNum
+        Stamp {
+          id
+          imageUrl
+        }
+        mUserId
+        mUsername
         email
+        createdAt
+        id
         mAddresses
         mAvatar
         mGrade
         mJoiningDate
         mPart
-        email
-        updatedAt
-        resign
-        mUsername
-        mUserId
+        mPhoneNum
+        mPhoneNumCompany
+        mPhoneNumFriend
+        mPhoneNumInside
         mRank
-        Stamp {
-          imageUrl
-          id
-        }
+        resign
+        updatedAt
       }
     }
   }

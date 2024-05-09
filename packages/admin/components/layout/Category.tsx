@@ -197,13 +197,6 @@ export default function Category() {
             />
           ))}
       </CateWrap>
-
-      {mGrade === grade.dev && (
-        <div className="flex flex-col">
-          <Link href="/testCate">TEST Attendance</Link>
-          <Link href="/testCate/testDates">TEST Calendar</Link>
-        </div>
-      )}
     </>
   )
 }
