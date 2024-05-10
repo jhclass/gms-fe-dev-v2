@@ -89,13 +89,17 @@ const NotiItem = styled.div`
   overflow: hidden;
   background: #fff;
   padding-right: 0.5rem;
+
+  &.read {
+    background: #ccc;
+  }
 `
 
 const NotiFlag = styled.span`
   display: block;
   width: 0.5rem;
   height: 100%;
-  background: Red;
+  background: #222;
 `
 const ClickBox = styled.div`
   display: flex;
@@ -164,7 +168,7 @@ export default function HeaderNoti({}) {
                         <i className="xi-close-circle" />
                       </NotiClose>
                     </NotiItem>
-                    <NotiItem>
+                    <NotiItem className="read">
                       <ClickBox onClick={onOpen}>
                         <NotiFlag></NotiFlag>
                         <ReqBox>
