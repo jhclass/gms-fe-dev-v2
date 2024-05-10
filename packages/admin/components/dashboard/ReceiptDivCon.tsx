@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_RD_QUERY } from '@/graphql/queries'
@@ -64,6 +64,7 @@ export default function ReceiptDivCon() {
   const { error, data } = useSuspenseQuery<DashboardRD>(DASHBOARD_RD_QUERY)
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
+
   const chartData = data?.dashboardRD
   const receiptDivValues = chartData
     ? chartData

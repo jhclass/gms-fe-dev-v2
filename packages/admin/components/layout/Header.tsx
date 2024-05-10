@@ -11,6 +11,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 import { useDisclosure } from '@nextui-org/react'
 import RequestMessage from '../modal/RequestMessage'
+import HeaderNoti from '../common/HeaderNoti'
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>
@@ -126,56 +127,6 @@ const ReqBtn = styled.button`
     transition: 0.3s;
   }
 `
-const NotiBtn = styled.button`
-  display: flex;
-  align-items: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0.3rem;
-  position: relative;
-
-  @media screen and (max-width: 1024px) {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 1.5rem;
-    top: 50%;
-    left: 3.1rem;
-    margin-top: -0.75rem;
-    background: #d4d4d8;
-    transition: 0.3s;
-  }
-`
-
-const NotiNum = styled.span`
-  display: flex;
-  align-items: center;
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 100%;
-  position: absolute;
-  right: -0.2rem;
-  top: -0.2rem;
-  background: #007de9;
-  font-size: 0.8rem;
-  color: #fff;
-  line-height: 1rem;
-  justify-content: center;
-
-  @media screen and (max-width: 1024px) {
-    width: 1rem;
-    height: 1rem;
-    right: 0;
-    top: 0;
-    font-size: 0.7rem;
-  }
-`
-
 const UserBox = styled.div`
   display: flex;
   align-items: center;
@@ -354,17 +305,7 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
-          <NotiBtn
-            onClick={() => {
-              router.push('/', undefined, { shallow: true })
-            }}
-          >
-            <img
-              src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
-              alt="알림"
-            />
-            <NotiNum>0</NotiNum>
-          </NotiBtn>
+          <HeaderNoti />
           {mGrade === 0 && (
             <ReqBtn onClick={onOpen}>
               <img
