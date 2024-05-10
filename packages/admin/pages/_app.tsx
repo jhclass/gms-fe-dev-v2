@@ -8,6 +8,8 @@ import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from '@/lib/apolloClient'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // import { __DEV__ } from '@apollo/client/utilities/globals'
 // import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -39,6 +41,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <title>HMS</title>
           </Head>
           <GlobalStyle />
+          <ToastContainer />
           {getLayout(<Component {...pageProps} />)}
         </NextUIProvider>
       </RecoilRoot>

@@ -17,6 +17,8 @@ import { useMutation } from '@apollo/client'
 import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import { Suspense, useEffect, useState } from 'react'
 import ManagerSelectID from '../common/ManagerSelectID'
+import { toast } from 'react-toastify'
+import ReqToast from '../common/ReqToast'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -88,26 +90,16 @@ export default function RequestMessage({
   const [manager, setManager] = useState('받는 사람')
 
   const onSubmit = data => {
-    console.log(data)
-    // try {
-    //   const result = await devEditManager({
-    //     variables: {
-    //       mUserId: [managerData.mUserId],
-    //       mPassword: data.mPassword.trim(),
-    //     },
-    //   })
-
-    //   if (!result.data.devEditManageUser.ok) {
-    //     throw new Error('비밀번호 변경 실패')
-    //   }
-    //   userLogs(`${managerData.mUsername} 비밀번호 변경`, 'password')
-    //   alert('변경되었습니다.')
-    //   closePopup()
-    // } catch (error) {
-    //   console.error('비밀번호 변경 중 에러 발생:', error)
-    //   alert('비밀번호 변경 처리 중 오류가 발생했습니다.')
-    //   closePopup()
-    // }
+    closePopup()
+    toast(<ReqToast />, {
+      position: 'bottom-right',
+      autoClose: 20000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
   }
 
   const handleManagerChange = e => {

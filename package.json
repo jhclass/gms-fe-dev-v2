@@ -20,5 +20,8 @@
     "test:hc-design": "cd packages/hc-design && npm test",
     "test:admin": "cd packages/admin && npm test",
     "format": "prettier --write ."
+  },
+  "dependencies": {
+    "react-toastify": "^10.0.5"
   }
 }
