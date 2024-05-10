@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ScrollShadow,
   Textarea,
+  useDisclosure,
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -19,6 +20,7 @@ import { Suspense, useEffect, useState } from 'react'
 import ManagerSelectID from '../common/ManagerSelectID'
 import { toast } from 'react-toastify'
 import ReqToast from '../common/ReqToast'
+import SeeRequestMessage from './SeeRequestMessage'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -99,6 +101,7 @@ export default function RequestMessage({
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+      onClick: seeOnOPen,
     })
   }
 
@@ -110,7 +113,11 @@ export default function RequestMessage({
     reset()
     onClose()
   }
-
+  const {
+    isOpen: seeIsOpne,
+    onOpen: seeOnOPen,
+    onClose: seeOnClose,
+  } = useDisclosure()
   return (
     <>
       <Modal size={'md'} isOpen={isOpen} onClose={closePopup}>
@@ -195,6 +202,7 @@ export default function RequestMessage({
           )}
         </ModalContent>
       </Modal>
+      <SeeRequestMessage isOpen={seeIsOpne} onClose={seeOnClose} />
     </>
   )
 }

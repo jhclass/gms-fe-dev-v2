@@ -107,14 +107,6 @@ const ReqBtn = styled.button`
   padding: 0.2rem;
   position: relative;
 
-  @media screen and (max-width: 1024px) {
-    width: 2rem;
-    height: 2rem;
-  }
-  img {
-    width: 100%;
-  }
-
   &:after {
     content: '';
     position: absolute;
@@ -125,6 +117,31 @@ const ReqBtn = styled.button`
     margin-top: -0.75rem;
     background: #d4d4d8;
     transition: 0.3s;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  @media screen and (max-width: 604px) {
+    width: 3rem;
+    height: 3rem;
+    background: #fff;
+    border: 4px solid #07bbae;
+    border-radius: 100%;
+    padding: 0.3rem;
+    position: fixed;
+    bottom: 4rem;
+    left: 2rem;
+
+    &:after {
+      display: none;
+    }
   }
 `
 const UserBox = styled.div`

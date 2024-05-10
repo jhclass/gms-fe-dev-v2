@@ -7,7 +7,7 @@ import { GlobalStyle } from '@/styles/GlobalStyle'
 import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from '@/lib/apolloClient'
 import { NextPage } from 'next'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // import { __DEV__ } from '@apollo/client/utilities/globals'
@@ -29,6 +29,22 @@ type AppPropsWithLayout = AppProps & {
 }
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || (page => page)
+  const [toastLimit, setToastLimit] = useState(5)
+
+  useEffect(() => {
+    const updateToastLimit = () => {
+      const width = window.innerWidth
+      setToastLimit(width < 768 ? 1 : 5)
+    }
+
+    window.addEventListener('resize', updateToastLimit)
+    updateToastLimit()
+
+    return () => {
+      window.removeEventListener('resize', updateToastLimit)
+    }
+  }, [])
+
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>
@@ -41,7 +57,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <title>HMS</title>
           </Head>
           <GlobalStyle />
-          <ToastContainer />
+          <ToastContainer limit={toastLimit} />
           {getLayout(<Component {...pageProps} />)}
         </NextUIProvider>
       </RecoilRoot>
