@@ -86,10 +86,10 @@ export default function TopBnr() {
               </Link>
             </BtnItme>
             <BtnItme>
-              <Link onClick={clickCall} href="tel:02-393-4321">
+              <Link onClick={clickCall} href="tel:02-364-0008">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
-                  alt="02)393-4321"
+                  alt="02)364-0008"
                 />
               </Link>
             </BtnItme>
