@@ -18,18 +18,6 @@ import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import { Suspense, useEffect, useState } from 'react'
 import ManagerSelectID from '../common/ManagerSelectID'
 
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: #fff;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,26 +41,28 @@ const AreaTitle = styled.div`
     font-weight: 600;
   }
 `
+const LineBox = styled.div`
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-bottom: 2px solid hsl(240 6% 90%);
+  height: 40px;
+  line-height: 40px;
+  font-size: 0.875rem;
+`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
-const FilterLabel = styled.p`
+const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
+  line-height: 1.25rem;
   color: #11181c;
-
-  span {
-    color: red;
-  }
+  display: block;
+  padding-bottom: 0.375rem;
 `
 
-export default function RequestMessage({
-  isOpen,
-  onClose,
-  managerId,
-  managerName,
-}) {
+export default function RequestMessage({ isOpen, onClose }) {
   const { userLogs } = useUserLogsMutation()
   const {
     control,
@@ -87,8 +77,8 @@ export default function RequestMessage({
   const { errors } = formState
   const [manager, setManager] = useState('받는 사람')
 
-  const onSubmit = data => {
-    console.log(data)
+  const onSubmit = () => {
+    onClose()
     // try {
     //   const result = await devEditManager({
     //     variables: {
@@ -114,71 +104,36 @@ export default function RequestMessage({
     setManager(e.target.value)
   }
 
-  const closePopup = () => {
-    reset()
-    onClose()
-  }
-
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={closePopup}>
+      <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
-          {closePopup => (
+          {onClose => (
             <>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalHeader className="flex flex-col gap-1">
-                  요청 하기
+                  요청 상세
                 </ModalHeader>
                 <ModalBody>
                   <ScrollShadow className="scrollbar min-h-[10rem] max-h-[25rem]">
                     <DetailDiv>
                       <FlexBox>
                         <AreaBox>
-                          <Controller
-                            control={control}
-                            name="processingManagerId"
-                            rules={{
-                              required: {
-                                value: true,
-                                message: '영업담당자를 선택해주세요.',
-                              },
-                            }}
-                            render={({ field, fieldState }) => (
-                              <Suspense
-                                fallback={
-                                  <LodingDiv>
-                                    <i className="xi-spinner-2" />
-                                  </LodingDiv>
-                                }
-                              >
-                                <ManagerSelectID
-                                  selecedKey={manager}
-                                  field={field}
-                                  label={'To.'}
-                                  handleChange={handleManagerChange}
-                                  optionDefualt={{
-                                    id: '받는 사람',
-                                    mUsername: '받는 사람',
-                                  }}
-                                  filter={{
-                                    mGrade: null,
-                                  }}
-                                />
-                              </Suspense>
-                            )}
-                          />
-                          {errors.processingManagerId && (
-                            <p className="px-2 pt-2 text-xs text-red-500">
-                              {String(errors.processingManagerId.message)}
-                            </p>
-                          )}
+                          <div>
+                            <FilterLabel>Form</FilterLabel>
+                            <LineBox>아무개</LineBox>
+                          </div>
                         </AreaBox>
                         <AreaBox>
                           <Textarea
+                            isReadOnly={true}
                             label="요청 내용"
                             labelPlacement="outside"
                             className="max-w-full"
                             variant="bordered"
+                            defaultValue={
+                              '요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청'
+                            }
                             minRows={5}
                             onChange={e => {
                               register('detail').onChange(e)
@@ -191,11 +146,11 @@ export default function RequestMessage({
                   </ScrollShadow>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={closePopup}>
-                    Close
-                  </Button>
                   <Button color="primary" type="submit">
-                    요청하기
+                    읽음
+                  </Button>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Close
                   </Button>
                 </ModalFooter>
               </form>
