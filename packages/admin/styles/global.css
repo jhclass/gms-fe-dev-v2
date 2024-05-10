@@ -57,6 +57,10 @@
   .scrollbar_g::-webkit-scrollbar-thumb:hover {
     background: gray;
   }
+
+  .Toastify__toast-body {
+    width: 100%;
+  }
 }
 
 @layer utilities {
