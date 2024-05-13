@@ -215,7 +215,7 @@ export default function StudentsWrite({ managerId }) {
       setJoiningDate(date)
     }
   }, [managerData])
-  console.log(managerData)
+
   const onSubmit = async data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
