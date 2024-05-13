@@ -250,7 +250,6 @@ export default function StudentsWrite({ managerId }) {
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
-          console.log(result)
 
           if (!result.data.editManageUser.ok) {
             throw new Error('강사 정보 수정 실패')

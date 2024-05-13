@@ -391,7 +391,6 @@ export default function StudentPaymentForm({
               isWeekend: data.isWeekend === undefined ? 'N' : data.isWeekend,
             },
             onCompleted: result => {
-              console.log(result)
               if (result.editStudentPayment.ok) {
                 const dirtyFieldsArray = [...Object.keys(dirtyFields)]
                 userLogs(

@@ -189,7 +189,6 @@ export default function TeacherFilterTable({ teacherFilter }) {
           mGrade: 20,
         },
         onCompleted: result => {
-          console.log(result)
           setManagerData(result?.searchManageUser.data)
           setManagerTotal(result?.searchManageUser.totalCount)
         },
