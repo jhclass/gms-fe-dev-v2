@@ -359,7 +359,7 @@ export default function StudentPaymentForm({
                 subjectSelected === null
                   ? parseInt(studentPaymentData.subject.id)
                   : parseInt(subjectSelected),
-              seScore: parseInt(data.seScore),
+              seScore: data.seScore === '' ? 0 : parseInt(data.seScore),
               tuitionFee: data.tuitionFee,
               processingManagerId: parseInt(subjectManager),
               cashAmount: studentPaymentData.cashAmount,
@@ -391,6 +391,7 @@ export default function StudentPaymentForm({
               isWeekend: data.isWeekend === undefined ? 'N' : data.isWeekend,
             },
             onCompleted: result => {
+              console.log(result)
               if (result.editStudentPayment.ok) {
                 const dirtyFieldsArray = [...Object.keys(dirtyFields)]
                 userLogs(

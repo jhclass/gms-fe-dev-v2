@@ -17,9 +17,25 @@ const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
 `
+const TopInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
+`
 const Noti = styled.p`
   span {
     color: red;
+  }
+`
+const UpdateTime = styled.p`
+  span {
+    color: #555;
   }
 `
 const DetailBox = styled.div`
@@ -135,6 +151,15 @@ export default function Profile() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
+            <TopInfo>
+              <Noti>
+                <span>*</span> 는 필수입력입니다.
+              </Noti>
+              <UpdateTime>
+                <span>최근 업데이트 :</span>
+                {formatDate(mMeData?.updatedAt)}
+              </UpdateTime>
+            </TopInfo>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox>

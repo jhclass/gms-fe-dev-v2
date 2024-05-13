@@ -98,7 +98,7 @@ const category: Category[] = [
     iconSrc: 'xi-presentation',
     name: '강의관리',
     resetItems: [],
-    exposure: true,
+    exposure: false,
     isBreadcrumb: true,
     isFilter: true,
     children: [

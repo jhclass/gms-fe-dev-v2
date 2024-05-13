@@ -115,6 +115,7 @@ export default function CreateAdviceType({ isActive }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
@@ -141,6 +142,7 @@ export default function CreateAdviceType({ isActive }) {
       }
       alert('상담 분야가 등록되었습니다.')
       userLogs(`${data.type} 상담분야 등록`)
+      reset()
     } catch (error) {
       console.error('상담 분야 등록 중 에러 발생:', error)
     }

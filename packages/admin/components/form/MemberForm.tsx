@@ -329,7 +329,8 @@ export default function ManagerWrite({ managerId }) {
               </Noti>
               <UpdateTime>
                 <span>최근 업데이트 :</span>
-                최근수정자 - {formatDate(managerData?.updatedAt)}
+                {managerData.lastModifiedBy} -{' '}
+                {formatDate(managerData?.updatedAt)}
               </UpdateTime>
             </TopInfo>
             <form onSubmit={handleSubmit(onSubmit)}>

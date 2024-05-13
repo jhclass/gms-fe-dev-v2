@@ -222,7 +222,8 @@ export default function PaymentInfo({
         <AreaBox>
           <div>
             <FilterLabel>
-              선발평가점수<span>*</span>
+              선발평가점수
+              {studentSubjectData?.subDiv === '국가기간' && <span>*</span>}
             </FilterLabel>
             <LineBox>{studentPaymentData?.seScore || 0}</LineBox>
           </div>
