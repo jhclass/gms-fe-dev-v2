@@ -14,7 +14,7 @@ import { useLazyQuery, useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from '@/pages/students/layout'
+import Layout from '@/pages/hr/layout'
 import {
   CHECK_DOUBLE_MUTATION,
   CREATE_MANAGE_USER_MUTATION,

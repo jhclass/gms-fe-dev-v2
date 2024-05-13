@@ -84,8 +84,10 @@ export default function Profile() {
         variables: {
           mUsername: data.mUsername === '' ? null : data.mUsername,
           mPhoneNum: data.mPhoneNum === '' ? null : data.mPhoneNum,
-          mPhoneNumCompany: mMeData.mPhoneNumCompany,
-          mPhoneNumInside: mMeData.mPhoneNumInside,
+          mPhoneNumCompany:
+            data.mPhoneNumCompany === '' ? null : data.mPhoneNumCompany,
+          mPhoneNumInside:
+            data.mPhoneNumInside === '' ? null : data.mPhoneNumInside,
           mPhoneNumFriend:
             data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend,
           mAddresses: data.mAddresses === '' ? null : data.mAddresses,
