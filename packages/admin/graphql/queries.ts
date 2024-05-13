@@ -71,6 +71,7 @@ export const MME_QUERY = gql`
       email
       id
       createdAt
+      lastModifiedBy
       favoriteStudentState
       ConsultationMemo {
         id
@@ -228,6 +229,7 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
         mRank
         resign
         updatedAt
+        lastModifiedBy
       }
     }
   }
