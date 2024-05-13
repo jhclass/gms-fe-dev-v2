@@ -13,7 +13,10 @@ import {
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
-import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
+import {
+  DEV_EDIT_MANAGE_USER_MUTATION,
+  EDIT_MANAGE_USER_MUTATION,
+} from '@/graphql/mutations'
 import { useEffect } from 'react'
 
 const DetailBox = styled.div`
@@ -77,7 +80,7 @@ const FilterLabel = styled.p`
 
 export default function LectureDates({ isOpen, onClose, managerData }) {
   const { userLogs } = useUserLogsMutation()
-  const [devEditManager] = useMutation(DEV_EDIT_MANAGE_USER_MUTATION)
+  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
   const {
     register,
     handleSubmit,
@@ -124,14 +127,14 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
 
   const onSubmit = async data => {
     try {
-      const result = await devEditManager({
+      const result = await editManager({
         variables: {
-          mUserId: [managerData.mUserId],
+          editManageUserId: managerData.id,
           mPassword: data.mPassword.trim(),
         },
       })
 
-      if (!result.data.devEditManageUser.ok) {
+      if (!result.data.editManageUser.ok) {
         throw new Error('비밀번호 변경 실패')
       }
       userLogs(`${managerData.mUsername} 비밀번호 변경`, 'password')

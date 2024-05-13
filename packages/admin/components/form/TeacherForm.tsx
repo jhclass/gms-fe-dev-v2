@@ -9,24 +9,23 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Button,
-  Input,
-  Radio,
-  RadioGroup,
-  Switch,
-  useDisclosure,
-} from '@nextui-org/react'
+import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
+import {
+  DEV_EDIT_MANAGE_USER_MUTATION,
+  EDIT_MANAGE_USER_MUTATION,
+} from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { ManageUser, Stamp } from '@/src/generated/graphql'
 import ChangePassword from '../modal/ChangePassword'
 import { Controller, useForm } from 'react-hook-form'
+import useMmeQuery from '@/utils/mMe'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -64,6 +63,11 @@ const TopInfo = styled.div`
 const Noti = styled.p`
   span {
     color: red;
+  }
+`
+const UpdateTime = styled.p`
+  span {
+    color: #555;
   }
 `
 const DetailDiv = styled.div`
@@ -154,6 +158,10 @@ type searchManageUserQuery = {
 }
 
 export default function StudentsWrite({ managerId }) {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const loginMGrade = useMme('mGrade')
+  const loginMPart = useMme('mPart')
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
@@ -174,10 +182,11 @@ export default function StudentsWrite({ managerId }) {
   })
 
   const managerData = data?.searchManageUser.data[0]
-  const [devEditManager] = useMutation(DEV_EDIT_MANAGE_USER_MUTATION)
+  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
 
   const { register, control, handleSubmit, setValue, formState } = useForm({
     defaultValues: {
+      editManageUserId: managerData.id,
       mUserId: managerData.mUserId,
       mUsername: managerData.mUsername,
       mPhoneNum: managerData.mPhoneNum,
@@ -206,7 +215,7 @@ export default function StudentsWrite({ managerId }) {
       setJoiningDate(date)
     }
   }, [managerData])
-
+  console.log(managerData)
   const onSubmit = async data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
@@ -219,14 +228,14 @@ export default function StudentsWrite({ managerId }) {
       }
       if (isModify) {
         try {
-          const result = await devEditManager({
+          const result = await editManager({
             variables: {
-              mUserId: [managerData.mUserId],
+              editManageUserId: managerData.id,
               mUsername: data.mUsername.trim(),
               mPhoneNum: data.mPhoneNum.trim(),
-              mPart: data.mPart === '' ? null : part,
+              mPart: data.mPart === null ? null : part,
               mPhoneNumFriend:
-                data.mPhoneNumFriend === ''
+                data.mPhoneNumFriend === null
                   ? null
                   : data.mPhoneNumFriend.trim(),
               mJoiningDate:
@@ -236,13 +245,14 @@ export default function StudentsWrite({ managerId }) {
                   ? new Date(parseInt(data.mJoiningDate))
                   : new Date(data.mJoiningDate),
               mAddresses:
-                data.mAddresses === '' ? null : data.mAddresses.trim(),
-              email: data.email === '' ? null : data.email.trim(),
+                data.mAddresses === null ? null : data.mAddresses.trim(),
+              email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
+          console.log(result)
 
-          if (!result.data.devEditManageUser.ok) {
+          if (!result.data.editManageUser.ok) {
             throw new Error('강사 정보 수정 실패')
           }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -258,6 +268,19 @@ export default function StudentsWrite({ managerId }) {
         }
       }
     }
+  }
+
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
   }
 
   const clickCreate = () => {
@@ -299,6 +322,10 @@ export default function StudentsWrite({ managerId }) {
               <Noti>
                 <span>*</span> 는 필수입력입니다.
               </Noti>
+              <UpdateTime>
+                <span>최근 업데이트 :</span>
+                최근수정자 - {formatDate(managerData?.updatedAt)}
+              </UpdateTime>
             </TopInfo>
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>
@@ -341,6 +368,12 @@ export default function StudentsWrite({ managerId }) {
                   <AreaBox>
                     <FilterLabel>비밀번호</FilterLabel>
                     <Button
+                      isDisabled={
+                        loginMGrade < grade.general ||
+                        loginMPart?.includes('교무팀')
+                          ? false
+                          : true
+                      }
                       size="md"
                       radius="md"
                       variant="solid"
@@ -619,16 +652,19 @@ export default function StudentsWrite({ managerId }) {
                   <AreaBox></AreaBox>
                 </FlexBox>
                 <BtnBox>
-                  <Button
-                    type="submit"
-                    size="md"
-                    radius="md"
-                    variant="solid"
-                    color="primary"
-                    className="w-full text-white"
-                  >
-                    수정
-                  </Button>
+                  {loginMGrade < grade.general ||
+                  loginMPart?.includes('교무팀') ? (
+                    <Button
+                      type="submit"
+                      size="md"
+                      radius="md"
+                      variant="solid"
+                      color="primary"
+                      className="w-full text-white"
+                    >
+                      수정
+                    </Button>
+                  ) : null}
                   <Button2
                     buttonType="button"
                     width="100%"

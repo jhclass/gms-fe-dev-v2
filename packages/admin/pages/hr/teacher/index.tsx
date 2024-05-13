@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import Layout from '@/pages/lecture/layout'
+import Layout from '@/pages/hr/layout'
 import { Suspense, useState } from 'react'
 import LectureList from '@/components/table/LectureList'
 import LectureFilter from '@/components/filter/LectureFilter'
@@ -42,55 +42,57 @@ export default function Teacher() {
   const [teacherFilter, setTeacherFilter] = useState()
 
   return (
-    <>
-      <MainWrap>
-        <Breadcrumb
-          onFilterToggle={setFilterActive}
-          isActive={filterActive}
-          isFilter={true}
-          isWrite={
-            mGrade < grade.general || mPart.includes('교무팀') ? true : false
-          }
-          rightArea={true}
-        />
-        <Suspense
-          fallback={
-            <LodingDiv>
-              <i className="xi-spinner-2" />
-            </LodingDiv>
-          }
-        >
-          <TeacherFilter
+    mPart && (
+      <>
+        <MainWrap>
+          <Breadcrumb
+            onFilterToggle={setFilterActive}
             isActive={filterActive}
-            onFilterSearch={setFilterSearch}
-            setTeacherFilter={setTeacherFilter}
+            isFilter={true}
+            isWrite={
+              mGrade < grade.general || mPart.includes('교무팀') ? true : false
+            }
+            rightArea={true}
           />
-        </Suspense>
-        <ConBox>
-          {filterSearch ? (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <TeacherFilterList teacherFilter={teacherFilter} />
-            </Suspense>
-          ) : (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <TeacherList />
-            </Suspense>
-          )}
-        </ConBox>
-      </MainWrap>
-    </>
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <TeacherFilter
+              isActive={filterActive}
+              onFilterSearch={setFilterSearch}
+              setTeacherFilter={setTeacherFilter}
+            />
+          </Suspense>
+          <ConBox>
+            {filterSearch ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <TeacherFilterList teacherFilter={teacherFilter} />
+              </Suspense>
+            ) : (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <TeacherList />
+              </Suspense>
+            )}
+          </ConBox>
+        </MainWrap>
+      </>
+    )
   )
 }
 Teacher.getLayout = page => <Layout>{page}</Layout>

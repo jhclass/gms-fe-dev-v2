@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import {
   Button,
-  CheckboxGroup,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -14,8 +12,6 @@ import {
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useMutation } from '@apollo/client'
-import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import { Suspense, useEffect, useState } from 'react'
 import ManagerSelectID from '../common/ManagerSelectID'
 import { toast } from 'react-toastify'
@@ -111,6 +107,7 @@ export default function RequestMessage({
 
   const closePopup = () => {
     reset()
+    setManager('받는 사람')
     onClose()
   }
   const {

@@ -15,7 +15,10 @@ import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
+import {
+  DEV_EDIT_MANAGE_USER_MUTATION,
+  EDIT_MANAGE_USER_MUTATION,
+} from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import {
@@ -61,6 +64,11 @@ const TopInfo = styled.div`
 const Noti = styled.p`
   span {
     color: red;
+  }
+`
+const UpdateTime = styled.p`
+  span {
+    color: #555;
   }
 `
 const DetailDiv = styled.div`
@@ -171,7 +179,7 @@ export default function ManagerWrite({ managerId }) {
   })
 
   const managerData = data?.searchManageUser.data[0]
-  const [devEditManager] = useMutation(DEV_EDIT_MANAGE_USER_MUTATION)
+  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
 
   const { register, setValue, control, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -219,9 +227,9 @@ export default function ManagerWrite({ managerId }) {
       }
       if (isModify) {
         try {
-          const result = await devEditManager({
+          const result = await editManager({
             variables: {
-              mUserId: [managerData.mUserId],
+              editManageUserId: managerData.id,
               mUsername: data.mUsername.trim(),
               mRank: data.mRank === null ? null : data.mRank,
               mPart: data.mPart === null ? null : part,
@@ -251,7 +259,7 @@ export default function ManagerWrite({ managerId }) {
             },
           })
 
-          if (!result.data.devEditManageUser.ok) {
+          if (!result.data.editManageUser.ok) {
             throw new Error('직원 정보 수정 실패')
           }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -267,6 +275,19 @@ export default function ManagerWrite({ managerId }) {
         }
       }
     }
+  }
+
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
   }
 
   const clickCreate = () => {
@@ -306,6 +327,10 @@ export default function ManagerWrite({ managerId }) {
               <Noti>
                 <span>*</span> 는 필수입력입니다.
               </Noti>
+              <UpdateTime>
+                <span>최근 업데이트 :</span>
+                최근수정자 - {formatDate(managerData?.updatedAt)}
+              </UpdateTime>
             </TopInfo>
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>

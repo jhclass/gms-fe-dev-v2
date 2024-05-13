@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import Layout from '@/pages/lecture/layout'
+import Layout from '@/pages/hr/layout'
 import { Suspense, useState } from 'react'
 import LectureList from '@/components/table/LectureList'
 import LectureFilter from '@/components/filter/LectureFilter'
