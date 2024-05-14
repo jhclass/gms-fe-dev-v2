@@ -22,7 +22,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "socket.io-client": "^4.7.5",
-    "react-toastify": "^10.0.5"
+    "apollo-upload-client": "^17.0.0",
+    "react-toastify": "^10.0.5",
+    "socket.io-client": "^4.7.5"
   }
 }

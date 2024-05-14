@@ -16,6 +16,7 @@
     "@table-library/react-table-library": "^4.1.7",
     "@types/recoil": "^0.0.9",
     "apexcharts": "^3.45.0",
+    "apollo-upload-client": "^17.0.0",
     "babel-plugin-styled-components": "^2.1.4",
     "font-awesome": "^4.7.0",
     "framer-motion": "^10.16.4",
