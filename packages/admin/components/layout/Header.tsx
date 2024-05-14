@@ -136,7 +136,7 @@ const ReqBtn = styled.button`
     border-radius: 100%;
     padding: 0.3rem;
     position: fixed;
-    bottom: 4rem;
+    bottom: 1.5rem;
     left: 2rem;
 
     &:after {

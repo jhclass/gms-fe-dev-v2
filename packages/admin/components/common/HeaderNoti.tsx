@@ -65,6 +65,13 @@ const NotiListBox = styled.div`
   background: rgba(0, 0, 0, 0.6);
   border-radius: 0.5rem;
   height: fit-content;
+
+  @media screen and (max-width: 1024px) {
+    width: 70vw;
+    left: auto;
+    right: 0;
+    margin-left: 0;
+  }
 `
 const ScrollBox = styled.div`
   display: flex;

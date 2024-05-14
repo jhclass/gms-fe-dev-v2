@@ -98,6 +98,9 @@ export default function RequestMessage({
       draggable: true,
       progress: undefined,
       onClick: seeOnOPen,
+      style: {
+        // width: '100%',
+      },
     })
   }
 
