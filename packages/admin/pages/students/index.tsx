@@ -11,7 +11,8 @@ import {
   studentFilterState,
   studentSearchState,
 } from '@/lib/recoilAtoms'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import io from 'socket.io-client'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -36,6 +37,25 @@ export default function Students() {
   )
   const [filterSearch, setFilterSearch] = useRecoilState(studentFilterState)
   const [studentFilter, setStudentFilter] = useRecoilState(studentSearchState)
+  // const [checkText, setCheckText] = useState('수강생 리스트 입니다.')
+
+  // useEffect(() => {
+  //   // io("통신할 서버 포트",{옵션})
+  //   const socket = io('https://2fd7-1-236-97-151.ngrok-free.app', {
+  //     path: '/socket.io/',
+  //     // transports: ['websocekt'],
+  //   })
+  //   console.log('socket' + ':' + socket)
+  //   socket.on('message', data => {
+  //     console.log(data)
+  //     console.log(data)
+  //     setCheckText(data)
+  //   })
+  //   return () => {
+  //     socket.off('message')
+  //     socket.close()
+  //   }
+  // }, [])
 
   return (
     <>
@@ -54,6 +74,7 @@ export default function Students() {
           studentFilter={studentFilter}
         />
         <ConBox>
+          {/* <div>{checkText}</div> */}
           <Suspense
             fallback={
               <LodingDiv>

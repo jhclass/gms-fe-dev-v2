@@ -212,7 +212,7 @@ export default function ConsolutationTable() {
                   limit={currentLimit}
                 />
               ))}
-            {/* {totalCount === 0 && <Nolist>등록된 상담카드가 없습니다.</Nolist>} */}
+            {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
         {totalCount > 0 && (

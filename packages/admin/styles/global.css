@@ -57,12 +57,14 @@
   .scrollbar_g::-webkit-scrollbar-thumb:hover {
     background: gray;
   }
-
-  .Toastify__toast-body {
-    width: 100%;
+}
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 75vw !important;
+    left: auto !important;
+    right: env(safe-area-inset-right) !important;
   }
 }
-
 @layer utilities {
   .wrap {
     @apply relative w-full px-6 lg:px-0 lg:w-web lg:m-auto;
