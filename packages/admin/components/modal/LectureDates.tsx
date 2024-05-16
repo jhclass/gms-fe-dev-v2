@@ -186,7 +186,7 @@ export default function LectureDates({
   }
 
   const clickAdviceSubmit = () => {
-    // setValue('adviceTypes', adviceTypeSelected)
+    setValue('lectureDetails', selectedDates)
     setDatesSelected(selectedDates)
     onClose()
   }

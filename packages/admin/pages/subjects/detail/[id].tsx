@@ -27,6 +27,7 @@ import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import SubjectRoundItem from '@/components/items/SubjectRoundItem'
 import Layout from '@/pages/subjects/layout'
+import TeacherSelect from '@/components/common/TeacherSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -837,59 +838,30 @@ export default function SubjectDetail() {
                       </p>
                     )}
                   </AreaBox>
-                  {/* <AreaBox>
+                  <AreaBox>
                     <Controller
                       control={control}
                       name="teacherName"
                       defaultValue={subjectState?.teacherName}
                       render={({ field }) => (
-                        <Select
-                          labelPlacement="outside"
-                          label="강사명"
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          defaultValue={subjectState?.teacherName}
-                          selectedKeys={[teacher]}
-                          onChange={value => {
-                              if (value.target.value !== '') {
-                                field.onChange(value)
-                            handleTeacherChange(value)
-                            }
-                          }}
-                        >
-                          <SelectItem key={'강사명 없음'} value={'강사명 없음'}>
-                            {'강사명 없음'}
-                          </SelectItem>
-                          <SelectItem key={'김강사'} value={'김강사'}>
-                            {'김강사'}
-                          </SelectItem>
-                          <SelectItem key={'이강사'} value={'이강사'}>
-                            {'이강사'}
-                          </SelectItem>
-                          {managerList?.map(item => (
-                            <SelectItem key={item.mUsername} value={item.mUsername}>
-                              {item.mUsername}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                        <Controller
+                          control={control}
+                          name="teacherName"
+                          render={({ field, fieldState }) => (
+                            <TeacherSelect
+                              selecedKey={teacher}
+                              defaultValue={subjectState?.teacherName}
+                              field={field}
+                              label={'강사명'}
+                              handleChange={handleTeacherChange}
+                              optionDefualt={{
+                                mUsername: '강사명 없음',
+                                mUserId: '강사명 없음',
+                              }}
+                            />
+                          )}
+                        />
                       )}
-                    />
-                  </AreaBox> */}
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="강사명"
-                      defaultValue={subjectState?.teacherName}
-                      onChange={e => {
-                        register('teacherName').onChange(e)
-                      }}
-                      className="w-full"
-                      {...register('teacherName')}
                     />
                   </AreaBox>
                 </FlexBox>
