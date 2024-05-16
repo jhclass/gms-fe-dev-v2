@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -16,29 +16,20 @@ import {
   RadioGroup,
   Select,
   SelectItem,
-  Switch,
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { classRoomState, gradeState, subStatusState } from '@/lib/recoilAtoms'
+import { subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
-import {
-  CREATE_SUBJECT_MUTATION,
-  DELETE_SUBJECT_MUTATION,
-  SEARCH_SUBJECT_MUTATION,
-  UPDATE_SUBJECT_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_LECTURES_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
-import useUserLogsMutation from '@/utils/userLogs'
-import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
-import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import SubjectRoundItem from '@/components/items/SubjectRoundItem'
 import Layout from '@/pages/subjects/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
+import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
 
 const ConArea = styled.div`
   width: 100%;
@@ -108,7 +99,7 @@ const ColFlexBox = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: flex-start;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -182,25 +173,38 @@ const BtnBox = styled.div`
 `
 
 export default function SubjectDetail() {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const classRoom = useRecoilValue(classRoomState)
+  const [campusName, setCampusName] = useState('신촌')
+
+  // const classRoom = useRecoilValue(classRoomState)
+  // const [room, setRoom] = useState('강의실 없음')
+  const [createLectures] = useMutation(CREATE_LECTURES_MUTATION, {
+    context: {
+      headers: {
+        'x-apollo-operation-name': 'timetableAttached',
+        // 'apollo-require-preflight': 'true',
+      },
+    },
+  })
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const subStatus = useRecoilValue(subStatusState)
+
   const [sub, setSub] = useState('없음')
-  const [teacher, setTeacher] = useState('강사명 없음')
-  const [room, setRoom] = useState('강의실 없음')
+
+  const [teacher, setTeacher] = useState([])
+
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [datesSelected, setDatesSelected] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [expStartDate, setExpStartDate] = useState(null)
-  const [expEndDate, setExpEndDate] = useState(null)
-  const [sjStartDate, setSjStartDate] = useState(null)
-  const [sjEndDate, setSjEndDate] = useState(null)
+  const [lectureStart, setLectureStart] = useState(null)
+  const [lectureStartTime, setLectureStartTime] = useState(null)
+  const [lectureEndTime, setLectureEndTime] = useState(null)
+  const [lectureStartDate, setLectureStartDate] = useState(null)
+  const [lectureEndDate, setLectureEndDate] = useState(null)
+  const [fF, setFF] = useState(null)
+
   const [isReport, setIsReport] = useState('Y')
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 선택하세요.')
@@ -223,6 +227,7 @@ export default function SubjectDetail() {
     resetField,
     formState,
   } = useForm()
+  const { errors } = formState
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -245,17 +250,17 @@ export default function SubjectDetail() {
     }
   }
 
+  const handleCampusNameChange = e => {
+    setCampusName(e.target.value)
+  }
+
   const handleSubChange = e => {
     setSub(e.target.value)
   }
 
-  const handleTeacherChange = e => {
-    setTeacher(e.target.value)
-  }
-
-  const handleRoomChange = e => {
-    setRoom(e.target.value)
-  }
+  // const handleRoomChange = e => {
+  //   setRoom(e.target.value)
+  // }
 
   const handleTypeChange = value => {
     setIsReport(value)
@@ -265,6 +270,7 @@ export default function SubjectDetail() {
     const file = event.target.files[0]
     if (file) {
       setFileName(file.name)
+      setValue('timetableAttached', file)
     }
   }
   const handleButtonClick = () => {
@@ -278,6 +284,30 @@ export default function SubjectDetail() {
     return <span title={tooltipText}>{shortMonth + 1}</span>
   }
 
+  const onSubmit = data => {
+    createLectures({
+      variables: {
+        campus: data.campus,
+        temporaryName: data.temporaryName,
+        subDiv: data.subDiv,
+        teachersId: [parseInt(data.teachersId)],
+        roomNum: data.roomNum,
+        subjectId: parseInt(subjectSelectedData.id),
+        lecturePeriodStart: data.lecturePeriodStart,
+        lecturePeriodEnd: data.lecturePeriodEnd,
+        lectureDetails: data.lectureDetails,
+        lectureTime: [lectureStartTime, lectureEndTime],
+        eduStatusReport: data.eduStatusReport,
+        approvedNum: parseInt(data.approvedNum),
+        confirmedNum: parseInt(data.confirmedNum),
+        sessionNum: parseInt(data.sessionNum),
+        timetableAttached: data.timetableAttached,
+      },
+      onCompleted: rr => {
+        console.log(rr)
+      },
+    })
+  }
   return (
     <>
       <MainWrap>
@@ -293,63 +323,112 @@ export default function SubjectDetail() {
                 {formatDate(subjectState?.updatedAt, true)}
               </UpdateTime>
             </TopInfo>
-            <DetailForm>
+            <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox style={{ minWidth: '20%' }}>
-                  <Select
-                    labelPlacement="outside"
-                    defaultValue={subjectState?.subDiv}
-                    label={
-                      <FilterLabel>
-                        학교(원)<span>*</span>
-                      </FilterLabel>
-                    }
-                    placeholder=" "
-                    className="w-full"
-                    variant="bordered"
-                    selectedKeys={['신촌']}
-                  >
-                    <SelectItem key={'신촌'} value={'신촌'}>
-                      {'신촌'}
-                    </SelectItem>
-                  </Select>
-                </AreaBox>
-                <AreaBox>
-                  <Select
-                    labelPlacement="outside"
-                    defaultValue={subjectState?.subDiv}
-                    label={
-                      <FilterLabel>
-                        수강구분<span>*</span>
-                      </FilterLabel>
-                    }
-                    placeholder=" "
-                    className="w-full"
-                    variant="bordered"
-                    selectedKeys={[sub]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        handleSubChange(value)
-                      }
+                  <Controller
+                    control={control}
+                    name="campus"
+                    defaultValue={campusName}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: '캠퍼스를 선택해주세요',
+                      },
                     }}
-                  >
-                    {Object.entries({
-                      ...subStatus,
-                      실업자: '실업자',
-                      재직자: '재직자',
-                    }).map(([key, item]) => (
-                      <SelectItem key={item} value={item}>
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    render={({ field, fieldState }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label={
+                          <FilterLabel>
+                            캠퍼스<span>*</span>
+                          </FilterLabel>
+                        }
+                        placeholder=" "
+                        className="w-full"
+                        variant="bordered"
+                        defaultSelectedKeys={[campusName]}
+                        selectedKeys={[campusName]}
+                        onChange={value => {
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleCampusNameChange(value)
+                          }
+                        }}
+                      >
+                        <SelectItem key={'신촌'} value={'신촌'}>
+                          {'신촌'}
+                        </SelectItem>
+                        <SelectItem key={'홍대'} value={'홍대'}>
+                          {'홍대'}
+                        </SelectItem>
+                      </Select>
+                    )}
+                  />
+                  {errors.campus && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.campus.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
+                  <Controller
+                    control={control}
+                    name="subDiv"
+                    rules={{
+                      required: {
+                        value: true,
+                        message: '수강 구분을 선택해주세요.',
+                      },
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label={
+                          <FilterLabel>
+                            수강구분<span>*</span>
+                          </FilterLabel>
+                        }
+                        placeholder=" "
+                        className="w-full"
+                        variant="bordered"
+                        selectedKeys={[sub]}
+                        onChange={value => {
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleSubChange(value)
+                          }
+                        }}
+                      >
+                        {Object.entries({
+                          ...subStatus,
+                          실업자: '실업자',
+                          재직자: '재직자',
+                        }).map(([key, item]) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    )}
+                  />
+                  {errors.subDiv && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.subDiv.message)}
+                    </p>
+                  )}
+                </AreaBox>
+                {/* <AreaBox>
                   <DatePickerBox>
                     <Controller
                       control={control}
                       name="expiresDateStart"
-                      defaultValue={subjectState?.expiresDateStart}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '강의배정 년월을 선택해주세요.',
+                        },
+                      }}
                       render={({ field }) => (
                         <DatePicker
                           renderMonthContent={renderMonthContent}
@@ -357,15 +436,15 @@ export default function SubjectDetail() {
                           locale="ko"
                           showYearDropdown
                           selected={
-                            expStartDate === null
+                            lectureStart === null
                               ? null
-                              : new Date(expStartDate)
+                              : new Date(lectureStart)
                           }
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)
-                            setExpStartDate(date)
+                            setLectureStart(date)
                           }}
                           dateFormat="yyyy/MM"
                           onChangeRaw={e => e.preventDefault()}
@@ -392,7 +471,12 @@ export default function SubjectDetail() {
                       )}
                     />
                   </DatePickerBox>
-                </AreaBox>
+                  {errors.expiresDateStart && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.expiresDateStart.message)}
+                    </p>
+                  )}
+                </AreaBox> */}
               </FlexBox>
               <FlexBox>
                 <AreaBox>
@@ -408,62 +492,130 @@ export default function SubjectDetail() {
                       </FilterLabel>
                     }
                     minRows={1}
+                    onChange={e => {
+                      register('temporaryName').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('temporaryName', {
+                      required: {
+                        value: true,
+                        message: '표시과목명을 입력해주세요.',
+                      },
+                    })}
                   />
+                  {errors.temporaryName && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.temporaryName.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
                 <AreaBox>
                   <Textarea
                     readOnly
+                    value={subjectSelectedData?.subjectName || ''}
                     label={
                       <FilterLabel>
-                        과목 선택<span>*</span>
+                        과정 선택<span>*</span>
                       </FilterLabel>
                     }
                     labelPlacement="outside"
                     className="max-w-full"
                     variant="bordered"
                     minRows={1}
+                    onChange={e => {
+                      register('subjectId').onChange(e)
+                    }}
                     onClick={sbjOpen}
+                    {...register('subjectId', {
+                      required: {
+                        value: true,
+                        message: '과정을 선택해 주세요.',
+                      },
+                    })}
                   />
+                  {errors.subjectId && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.subjectId.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
                 <AreaBox>
                   <Controller
                     control={control}
-                    name="teacherName"
-                    defaultValue={subjectState?.teacherName}
+                    name="teachersId"
+                    rules={{
+                      required: {
+                        value: true,
+                        message: '강사를 선택해주세요.',
+                      },
+                    }}
                     render={({ field }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="강사명"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        defaultValue={subjectState?.teacherName}
-                        selectedKeys={[teacher]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleTeacherChange(value)
-                          }
-                        }}
-                      >
-                        <SelectItem key={'강사명 없음'} value={'강사명 없음'}>
-                          {'강사명 없음'}
-                        </SelectItem>
-                        <SelectItem key={'김강사'} value={'김강사'}>
-                          {'김강사'}
-                        </SelectItem>
-                        <SelectItem key={'이강사'} value={'이강사'}>
-                          {'이강사'}
-                        </SelectItem>
-                      </Select>
+                      <Controller
+                        control={control}
+                        name="teachersId"
+                        render={({ field, fieldState }) => (
+                          <TeacherMultiSelectID
+                            selecedKey={teacher}
+                            field={field}
+                            label={
+                              <FilterLabel>
+                                강사명<span>*</span>
+                              </FilterLabel>
+                            }
+                            handleChange={setTeacher}
+                            optionDefualt={{
+                              mUsername: '강사명 없음',
+                              id: '강사명 없음',
+                            }}
+                          />
+                        )}
+                      />
                     )}
                   />
+                  {errors.teachersId && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.teachersId.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="예) 204호 또는 별관 204호"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label={
+                      <FilterLabel>
+                        강의실<span>*</span>
+                      </FilterLabel>
+                    }
+                    onChange={e => {
+                      register('roomNum').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('roomNum', {
+                      required: {
+                        value: true,
+                        message: '강의실을 입력해 주세요.',
+                      },
+                      pattern: {
+                        value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        message: '한글, 영어, 숫자만 사용 가능합니다.',
+                      },
+                    })}
+                  />
+                  {errors.roomNum && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.roomNum.message)}
+                    </p>
+                  )}
+                </AreaBox>
+                {/* <AreaBox>
                   <Controller
                     control={control}
                     name="roomNum"
@@ -492,14 +644,19 @@ export default function SubjectDetail() {
                       </Select>
                     )}
                   />
-                </AreaBox>
+                </AreaBox> */}
                 <AreaBox>
                   <TimeBox>
                     <DatePickerBox>
                       <Controller
                         control={control}
-                        name="startTime"
-                        defaultValue={subjectState?.endDate}
+                        name="lectureTime"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '강의 시작시간을 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <DatePicker
                             renderCustomHeader={({
@@ -519,14 +676,17 @@ export default function SubjectDetail() {
                               />
                             )}
                             locale="ko"
+                            selectsStart
                             selected={
-                              sjEndDate === null ? null : new Date(sjEndDate)
+                              lectureStartTime === null
+                                ? null
+                                : new Date(lectureStartTime)
                             }
                             placeholderText="시작시간"
                             isClearable
                             onChange={date => {
                               field.onChange(date)
-                              setSjEndDate(date)
+                              setLectureStartTime(date)
                             }}
                             showTimeSelect
                             showTimeSelectOnly
@@ -537,7 +697,11 @@ export default function SubjectDetail() {
                             onFocus={e => e.target.blur()}
                             customInput={
                               <Input
-                                label="강의 시간"
+                                label={
+                                  <FilterLabel>
+                                    강의시간<span>*</span>
+                                  </FilterLabel>
+                                }
                                 labelPlacement="outside"
                                 type="text"
                                 variant="bordered"
@@ -557,8 +721,13 @@ export default function SubjectDetail() {
                     <DatePickerBox>
                       <Controller
                         control={control}
-                        name="endTime"
-                        defaultValue={subjectState?.endDate}
+                        name="lectureTime"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '강의 종료시간을 선택해주세요.',
+                          },
+                        }}
                         render={({ field }) => (
                           <DatePicker
                             renderCustomHeader={({
@@ -579,13 +748,16 @@ export default function SubjectDetail() {
                             )}
                             locale="ko"
                             selected={
-                              sjEndDate === null ? null : new Date(sjEndDate)
+                              lectureEndTime === null
+                                ? null
+                                : new Date(lectureEndTime)
                             }
                             placeholderText="종료시간"
                             isClearable
+                            selectsEnd
                             onChange={date => {
                               field.onChange(date)
-                              setSjEndDate(date)
+                              setLectureEndTime(date)
                             }}
                             showTimeSelect
                             showTimeSelectOnly
@@ -613,6 +785,11 @@ export default function SubjectDetail() {
                       />
                     </DatePickerBox>
                   </TimeBox>
+                  {errors.lectureTime && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.lectureTime.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
@@ -620,7 +797,13 @@ export default function SubjectDetail() {
                   <DatePickerBox>
                     <Controller
                       control={control}
-                      name="startDate"
+                      name="lecturePeriodStart"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '개강일을 선택해주세요.',
+                        },
+                      }}
                       defaultValue={subjectState?.startDate}
                       render={({ field }) => (
                         <DatePicker
@@ -643,20 +826,26 @@ export default function SubjectDetail() {
                           locale="ko"
                           showYearDropdown
                           selected={
-                            sjStartDate === null ? null : new Date(sjStartDate)
+                            lectureStartDate === null
+                              ? null
+                              : new Date(lectureStartDate)
                           }
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)
-                            setSjStartDate(date)
+                            setLectureStartDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
                           onFocus={e => e.target.blur()}
                           customInput={
                             <Input
-                              label="강의 기간(개강일)"
+                              label={
+                                <FilterLabel>
+                                  개강일<span>*</span>
+                                </FilterLabel>
+                              }
                               labelPlacement="outside"
                               type="text"
                               variant="bordered"
@@ -672,12 +861,23 @@ export default function SubjectDetail() {
                       )}
                     />
                   </DatePickerBox>
+                  {errors.lecturePeriodStart && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.lecturePeriodStart.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <DatePickerBox>
                     <Controller
                       control={control}
-                      name="endDate"
+                      name="lecturePeriodEnd"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '종강일을 선택해주세요.',
+                        },
+                      }}
                       defaultValue={subjectState?.endDate}
                       render={({ field }) => (
                         <DatePicker
@@ -700,20 +900,27 @@ export default function SubjectDetail() {
                           locale="ko"
                           showYearDropdown
                           selected={
-                            sjEndDate === null ? null : new Date(sjEndDate)
+                            lectureEndDate === null
+                              ? null
+                              : new Date(lectureEndDate)
                           }
+                          minDate={lectureStartDate}
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
                             field.onChange(date)
-                            setSjEndDate(date)
+                            setLectureEndDate(date)
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
                           onFocus={e => e.target.blur()}
                           customInput={
                             <Input
-                              label="강의 기간(종강일)"
+                              label={
+                                <FilterLabel>
+                                  종강일<span>*</span>
+                                </FilterLabel>
+                              }
                               labelPlacement="outside"
                               type="text"
                               variant="bordered"
@@ -729,21 +936,47 @@ export default function SubjectDetail() {
                       )}
                     />
                   </DatePickerBox>
+                  {errors.lecturePeriodEnd && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.lecturePeriodEnd.message)}
+                    </p>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <FilterLabel>
                     요일선택<span>*</span>
                   </FilterLabel>
-                  <div className="flex items-end gap-3">
+                  <div className="flex items-end gap-3 mt-1.5">
                     <Button color={'primary'} onClick={onOpen}>
                       요일선택
                     </Button>
-                    {datesSelected !== null && (
-                      <SText>
-                        총 수업 일수 <b>{datesSelected.length}</b>일
-                      </SText>
-                    )}
+                    <Input
+                      readOnly
+                      defaultValue={null}
+                      // value={
+                      //   datesSelected &&
+                      //   ` 총 수업 일수 ${(<b>{datesSelected?.length}</b>)}일`
+                      // }
+                      labelPlacement="outside"
+                      className="max-w-full"
+                      variant="bordered"
+                      onChange={e => {
+                        register('lectureDetails').onChange(e)
+                      }}
+                      onClick={sbjOpen}
+                      {...register('lectureDetails', {
+                        required: {
+                          value: true,
+                          message: '요일을 선택해 주세요.',
+                        },
+                      })}
+                    />
                   </div>
+                  {errors.lectureDetails && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.lectureDetails.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>
@@ -751,7 +984,13 @@ export default function SubjectDetail() {
                   <RadioBox>
                     <Controller
                       control={control}
-                      name="cashOrCard"
+                      name="eduStatusReport"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '교육상황보고 연동여부를 선택해주세요.',
+                        },
+                      }}
                       render={({ field }) => (
                         <RadioGroup
                           label={
@@ -777,117 +1016,142 @@ export default function SubjectDetail() {
                       )}
                     />
                   </RadioBox>
+                  {errors.eduStatusReport && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.eduStatusReport.message)}
+                    </p>
+                  )}
                 </AreaBox>
               </FlexBox>
-              {isReport === 'Y' && (
-                <>
-                  <FlexBox>
-                    <AreaBox>
-                      <Input
-                        labelPlacement="outside"
-                        placeholder="숫자만 입력해주세요"
-                        variant="bordered"
-                        radius="md"
-                        type="text"
-                        label={
-                          <FilterLabel>
-                            승인인원<span>*</span>
-                          </FilterLabel>
-                        }
-                        defaultValue={subjectState?.roomNum}
-                        onChange={e => {
-                          // register('roomNum').onChange(e)
-                        }}
-                        className="w-full"
-                        // {...register('roomNum', {
-                        //   pattern: {
-                        //     value: /^[가-힣a-zA-Z0-9\s]*$/,
-                        //     message: '한글, 영어, 숫자만 사용 가능합니다.',
-                        //   },
-                        // })}
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        labelPlacement="outside"
-                        placeholder="숫자만 입력해주세요"
-                        variant="bordered"
-                        radius="md"
-                        type="text"
-                        label={
-                          <FilterLabel>
-                            확정인원<span>*</span>
-                          </FilterLabel>
-                        }
-                        defaultValue={subjectState?.roomNum}
-                        onChange={e => {
-                          // register('roomNum').onChange(e)
-                        }}
-                        className="w-full"
-                        // {...register('roomNum', {
-                        //   pattern: {
-                        //     value: /^[가-힣a-zA-Z0-9\s]*$/,
-                        //     message: '한글, 영어, 숫자만 사용 가능합니다.',
-                        //   },
-                        // })}
-                      />
-                    </AreaBox>
-                    <AreaBox>
-                      <Input
-                        labelPlacement="outside"
-                        placeholder="숫자만 입력해주세요"
-                        variant="bordered"
-                        radius="md"
-                        type="text"
-                        label={
-                          <FilterLabel>
-                            교육회차<span>*</span>
-                          </FilterLabel>
-                        }
-                        defaultValue={subjectState?.roomNum}
-                        onChange={e => {
-                          register('roomNum').onChange(e)
-                        }}
-                        className="w-full"
-                        {...register('roomNum', {
-                          pattern: {
-                            value: /^[가-힣a-zA-Z0-9\s]*$/,
-                            message: '한글, 영어, 숫자만 사용 가능합니다.',
-                          },
-                        })}
-                      />
-                    </AreaBox>
-                  </FlexBox>
-                  <FlexBox>
-                    <AreaBox>
-                      <FilterLabel className="file">
-                        훈련시간표 첨부
+              <FlexBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="숫자만 입력해주세요"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label={
+                      <FilterLabel>
+                        승인인원<span>*</span>
                       </FilterLabel>
-                      <TimeBox>
-                        <input
-                          type="file"
-                          ref={fileInputRef}
-                          style={{ display: 'none' }}
-                          onChange={handleFileChange}
-                        />
-                        <Button color={'primary'} onClick={handleButtonClick}>
-                          파일 선택
-                        </Button>
-                        <Input
-                          readOnly={true}
-                          labelPlacement="outside"
-                          placeholder=" "
-                          variant="faded"
-                          radius="md"
-                          type="text"
-                          label=""
-                          value={fileName}
-                        />
-                      </TimeBox>
-                    </AreaBox>
-                  </FlexBox>
-                </>
-              )}
+                    }
+                    onChange={e => {
+                      register('approvedNum').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('approvedNum', {
+                      required: {
+                        value: true,
+                        message: '승인 인원을 입력해주세요.',
+                      },
+                      pattern: {
+                        value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        message: '한글, 영어, 숫자만 사용 가능합니다.',
+                      },
+                    })}
+                  />
+                  {errors.approvedNum && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.approvedNum.message)}
+                    </p>
+                  )}
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="숫자만 입력해주세요"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label={
+                      <FilterLabel>
+                        확정인원<span>*</span>
+                      </FilterLabel>
+                    }
+                    defaultValue={subjectState?.roomNum}
+                    onChange={e => {
+                      register('confirmedNum').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('confirmedNum', {
+                      required: {
+                        value: true,
+                        message: '승인 인원을 입력해주세요.',
+                      },
+                      pattern: {
+                        value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        message: '한글, 영어, 숫자만 사용 가능합니다.',
+                      },
+                    })}
+                  />
+                  {errors.confirmedNum && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.confirmedNum.message)}
+                    </p>
+                  )}
+                </AreaBox>
+                <AreaBox>
+                  <Input
+                    labelPlacement="outside"
+                    placeholder="숫자만 입력해주세요"
+                    variant="bordered"
+                    radius="md"
+                    type="text"
+                    label={
+                      <FilterLabel>
+                        교육회차<span>*</span>
+                      </FilterLabel>
+                    }
+                    defaultValue={subjectState?.roomNum}
+                    onChange={e => {
+                      register('sessionNum').onChange(e)
+                    }}
+                    className="w-full"
+                    {...register('sessionNum', {
+                      required: {
+                        value: true,
+                        message: '승인 인원을 입력해주세요.',
+                      },
+                      pattern: {
+                        value: /^[가-힣a-zA-Z0-9\s]*$/,
+                        message: '한글, 영어, 숫자만 사용 가능합니다.',
+                      },
+                    })}
+                  />
+                  {errors.sessionNum && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.sessionNum.message)}
+                    </p>
+                  )}
+                </AreaBox>
+              </FlexBox>
+              <FlexBox>
+                <AreaBox>
+                  <FilterLabel className="file">훈련시간표 첨부</FilterLabel>
+                  <TimeBox>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: 'none' }}
+                      onChange={handleFileChange}
+                    />
+                    <Button color={'primary'} onClick={handleButtonClick}>
+                      파일 선택
+                    </Button>
+                    <Input
+                      readOnly={true}
+                      labelPlacement="outside"
+                      placeholder=" "
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      label=""
+                      value={fileName}
+                    />
+                  </TimeBox>
+                </AreaBox>
+              </FlexBox>
               <BtnBox>
                 <Button2
                   buttonType="submit"

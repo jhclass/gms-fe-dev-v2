@@ -39,6 +39,7 @@ import SubjectRoundItem from '@/components/items/SubjectRoundItem'
 import Layout from '@/pages/subjects/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
+import TeacherSelect from '@/components/common/TeacherSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -435,31 +436,23 @@ export default function SubjectDetail() {
                     name="teacherName"
                     defaultValue={subjectState?.teacherName}
                     render={({ field }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="강사명"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        defaultValue={subjectState?.teacherName}
-                        selectedKeys={[teacher]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleTeacherChange(value)
-                          }
-                        }}
-                      >
-                        <SelectItem key={'강사명 없음'} value={'강사명 없음'}>
-                          {'강사명 없음'}
-                        </SelectItem>
-                        <SelectItem key={'김강사'} value={'김강사'}>
-                          {'김강사'}
-                        </SelectItem>
-                        <SelectItem key={'이강사'} value={'이강사'}>
-                          {'이강사'}
-                        </SelectItem>
-                      </Select>
+                      <Controller
+                        control={control}
+                        name="teacherName"
+                        render={({ field, fieldState }) => (
+                          <TeacherSelect
+                            selecedKey={teacher}
+                            defaultValue={subjectState?.teacherName}
+                            field={field}
+                            label={'강사명'}
+                            handleChange={handleTeacherChange}
+                            optionDefualt={{
+                              mUsername: '강사명 없음',
+                              mUserId: '강사명 없음',
+                            }}
+                          />
+                        )}
+                      />
                     )}
                   />
                 </AreaBox>

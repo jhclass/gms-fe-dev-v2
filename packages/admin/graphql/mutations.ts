@@ -1613,3 +1613,45 @@ export const GET_HOURLY_SALES_MUTATION = gql`
     }
   }
 `
+
+export const CREATE_LECTURES_MUTATION = gql`
+  mutation CreateLectures(
+    $campus: String!
+    $temporaryName: String!
+    $subDiv: String!
+    $teachersId: [Int]!
+    $roomNum: String!
+    $subjectId: Int!
+    $lecturePeriodStart: String!
+    $lecturePeriodEnd: String!
+    $lectureDetails: [String]!
+    $lectureTime: [String]!
+    $eduStatusReport: String!
+    $approvedNum: Int!
+    $confirmedNum: Int!
+    $sessionNum: Int!
+    $timetableAttached: Upload
+  ) {
+    createLectures(
+      campus: $campus
+      temporaryName: $temporaryName
+      subDiv: $subDiv
+      teachersId: $teachersId
+      roomNum: $roomNum
+      subjectId: $subjectId
+      lecturePeriodStart: $lecturePeriodStart
+      lecturePeriodEnd: $lecturePeriodEnd
+      lectureDetails: $lectureDetails
+      lectureTime: $lectureTime
+      eduStatusReport: $eduStatusReport
+      ApprovedNum: $approvedNum
+      confirmedNum: $confirmedNum
+      sessionNum: $sessionNum
+      timetableAttached: $timetableAttached
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
