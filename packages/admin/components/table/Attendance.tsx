@@ -58,7 +58,7 @@ const TodayTag = styled.span`
   vertical-align: middle;
 `
 
-export default function TestCate() {
+export default function Attendance() {
   const nodes = [
     {
       id: '0',

@@ -97,6 +97,32 @@ const AreaTitle = styled.div`
     font-weight: 600;
   }
 `
+const AvatarBox = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+  } */
+`
+
+const AvatarF = styled.div`
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  background-color: #4f46e5;
+  background-position: center;
+  background-size: 100%;
+  font-size: 4rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  line-height: 5rem;
+`
+
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
@@ -202,6 +228,15 @@ export default function ManagerWrite({ managerId }) {
   const [joiningDate, setJoiningDate] = useState(null)
   const years = _.range(1950, getYear(new Date()) + 1, 1)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const gradeStr = data => {
+    if (data == null) {
+      return 'A'
+    } else {
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
+    }
+  }
 
   useEffect(() => {
     if (
@@ -335,6 +370,17 @@ export default function ManagerWrite({ managerId }) {
             </TopInfo>
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>
+                <AvatarBox>
+                  {managerData?.mAvatar?.imageUrl ? (
+                    <AvatarF
+                      style={{
+                        backgroundImage: `url('${managerData?.mAvatar?.imageUrl}')`,
+                      }}
+                    ></AvatarF>
+                  ) : (
+                    <AvatarF>{gradeStr(managerData?.mUserId)}</AvatarF>
+                  )}
+                </AvatarBox>
                 <FlexBox>
                   <AreaBox>
                     <Input

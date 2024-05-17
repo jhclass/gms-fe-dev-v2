@@ -12,6 +12,7 @@ import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import Layout from '@/pages/member/layout'
 import { ManageUser } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
+import { useRef } from 'react'
 
 const ConArea = styled.div`
   width: 100%;
@@ -54,6 +55,33 @@ const DetailForm = styled.form`
     gap: 1rem;
   }
 `
+
+const AvatarBox = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+  } */
+`
+
+const AvatarF = styled.div`
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  background-color: #4f46e5;
+  background-position: center;
+  background-size: 100%;
+  font-size: 4rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  line-height: 5rem;
+`
+
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -91,8 +119,18 @@ export default function Profile() {
   const { userLogs } = useUserLogsMutation()
   const mMeData = data?.mMe
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { register, handleSubmit, formState } = useForm()
+  const { register, handleSubmit, setValue, formState } = useForm()
   const { errors, isDirty, dirtyFields } = formState
+  const fileInputRef = useRef(null)
+
+  const gradeStr = data => {
+    if (data == null) {
+      return 'A'
+    } else {
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
+    }
+  }
 
   const onSubmit = data => {
     if (isDirty) {
@@ -141,10 +179,25 @@ export default function Profile() {
     return formatted
   }
 
+  const handleFileChange = event => {
+    const MAX_FILE_SIZE = 10 * 1024 * 1024
+    const file = event.target.files[0]
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        fileInputRef.current.value = ''
+      } else {
+        // setValue('timetableAttached', file)
+      }
+    }
+  }
+  const handleButtonClick = e => {
+    fileInputRef.current.click()
+  }
+
   if (error) {
     console.log(error)
   }
-
+  console.log(mMeData)
   return (
     <>
       <MainWrap>
@@ -161,6 +214,31 @@ export default function Profile() {
               </UpdateTime>
             </TopInfo>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
+              <AvatarBox>
+                {!mMeData?.Stamp[0]?.imageUrl ? (
+                  <AvatarF
+                    style={{
+                      backgroundImage: `url('${mMeData?.Stamp[0]?.imageUrl}')`,
+                    }}
+                  ></AvatarF>
+                ) : (
+                  <AvatarF>{gradeStr(mMeData?.mUserId)}</AvatarF>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+                <Button
+                  size="sm"
+                  color={'primary'}
+                  onClick={handleButtonClick}
+                  className="bg-[#07bbae]"
+                >
+                  프로필 변경
+                </Button>
+              </AvatarBox>
               <FlexBox>
                 <AreaBox>
                   <Input

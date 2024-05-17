@@ -26,7 +26,6 @@ const category: Category[] = [
   {
     id: 0,
     href: '/',
-    // iconSrc: 'ico_home',
     iconSrc: 'xi-home-o',
     name: '대시보드',
     exposure: true,
@@ -37,8 +36,32 @@ const category: Category[] = [
   },
   {
     id: 1,
+    href: '/message',
+    iconSrc: 'xi-mail-o',
+    name: '메시지',
+    resetItems: [],
+    exposure: true,
+    children: [
+      {
+        href: '/',
+        name: '받은요청 목록',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+      },
+      {
+        href: '/request',
+        name: '보낸요청 목록',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+      },
+    ],
+  },
+  {
     href: '/consult',
-    // iconSrc: 'ico_consult',
     iconSrc: 'xi-forum-o',
     name: '상담관리',
     resetItems: [
@@ -92,9 +115,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 2,
     href: '/lecture',
-    // iconSrc: 'ico_work',
     iconSrc: 'xi-presentation',
     name: '강의관리',
     resetItems: [],
@@ -145,9 +166,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 3,
     href: '/subjects',
-    // iconSrc: 'ico_work',
     iconSrc: 'xi-library-books-o',
     name: '과정관리',
     resetItems: [
@@ -180,9 +199,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 4,
     href: '/students',
-    // iconSrc: 'ico_regist',
     iconSrc: 'xi-user-address',
     name: '수강생관리',
     resetItems: [
@@ -238,9 +255,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 5,
     href: '/accounting',
-    // iconSrc: 'ico_accounting',
     iconSrc: 'xi-money',
     name: '회계관리',
     grade: '회계팀',
@@ -313,9 +328,7 @@ const category: Category[] = [
     ],
   },
   {
-    id: 6,
     href: '/statistics',
-    // iconSrc: 'ico_accounting',
     iconSrc: 'xi-chart-line',
     name: '통계',
     grade: '영업팀',

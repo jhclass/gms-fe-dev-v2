@@ -30,6 +30,7 @@ import Layout from '@/pages/subjects/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const ConArea = styled.div`
   width: 100%;
@@ -172,8 +173,9 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-export default function SubjectDetail() {
+export default function LectureWrite() {
   const router = useRouter()
+  const { userLogs } = useUserLogsMutation()
   const [campusName, setCampusName] = useState('신촌')
 
   // const classRoom = useRecoilValue(classRoomState)
@@ -225,6 +227,8 @@ export default function SubjectDetail() {
     setValue,
     handleSubmit,
     resetField,
+    reset,
+    clearErrors,
     formState,
   } = useForm()
   const { errors } = formState
@@ -267,13 +271,25 @@ export default function SubjectDetail() {
   }
 
   const handleFileChange = event => {
+    const MAX_FILE_SIZE = 10 * 1024 * 1024
     const file = event.target.files[0]
     if (file) {
-      setFileName(file.name)
-      setValue('timetableAttached', file)
+      if (file.size > MAX_FILE_SIZE) {
+        setError('timetableAttached', {
+          type: 'manual',
+          message: '파일이 너무 큽니다. 10Mb이하만 가능합니다.',
+        })
+        setFileName('')
+        fileInputRef.current.value = ''
+        resetField('timetableAttached')
+      } else {
+        clearErrors('timetableAttached')
+        setFileName(file.name)
+        setValue('timetableAttached', file)
+      }
     }
   }
-  const handleButtonClick = () => {
+  const handleButtonClick = e => {
     fileInputRef.current.click()
   }
 
@@ -284,30 +300,51 @@ export default function SubjectDetail() {
     return <span title={tooltipText}>{shortMonth + 1}</span>
   }
 
-  const onSubmit = data => {
-    createLectures({
-      variables: {
-        campus: data.campus,
-        temporaryName: data.temporaryName,
-        subDiv: data.subDiv,
-        teachersId: [parseInt(data.teachersId)],
-        roomNum: data.roomNum,
-        subjectId: parseInt(subjectSelectedData.id),
-        lecturePeriodStart: data.lecturePeriodStart,
-        lecturePeriodEnd: data.lecturePeriodEnd,
-        lectureDetails: data.lectureDetails,
-        lectureTime: [lectureStartTime, lectureEndTime],
-        eduStatusReport: data.eduStatusReport,
-        approvedNum: parseInt(data.approvedNum),
-        confirmedNum: parseInt(data.confirmedNum),
-        sessionNum: parseInt(data.sessionNum),
-        timetableAttached: data.timetableAttached,
-      },
-      onCompleted: rr => {
-        console.log(rr)
-      },
-    })
+  const onSubmit = async data => {
+    try {
+      const teachersIdArray = data.teachersId
+        .split(',')
+        .filter(Boolean)
+        .map(Number)
+      const result = await createLectures({
+        variables: {
+          campus: data.campus,
+          temporaryName: data.temporaryName,
+          subDiv: data.subDiv,
+          teachersId: teachersIdArray,
+          roomNum: data.roomNum,
+          subjectId: parseInt(subjectSelectedData.id),
+          lecturePeriodStart: data.lecturePeriodStart,
+          lecturePeriodEnd: data.lecturePeriodEnd,
+          lectureDetails: data.lectureDetails,
+          lectureTime: [lectureStartTime, lectureEndTime],
+          eduStatusReport: data.eduStatusReport,
+          approvedNum: parseInt(data.approvedNum),
+          confirmedNum: parseInt(data.confirmedNum),
+          sessionNum: parseInt(data.sessionNum),
+          timetableAttached: data.timetableAttached,
+        },
+        // refetchQueries: [
+        //   {
+        //     query: SEE_SUBJECT_QUERY,
+        //     variables: { page: 1, limit: 10 },
+        //   },
+        // ],
+      })
+
+      if (!result.data.createLectures.ok) {
+        throw new Error('과정 등록 실패')
+      }
+
+      alert('등록되었습니다.')
+      userLogs(`${data.temporaryName}강의 등록`)
+      router.push('/lecture')
+    } catch (error) {
+      console.error('강의 등록 중 에러 발생:', error)
+      alert('강의 등록 처리 중 오류가 발생했습니다.')
+    }
   }
+
   return (
     <>
       <MainWrap>
@@ -947,7 +984,15 @@ export default function SubjectDetail() {
                     요일선택<span>*</span>
                   </FilterLabel>
                   <div className="flex items-end gap-3 mt-1.5">
-                    <Button color={'primary'} onClick={onOpen}>
+                    <Button
+                      isDisabled={
+                        lectureStartDate === null || lectureEndDate === null
+                          ? true
+                          : false
+                      }
+                      color={'primary'}
+                      onClick={onOpen}
+                    >
                       요일선택
                     </Button>
                     <Input
@@ -1140,6 +1185,31 @@ export default function SubjectDetail() {
                       파일 선택
                     </Button>
                     <Input
+                      readOnly
+                      placeholder=" "
+                      variant="faded"
+                      radius="md"
+                      type="text"
+                      value={fileName}
+                      {...register('timetableAttached')}
+                    />
+                  </TimeBox>
+                  {errors.timetableAttached && (
+                    <p className="px-2 pt-2 text-xs text-red-500">
+                      {String(errors.timetableAttached.message)}
+                    </p>
+                  )}
+                  {/* <TimeBox>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: 'none' }}
+                      onChange={handleFileChange}
+                    />
+                    <Button color={'primary'} onClick={handleButtonClick}>
+                      파일 선택
+                    </Button>
+                    <Input
                       readOnly={true}
                       labelPlacement="outside"
                       placeholder=" "
@@ -1149,7 +1219,7 @@ export default function SubjectDetail() {
                       label=""
                       value={fileName}
                     />
-                  </TimeBox>
+                  </TimeBox> */}
                 </AreaBox>
               </FlexBox>
               <BtnBox>
@@ -1161,7 +1231,7 @@ export default function SubjectDetail() {
                   fontColor="#fff"
                   bgColor="#007de9"
                 >
-                  수정
+                  등록
                 </Button2>
                 <Button2
                   buttonType="button"
@@ -1194,8 +1264,10 @@ export default function SubjectDetail() {
         onClose={onClose}
         setValue={setValue}
         setDatesSelected={setDatesSelected}
+        startDate={lectureStartDate}
+        endDate={lectureEndDate}
       />
     </>
   )
 }
-SubjectDetail.getLayout = page => <Layout>{page}</Layout>
+LectureWrite.getLayout = page => <Layout>{page}</Layout>
