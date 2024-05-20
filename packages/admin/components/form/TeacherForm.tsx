@@ -96,6 +96,29 @@ const AreaTitle = styled.div`
     font-weight: 600;
   }
 `
+const AvatarBox = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+  } */
+`
+const AvatarF = styled.div`
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  background-color: #4f46e5;
+  background-position: center;
+  background-size: 100%;
+  font-size: 4rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  line-height: 5rem;
+`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
@@ -203,6 +226,15 @@ export default function StudentsWrite({ managerId }) {
   const [joiningDate, setJoiningDate] = useState(null)
   const years = _.range(1950, getYear(new Date()) + 1, 1)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const gradeStr = data => {
+    if (data == null) {
+      return 'A'
+    } else {
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
+    }
+  }
 
   useEffect(() => {
     if (
@@ -329,6 +361,17 @@ export default function StudentsWrite({ managerId }) {
             </TopInfo>
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>
+                <AvatarBox>
+                  {managerData?.mAvatar ? (
+                    <AvatarF
+                      style={{
+                        backgroundImage: `url('${managerData?.mAvatar}')`,
+                      }}
+                    ></AvatarF>
+                  ) : (
+                    <AvatarF>{gradeStr(managerData?.mUserId)}</AvatarF>
+                  )}
+                </AvatarBox>
                 <FlexBox>
                   <AreaBox>
                     <Input
@@ -623,34 +666,36 @@ export default function StudentsWrite({ managerId }) {
                     </DatePickerBox>
                   </AreaBox>
                 </FlexBox>
-                <FlexBox>
-                  <AreaSmallBox>
-                    <FilterLabel>
-                      도장<span>*</span>
-                    </FilterLabel>
-                    <div className="flex items-start gap-3 mt-1">
-                      <Button
-                        isDisabled={
-                          managerData?.Stamp[0]?.imageUrl ? true : false
-                        }
-                        color={'primary'}
-                        onClick={clickCreate}
-                      >
-                        도장 생성
-                      </Button>
-                      {managerData?.Stamp[0]?.imageUrl && (
-                        <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
-                          <img
-                            src={managerData?.Stamp[0]?.imageUrl}
-                            alt={managerData.mUsername + '인'}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </AreaSmallBox>
-                  <AreaBox></AreaBox>
-                  <AreaBox></AreaBox>
-                </FlexBox>
+                {managerData?.Stamp.length > 0 && (
+                  <FlexBox>
+                    <AreaSmallBox>
+                      <FilterLabel>
+                        도장<span>*</span>
+                      </FilterLabel>
+                      <div className="flex items-start gap-3 mt-1">
+                        <Button
+                          isDisabled={
+                            managerData?.Stamp[0]?.imageUrl ? true : false
+                          }
+                          color={'primary'}
+                          onClick={clickCreate}
+                        >
+                          도장 생성
+                        </Button>
+                        {managerData?.Stamp[0]?.imageUrl && (
+                          <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
+                            <img
+                              src={managerData?.Stamp[0]?.imageUrl}
+                              alt={managerData.mUsername + '인'}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </AreaSmallBox>
+                    <AreaBox></AreaBox>
+                    <AreaBox></AreaBox>
+                  </FlexBox>
+                )}
                 <BtnBox>
                   {loginMGrade < grade.general ||
                   loginMPart?.includes('교무팀') ? (

@@ -42,16 +42,6 @@ const ClickBox = styled.div`
   width: 100%;
   align-items: center;
 `
-const Tnum = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 6%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.06}px;
-`
 const AvatarBox = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -69,12 +59,33 @@ const AvatarF = styled.div`
   height: 2rem;
   background-color: #fff;
   background-position: center;
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
   font-size: 1rem;
   text-align: center;
   color: #fff;
   font-weight: 700;
   line-height: 2rem;
+`
+const Tnum = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.06}px;
+`
+const Tavatar = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.06}px;
 `
 const Tid = styled.div`
   position: relative;
@@ -93,32 +104,32 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: #007de9;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
   font-weight: 600;
 `
 const Tpart = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 14%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.13}px;
 `
 const Trank = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.07}px;
 `
 const Tphone = styled.div`
   display: table-cell;
@@ -134,21 +145,21 @@ const Temail = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.13}px;
 `
 const TjoiningDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tdate = styled.div`
   display: table-cell;
@@ -248,7 +259,7 @@ export default function ManagerItem(props) {
           >
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
-              <Tid>
+              <Tavatar>
                 <AvatarBox>
                   {managerData?.mAvatar ? (
                     <AvatarF
@@ -265,8 +276,10 @@ export default function ManagerItem(props) {
                       {gradeStr(managerData?.mUserId)}
                     </AvatarF>
                   )}
-                  <EllipsisBox>{managerData.mUserId}</EllipsisBox>
                 </AvatarBox>
+              </Tavatar>
+              <Tid>
+                <EllipsisBox>{managerData.mUserId}</EllipsisBox>
               </Tid>
               <Tname>
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>

@@ -163,7 +163,8 @@ const UserGrade = styled.div`
   position: relative;
   background-color: #fff;
   background-position: center;
-  background-size: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
   text-align: center;
   line-height: 2.5rem;
 
