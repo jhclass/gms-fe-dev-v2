@@ -262,10 +262,13 @@ export default function Profile() {
                   ) : (
                     <AvatarF
                       style={{
-                        backgroundColor: `#4f46e5`,
+                        backgroundColor:
+                          avatarImg === null ? '#4f46e5' : 'transparent',
+                        backgroundImage:
+                          avatarImg !== null ? `url('${avatarImg}')` : 'none',
                       }}
                     >
-                      {gradeStr(mMeData?.mUserId)}
+                      {avatarImg === null ? gradeStr(mMeData?.mUserId) : null}
                     </AvatarF>
                   )}
                   <input
