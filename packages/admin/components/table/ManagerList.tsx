@@ -15,6 +15,7 @@ import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
 import {
   ManageUser,
+  SeeManageUserResult,
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
@@ -170,21 +171,25 @@ const Nolist = styled.div`
   color: #71717a;
 `
 type seeManageUser = {
-  seeManageUser: ManageUser[]
+  seeManageUser: SeeManageUserResult
 }
 
 export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const { error, data, refetch } = useSuspenseQuery<seeManageUser>(
-    SEE_MANAGEUSER_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
-  )
+  const {
+    error,
+    data: seeManagerData,
+    refetch,
+  } = useSuspenseQuery<seeManageUser>(SEE_MANAGEUSER_QUERY, {
+    variables: { page: currentPage, limit: currentLimit },
+  })
 
-  const managerData = data?.seeManageUser.filter(manager => manager.mGrade < 20)
+  // const managerData = data?.seeManageUser.filter(
+  //   manager => manager.mGrade < 20,
+  // )
+  const managerData = seeManagerData?.seeManageUser?.data
+  const totalCount = seeManagerData?.seeManageUser?.totalCount
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -225,7 +230,7 @@ export default function ConsolutationTable() {
                   </ClickBox>
                 </TheaderBox>
               </Theader>
-              {managerData.length > 0 &&
+              {totalCount > 0 &&
                 managerData?.map((item, index) => (
                   <ManagerItem
                     forName="student"
@@ -236,11 +241,23 @@ export default function ConsolutationTable() {
                     limit={currentLimit}
                   />
                 ))}
-              {managerData.length === 0 && (
-                <Nolist>등록된 직원이 없습니다.</Nolist>
-              )}
+              {totalCount === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
+          {totalCount > 0 && (
+            <PagerWrap>
+              <Pagination
+                variant="light"
+                showControls
+                initialPage={currentPage}
+                page={currentPage}
+                total={Math.ceil(totalCount / currentLimit)}
+                onChange={newPage => {
+                  setCurrentPage(newPage)
+                }}
+              />
+            </PagerWrap>
+          )}
         </TableArea>
       </>
     )

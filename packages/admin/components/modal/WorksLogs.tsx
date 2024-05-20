@@ -424,10 +424,16 @@ export default function SubjectModal({
                 </DatailBody>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={sbjClose}>
+                <Button
+                  size="sm"
+                  color="danger"
+                  variant="light"
+                  onPress={sbjClose}
+                >
                   Close
                 </Button>
                 <Button
+                  size="sm"
                   color="primary"
                   onPress={() => {
                     onClose()

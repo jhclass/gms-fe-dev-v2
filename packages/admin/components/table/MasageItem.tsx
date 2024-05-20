@@ -5,9 +5,10 @@ import { progressStatusState } from '@/lib/recoilAtoms'
 import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
-import { Checkbox } from '@nextui-org/react'
+import { Checkbox, useDisclosure } from '@nextui-org/react'
+import SeeRequestMessage from '../modal/SeeRequestMessage'
 
-const TableItem = styled.div<{ $resign: string }>`
+const TableItem = styled.div`
   position: relative;
   width: 100%;
   min-width: fit-content;
@@ -16,8 +17,7 @@ const TableItem = styled.div<{ $resign: string }>`
   font-size: 0.875rem;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: ${props => (props.$resign === 'Y' ? '#e4e4e7' : '#fff')};
-
+  background: #fff;
   &:hover {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.8);
@@ -31,9 +31,6 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem 2% auto; */
 `
 
 const ClickBox = styled.div`
@@ -50,18 +47,6 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
-const Tid = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 12%;
-  padding: 1rem;
-  font-size: inherit;
-  color: #07bbae;
-  min-width: ${1200 * 0.12}px;
-  font-weight: 600;
-`
 const Tname = styled.div`
   position: relative;
   display: table-cell;
@@ -70,51 +55,20 @@ const Tname = styled.div`
   width: 12%;
   padding: 1rem;
   font-size: inherit;
-  color: #007de9;
   min-width: ${1200 * 0.12}px;
   font-weight: 600;
 `
-const Tpart = styled.div`
+const Tcon = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 58%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.58}px;
 `
-const Trank = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 9%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.09}px;
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.14}px;
-`
-const Temail = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.2}px;
-`
-const TjoiningDate = styled.div`
+const TDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -125,7 +79,10 @@ const TjoiningDate = styled.div`
   min-width: ${1200 * 0.12}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 `
@@ -149,6 +106,8 @@ export default function ConsolutItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const managerData = props.tableData
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -181,44 +140,39 @@ export default function ConsolutItem(props) {
 
   return (
     <>
-      <TableItem $resign={managerData.resign}>
+      <TableItem>
         <TableRow>
-          <Link href={`/hr/teacherDetail/${managerData.id}`}>
+          <Link href={`#`} onClick={onOpen}>
             <ClickBox>
-              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
-              <Tid>
-                <EllipsisBox>{managerData.mUserId}</EllipsisBox>
-              </Tid>
+              <Tnum>{conIndex + 1}</Tnum>
               <Tname>
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>
               </Tname>
-              <Tpart>
-                <EllipsisBox>{managerData.mPart.join(',')}</EllipsisBox>
-              </Tpart>
-              <Trank>
-                <EllipsisBox>{managerData.mRank}</EllipsisBox>
-              </Trank>
-              <Tphone>
+              <Tcon>
                 <EllipsisBox>
-                  {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
+                  요청
+                  내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내내용내용내용내용내용내용
                 </EllipsisBox>
-              </Tphone>
-              <Temail>
-                <EllipsisBox>
-                  {managerData.email ? managerData.email : '-'}
-                </EllipsisBox>
-              </Temail>
-              <TjoiningDate>
+              </Tcon>
+              <TDate>
                 <EllipsisBox>
                   {managerData.mJoiningDate
                     ? formatDate(managerData.mJoiningDate, false)
                     : '-'}
                 </EllipsisBox>
-              </TjoiningDate>
+              </TDate>
+              <TDate>
+                <EllipsisBox>
+                  {managerData.mJoiningDate
+                    ? formatDate(managerData.mJoiningDate, false)
+                    : '-'}
+                </EllipsisBox>
+              </TDate>
             </ClickBox>
           </Link>
         </TableRow>
       </TableItem>
+      <SeeRequestMessage isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

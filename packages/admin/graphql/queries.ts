@@ -149,59 +149,74 @@ export const CREATE_STAMP_QUERY = gql`
 `
 
 export const SEE_MANAGEUSER_QUERY = gql`
-  query SeeManageUser {
-    seeManageUser {
-      id
-      mUserId
-      mUsername
-      mGrade
-      mRank
-      mPhoneNum
-      mPhoneNumCompany
-      mPhoneNumInside
-      mPhoneNumFriend
-      mPart
-      mAvatar
-      mJoiningDate
-      email
-      mAddresses
-      createdAt
-      updatedAt
-      resign
-      ConsultationMemo {
-        id
-        content
-        createdAt
+  query Query($limit: Int, $page: Int) {
+    seeManageUser(limit: $limit, page: $page) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        ConsultationMemo {
+          id
+          createdAt
+          content
+          manageUserId
+          studentStateId
+          updatedAt
+        }
         updatedAt
-        studentStateId
-        manageUserId
+        resign
+        mUsername
+        mUserId
+        mRank
+        mPhoneNumInside
+        mPhoneNumFriend
+        mPhoneNumCompany
+        mPhoneNum
+        mPassword
+        mPart
+        mJoiningDate
+        mGrade
+        mAvatar
+        mAddresses
+        lastModifiedBy
+        id
+        favoriteStudentState
+        email
+        createdAt
+        Stamp {
+          id
+          imageUrl
+        }
+        frequentlyUsed
       }
-      favoriteStudentState
     }
   }
 `
 export const SEARCH_MANAGEUSER_QUERY = gql`
   query SearchManageUser(
+    $page: Int
+    $limit: Int
     $searchManageUserId: Int
-    $mJoiningDate: [String]
-    $resign: String
-    $mPart: String
-    $mPhoneNum: String
-    $mRank: String
-    $mGrade: Int
-    $mUsername: String
     $mUserId: String
+    $mUsername: String
+    $mRank: String
+    $mPhoneNum: String
+    $mPart: String
+    $resign: String
+    $mJoiningDate: [String]
   ) {
     searchManageUser(
+      page: $page
+      limit: $limit
       id: $searchManageUserId
-      mJoiningDate: $mJoiningDate
-      resign: $resign
-      mPart: $mPart
-      mPhoneNum: $mPhoneNum
-      mRank: $mRank
-      mGrade: $mGrade
-      mUsername: $mUsername
       mUserId: $mUserId
+      mUsername: $mUsername
+      mRank: $mRank
+      mPhoneNum: $mPhoneNum
+      mPart: $mPart
+      resign: $resign
+      mJoiningDate: $mJoiningDate
     ) {
       totalCount
       ok

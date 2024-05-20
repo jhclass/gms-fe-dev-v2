@@ -20,8 +20,7 @@ import {
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
-import ManagerItem from './ManagerItem'
-import TeacherItem from './TeacherItem'
+import MasageItem from './MasageItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -86,47 +85,17 @@ const Tname = styled.div`
   min-width: ${1200 * 0.12}px;
   font-weight: 600;
 `
-const Tpart = styled.div`
+const Tcon = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 58%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.58}px;
 `
-const Trank = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 9%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.09}px;
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.14}px;
-`
-const Temail = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.2}px;
-`
-const TjoiningDate = styled.div`
+const TDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -153,12 +122,13 @@ type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
+  const [totalCount, setTotalCount] = useState(0)
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
-      variables: { page: currentPage, limit: currentLimit, mRank: '강사' },
+      variables: { mGrade: 20 },
     },
   )
   const managerData = data?.searchManageUser.data
@@ -190,19 +160,16 @@ export default function ConsolutationTable() {
               <TheaderBox>
                 <ClickBox>
                   <Tnum>No</Tnum>
-                  <Tname>아이디</Tname>
-                  <Tname>이름</Tname>
-                  <Tpart>강의 분야</Tpart>
-                  <Trank>직책</Trank>
-                  <Tphone>연락처</Tphone>
-                  <Temail>이메일</Temail>
-                  <TjoiningDate>입사일</TjoiningDate>
+                  <Tname>보낸사람</Tname>
+                  <Tcon>요청내용</Tcon>
+                  <TDate>요청일자</TDate>
+                  <TDate>읽은일자</TDate>
                 </ClickBox>
               </TheaderBox>
             </Theader>
             {managerData.length > 0 &&
               managerData?.map((item, index) => (
-                <TeacherItem
+                <MasageItem
                   forName="student"
                   key={index}
                   tableData={item}
@@ -211,17 +178,17 @@ export default function ConsolutationTable() {
                   limit={currentLimit}
                 />
               ))}
-            {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}
+            {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
-        {managerTotal > 0 && (
+        {totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(managerTotal / currentLimit)}
+              total={Math.ceil(totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

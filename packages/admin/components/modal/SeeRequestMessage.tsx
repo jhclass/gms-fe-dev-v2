@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ScrollShadow,
   Textarea,
+  useDisclosure,
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -17,6 +18,7 @@ import { useMutation } from '@apollo/client'
 import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import { Suspense, useEffect, useState } from 'react'
 import ManagerSelectID from '../common/ManagerSelectID'
+import ReplyMessage from './ReplyMessage'
 
 const DetailDiv = styled.div`
   display: flex;
@@ -104,6 +106,12 @@ export default function RequestMessage({ isOpen, onClose }) {
     setManager(e.target.value)
   }
 
+  const {
+    isOpen: ReplyIsOpne,
+    onOpen: ReplyOnOPen,
+    onClose: ReplyOnClose,
+  } = useDisclosure()
+
   return (
     <>
       <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
@@ -134,7 +142,7 @@ export default function RequestMessage({ isOpen, onClose }) {
                             defaultValue={
                               '요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청'
                             }
-                            minRows={5}
+                            maxRows={5}
                             onChange={e => {
                               register('detail').onChange(e)
                             }}
@@ -146,11 +154,27 @@ export default function RequestMessage({ isOpen, onClose }) {
                   </ScrollShadow>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" type="submit">
+                  <Button
+                    size="sm"
+                    color="danger"
+                    variant="light"
+                    onPress={onClose}
+                  >
+                    Close
+                  </Button>
+                  <Button size="sm" color="primary">
                     읽음
                   </Button>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
+                  <Button
+                    size="sm"
+                    variant="bordered"
+                    color="primary"
+                    onPress={() => {
+                      onClose()
+                      ReplyOnOPen()
+                    }}
+                  >
+                    답변
                   </Button>
                 </ModalFooter>
               </form>
@@ -158,6 +182,12 @@ export default function RequestMessage({ isOpen, onClose }) {
           )}
         </ModalContent>
       </Modal>
+      <ReplyMessage
+        isOpen={ReplyIsOpne}
+        onClose={ReplyOnClose}
+        managerId={undefined}
+        managerName={undefined}
+      />
     </>
   )
 }

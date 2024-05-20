@@ -40,6 +40,7 @@ const TableRow = styled.div`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -50,6 +51,30 @@ const Tnum = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.06}px;
+`
+const AvatarBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+  } */
+`
+const AvatarF = styled.div`
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 2rem;
+  height: 2rem;
+  background-color: #fff;
+  background-position: center;
+  background-size: 100%;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  line-height: 2rem;
 `
 const Tid = styled.div`
   position: relative;
@@ -160,21 +185,6 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-const isDisplayFlag = (date: string, step: number): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && step === 999) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
-
 export default function ManagerItem(props) {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
@@ -182,6 +192,15 @@ export default function ManagerItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const managerData = props.tableData
+  const gradeStr = data => {
+    if (data == null) {
+      return 'A'
+    } else {
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
+    }
+  }
+
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -228,9 +247,26 @@ export default function ManagerItem(props) {
             href={mGrade < grade.general ? `/hr/detail/${managerData.id}` : '#'}
           >
             <ClickBox>
-              <Tnum>{conIndex + 1}</Tnum>
+              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <Tid>
-                <EllipsisBox>{managerData.mUserId}</EllipsisBox>
+                <AvatarBox>
+                  {managerData?.mAvatar ? (
+                    <AvatarF
+                      style={{
+                        backgroundImage: `url('${managerData?.mAvatar}')`,
+                      }}
+                    ></AvatarF>
+                  ) : (
+                    <AvatarF
+                      style={{
+                        backgroundColor: `#4f46e5`,
+                      }}
+                    >
+                      {gradeStr(managerData?.mUserId)}
+                    </AvatarF>
+                  )}
+                  <EllipsisBox>{managerData.mUserId}</EllipsisBox>
+                </AvatarBox>
               </Tid>
               <Tname>
                 <EllipsisBox>{managerData.mUsername}</EllipsisBox>

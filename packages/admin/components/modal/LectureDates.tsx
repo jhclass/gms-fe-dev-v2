@@ -69,9 +69,9 @@ export default function LectureDates({
   onClose,
   setValue,
   setDatesSelected,
+  startDate,
+  endDate,
 }) {
-  const startDate = new Date('2024-01-11')
-  const endDate = new Date('2024-03-15')
   const [disabledDays, setDisabledDays] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
@@ -87,13 +87,13 @@ export default function LectureDates({
       currentDate.setDate(currentDate.getDate() + 1)
     }
     setSelectedDates(updatedSelectedDates)
-  }, [])
+  }, [startDate, endDate])
 
   const calculateMonthsShown = (startDate, endDate) => {
-    const startYear = startDate.getFullYear()
-    const endYear = endDate.getFullYear()
-    const startMonth = startDate.getMonth()
-    const endMonth = endDate.getMonth()
+    const startYear = startDate?.getFullYear()
+    const endYear = endDate?.getFullYear()
+    const startMonth = startDate?.getMonth()
+    const endMonth = endDate?.getMonth()
 
     // 두 날짜 사이의 총 월 수 계산
     const months = (endYear - startYear) * 12 + endMonth - startMonth + 1
@@ -246,10 +246,16 @@ export default function LectureDates({
                 </ScrollShadow>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  size="sm"
+                  color="danger"
+                  variant="light"
+                  onPress={onClose}
+                >
                   Close
                 </Button>
                 <Button
+                  size="sm"
                   color="primary"
                   onPress={() => {
                     clickAdviceSubmit()

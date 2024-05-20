@@ -3,15 +3,16 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Input, Button, useDisclosure } from '@nextui-org/react'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
-import { MME_QUERY } from '@/graphql/queries'
+import { CREATE_STAMP_QUERY, MME_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import Layout from '@/pages/member/layout'
 import { ManageUser } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
+import { useRef, useState } from 'react'
 
 const ConArea = styled.div`
   width: 100%;
@@ -54,6 +55,33 @@ const DetailForm = styled.form`
     gap: 1rem;
   }
 `
+
+const AvatarBox = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+  } */
+`
+
+const AvatarF = styled.div`
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  background-color: #fff;
+  background-position: center;
+  background-size: 100%;
+  font-size: 4rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  line-height: 5rem;
+`
+
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -86,13 +114,32 @@ type mmeQuery = {
 }
 export default function Profile() {
   const router = useRouter()
-  const { error, data } = useSuspenseQuery<mmeQuery>(MME_QUERY)
-  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
+  const { error, data, refetch } = useSuspenseQuery<mmeQuery>(MME_QUERY)
+  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION, {
+    context: {
+      headers: {
+        'x-apollo-operation-name': 'mAvatar',
+        // 'apollo-require-preflight': 'true',
+      },
+    },
+  })
   const { userLogs } = useUserLogsMutation()
   const mMeData = data?.mMe
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { register, handleSubmit, formState } = useForm()
+  const { register, handleSubmit, setValue, setError, clearErrors, formState } =
+    useForm()
   const { errors, isDirty, dirtyFields } = formState
+  const [avatarImg, setAvatartImg] = useState(null)
+  const fileInputRef = useRef(null)
+
+  const gradeStr = data => {
+    if (data == null) {
+      return 'A'
+    } else {
+      const idF = data?.charAt(0).toUpperCase()
+      return idF
+    }
+  }
 
   const onSubmit = data => {
     if (isDirty) {
@@ -108,6 +155,7 @@ export default function Profile() {
             data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend,
           mAddresses: data.mAddresses === '' ? null : data.mAddresses,
           email: data.email === '' ? null : data.email,
+          mAvatar: data.mAvatar,
         },
         refetchQueries: [
           {
@@ -128,6 +176,15 @@ export default function Profile() {
     }
   }
 
+  const [
+    createTamp,
+    { loading: createLoading, error: createError, data: CreateData },
+  ] = useLazyQuery(CREATE_STAMP_QUERY, {
+    onCompleted: () => {
+      refetch()
+    },
+  })
+
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -141,8 +198,36 @@ export default function Profile() {
     return formatted
   }
 
+  const handleFileChange = event => {
+    const MAX_FILE_SIZE = 10 * 1024 * 1024
+    const file = event.target.files[0]
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        setError('mAvatar', {
+          type: 'manual',
+          message: '파일이 너무 큽니다. 10Mb이하만 가능합니다.',
+        })
+      } else {
+        clearErrors('mAvatar')
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setAvatartImg(reader.result)
+        }
+        reader.readAsDataURL(file)
+        setValue('mAvatar', file, { shouldDirty: true })
+      }
+    }
+  }
+
+  const handleButtonClick = e => {
+    fileInputRef.current.click()
+  }
+
   if (error) {
     console.log(error)
+  }
+  const clickCreate = () => {
+    createTamp({ variables: { manageUserId: mMeData.id } })
   }
 
   return (
@@ -161,6 +246,46 @@ export default function Profile() {
               </UpdateTime>
             </TopInfo>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
+              <AvatarBox>
+                {mMeData?.mAvatar ? (
+                  <AvatarF
+                    style={{
+                      backgroundImage: `${
+                        avatarImg === null
+                          ? `url('${mMeData?.mAvatar}')`
+                          : `url('${avatarImg}')`
+                      } `,
+                    }}
+                  ></AvatarF>
+                ) : (
+                  <AvatarF
+                    style={{
+                      backgroundColor: `#4f46e5`,
+                    }}
+                  >
+                    {gradeStr(mMeData?.mUserId)}
+                  </AvatarF>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+                <Button
+                  size="sm"
+                  color={'primary'}
+                  onClick={handleButtonClick}
+                  className="bg-[#07bbae]"
+                >
+                  프로필 변경
+                </Button>
+              </AvatarBox>
+              {errors.mAvatar && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.mAvatar.message)}
+                </p>
+              )}
               <FlexBox>
                 <AreaBox>
                   <Input
@@ -445,17 +570,20 @@ export default function Profile() {
                     도장<span>*</span>
                   </FilterLabel>
                   <div className="flex items-start gap-3 mt-1">
-                    {mMeData?.Stamp[0]?.imageUrl ? (
+                    <Button
+                      isDisabled={mMeData?.Stamp[0]?.imageUrl ? true : false}
+                      color={'primary'}
+                      onClick={clickCreate}
+                    >
+                      도장 생성
+                    </Button>
+                    {mMeData?.Stamp[0]?.imageUrl && (
                       <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
                         <img
                           src={mMeData?.Stamp[0]?.imageUrl}
                           alt={mMeData.mUsername + '인'}
                         />
                       </div>
-                    ) : (
-                      <Noti>
-                        <span>*</span> 도장 생성을 요청해주세요.
-                      </Noti>
                     )}
                   </div>
                 </AreaBox>

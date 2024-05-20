@@ -71,7 +71,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
     $mPhoneNumInside: String
     $mPart: [String]
     $mPhoneNumFriend: String
-    $mAvatar: String
+    $mAvatar: Upload
     $mAddresses: String
     $mJoiningDate: String
     $email: String
