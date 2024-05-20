@@ -12,7 +12,7 @@ import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import Layout from '@/pages/member/layout'
 import { ManageUser } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 const ConArea = styled.div`
   width: 100%;
@@ -72,7 +72,7 @@ const AvatarF = styled.div`
   overflow: hidden;
   width: 5rem;
   height: 5rem;
-  background-color: #4f46e5;
+  background-color: #fff;
   background-position: center;
   background-size: 100%;
   font-size: 4rem;
@@ -115,12 +115,21 @@ type mmeQuery = {
 export default function Profile() {
   const router = useRouter()
   const { error, data, refetch } = useSuspenseQuery<mmeQuery>(MME_QUERY)
-  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
+  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION, {
+    context: {
+      headers: {
+        'x-apollo-operation-name': 'mAvatar',
+        // 'apollo-require-preflight': 'true',
+      },
+    },
+  })
   const { userLogs } = useUserLogsMutation()
   const mMeData = data?.mMe
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { register, handleSubmit, setValue, formState } = useForm()
+  const { register, handleSubmit, setValue, setError, clearErrors, formState } =
+    useForm()
   const { errors, isDirty, dirtyFields } = formState
+  const [avatarImg, setAvatartImg] = useState(null)
   const fileInputRef = useRef(null)
 
   const gradeStr = data => {
@@ -146,6 +155,7 @@ export default function Profile() {
             data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend,
           mAddresses: data.mAddresses === '' ? null : data.mAddresses,
           email: data.email === '' ? null : data.email,
+          mAvatar: data.mAvatar,
         },
         refetchQueries: [
           {
@@ -193,12 +203,22 @@ export default function Profile() {
     const file = event.target.files[0]
     if (file) {
       if (file.size > MAX_FILE_SIZE) {
-        fileInputRef.current.value = ''
+        setError('mAvatar', {
+          type: 'manual',
+          message: '파일이 너무 큽니다. 10Mb이하만 가능합니다.',
+        })
       } else {
-        // setValue('timetableAttached', file)
+        clearErrors('mAvatar')
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setAvatartImg(reader.result)
+        }
+        reader.readAsDataURL(file)
+        setValue('mAvatar', file, { shouldDirty: true })
       }
     }
   }
+
   const handleButtonClick = e => {
     fileInputRef.current.click()
   }
@@ -209,6 +229,7 @@ export default function Profile() {
   const clickCreate = () => {
     createTamp({ variables: { manageUserId: mMeData.id } })
   }
+
   return (
     <>
       <MainWrap>
@@ -226,14 +247,24 @@ export default function Profile() {
             </TopInfo>
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <AvatarBox>
-                {!mMeData?.Stamp[0]?.imageUrl ? (
+                {mMeData?.mAvatar ? (
                   <AvatarF
                     style={{
-                      backgroundImage: `url('${mMeData?.Stamp[0]?.imageUrl}')`,
+                      backgroundImage: `${
+                        avatarImg === null
+                          ? `url('${mMeData?.mAvatar}')`
+                          : `url('${avatarImg}')`
+                      } `,
                     }}
                   ></AvatarF>
                 ) : (
-                  <AvatarF>{gradeStr(mMeData?.mUserId)}</AvatarF>
+                  <AvatarF
+                    style={{
+                      backgroundColor: `#4f46e5`,
+                    }}
+                  >
+                    {gradeStr(mMeData?.mUserId)}
+                  </AvatarF>
                 )}
                 <input
                   type="file"
@@ -250,6 +281,11 @@ export default function Profile() {
                   프로필 변경
                 </Button>
               </AvatarBox>
+              {errors.mAvatar && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.mAvatar.message)}
+                </p>
+              )}
               <FlexBox>
                 <AreaBox>
                   <Input

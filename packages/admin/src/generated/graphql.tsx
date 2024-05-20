@@ -288,7 +288,9 @@ export type ManageUser = {
   createdAt?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   favoriteStudentState?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
+  frequentlyUsed?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   id: Scalars['Int']['output'];
+  lastModifiedBy?: Maybe<Scalars['String']['output']>;
   mAddresses?: Maybe<Scalars['String']['output']>;
   mAvatar?: Maybe<Scalars['String']['output']>;
   mGrade?: Maybe<Scalars['Int']['output']>;
@@ -349,10 +351,13 @@ export type Mutation = {
   deleteLectures?: Maybe<CommonResponse>;
   deleteMessage: MutationResponse;
   deletePhoto: DeletePhotoResult;
+  deleteStamp?: Maybe<CommonResponse>;
+  deleteStudent?: Maybe<CommonResponse>;
   deleteStudentMemo?: Maybe<CommonResponse>;
   deleteStudentPayment?: Maybe<CommonResponse>;
   deleteStudentState?: Maybe<DeleteStudentStateResult>;
   deleteSubject?: Maybe<CommonResponse>;
+  deleteWorkRequest?: Maybe<CommonResponse>;
   devEditManageUser?: Maybe<CommonResponse>;
   doubleCheck?: Maybe<CommonResponse>;
   duplicateCheck?: Maybe<CommonResponse>;
@@ -642,6 +647,16 @@ export type MutationDeletePhotoArgs = {
 };
 
 
+export type MutationDeleteStampArgs = {
+  manageUserId: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteStudentArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteStudentMemoArgs = {
   id: Scalars['Int']['input'];
 };
@@ -658,6 +673,11 @@ export type MutationDeleteStudentStateArgs = {
 
 
 export type MutationDeleteSubjectArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteWorkRequestArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -729,8 +749,9 @@ export type MutationEditLecturesArgs = {
 
 export type MutationEditManageUserArgs = {
   email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
   mAddresses?: InputMaybe<Scalars['String']['input']>;
-  mAvatar?: InputMaybe<Scalars['String']['input']>;
+  mAvatar?: InputMaybe<Scalars['Upload']['input']>;
   mGrade?: InputMaybe<Scalars['Int']['input']>;
   mJoiningDate?: InputMaybe<Scalars['String']['input']>;
   mPart?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -1163,7 +1184,7 @@ export type Query = {
   seeFollows: SeeFollowsResult;
   seeHashtag?: Maybe<Hashtag>;
   seeLectures?: Maybe<SeeLecturesResult>;
-  seeManageUser?: Maybe<Array<Maybe<ManageUser>>>;
+  seeManageUser?: Maybe<SeeManageUserResult>;
   seePaymentDetail?: Maybe<PaymentDetailResult>;
   seePhoto?: Maybe<Photo>;
   seePhotoComments?: Maybe<Array<Maybe<Comment>>>;
@@ -1204,6 +1225,7 @@ export type QuerySearchAttendanceArgs = {
 
 export type QuerySearchManageUserArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
   mGrade?: InputMaybe<Scalars['Int']['input']>;
   mJoiningDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   mPart?: InputMaybe<Scalars['String']['input']>;
@@ -1211,6 +1233,7 @@ export type QuerySearchManageUserArgs = {
   mRank?: InputMaybe<Scalars['String']['input']>;
   mUserId?: InputMaybe<Scalars['String']['input']>;
   mUsername?: InputMaybe<Scalars['String']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
   resign?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1267,6 +1290,12 @@ export type QuerySeeHashtagArgs = {
 
 
 export type QuerySeeLecturesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySeeManageUserArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1508,6 +1537,15 @@ export type SeeLecturesResult = {
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SeeManageUserResult = {
+  __typename?: 'SeeManageUserResult';
+  data?: Maybe<Array<Maybe<ManageUser>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 

@@ -153,23 +153,25 @@ const UserBox = styled.div`
 `
 
 const UserGrade = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   overflow: hidden;
   border-radius: 100%;
-  border: 1px solid #d4d4d8;
-  background: #4f46e5;
   font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
+  position: relative;
+  background-color: #fff;
+  background-position: center;
+  background-size: 100%;
+  text-align: center;
+  line-height: 2.5rem;
 
   @media screen and (max-width: 1024px) {
     width: 2rem;
     height: 2rem;
     font-size: 1rem;
+    line-height: 2rem;
   }
 `
 
@@ -234,7 +236,7 @@ export default function Header() {
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
-  const { mUserId = '', mUsername = '', mGrade = '' } = mMe || {}
+  const { mUserId = '', mUsername = '', mGrade = '', mAvatar = '' } = mMe || {}
   const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
@@ -333,6 +335,21 @@ export default function Header() {
           )}
           <UserBox onClick={toggleUserMenu}>
             <UserGrade>
+              {mAvatar ? (
+                <UserGrade
+                  style={{
+                    backgroundImage: `url('${mAvatar}')`,
+                  }}
+                ></UserGrade>
+              ) : (
+                <UserGrade
+                  style={{
+                    backgroundColor: `#4f46e5`,
+                  }}
+                >
+                  {gradeStr(mUserId)}
+                </UserGrade>
+              )}
               <span>{gradeStr(mUserId)}</span>
             </UserGrade>
             <UserInfo>

@@ -67,7 +67,7 @@ const AvatarF = styled.div`
   overflow: hidden;
   width: 2rem;
   height: 2rem;
-  background-color: #4f46e5;
+  background-color: #fff;
   background-position: center;
   background-size: 100%;
   font-size: 1rem;
@@ -247,17 +247,23 @@ export default function ManagerItem(props) {
             href={mGrade < grade.general ? `/hr/detail/${managerData.id}` : '#'}
           >
             <ClickBox>
-              <Tnum>{conIndex + 1}</Tnum>
+              <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <Tid>
                 <AvatarBox>
-                  {managerData?.mAvatar?.imageUrl ? (
+                  {managerData?.mAvatar ? (
                     <AvatarF
                       style={{
-                        backgroundImage: `url('${managerData?.mAvatar?.imageUrl}')`,
+                        backgroundImage: `url('${managerData?.mAvatar}')`,
                       }}
                     ></AvatarF>
                   ) : (
-                    <AvatarF>{gradeStr(managerData?.mUserId)}</AvatarF>
+                    <AvatarF
+                      style={{
+                        backgroundColor: `#4f46e5`,
+                      }}
+                    >
+                      {gradeStr(managerData?.mUserId)}
+                    </AvatarF>
                   )}
                   <EllipsisBox>{managerData.mUserId}</EllipsisBox>
                 </AvatarBox>

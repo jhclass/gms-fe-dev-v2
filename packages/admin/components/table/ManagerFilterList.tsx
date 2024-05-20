@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import { Button, ScrollShadow } from '@nextui-org/react'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -168,6 +168,8 @@ type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 export default function ManagerFilterTable({ managerFilter }) {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
     SEARCH_MANAGEUSER_QUERY,
     {},
@@ -183,6 +185,8 @@ export default function ManagerFilterTable({ managerFilter }) {
       searchManager({
         variables: {
           ...managerFilter,
+          page: currentPage,
+          limit: currentLimit,
         },
         onCompleted: result => {
           setManagerData(result?.searchManageUser.data)
@@ -190,7 +194,7 @@ export default function ManagerFilterTable({ managerFilter }) {
         },
       })
     }
-  }, [managerFilter])
+  }, [managerFilter, currentPage])
 
   const resetList = () => {
     window.location.href = '/hr'
@@ -242,9 +246,23 @@ export default function ManagerFilterTable({ managerFilter }) {
                     itemIndex={index}
                   />
                 ))}
-              {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}
+              {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
+          {managerTotal > 0 && (
+            <PagerWrap>
+              <Pagination
+                variant="light"
+                showControls
+                initialPage={currentPage}
+                page={currentPage}
+                total={Math.ceil(managerTotal / currentLimit)}
+                onChange={newPage => {
+                  setCurrentPage(newPage)
+                }}
+              />
+            </PagerWrap>
+          )}
         </TableArea>
       </>
     )

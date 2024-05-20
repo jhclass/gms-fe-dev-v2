@@ -162,19 +162,11 @@ type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 export default function TeacherFilterTable({ teacherFilter }) {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
     SEARCH_MANAGEUSER_QUERY,
-    {},
   )
-  // const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
-  //   SEARCH_MANAGEUSER_QUERY,
-  //   {
-  //     variables: {
-  //       ...teacherFilter,
-  //       mGrade: 20,
-  //     },
-  //   },
-  // )
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
 
@@ -187,6 +179,8 @@ export default function TeacherFilterTable({ teacherFilter }) {
         variables: {
           ...teacherFilter,
           mRank: '강사',
+          page: currentPage,
+          limit: currentLimit,
         },
         onCompleted: result => {
           setManagerData(result?.searchManageUser.data)
@@ -194,7 +188,7 @@ export default function TeacherFilterTable({ teacherFilter }) {
         },
       })
     }
-  }, [teacherFilter])
+  }, [teacherFilter, currentPage])
 
   const resetList = () => {
     window.location.href = '/hr/teacher'
@@ -242,11 +236,27 @@ export default function TeacherFilterTable({ teacherFilter }) {
                     key={index}
                     tableData={item}
                     itemIndex={index}
+                    currentPage={currentPage}
+                    limit={currentLimit}
                   />
                 ))}
               {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
+          {managerTotal > 0 && (
+            <PagerWrap>
+              <Pagination
+                variant="light"
+                showControls
+                initialPage={currentPage}
+                page={currentPage}
+                total={Math.ceil(managerTotal / currentLimit)}
+                onChange={newPage => {
+                  setCurrentPage(newPage)
+                }}
+              />
+            </PagerWrap>
+          )}
         </TableArea>
       </>
     )

@@ -153,13 +153,12 @@ type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
-      variables: { mRank: '강사' },
+      variables: { page: currentPage, limit: currentLimit, mRank: '강사' },
     },
   )
   const managerData = data?.searchManageUser.data
@@ -212,17 +211,17 @@ export default function ConsolutationTable() {
                   limit={currentLimit}
                 />
               ))}
-            {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
+            {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        {managerTotal > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
+              total={Math.ceil(managerTotal / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}
