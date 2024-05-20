@@ -73,6 +73,17 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
+const Tavatar = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.06}px;
+`
+
 const Tid = styled.div`
   position: relative;
   display: table-cell;
@@ -81,7 +92,6 @@ const Tid = styled.div`
   width: 10%;
   padding: 1rem;
   font-size: inherit;
-  color: #07bbae;
   min-width: ${1200 * 0.1}px;
   font-weight: 600;
 `
@@ -90,31 +100,31 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
   font-weight: 600;
 `
 const Tpart = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 14%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.13}px;
 `
 const Trank = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 7%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.07}px;
 `
 const Tphone = styled.div`
   display: table-cell;
@@ -130,21 +140,21 @@ const Temail = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.13}px;
 `
 const TjoiningDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tdate = styled.div`
   display: table-cell;
@@ -218,7 +228,8 @@ export default function ConsolutationTable() {
                 <TheaderBox>
                   <ClickBox>
                     <Tnum>No</Tnum>
-                    <Tname>아이디</Tname>
+                    <Tavatar></Tavatar>
+                    <Tid>아이디</Tid>
                     <Tname>이름</Tname>
                     <Tpart>부서</Tpart>
                     <Trank>직책/직위</Trank>

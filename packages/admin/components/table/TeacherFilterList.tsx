@@ -84,15 +84,26 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
+const Tavatar = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.06}px;
+`
+
 const Tname = styled.div`
   position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.12}px;
+  min-width: ${1200 * 0.11}px;
   font-weight: 600;
 `
 const Tpart = styled.div`
@@ -129,21 +140,21 @@ const Temail = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 20%;
+  width: 18%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.2}px;
+  min-width: ${1200 * 0.18}px;
 `
 const TjoiningDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.12}px;
+  min-width: ${1200 * 0.1}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -219,6 +230,7 @@ export default function TeacherFilterTable({ teacherFilter }) {
                 <TheaderBox>
                   <ClickBox>
                     <Tnum>No</Tnum>
+                    <Tavatar></Tavatar>
                     <Tname>아이디</Tname>
                     <Tname>이름</Tname>
                     <Tpart>강의 분야</Tpart>

@@ -100,7 +100,6 @@ const AreaTitle = styled.div`
 const AvatarBox = styled.div`
   display: flex;
   gap: 1rem;
-  justify-content: center;
   align-items: center;
   /* @media (max-width: 768px) {
     flex-direction: column;
@@ -371,10 +370,10 @@ export default function ManagerWrite({ managerId }) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>
                 <AvatarBox>
-                  {managerData?.mAvatar?.imageUrl ? (
+                  {managerData?.mAvatar ? (
                     <AvatarF
                       style={{
-                        backgroundImage: `url('${managerData?.mAvatar?.imageUrl}')`,
+                        backgroundImage: `url('${managerData?.mAvatar}')`,
                       }}
                     ></AvatarF>
                   ) : (
@@ -772,34 +771,36 @@ export default function ManagerWrite({ managerId }) {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <FlexBox>
-                  <AreaSmallBox>
-                    <FilterLabel>
-                      도장<span>*</span>
-                    </FilterLabel>
-                    <div className="flex items-start gap-3 mt-1">
-                      <Button
-                        isDisabled={
-                          managerData?.Stamp[0]?.imageUrl ? true : false
-                        }
-                        color={'primary'}
-                        onClick={clickCreate}
-                      >
-                        도장 생성
-                      </Button>
-                      {managerData?.Stamp[0]?.imageUrl && (
-                        <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
-                          <img
-                            src={managerData?.Stamp[0]?.imageUrl}
-                            alt={managerData.mUsername + '인'}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </AreaSmallBox>
-                  <AreaBox></AreaBox>
-                  <AreaBox></AreaBox>
-                </FlexBox>
+                {managerData?.Stamp.length > 0 && (
+                  <FlexBox>
+                    <AreaSmallBox>
+                      <FilterLabel>
+                        도장<span>*</span>
+                      </FilterLabel>
+                      <div className="flex items-start gap-3 mt-1">
+                        <Button
+                          isDisabled={
+                            managerData?.Stamp[0]?.imageUrl ? true : false
+                          }
+                          color={'primary'}
+                          onClick={clickCreate}
+                        >
+                          도장 생성
+                        </Button>
+                        {managerData?.Stamp[0]?.imageUrl && (
+                          <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
+                            <img
+                              src={managerData?.Stamp[0]?.imageUrl}
+                              alt={managerData.mUsername + '인'}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </AreaSmallBox>
+                    <AreaBox></AreaBox>
+                    <AreaBox></AreaBox>
+                  </FlexBox>
+                )}
                 <BtnBox>
                   <Button
                     type="submit"

@@ -59,7 +59,6 @@ const DetailForm = styled.form`
 const AvatarBox = styled.div`
   display: flex;
   gap: 1rem;
-  justify-content: center;
   align-items: center;
   /* @media (max-width: 768px) {
     flex-direction: column;
@@ -74,7 +73,8 @@ const AvatarF = styled.div`
   height: 5rem;
   background-color: #fff;
   background-position: center;
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
   font-size: 4rem;
   text-align: center;
   color: #fff;
@@ -564,32 +564,34 @@ export default function Profile() {
                   />
                 </AreaBox>
               </FlexBox>
-              <FlexBox>
-                <AreaBox>
-                  <FilterLabel>
-                    도장<span>*</span>
-                  </FilterLabel>
-                  <div className="flex items-start gap-3 mt-1">
-                    <Button
-                      isDisabled={mMeData?.Stamp[0]?.imageUrl ? true : false}
-                      color={'primary'}
-                      onClick={clickCreate}
-                    >
-                      도장 생성
-                    </Button>
-                    {mMeData?.Stamp[0]?.imageUrl && (
-                      <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
-                        <img
-                          src={mMeData?.Stamp[0]?.imageUrl}
-                          alt={mMeData.mUsername + '인'}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </AreaBox>
-                <AreaBox></AreaBox>
-                <AreaBox></AreaBox>
-              </FlexBox>
+              {mMeData?.Stamp.length > 0 && (
+                <FlexBox>
+                  <AreaBox>
+                    <FilterLabel>
+                      도장<span>*</span>
+                    </FilterLabel>
+                    <div className="flex items-start gap-3 mt-1">
+                      <Button
+                        isDisabled={mMeData?.Stamp[0]?.imageUrl ? true : false}
+                        color={'primary'}
+                        onClick={clickCreate}
+                      >
+                        도장 생성
+                      </Button>
+                      {mMeData?.Stamp[0]?.imageUrl && (
+                        <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
+                          <img
+                            src={mMeData?.Stamp[0]?.imageUrl}
+                            alt={mMeData.mUsername + '인'}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </AreaBox>
+                  <AreaBox></AreaBox>
+                  <AreaBox></AreaBox>
+                </FlexBox>
+              )}
               <BtnBox>
                 <Button2
                   buttonType="submit"
