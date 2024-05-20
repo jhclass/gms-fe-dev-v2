@@ -14,13 +14,10 @@ import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import {
-  DEV_EDIT_MANAGE_USER_MUTATION,
-  EDIT_MANAGE_USER_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { ManageUser, Stamp } from '@/src/generated/graphql'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '../modal/ChangePassword'
 import { Controller, useForm } from 'react-hook-form'
 import useMmeQuery from '@/utils/mMe'
@@ -110,7 +107,7 @@ const AvatarF = styled.div`
   overflow: hidden;
   width: 5rem;
   height: 5rem;
-  background-color: #4f46e5;
+  background-color: #fff;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -169,14 +166,7 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
-interface ExtendedStamp extends Stamp {
-  imageUrl: string // imageUrl 속성을 추가합니다.
-}
 
-type SearchManageUserResult = {
-  data: ManageUser
-  stamps: ExtendedStamp[] // 이 배열은 확장된 Stamp 타입을 사용합니다.
-}
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
@@ -370,7 +360,13 @@ export default function StudentsWrite({ managerId }) {
                       }}
                     ></AvatarF>
                   ) : (
-                    <AvatarF>{gradeStr(managerData?.mUserId)}</AvatarF>
+                    <AvatarF
+                      style={{
+                        backgroundColor: `#4f46e5`,
+                      }}
+                    >
+                      {gradeStr(managerData?.mUserId)}
+                    </AvatarF>
                   )}
                 </AvatarBox>
                 <FlexBox>
@@ -667,7 +663,7 @@ export default function StudentsWrite({ managerId }) {
                     </DatePickerBox>
                   </AreaBox>
                 </FlexBox>
-                {managerData?.Stamp.length > 0 && (
+                {managerData?.Stamp?.length > 0 && (
                   <FlexBox>
                     <AreaSmallBox>
                       <FilterLabel>

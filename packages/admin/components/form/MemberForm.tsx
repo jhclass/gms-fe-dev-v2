@@ -15,17 +15,10 @@ import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
-import {
-  DEV_EDIT_MANAGE_USER_MUTATION,
-  EDIT_MANAGE_USER_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import {
-  ManageUser,
-  // SearchManageUserResult,
-  Stamp,
-} from '@/src/generated/graphql'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '../modal/ChangePassword'
 
 const ConArea = styled.div`
@@ -112,7 +105,7 @@ const AvatarF = styled.div`
   overflow: hidden;
   width: 5rem;
   height: 5rem;
-  background-color: #4f46e5;
+  background-color: #fff;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -172,14 +165,7 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
-interface ExtendedStamp extends Stamp {
-  imageUrl: string // imageUrl 속성을 추가합니다.
-}
 
-type SearchManageUserResult = {
-  data: ManageUser
-  stamps: ExtendedStamp[] // 이 배열은 확장된 Stamp 타입을 사용합니다.
-}
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
@@ -378,7 +364,13 @@ export default function ManagerWrite({ managerId }) {
                       }}
                     ></AvatarF>
                   ) : (
-                    <AvatarF>{gradeStr(managerData?.mUserId)}</AvatarF>
+                    <AvatarF
+                      style={{
+                        backgroundColor: `#4f46e5`,
+                      }}
+                    >
+                      {gradeStr(managerData?.mUserId)}
+                    </AvatarF>
                   )}
                 </AvatarBox>
                 <FlexBox>
@@ -772,36 +764,36 @@ export default function ManagerWrite({ managerId }) {
                     )}
                   </AreaBox>
                 </FlexBox>
-                {managerData?.Stamp.length > 0 && (
-                  <FlexBox>
-                    <AreaSmallBox>
-                      <FilterLabel>
-                        도장<span>*</span>
-                      </FilterLabel>
-                      <div className="flex items-start gap-3 mt-1">
-                        <Button
-                          isDisabled={
-                            managerData?.Stamp[0]?.imageUrl ? true : false
-                          }
-                          color={'primary'}
-                          onClick={clickCreate}
-                        >
-                          도장 생성
-                        </Button>
-                        {managerData?.Stamp[0]?.imageUrl && (
-                          <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
-                            <img
-                              src={managerData?.Stamp[0]?.imageUrl}
-                              alt={managerData.mUsername + '인'}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </AreaSmallBox>
-                    <AreaBox></AreaBox>
-                    <AreaBox></AreaBox>
-                  </FlexBox>
-                )}
+
+                <FlexBox>
+                  <AreaSmallBox>
+                    <FilterLabel>
+                      도장<span>*</span>
+                    </FilterLabel>
+                    <div className="flex items-start gap-3 mt-1">
+                      <Button
+                        isDisabled={
+                          managerData?.Stamp[0]?.imageUrl ? true : false
+                        }
+                        color={'primary'}
+                        onClick={clickCreate}
+                      >
+                        도장 생성
+                      </Button>
+                      {managerData?.Stamp[0]?.imageUrl && (
+                        <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
+                          <img
+                            src={managerData?.Stamp[0]?.imageUrl}
+                            alt={managerData.mUsername + '인'}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </AreaSmallBox>
+                  <AreaBox></AreaBox>
+                  <AreaBox></AreaBox>
+                </FlexBox>
+
                 <BtnBox>
                   <Button
                     type="submit"
