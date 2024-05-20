@@ -112,7 +112,8 @@ const AvatarF = styled.div`
   height: 5rem;
   background-color: #4f46e5;
   background-position: center;
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
   font-size: 4rem;
   text-align: center;
   color: #fff;
