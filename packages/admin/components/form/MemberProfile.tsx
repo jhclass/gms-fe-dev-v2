@@ -3,9 +3,9 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Input, Button, useDisclosure } from '@nextui-org/react'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
-import { MME_QUERY } from '@/graphql/queries'
+import { CREATE_STAMP_QUERY, MME_QUERY } from '@/graphql/queries'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
@@ -114,7 +114,7 @@ type mmeQuery = {
 }
 export default function Profile() {
   const router = useRouter()
-  const { error, data } = useSuspenseQuery<mmeQuery>(MME_QUERY)
+  const { error, data, refetch } = useSuspenseQuery<mmeQuery>(MME_QUERY)
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const mMeData = data?.mMe
@@ -166,6 +166,15 @@ export default function Profile() {
     }
   }
 
+  const [
+    createTamp,
+    { loading: createLoading, error: createError, data: CreateData },
+  ] = useLazyQuery(CREATE_STAMP_QUERY, {
+    onCompleted: () => {
+      refetch()
+    },
+  })
+
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -197,7 +206,9 @@ export default function Profile() {
   if (error) {
     console.log(error)
   }
-  console.log(mMeData)
+  const clickCreate = () => {
+    createTamp({ variables: { manageUserId: mMeData.id } })
+  }
   return (
     <>
       <MainWrap>
@@ -523,17 +534,20 @@ export default function Profile() {
                     도장<span>*</span>
                   </FilterLabel>
                   <div className="flex items-start gap-3 mt-1">
-                    {mMeData?.Stamp[0]?.imageUrl ? (
+                    <Button
+                      isDisabled={mMeData?.Stamp[0]?.imageUrl ? true : false}
+                      color={'primary'}
+                      onClick={clickCreate}
+                    >
+                      도장 생성
+                    </Button>
+                    {mMeData?.Stamp[0]?.imageUrl && (
                       <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
                         <img
                           src={mMeData?.Stamp[0]?.imageUrl}
                           alt={mMeData.mUsername + '인'}
                         />
                       </div>
-                    ) : (
-                      <Noti>
-                        <span>*</span> 도장 생성을 요청해주세요.
-                      </Noti>
                     )}
                   </div>
                 </AreaBox>

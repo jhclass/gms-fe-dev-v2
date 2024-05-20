@@ -43,6 +43,14 @@ const FlexBox = styled.div`
   gap: 1rem;
   flex-direction: column;
 `
+const LineBox = styled.div`
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-bottom: 2px solid hsl(240 6% 90%);
+  height: 40px;
+  line-height: 40px;
+  font-size: 0.875rem;
+`
 const AreaTitle = styled.div`
   display: flex;
   justify-content: space-between;
@@ -89,19 +97,6 @@ export default function RequestMessage({
 
   const onSubmit = data => {
     closePopup()
-    toast(<ReqToast />, {
-      position: 'bottom-right',
-      autoClose: 20000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      onClick: seeOnOPen,
-      style: {
-        // width: '100%',
-      },
-    })
   }
 
   const handleManagerChange = e => {
@@ -113,11 +108,7 @@ export default function RequestMessage({
     setManager('받는 사람')
     onClose()
   }
-  const {
-    isOpen: seeIsOpne,
-    onOpen: seeOnOPen,
-    onClose: seeOnClose,
-  } = useDisclosure()
+
   return (
     <>
       <Modal size={'md'} isOpen={isOpen} onClose={closePopup}>
@@ -133,48 +124,27 @@ export default function RequestMessage({
                     <DetailDiv>
                       <FlexBox>
                         <AreaBox>
-                          <Controller
-                            control={control}
-                            name="processingManagerId"
-                            rules={{
-                              required: {
-                                value: true,
-                                message: '영업담당자를 선택해주세요.',
-                              },
-                            }}
-                            render={({ field, fieldState }) => (
-                              <Suspense
-                                fallback={
-                                  <LodingDiv>
-                                    <i className="xi-spinner-2" />
-                                  </LodingDiv>
-                                }
-                              >
-                                <ManagerSelectID
-                                  selecedKey={manager}
-                                  field={field}
-                                  label={'To.'}
-                                  handleChange={handleManagerChange}
-                                  optionDefualt={{
-                                    id: '받는 사람',
-                                    mUsername: '받는 사람',
-                                  }}
-                                  filter={{
-                                    mGrade: null,
-                                  }}
-                                />
-                              </Suspense>
-                            )}
-                          />
-                          {errors.processingManagerId && (
-                            <p className="px-2 pt-2 text-xs text-red-500">
-                              {String(errors.processingManagerId.message)}
-                            </p>
-                          )}
+                          <div>
+                            <FilterLabel>Form</FilterLabel>
+                            <LineBox>아무개</LineBox>
+                          </div>
                         </AreaBox>
                         <AreaBox>
                           <Textarea
+                            isReadOnly={true}
                             label="요청 내용"
+                            labelPlacement="outside"
+                            className="max-w-full"
+                            variant="bordered"
+                            defaultValue={
+                              '요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청요청'
+                            }
+                            maxRows={3}
+                          />
+                        </AreaBox>
+                        <AreaBox>
+                          <Textarea
+                            label="답변 내용"
                             labelPlacement="outside"
                             className="max-w-full"
                             variant="bordered"
@@ -199,7 +169,7 @@ export default function RequestMessage({
                     Close
                   </Button>
                   <Button size="sm" color="primary" type="submit">
-                    요청하기
+                    답변하기
                   </Button>
                 </ModalFooter>
               </form>
@@ -207,7 +177,6 @@ export default function RequestMessage({
           )}
         </ModalContent>
       </Modal>
-      <SeeRequestMessage isOpen={seeIsOpne} onClose={seeOnClose} />
     </>
   )
 }

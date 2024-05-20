@@ -159,7 +159,7 @@ export default function ConsolutationTable() {
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
-      variables: { mGrade: 20 },
+      variables: { mRank: '강사' },
     },
   )
   const managerData = data?.searchManageUser.data

@@ -234,10 +234,15 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
                   </ScrollShadow>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={closePopup}>
+                  <Button
+                    size="sm"
+                    color="danger"
+                    variant="light"
+                    onPress={closePopup}
+                  >
                     Close
                   </Button>
-                  <Button color="primary" type="submit">
+                  <Button size="sm" color="primary" type="submit">
                     비밀번호 변경
                   </Button>
                 </ModalFooter>

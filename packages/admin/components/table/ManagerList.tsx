@@ -184,7 +184,10 @@ export default function ConsolutationTable() {
     },
   )
 
-  const managerData = data?.seeManageUser.filter(manager => manager.mGrade < 20)
+  // const managerData = data?.seeManageUser.filter(
+  //   manager => manager.mGrade < 20,
+  // )
+  const managerData = data?.seeManageUser
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

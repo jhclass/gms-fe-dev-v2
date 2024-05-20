@@ -238,7 +238,7 @@ export default function ManagerItem(props) {
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
     return '+' + daysDiff
   }
-  console.log(managerData)
+
   return (
     <>
       <TableItem $resign={managerData.resign}>

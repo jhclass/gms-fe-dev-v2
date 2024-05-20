@@ -246,10 +246,16 @@ export default function LectureDates({
                 </ScrollShadow>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  size="sm"
+                  color="danger"
+                  variant="light"
+                  onPress={onClose}
+                >
                   Close
                 </Button>
                 <Button
+                  size="sm"
                   color="primary"
                   onPress={() => {
                     clickAdviceSubmit()

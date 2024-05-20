@@ -172,15 +172,6 @@ export default function ManagerFilterTable({ managerFilter }) {
     SEARCH_MANAGEUSER_QUERY,
     {},
   )
-  // const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
-  //   SEARCH_MANAGEUSER_QUERY,
-  //   {
-  //     variables: {
-  //       ...teacherFilter,
-  //       mGrade: 20,
-  //     },
-  //   },
-  // )
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
 

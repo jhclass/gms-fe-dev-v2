@@ -186,7 +186,7 @@ export default function TeacherFilterTable({ teacherFilter }) {
       searchManager({
         variables: {
           ...teacherFilter,
-          mGrade: 20,
+          mRank: '강사',
         },
         onCompleted: result => {
           setManagerData(result?.searchManageUser.data)
