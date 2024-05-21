@@ -10,85 +10,14 @@ import { DELETE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import { ResultAdviceType } from '@/src/generated/graphql'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { useState } from 'react'
 
-const FilterBox = styled(motion.div)`
-  z-index: 2;
-  position: relative;
-`
-const BoxArea = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 1.5rem;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
-  flex-direction: column;
-
-  @media (max-width: 768px) {
-    gap: 1rem;
-  }
-`
-const FilterForm = styled.form`
-  display: flex;
-  width: 100%;
-  gap: 1rem;
-`
-const BoxTop = styled.div`
+const FlexContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-`
-const BoxBottom = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-  max-width: 1400px;
-`
-const ItemBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
   width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
 `
-
-const InputBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 70%;
-  @media (max-width: 768px) {
-    max-width: 100%;
-  }
-`
-
-const FilterVariants = {
-  hidden: {
-    scaleY: 0,
-    transformOrigin: 'top',
-    height: 0,
-  },
-  visible: {
-    scaleY: 1,
-    transformOrigin: 'top',
-    height: 'auto',
-    transition: {
-      duration: 0.3,
-    },
-  },
-}
-
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
@@ -100,6 +29,7 @@ export default function CreateAdviceTypeChip() {
     SEE_ADVICE_TYPE_QUERY,
   )
   const adviceList = data?.seeAdviceType.adviceType
+  const [items, setItems] = useState(adviceList)
 
   const deleteType = async item => {
     const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
@@ -131,13 +61,59 @@ export default function CreateAdviceTypeChip() {
     console.log(error)
   }
 
+  const handleOnDragEnd = result => {
+    console.log(result)
+    if (!result.destination) return
+
+    const newItems = Array.from(items)
+    const [reorderedItem] = newItems.splice(result.source.index, 1)
+    newItems.splice(result.destination.index, 0, reorderedItem)
+
+    setItems(newItems)
+  }
+
   return (
     <>
-      {adviceList?.map((item, index) => (
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {provided => (
+            <div
+              style={{ background: 'red' }}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              <FlexContainer>
+                {items.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={item.type}
+                    index={index}
+                  >
+                    {provided => (
+                      <Chip
+                        key={index}
+                        variant="bordered"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        onClose={() => deleteType(item)}
+                      >
+                        {item.type}
+                      </Chip>
+                    )}
+                  </Draggable>
+                ))}
+              </FlexContainer>
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {/* {adviceList?.map((item, index) => (
         <Chip key={index} variant="bordered" onClose={() => deleteType(item)}>
           {item.type}
         </Chip>
-      ))}
+      ))} */}
     </>
   )
 }
