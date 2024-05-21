@@ -663,36 +663,34 @@ export default function StudentsWrite({ managerId }) {
                     </DatePickerBox>
                   </AreaBox>
                 </FlexBox>
-                {managerData?.Stamp?.length > 0 && (
-                  <FlexBox>
-                    <AreaSmallBox>
-                      <FilterLabel>
-                        도장<span>*</span>
-                      </FilterLabel>
-                      <div className="flex items-start gap-3 mt-1">
-                        <Button
-                          isDisabled={
-                            managerData?.Stamp[0]?.imageUrl ? true : false
-                          }
-                          color={'primary'}
-                          onClick={clickCreate}
-                        >
-                          도장 생성
-                        </Button>
-                        {managerData?.Stamp[0]?.imageUrl && (
-                          <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
-                            <img
-                              src={managerData?.Stamp[0]?.imageUrl}
-                              alt={managerData.mUsername + '인'}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </AreaSmallBox>
-                    <AreaBox></AreaBox>
-                    <AreaBox></AreaBox>
-                  </FlexBox>
-                )}
+                <FlexBox>
+                  <AreaSmallBox>
+                    <FilterLabel>
+                      도장<span>*</span>
+                    </FilterLabel>
+                    <div className="flex items-start gap-3 mt-1">
+                      <Button
+                        isDisabled={
+                          managerData?.Stamp[0]?.imageUrl ? true : false
+                        }
+                        color={'primary'}
+                        onClick={clickCreate}
+                      >
+                        도장 생성
+                      </Button>
+                      {managerData?.Stamp[0]?.imageUrl && (
+                        <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
+                          <img
+                            src={managerData?.Stamp[0]?.imageUrl}
+                            alt={managerData.mUsername + '인'}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </AreaSmallBox>
+                  <AreaBox></AreaBox>
+                  <AreaBox></AreaBox>
+                </FlexBox>
                 <BtnBox>
                   {loginMGrade < grade.general ||
                   loginMPart?.includes('교무팀') ? (

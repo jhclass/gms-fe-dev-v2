@@ -764,7 +764,6 @@ export default function ManagerWrite({ managerId }) {
                     )}
                   </AreaBox>
                 </FlexBox>
-
                 <FlexBox>
                   <AreaSmallBox>
                     <FilterLabel>
@@ -793,7 +792,6 @@ export default function ManagerWrite({ managerId }) {
                   <AreaBox></AreaBox>
                   <AreaBox></AreaBox>
                 </FlexBox>
-
                 <BtnBox>
                   <Button
                     type="submit"
