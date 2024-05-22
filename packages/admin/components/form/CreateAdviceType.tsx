@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
-import Button from '@/components/common/Button'
-import { Input } from '@nextui-org/react'
+// import Button from '@/components/common/Button'
+import { Button, Input, useDisclosure } from '@nextui-org/react'
 import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -16,6 +16,7 @@ import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import CreateAdviceTypeChip from './CreateAdviceTypeChip'
 import { Suspense } from 'react'
+import TypeIndex from '@/components/modal/TypeIndex'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -113,6 +114,11 @@ export default function CreateAdviceType({ isActive }) {
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
   const [deleteAdvice] = useMutation(DELETE_ADVICE_TYPE_MUTATION)
   const {
+    isOpen: typeIsOpne,
+    onOpen: typeOnOPen,
+    onClose: typeOnClose,
+  } = useDisclosure()
+  const {
     register,
     handleSubmit,
     reset,
@@ -124,6 +130,7 @@ export default function CreateAdviceType({ isActive }) {
   })
 
   const onSubmit = async data => {
+    console.log('a')
     if (!isDirty) return
 
     try {
@@ -224,20 +231,33 @@ export default function CreateAdviceType({ isActive }) {
                   )}
                 </InputBox>
                 <Button
-                  buttonType="submit"
-                  width="calc(50%)"
-                  height="2.5rem"
-                  typeBorder={true}
-                  fontColor="#fff"
-                  bgColor="#007de9"
+                  type="submit"
+                  color="primary"
+                  size="md"
+                  className=" w-[25%]"
                 >
                   등록
+                </Button>
+                <Button
+                  type="button"
+                  color="primary"
+                  size="md"
+                  variant="bordered"
+                  className=" w-[25%]"
+                  onClick={typeOnOPen}
+                >
+                  순서변경
                 </Button>
               </ItemBox>
             </FilterForm>
           </BoxBottom>
         </BoxArea>
       </FilterBox>
+      <TypeIndex
+        isOpen={typeIsOpne}
+        onClose={typeOnClose}
+        managerData={undefined}
+      />
     </>
   )
 }

@@ -13,11 +13,6 @@ import { ResultAdviceType } from '@/src/generated/graphql'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useState } from 'react'
 
-const FlexContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-`
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
@@ -27,6 +22,13 @@ export default function CreateAdviceTypeChip() {
   const [deleteAdvice] = useMutation(DELETE_ADVICE_TYPE_MUTATION)
   const { error, data } = useSuspenseQuery<seeAdviceTypeQuery>(
     SEE_ADVICE_TYPE_QUERY,
+    {
+      variables: {
+        page: 1,
+        category: '상담분야',
+        limit: 50,
+      },
+    },
   )
   const adviceList = data?.seeAdviceType.adviceType
   const [items, setItems] = useState(adviceList)
@@ -74,46 +76,11 @@ export default function CreateAdviceTypeChip() {
 
   return (
     <>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {provided => (
-            <div
-              style={{ background: 'red' }}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              <FlexContainer>
-                {items.map((item, index) => (
-                  <Draggable
-                    key={item.id}
-                    draggableId={item.type}
-                    index={index}
-                  >
-                    {provided => (
-                      <Chip
-                        key={index}
-                        variant="bordered"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        onClose={() => deleteType(item)}
-                      >
-                        {item.type}
-                      </Chip>
-                    )}
-                  </Draggable>
-                ))}
-              </FlexContainer>
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      {/* {adviceList?.map((item, index) => (
+      {adviceList?.map((item, index) => (
         <Chip key={index} variant="bordered" onClose={() => deleteType(item)}>
           {item.type}
         </Chip>
-      ))} */}
+      ))}
     </>
   )
 }
