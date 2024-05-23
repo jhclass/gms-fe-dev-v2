@@ -405,8 +405,8 @@ export const DELETE_STUDENT_STATE_MUTATION = gql`
 
 // adiveType
 export const CREATE_ADVICE_TYPE_MUTATION = gql`
-  mutation Mutation($type: String!) {
-    createAdviceType(type: $type) {
+  mutation Mutation($type: String!, $indexNum: Int!, $category: String!) {
+    createAdviceType(type: $type, indexNum: $indexNum, category: $category) {
       error
       message
       ok
@@ -1649,6 +1649,16 @@ export const CREATE_LECTURES_MUTATION = gql`
       sessionNum: $sessionNum
       timetableAttached: $timetableAttached
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+
+export const CHANGE_ORDER_AT_MUTATION = gql`
+  mutation Mutation($ids: [Int], $indexNums: [Int!]) {
+    changeOrderAT(ids: $ids, indexNums: $indexNums) {
       error
       message
       ok

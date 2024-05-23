@@ -18,8 +18,11 @@ export type Scalars = {
 
 export type AdviceType = {
   __typename?: 'AdviceType';
+  category?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
+  indexNum?: Maybe<Scalars['Int']['output']>;
+  onOff?: Maybe<Scalars['String']['output']>;
   studentStates?: Maybe<Array<Maybe<StudentState>>>;
   type: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['String']['output']>;
@@ -325,6 +328,7 @@ export type Message = {
 export type Mutation = {
   __typename?: 'Mutation';
   authEmail?: Maybe<AuthEmailResult>;
+  changeOrderAT?: Maybe<CommonResponse>;
   checkNick: CheckAccountResult;
   checkUser: CheckAccountResult;
   classCancellation?: Maybe<CommonResponse>;
@@ -361,6 +365,7 @@ export type Mutation = {
   devEditManageUser?: Maybe<CommonResponse>;
   doubleCheck?: Maybe<CommonResponse>;
   duplicateCheck?: Maybe<CommonResponse>;
+  editAdviceType?: Maybe<CommonResponse>;
   editAttendance?: Maybe<CommonResponse>;
   editComment: MutationResponse;
   editLectures?: Maybe<CommonResponse>;
@@ -405,6 +410,12 @@ export type MutationAuthEmailArgs = {
 };
 
 
+export type MutationChangeOrderAtArgs = {
+  ids?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  indexNums?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+
 export type MutationCheckNickArgs = {
   nick: Scalars['String']['input'];
 };
@@ -431,7 +442,10 @@ export type MutationCreateAccountArgs = {
 
 
 export type MutationCreateAdviceTypeArgs = {
-  type?: InputMaybe<Scalars['String']['input']>;
+  category: Scalars['String']['input'];
+  indexNum: Scalars['Int']['input'];
+  onOff?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
 };
 
 
@@ -710,6 +724,11 @@ export type MutationDoubleCheckArgs = {
 export type MutationDuplicateCheckArgs = {
   studentId: Scalars['Int']['input'];
   subjectId: Scalars['Int']['input'];
+};
+
+
+export type MutationEditAdviceTypeArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1257,7 +1276,9 @@ export type QuerySearchWorkLogsArgs = {
 
 
 export type QuerySeeAdviceTypeArgs = {
+  category: Scalars['String']['input'];
   limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1392,6 +1413,7 @@ export type ResultAdviceType = {
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Room = {

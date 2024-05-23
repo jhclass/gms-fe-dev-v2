@@ -103,7 +103,15 @@ export default function Subjects() {
           setSubjectFilter={setSubjectFilter}
           subjectFilter={subjectFilter}
         />
-        <CreateAdviceType isActive={createActive} />
+        <Suspense
+          fallback={
+            <LodingDiv>
+              <i className="xi-spinner-2" />
+            </LodingDiv>
+          }
+        >
+          <CreateAdviceType isActive={createActive} />
+        </Suspense>
         <ConBox>
           <Suspense
             fallback={

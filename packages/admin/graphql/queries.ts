@@ -125,15 +125,19 @@ export const SEE_STUDENT_STATE_QUERY = gql`
   }
 `
 export const SEE_ADVICE_TYPE_QUERY = gql`
-  query Query {
-    seeAdviceType {
+  query SeeAdviceType($category: String!, $page: Int, $limit: Int) {
+    seeAdviceType(category: $category, page: $page, limit: $limit) {
+      ok
+      message
+      error
       adviceType {
+        category
         id
+        indexNum
+        onOff
         type
       }
-      error
-      message
-      ok
+      totalCount
     }
   }
 `
