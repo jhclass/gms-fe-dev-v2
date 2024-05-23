@@ -13,13 +13,18 @@ import {
 } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import {
+  useLazyQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from '@apollo/client'
 import {
   CHANGE_ORDER_AT_MUTATION,
   DEV_EDIT_MANAGE_USER_MUTATION,
   EDIT_MANAGE_USER_MUTATION,
 } from '@/graphql/mutations'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
@@ -50,28 +55,48 @@ type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
 
-export default function TypeIndex({ isOpen, onClose, managerData }) {
+export default function TypeIndex({
+  refetch,
+  isOpen,
+  onClose,
+  orderAdviceList,
+  orderPage,
+  setOrderPage,
+  seeAdviceQuery,
+}) {
   const { userLogs } = useUserLogsMutation()
-
-  const { error, data } = useSuspenseQuery<seeAdviceTypeQuery>(
-    SEE_ADVICE_TYPE_QUERY,
-    {
-      variables: {
-        page: 1,
-        category: '상담분야',
-        limit: 30,
-      },
-    },
-  )
+  const [items, setItems] = useState([])
   const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
-  const adviceList = data?.seeAdviceType.adviceType
-  const [items, setItems] = useState(adviceList)
 
   const { handleSubmit, formState, setValue } = useForm()
   const { errors, isDirty } = formState
 
+  const [bottomReached, setBottomReached] = useState(false)
+
+  const handleScroll = e => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target
+    if (scrollTop + clientHeight >= scrollHeight) {
+      setBottomReached(true)
+      // setOrderPage(prev => prev + 1)
+      console.log('a')
+    }
+  }
+
+  // useEffect(() => {
+  //   if (bottomReached) {
+  //   }
+  // }, [bottomReached])
+
+  // useEffect(() => {
+  //   seeAdviceQuery() // 다음 페이지 데이터 요청
+  //   setBottomReached(false)
+  // }, [seeAdviceQuery, bottomReached])
+
+  useEffect(() => {
+    setItems(orderAdviceList)
+  }, [orderAdviceList])
+
   const handleOnDragEnd = result => {
-    console.log(result)
     if (!result.destination) return
 
     const newItems = Array.from(items)
@@ -83,7 +108,6 @@ export default function TypeIndex({ isOpen, onClose, managerData }) {
   }
 
   const onSubmit = async data => {
-    console.log(isDirty)
     if (!isDirty) return
 
     try {
@@ -95,19 +119,22 @@ export default function TypeIndex({ isOpen, onClose, managerData }) {
           indexNums: typeIndex,
         },
       })
+
       if (!result.data.changeOrderAT.ok) {
         throw new Error('상담 분야 순서 변경 실패')
       }
+
+      refetch({
+        page: 1,
+        category: '상담분야',
+        limit: 50,
+      })
       alert('상담 분야 순서가 변경되었습니다.')
       userLogs(`상담분야 순서 변경`)
       onClose()
     } catch (error) {
       console.error('상담 분야 순서 변경 중 에러 발생:', error)
     }
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   return (
@@ -127,6 +154,7 @@ export default function TypeIndex({ isOpen, onClose, managerData }) {
                         <Container
                           {...provided.droppableProps}
                           ref={provided.innerRef}
+                          onScroll={handleScroll}
                         >
                           {items.map((item, index) => (
                             <Draggable

@@ -7,7 +7,7 @@ import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import {
   CREATE_ADVICE_TYPE_MUTATION,
   DELETE_ADVICE_TYPE_MUTATION,
@@ -15,8 +15,9 @@ import {
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import CreateAdviceTypeChip from './CreateAdviceTypeChip'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import TypeIndex from '@/components/modal/TypeIndex'
+import { ResultAdviceType } from '@/src/generated/graphql'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -59,7 +60,7 @@ const BoxTop = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
 `
-const BoxBottom = styled.div`
+const BoxBtn = styled.div`
   display: flex;
   flex: 1;
   gap: 2rem;
@@ -108,11 +109,40 @@ const FilterVariants = {
     },
   },
 }
-
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
+}
 export default function CreateAdviceType({ isActive }) {
   const { userLogs } = useUserLogsMutation()
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
-  const [deleteAdvice] = useMutation(DELETE_ADVICE_TYPE_MUTATION)
+  const [page, setPage] = useState(1)
+  const [adviceList, setAdviceList] = useState([])
+  const {
+    error,
+    data,
+    refetch: seeRefetch,
+  } = useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
+    variables: {
+      page: page,
+      category: '상담분야',
+      limit: 50,
+    },
+  })
+  const totalCount = data?.seeAdviceType.totalCount
+  const [seeAdviceQuery] = useLazyQuery(SEE_ADVICE_TYPE_QUERY, {
+    onCompleted: result => {
+      const orederAdvice = result?.seeAdviceType.adviceType
+      setOrderAdviceList(orederAdvice)
+    },
+  })
+  //  const [seeAdviceQuery] = useLazyQuery(SEE_ADVICE_TYPE_QUERY, {
+  //    onCompleted: result => {
+  //      const newAdvice = result?.seeAdviceType.adviceType
+  //      setOrderAdviceList(prevList => [...prevList, ...newAdvice])
+  //    },
+  //  })
+  const [orderPage, setOrderPage] = useState(1)
+  const [orderAdviceList, setOrderAdviceList] = useState([])
   const {
     isOpen: typeIsOpne,
     onOpen: typeOnOPen,
@@ -129,24 +159,49 @@ export default function CreateAdviceType({ isActive }) {
     },
   })
 
+  useEffect(() => {
+    if (data) {
+      if (page === 1) {
+        setAdviceList(data.seeAdviceType.adviceType)
+      } else {
+        setAdviceList(prevList => [
+          ...prevList,
+          ...data.seeAdviceType.adviceType,
+        ])
+      }
+    }
+  }, [data])
+
+  const openOrderChange = () => {
+    seeAdviceQuery({
+      variables: {
+        page: 1,
+        category: '상담분야',
+        limit: 50,
+      },
+    })
+    typeOnOPen()
+  }
+
   const onSubmit = async data => {
-    console.log('a')
     if (!isDirty) return
 
     try {
       const result = await createAdvice({
         variables: {
           type: data.type,
+          indexNum: totalCount + 1,
+          category: '상담분야',
         },
-        refetchQueries: [
-          {
-            query: SEE_ADVICE_TYPE_QUERY,
-          },
-        ],
       })
       if (!result.data.createAdviceType.ok) {
         throw new Error('상담 분야 등록 실패')
       }
+      seeRefetch({
+        page: 1,
+        category: '상담분야',
+        limit: 50,
+      })
       alert('상담 분야가 등록되었습니다.')
       userLogs(`${data.type} 상담분야 등록`)
       reset()
@@ -155,30 +210,8 @@ export default function CreateAdviceType({ isActive }) {
     }
   }
 
-  const deleteType = async item => {
-    const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
-    if (!isDelete) return
-
-    try {
-      const result = await deleteAdvice({
-        variables: {
-          deleteAdviceTypeId: item.id,
-        },
-        refetchQueries: [
-          {
-            query: SEE_ADVICE_TYPE_QUERY,
-          },
-        ],
-      })
-
-      if (!result.data.deleteAdviceType.ok) {
-        throw new Error('상담 분야 삭제 실패')
-      }
-      alert('상담 분야가 삭제되었습니다.')
-      userLogs(`${item.type} 상담분야 삭제`)
-    } catch (error) {
-      console.error('상담 분야 삭제 중 에러 발생:', error)
-    }
+  const loadMore = () => {
+    setPage(prevPage => prevPage + 1)
   }
 
   return (
@@ -189,18 +222,7 @@ export default function CreateAdviceType({ isActive }) {
         animate={isActive ? 'visible' : 'hidden'}
       >
         <BoxArea>
-          <BoxTop>
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <CreateAdviceTypeChip />
-            </Suspense>
-          </BoxTop>
-          <BoxBottom>
+          <BoxBtn>
             <FilterForm onSubmit={handleSubmit(onSubmit)}>
               <ItemBox>
                 <InputBox>
@@ -244,19 +266,34 @@ export default function CreateAdviceType({ isActive }) {
                   size="md"
                   variant="bordered"
                   className=" w-[25%]"
-                  onClick={typeOnOPen}
+                  onClick={openOrderChange}
                 >
                   순서변경
                 </Button>
               </ItemBox>
             </FilterForm>
-          </BoxBottom>
+          </BoxBtn>
+          <BoxTop>
+            <CreateAdviceTypeChip
+              adviceList={adviceList}
+              refetch={seeRefetch}
+            />
+          </BoxTop>
+          <BoxTop>
+            <Button color="primary" onClick={loadMore}>
+              더보기
+            </Button>
+          </BoxTop>
         </BoxArea>
       </FilterBox>
       <TypeIndex
         isOpen={typeIsOpne}
         onClose={typeOnClose}
-        managerData={undefined}
+        refetch={seeRefetch}
+        orderAdviceList={orderAdviceList}
+        orderPage={orderPage}
+        setOrderPage={setOrderPage}
+        seeAdviceQuery={seeAdviceQuery}
       />
     </>
   )
