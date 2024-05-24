@@ -10,13 +10,9 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { Suspense, useEffect, useState } from 'react'
-import ManagerSelectID from '../common/ManagerSelectID'
-import { toast } from 'react-toastify'
-import ReqToast from '../common/ReqToast'
-import SeeRequestMessage from './SeeRequestMessage'
+import { useState } from 'react'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;

@@ -3,16 +3,15 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/hr/layout'
 import { Suspense, useState } from 'react'
-import LectureList from '@/components/table/LectureList'
-import LectureFilter from '@/components/filter/LectureFilter'
-import ManagerList from '@/components/table/ManagerList'
-import ManagerFilter from '@/components/filter/ManagerFilter'
 import TeacherList from '@/components/table/TeacherList'
 import TeacherFilter from '@/components/filter/TeacherFilter'
 import TeacherFilterList from '@/components/table/TeacherFilterList'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
+import { Button } from '@nextui-org/react'
+import { motion } from 'framer-motion'
+import CreateTeacherType from '@/components/form/CreateTeacherType'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -31,7 +30,19 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-
+const ActiveIcon = styled(motion.i)`
+  color: #fff;
+`
+const IconVariants = {
+  initial: {
+    scale: 0,
+    display: 'none',
+  },
+  active: {
+    scale: 1,
+    display: 'inline',
+  },
+}
 export default function Teacher() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
@@ -40,6 +51,7 @@ export default function Teacher() {
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [teacherFilter, setTeacherFilter] = useState()
+  const [createActive, setCreateActive] = useState(false)
 
   return (
     mPart && (
@@ -53,6 +65,32 @@ export default function Teacher() {
               mGrade < grade.general || mPart.includes('교무팀') ? true : false
             }
             rightArea={true}
+            addRender={
+              (mGrade < grade.general || mPart.includes('교무팀')) && (
+                <>
+                  {
+                    <Button
+                      size="sm"
+                      radius="sm"
+                      variant="solid"
+                      color="primary"
+                      className="text-white ml-[0.5rem]"
+                      onClick={() => {
+                        setCreateActive(prev => !prev)
+                      }}
+                    >
+                      <ActiveIcon
+                        variants={IconVariants}
+                        initial="initial"
+                        animate={createActive ? 'active' : 'initial'}
+                        className="xi-check-min"
+                      />
+                      분야 관리
+                    </Button>
+                  }
+                </>
+              )
+            }
           />
           <Suspense
             fallback={
@@ -66,6 +104,15 @@ export default function Teacher() {
               onFilterSearch={setFilterSearch}
               setTeacherFilter={setTeacherFilter}
             />
+          </Suspense>
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <CreateTeacherType isActive={createActive} />
           </Suspense>
           <ConBox>
             {filterSearch ? (

@@ -10,8 +10,8 @@ import { MME_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 import { useDisclosure } from '@nextui-org/react'
-import RequestMessage from '../modal/RequestMessage'
-import HeaderNoti from '../common/HeaderNoti'
+import RequestMessage from '@/components/modal/RequestMessage'
+import HeaderNoti from '@/components/common/HeaderNoti'
 
 const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   max-width: ${props =>

@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import {
   Button,
-  CheckboxGroup,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -12,12 +10,9 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useMutation } from '@apollo/client'
-import { DEV_EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
-import { Suspense, useEffect, useState } from 'react'
-import ManagerSelectID from '../common/ManagerSelectID'
+import { useState } from 'react'
 import ReplyMessage from './ReplyMessage'
 
 const DetailDiv = styled.div`

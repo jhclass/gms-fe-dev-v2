@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -18,15 +18,28 @@ import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
-import ChangePassword from '../modal/ChangePassword'
+import ChangePassword from '@/components/modal/ChangePassword'
 import { Controller, useForm } from 'react-hook-form'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
+import AdviceMultiSelect from '../common/AdviceMultiSelect'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const SwitchDiv = styled.div`
   display: flex;
@@ -214,6 +227,7 @@ export default function StudentsWrite({ managerId }) {
   const loginMGrade = useMme('mGrade')
   const loginMPart = useMme('mPart')
   const router = useRouter()
+  const [adviceType, setAdviceType] = useState([])
   const { userLogs } = useUserLogsMutation()
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
@@ -274,6 +288,12 @@ export default function StudentsWrite({ managerId }) {
       const date = parseInt(managerData?.mJoiningDate)
       setJoiningDate(date)
     }
+
+    if (managerData?.mPart === null || managerData?.mPart === undefined) {
+      setAdviceType([])
+    } else {
+      setAdviceType(managerData?.mPart)
+    }
   }, [managerData])
 
   const onSubmit = async data => {
@@ -281,7 +301,9 @@ export default function StudentsWrite({ managerId }) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       let part
       if (dirtyFields.mPart) {
-        const parts = data.mPart.split(',').map(part => part.trim())
+        const parts = String(data.mPart)
+          .split(',')
+          .map(part => part.trim())
         part = parts
       } else {
         part = managerData.mPart
@@ -320,7 +342,7 @@ export default function StudentsWrite({ managerId }) {
             dirtyFieldsArray.join(', '),
           )
           alert('수정되었습니다.')
-          router.push('/hr/teacher', undefined, { shallow: true })
+          window.location.href = '/hr/teacher'
         } catch (error) {
           console.error('강사 정보 수정 중 에러 발생:', error)
           alert('강사 정보 수정 처리 중 오류가 발생했습니다.')
@@ -620,25 +642,31 @@ export default function StudentsWrite({ managerId }) {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="강의분야"
-                      variant={'bordered'}
-                      radius="md"
-                      type="text"
-                      label="강의 분야"
-                      defaultValue={managerData.mPart.join(',')}
-                      className="w-full"
-                      onChange={e => {
-                        register('mPart').onChange(e)
-                      }}
-                      {...register('mPart')}
-                    />
-                    {errors.mPart && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.mPart.message)}
-                      </p>
-                    )}
+                    <AreaBox>
+                      <Controller
+                        control={control}
+                        name="mPart"
+                        defaultValue={managerData.mPart}
+                        render={({ field }) => (
+                          <Suspense
+                            fallback={
+                              <LodingDiv>
+                                <i className="xi-spinner-2" />
+                              </LodingDiv>
+                            }
+                          >
+                            <AdviceMultiSelect
+                              defaultValue={managerData.mPart}
+                              selecedKey={adviceType}
+                              field={field}
+                              label={'강의분야'}
+                              handleChange={setAdviceType}
+                              category={'강의분야'}
+                            />
+                          </Suspense>
+                        )}
+                      />
+                    </AreaBox>
                   </AreaBox>
                   <AreaBox>
                     <DatePickerBox>

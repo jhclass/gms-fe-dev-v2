@@ -16,7 +16,7 @@ import {
 import { useTheme } from '@table-library/react-table-library/theme'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
-import WorksLogs from '../modal/WorksLogs'
+import WorksLogs from '@/components/modal/WorksLogs'
 
 const PagerWrap = styled.div`
   display: flex;

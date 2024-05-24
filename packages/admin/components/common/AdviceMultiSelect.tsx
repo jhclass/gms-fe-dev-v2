@@ -1,34 +1,34 @@
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
+import { ResultAdviceType } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
 
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
 }
 
-export default function TeacherMultiSelect({
+export default function managerSelect({
   defaultValue = null,
   selecedKey,
   field,
   label,
   handleChange,
   optionDefualt = null,
+  filter = null,
+  category,
 }) {
-  const { error: searchManagerError, data: searchManagerData } =
-    useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+  const { error: adviceError, data: adviceData } =
+    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
       variables: {
-        mGrade: 20,
-        resign: 'N',
+        page: 1,
+        category: category,
+        limit: 100,
       },
     })
-  const managerList = [
-    optionDefualt,
-    ...searchManagerData?.searchManageUser.data,
-  ]
+  const adviceList = adviceData?.seeAdviceType.adviceType
 
-  if (searchManagerError) {
-    console.log(searchManagerError)
+  if (adviceError) {
+    console.log(adviceError)
   }
 
   return (
@@ -50,9 +50,9 @@ export default function TeacherMultiSelect({
         }}
         onSelectionChange={handleChange}
       >
-        {managerList.map(item => (
-          <SelectItem key={item.id} value={item.id}>
-            {item.mUsername}
+        {adviceList?.map(item => (
+          <SelectItem key={item.type} value={item.type}>
+            {item.type}
           </SelectItem>
         ))}
       </Select>

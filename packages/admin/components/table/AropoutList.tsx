@@ -16,7 +16,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

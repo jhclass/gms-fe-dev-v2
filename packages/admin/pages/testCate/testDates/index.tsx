@@ -9,7 +9,7 @@ const _ = require('lodash')
 import MainWrap from '@/components/wrappers/MainWrap'
 import { Button } from '@nextui-org/react'
 import { styled } from 'styled-components'
-// import DatePickerHeader from '../common/DatePickerHeader'
+// import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const DatePickerBox = styled.div`
   .react-datepicker__day--keyboard-selected {

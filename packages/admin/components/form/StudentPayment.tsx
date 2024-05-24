@@ -26,10 +26,10 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
-import ManagerSelectID from '../common/ManagerSelectID'
+import ManagerSelectID from '@/components/common/ManagerSelectID'
 
 const DetailBox = styled.div`
   margin-top: 2rem;

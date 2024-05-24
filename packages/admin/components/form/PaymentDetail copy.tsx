@@ -26,10 +26,10 @@ import {
   SEARCH_SUBJECT_MUTATION,
   UPDATE_STUDENT_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import ManagerSelectID from '../common/ManagerSelectID'
+import ManagerSelectID from '@/components/common/ManagerSelectID'
 
 const ConArea = styled.div`
   width: 100%;

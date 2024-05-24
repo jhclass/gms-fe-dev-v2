@@ -31,7 +31,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 const Container = styled.div`
   width: 100%;
-  height: 50vh;
+  height: 10vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -49,6 +49,10 @@ const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &:hover {
+    background-color: #d9e3fa;
+  }
 `
 
 type seeAdviceTypeQuery = {
@@ -63,6 +67,8 @@ export default function TypeIndex({
   orderPage,
   setOrderPage,
   seeAdviceQuery,
+  totalCount,
+  category,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [items, setItems] = useState([])
@@ -77,20 +83,26 @@ export default function TypeIndex({
     const { scrollTop, scrollHeight, clientHeight } = e.target
     if (scrollTop + clientHeight >= scrollHeight) {
       setBottomReached(true)
-      // setOrderPage(prev => prev + 1)
-      console.log('a')
+      setOrderPage(prev => prev + 1)
     }
   }
 
-  // useEffect(() => {
-  //   if (bottomReached) {
-  //   }
-  // }, [bottomReached])
+  useEffect(() => {
+    if (bottomReached) {
+    }
+  }, [bottomReached])
 
-  // useEffect(() => {
-  //   seeAdviceQuery() // 다음 페이지 데이터 요청
-  //   setBottomReached(false)
-  // }, [seeAdviceQuery, bottomReached])
+  useEffect(() => {
+    seeAdviceQuery({
+      variables: {
+        page: orderPage,
+        category: category,
+        limit: 3,
+      },
+    })
+
+    setBottomReached(false)
+  }, [seeAdviceQuery, bottomReached])
 
   useEffect(() => {
     setItems(orderAdviceList)
@@ -121,19 +133,19 @@ export default function TypeIndex({
       })
 
       if (!result.data.changeOrderAT.ok) {
-        throw new Error('상담 분야 순서 변경 실패')
+        throw new Error(`${category} 순서 변경 실패`)
       }
 
       refetch({
         page: 1,
-        category: '상담분야',
+        category: category,
         limit: 50,
       })
-      alert('상담 분야 순서가 변경되었습니다.')
-      userLogs(`상담분야 순서 변경`)
+      alert(`${category} 순서가 변경되었습니다.`)
+      userLogs(`${category} 순서 변경`)
       onClose()
     } catch (error) {
-      console.error('상담 분야 순서 변경 중 에러 발생:', error)
+      console.error(`${category} 순서 변경 중 에러 발생:`, error)
     }
   }
 
@@ -152,6 +164,7 @@ export default function TypeIndex({
                     <Droppable droppableId="droppable">
                       {provided => (
                         <Container
+                          className="scrollbar"
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                           onScroll={handleScroll}

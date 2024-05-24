@@ -36,6 +36,7 @@ const CateLink = styled(motion.div)<{ $navOpen: boolean }>`
   width: 100%;
   height: 100%;
   color: inherit;
+  align-items: center;
 `
 
 const CateIcon = styled.figure`
@@ -196,6 +197,7 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
+              <i className="xi-new" />
             </CateLink>
           </Link>
         ) : (
@@ -249,6 +251,9 @@ export default function CategoryItem<CategoryItemProps>({
                   {name}
                 </Link>
               </CateTitle>
+              <span>
+                <i className="xi-new" />
+              </span>
             </CateLink>
 
             {navOpen && (

@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -21,22 +21,24 @@ import {
   CREATE_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import AdviceSelect from '@/components/common/AdviceSelect'
+import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
 `
-const SwitchDiv = styled.div`
-  display: flex;
-  align-items: center;
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
   background: #fff;
-  padding: 0.5rem 0 0.5rem 0.5rem;
-  border-radius: 0.75rem;
-`
-const SwitchText = styled.span`
-  width: max-content;
-  padding-right: 0.5rem;
-  font-size: 0.8rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -153,6 +155,7 @@ export default function StudentsWrite() {
   const { errors } = formState
   const [joiningDate, setJoiningDate] = useState(null)
   const years = _.range(1950, getYear(new Date()) + 1, 1)
+  const [adviceType, setAdviceType] = useState(new Set([]))
 
   const password = watch('mPassword')
   const confirmPassword = watch('mPassword1')
@@ -184,9 +187,12 @@ export default function StudentsWrite() {
   }, [password, confirmPassword, setError, clearErrors])
 
   const onSubmit = data => {
+    console.log(typeof data.mPart)
     checkPassword(data.mPassword, data.mPassword1)
-    if (typeof data.mPart === 'string') {
-      const parts = data.mPart.split(',').map(part => part.trim())
+    if (data.mPart !== undefined) {
+      const parts = String(data.mPart)
+        .split(',')
+        .map(part => part.trim())
       setValue('mPart', parts)
     }
 
@@ -216,6 +222,10 @@ export default function StudentsWrite() {
         }
       },
     })
+  }
+
+  const handleAdviceChange = e => {
+    setAdviceType(e.target.value)
   }
 
   return (
@@ -487,18 +497,26 @@ export default function StudentsWrite() {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="강의분야"
-                      variant={'bordered'}
-                      radius="md"
-                      type="text"
-                      label="강의 분야"
-                      className="w-full"
-                      onChange={e => {
-                        register('mPart').onChange(e)
-                      }}
-                      {...register('mPart')}
+                    <Controller
+                      control={control}
+                      name="mPart"
+                      render={({ field }) => (
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
+                        >
+                          <AdviceMultiSelect
+                            selecedKey={adviceType}
+                            field={field}
+                            label={'강의분야'}
+                            handleChange={setAdviceType}
+                            category={'강의분야'}
+                          />
+                        </Suspense>
+                      )}
                     />
                   </AreaBox>
                   <AreaBox>
