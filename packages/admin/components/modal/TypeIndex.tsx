@@ -73,24 +73,23 @@ export default function TypeIndex({
   const { userLogs } = useUserLogsMutation()
   const [items, setItems] = useState([])
   const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
-
   const { handleSubmit, formState, setValue } = useForm()
   const { errors, isDirty } = formState
-
   const [bottomReached, setBottomReached] = useState(false)
-
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
     if (scrollTop + clientHeight >= scrollHeight) {
-      setBottomReached(true)
-      setOrderPage(prev => prev + 1)
+      if (orderPage < Math.ceil(totalCount / 3)) {
+        setOrderPage(prev => prev + 1)
+        setBottomReached(true)
+      }
     }
   }
 
-  useEffect(() => {
-    if (bottomReached) {
-    }
-  }, [bottomReached])
+  // useEffect(() => {
+  //   if (bottomReached) {
+  //   }
+  // }, [bottomReached])
 
   useEffect(() => {
     if (orderPage > 1) {
@@ -104,7 +103,7 @@ export default function TypeIndex({
     }
 
     setBottomReached(false)
-  }, [seeAdviceQuery, bottomReached])
+  }, [bottomReached])
 
   useEffect(() => {
     setItems(orderAdviceList)
@@ -145,17 +144,27 @@ export default function TypeIndex({
       })
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)
-      onClose()
+      closeBtn()
     } catch (error) {
       console.error(`${category} 순서 변경 중 에러 발생:`, error)
     }
   }
 
+  const closeBtn = () => {
+    onClose()
+    setOrderPage(1)
+    setItems([])
+    setBottomReached(false)
+  }
+
+  // console.log(orderPage, orderAdviceList)
+  // console.log(items, bottomReached)
+
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'md'} isOpen={isOpen} onClose={closeBtn}>
         <ModalContent>
-          {onClose => (
+          {closeBtn => (
             <>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalHeader className="flex flex-col gap-1">
@@ -179,7 +188,7 @@ export default function TypeIndex({
                             >
                               {provided => (
                                 <Item
-                                  key={index}
+                                  key={item.id}
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
@@ -204,7 +213,7 @@ export default function TypeIndex({
                     size="sm"
                     color="danger"
                     variant="light"
-                    onPress={onClose}
+                    onPress={closeBtn}
                   >
                     Close
                   </Button>

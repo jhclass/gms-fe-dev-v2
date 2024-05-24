@@ -88,6 +88,13 @@ const MenuItem = styled.li<{ $isActive: boolean }>`
   }
 `
 
+const MewIcon = styled.span<{ $navOpen: boolean }>`
+  position: ${props => (props.$navOpen ? 'relative' : 'absolute')};
+  right: ${props => (props.$navOpen ? 'auto' : '0.3rem')};
+  top: ${props => (props.$navOpen ? 'auto' : '0')};
+  color: #dd1e59;
+`
+
 const CateActive = styled(motion.div)`
   position: absolute;
   top: 0;
@@ -271,7 +278,9 @@ export default function CategoryItem<CategoryItemProps>({
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
               {(newConsult || newStudent || newAccounting) && (
-                <i className="xi-new text-[#dd1e59]" />
+                <MewIcon $navOpen={navOpen}>
+                  <i className="xi-new" />
+                </MewIcon>
               )}
             </CateLink>
           </Link>
@@ -327,7 +336,9 @@ export default function CategoryItem<CategoryItemProps>({
                 </Link>
               </CateTitle>
               {(newConsult || newStudent || newAccounting) && (
-                <i className="xi-new text-[#dd1e59]" />
+                <MewIcon $navOpen={navOpen}>
+                  <i className="xi-new" />
+                </MewIcon>
               )}
             </CateLink>
 
