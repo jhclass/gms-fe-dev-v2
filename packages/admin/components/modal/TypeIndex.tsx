@@ -93,13 +93,15 @@ export default function TypeIndex({
   }, [bottomReached])
 
   useEffect(() => {
-    seeAdviceQuery({
-      variables: {
-        page: orderPage,
-        category: category,
-        limit: 3,
-      },
-    })
+    if (orderPage > 1) {
+      seeAdviceQuery({
+        variables: {
+          page: orderPage,
+          category: category,
+          limit: 3,
+        },
+      })
+    }
 
     setBottomReached(false)
   }, [seeAdviceQuery, bottomReached])
@@ -139,7 +141,7 @@ export default function TypeIndex({
       refetch({
         page: 1,
         category: category,
-        limit: 50,
+        limit: 3,
       })
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)

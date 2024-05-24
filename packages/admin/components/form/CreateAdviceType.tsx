@@ -130,7 +130,7 @@ export default function CreateAdviceType({ isActive }) {
   const { userLogs } = useUserLogsMutation()
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
   const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(50)
+  const [limit, setLimit] = useState(3)
   const [adviceList, setAdviceList] = useState([])
   const [orderPage, setOrderPage] = useState(1)
   const [orderAdviceList, setOrderAdviceList] = useState([])
@@ -220,7 +220,7 @@ export default function CreateAdviceType({ isActive }) {
       seeRefetch({
         page: 1,
         category: '상담분야',
-        limit: 50,
+        limit: 3,
       })
       alert('상담 분야가 등록되었습니다.')
       userLogs(`${data.type} 상담분야 등록`)

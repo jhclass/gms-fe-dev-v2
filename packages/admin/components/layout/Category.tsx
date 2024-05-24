@@ -48,8 +48,6 @@ import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
 import useMmeQuery from '@/utils/mMe'
 import Link from 'next/link'
-import { useMutation } from '@apollo/client'
-import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 
 const CateWrap = styled(motion.ul)``
 
@@ -155,7 +153,6 @@ export default function Category() {
 
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
-  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const handleCategoryClick = (categoryId, resetItems) => {
     setActiveCategory(categoryId)
 
@@ -166,20 +163,6 @@ export default function Category() {
       }
     })
   }
-
-  // useEffect(() => {
-  //   searchStudentStateMutation({
-  //     variables: {
-  //       "createdAt": []
-  //     },
-  //     onCompleted: resData => {
-  //       if (resData.searchStudentState.ok) {
-  //         const { studentState, totalCount } = resData.searchStudentState || {}
-  //         setSearchResult({ studentState, totalCount })
-  //       }
-  //     },
-  //   })
-  // }, [studentFilter, currentPage])
 
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)

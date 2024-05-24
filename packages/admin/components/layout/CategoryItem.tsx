@@ -1,10 +1,16 @@
+import {
+  SEARCH_PAYMENT_FILTER_MUTATION,
+  SEARCH_STUDENTSTATE_MUTATION,
+  SEARCH_STUDENT_FILTER_MUTATION,
+} from '@/graphql/mutations'
 import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
+import { useMutation } from '@apollo/client'
 import { Tooltip } from '@nextui-org/react'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 
@@ -122,9 +128,76 @@ export default function CategoryItem<CategoryItemProps>({
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
+  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
+  const [searchStudentFilterMutation] = useMutation(
+    SEARCH_STUDENT_FILTER_MUTATION,
+  )
+  const [searchPaymentFilterMutation] = useMutation(
+    SEARCH_PAYMENT_FILTER_MUTATION,
+  )
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const [newConsult, setNewConsult] = useState(false)
+  const [newStudent, setNewStudent] = useState(false)
+  const [newAccounting, setNewAccounting] = useState(false)
   const arrowRef = useRef(null)
+  const nowDate = new Date()
+  const startOfDay = new Date(
+    nowDate.getFullYear(),
+    nowDate.getMonth(),
+    nowDate.getDate(),
+    0,
+    0,
+    0,
+  )
+
+  useEffect(() => {
+    if (name === '상담관리') {
+      searchStudentStateMutation({
+        variables: {
+          createdAt: [startOfDay, nowDate],
+        },
+        onCompleted: resData => {
+          if (resData.searchStudentState.ok) {
+            const { totalCount } = resData.searchStudentState || {}
+            if (totalCount > 0) {
+              setNewConsult(true)
+            }
+          }
+        },
+      })
+    }
+    if (name === '수강생관리') {
+      searchStudentFilterMutation({
+        variables: {
+          createdAt: [startOfDay, nowDate],
+        },
+        onCompleted: resData => {
+          if (resData.searchStudent.ok) {
+            const { totalCount } = resData.searchStudent || {}
+            if (totalCount > 0) {
+              setNewStudent(true)
+            }
+          }
+        },
+      })
+    }
+    // if (name === '회계관리') {
+    //   searchPaymentFilterMutation({
+    //     variables: {
+    //       createdAt: [startOfDay, nowDate],
+    //     },
+    //     onCompleted: resData => {
+    //       if (resData.searchStudentPayment.ok) {
+    //         const { totalCount } = resData.searchStudentPayment || {}
+    //         if (totalCount > 0) {
+    //           setNewAccounting(true)
+    //         }
+    //       }
+    //     },
+    //   })
+    // }
+  }, [])
 
   useEffect(() => {
     if (arrowRef.current) {
@@ -197,7 +270,9 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
-              <i className="xi-new" />
+              {(newConsult || newStudent || newAccounting) && (
+                <i className="xi-new text-[#dd1e59]" />
+              )}
             </CateLink>
           </Link>
         ) : (
@@ -251,9 +326,9 @@ export default function CategoryItem<CategoryItemProps>({
                   {name}
                 </Link>
               </CateTitle>
-              <span>
-                <i className="xi-new" />
-              </span>
+              {(newConsult || newStudent || newAccounting) && (
+                <i className="xi-new text-[#dd1e59]" />
+              )}
             </CateLink>
 
             {navOpen && (
