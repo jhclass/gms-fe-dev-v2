@@ -330,6 +330,7 @@ export default function CreateAdviceType({ isActive }) {
           seeAdviceQuery={seeAdviceQuery}
           totalCount={totalCount}
           category={'상담분야'}
+          limit={limit}
         />
       )}
     </>

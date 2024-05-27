@@ -69,6 +69,7 @@ export default function TypeIndex({
   seeAdviceQuery,
   totalCount,
   category,
+  limit,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [items, setItems] = useState([])
@@ -148,7 +149,7 @@ export default function TypeIndex({
       refetch({
         page: 1,
         category: category,
-        limit: 3,
+        limit: limit,
       })
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)

@@ -332,6 +332,7 @@ export default function CreateAdviceType({ isActive }) {
           seeAdviceQuery={seeAdviceQuery}
           totalCount={totalCount}
           category={'강의분야'}
+          limit={limit}
         />
       )}
     </>
