@@ -13,7 +13,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { useEffect, useState } from 'react'
-import ChipCheckbox from '../common/ChipCheckbox'
+import ChipCheckbox from '@/components/common/ChipCheckbox'
 registerLocale('ko', ko)
 const _ = require('lodash')
 

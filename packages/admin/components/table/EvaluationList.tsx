@@ -16,12 +16,6 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  ManageUser,
-  StudentState,
-  StudentStateResponse,
-} from '@/src/generated/graphql'
-import DatePickerHeader from '../common/DatePickerHeader'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

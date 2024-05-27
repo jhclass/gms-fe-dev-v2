@@ -141,7 +141,7 @@ export default function CreateAdviceType({ isActive }) {
   } = useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
     variables: {
       page: page,
-      category: '상담분야',
+      category: '강의분야',
       limit: limit,
     },
   })
@@ -196,7 +196,7 @@ export default function CreateAdviceType({ isActive }) {
     seeAdviceQuery({
       variables: {
         page: 1,
-        category: '상담분야',
+        category: '강의분야',
         limit: 30,
       },
     })
@@ -204,6 +204,7 @@ export default function CreateAdviceType({ isActive }) {
   }
 
   const onSubmit = async data => {
+    console.log(data)
     if (!isDirty) return
 
     try {
@@ -211,22 +212,23 @@ export default function CreateAdviceType({ isActive }) {
         variables: {
           type: data.type,
           indexNum: totalCount + 1,
-          category: '상담분야',
+          category: '강의분야',
         },
       })
+      console.log(result)
       if (!result.data.createAdviceType.ok) {
-        throw new Error('상담 분야 등록 실패')
+        throw new Error('강의 분야 등록 실패')
       }
       seeRefetch({
         page: 1,
-        category: '상담분야',
+        category: '강의분야',
         limit: 50,
       })
-      alert('상담 분야가 등록되었습니다.')
-      userLogs(`${data.type} 상담분야 등록`)
+      alert('강의 분야가 등록되었습니다.')
+      userLogs(`${data.type} 강의분야 등록`)
       reset()
     } catch (error) {
-      console.error('상담 분야 등록 중 에러 발생:', error)
+      console.error('강의 분야 등록 중 에러 발생:', error)
     }
   }
 
@@ -329,7 +331,7 @@ export default function CreateAdviceType({ isActive }) {
           setOrderPage={setOrderPage}
           seeAdviceQuery={seeAdviceQuery}
           totalCount={totalCount}
-          category={'상담분야'}
+          category={'강의분야'}
         />
       )}
     </>

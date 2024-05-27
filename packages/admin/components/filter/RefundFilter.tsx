@@ -9,7 +9,7 @@ import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { getYear, subMonths, subDays } from 'date-fns'

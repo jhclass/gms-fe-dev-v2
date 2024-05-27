@@ -13,10 +13,10 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { Suspense, useEffect, useState } from 'react'
-import ManagerSelectID from '../common/ManagerSelectID'
+import ManagerSelectID from '@/components/common/ManagerSelectID'
 import { toast } from 'react-toastify'
-import ReqToast from '../common/ReqToast'
-import SeeRequestMessage from './SeeRequestMessage'
+import ReqToast from '@/components/common/ReqToast'
+import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;

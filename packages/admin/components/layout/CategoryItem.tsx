@@ -1,10 +1,16 @@
+import {
+  SEARCH_PAYMENT_FILTER_MUTATION,
+  SEARCH_STUDENTSTATE_MUTATION,
+  SEARCH_STUDENT_FILTER_MUTATION,
+} from '@/graphql/mutations'
 import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
+import { useMutation } from '@apollo/client'
 import { Tooltip } from '@nextui-org/react'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 
@@ -36,6 +42,7 @@ const CateLink = styled(motion.div)<{ $navOpen: boolean }>`
   width: 100%;
   height: 100%;
   color: inherit;
+  align-items: center;
 `
 
 const CateIcon = styled.figure`
@@ -81,6 +88,13 @@ const MenuItem = styled.li<{ $isActive: boolean }>`
   }
 `
 
+const MewIcon = styled.span<{ $navOpen: boolean }>`
+  position: ${props => (props.$navOpen ? 'relative' : 'absolute')};
+  right: ${props => (props.$navOpen ? 'auto' : '0.3rem')};
+  top: ${props => (props.$navOpen ? 'auto' : '0')};
+  color: #dd1e59;
+`
+
 const CateActive = styled(motion.div)`
   position: absolute;
   top: 0;
@@ -121,9 +135,76 @@ export default function CategoryItem<CategoryItemProps>({
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
+  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
+  const [searchStudentFilterMutation] = useMutation(
+    SEARCH_STUDENT_FILTER_MUTATION,
+  )
+  const [searchPaymentFilterMutation] = useMutation(
+    SEARCH_PAYMENT_FILTER_MUTATION,
+  )
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const [newConsult, setNewConsult] = useState(false)
+  const [newStudent, setNewStudent] = useState(false)
+  const [newAccounting, setNewAccounting] = useState(false)
   const arrowRef = useRef(null)
+  const nowDate = new Date()
+  const startOfDay = new Date(
+    nowDate.getFullYear(),
+    nowDate.getMonth(),
+    nowDate.getDate(),
+    0,
+    0,
+    0,
+  )
+
+  useEffect(() => {
+    if (name === '상담관리') {
+      searchStudentStateMutation({
+        variables: {
+          createdAt: [startOfDay, nowDate],
+        },
+        onCompleted: resData => {
+          if (resData.searchStudentState.ok) {
+            const { totalCount } = resData.searchStudentState || {}
+            if (totalCount > 0) {
+              setNewConsult(true)
+            }
+          }
+        },
+      })
+    }
+    if (name === '수강생관리') {
+      searchStudentFilterMutation({
+        variables: {
+          createdAt: [startOfDay, nowDate],
+        },
+        onCompleted: resData => {
+          if (resData.searchStudent.ok) {
+            const { totalCount } = resData.searchStudent || {}
+            if (totalCount > 0) {
+              setNewStudent(true)
+            }
+          }
+        },
+      })
+    }
+    // if (name === '회계관리') {
+    //   searchPaymentFilterMutation({
+    //     variables: {
+    //       createdAt: [startOfDay, nowDate],
+    //     },
+    //     onCompleted: resData => {
+    //       if (resData.searchStudentPayment.ok) {
+    //         const { totalCount } = resData.searchStudentPayment || {}
+    //         if (totalCount > 0) {
+    //           setNewAccounting(true)
+    //         }
+    //       }
+    //     },
+    //   })
+    // }
+  }, [])
 
   useEffect(() => {
     if (arrowRef.current) {
@@ -196,6 +277,11 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
+              {(newConsult || newStudent || newAccounting) && (
+                <MewIcon $navOpen={navOpen}>
+                  <i className="xi-new" />
+                </MewIcon>
+              )}
             </CateLink>
           </Link>
         ) : (
@@ -249,6 +335,11 @@ export default function CategoryItem<CategoryItemProps>({
                   {name}
                 </Link>
               </CateTitle>
+              {(newConsult || newStudent || newAccounting) && (
+                <MewIcon $navOpen={navOpen}>
+                  <i className="xi-new" />
+                </MewIcon>
+              )}
             </CateLink>
 
             {navOpen && (

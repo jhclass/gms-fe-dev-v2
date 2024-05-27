@@ -19,7 +19,7 @@ import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
-import ChangePassword from '../modal/ChangePassword'
+import ChangePassword from '@/components/modal/ChangePassword'
 
 const ConArea = styled.div`
   width: 100%;

@@ -1,7 +1,7 @@
 import { ScrollShadow, useDisclosure } from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import SeeRequestMessage from '../modal/SeeRequestMessage'
+import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
 
 const NotiBtn = styled.button`
   display: flex;

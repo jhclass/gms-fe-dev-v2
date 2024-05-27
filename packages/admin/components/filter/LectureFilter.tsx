@@ -1,26 +1,16 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
-import {
-  consultPageState,
-  gradeState,
-  progressStatusState,
-  receiptStatusState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { consultPageState, subStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import ChipCheckbox from '@/components/common/ChipCheckbox'
-import { CheckboxGroup, Input, Select, SelectItem } from '@nextui-org/react'
-import { Suspense, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { Input, Select, SelectItem } from '@nextui-org/react'
+import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import ManagerSelect from '@/components/common/ManagerSelect'
-import AdviceSelect from '@/components//common/AdviceSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 

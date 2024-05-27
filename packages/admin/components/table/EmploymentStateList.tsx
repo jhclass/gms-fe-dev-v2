@@ -21,7 +21,7 @@ import {
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 import EmploymentStateItem from './EmploymentStateItem'
 
 const TableArea = styled.div`

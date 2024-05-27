@@ -1,17 +1,11 @@
 import styled from 'styled-components'
 import {
   Button,
-  Checkbox,
-  CheckboxGroup,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Pagination,
-  Radio,
-  RadioGroup,
   ScrollShadow,
   Textarea,
 } from '@nextui-org/react'
@@ -19,11 +13,10 @@ import { useEffect, useState } from 'react'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import SubjectItem from '@/components/table/SubjectItem'
 import { useForm } from 'react-hook-form'
-import WorksSchedule from '../table/WorksSchedule'
-import WorksTime from '../table/WorksTime'
-import WorksRemark from '../table/WorksRemark'
+import WorksSchedule from '@/components/table/WorksSchedule'
+import WorksTime from '@/components/table/WorksTime'
+import WorksRemark from '@/components/table/WorksRemark'
 
 const Title = styled.h2`
   position: relative;

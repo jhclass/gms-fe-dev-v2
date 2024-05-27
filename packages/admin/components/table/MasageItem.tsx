@@ -1,12 +1,7 @@
 import { styled } from 'styled-components'
-import { useMutation } from '@apollo/client'
-import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
-import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
-import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
-import { Checkbox, useDisclosure } from '@nextui-org/react'
-import SeeRequestMessage from '../modal/SeeRequestMessage'
+import { useDisclosure } from '@nextui-org/react'
+import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
 
 const TableItem = styled.div`
   position: relative;

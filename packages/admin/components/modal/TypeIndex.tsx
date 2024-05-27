@@ -31,7 +31,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 const Container = styled.div`
   width: 100%;
-  height: 50vh;
+  height: 40vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -49,6 +49,10 @@ const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &:hover {
+    background-color: #d9e3fa;
+  }
 `
 
 type seeAdviceTypeQuery = {
@@ -63,22 +67,22 @@ export default function TypeIndex({
   orderPage,
   setOrderPage,
   seeAdviceQuery,
+  totalCount,
+  category,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [items, setItems] = useState([])
   const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
-
   const { handleSubmit, formState, setValue } = useForm()
   const { errors, isDirty } = formState
-
   const [bottomReached, setBottomReached] = useState(false)
-
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
-    if (scrollTop + clientHeight >= scrollHeight) {
-      setBottomReached(true)
-      // setOrderPage(prev => prev + 1)
-      console.log('a')
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      if (orderPage < Math.ceil(totalCount / 3)) {
+        setOrderPage(prev => prev + 1)
+        setBottomReached(true)
+      }
     }
   }
 
@@ -87,10 +91,27 @@ export default function TypeIndex({
   //   }
   // }, [bottomReached])
 
-  // useEffect(() => {
-  //   seeAdviceQuery() // 다음 페이지 데이터 요청
-  //   setBottomReached(false)
-  // }, [seeAdviceQuery, bottomReached])
+  useEffect(() => {
+    if (orderPage > 1) {
+      seeAdviceQuery({
+        variables: {
+          page: orderPage,
+          category: category,
+          limit: 30,
+        },
+      })
+    } else {
+      seeAdviceQuery({
+        variables: {
+          page: 1,
+          category: category,
+          limit: 30,
+        },
+      })
+    }
+
+    setBottomReached(false)
+  }, [bottomReached])
 
   useEffect(() => {
     setItems(orderAdviceList)
@@ -121,27 +142,35 @@ export default function TypeIndex({
       })
 
       if (!result.data.changeOrderAT.ok) {
-        throw new Error('상담 분야 순서 변경 실패')
+        throw new Error(`${category} 순서 변경 실패`)
       }
 
       refetch({
         page: 1,
-        category: '상담분야',
-        limit: 50,
+        category: category,
+        limit: 3,
       })
-      alert('상담 분야 순서가 변경되었습니다.')
-      userLogs(`상담분야 순서 변경`)
-      onClose()
+      alert(`${category} 순서가 변경되었습니다.`)
+      userLogs(`${category} 순서 변경`)
+      closeBtn()
     } catch (error) {
-      console.error('상담 분야 순서 변경 중 에러 발생:', error)
+      console.error(`${category} 순서 변경 중 에러 발생:`, error)
     }
   }
 
+  const closeBtn = () => {
+    onClose()
+    setOrderPage(1)
+  }
+
+  // console.log(orderPage, orderAdviceList)
+  // console.log(items, bottomReached)
+
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'md'} isOpen={isOpen} onClose={closeBtn}>
         <ModalContent>
-          {onClose => (
+          {closeBtn => (
             <>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalHeader className="flex flex-col gap-1">
@@ -152,6 +181,7 @@ export default function TypeIndex({
                     <Droppable droppableId="droppable">
                       {provided => (
                         <Container
+                          className="scrollbar"
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                           onScroll={handleScroll}
@@ -164,7 +194,7 @@ export default function TypeIndex({
                             >
                               {provided => (
                                 <Item
-                                  key={index}
+                                  key={item.id}
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
@@ -189,7 +219,7 @@ export default function TypeIndex({
                     size="sm"
                     color="danger"
                     variant="light"
-                    onPress={onClose}
+                    onPress={closeBtn}
                   >
                     Close
                   </Button>

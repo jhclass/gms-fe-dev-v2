@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
 import { ResultAdviceType } from '@/src/generated/graphql'
+import { pages } from 'next/dist/build/templates/app-page'
 
 const Nolist = styled.div`
   display: flex;
@@ -20,6 +21,13 @@ type seeAdviceTypeQuery = {
 export default function AdviceTypeModalChip() {
   const { error, data } = useSuspenseQuery<seeAdviceTypeQuery>(
     SEE_ADVICE_TYPE_QUERY,
+    {
+      variables: {
+        page: 1,
+        category: '상담분야',
+        limit: 100,
+      },
+    },
   )
   const adviceList = data?.seeAdviceType.adviceType
 

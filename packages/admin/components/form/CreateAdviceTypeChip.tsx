@@ -6,6 +6,7 @@ registerLocale('ko', ko)
 import { useMutation } from '@apollo/client'
 import { DELETE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
+import { styled } from 'styled-components'
 
 export default function CreateAdviceTypeChip({ adviceList, refetch }) {
   const { userLogs } = useUserLogsMutation()
@@ -42,7 +43,12 @@ export default function CreateAdviceTypeChip({ adviceList, refetch }) {
     <>
       {adviceList &&
         adviceList?.map((item, index) => (
-          <Chip key={index} variant="bordered" onClose={() => deleteType(item)}>
+          <Chip
+            key={index}
+            variant="bordered"
+            onClose={() => deleteType(item)}
+            className={'hover:border-primary'}
+          >
             {item.type}
           </Chip>
         ))}

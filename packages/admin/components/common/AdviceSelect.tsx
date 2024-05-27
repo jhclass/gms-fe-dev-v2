@@ -15,9 +15,16 @@ export default function managerSelect({
   handleChange,
   optionDefualt,
   filter = null,
+  category,
 }) {
   const { error: adviceError, data: adviceData } =
-    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY)
+    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
+      variables: {
+        page: 1,
+        category: category,
+        limit: 100,
+      },
+    })
   const adviceList = [optionDefualt, ...adviceData?.seeAdviceType.adviceType]
 
   if (adviceError) {
