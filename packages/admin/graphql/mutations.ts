@@ -413,9 +413,10 @@ export const CREATE_ADVICE_TYPE_MUTATION = gql`
     }
   }
 `
-export const DELETE_ADVICE_TYPE_MUTATION = gql`
-  mutation DeleteAdviceType($deleteAdviceTypeId: Int!) {
-    deleteAdviceType(id: $deleteAdviceTypeId) {
+
+export const EDIT_ADVICE_TYPE_MUTATION = gql`
+  mutation Mutation($editAdviceTypeId: Int!) {
+    editAdviceType(id: $editAdviceTypeId) {
       error
       message
       ok

@@ -22,9 +22,9 @@ const STUDENT_STATE_MUTATION = gql`
     $progress: Int!
     $adviceTypes: [String]!
     $classMethod: [String]
-    $receiptDiv: String
     $campus: String
     $detail: String
+    $receiptDiv: String
   ) {
     createStudentState(
       stName: $stName
@@ -34,27 +34,31 @@ const STUDENT_STATE_MUTATION = gql`
       progress: $progress
       adviceTypes: $adviceTypes
       classMethod: $classMethod
-      receiptDiv: $receiptDiv
       campus: $campus
       detail: $detail
+      receiptDiv: $receiptDiv
     ) {
-      error
-      message
       ok
+      message
+      error
     }
   }
 `
 
 export const SEE_ADVICE_TYPE_QUERY = gql`
-  query Query {
-    seeAdviceType {
+  query Query($category: String!) {
+    seeAdviceType(category: $category) {
+      totalCount
+      ok
+      message
+      error
       adviceType {
         id
+        indexNum
+        onOff
         type
+        category
       }
-      error
-      message
-      ok
     }
   }
 `
@@ -70,7 +74,15 @@ type FormValues = {
 
 export default function Form() {
   const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
-  const { loading, error, data: adciveData } = useQuery(SEE_ADVICE_TYPE_QUERY)
+  const {
+    loading,
+    error,
+    data: adciveData,
+  } = useQuery(SEE_ADVICE_TYPE_QUERY, {
+    variables: {
+      category: '상담분야',
+    },
+  })
   const adviceList = adciveData?.seeAdviceType.adviceType || []
   const [groupSelected, setGroupSelected] = useRecoilState(
     formGroupSelectedState,
@@ -91,6 +103,7 @@ export default function Form() {
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
+    console.log(data)
     setButtonClickable(false)
     try {
       if (regExp.test(data.contents)) {

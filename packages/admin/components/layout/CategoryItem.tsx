@@ -171,7 +171,7 @@ export default function CategoryItem<CategoryItemProps>({
         setNewAccounting(true)
       }
     }
-  }, [])
+  }, [consultTotal, studenTotal, accounTingTotal])
 
   useEffect(() => {
     if (arrowRef.current) {

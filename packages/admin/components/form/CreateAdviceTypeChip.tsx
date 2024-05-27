@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useMutation } from '@apollo/client'
-import { DELETE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
+import { EDIT_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { styled } from 'styled-components'
 
@@ -14,20 +14,21 @@ export default function CreateAdviceTypeChip({
   category,
 }) {
   const { userLogs } = useUserLogsMutation()
-  const [deleteAdvice] = useMutation(DELETE_ADVICE_TYPE_MUTATION)
+  const [editAdvice] = useMutation(EDIT_ADVICE_TYPE_MUTATION)
 
   const deleteType = async item => {
     const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
     if (!isDelete) return
 
     try {
-      const result = await deleteAdvice({
+      const result = await editAdvice({
         variables: {
-          deleteAdviceTypeId: item.id,
+          editAdviceTypeId: item.id,
         },
       })
+      console.log(result)
 
-      if (!result.data.deleteAdviceType.ok) {
+      if (!result.data.editAdviceType.ok) {
         throw new Error(`${category} 삭제 실패`)
       }
       refetch({
