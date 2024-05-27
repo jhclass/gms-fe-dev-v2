@@ -3,7 +3,13 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
+import {
+  categoryMenuState,
+  navOpenState,
+  newAccountingTotalState,
+  newConsultTotalState,
+  newStudentTotalState,
+} from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { useMutation } from '@apollo/client'
 import { Tooltip } from '@nextui-org/react'
@@ -135,75 +141,36 @@ export default function CategoryItem<CategoryItemProps>({
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
-  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
-  const [searchStudentFilterMutation] = useMutation(
-    SEARCH_STUDENT_FILTER_MUTATION,
-  )
-  const [searchPaymentFilterMutation] = useMutation(
-    SEARCH_PAYMENT_FILTER_MUTATION,
-  )
+
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const [consultTotal, setNewConsultTotal] =
+    useRecoilState(newConsultTotalState)
+  const [studenTotal, setNewStudentTotal] = useRecoilState(newStudentTotalState)
+  const [accounTingTotal, setNewAccountingTotal] = useRecoilState(
+    newAccountingTotalState,
+  )
   const [newConsult, setNewConsult] = useState(false)
   const [newStudent, setNewStudent] = useState(false)
   const [newAccounting, setNewAccounting] = useState(false)
   const arrowRef = useRef(null)
-  const nowDate = new Date()
-  const startOfDay = new Date(
-    nowDate.getFullYear(),
-    nowDate.getMonth(),
-    nowDate.getDate(),
-    0,
-    0,
-    0,
-  )
 
   useEffect(() => {
     if (name === '상담관리') {
-      searchStudentStateMutation({
-        variables: {
-          createdAt: [startOfDay, nowDate],
-        },
-        onCompleted: resData => {
-          if (resData.searchStudentState.ok) {
-            const { totalCount } = resData.searchStudentState || {}
-            if (totalCount > 0) {
-              setNewConsult(true)
-            }
-          }
-        },
-      })
+      if (consultTotal > 0) {
+        setNewConsult(true)
+      }
     }
     if (name === '수강생관리') {
-      searchStudentFilterMutation({
-        variables: {
-          createdAt: [startOfDay, nowDate],
-        },
-        onCompleted: resData => {
-          if (resData.searchStudent.ok) {
-            const { totalCount } = resData.searchStudent || {}
-            if (totalCount > 0) {
-              setNewStudent(true)
-            }
-          }
-        },
-      })
+      if (studenTotal > 0) {
+        setNewStudent(true)
+      }
     }
-    // if (name === '회계관리') {
-    //   searchPaymentFilterMutation({
-    //     variables: {
-    //       createdAt: [startOfDay, nowDate],
-    //     },
-    //     onCompleted: resData => {
-    //       if (resData.searchStudentPayment.ok) {
-    //         const { totalCount } = resData.searchStudentPayment || {}
-    //         if (totalCount > 0) {
-    //           setNewAccounting(true)
-    //         }
-    //       }
-    //     },
-    //   })
-    // }
+    if (name === '회계관리') {
+      if (accounTingTotal > 0) {
+        setNewAccounting(true)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -229,12 +196,12 @@ export default function CategoryItem<CategoryItemProps>({
     e.preventDefault()
     if (grade) {
       if (mGrade <= 1 || mPart.includes(grade)) {
-        router.push(link, undefined, { shallow: true })
+        router.push(link, undefined, { shallow: true, scroll: false })
       } else {
         alert('🚧 접근 권한이 없습니다. 🚧')
       }
     } else {
-      router.push(link, undefined, { shallow: true })
+      router.push(link, undefined, { shallow: true, scroll: false })
     }
   }
 

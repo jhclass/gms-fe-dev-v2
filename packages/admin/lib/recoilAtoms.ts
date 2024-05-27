@@ -9,7 +9,22 @@ export const isScreenState = atom<boolean>({
 // GNB
 export const navOpenState = atom<boolean>({
   key: 'navOpenState',
-  default: true,
+  default: false,
+})
+
+export const newConsultTotalState = atom<number>({
+  key: 'newConsultTotal',
+  default: 0,
+})
+
+export const newStudentTotalState = atom<number>({
+  key: 'newStudentTotal',
+  default: 0,
+})
+
+export const newAccountingTotalState = atom<number>({
+  key: 'newAccountingTotal',
+  default: 0,
 })
 
 export const categoryMenuState = atom<{}>({

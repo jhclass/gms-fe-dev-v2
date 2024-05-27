@@ -6,6 +6,19 @@ import ConsultNum from '@/components/dashboard/ConsultNum'
 import AdviceType from '@/components/dashboard/AdviceType'
 import ReceiptDiv from '@/components/dashboard/ReceiptDiv'
 import { useAuthRedirect } from '@/utils/useAuthRedirect'
+import { useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import {
+  SEARCH_PAYMENT_FILTER_MUTATION,
+  SEARCH_STUDENTSTATE_MUTATION,
+  SEARCH_STUDENT_FILTER_MUTATION,
+} from '@/graphql/mutations'
+import { useRecoilState } from 'recoil'
+import {
+  newAccountingTotalState,
+  newConsultTotalState,
+  newStudentTotalState,
+} from '@/lib/recoilAtoms'
 
 const HomeArea = styled.div`
   max-width: 1400px;
@@ -35,7 +48,71 @@ const HomeArea = styled.div`
 `
 
 export default function Home() {
+  const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
+  const [searchStudentFilterMutation] = useMutation(
+    SEARCH_STUDENT_FILTER_MUTATION,
+  )
+  const [searchPaymentFilterMutation] = useMutation(
+    SEARCH_PAYMENT_FILTER_MUTATION,
+  )
+  const [newConsult, setNewConsult] = useRecoilState(newConsultTotalState)
+  const [newStudent, setNewStudent] = useRecoilState(newStudentTotalState)
+  const [newAccounting, setNewAccounting] = useRecoilState(
+    newAccountingTotalState,
+  )
   const isCheckingLogin = useAuthRedirect()
+  const nowDate = new Date()
+  const startOfDay = new Date(
+    nowDate.getFullYear(),
+    nowDate.getMonth(),
+    nowDate.getDate(),
+    0,
+    0,
+    0,
+  )
+
+  useEffect(() => {
+    searchStudentStateMutation({
+      variables: {
+        createdAt: [startOfDay, nowDate],
+      },
+      onCompleted: resData => {
+        if (resData.searchStudentState.ok) {
+          const { totalCount } = resData.searchStudentState || {}
+          if (totalCount > 0) {
+            setNewConsult(totalCount)
+          }
+        }
+      },
+    })
+    searchStudentFilterMutation({
+      variables: {
+        createdAt: [startOfDay, nowDate],
+      },
+      onCompleted: resData => {
+        if (resData.searchStudent.ok) {
+          const { totalCount } = resData.searchStudent || {}
+          if (totalCount > 0) {
+            setNewStudent(totalCount)
+          }
+        }
+      },
+    })
+    searchPaymentFilterMutation({
+      variables: {
+        createdPeriod: [startOfDay, nowDate],
+      },
+      onCompleted: resData => {
+        if (resData.searchStudentPayment.ok) {
+          const { totalCount } = resData.searchStudentPayment || {}
+          if (totalCount > 0) {
+            setNewAccounting(totalCount)
+          }
+        }
+      },
+    })
+  }, [])
+
   if (isCheckingLogin) {
     return null
   }

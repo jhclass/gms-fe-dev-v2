@@ -1115,12 +1115,14 @@ export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
     $limit: Int
     $studentName: String
     $period: [String]
+    $createdPeriod: [String]
   ) {
     searchStudentPayment(
       page: $page
       limit: $limit
       studentName: $studentName
       period: $period
+      createdPeriod: $createdPeriod
     ) {
       data {
         actualAmount

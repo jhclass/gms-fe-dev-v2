@@ -204,7 +204,6 @@ export default function CreateAdviceType({ isActive }) {
   }
 
   const onSubmit = async data => {
-    console.log(data)
     if (!isDirty) return
 
     try {
@@ -215,7 +214,6 @@ export default function CreateAdviceType({ isActive }) {
           category: '강의분야',
         },
       })
-      console.log(result)
       if (!result.data.createAdviceType.ok) {
         throw new Error('강의 분야 등록 실패')
       }
@@ -303,6 +301,7 @@ export default function CreateAdviceType({ isActive }) {
             <CreateAdviceTypeChip
               adviceList={adviceList}
               refetch={seeRefetch}
+              category={'강의분야'}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (

@@ -301,6 +301,7 @@ export default function CreateAdviceType({ isActive }) {
             <CreateAdviceTypeChip
               adviceList={adviceList}
               refetch={seeRefetch}
+              category={'상담분야'}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (
