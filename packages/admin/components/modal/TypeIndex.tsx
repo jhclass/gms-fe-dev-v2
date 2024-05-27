@@ -31,7 +31,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 const Container = styled.div`
   width: 100%;
-  height: 10vh;
+  height: 40vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
