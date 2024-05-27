@@ -78,7 +78,7 @@ export default function TypeIndex({
   const [bottomReached, setBottomReached] = useState(false)
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
       if (orderPage < Math.ceil(totalCount / 3)) {
         setOrderPage(prev => prev + 1)
         setBottomReached(true)
@@ -96,6 +96,14 @@ export default function TypeIndex({
       seeAdviceQuery({
         variables: {
           page: orderPage,
+          category: category,
+          limit: 3,
+        },
+      })
+    } else {
+      seeAdviceQuery({
+        variables: {
+          page: 1,
           category: category,
           limit: 3,
         },
@@ -153,8 +161,6 @@ export default function TypeIndex({
   const closeBtn = () => {
     onClose()
     setOrderPage(1)
-    setItems([])
-    setBottomReached(false)
   }
 
   // console.log(orderPage, orderAdviceList)

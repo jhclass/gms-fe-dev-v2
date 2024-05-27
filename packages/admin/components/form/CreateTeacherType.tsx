@@ -321,17 +321,19 @@ export default function CreateAdviceType({ isActive }) {
           )}
         </BoxArea>
       </FilterBox>
-      <TypeIndex
-        isOpen={typeIsOpne}
-        onClose={typeOnClose}
-        refetch={seeRefetch}
-        orderAdviceList={orderAdviceList}
-        orderPage={orderPage}
-        setOrderPage={setOrderPage}
-        seeAdviceQuery={seeAdviceQuery}
-        totalCount={totalCount}
-        category={'강의분야'}
-      />
+      {typeIsOpne && (
+        <TypeIndex
+          isOpen={typeIsOpne}
+          onClose={typeOnClose}
+          refetch={seeRefetch}
+          orderAdviceList={orderAdviceList}
+          orderPage={orderPage}
+          setOrderPage={setOrderPage}
+          seeAdviceQuery={seeAdviceQuery}
+          totalCount={totalCount}
+          category={'강의분야'}
+        />
+      )}
     </>
   )
 }
