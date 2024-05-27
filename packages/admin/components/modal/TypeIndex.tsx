@@ -97,7 +97,7 @@ export default function TypeIndex({
         variables: {
           page: orderPage,
           category: category,
-          limit: 3,
+          limit: 30,
         },
       })
     } else {
@@ -105,7 +105,7 @@ export default function TypeIndex({
         variables: {
           page: 1,
           category: category,
-          limit: 3,
+          limit: 30,
         },
       })
     }

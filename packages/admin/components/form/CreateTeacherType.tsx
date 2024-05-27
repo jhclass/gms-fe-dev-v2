@@ -197,7 +197,7 @@ export default function CreateAdviceType({ isActive }) {
       variables: {
         page: 1,
         category: '강의분야',
-        limit: 3,
+        limit: 30,
       },
     })
     typeOnOPen()
