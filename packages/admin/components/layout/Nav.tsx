@@ -148,8 +148,9 @@ export default function Header() {
           ref={navRef}
           onScroll={handleScroll}
           style={{ height: '100%', overflowY: 'auto' }}
+          className="scrollbar_g"
         >
-          <ScrollShadow className="w-full scrollbar_g">
+          <ScrollShadow className="w-full">
             <NavWrap $navOpen={navOpen}>
               <Logo $navOpen={navOpen}>
                 <Link href={'/'}>
