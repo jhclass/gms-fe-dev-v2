@@ -12,26 +12,42 @@ const Wrap = styled.div`
 `
 
 const Content3 = styled.div`
-  margin: 0 auto;
+  margin-top: -9rem;
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `
 
 const ConBtn = styled.div`
-  margin: 0 auto;
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 1rem;
 
+  img {
+    width: 19.7222vw;
+  }
+
   @media (max-width: 768px) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0;
+    padding: 0 4rem;
     p {
       width: 50%;
     }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &.left {
+    padding-left: 6rem;
+  }
+  &.right {
+    padding-right: 7rem;
   }
 `
 
@@ -50,18 +66,14 @@ export default function academyFeatures() {
               alt="교육은 듣는사람이 재미있어야합니다. 가르치는 사람의 열정이 있어야합니다. 그리고 무엇보다, 기억에 남아야합니다."
             />
             <Wrap>
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_02.webp"
-                alt="attention 올바르지 않은 실무 교육의 판단은 이제 개선 되어야 합니다. 한번쯤 이런 고민을 해보셨다면 주목해보세요. 전공자, 비전공자의 고민을 공감하고 목표달성을 함께하겠습니다."
-              />
               <div className="relative">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_02.webp"
+                  alt="attention 올바르지 않은 실무 교육의 판단은 이제 개선 되어야 합니다. 한번쯤 이런 고민을 해보셨다면 주목해보세요. 전공자, 비전공자의 고민을 공감하고 목표달성을 함께하겠습니다."
+                />
                 <Content3>
-                  <ConBtn>
-                    <img
-                      src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_01.webp"
-                      alt=" Q. 에이치아카데미의 교육은 무엇이 다른가요? 만족도가 다릅니다.그리고 수강생의 결과가 다릅니다. 비전공자라도 취업이 가능하도록 만드는 아카데미.본원에 방문하시면 그 결과를 보여드립니다."
-                    />
-                    <p className="pl-[3rem]">
+                  <ConBtn className="left">
+                    <p>
                       <Link href="/support/system">
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn01.webp"
@@ -69,7 +81,7 @@ export default function academyFeatures() {
                         />
                       </Link>
                     </p>
-                    <p className="pl-[3rem]">
+                    <p>
                       <Link href="/cs/curriculum">
                         <img
                           src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_btn03.webp"
@@ -78,16 +90,7 @@ export default function academyFeatures() {
                       </Link>
                     </p>
                   </ConBtn>
-
-                  <img
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_02.webp"
-                    alt=""
-                  />
-                  <ConBtn>
-                    <img
-                      src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/academy_features_03_03.webp"
-                      alt=" Q. 배우면 뭐해?... 실무에서 아쓰는데?.. 현업에서 활동중인 디자이너가 직접 강의를 진행합니다. 배웠지만 사용할 수 없는 촌스러운 강의는 하지 않습니다. 수업에 참여만해도, 실력이 업그레이드 됩니다. 에이치아카데미 강의는 특별합니다."
-                    />
+                  <ConBtn className="right">
                     <p className="pl-[3rem]">
                       <Link href="/support">
                         <img

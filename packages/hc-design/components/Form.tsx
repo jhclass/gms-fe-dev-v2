@@ -20,11 +20,11 @@ const STUDENT_STATE_MUTATION = gql`
     $subject: [String]!
     $agreement: String!
     $progress: Int!
-    $adviceTypes: [String]!
+    $adviceTypes: [Int]!
     $classMethod: [String]
-    $receiptDiv: String
     $campus: String
     $detail: String
+    $receiptDiv: String
   ) {
     createStudentState(
       stName: $stName
@@ -34,27 +34,31 @@ const STUDENT_STATE_MUTATION = gql`
       progress: $progress
       adviceTypes: $adviceTypes
       classMethod: $classMethod
-      receiptDiv: $receiptDiv
       campus: $campus
       detail: $detail
+      receiptDiv: $receiptDiv
     ) {
-      error
-      message
       ok
+      message
+      error
     }
   }
 `
 
 export const SEE_ADVICE_TYPE_QUERY = gql`
-  query Query {
-    seeAdviceType {
+  query Query($category: String!) {
+    seeAdviceType(category: $category) {
+      totalCount
+      ok
+      message
+      error
       adviceType {
         id
+        indexNum
+        onOff
         type
+        category
       }
-      error
-      message
-      ok
     }
   }
 `
@@ -70,11 +74,18 @@ type FormValues = {
 
 export default function Form() {
   const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
-  const { loading, error, data: adciveData } = useQuery(SEE_ADVICE_TYPE_QUERY)
+  const {
+    loading,
+    error,
+    data: adciveData,
+  } = useQuery(SEE_ADVICE_TYPE_QUERY, {
+    variables: {
+      category: '상담분야',
+    },
+  })
   const adviceList = adciveData?.seeAdviceType.adviceType || []
-  const [groupSelected, setGroupSelected] = useRecoilState(
-    formGroupSelectedState,
-  )
+  const [groupSelected, setGroupSelected] = useState([])
+  const [groupSelectedName, setGroupSelectedName] = useState([])
   const [methodSelect, setMethodSelect] = useState([])
   const regExp = new RegExp(badwords.join('|'), 'i')
   const [checkPrivacy, setCheckPrivacy] = useState(false)
@@ -137,12 +148,19 @@ export default function Form() {
   useEffect(() => {
     if (groupSelected.length !== 0) {
       clearErrors('groupSelected')
+      const typesArray = groupSelected
+        .map(id => {
+          const foundObject = adviceList.find(obj => obj.id === id)
+          return foundObject ? foundObject.type : null
+        })
+        .filter(type => type !== null)
+      setGroupSelectedName(typesArray)
     }
   }, [groupSelected])
 
   useEffect(() => {}, [isButtonClickable])
 
-  const handleCheckboxChange = (value: string[]) => {
+  const handleCheckboxChange = value => {
     setValue('groupSelected', value)
     setGroupSelected(value)
   }
@@ -197,7 +215,7 @@ export default function Form() {
                       adviceList.map((item, index) => (
                         <Checkbox
                           key={index}
-                          value={item.type}
+                          value={item.id}
                           radius={'full'}
                           classNames={{
                             wrapper: 'before:border-[#100061]',
@@ -263,7 +281,7 @@ export default function Form() {
               <p className="absolute top-[1rem] wmd:top-[50%] wmd:left-[2rem] wmd:-translate-y-[50%] bg-[#100061] px-5 py-2 text-center font-bold text-white rounded-full">
                 선택 분야
               </p>
-              {groupSelected.map((item, index) => (
+              {groupSelectedName.map((item, index) => (
                 <div
                   key={index}
                   className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"
