@@ -45,7 +45,6 @@ export default function TestDND() {
   const [items, setItems] = useState(initialItems)
 
   const handleOnDragEnd = result => {
-    console.log(result)
     if (!result.destination) return
 
     const newItems = Array.from(items)

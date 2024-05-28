@@ -187,7 +187,6 @@ export default function StudentsWrite() {
   }, [password, confirmPassword, setError, clearErrors])
 
   const onSubmit = data => {
-    console.log(typeof data.mPart)
     checkPassword(data.mPassword, data.mPassword1)
     if (data.mPart !== undefined) {
       const parts = String(data.mPart)

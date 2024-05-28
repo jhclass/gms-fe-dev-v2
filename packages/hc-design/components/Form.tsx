@@ -20,7 +20,7 @@ const STUDENT_STATE_MUTATION = gql`
     $subject: [String]!
     $agreement: String!
     $progress: Int!
-    $adviceTypes: [String]!
+    $adviceTypes: [Int]!
     $classMethod: [String]
     $campus: String
     $detail: String
@@ -84,9 +84,8 @@ export default function Form() {
     },
   })
   const adviceList = adciveData?.seeAdviceType.adviceType || []
-  const [groupSelected, setGroupSelected] = useRecoilState(
-    formGroupSelectedState,
-  )
+  const [groupSelected, setGroupSelected] = useState([])
+  const [groupSelectedName, setGroupSelectedName] = useState([])
   const [methodSelect, setMethodSelect] = useState([])
   const regExp = new RegExp(badwords.join('|'), 'i')
   const [checkPrivacy, setCheckPrivacy] = useState(false)
@@ -103,7 +102,6 @@ export default function Form() {
   } = useForm()
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data)
     setButtonClickable(false)
     try {
       if (regExp.test(data.contents)) {
@@ -150,12 +148,19 @@ export default function Form() {
   useEffect(() => {
     if (groupSelected.length !== 0) {
       clearErrors('groupSelected')
+      const typesArray = groupSelected
+        .map(id => {
+          const foundObject = adviceList.find(obj => obj.id === id)
+          return foundObject ? foundObject.type : null
+        })
+        .filter(type => type !== null)
+      setGroupSelectedName(typesArray)
     }
   }, [groupSelected])
 
   useEffect(() => {}, [isButtonClickable])
 
-  const handleCheckboxChange = (value: string[]) => {
+  const handleCheckboxChange = value => {
     setValue('groupSelected', value)
     setGroupSelected(value)
   }
@@ -210,7 +215,7 @@ export default function Form() {
                       adviceList.map((item, index) => (
                         <Checkbox
                           key={index}
-                          value={item.type}
+                          value={item.id}
                           radius={'full'}
                           classNames={{
                             wrapper: 'before:border-[#100061]',
@@ -276,7 +281,7 @@ export default function Form() {
               <p className="absolute top-[1rem] wmd:top-[50%] wmd:left-[2rem] wmd:-translate-y-[50%] bg-[#100061] px-5 py-2 text-center font-bold text-white rounded-full">
                 선택 분야
               </p>
-              {groupSelected.map((item, index) => (
+              {groupSelectedName.map((item, index) => (
                 <div
                   key={index}
                   className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"

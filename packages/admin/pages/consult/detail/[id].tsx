@@ -209,6 +209,7 @@ export default function ConsultDetail() {
   } = useDisclosure()
   const [subjectSelected, setSubjectSelected] = useState([])
   const [adviceTypeSelected, setAdviceTypeSelected] = useState([])
+  const [adviceTypeSelectedName, setAdviceTypeSelectedName] = useState([])
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
   const [receipt, setReceipt] = useState('없음')
@@ -341,8 +342,11 @@ export default function ConsultDetail() {
       const date = parseInt(studentState?.expEnrollDate)
       setExpEnrollDate(date)
     }
-    if (studentAdvice.length > 0) {
-      setAdviceTypeSelected(studentAdvice)
+    if (studentState?.adviceTypes) {
+      const name = studentState?.adviceTypes.map(item => item.type)
+      const id = studentState?.adviceTypes.map(item => item.id)
+      setAdviceTypeSelected(id)
+      setAdviceTypeSelectedName(name)
     }
   }, [studentState])
 
@@ -646,7 +650,7 @@ export default function ConsultDetail() {
                       <>
                         <Textarea
                           readOnly
-                          value={field.value || ''}
+                          value={String(adviceTypeSelectedName)}
                           label={
                             <FilterLabel>
                               상담 분야<span>*</span>
@@ -659,14 +663,24 @@ export default function ConsultDetail() {
                           onClick={onOpen}
                           {...register('adviceTypes')}
                         />
-                        <AdviceTypeModal
-                          adviceTypeSelected={adviceTypeSelected}
-                          setAdviceTypeSelected={setAdviceTypeSelected}
-                          field={field}
-                          isOpen={isOpen}
-                          onClose={onClose}
-                          setValue={setValue}
-                        />
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
+                        >
+                          <AdviceTypeModal
+                            adviceTypeSelected={adviceTypeSelected}
+                            setAdviceTypeSelected={setAdviceTypeSelected}
+                            setAdviceTypeSelectedName={
+                              setAdviceTypeSelectedName
+                            }
+                            isOpen={isOpen}
+                            onClose={onClose}
+                            setValue={setValue}
+                          />
+                        </Suspense>
                       </>
                     )}
                   />

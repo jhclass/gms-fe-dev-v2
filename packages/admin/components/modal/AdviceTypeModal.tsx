@@ -10,7 +10,10 @@ import {
   ScrollShadow,
 } from '@nextui-org/react'
 import AdviceTypeModalChip from './AdviceTypeModalChip'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import { ResultAdviceType } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -24,20 +27,44 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
+}
 export default function AdviceTypeModal({
   isOpen,
   onClose,
   setValue,
-  field,
   adviceTypeSelected,
   setAdviceTypeSelected,
+  setAdviceTypeSelectedName,
 }) {
+  const { error, data } = useSuspenseQuery<seeAdviceTypeQuery>(
+    SEE_ADVICE_TYPE_QUERY,
+    {
+      variables: {
+        page: 1,
+        category: '상담분야',
+        limit: 100,
+      },
+    },
+  )
+  const adviceList = data?.seeAdviceType.adviceType
+
+  if (error) {
+    console.log(error)
+  }
   const handleAdviceChange = values => {
     setAdviceTypeSelected(values)
   }
   const clickAdviceSubmit = () => {
-    setValue('adviceTypes', adviceTypeSelected)
+    setValue('adviceTypes', adviceTypeSelected, { shouldDirty: true })
+    const typesArray = adviceTypeSelected
+      .map(id => {
+        const foundObject = adviceList.find(obj => obj.id === id)
+        return foundObject ? foundObject.type : null
+      })
+      .filter(type => type !== null)
+    setAdviceTypeSelectedName(typesArray)
     onClose()
   }
 
@@ -57,17 +84,9 @@ export default function AdviceTypeModal({
                     className="gap-1 radioBox"
                     color="secondary"
                     value={adviceTypeSelected}
-                    onValueChange={handleAdviceChange}
+                    onChange={handleAdviceChange}
                   >
-                    <Suspense
-                      fallback={
-                        <LodingDiv>
-                          <i className="xi-spinner-2" />
-                        </LodingDiv>
-                      }
-                    >
-                      <AdviceTypeModalChip />
-                    </Suspense>
+                    <AdviceTypeModalChip adviceList={adviceList} />
                   </CheckboxGroup>
                 </ScrollShadow>
               </ModalBody>
@@ -85,7 +104,6 @@ export default function AdviceTypeModal({
                   color="primary"
                   onPress={() => {
                     clickAdviceSubmit()
-                    field.onChange(adviceTypeSelected)
                   }}
                 >
                   선택

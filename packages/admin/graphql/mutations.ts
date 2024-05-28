@@ -217,7 +217,7 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
     $subject: [String]!
     $agreement: String!
     $progress: Int!
-    $adviceTypes: [String]!
+    $adviceTypes: [Int]!
     $campus: String
     $detail: String
     $category: String
@@ -363,7 +363,7 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
     $birthday: String
     $pic: String
     $receiptDiv: String
-    $adviceTypes: [String]
+    $adviceTypes: [Int]
   ) {
     updateStudentState(
       id: $updateStudentStateId
@@ -1616,6 +1616,15 @@ export const GET_HOURLY_SALES_MUTATION = gql`
     }
   }
 `
+export const CHANGE_ORDER_AT_MUTATION = gql`
+  mutation Mutation($ids: [Int], $indexNums: [Int!]) {
+    changeOrderAT(ids: $ids, indexNums: $indexNums) {
+      error
+      message
+      ok
+    }
+  }
+`
 
 export const CREATE_LECTURES_MUTATION = gql`
   mutation CreateLectures(
@@ -1658,13 +1667,38 @@ export const CREATE_LECTURES_MUTATION = gql`
     }
   }
 `
-
-export const CHANGE_ORDER_AT_MUTATION = gql`
-  mutation Mutation($ids: [Int], $indexNums: [Int!]) {
-    changeOrderAT(ids: $ids, indexNums: $indexNums) {
-      error
-      message
+export const SEARCH_LECTURES_MUTATION = gql`
+  mutation Mutation($searchLecturesId: Int) {
+    searchLectures(id: $searchLecturesId) {
+      totalCount
       ok
+      message
+      error
+      data {
+        updatedAt
+        timetableAttached
+        temporaryName
+        subjectId
+        subject {
+          subDiv
+          round
+          id
+          subjectName
+          subjectCode
+          totalTime
+        }
+        subDiv
+        sessionNum
+        roomNum
+        lectureTime
+        lectureDetails
+        id
+        eduStatusReport
+        createdAt
+        confirmedNum
+        campus
+        ApprovedNum
+      }
     }
   }
 `
