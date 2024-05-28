@@ -415,11 +415,11 @@ export const CREATE_ADVICE_TYPE_MUTATION = gql`
 `
 
 export const EDIT_ADVICE_TYPE_MUTATION = gql`
-  mutation Mutation($editAdviceTypeId: Int!) {
-    editAdviceType(id: $editAdviceTypeId) {
-      error
+  mutation EditAdviceType($editAdviceTypeId: Int!, $onOff: String) {
+    editAdviceType(id: $editAdviceTypeId, onOff: $onOff) {
       message
       ok
+      error
     }
   }
 `

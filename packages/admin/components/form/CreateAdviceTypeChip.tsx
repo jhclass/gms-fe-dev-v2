@@ -24,9 +24,9 @@ export default function CreateAdviceTypeChip({
       const result = await editAdvice({
         variables: {
           editAdviceTypeId: item.id,
+          onOff: 'N',
         },
       })
-      console.log(result)
 
       if (!result.data.editAdviceType.ok) {
         throw new Error(`${category} 삭제 실패`)
