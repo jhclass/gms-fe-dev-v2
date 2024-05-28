@@ -8,10 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
-import {
-  CREATE_ADVICE_TYPE_MUTATION,
-  DELETE_ADVICE_TYPE_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import CreateAdviceTypeChip from './CreateAdviceTypeChip'
