@@ -55,6 +55,14 @@ export type AuthEmailResult = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type Branch = {
+  __typename?: 'Branch';
+  branchName?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
 export type CheckAccountResult = {
   __typename?: 'CheckAccountResult';
   message?: Maybe<Scalars['String']['output']>;
@@ -335,6 +343,7 @@ export type Mutation = {
   createAccount?: Maybe<CreateAccountResult>;
   createAdviceType?: Maybe<CommonResponse>;
   createAttendance?: Maybe<CommonResponse>;
+  createBranch?: Maybe<CommonResponse>;
   createComment: MutationResponse;
   createConsultationMemo?: Maybe<CreateConsultationMemoResult>;
   createLectures?: Maybe<CommonResponse>;
@@ -381,6 +390,21 @@ export type Mutation = {
   followUser?: Maybe<FollowUserResult>;
   getHourlySalesData?: Maybe<HourlySalesData>;
   getSalesData?: Maybe<Array<SalesData>>;
+  insertBranchToAdviceType?: Maybe<CommonResponse>;
+  insertBranchToAttendance?: Maybe<CommonResponse>;
+  insertBranchToConsultationMemo?: Maybe<CommonResponse>;
+  insertBranchToLectures?: Maybe<CommonResponse>;
+  insertBranchToManageUser?: Maybe<CommonResponse>;
+  insertBranchToPaymentDetail?: Maybe<CommonResponse>;
+  insertBranchToStamp?: Maybe<CommonResponse>;
+  insertBranchToStudent?: Maybe<CommonResponse>;
+  insertBranchToStudentMemo?: Maybe<CommonResponse>;
+  insertBranchToStudentPayment?: Maybe<CommonResponse>;
+  insertBranchToStudentState?: Maybe<CommonResponse>;
+  insertBranchToSubject?: Maybe<CommonResponse>;
+  insertBranchToUserActivityLogs?: Maybe<CommonResponse>;
+  insertBranchToWorkLogs?: Maybe<CommonResponse>;
+  insertBranchToWorkRequest?: Maybe<CommonResponse>;
   login?: Maybe<LoginResult>;
   mLogin?: Maybe<MLoginResult>;
   readMessage: MutationResponse;
@@ -454,6 +478,11 @@ export type MutationCreateAttendanceArgs = {
   lecturesId: Scalars['Int']['input'];
   studentId: Scalars['Int']['input'];
   studentPaymentId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateBranchArgs = {
+  branchName?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -571,7 +600,7 @@ export type MutationCreateStudentPaymentArgs = {
 
 
 export type MutationCreateStudentStateArgs = {
-  adviceTypes: Array<InputMaybe<Scalars['String']['input']>>;
+  adviceTypes: Array<InputMaybe<Scalars['Int']['input']>>;
   agreement: Scalars['String']['input'];
   birthday?: InputMaybe<Scalars['String']['input']>;
   campus?: InputMaybe<Scalars['String']['input']>;
@@ -728,7 +757,9 @@ export type MutationDuplicateCheckArgs = {
 
 
 export type MutationEditAdviceTypeArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
+  onOff?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -909,6 +940,81 @@ export type MutationGetSalesDataArgs = {
 };
 
 
+export type MutationInsertBranchToAdviceTypeArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToAttendanceArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToConsultationMemoArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToLecturesArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToManageUserArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToPaymentDetailArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToStampArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToStudentArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToStudentMemoArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToStudentPaymentArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToStudentStateArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToSubjectArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToUserActivityLogsArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToWorkLogsArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationInsertBranchToWorkRequestArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type MutationLoginArgs = {
   password: Scalars['String']['input'];
   username: Scalars['String']['input'];
@@ -960,6 +1066,7 @@ export type MutationSearchLecturesArgs = {
   periodEnd?: InputMaybe<Scalars['String']['input']>;
   periodStart?: InputMaybe<Scalars['String']['input']>;
   subjectId?: InputMaybe<Scalars['Int']['input']>;
+  teacherId?: InputMaybe<Scalars['Int']['input']>;
   temporaryName?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -993,6 +1100,7 @@ export type MutationSearchStudentArgs = {
 
 
 export type MutationSearchStudentPaymentArgs = {
+  createdPeriod?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -1057,7 +1165,7 @@ export type MutationUpdateFavoriteArgs = {
 
 
 export type MutationUpdateStudentStateArgs = {
-  adviceTypes?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  adviceTypes?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   birthday?: InputMaybe<Scalars['String']['input']>;
   campus?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;

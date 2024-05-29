@@ -15,6 +15,7 @@ export default function CreateAdviceTypeChip({
   adviceList,
   refetch,
   category,
+  orderRefetch,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [editAdvice] = useMutation(EDIT_ADVICE_TYPE_MUTATION)
@@ -54,7 +55,11 @@ export default function CreateAdviceTypeChip({
         category: category,
         limit: 50,
       })
-
+      orderRefetch({
+        page: 1,
+        category: category,
+        limit: 30,
+      })
       alert(`${category}가 삭제되었습니다.`)
       userLogs(`${item.type} ${category} 삭제`)
     } catch (error) {
