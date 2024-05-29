@@ -222,6 +222,11 @@ export default function CreateAdviceType({ isActive }) {
         category: '강의분야',
         limit: 50,
       })
+      orderRefetch({
+        page: 1,
+        category: '강의분야',
+        limit: 30,
+      })
       alert('강의 분야가 등록되었습니다.')
       userLogs(`${data.type} 강의분야 등록`)
       reset()
@@ -302,6 +307,7 @@ export default function CreateAdviceType({ isActive }) {
               adviceList={adviceList}
               refetch={seeRefetch}
               category={'강의분야'}
+              orderRefetch={orderRefetch}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (
