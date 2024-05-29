@@ -80,7 +80,7 @@ export default function TypeIndex({
   const [bottomReached, setBottomReached] = useState(false)
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
-    if (scrollTop + clientHeight >= scrollHeight - 10) {
+    if (scrollTop + clientHeight >= scrollHeight - 50) {
       if (orderPage < Math.ceil(totalCount / 3)) {
         setOrderPage(prev => prev + 1)
         setBottomReached(true)
