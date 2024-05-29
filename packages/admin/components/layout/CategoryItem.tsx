@@ -196,14 +196,14 @@ export default function CategoryItem<CategoryItemProps>({
     e.preventDefault()
     if (grade) {
       if (mGrade <= 1 || mPart.includes(grade)) {
-        // router.push(link, undefined, { shallow: true, scroll: false })
-        window.location.href = link
+        router.push(link)
+        // window.location.href = link
       } else {
         alert('🚧 접근 권한이 없습니다. 🚧')
       }
     } else {
-      // router.push(link, undefined, { shallow: true, scroll: false })
-      window.location.href = link
+      router.push(link)
+      // window.location.href = link
     }
   }
 
