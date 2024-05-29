@@ -302,7 +302,6 @@ export default function CreateAdviceType({ isActive }) {
               adviceList={adviceList}
               refetch={seeRefetch}
               category={'상담분야'}
-              totalCount={totalCount}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (
