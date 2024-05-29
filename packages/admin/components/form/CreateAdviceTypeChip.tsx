@@ -15,7 +15,6 @@ export default function CreateAdviceTypeChip({
   adviceList,
   refetch,
   category,
-  totalCount,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [editAdvice] = useMutation(EDIT_ADVICE_TYPE_MUTATION)
