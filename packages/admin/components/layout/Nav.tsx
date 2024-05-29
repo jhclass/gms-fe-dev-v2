@@ -147,7 +147,7 @@ export default function Header() {
         <div
           ref={navRef}
           onScroll={handleScroll}
-          style={{ height: '100%', overflowY: 'auto' }}
+          style={{ height: '100%', overflowY: 'auto', width: '100%' }}
           className="scrollbar_g"
         >
           <ScrollShadow className="w-full">

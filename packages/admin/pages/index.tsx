@@ -13,12 +13,6 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import { useRecoilState } from 'recoil'
-import {
-  newAccountingTotalState,
-  newConsultTotalState,
-  newStudentTotalState,
-} from '@/lib/recoilAtoms'
 
 const HomeArea = styled.div`
   max-width: 1400px;
@@ -55,11 +49,6 @@ export default function Home() {
   const [searchPaymentFilterMutation] = useMutation(
     SEARCH_PAYMENT_FILTER_MUTATION,
   )
-  const [newConsult, setNewConsult] = useRecoilState(newConsultTotalState)
-  const [newStudent, setNewStudent] = useRecoilState(newStudentTotalState)
-  const [newAccounting, setNewAccounting] = useRecoilState(
-    newAccountingTotalState,
-  )
   const isCheckingLogin = useAuthRedirect()
   const nowDate = new Date()
   const startOfDay = new Date(
@@ -80,7 +69,7 @@ export default function Home() {
         if (resData.searchStudentState.ok) {
           const { totalCount } = resData.searchStudentState || {}
           if (totalCount > 0) {
-            setNewConsult(totalCount)
+            sessionStorage.setItem('newConsult', totalCount)
           }
         }
       },
@@ -93,7 +82,7 @@ export default function Home() {
         if (resData.searchStudent.ok) {
           const { totalCount } = resData.searchStudent || {}
           if (totalCount > 0) {
-            setNewStudent(totalCount)
+            sessionStorage.setItem('newStudent', totalCount)
           }
         }
       },
@@ -106,7 +95,7 @@ export default function Home() {
         if (resData.searchStudentPayment.ok) {
           const { totalCount } = resData.searchStudentPayment || {}
           if (totalCount > 0) {
-            setNewAccounting(totalCount)
+            sessionStorage.setItem('newAccounting', totalCount)
           }
         }
       },

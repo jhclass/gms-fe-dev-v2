@@ -313,6 +313,8 @@ export default function CreateAdviceType({ isActive }) {
               category={'강의분야'}
               orderRefetch={orderRefetch}
               openOrder={openOrder}
+              setPage={setPage}
+              setOrderPage={setOrderPage}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (
@@ -344,6 +346,7 @@ export default function CreateAdviceType({ isActive }) {
           category={'강의분야'}
           limit={limit}
           orderRefetch={orderRefetch}
+          setPage={setPage}
         />
       )}
     </>
