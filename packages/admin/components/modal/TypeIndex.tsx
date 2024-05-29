@@ -70,6 +70,7 @@ export default function TypeIndex({
   totalCount,
   category,
   limit,
+  orderRefetch,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [items, setItems] = useState([])
@@ -150,6 +151,11 @@ export default function TypeIndex({
         page: 1,
         category: category,
         limit: limit,
+      })
+      orderRefetch({
+        page: 1,
+        category: category,
+        limit: 30,
       })
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)
