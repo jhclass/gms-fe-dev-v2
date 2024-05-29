@@ -4,7 +4,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { useMutation } from '@apollo/client'
-import { EDIT_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
+import {
+  CHANGE_ORDER_AT_MUTATION,
+  EDIT_ADVICE_TYPE_MUTATION,
+} from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { styled } from 'styled-components'
 
@@ -12,9 +15,12 @@ export default function CreateAdviceTypeChip({
   adviceList,
   refetch,
   category,
+  totalCount,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [editAdvice] = useMutation(EDIT_ADVICE_TYPE_MUTATION)
+  const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
+  const createNumberArray = n => Array.from({ length: n }, (_, i) => i + 1)
 
   const deleteType = async item => {
     const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
@@ -27,10 +33,23 @@ export default function CreateAdviceTypeChip({
           onOff: 'N',
         },
       })
-
+      const typeID = adviceList
+        .filter(type => type.id !== item.id)
+        .map(advice => advice.id)
+      const typeIndex = createNumberArray(typeID.length)
+      const changeResult = await changeOrderAt({
+        variables: {
+          ids: typeID,
+          indexNums: typeIndex,
+        },
+      })
       if (!result.data.editAdviceType.ok) {
         throw new Error(`${category} 삭제 실패`)
       }
+      if (!changeResult.data.changeOrderAT.ok) {
+        throw new Error(`${category} 삭제 후 순서 재설정 실패`)
+      }
+
       refetch({
         page: 1,
         category: category,

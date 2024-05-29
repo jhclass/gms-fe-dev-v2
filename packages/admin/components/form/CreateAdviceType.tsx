@@ -149,16 +149,19 @@ export default function CreateAdviceType({ isActive }) {
   //     setOrderAdviceList(orederAdvice)
   //   },
   // })
-  const [seeAdviceQuery] = useLazyQuery(SEE_ADVICE_TYPE_QUERY, {
-    onCompleted: result => {
-      if (orderPage === 1) {
-        setOrderAdviceList(result.seeAdviceType.adviceType)
-      } else {
-        const newAdvice = result?.seeAdviceType.adviceType
-        setOrderAdviceList(prevList => [...prevList, ...newAdvice])
-      }
+  const [seeAdviceQuery, { refetch: orderRefetch }] = useLazyQuery(
+    SEE_ADVICE_TYPE_QUERY,
+    {
+      onCompleted: result => {
+        if (orderPage === 1) {
+          setOrderAdviceList(result.seeAdviceType.adviceType)
+        } else {
+          const newAdvice = result?.seeAdviceType.adviceType
+          setOrderAdviceList(prevList => [...prevList, ...newAdvice])
+        }
+      },
     },
-  })
+  )
 
   const {
     isOpen: typeIsOpne,
@@ -299,6 +302,7 @@ export default function CreateAdviceType({ isActive }) {
               adviceList={adviceList}
               refetch={seeRefetch}
               category={'상담분야'}
+              totalCount={totalCount}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (
@@ -329,6 +333,7 @@ export default function CreateAdviceType({ isActive }) {
           totalCount={totalCount}
           category={'상담분야'}
           limit={limit}
+          orderRefetch={orderRefetch}
         />
       )}
     </>
