@@ -131,6 +131,7 @@ export default function CreateAdviceType({ isActive }) {
   const [adviceList, setAdviceList] = useState([])
   const [orderPage, setOrderPage] = useState(1)
   const [orderAdviceList, setOrderAdviceList] = useState([])
+  const [openOrder, setOpenOrder] = useState(false)
   const {
     error,
     data,
@@ -201,6 +202,7 @@ export default function CreateAdviceType({ isActive }) {
       },
     })
     typeOnOPen()
+    setOpenOrder(true)
   }
 
   const onSubmit = async data => {
@@ -222,11 +224,13 @@ export default function CreateAdviceType({ isActive }) {
         category: '강의분야',
         limit: 50,
       })
-      orderRefetch({
-        page: 1,
-        category: '강의분야',
-        limit: 30,
-      })
+      if (openOrder) {
+        orderRefetch({
+          page: 1,
+          category: '강의분야',
+          limit: 30,
+        })
+      }
       alert('강의 분야가 등록되었습니다.')
       userLogs(`${data.type} 강의분야 등록`)
       reset()
