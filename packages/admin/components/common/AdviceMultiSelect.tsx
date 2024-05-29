@@ -7,12 +7,13 @@ type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
 
-export default function managerSelect({
+export default function AdviceMultiSelect({
   defaultValue = null,
   selecedKey,
   field,
   label,
   handleChange,
+  placeholder = ' ',
   optionDefualt = null,
   filter = null,
   category,
@@ -36,8 +37,11 @@ export default function managerSelect({
       <Select
         labelPlacement="outside"
         label={label}
-        placeholder=" "
+        placeholder={placeholder}
         className="w-full"
+        classNames={{
+          value: 'text-[#11141c] opacity-1',
+        }}
         isMultiline={true}
         selectionMode="multiple"
         defaultValue={defaultValue}

@@ -288,12 +288,6 @@ export default function StudentsWrite({ managerId }) {
       const date = parseInt(managerData?.mJoiningDate)
       setJoiningDate(date)
     }
-
-    if (managerData?.mPart === null || managerData?.mPart === undefined) {
-      setAdviceType([])
-    } else {
-      setAdviceType(managerData?.mPart)
-    }
   }, [managerData])
 
   const onSubmit = async data => {
@@ -642,31 +636,29 @@ export default function StudentsWrite({ managerId }) {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <AreaBox>
-                      <Controller
-                        control={control}
-                        name="mPart"
-                        defaultValue={managerData.mPart}
-                        render={({ field }) => (
-                          <Suspense
-                            fallback={
-                              <LodingDiv>
-                                <i className="xi-spinner-2" />
-                              </LodingDiv>
-                            }
-                          >
-                            <AdviceMultiSelect
-                              defaultValue={managerData.mPart}
-                              selecedKey={adviceType}
-                              field={field}
-                              label={'강의분야'}
-                              handleChange={setAdviceType}
-                              category={'강의분야'}
-                            />
-                          </Suspense>
-                        )}
-                      />
-                    </AreaBox>
+                    <Controller
+                      control={control}
+                      name="mPart"
+                      defaultValue={managerData.mPart}
+                      render={({ field }) => (
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
+                        >
+                          <AdviceMultiSelect
+                            placeholder={String(managerData.mPart)}
+                            selecedKey={adviceType}
+                            field={field}
+                            label={'강의분야'}
+                            handleChange={setAdviceType}
+                            category={'강의분야'}
+                          />
+                        </Suspense>
+                      )}
+                    />
                   </AreaBox>
                   <AreaBox>
                     <DatePickerBox>

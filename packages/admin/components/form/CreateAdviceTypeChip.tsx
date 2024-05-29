@@ -24,7 +24,9 @@ export default function CreateAdviceTypeChip({
   const createNumberArray = n => Array.from({ length: n }, (_, i) => i + 1)
 
   const deleteType = async item => {
-    const isDelete = confirm(`[${item.type}]을 삭제하시겠습니까?`)
+    const isDelete = confirm(
+      `해당 분야가 노출된 부분에서 전부 삭제 처리됩니다.\n[${item.type}]을 삭제하시겠습니까?`,
+    )
     if (!isDelete) return
 
     try {
