@@ -147,19 +147,19 @@ export default function TypeIndex({
       if (!result.data.changeOrderAT.ok) {
         throw new Error(`${category} 순서 변경 실패`)
       }
-
+      setPage(1)
       refetch({
         page: 1,
         category: category,
         limit: limit,
       })
+      setOrderPage(1)
       orderRefetch({
         page: 1,
         category: category,
         limit: 30,
       })
-      setPage(1)
-      setOrderPage(1)
+
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)
       closeBtn()

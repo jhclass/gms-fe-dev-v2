@@ -191,9 +191,10 @@ export default function CreateAdviceType({ isActive }) {
         ])
       }
     }
-  }, [data])
+  }, [data, page])
 
   const openOrderChange = () => {
+    setOrderPage(1)
     seeAdviceQuery({
       variables: {
         page: 1,
@@ -219,16 +220,16 @@ export default function CreateAdviceType({ isActive }) {
       if (!result.data.createAdviceType.ok) {
         throw new Error('강의 분야 등록 실패')
       }
-      seeRefetch({
-        page: 1,
-        category: '강의분야',
-        limit: 50,
-      })
+      setPage(1)
+      seeRefetch()
       if (openOrder) {
-        orderRefetch({
-          page: 1,
-          category: '강의분야',
-          limit: 30,
+        setOrderPage(1)
+        seeAdviceQuery({
+          variables: {
+            page: 1,
+            category: '강의분야',
+            limit: 30,
+          },
         })
       }
       alert('강의 분야가 등록되었습니다.')
@@ -311,7 +312,7 @@ export default function CreateAdviceType({ isActive }) {
               adviceList={adviceList}
               refetch={seeRefetch}
               category={'강의분야'}
-              orderRefetch={orderRefetch}
+              seeRefetch={seeRefetch}
               openOrder={openOrder}
               setPage={setPage}
               setOrderPage={setOrderPage}

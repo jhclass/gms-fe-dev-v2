@@ -15,7 +15,7 @@ export default function CreateAdviceTypeChip({
   adviceList,
   refetch,
   category,
-  orderRefetch,
+  seeRefetch,
   openOrder,
   setPage,
   setOrderPage,
@@ -54,21 +54,17 @@ export default function CreateAdviceTypeChip({
       if (!changeResult.data.changeOrderAT.ok) {
         throw new Error(`${category} 삭제 후 순서 재설정 실패`)
       }
-
-      refetch({
-        page: 1,
-        category: category,
-        limit: 50,
-      })
+      setPage(1)
+      refetch()
       if (openOrder) {
-        orderRefetch({
+        setOrderPage(1)
+        seeRefetch({
           page: 1,
           category: category,
           limit: 30,
         })
       }
-      setPage(1)
-      setOrderPage(1)
+
       alert(`${category}가 삭제되었습니다.`)
       userLogs(`${item.type} ${category} 삭제`)
     } catch (error) {
