@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import ConsultationTable from '@/components/table/Consultation'
 import ConsultationFilter from '@/components/table/ConsultationFilter'
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ConsultFilter from '@/components/filter/ConsultFilter'
 import { styled } from 'styled-components'

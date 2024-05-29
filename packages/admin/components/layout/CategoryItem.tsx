@@ -3,13 +3,7 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import {
-  categoryMenuState,
-  navOpenState,
-  newAccountingTotalState,
-  newConsultTotalState,
-  newStudentTotalState,
-} from '@/lib/recoilAtoms'
+import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { useMutation } from '@apollo/client'
 import { Tooltip } from '@nextui-org/react'
@@ -144,12 +138,10 @@ export default function CategoryItem<CategoryItemProps>({
 
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
-  const [consultTotal, setNewConsultTotal] =
-    useRecoilState(newConsultTotalState)
-  const [studenTotal, setNewStudentTotal] = useRecoilState(newStudentTotalState)
-  const [accounTingTotal, setNewAccountingTotal] = useRecoilState(
-    newAccountingTotalState,
-  )
+  const consultTotal = sessionStorage.getItem('newConsult')
+  const studenTotal = sessionStorage.getItem('newStudent')
+  const accounTingTotal = sessionStorage.getItem('newAccounting')
+
   const [newConsult, setNewConsult] = useState(false)
   const [newStudent, setNewStudent] = useState(false)
   const [newAccounting, setNewAccounting] = useState(false)
@@ -157,17 +149,17 @@ export default function CategoryItem<CategoryItemProps>({
 
   useEffect(() => {
     if (name === '상담관리') {
-      if (consultTotal > 0) {
+      if (parseInt(consultTotal) > 0) {
         setNewConsult(true)
       }
     }
     if (name === '수강생관리') {
-      if (studenTotal > 0) {
+      if (parseInt(studenTotal) > 0) {
         setNewStudent(true)
       }
     }
     if (name === '회계관리') {
-      if (accounTingTotal > 0) {
+      if (parseInt(accounTingTotal) > 0) {
         setNewAccounting(true)
       }
     }
@@ -192,18 +184,21 @@ export default function CategoryItem<CategoryItemProps>({
 
   const subCate = children?.filter(category => category.exposure) || []
 
-  const clickCate = (e, grade, link) => {
+  const clickCate = (e, grade, link, name) => {
     e.preventDefault()
+
     if (grade) {
       if (mGrade <= 1 || mPart.includes(grade)) {
         router.push(link, undefined, { shallow: true, scroll: false })
-        // window.location.href = link
       } else {
         alert('🚧 접근 권한이 없습니다. 🚧')
       }
     } else {
-      router.push(link, undefined, { shallow: true, scroll: false })
-      // window.location.href = link
+      if (name === '상담관리') {
+        window.location.href = link
+      } else {
+        router.push(link, undefined, { shallow: true, scroll: false })
+      }
     }
   }
 
@@ -217,7 +212,7 @@ export default function CategoryItem<CategoryItemProps>({
         }}
       >
         {!children || subCate.length === 0 ? (
-          <Link href={'#'} onClick={e => clickCate(e, cateGrade, href)}>
+          <Link href={'#'} onClick={e => clickCate(e, cateGrade, href, name)}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
                 content={name}
@@ -226,7 +221,7 @@ export default function CategoryItem<CategoryItemProps>({
               >
                 <CateIcon
                   onClick={e => {
-                    clickCate(e, cateGrade, href)
+                    clickCate(e, cateGrade, href, name)
                   }}
                 >
                   <i className={iconSrc} />
@@ -282,7 +277,7 @@ export default function CategoryItem<CategoryItemProps>({
               >
                 <CateIcon
                   onClick={e => {
-                    clickCate(e, cateGrade, href)
+                    clickCate(e, cateGrade, href, name)
                   }}
                 >
                   <i className={iconSrc} />
@@ -300,7 +295,10 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
-                <Link href={'#'} onClick={e => clickCate(e, cateGrade, href)}>
+                <Link
+                  href={'#'}
+                  onClick={e => clickCate(e, cateGrade, href, name)}
+                >
                   {name}
                 </Link>
               </CateTitle>
@@ -320,7 +318,9 @@ export default function CategoryItem<CategoryItemProps>({
                   >
                     <Link
                       href={'#'}
-                      onClick={e => clickCate(e, item.grade, href + item.href)}
+                      onClick={e =>
+                        clickCate(e, item.grade, href + item.href, name)
+                      }
                     >
                       {item.name}
                     </Link>

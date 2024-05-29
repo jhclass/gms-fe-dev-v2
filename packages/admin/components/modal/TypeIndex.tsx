@@ -71,6 +71,7 @@ export default function TypeIndex({
   category,
   limit,
   orderRefetch,
+  setPage,
 }) {
   const { userLogs } = useUserLogsMutation()
   const [items, setItems] = useState([])
@@ -80,7 +81,7 @@ export default function TypeIndex({
   const [bottomReached, setBottomReached] = useState(false)
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
-    if (scrollTop + clientHeight >= scrollHeight - 50) {
+    if (scrollTop + clientHeight >= scrollHeight - 40) {
       if (orderPage < Math.ceil(totalCount / 3)) {
         setOrderPage(prev => prev + 1)
         setBottomReached(true)
@@ -146,17 +147,19 @@ export default function TypeIndex({
       if (!result.data.changeOrderAT.ok) {
         throw new Error(`${category} 순서 변경 실패`)
       }
-
+      setPage(1)
       refetch({
         page: 1,
         category: category,
         limit: limit,
       })
+      setOrderPage(1)
       orderRefetch({
         page: 1,
         category: category,
         limit: 30,
       })
+
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)
       closeBtn()
