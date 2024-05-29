@@ -312,6 +312,7 @@ export default function CreateAdviceType({ isActive }) {
               refetch={seeRefetch}
               category={'강의분야'}
               orderRefetch={orderRefetch}
+              openOrder={openOrder}
             />
           </BoxTop>
           {page < Math.ceil(totalCount / limit) && (
