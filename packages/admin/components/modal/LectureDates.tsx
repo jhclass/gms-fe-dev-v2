@@ -77,6 +77,7 @@ export default function LectureDates({
   const [groupSelected, setGroupSelected] = useState([])
 
   useEffect(() => {
+    setSelectedDates([])
     let currentDate = new Date(startDate)
     let updatedSelectedDates = []
 
@@ -90,10 +91,14 @@ export default function LectureDates({
   }, [startDate, endDate])
 
   const calculateMonthsShown = (startDate, endDate) => {
-    const startYear = startDate?.getFullYear()
-    const endYear = endDate?.getFullYear()
-    const startMonth = startDate?.getMonth()
-    const endMonth = endDate?.getMonth()
+    const validStartDate =
+      startDate instanceof Date ? startDate : new Date(startDate)
+    const validEndDate = endDate instanceof Date ? endDate : new Date(endDate)
+
+    const startYear = validStartDate.getFullYear()
+    const endYear = validEndDate.getFullYear()
+    const startMonth = validStartDate.getMonth()
+    const endMonth = validEndDate.getMonth()
 
     // 두 날짜 사이의 총 월 수 계산
     const months = (endYear - startYear) * 12 + endMonth - startMonth + 1

@@ -322,14 +322,11 @@ export default function LectureWrite() {
           approvedNum: parseInt(data.approvedNum),
           confirmedNum: parseInt(data.confirmedNum),
           sessionNum: parseInt(data.sessionNum),
-          timetableAttached: data.timetableAttached,
+          timetableAttached:
+            data.timetableAttached === '파일을 선택하세요.'
+              ? null
+              : data.timetableAttached,
         },
-        // refetchQueries: [
-        //   {
-        //     query: SEE_SUBJECT_QUERY,
-        //     variables: { page: 1, limit: 10 },
-        //   },
-        // ],
       })
 
       if (!result.data.createLectures.ok) {
@@ -437,11 +434,7 @@ export default function LectureWrite() {
                           }
                         }}
                       >
-                        {Object.entries({
-                          ...subStatus,
-                          실업자: '실업자',
-                          재직자: '재직자',
-                        }).map(([key, item]) => (
+                        {Object.entries(subStatus).map(([key, item]) => (
                           <SelectItem key={item} value={item}>
                             {item}
                           </SelectItem>
@@ -870,8 +863,18 @@ export default function LectureWrite() {
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
-                            field.onChange(date)
-                            setLectureStartDate(date)
+                            const adjustedDate = date
+                              ? new Date(
+                                  date.getFullYear(),
+                                  date.getMonth(),
+                                  date.getDate(),
+                                  10,
+                                  10,
+                                  10,
+                                )
+                              : null
+                            field.onChange(adjustedDate)
+                            setLectureStartDate(adjustedDate)
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
@@ -945,8 +948,18 @@ export default function LectureWrite() {
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
-                            field.onChange(date)
-                            setLectureEndDate(date)
+                            const adjustedDate = date
+                              ? new Date(
+                                  date.getFullYear(),
+                                  date.getMonth(),
+                                  date.getDate(),
+                                  23,
+                                  59,
+                                  59,
+                                )
+                              : null
+                            field.onChange(adjustedDate)
+                            setLectureEndDate(adjustedDate)
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
@@ -1008,7 +1021,6 @@ export default function LectureWrite() {
                       onChange={e => {
                         register('lectureDetails').onChange(e)
                       }}
-                      onClick={sbjOpen}
                       {...register('lectureDetails', {
                         required: {
                           value: true,
@@ -1030,6 +1042,7 @@ export default function LectureWrite() {
                     <Controller
                       control={control}
                       name="eduStatusReport"
+                      defaultValue={'Y'}
                       rules={{
                         required: {
                           value: true,

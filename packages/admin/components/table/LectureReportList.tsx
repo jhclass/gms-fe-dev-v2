@@ -53,15 +53,7 @@ const Tlong = styled.div`
   min-width: ${1200 * 0.09}px;
 `
 
-export default function ConsolutationTable() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
-  const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
+export default function ConsolutationTable(lecture) {
   return (
     <>
       <TableArea>
@@ -85,7 +77,7 @@ export default function ConsolutationTable() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            <LectureReportItem />
+            <LectureReportItem lecture={lecture} />
           </TableWrap>
         </ScrollShadow>
       </TableArea>

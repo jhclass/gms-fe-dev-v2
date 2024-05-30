@@ -178,11 +178,9 @@ const BtnBox = styled.div`
 
 export default function LectureWrite() {
   const router = useRouter()
+  const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
   const [campusName, setCampusName] = useState('신촌')
-
-  // const classRoom = useRecoilValue(classRoomState)
-  // const [room, setRoom] = useState('강의실 없음')
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
@@ -203,7 +201,7 @@ export default function LectureWrite() {
   const [lectureEndDate, setLectureEndDate] = useState(null)
   const [isReport, setIsReport] = useState('Y')
   const fileInputRef = useRef(null)
-  const [fileName, setFileName] = useState('파일을 선택하세요.')
+  const [fileName, setFileName] = useState('파일을 입력해주세요.')
   const [lectureData, setLectureData] = useState(null)
 
   const {
@@ -231,7 +229,7 @@ export default function LectureWrite() {
   useEffect(() => {
     searchLectures({
       variables: {
-        searchLecturesId: 8,
+        searchLecturesId: parseInt(lectureId),
       },
       onCompleted: result => {
         if (result.searchLectures.ok) {
@@ -239,17 +237,60 @@ export default function LectureWrite() {
         }
       },
     })
-  }, [])
+  }, [lectureId])
+
+  const extractFileName = url => {
+    if (url !== null) {
+      const lastSlashIndex = url.lastIndexOf('/')
+      const afterLastSlash = url.substring(lastSlashIndex + 1)
+      const firstHyphenIndex = afterLastSlash.indexOf('-')
+      const secondHyphenIndex = afterLastSlash.indexOf(
+        '-',
+        firstHyphenIndex + 1,
+      )
+      const fileNames = afterLastSlash.substring(secondHyphenIndex + 1)
+      return fileNames
+    }
+  }
 
   useEffect(() => {
-    if (lectureData.campus) {
-      setCampusName(lectureData.campus)
-    }
-    if (lectureData.subDiv) {
-      setSub(lectureData.subDiv)
-    }
-    if (lectureData.subDiv) {
-      setSub(lectureData.subDiv)
+    if (lectureData) {
+      if (lectureData.campus) {
+        setCampusName(lectureData.campus)
+      }
+      if (lectureData.subDiv) {
+        setSub(lectureData.subDiv)
+      }
+      if (lectureData?.lectureTime) {
+        const startTime = new Date(lectureData?.lectureTime[0])
+        const endTime = new Date(lectureData?.lectureTime[1])
+        setLectureStartTime(startTime)
+        setLectureEndTime(endTime)
+      }
+
+      if (lectureData?.lecturePeriodStart) {
+        const date = parseInt(lectureData?.lecturePeriodStart)
+        setLectureStartDate(date)
+      }
+      if (lectureData?.teachers) {
+        const date = lectureData?.teachers.map(teacher => String(teacher.id))
+        setTeacher(date)
+      }
+
+      if (lectureData?.lecturePeriodEnd) {
+        const date = parseInt(lectureData?.lecturePeriodEnd)
+        setLectureEndDate(date)
+      }
+
+      if (
+        lectureData?.timetableAttached === undefined ||
+        lectureData?.timetableAttached === null
+      ) {
+        setFileName('파일을 입력해주세요.')
+      } else {
+        const date = extractFileName(lectureData?.timetableAttached)
+        setFileName(date)
+      }
     }
   }, [lectureData])
 
@@ -362,7 +403,7 @@ export default function LectureWrite() {
     //   alert('강의 등록 처리 중 오류가 발생했습니다.')
     // }
   }
-  // console.log(lectureData)
+
   return (
     lectureData && (
       <>
@@ -456,11 +497,7 @@ export default function LectureWrite() {
                             }
                           }}
                         >
-                          {Object.entries({
-                            ...subStatus,
-                            실업자: '실업자',
-                            재직자: '재직자',
-                          }).map(([key, item]) => (
+                          {Object.entries(subStatus).map(([key, item]) => (
                             <SelectItem key={item} value={item}>
                               {item}
                             </SelectItem>
@@ -571,7 +608,13 @@ export default function LectureWrite() {
                   <AreaBox>
                     <Textarea
                       readOnly
-                      value={lectureData.subject?.subjectName || ''}
+                      value={
+                        subjectSelectedData?.subjectName !== undefined
+                          ? String(subjectSelectedData?.subjectName)
+                          : lectureData?.subject?.subjectName !== null
+                          ? lectureData?.subject?.subjectName
+                          : ''
+                      }
                       label={
                         <FilterLabel>
                           과정 선택<span>*</span>
@@ -581,9 +624,6 @@ export default function LectureWrite() {
                       className="max-w-full"
                       variant="bordered"
                       minRows={1}
-                      onChange={e => {
-                        register('subjectId').onChange(e)
-                      }}
                       onClick={sbjOpen}
                       {...register('subjectId', {
                         required: {
@@ -891,8 +931,18 @@ export default function LectureWrite() {
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
-                              field.onChange(date)
-                              setLectureStartDate(date)
+                              const adjustedDate = date
+                                ? new Date(
+                                    date.getFullYear(),
+                                    date.getMonth(),
+                                    date.getDate(),
+                                    10,
+                                    10,
+                                    10,
+                                  )
+                                : null
+                              field.onChange(adjustedDate)
+                              setLectureStartDate(adjustedDate)
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -966,8 +1016,18 @@ export default function LectureWrite() {
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
-                              field.onChange(date)
-                              setLectureEndDate(date)
+                              const adjustedDate = date
+                                ? new Date(
+                                    date.getFullYear(),
+                                    date.getMonth(),
+                                    date.getDate(),
+                                    23,
+                                    59,
+                                    59,
+                                  )
+                                : null
+                              field.onChange(adjustedDate)
+                              setLectureEndDate(adjustedDate)
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -1018,18 +1078,13 @@ export default function LectureWrite() {
                       </Button>
                       <Input
                         readOnly
-                        defaultValue={null}
-                        // value={
-                        //   datesSelected &&
-                        //   ` 총 수업 일수 ${(<b>{datesSelected?.length}</b>)}일`
-                        // }
+                        defaultValue={String(lectureData?.lectureDetails)}
                         labelPlacement="outside"
                         className="max-w-full"
                         variant="bordered"
                         onChange={e => {
                           register('lectureDetails').onChange(e)
                         }}
-                        onClick={sbjOpen}
                         {...register('lectureDetails', {
                           required: {
                             value: true,
@@ -1214,6 +1269,7 @@ export default function LectureWrite() {
                         variant="faded"
                         radius="md"
                         type="text"
+                        defaultValue={'asd'}
                         value={fileName}
                         {...register('timetableAttached')}
                       />
@@ -1283,14 +1339,16 @@ export default function LectureWrite() {
           setValue={setValue}
           radio={true}
         />
-        <LectureDates
-          isOpen={isOpen}
-          onClose={onClose}
-          setValue={setValue}
-          setDatesSelected={setDatesSelected}
-          startDate={lectureStartDate}
-          endDate={lectureEndDate}
-        />
+        {lectureStartDate && lectureEndDate && (
+          <LectureDates
+            isOpen={isOpen}
+            onClose={onClose}
+            setValue={setValue}
+            setDatesSelected={setDatesSelected}
+            startDate={lectureStartDate}
+            endDate={lectureEndDate}
+          />
+        )}
       </>
     )
   )

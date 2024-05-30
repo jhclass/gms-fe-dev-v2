@@ -487,3 +487,46 @@ export const GET_SALES_QUERY = gql`
     }
   }
 `
+
+//강의
+export const SEE_LECTURES_QUERY = gql`
+  query Query($page: Int, $limit: Int) {
+    seeLectures(page: $page, limit: $limit) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        ApprovedNum
+        campus
+        confirmedNum
+        createdAt
+        eduStatusReport
+        id
+        lectureDetails
+        lecturePeriodEnd
+        lecturePeriodStart
+        lectureTime
+        roomNum
+        updatedAt
+        timetableAttached
+        temporaryName
+        subjectId
+        subject {
+          id
+          subjectName
+          subjectCode
+          subDiv
+          round
+        }
+        subDiv
+        sessionNum
+        teachers {
+          id
+          mUserId
+          mUsername
+        }
+      }
+    }
+  }
+`

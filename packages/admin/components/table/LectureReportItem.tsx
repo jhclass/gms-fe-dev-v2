@@ -50,46 +50,46 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-export default function ConsolutItem(props) {
+export default function ConsolutItem({ lecture }) {
   return (
     <>
       <TableRow>
         <ClickBox>
           <Tnum>
-            <EllipsisBox>20</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tnum>
-            <EllipsisBox>10</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tnum>
-            <EllipsisBox>50%</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tnum>
-            <EllipsisBox>0</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tnum>
-            <EllipsisBox>0</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tnum>
-            <EllipsisBox>0%</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tlong>
-            <EllipsisBox>0</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tlong>
           <Tlong>
-            <EllipsisBox>0</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tlong>
           <Tnum>
-            <EllipsisBox>9</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tnum>
-            <EllipsisBox>100%</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tnum>
           <Tlong>
-            <EllipsisBox>훈련교육중</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tlong>
           <Tlong>
-            <EllipsisBox>0</EllipsisBox>
+            <EllipsisBox>-</EllipsisBox>
           </Tlong>
         </ClickBox>
       </TableRow>
