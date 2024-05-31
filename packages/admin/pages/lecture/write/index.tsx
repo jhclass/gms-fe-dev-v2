@@ -952,7 +952,7 @@ export default function LectureWrite() {
                               ? null
                               : new Date(lectureEndDate)
                           }
-                          minDate={lectureStartDate}
+                          minDate={new Date(lectureStartDate)}
                           placeholderText="날짜를 선택해주세요."
                           isClearable
                           onChange={date => {
@@ -1280,7 +1280,7 @@ export default function LectureWrite() {
         setValue={setValue}
         radio={true}
       />
-      {isOpen && (
+      {lectureStartDate && (
         <LectureDates
           isOpen={isOpen}
           onClose={onClose}

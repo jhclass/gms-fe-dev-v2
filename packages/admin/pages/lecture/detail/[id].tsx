@@ -294,6 +294,10 @@ export default function LectureWrite() {
       if (lectureData.subDiv) {
         setSub(lectureData.subDiv)
       }
+      if (lectureData.eduStatusReport) {
+        setIsReport(lectureData.eduStatusReport)
+      }
+
       if (lectureData?.lectureTime) {
         const startTime = new Date(lectureData?.lectureTime[0])
         const endTime = new Date(lectureData?.lectureTime[1])
@@ -389,7 +393,8 @@ export default function LectureWrite() {
   }
 
   const onSubmit = async data => {
-    console.log(data)
+    console.log(dirtyFields.eduStatusReport)
+    console.log(data.eduStatusReport)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -409,15 +414,14 @@ export default function LectureWrite() {
               subDiv: data.subDiv,
               // teachersId: dirtyFields.teachersId && teachersIdArray,
               roomNum: data.roomNum,
-              subjectId:
-                subjectSelectedData === null
-                  ? lectureData.subjectId
-                  : parseInt(subjectSelectedData.id),
+              // subjectId: dirtyFields.subjectId
+              //   ? parseInt(subjectSelectedData.id)
+              //   : lectureData.subjectId,
               lecturePeriodStart: dirtyFields.lecturePeriodStart
-                ? data.lecturePeriodStart
-                : new Date(parseInt(lectureData.lecturePeriodEnd)),
+                ? new Date(data.lecturePeriodStart)
+                : new Date(parseInt(lectureData.lecturePeriodStart)),
               lecturePeriodEnd: dirtyFields.lecturePeriodEnd
-                ? data.lecturePeriodEnd
+                ? new Date(data.lecturePeriodEnd)
                 : new Date(parseInt(lectureData.lecturePeriodEnd)),
               lectureDetails: dirtyFields.lectureDetails
                 ? data.lectureDetails
@@ -1015,6 +1019,7 @@ export default function LectureWrite() {
                                 ? null
                                 : new Date(lectureEndDate)
                             }
+                            minDate={new Date(lectureStartDate)}
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={endDate => {
@@ -1125,7 +1130,6 @@ export default function LectureWrite() {
                             orientation="horizontal"
                             className="gap-[0.65rem]"
                             value={isReport}
-                            defaultChecked={lectureData.eduStatusReport}
                             onValueChange={value => {
                               field.onChange(value)
                               handleTypeChange(value)
@@ -1341,16 +1345,15 @@ export default function LectureWrite() {
           setValue={setValue}
           radio={true}
         />
-        {isOpen && (
-          <LectureDates
-            isOpen={isOpen}
-            onClose={onClose}
-            setValue={setValue}
-            setDatesSelected={setDatesSelected}
-            startDate={lectureStartDate}
-            endDate={lectureEndDate}
-          />
-        )}
+
+        <LectureDates
+          isOpen={isOpen}
+          onClose={onClose}
+          setValue={setValue}
+          setDatesSelected={setDatesSelected}
+          startDate={lectureStartDate}
+          endDate={lectureEndDate}
+        />
       </>
     )
   )

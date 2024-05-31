@@ -78,20 +78,13 @@ export default function LectureDates({
 
   const selectDateAuto = (startDate, endDate) => {
     let currentDate =
-      startDate instanceof Date ? startDate : new Date(startDate)
-    let validEndDate = endDate instanceof Date ? endDate : new Date(endDate)
-    currentDate.setHours(10)
-    currentDate.setMinutes(10)
-    currentDate.setSeconds(10)
-    validEndDate.setHours(23)
-    validEndDate.setMinutes(59)
-    validEndDate.setSeconds(59)
+      startDate instanceof Date ? new Date(startDate) : new Date(startDate)
+    let validEndDate =
+      endDate instanceof Date ? new Date(endDate) : new Date(endDate)
     let updatedSelectedDates = []
-
     while (currentDate <= validEndDate) {
       const dateString = currentDate.toISOString().split('T')[0]
       updatedSelectedDates.push(dateString)
-
       currentDate.setDate(currentDate.getDate() + 1)
     }
     setSelectedDates(updatedSelectedDates)
@@ -154,7 +147,6 @@ export default function LectureDates({
 
   // 요일 선택 핸들러
   const toggleDay = day => {
-    console.log(day)
     setGroupSelected(day)
     setDisabledDays(prev => {
       const isDayDisabled = prev.includes(day)
@@ -199,7 +191,7 @@ export default function LectureDates({
   }
 
   const clickAdviceSubmit = () => {
-    setValue('lectureDetails', selectedDates)
+    setValue('lectureDetails', selectedDates, { shouldDirty: true })
     setDatesSelected(selectedDates)
     onClose()
   }
@@ -213,19 +205,6 @@ export default function LectureDates({
               <ModalHeader className="flex flex-col gap-1">
                 기간선택
                 <DayCheck>
-                  {/* {['일', '월', '화', '수', '목', '금', '토'].map(
-                    (day, index) => (
-                      <label key={index}>
-                        <input
-                          type="checkbox"
-                          checked={disabledDays.includes(index)}
-                          onChange={() => toggleDay(index)}
-                        />
-                        {day}
-                      </label>
-                    ),
-                  )} */}
-
                   {[' 일 ', ' 월 ', ' 화 ', ' 수 ', ' 목 ', ' 금 ', ' 토 '].map(
                     (day, index) => (
                       <ChipCheckbox
