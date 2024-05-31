@@ -78,10 +78,18 @@ export default function LectureDates({
 
   useEffect(() => {
     setSelectedDates([])
-    let currentDate = new Date(startDate)
+    let currentDate =
+      startDate instanceof Date ? startDate : new Date(startDate)
+    let validEndDate = endDate instanceof Date ? endDate : new Date(endDate)
+    currentDate.setHours(10)
+    currentDate.setMinutes(10)
+    currentDate.setSeconds(10)
+    validEndDate.setHours(23)
+    validEndDate.setMinutes(59)
+    validEndDate.setSeconds(59)
     let updatedSelectedDates = []
 
-    while (currentDate <= endDate) {
+    while (currentDate <= validEndDate) {
       const dateString = currentDate.toISOString().split('T')[0]
       updatedSelectedDates.push(dateString)
 
