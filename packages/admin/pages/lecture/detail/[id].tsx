@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -19,11 +19,9 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { subStatusState } from '@/lib/recoilAtoms'
-import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
-  CREATE_LECTURES_MUTATION,
+  EDIT_LECTURES_MUTATION,
   SEARCH_LECTURES_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
@@ -34,6 +32,7 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
+import SubDivSelect from '@/components/common/SubDivSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -176,20 +175,29 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
 export default function LectureWrite() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
-  const [campusName, setCampusName] = useState('신촌')
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
+  const [editLectures] = useMutation(EDIT_LECTURES_MUTATION)
+  const [campusName, setCampusName] = useState('신촌')
   const [subjectState, setSubjectState] = useState(null)
-  const [subjectRoundItem, setSubjectRoundItem] = useState([])
-  const subStatus = useRecoilValue(subStatusState)
-
   const [sub, setSub] = useState('없음')
-
   const [teacher, setTeacher] = useState([])
-
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [datesSelected, setDatesSelected] = useState(null)
@@ -354,55 +362,50 @@ export default function LectureWrite() {
     fileInputRef.current.click()
   }
 
-  const renderMonthContent = (shortMonth, longMonth, day) => {
-    const fullYear = new Date(day).getFullYear()
-    const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`
-
-    return <span title={tooltipText}>{shortMonth + 1}</span>
+  const onSubmit = async data => {
+    try {
+      console.log(data)
+      //   const teachersIdArray = data.teachersId
+      //     .split(',')
+      //     .filter(Boolean)
+      //     .map(Number)
+      //   const result = await editLectures({
+      //     variables: {
+      //       campus: data.campus,
+      //       temporaryName: data.temporaryName,
+      //       subDiv: data.subDiv,
+      //       teachersId: teachersIdArray,
+      //       roomNum: data.roomNum,
+      //       subjectId: parseInt(subjectSelectedData.id),
+      //       lecturePeriodStart: data.lecturePeriodStart,
+      //       lecturePeriodEnd: data.lecturePeriodEnd,
+      //       lectureDetails: data.lectureDetails,
+      //       lectureTime: [lectureStartTime, lectureEndTime],
+      //       eduStatusReport: data.eduStatusReport,
+      //       approvedNum: parseInt(data.approvedNum),
+      //       confirmedNum: parseInt(data.confirmedNum),
+      //       sessionNum: parseInt(data.sessionNum),
+      //       timetableAttached: data.timetableAttached,
+      //     },
+      //     // refetchQueries: [
+      //     //   {
+      //     //     query: SEE_SUBJECT_QUERY,
+      //     //     variables: { page: 1, limit: 10 },
+      //     //   },
+      //     // ],
+      //   })
+      //   if (!result.data.createLectures.ok) {
+      //     throw new Error('과정 등록 실패')
+      //   }
+      //   alert('등록되었습니다.')
+      //   userLogs(`${data.temporaryName}강의 등록`)
+      //   router.push('/lecture')
+    } catch (error) {
+      console.error('강의 등록 중 에러 발생:', error)
+      alert('강의 등록 처리 중 오류가 발생했습니다.')
+    }
   }
-
-  const onSubmit = data => {
-    // try {
-    //   const teachersIdArray = data.teachersId
-    //     .split(',')
-    //     .filter(Boolean)
-    //     .map(Number)
-    //   const result = await createLectures({
-    //     variables: {
-    //       campus: data.campus,
-    //       temporaryName: data.temporaryName,
-    //       subDiv: data.subDiv,
-    //       teachersId: teachersIdArray,
-    //       roomNum: data.roomNum,
-    //       subjectId: parseInt(subjectSelectedData.id),
-    //       lecturePeriodStart: data.lecturePeriodStart,
-    //       lecturePeriodEnd: data.lecturePeriodEnd,
-    //       lectureDetails: data.lectureDetails,
-    //       lectureTime: [lectureStartTime, lectureEndTime],
-    //       eduStatusReport: data.eduStatusReport,
-    //       approvedNum: parseInt(data.approvedNum),
-    //       confirmedNum: parseInt(data.confirmedNum),
-    //       sessionNum: parseInt(data.sessionNum),
-    //       timetableAttached: data.timetableAttached,
-    //     },
-    //     // refetchQueries: [
-    //     //   {
-    //     //     query: SEE_SUBJECT_QUERY,
-    //     //     variables: { page: 1, limit: 10 },
-    //     //   },
-    //     // ],
-    //   })
-    //   if (!result.data.createLectures.ok) {
-    //     throw new Error('과정 등록 실패')
-    //   }
-    //   alert('등록되었습니다.')
-    //   userLogs(`${data.temporaryName}강의 등록`)
-    //   router.push('/lecture')
-    // } catch (error) {
-    //   console.error('강의 등록 중 에러 발생:', error)
-    //   alert('강의 등록 처리 중 오류가 발생했습니다.')
-    // }
-  }
+  console.log(lectureData)
 
   return (
     lectureData && (
@@ -426,7 +429,7 @@ export default function LectureWrite() {
                     <Controller
                       control={control}
                       name="campus"
-                      defaultValue={campusName}
+                      defaultValue={lectureData.campus}
                       rules={{
                         required: {
                           value: true,
@@ -472,6 +475,7 @@ export default function LectureWrite() {
                     <Controller
                       control={control}
                       name="subDiv"
+                      defaultValue={lectureData.subDiv}
                       rules={{
                         required: {
                           value: true,
@@ -479,30 +483,25 @@ export default function LectureWrite() {
                         },
                       }}
                       render={({ field, fieldState }) => (
-                        <Select
-                          labelPlacement="outside"
-                          label={
-                            <FilterLabel>
-                              수강구분<span>*</span>
-                            </FilterLabel>
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
                           }
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          selectedKeys={[sub]}
-                          onChange={value => {
-                            if (value.target.value !== '') {
-                              field.onChange(value)
-                              handleSubChange(value)
-                            }
-                          }}
                         >
-                          {Object.entries(subStatus).map(([key, item]) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                          <SubDivSelect
+                            selectedKey={sub}
+                            field={field}
+                            label={
+                              <FilterLabel>
+                                수강구분<span>*</span>
+                              </FilterLabel>
+                            }
+                            handleChange={handleSubChange}
+                            isHyphen={false}
+                          />
+                        </Suspense>
                       )}
                     />
                     {errors.subDiv && (
@@ -511,65 +510,6 @@ export default function LectureWrite() {
                       </p>
                     )}
                   </AreaBox>
-                  {/* <AreaBox>
-                  <DatePickerBox>
-                    <Controller
-                      control={control}
-                      name="expiresDateStart"
-                      rules={{
-                        required: {
-                          value: true,
-                          message: '강의배정 년월을 선택해주세요.',
-                        },
-                      }}
-                      render={({ field }) => (
-                        <DatePicker
-                          renderMonthContent={renderMonthContent}
-                          showMonthYearPicker
-                          locale="ko"
-                          showYearDropdown
-                          selected={
-                            lectureStart === null
-                              ? null
-                              : new Date(lectureStart)
-                          }
-                          placeholderText="날짜를 선택해주세요."
-                          isClearable
-                          onChange={date => {
-                            field.onChange(date)
-                            setLectureStart(date)
-                          }}
-                          dateFormat="yyyy/MM"
-                          onChangeRaw={e => e.preventDefault()}
-                          onFocus={e => e.target.blur()}
-                          customInput={
-                            <Input
-                              label={
-                                <FilterLabel>
-                                  강의배정 년월<span>*</span>
-                                </FilterLabel>
-                              }
-                              labelPlacement="outside"
-                              variant="bordered"
-                              type="text"
-                              id="date"
-                              classNames={{
-                                input: 'caret-transparent',
-                              }}
-                              isReadOnly={true}
-                              startContent={<i className="xi-calendar" />}
-                            />
-                          }
-                        />
-                      )}
-                    />
-                  </DatePickerBox>
-                  {errors.expiresDateStart && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
-                      {String(errors.expiresDateStart.message)}
-                    </p>
-                  )}
-                </AreaBox> */}
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
@@ -644,6 +584,7 @@ export default function LectureWrite() {
                     <Controller
                       control={control}
                       name="teachersId"
+                      defaultValue={lectureData.teachers}
                       rules={{
                         required: {
                           value: true,
@@ -749,6 +690,7 @@ export default function LectureWrite() {
                         <Controller
                           control={control}
                           name="lectureTime"
+                          defaultValue={lectureData.lectureTime[0]}
                           rules={{
                             required: {
                               value: true,
@@ -819,6 +761,7 @@ export default function LectureWrite() {
                       <DatePickerBox>
                         <Controller
                           control={control}
+                          defaultValue={lectureData.lectureTime[1]}
                           name="lectureTime"
                           rules={{
                             required: {
@@ -896,13 +839,13 @@ export default function LectureWrite() {
                       <Controller
                         control={control}
                         name="lecturePeriodStart"
+                        defaultValue={lectureData.lecturePeriodStart}
                         rules={{
                           required: {
                             value: true,
                             message: '개강일을 선택해주세요.',
                           },
                         }}
-                        defaultValue={subjectState?.startDate}
                         render={({ field }) => (
                           <DatePicker
                             renderCustomHeader={({
@@ -980,13 +923,13 @@ export default function LectureWrite() {
                       <Controller
                         control={control}
                         name="lecturePeriodEnd"
+                        defaultValue={lectureData.lecturePeriodEnd}
                         rules={{
                           required: {
                             value: true,
                             message: '종강일을 선택해주세요.',
                           },
                         }}
-                        defaultValue={subjectState?.endDate}
                         render={({ field }) => (
                           <DatePicker
                             renderCustomHeader={({

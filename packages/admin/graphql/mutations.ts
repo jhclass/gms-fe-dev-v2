@@ -1722,3 +1722,46 @@ export const SEARCH_LECTURES_MUTATION = gql`
     }
   }
 `
+export const EDIT_LECTURES_MUTATION = gql`
+  mutation Mutation(
+    $editLecturesId: Int!
+    $campus: String
+    $temporaryName: String
+    $subDiv: String
+    $teachersId: [Int]
+    $roomNum: String
+    $subjectId: Int
+    $lecturePeriodStart: String
+    $lecturePeriodEnd: String
+    $lectureDetails: [String]
+    $lectureTime: [String]
+    $eduStatusReport: String
+    $approvedNum: Int
+    $confirmedNum: Int
+    $sessionNum: Int
+    $timetableAttached: Upload
+  ) {
+    editLectures(
+      id: $editLecturesId
+      campus: $campus
+      temporaryName: $temporaryName
+      subDiv: $subDiv
+      teachersId: $teachersId
+      roomNum: $roomNum
+      subjectId: $subjectId
+      lecturePeriodStart: $lecturePeriodStart
+      lecturePeriodEnd: $lecturePeriodEnd
+      lectureDetails: $lectureDetails
+      lectureTime: $lectureTime
+      eduStatusReport: $eduStatusReport
+      ApprovedNum: $approvedNum
+      confirmedNum: $confirmedNum
+      sessionNum: $sessionNum
+      timetableAttached: $timetableAttached
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`

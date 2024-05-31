@@ -109,6 +109,7 @@ const DimBtn = styled.button`
   padding: 0.3rem;
   font-size: 1.5rem;
   color: #111;
+  z-index: 1000;
 
   @media screen and (max-width: 1024px) {
     display: flex;

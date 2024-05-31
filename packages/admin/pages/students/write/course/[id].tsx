@@ -35,6 +35,7 @@ import {
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ManagerSelectID from '@/components/common/ManagerSelectID'
+import SubDivSelect from '@/components/common/SubDivSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -709,27 +710,21 @@ export default function StudentsWriteCourse() {
                       control={control}
                       name="subDiv"
                       render={({ field, fieldState }) => (
-                        <Select
-                          selectionMode="single"
-                          labelPlacement="outside"
-                          label={<FilterLabel>수강구분</FilterLabel>}
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          selectedKeys={[sub]}
-                          onChange={value => {
-                            if (value.target.value !== '') {
-                              field.onChange(value)
-                              handleSubChange(value)
-                            }
-                          }}
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
                         >
-                          {Object.entries(subStatus).map(([key, item]) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                          <SubDivSelect
+                            selectedKey={sub}
+                            field={field}
+                            label={<FilterLabel>수강구분</FilterLabel>}
+                            handleChange={handleSubChange}
+                            isHyphen={false}
+                          />
+                        </Suspense>
                       )}
                     />
                   </AreaBox>

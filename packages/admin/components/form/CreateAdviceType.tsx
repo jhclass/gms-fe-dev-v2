@@ -123,7 +123,7 @@ const FilterVariants = {
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
-export default function CreateAdviceType({ isActive }) {
+export default function CreateAdviceType({ isActive, category }) {
   const { userLogs } = useUserLogsMutation()
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
   const [page, setPage] = useState(1)
@@ -139,7 +139,7 @@ export default function CreateAdviceType({ isActive }) {
   } = useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
     variables: {
       page: page,
-      category: '상담분야',
+      category: category,
       limit: limit,
     },
   })
@@ -198,7 +198,7 @@ export default function CreateAdviceType({ isActive }) {
     seeAdviceQuery({
       variables: {
         page: 1,
-        category: '상담분야',
+        category: category,
         limit: 30,
       },
     })
@@ -214,11 +214,11 @@ export default function CreateAdviceType({ isActive }) {
         variables: {
           type: data.type,
           indexNum: totalCount + 1,
-          category: '상담분야',
+          category: category,
         },
       })
       if (!result.data.createAdviceType.ok) {
-        throw new Error('상담 분야 등록 실패')
+        throw new Error(`${category} 등록 실패`)
       }
       setPage(1)
       seeRefetch()
@@ -227,16 +227,16 @@ export default function CreateAdviceType({ isActive }) {
         seeAdviceQuery({
           variables: {
             page: 1,
-            category: '상담분야',
+            category: category,
             limit: 30,
           },
         })
       }
-      alert('상담 분야가 등록되었습니다.')
-      userLogs(`${data.type} 상담분야 등록`)
+      alert(`${category} 분야가 등록되었습니다.`)
+      userLogs(`${data.type} ${category} 등록`)
       reset()
     } catch (error) {
-      console.error('상담 분야 등록 중 에러 발생:', error)
+      console.error(`${category} 등록 중 에러 발생:`, error)
     }
   }
 
@@ -263,9 +263,9 @@ export default function CreateAdviceType({ isActive }) {
                     placeholder="2글자 이상 작성해주세요."
                     type="text"
                     variant="bordered"
-                    label="분야명"
+                    label={`${category}명`}
                     classNames={{
-                      label: ['w-[4rem]'],
+                      label: ['w-[5.5rem]'],
                       mainWrapper: ['w-[calc(100%-4rem)]'],
                     }}
                     onChange={e => {
@@ -311,7 +311,7 @@ export default function CreateAdviceType({ isActive }) {
             <CreateAdviceTypeChip
               adviceList={adviceList}
               refetch={seeRefetch}
-              category={'상담분야'}
+              category={category}
               seeRefetch={seeRefetch}
               openOrder={openOrder}
               setPage={setPage}
@@ -344,7 +344,7 @@ export default function CreateAdviceType({ isActive }) {
           setOrderPage={setOrderPage}
           seeAdviceQuery={seeAdviceQuery}
           totalCount={totalCount}
-          category={'상담분야'}
+          category={category}
           limit={limit}
           orderRefetch={orderRefetch}
           setPage={setPage}

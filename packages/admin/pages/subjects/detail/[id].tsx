@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -28,6 +28,7 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import SubjectRoundItem from '@/components/items/SubjectRoundItem'
 import Layout from '@/pages/subjects/layout'
 import TeacherSelect from '@/components/common/TeacherSelect'
+import SubDivSelect from '@/components/common/SubDivSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -163,6 +164,19 @@ const BtnBox = styled.div<{ $isMaster: boolean }>`
       ${props => props.$isMaster && ' width: calc(50% - 0.5rem);'}
     }
   }
+`
+
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export default function SubjectDetail() {
@@ -621,31 +635,26 @@ export default function SubjectDetail() {
                       name="subDiv"
                       defaultValue={subjectState?.subDiv}
                       render={({ field, fieldState }) => (
-                        <Select
-                          labelPlacement="outside"
-                          defaultValue={subjectState?.subDiv}
-                          label={
-                            <FilterLabel>
-                              수강구분<span>*</span>
-                            </FilterLabel>
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
                           }
-                          placeholder=" "
-                          className="w-full"
-                          variant="bordered"
-                          selectedKeys={[sub]}
-                          onChange={value => {
-                            if (value.target.value !== '') {
-                              field.onChange(value)
-                              handleSubChange(value)
-                            }
-                          }}
                         >
-                          {Object.entries(subStatus).map(([key, item]) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                          <SubDivSelect
+                            selectedKey={sub}
+                            field={field}
+                            defaultValue={subjectState?.subDiv}
+                            label={
+                              <FilterLabel>
+                                수강구분<span>*</span>
+                              </FilterLabel>
+                            }
+                            handleChange={handleSubChange}
+                            isHyphen={false}
+                          />
+                        </Suspense>
                       )}
                     />
                     {errors.subDiv && (
