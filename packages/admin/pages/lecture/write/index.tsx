@@ -1280,14 +1280,16 @@ export default function LectureWrite() {
         setValue={setValue}
         radio={true}
       />
-      <LectureDates
-        isOpen={isOpen}
-        onClose={onClose}
-        setValue={setValue}
-        setDatesSelected={setDatesSelected}
-        startDate={lectureStartDate}
-        endDate={lectureEndDate}
-      />
+      {isOpen && (
+        <LectureDates
+          isOpen={isOpen}
+          onClose={onClose}
+          setValue={setValue}
+          setDatesSelected={setDatesSelected}
+          startDate={lectureStartDate}
+          endDate={lectureEndDate}
+        />
+      )}
     </>
   )
 }

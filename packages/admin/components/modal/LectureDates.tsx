@@ -76,8 +76,7 @@ export default function LectureDates({
   const [selectedDates, setSelectedDates] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
 
-  useEffect(() => {
-    setSelectedDates([])
+  const selectDateAuto = (startDate, endDate) => {
     let currentDate =
       startDate instanceof Date ? startDate : new Date(startDate)
     let validEndDate = endDate instanceof Date ? endDate : new Date(endDate)
@@ -96,6 +95,11 @@ export default function LectureDates({
       currentDate.setDate(currentDate.getDate() + 1)
     }
     setSelectedDates(updatedSelectedDates)
+  }
+
+  useEffect(() => {
+    setSelectedDates([])
+    selectDateAuto(startDate, endDate)
   }, [startDate, endDate])
 
   const calculateMonthsShown = (startDate, endDate) => {
@@ -194,10 +198,6 @@ export default function LectureDates({
     })
   }
 
-  const clickDate = () => {
-    console.log(selectedDates)
-  }
-
   const clickAdviceSubmit = () => {
     setValue('lectureDetails', selectedDates)
     setDatesSelected(selectedDates)
@@ -273,7 +273,6 @@ export default function LectureDates({
                   onPress={() => {
                     clickAdviceSubmit()
                     // field.onChange(adviceTypeSelected)
-                    clickDate()
                   }}
                 >
                   선택

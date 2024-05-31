@@ -193,7 +193,14 @@ export default function LectureWrite() {
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
-  const [editLectures] = useMutation(EDIT_LECTURES_MUTATION)
+  const [editLectures] = useMutation(EDIT_LECTURES_MUTATION, {
+    context: {
+      headers: {
+        'x-apollo-operation-name': 'timetableAttached',
+        // 'apollo-require-preflight': 'true',
+      },
+    },
+  })
   const [campusName, setCampusName] = useState('신촌')
   const [subjectState, setSubjectState] = useState(null)
   const [sub, setSub] = useState('없음')
@@ -231,8 +238,26 @@ export default function LectureWrite() {
     reset,
     clearErrors,
     formState,
-  } = useForm()
-  const { errors } = formState
+  } = useForm({
+    defaultValues: {
+      campus: lectureData?.campus,
+      temporaryName: lectureData?.temporaryName,
+      subDiv: lectureData?.subDiv,
+      teachersId: lectureData?.teachersId,
+      roomNum: lectureData?.roomNum,
+      subjectId: lectureData?.subjectId,
+      lecturePeriodStart: lectureData?.lecturePeriodStart,
+      lecturePeriodEnd: lectureData?.lecturePeriodEnd,
+      lectureDetails: lectureData?.lectureDetails,
+      lectureTime: lectureData?.lectureTime,
+      eduStatusReport: lectureData?.eduStatusReport,
+      approvedNum: lectureData?.approvedNum,
+      confirmedNum: lectureData?.confirmedNum,
+      sessionNum: lectureData?.sessionNum,
+      timetableAttached: lectureData?.timetableAttached,
+    },
+  })
+  const { errors, dirtyFields, isDirty } = formState
 
   useEffect(() => {
     searchLectures({
@@ -280,14 +305,15 @@ export default function LectureWrite() {
         const date = parseInt(lectureData?.lecturePeriodStart)
         setLectureStartDate(date)
       }
-      if (lectureData?.teachers) {
-        const date = lectureData?.teachers.map(teacher => String(teacher.id))
-        setTeacher(date)
-      }
 
       if (lectureData?.lecturePeriodEnd) {
         const date = parseInt(lectureData?.lecturePeriodEnd)
         setLectureEndDate(date)
+      }
+
+      if (lectureData?.teachers) {
+        const date = lectureData?.teachers.map(teacher => String(teacher.id))
+        setTeacher(date)
       }
 
       if (
@@ -354,7 +380,7 @@ export default function LectureWrite() {
       } else {
         clearErrors('timetableAttached')
         setFileName(file.name)
-        setValue('timetableAttached', file)
+        setValue('timetableAttached', file, { shouldDirty: true })
       }
     }
   }
@@ -363,49 +389,82 @@ export default function LectureWrite() {
   }
 
   const onSubmit = async data => {
-    try {
-      console.log(data)
-      //   const teachersIdArray = data.teachersId
-      //     .split(',')
-      //     .filter(Boolean)
-      //     .map(Number)
-      //   const result = await editLectures({
-      //     variables: {
-      //       campus: data.campus,
-      //       temporaryName: data.temporaryName,
-      //       subDiv: data.subDiv,
-      //       teachersId: teachersIdArray,
-      //       roomNum: data.roomNum,
-      //       subjectId: parseInt(subjectSelectedData.id),
-      //       lecturePeriodStart: data.lecturePeriodStart,
-      //       lecturePeriodEnd: data.lecturePeriodEnd,
-      //       lectureDetails: data.lectureDetails,
-      //       lectureTime: [lectureStartTime, lectureEndTime],
-      //       eduStatusReport: data.eduStatusReport,
-      //       approvedNum: parseInt(data.approvedNum),
-      //       confirmedNum: parseInt(data.confirmedNum),
-      //       sessionNum: parseInt(data.sessionNum),
-      //       timetableAttached: data.timetableAttached,
-      //     },
-      //     // refetchQueries: [
-      //     //   {
-      //     //     query: SEE_SUBJECT_QUERY,
-      //     //     variables: { page: 1, limit: 10 },
-      //     //   },
-      //     // ],
-      //   })
-      //   if (!result.data.createLectures.ok) {
-      //     throw new Error('과정 등록 실패')
-      //   }
-      //   alert('등록되었습니다.')
-      //   userLogs(`${data.temporaryName}강의 등록`)
-      //   router.push('/lecture')
-    } catch (error) {
-      console.error('강의 등록 중 에러 발생:', error)
-      alert('강의 등록 처리 중 오류가 발생했습니다.')
+    console.log(data)
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          let teachersIdArray
+          if (dirtyFields.teachersId) {
+            teachersIdArray = data.teachersId
+              .split(',')
+              .filter(Boolean)
+              .map(Number)
+          }
+          const result = await editLectures({
+            variables: {
+              editLecturesId: parseInt(lectureId),
+              campus: data.campus,
+              temporaryName: data.temporaryName,
+              subDiv: data.subDiv,
+              // teachersId: dirtyFields.teachersId && teachersIdArray,
+              roomNum: data.roomNum,
+              subjectId:
+                subjectSelectedData === null
+                  ? lectureData.subjectId
+                  : parseInt(subjectSelectedData.id),
+              lecturePeriodStart: dirtyFields.lecturePeriodStart
+                ? data.lecturePeriodStart
+                : new Date(parseInt(lectureData.lecturePeriodEnd)),
+              lecturePeriodEnd: dirtyFields.lecturePeriodEnd
+                ? data.lecturePeriodEnd
+                : new Date(parseInt(lectureData.lecturePeriodEnd)),
+              lectureDetails: dirtyFields.lectureDetails
+                ? data.lectureDetails
+                : lectureData.lectureDetails,
+              lectureTime: dirtyFields.lectureTime
+                ? [lectureStartTime, lectureEndTime]
+                : lectureData.lectureTime,
+              eduStatusReport: dirtyFields.eduStatusReport
+                ? data.eduStatusReport
+                : lectureData.eduStatusReport,
+              approvedNum: dirtyFields.approvedNum
+                ? parseInt(data.approvedNum)
+                : lectureData.approvedNum,
+              confirmedNum: dirtyFields.confirmedNum
+                ? parseInt(data.confirmedNum)
+                : lectureData.confirmedNum,
+              sessionNum: dirtyFields.sessionNum
+                ? parseInt(data.sessionNum)
+                : lectureData.sessionNum,
+              timetableAttached:
+                dirtyFields.timetableAttached && data.timetableAttached,
+            },
+            // refetchQueries: [
+            //   {
+            //     query: SEE_SUBJECT_QUERY,
+            //     variables: { page: 1, limit: 10 },
+            //   },
+            // ],
+          })
+          console.log('result', result)
+          if (!result.data.editLectures.ok) {
+            throw new Error('과정 수정 실패')
+          }
+          alert('등록되었습니다.')
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${lectureId} ${data.temporaryName} 강의 정보 수정`,
+            dirtyFieldsArray.join(', '),
+          )
+          router.push('/lecture')
+        } catch (error) {
+          console.error('강의 수정 중 에러 발생:', error)
+          alert('강의 수정 처리 중 오류가 발생했습니다.')
+        }
+      }
     }
   }
-  console.log(lectureData)
 
   return (
     lectureData && (
@@ -560,6 +619,7 @@ export default function LectureWrite() {
                           과정 선택<span>*</span>
                         </FilterLabel>
                       }
+                      defaultValue={lectureData.subjectId}
                       labelPlacement="outside"
                       className="max-w-full"
                       variant="bordered"
@@ -846,7 +906,7 @@ export default function LectureWrite() {
                             message: '개강일을 선택해주세요.',
                           },
                         }}
-                        render={({ field }) => (
+                        render={({ field: startField }) => (
                           <DatePicker
                             renderCustomHeader={({
                               date,
@@ -873,18 +933,18 @@ export default function LectureWrite() {
                             }
                             placeholderText="날짜를 선택해주세요."
                             isClearable
-                            onChange={date => {
-                              const adjustedDate = date
+                            onChange={startDate => {
+                              const adjustedDate = startDate
                                 ? new Date(
-                                    date.getFullYear(),
-                                    date.getMonth(),
-                                    date.getDate(),
+                                    startDate.getFullYear(),
+                                    startDate.getMonth(),
+                                    startDate.getDate(),
                                     10,
                                     10,
                                     10,
                                   )
                                 : null
-                              field.onChange(adjustedDate)
+                              startField.onChange(adjustedDate)
                               setLectureStartDate(adjustedDate)
                             }}
                             dateFormat="yyyy/MM/dd"
@@ -930,7 +990,7 @@ export default function LectureWrite() {
                             message: '종강일을 선택해주세요.',
                           },
                         }}
-                        render={({ field }) => (
+                        render={({ field: endField }) => (
                           <DatePicker
                             renderCustomHeader={({
                               date,
@@ -955,22 +1015,21 @@ export default function LectureWrite() {
                                 ? null
                                 : new Date(lectureEndDate)
                             }
-                            minDate={lectureStartDate}
                             placeholderText="날짜를 선택해주세요."
                             isClearable
-                            onChange={date => {
-                              const adjustedDate = date
+                            onChange={endDate => {
+                              const adjustedEndDate = endDate
                                 ? new Date(
-                                    date.getFullYear(),
-                                    date.getMonth(),
-                                    date.getDate(),
+                                    endDate.getFullYear(),
+                                    endDate.getMonth(),
+                                    endDate.getDate(),
                                     23,
                                     59,
                                     59,
                                   )
                                 : null
-                              field.onChange(adjustedDate)
-                              setLectureEndDate(adjustedDate)
+                              endField.onChange(adjustedEndDate)
+                              setLectureEndDate(adjustedEndDate)
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -1021,7 +1080,7 @@ export default function LectureWrite() {
                       </Button>
                       <Input
                         readOnly
-                        defaultValue={String(lectureData?.lectureDetails)}
+                        defaultValue={lectureData?.lectureDetails}
                         labelPlacement="outside"
                         className="max-w-full"
                         variant="bordered"
@@ -1254,7 +1313,7 @@ export default function LectureWrite() {
                     fontColor="#fff"
                     bgColor="#007de9"
                   >
-                    등록
+                    수정
                   </Button2>
                   <Button2
                     buttonType="button"
@@ -1282,7 +1341,7 @@ export default function LectureWrite() {
           setValue={setValue}
           radio={true}
         />
-        {lectureStartDate && lectureEndDate && (
+        {isOpen && (
           <LectureDates
             isOpen={isOpen}
             onClose={onClose}
