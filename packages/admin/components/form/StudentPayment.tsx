@@ -1156,7 +1156,11 @@ export default function StudentPaymentForm({
                         <ManagerSelectID
                           selecedKey={subjectManager}
                           field={field}
-                          label={'영업 담당자'}
+                          label={
+                            <FilterLabel>
+                              영업담당자<span>*</span>
+                            </FilterLabel>
+                          }
                           defaultValue={studentPaymentData?.processingManagerId}
                           handleChange={handleSubManagerChange}
                           optionDefualt={{

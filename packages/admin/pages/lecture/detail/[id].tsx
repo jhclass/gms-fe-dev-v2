@@ -393,8 +393,6 @@ export default function LectureWrite() {
   }
 
   const onSubmit = async data => {
-    console.log(dirtyFields.eduStatusReport)
-    console.log(data.eduStatusReport)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -412,11 +410,12 @@ export default function LectureWrite() {
               campus: data.campus,
               temporaryName: data.temporaryName,
               subDiv: data.subDiv,
-              // teachersId: dirtyFields.teachersId && teachersIdArray,
+              teachersId: dirtyFields.teachersId && teachersIdArray,
               roomNum: data.roomNum,
-              // subjectId: dirtyFields.subjectId
-              //   ? parseInt(subjectSelectedData.id)
-              //   : lectureData.subjectId,
+              subjectId:
+                subjectSelectedData !== null
+                  ? parseInt(subjectSelectedData.id)
+                  : lectureData.subjectId,
               lecturePeriodStart: dirtyFields.lecturePeriodStart
                 ? new Date(data.lecturePeriodStart)
                 : new Date(parseInt(lectureData.lecturePeriodStart)),
@@ -455,7 +454,7 @@ export default function LectureWrite() {
           if (!result.data.editLectures.ok) {
             throw new Error('과정 수정 실패')
           }
-          alert('등록되었습니다.')
+          alert('수정되었습니다.')
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${lectureId} ${data.temporaryName} 강의 정보 수정`,

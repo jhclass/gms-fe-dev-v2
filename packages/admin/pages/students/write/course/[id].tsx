@@ -1044,7 +1044,11 @@ export default function StudentsWriteCourse() {
                           <ManagerSelectID
                             selecedKey={subjectManager}
                             field={field}
-                            label={'영업 담당자'}
+                            label={
+                              <FilterLabel>
+                                영업담당자<span>*</span>
+                              </FilterLabel>
+                            }
                             handleChange={handleSubManagerChange}
                             optionDefualt={{
                               id: '담당자 지정필요',
