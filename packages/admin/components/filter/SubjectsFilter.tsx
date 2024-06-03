@@ -9,8 +9,9 @@ import { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import SubDivSelect from '../common/SubDivSelect'
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -75,6 +76,19 @@ const FilterVariants = {
     },
   },
 }
+
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 export default function SubjectsFilter({
   isActive,
@@ -174,33 +188,22 @@ export default function SubjectsFilter({
                 name="subDiv"
                 defaultValue={'-'}
                 render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label={<FilterLabel>수강구분</FilterLabel>}
-                    placeholder=" "
-                    defaultValue={'-'}
-                    className="w-full"
-                    variant="bordered"
-                    selectedKeys={[sub]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        field.onChange(value)
-                        handleSubChange(value)
-                      }
-                    }}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
                   >
-                    {Object.entries(subStatus).map(([key, item]) =>
-                      key === '0' ? (
-                        <SelectItem value="-" key={'-'}>
-                          -
-                        </SelectItem>
-                      ) : (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ),
-                    )}
-                  </Select>
+                    <SubDivSelect
+                      selectedKey={sub}
+                      field={field}
+                      defaultValue={'-'}
+                      label={<FilterLabel>수강구분</FilterLabel>}
+                      handleChange={handleSubChange}
+                      isHyphen={true}
+                    />
+                  </Suspense>
                 )}
               />
             </ItemBox>

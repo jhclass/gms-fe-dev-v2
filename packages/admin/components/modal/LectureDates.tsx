@@ -76,24 +76,34 @@ export default function LectureDates({
   const [selectedDates, setSelectedDates] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
 
-  useEffect(() => {
-    let currentDate = new Date(startDate)
+  const selectDateAuto = (startDate, endDate) => {
+    let currentDate =
+      startDate instanceof Date ? new Date(startDate) : new Date(startDate)
+    let validEndDate =
+      endDate instanceof Date ? new Date(endDate) : new Date(endDate)
     let updatedSelectedDates = []
-
-    while (currentDate <= endDate) {
+    while (currentDate <= validEndDate) {
       const dateString = currentDate.toISOString().split('T')[0]
       updatedSelectedDates.push(dateString)
-
       currentDate.setDate(currentDate.getDate() + 1)
     }
     setSelectedDates(updatedSelectedDates)
+  }
+
+  useEffect(() => {
+    setSelectedDates([])
+    selectDateAuto(startDate, endDate)
   }, [startDate, endDate])
 
   const calculateMonthsShown = (startDate, endDate) => {
-    const startYear = startDate?.getFullYear()
-    const endYear = endDate?.getFullYear()
-    const startMonth = startDate?.getMonth()
-    const endMonth = endDate?.getMonth()
+    const validStartDate =
+      startDate instanceof Date ? startDate : new Date(startDate)
+    const validEndDate = endDate instanceof Date ? endDate : new Date(endDate)
+
+    const startYear = validStartDate.getFullYear()
+    const endYear = validEndDate.getFullYear()
+    const startMonth = validStartDate.getMonth()
+    const endMonth = validEndDate.getMonth()
 
     // 두 날짜 사이의 총 월 수 계산
     const months = (endYear - startYear) * 12 + endMonth - startMonth + 1
@@ -137,7 +147,6 @@ export default function LectureDates({
 
   // 요일 선택 핸들러
   const toggleDay = day => {
-    console.log(day)
     setGroupSelected(day)
     setDisabledDays(prev => {
       const isDayDisabled = prev.includes(day)
@@ -181,12 +190,8 @@ export default function LectureDates({
     })
   }
 
-  const clickDate = () => {
-    console.log(selectedDates)
-  }
-
   const clickAdviceSubmit = () => {
-    setValue('lectureDetails', selectedDates)
+    setValue('lectureDetails', selectedDates, { shouldDirty: true })
     setDatesSelected(selectedDates)
     onClose()
   }
@@ -200,19 +205,6 @@ export default function LectureDates({
               <ModalHeader className="flex flex-col gap-1">
                 기간선택
                 <DayCheck>
-                  {/* {['일', '월', '화', '수', '목', '금', '토'].map(
-                    (day, index) => (
-                      <label key={index}>
-                        <input
-                          type="checkbox"
-                          checked={disabledDays.includes(index)}
-                          onChange={() => toggleDay(index)}
-                        />
-                        {day}
-                      </label>
-                    ),
-                  )} */}
-
                   {[' 일 ', ' 월 ', ' 화 ', ' 수 ', ' 목 ', ' 금 ', ' 토 '].map(
                     (day, index) => (
                       <ChipCheckbox
@@ -260,7 +252,6 @@ export default function LectureDates({
                   onPress={() => {
                     clickAdviceSubmit()
                     // field.onChange(adviceTypeSelected)
-                    clickDate()
                   }}
                 >
                   선택

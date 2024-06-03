@@ -21,6 +21,7 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
 import ManagerSelect from '@/components/common/ManagerSelect'
 import AdviceSelect from '@/components//common/AdviceSelect'
+import SubDivSelect from '../common/SubDivSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -399,33 +400,22 @@ export default function ConsultFilter({
                 name="subDiv"
                 defaultValue={'-'}
                 render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label={<FilterLabel>수강구분</FilterLabel>}
-                    placeholder=" "
-                    defaultValue={'-'}
-                    className="w-full"
-                    variant="bordered"
-                    selectedKeys={[sub]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        field.onChange(value)
-                        handleSubChange(value)
-                      }
-                    }}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
                   >
-                    {Object.entries(subStatus).map(([key, item]) =>
-                      key === '0' ? (
-                        <SelectItem value="-" key={'-'}>
-                          -
-                        </SelectItem>
-                      ) : (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ),
-                    )}
-                  </Select>
+                    <SubDivSelect
+                      selectedKey={sub}
+                      field={field}
+                      defaultValue={'-'}
+                      label={<FilterLabel>수강구분</FilterLabel>}
+                      handleChange={handleSubChange}
+                      isHyphen={true}
+                    />
+                  </Suspense>
                 )}
               />
             </ItemBox>

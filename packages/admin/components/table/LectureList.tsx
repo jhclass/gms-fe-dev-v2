@@ -1,15 +1,12 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
 import LectureItem from '@/components/table/LectureItem'
-import {
-  ManageUser,
-  StudentState,
-  StudentStateResponse,
-} from '@/src/generated/graphql'
+import { SeeLecturesResult } from '@/src/generated/graphql'
+import { SEE_LECTURES_QUERY } from '@/graphql/queries'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -122,11 +119,11 @@ const Tperiod = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 14%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.16}px;
 `
 const Ttimes = styled.div`
   position: relative;
@@ -164,11 +161,11 @@ const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.13}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -183,23 +180,33 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: #71717a;
 `
-type seeStudentState = {
-  seeStudentState: StudentStateResponse
-}
-type mmeFavoQuery = {
-  mMe: ManageUser
-}
-type seeFavoriteState = {
-  seeFavorite: StudentState[]
+type seeLectures = {
+  seeLectures: SeeLecturesResult
 }
 
 export default function LectureList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
+
+  const { error, data, refetch } = useSuspenseQuery<seeLectures>(
+    SEE_LECTURES_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
+  const lectureData = data?.seeLectures?.data
+  const totalCount = data?.seeLectures?.totalCount
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [])
+
+  if (error) {
+    console.log(error)
   }
 
   return (
@@ -240,8 +247,17 @@ export default function LectureList() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            <LectureItem />
-            <LectureItem />
+            {totalCount > 0 &&
+              lectureData?.map((item, index) => (
+                <LectureItem
+                  forName="student"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                />
+              ))}
             {totalCount === 0 && <Nolist>등록된 강의가 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>

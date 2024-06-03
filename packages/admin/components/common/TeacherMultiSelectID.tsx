@@ -8,7 +8,7 @@ type searchManageUserQuery = {
 }
 
 export default function TeacherMultiSelect({
-  defaultValue = null,
+  defaultSelectedKeys = null,
   selecedKey,
   field,
   label,
@@ -18,7 +18,7 @@ export default function TeacherMultiSelect({
   const { error: searchManagerError, data: searchManagerData } =
     useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
       variables: {
-        mGrade: 20,
+        mRank: '강사',
         resign: 'N',
       },
     })
@@ -40,8 +40,9 @@ export default function TeacherMultiSelect({
         className="w-full"
         isMultiline={true}
         selectionMode="multiple"
-        defaultValue={defaultValue}
+        defaultSelectedKeys={defaultSelectedKeys}
         variant="bordered"
+        // selectedKeys={selecedKey}
         selectedKeys={selecedKey}
         onChange={value => {
           if (value.target.value !== '') {

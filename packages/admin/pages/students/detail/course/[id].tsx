@@ -636,10 +636,12 @@ export default function StudentsWrite() {
                           <>
                             <Button
                               isDisabled={
-                                studentPaymentData?.courseComplete ===
-                                  '미수료' ||
-                                studentPaymentData?.courseComplete === ''
-                                  ? false
+                                studentPaymentData?.amountReceived > 0
+                                  ? studentPaymentData?.courseComplete ===
+                                      '미수료' ||
+                                    studentPaymentData?.courseComplete === ''
+                                    ? false
+                                    : true
                                   : true
                               }
                               size="md"

@@ -1668,37 +1668,100 @@ export const CREATE_LECTURES_MUTATION = gql`
   }
 `
 export const SEARCH_LECTURES_MUTATION = gql`
-  mutation Mutation($searchLecturesId: Int) {
-    searchLectures(id: $searchLecturesId) {
+  mutation Mutation(
+    $searchLecturesId: Int
+    $teacherId: Int
+    $subjectId: Int
+    $temporaryName: String
+    $periodEnd: String
+    $periodStart: String
+  ) {
+    searchLectures(
+      id: $searchLecturesId
+      teacherId: $teacherId
+      subjectId: $subjectId
+      temporaryName: $temporaryName
+      periodEnd: $periodEnd
+      periodStart: $periodStart
+    ) {
       totalCount
       ok
       message
       error
       data {
-        updatedAt
-        timetableAttached
-        temporaryName
-        subjectId
+        ApprovedNum
+        campus
+        confirmedNum
+        createdAt
+        eduStatusReport
+        id
+        lectureDetails
+        lecturePeriodEnd
+        lecturePeriodStart
+        lectureTime
+        roomNum
+        sessionNum
+        subDiv
         subject {
+          subjectName
+          subjectCode
           subDiv
           round
           id
-          subjectName
-          subjectCode
-          totalTime
         }
-        subDiv
-        sessionNum
-        roomNum
-        lectureTime
-        lectureDetails
-        id
-        eduStatusReport
-        createdAt
-        confirmedNum
-        campus
-        ApprovedNum
+        subjectId
+        teachers {
+          mUserId
+          mUsername
+          id
+        }
+        temporaryName
+        timetableAttached
+        updatedAt
       }
+    }
+  }
+`
+export const EDIT_LECTURES_MUTATION = gql`
+  mutation Mutation(
+    $editLecturesId: Int!
+    $campus: String
+    $temporaryName: String
+    $subDiv: String
+    $teachersId: [Int]
+    $roomNum: String
+    $subjectId: Int
+    $lecturePeriodStart: String
+    $lecturePeriodEnd: String
+    $lectureDetails: [String]
+    $lectureTime: [String]
+    $eduStatusReport: String
+    $approvedNum: Int
+    $confirmedNum: Int
+    $sessionNum: Int
+    $timetableAttached: Upload
+  ) {
+    editLectures(
+      id: $editLecturesId
+      campus: $campus
+      temporaryName: $temporaryName
+      subDiv: $subDiv
+      teachersId: $teachersId
+      roomNum: $roomNum
+      subjectId: $subjectId
+      lecturePeriodStart: $lecturePeriodStart
+      lecturePeriodEnd: $lecturePeriodEnd
+      lectureDetails: $lectureDetails
+      lectureTime: $lectureTime
+      eduStatusReport: $eduStatusReport
+      ApprovedNum: $approvedNum
+      confirmedNum: $confirmedNum
+      sessionNum: $sessionNum
+      timetableAttached: $timetableAttached
+    ) {
+      ok
+      message
+      error
     }
   }
 `

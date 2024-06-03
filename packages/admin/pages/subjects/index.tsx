@@ -54,6 +54,7 @@ export default function Subjects() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [filterActive, setFilterActive] = useRecoilState(
     subjectFilterActiveState,
   )
@@ -71,7 +72,7 @@ export default function Subjects() {
           isWrite={true}
           rightArea={true}
           addRender={
-            mGrade < grade.general && (
+            (mGrade < grade.general || mPart.includes('영업팀')) && (
               <>
                 {
                   <Button
@@ -110,7 +111,7 @@ export default function Subjects() {
             </LodingDiv>
           }
         >
-          <CreateAdviceType isActive={createActive} />
+          <CreateAdviceType isActive={createActive} category="수강구분" />
         </Suspense>
         <ConBox>
           <Suspense

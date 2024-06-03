@@ -11,7 +11,7 @@ import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { Button } from '@nextui-org/react'
 import { motion } from 'framer-motion'
-import CreateTeacherType from '@/components/form/CreateTeacherType'
+import CreateAdviceType from '@/components/form/CreateAdviceType'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -112,7 +112,7 @@ export default function Teacher() {
               </LodingDiv>
             }
           >
-            <CreateTeacherType isActive={createActive} />
+            <CreateAdviceType isActive={createActive} category="강의분야" />
           </Suspense>
           <ConBox>
             {filterSearch ? (

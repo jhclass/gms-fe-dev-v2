@@ -103,11 +103,11 @@ const Tperiod = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 14%;
+  width: 16%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.16}px;
 `
 const Ttimes = styled.div`
   position: relative;
@@ -144,11 +144,11 @@ const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.13}px;
 `
 const BtnBox = styled.div`
   display: flex;
@@ -181,38 +181,33 @@ export default function ConsolutItem(props) {
   const mPart = useMme('mPart')
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
-  const student = props.tableData
-  const progressStatus = useRecoilValue(progressStatusState)
-  const studentAdvice = student?.adviceTypes.map(item => item.type) || []
+  const lecture = props.tableData
   const [isOpen, setIsOpen] = useState(false)
 
-  const formatDate = (data, isTime) => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    if (isTime) {
-      if (date.getHours() === 0 && date.getMinutes() === 0) {
-        const formatted =
-          `${date.getFullYear()}-` +
-          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-          `${date.getDate().toString().padStart(2, '0')} ` +
-          `미정`
-        return formatted
-      } else {
-        const formatted =
-          `${date.getFullYear()}-` +
-          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-          `${date.getDate().toString().padStart(2, '0')} ` +
-          `${date.getHours().toString().padStart(2, '0')}:` +
-          `${date.getMinutes().toString().padStart(2, '0')}`
-        return formatted
-      }
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
-    }
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
+  }
+  const formatTime = dateString => {
+    const date = new Date(dateString)
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${hours}:${minutes}`
+  }
+
+  const extractTimeRange = dates => {
+    const startTime = formatTime(dates[0])
+    const endTime = formatTime(dates[1])
+    return `${startTime} - ${endTime}`
+  }
+
+  function formatUsernames(data) {
+    return data.map(item => item.mUsername).join(', ')
   }
 
   const rejectCheck = (clickCheck: number): void => {
@@ -239,46 +234,35 @@ export default function ConsolutItem(props) {
             <div>
               <Tnum>
                 <EllipsisBox>
-                  {/* {(props.currentPage - 1) * conLimit + (conIndex + 1)} */}1
+                  {(props.currentPage - 1) * conLimit + (conIndex + 1)}
                 </EllipsisBox>
               </Tnum>
               <Troom>
-                <EllipsisBox>
-                  {/* {student.subDiv} */}
-                  204호
-                </EllipsisBox>
+                <EllipsisBox>{lecture.roomNum}</EllipsisBox>
               </Troom>
               <TsubDiv>
-                <EllipsisBox>
-                  {/* {student.subDiv} */}
-                  근로자
-                </EllipsisBox>
+                <EllipsisBox>{lecture.subDiv}</EllipsisBox>
               </TsubDiv>
               <TlecturName>
-                <EllipsisBox>
-                  {/* {student.subDiv} */}
-                  귀여운이모티콘 제작하기
-                </EllipsisBox>
+                <EllipsisBox>{lecture.temporaryName}</EllipsisBox>
               </TlecturName>
               <Tperiod>
                 <EllipsisBox>
-                  {/* {student.createdAt
-                    ? formatDate(student.createdAt, false)
-                    : '-'} */}
-                  2024-01-01 ~ 2024-03-15
+                  {formatDate(lecture.lecturePeriodStart) +
+                    ' - ' +
+                    formatDate(lecture.lecturePeriodEnd)}
                 </EllipsisBox>
               </Tperiod>
               <Ttimes>
-                <EllipsisBox>09:30 ~ 18:20</EllipsisBox>
+                <EllipsisBox>
+                  {extractTimeRange(lecture.lectureTime)}
+                </EllipsisBox>
               </Ttimes>
               <Tdates>
-                <EllipsisBox>30일</EllipsisBox>
+                <EllipsisBox>{lecture.lectureDetails.length}일</EllipsisBox>
               </Tdates>
               <Tteacher>
-                <EllipsisBox>
-                  {/* {student.stName} */}
-                  김강사
-                </EllipsisBox>
+                <EllipsisBox>{formatUsernames(lecture.teachers)}</EllipsisBox>
               </Tteacher>
               <Tbtn>
                 <BtnBox>
@@ -290,7 +274,7 @@ export default function ConsolutItem(props) {
                       className="w-full text-white"
                       onClick={e => {
                         e.preventDefault()
-                        router.push('/lecture/detail')
+                        router.push(`/lecture/detail/${lecture.id}`)
                       }}
                     >
                       강의 수정
@@ -313,7 +297,7 @@ export default function ConsolutItem(props) {
             </div>
             <div>
               <Tdiv $isOpen={isOpen}>
-                <LectureReportList />
+                <LectureReportList lecture={lecture} />
               </Tdiv>
             </div>
           </ClickBox>

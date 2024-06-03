@@ -149,7 +149,7 @@ export default function StudentsWrite() {
         if (result.createStudent.ok) {
           userLogs(`${data.name} 수강생 등록`)
           alert('등록되었습니다.')
-          router.back()
+          window.location.href = '/students'
         }
       },
     })
