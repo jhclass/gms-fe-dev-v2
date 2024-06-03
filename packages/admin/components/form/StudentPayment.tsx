@@ -723,10 +723,10 @@ export default function StudentPaymentForm({
                       <FilterLabel>
                         선발 평가 점수
                         {subjectSelectedData === null
-                          ? studentSubjectData.subDiv === '국가기간' && (
+                          ? sub === '국가기간' && <span>*</span>
+                          : subjectSelectedData.subDiv === '국가기간' && (
                               <span>*</span>
-                            )
-                          : sub === '국가기간' && <span>*</span>}
+                            )}
                       </FilterLabel>
                     }
                     className="w-full"
@@ -734,10 +734,10 @@ export default function StudentPaymentForm({
                       required: {
                         value:
                           subjectSelectedData === null
-                            ? studentSubjectData.subDiv === '국가기간'
+                            ? sub === '국가기간'
                               ? true
                               : false
-                            : sub === '국가기간'
+                            : subjectSelectedData.subDiv === '국가기간'
                             ? true
                             : false,
                         message: '선발 평가 점수를 작성해주세요.',
