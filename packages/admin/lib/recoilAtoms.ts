@@ -17,6 +17,11 @@ export const navOpenState = atom<boolean>({
   default: true,
 })
 
+export const newStudentState = atom<boolean>({
+  key: 'newStudent',
+  default: false,
+})
+
 export const categoryMenuState = atom<{}>({
   key: 'categoryMenuState',
   default: {

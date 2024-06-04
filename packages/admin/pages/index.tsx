@@ -82,7 +82,7 @@ export default function Home() {
         if (resData.searchStudent.ok) {
           const { totalCount } = resData.searchStudent || {}
           if (totalCount > 0) {
-            sessionStorage.setItem('newStudent', totalCount)
+            sessionStorage.setItem('todayStudentTotal', totalCount)
           }
         }
       },

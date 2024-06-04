@@ -3,7 +3,11 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
+import {
+  categoryMenuState,
+  navOpenState,
+  newStudentState,
+} from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { useMutation } from '@apollo/client'
 import { Tooltip } from '@nextui-org/react'
@@ -135,17 +139,28 @@ export default function CategoryItem<CategoryItemProps>({
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = today.getMonth() + 1
+  const day = today.getDate()
+  const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
+    day,
+  ).padStart(2, '0')}`
 
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const sessionToday = sessionStorage.getItem('today')
   const consultTotal = sessionStorage.getItem('newConsult')
-  const studenTotal = sessionStorage.getItem('newStudent')
+  const studentTotal = sessionStorage.getItem('todayStudentTotal')
+  const newStudentState = sessionStorage.getItem('newStudent')
   const accounTingTotal = sessionStorage.getItem('newAccounting')
 
   const [newConsult, setNewConsult] = useState(false)
   const [newStudent, setNewStudent] = useState(false)
   const [newAccounting, setNewAccounting] = useState(false)
   const arrowRef = useRef(null)
+
+  console.log(sessionToday, newStudentState)
 
   useEffect(() => {
     if (name === '상담관리') {
@@ -154,7 +169,10 @@ export default function CategoryItem<CategoryItemProps>({
       }
     }
     if (name === '수강생관리') {
-      if (parseInt(studenTotal) > 0) {
+      if (parseInt(studentTotal) > 0 || newStudentState) {
+        setNewStudent(true)
+      }
+      if (formattedDate === sessionToday && newStudentState === 'true') {
         setNewStudent(true)
       }
     }
@@ -163,7 +181,7 @@ export default function CategoryItem<CategoryItemProps>({
         setNewAccounting(true)
       }
     }
-  }, [consultTotal, studenTotal, accounTingTotal])
+  }, [consultTotal, studentTotal, newStudentState, accounTingTotal])
 
   useEffect(() => {
     if (arrowRef.current) {

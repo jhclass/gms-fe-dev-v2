@@ -20,6 +20,8 @@ import {
   CREATE_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { useRecoilState } from 'recoil'
+import { newStudentState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -126,6 +128,7 @@ const BtnBox = styled.div`
 export default function StudentsWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const [studenTotal, setStudenTotal] = useRecoilState(newStudentState)
   const [createStudent] = useMutation(CREATE_STUDENT_MUTATION)
   const [checkDouble] = useMutation(CHECK_DOUBLE_MUTATION)
   const { register, getValues, control, handleSubmit, formState, reset } =
@@ -149,7 +152,7 @@ export default function StudentsWrite() {
         if (result.createStudent.ok) {
           userLogs(`${data.name} 수강생 등록`)
           alert('등록되었습니다.')
-          window.location.href = '/students'
+          // window.location.href = '/students'
         }
       },
     })
@@ -198,7 +201,7 @@ export default function StudentsWrite() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     console.log('token:', token)
-    const ws = new WebSocket(`ws://localhost:4001/ws?token=${token}`)
+    const ws = new WebSocket(`ws://13.125.214.206:4001/ws?token=${token}`)
 
     ws.onopen = () => {
       setStatus('WebSocket connection opened')
@@ -214,6 +217,16 @@ export default function StudentsWrite() {
         if (message.type === 'NEW_STUDENT') {
           setMessages(prevMessages => [...prevMessages, message.data])
           console.log('NEW_STUDENT message received:', message.data)
+          const currentDate = new Date()
+          const year = currentDate.getFullYear()
+          const month = currentDate.getMonth() + 1
+          const day = currentDate.getDate()
+          const formattedDate = `${year}-${String(month).padStart(
+            2,
+            '0',
+          )}-${String(day).padStart(2, '0')}`
+          sessionStorage.setItem('today', formattedDate)
+          sessionStorage.setItem('newStudent', 'true')
         }
       } catch (error) {
         console.error('Error parsing message:', error)
