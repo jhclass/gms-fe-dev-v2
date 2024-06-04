@@ -320,7 +320,6 @@ export default function StudentsWriteCourse() {
   }, [subjectSelectedData])
 
   const onSubmit = data => {
-    console.log(data)
     if (data.actualAmount >= 0) {
       createStudentPayment({
         variables: {
