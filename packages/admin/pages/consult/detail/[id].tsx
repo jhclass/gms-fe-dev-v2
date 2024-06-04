@@ -10,7 +10,9 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
+  Button,
   Input,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -113,6 +115,7 @@ const ColFlexBox = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
+  position: relative;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -120,6 +123,7 @@ const FlexBox = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  position: relative;
 `
 const DatePickerBox = styled.div`
   width: 100%;
@@ -173,6 +177,7 @@ const MemoList = styled.ul`
     gap: 1.5rem;
   }
 `
+
 const MemoItem = styled.li`
   width: 100%;
   display: flex;
@@ -188,12 +193,26 @@ const MemoItem = styled.li`
     gap: 0.3rem;
   }
 `
+const LabelFlex = styled.div`
+  position: relative;
+`
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
 
 export default function ConsultDetail() {
   const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
@@ -449,6 +468,20 @@ export default function ConsultDetail() {
     setManager(e.target.value)
   }
 
+  const handleClickAdviceType = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'adviceType' },
+    })
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
+  }
+
   return (
     <>
       {studentState !== null && (
@@ -690,6 +723,18 @@ export default function ConsultDetail() {
                       {String(errors.adviceTypes.message)}
                     </p>
                   )}
+                  {mGrade < grade.general && (
+                    <AddLink>
+                      <Link
+                        size="sm"
+                        underline="hover"
+                        href="#"
+                        onClick={handleClickAdviceType}
+                      >
+                        상담분야 추가
+                      </Link>
+                    </AddLink>
+                  )}
                 </AreaBox>
                 <AreaBox>
                   <Textarea
@@ -748,13 +793,29 @@ export default function ConsultDetail() {
                         <SubDivSelect
                           selectedKey={sub}
                           field={field}
-                          label={<FilterLabel>수강구분</FilterLabel>}
+                          label={
+                            <LabelFlex>
+                              <FilterLabel>수강구분</FilterLabel>
+                            </LabelFlex>
+                          }
                           handleChange={handleSubChange}
                           isHyphen={false}
                         />
                       </Suspense>
                     )}
                   />
+                  {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                    <AddLink>
+                      <Link
+                        size="sm"
+                        underline="hover"
+                        href="#"
+                        onClick={handleClick}
+                      >
+                        수강구분 추가
+                      </Link>
+                    </AddLink>
+                  )}
                 </FlexBox>
                 <FlexBox>
                   <Controller

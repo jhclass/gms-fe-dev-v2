@@ -9,7 +9,14 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react'
+import {
+  Input,
+  Link,
+  Select,
+  SelectItem,
+  Switch,
+  Textarea,
+} from '@nextui-org/react'
 import { gradeState, subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
@@ -105,6 +112,7 @@ const FlexBox = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  position: relative;
 `
 const AreaSmallBox = styled.div`
   width: 10%;
@@ -179,11 +187,23 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
 export default function SubjectDetail() {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const subjectId = typeof router.query.id === 'string' ? router.query.id : null
   const subjectsPage = router.query.page
   const subjectsLimit = router.query.limit
@@ -467,6 +487,12 @@ export default function SubjectDetail() {
   const handleTeacherChange = e => {
     setTeacher(e.target.value)
   }
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
+  }
 
   return (
     <>
@@ -661,6 +687,18 @@ export default function SubjectDetail() {
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.subDiv.message)}
                       </p>
+                    )}
+                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          수강구분 추가
+                        </Link>
+                      </AddLink>
                     )}
                   </AreaBox>
                 </FlexBox>

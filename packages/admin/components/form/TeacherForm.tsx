@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -170,6 +170,7 @@ const AvatarF = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+  position: relative;
 `
 const AreaSmallBox = styled.div``
 const DatePickerBox = styled.div`
@@ -215,6 +216,17 @@ const BtnBox = styled.div`
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+`
+
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
 `
 
 type searchManageUserQuery = {
@@ -360,6 +372,13 @@ export default function StudentsWrite({ managerId }) {
 
   const clickCreate = () => {
     createTamp({ variables: { manageUserId: managerData.id } })
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'teacherType' },
+    })
   }
 
   return (
@@ -659,6 +678,19 @@ export default function StudentsWrite({ managerId }) {
                         </Suspense>
                       )}
                     />
+                    {(loginMGrade < grade.general ||
+                      loginMPart?.includes('교무팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          강의분야 추가
+                        </Link>
+                      </AddLink>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <DatePickerBox>
