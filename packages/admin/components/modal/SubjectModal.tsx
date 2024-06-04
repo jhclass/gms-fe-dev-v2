@@ -148,6 +148,7 @@ export default function SubjectModal({
   radio = false,
   setSubjectSelectedData = null,
   setSub = null,
+  isLecture = false,
 }) {
   const router = useRouter()
   const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
@@ -293,16 +294,39 @@ export default function SubjectModal({
                           <Tfee>과정 금액</Tfee>
                         </TableRow>
                       </Theader>
-                      {subjectList?.result !== null &&
-                        subjectList?.result.map((item, index) => (
-                          <TableItem key={index}>
-                            <TableRow>
-                              <Radio key={item.id} value={String(item.id)}>
-                                <SubjectItem tableData={item} />
-                              </Radio>
-                            </TableRow>
-                          </TableItem>
-                        ))}
+                      {isLecture ? (
+                        <>
+                          {subjectList?.result !== null &&
+                            subjectList?.result
+                              .filter(item => item.lectures === null)
+                              .map((item, index) => (
+                                <TableItem key={index}>
+                                  <TableRow>
+                                    <Radio
+                                      key={item.id}
+                                      value={String(item.id)}
+                                    >
+                                      <SubjectItem tableData={item} />
+                                    </Radio>
+                                  </TableRow>
+                                </TableItem>
+                              ))}
+                        </>
+                      ) : (
+                        <>
+                          {subjectList?.result !== null &&
+                            subjectList?.result.map((item, index) => (
+                              <TableItem key={index}>
+                                <TableRow>
+                                  <Radio key={item.id} value={String(item.id)}>
+                                    <SubjectItem tableData={item} />
+                                  </Radio>
+                                </TableRow>
+                              </TableItem>
+                            ))}
+                        </>
+                      )}
+
                       {subjectList?.result === null && (
                         <Nolist>노출중인 과정이 없습니다.</Nolist>
                       )}

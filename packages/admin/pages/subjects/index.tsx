@@ -17,6 +17,7 @@ import {
   subjectSearchState,
 } from '@/lib/recoilAtoms'
 import Layout from '@/pages/subjects/layout'
+import { useRouter } from 'next/router'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -51,6 +52,7 @@ const IconVariants = {
 }
 
 export default function Subjects() {
+  const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -61,6 +63,13 @@ export default function Subjects() {
   const [filterSearch, setFilterSearch] = useRecoilState(subjectFilterState)
   const [subjectFilter, setSubjectFilter] = useRecoilState(subjectSearchState)
   const [createActive, setCreateActive] = useState(false)
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
+  }
 
   return (
     <>
@@ -81,9 +90,7 @@ export default function Subjects() {
                     variant="solid"
                     color="primary"
                     className="text-white ml-[0.5rem]"
-                    onClick={() => {
-                      setCreateActive(prev => !prev)
-                    }}
+                    onClick={handleClick}
                   >
                     <ActiveIcon
                       variants={IconVariants}
@@ -104,15 +111,6 @@ export default function Subjects() {
           setSubjectFilter={setSubjectFilter}
           subjectFilter={subjectFilter}
         />
-        <Suspense
-          fallback={
-            <LodingDiv>
-              <i className="xi-spinner-2" />
-            </LodingDiv>
-          }
-        >
-          <CreateAdviceType isActive={createActive} category="수강구분" />
-        </Suspense>
         <ConBox>
           <Suspense
             fallback={

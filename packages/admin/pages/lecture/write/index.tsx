@@ -1279,6 +1279,7 @@ export default function LectureWrite() {
         sbjClose={sbjClose}
         setValue={setValue}
         radio={true}
+        isLecture={true}
       />
       {lectureStartDate && (
         <LectureDates

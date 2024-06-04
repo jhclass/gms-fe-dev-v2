@@ -567,22 +567,25 @@ export const SEARCH_SUBJECT_MUTATION = gql`
       message
       ok
       result {
+        updatedAt
+        totalTime
+        teacherName
+        subjectName
+        subjectCode
+        subDiv
+        startDate
+        round
+        roomNum
+        lectures {
+          id
+        }
+        id
+        fee
+        exposure
+        expiresDateStart
+        expiresDateEnd
         createdAt
         endDate
-        expiresDateEnd
-        expiresDateStart
-        exposure
-        fee
-        id
-        roomNum
-        startDate
-        subDiv
-        subjectCode
-        subjectName
-        teacherName
-        totalTime
-        updatedAt
-        round
       }
       totalCount
     }
