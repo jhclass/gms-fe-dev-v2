@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -191,6 +191,50 @@ export default function StudentsWrite() {
   //     }
   //   }
   // }
+
+  //socketTest
+  const [status, setStatus] = useState('Connecting...')
+  const [messages, setMessages] = useState([])
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    console.log('token:', token)
+    const ws = new WebSocket(`ws://localhost:4001/ws?token=${token}`)
+
+    ws.onopen = () => {
+      setStatus('WebSocket connection opened')
+      console.log('WebSocket connection opened')
+      ws.send('클라이언트에서 서버로 메시지 전송')
+    }
+
+    ws.onmessage = event => {
+      try {
+        const message = JSON.parse(event.data)
+        console.log('Message from server:', message)
+
+        if (message.type === 'NEW_STUDENT') {
+          setMessages(prevMessages => [...prevMessages, message.data])
+          console.log('NEW_STUDENT message received:', message.data)
+        }
+      } catch (error) {
+        console.error('Error parsing message:', error)
+      }
+    }
+
+    ws.onclose = () => {
+      setStatus('WebSocket connection closed')
+      console.log('WebSocket connection closed')
+    }
+
+    ws.onerror = error => {
+      setStatus('WebSocket error')
+      console.log('WebSocket error:', error)
+    }
+
+    return () => {
+      ws.close()
+    }
+  }, [])
+  //socketTest
   return (
     <>
       <MainWrap>
