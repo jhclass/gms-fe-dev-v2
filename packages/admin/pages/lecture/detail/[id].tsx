@@ -12,6 +12,7 @@ const _ = require('lodash')
 import {
   Button,
   Input,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -33,6 +34,9 @@ import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -111,6 +115,7 @@ const FlexBox = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  position: relative;
 `
 const TimeBox = styled.div`
   display: flex;
@@ -188,9 +193,24 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
 export default function LectureWrite() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const { userLogs } = useUserLogsMutation()
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [editLectures] = useMutation(EDIT_LECTURES_MUTATION, {
@@ -469,6 +489,13 @@ export default function LectureWrite() {
     }
   }
 
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
+  }
+
   return (
     lectureData && (
       <>
@@ -570,6 +597,18 @@ export default function LectureWrite() {
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.subDiv.message)}
                       </p>
+                    )}
+                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          수강구분 추가
+                        </Link>
+                      </AddLink>
                     )}
                   </AreaBox>
                 </FlexBox>

@@ -11,6 +11,7 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import {
   Input,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -37,6 +38,7 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/consult/layout'
 import ManagerSelect from '@/components/common/ManagerSelect'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -88,6 +90,7 @@ const DetailForm = styled.form`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
+  position: relative;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -95,6 +98,7 @@ const FlexBox = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  position: relative;
 `
 const DatePickerBox = styled.div`
   width: 100%;
@@ -137,9 +141,23 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
 export default function ConsultWirte() {
   const router = useRouter()
   const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
@@ -214,6 +232,20 @@ export default function ConsultWirte() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
+  }
+
+  const handleClickAdviceType = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'adviceType' },
+    })
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
   }
 
   return (
@@ -443,6 +475,18 @@ export default function ConsultWirte() {
                     {String(errors.adviceTypes.message)}
                   </p>
                 )}
+                {mGrade < grade.general && (
+                  <AddLink>
+                    <Link
+                      size="sm"
+                      underline="hover"
+                      href="#"
+                      onClick={handleClickAdviceType}
+                    >
+                      상담분야 추가
+                    </Link>
+                  </AddLink>
+                )}
               </AreaBox>
               <AreaBox>
                 <Textarea
@@ -504,6 +548,18 @@ export default function ConsultWirte() {
                     </Suspense>
                   )}
                 />
+                {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                  <AddLink>
+                    <Link
+                      size="sm"
+                      underline="hover"
+                      href="#"
+                      onClick={handleClick}
+                    >
+                      수강구분 추가
+                    </Link>
+                  </AddLink>
+                )}
               </FlexBox>
               <FlexBox>
                 <Controller

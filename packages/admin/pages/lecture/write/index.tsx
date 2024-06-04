@@ -12,6 +12,7 @@ const _ = require('lodash')
 import {
   Button,
   Input,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -19,7 +20,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { subStatusState } from '@/lib/recoilAtoms'
+import { gradeState, subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_LECTURES_MUTATION } from '@/graphql/mutations'
@@ -32,6 +33,7 @@ import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -110,6 +112,7 @@ const FlexBox = styled.div`
 `
 const AreaBox = styled.div`
   flex: 1;
+  position: relative;
 `
 const TimeBox = styled.div`
   display: flex;
@@ -185,10 +188,24 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
 
 export default function LectureWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [campusName, setCampusName] = useState('신촌')
 
   // const classRoom = useRecoilValue(classRoomState)
@@ -355,6 +372,13 @@ export default function LectureWrite() {
     }
   }
 
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
+  }
+
   return (
     <>
       <MainWrap>
@@ -454,6 +478,18 @@ export default function LectureWrite() {
                     <p className="px-2 pt-2 text-xs text-red-500">
                       {String(errors.subDiv.message)}
                     </p>
+                  )}
+                  {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                    <AddLink>
+                      <Link
+                        size="sm"
+                        underline="hover"
+                        href="#"
+                        onClick={handleClick}
+                      >
+                        수강구분 추가
+                      </Link>
+                    </AddLink>
                   )}
                 </AreaBox>
                 {/* <AreaBox>

@@ -9,18 +9,24 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Radio, RadioGroup, Switch } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Link,
+  Radio,
+  RadioGroup,
+  Switch,
+} from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/hr/layout'
-import {
-  CHECK_DOUBLE_MUTATION,
-  CREATE_MANAGE_USER_MUTATION,
-  CREATE_STUDENT_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -89,6 +95,7 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+  position: relative;
 `
 const AreaSmallBox = styled.div``
 const DatePickerBox = styled.div`
@@ -135,9 +142,23 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
 
 export default function StudentsWrite() {
   const router = useRouter()
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const { userLogs } = useUserLogsMutation()
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
   const {
@@ -218,6 +239,13 @@ export default function StudentsWrite() {
           alert(result.createManagerAccount.error)
         }
       },
+    })
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'teacherType' },
     })
   }
 
@@ -575,6 +603,18 @@ export default function StudentsWrite() {
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}
                       </p>
+                    )}
+                    {(mGrade < grade.general || mPart.includes('교무팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          강의분야 추가
+                        </Link>
+                      </AddLink>
                     )}
                   </AreaBox>
                   <AreaBox>

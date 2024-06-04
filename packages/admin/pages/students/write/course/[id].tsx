@@ -13,6 +13,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Input,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -27,7 +28,11 @@ import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { additionalAmountState, subStatusState } from '@/lib/recoilAtoms'
+import {
+  additionalAmountState,
+  gradeState,
+  subStatusState,
+} from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
   CREATE_STUDENT_PAYMENT_MUTATION,
@@ -36,6 +41,7 @@ import {
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ManagerSelectID from '@/components/common/ManagerSelectID'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -110,6 +116,7 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+  position: relative;
 
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -206,9 +213,24 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
 export default function StudentsWriteCourse() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
@@ -470,6 +492,12 @@ export default function StudentsWriteCourse() {
       setValue('unCollectedAmount', subjectSelectedData?.fee)
     }
   }
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'subDiv' },
+    })
+  }
 
   return (
     <>
@@ -727,6 +755,18 @@ export default function StudentsWriteCourse() {
                         </Suspense>
                       )}
                     />
+                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          수강구분 추가
+                        </Link>
+                      </AddLink>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Input
