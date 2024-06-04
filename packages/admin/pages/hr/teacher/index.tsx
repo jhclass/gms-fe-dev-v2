@@ -12,6 +12,7 @@ import useMmeQuery from '@/utils/mMe'
 import { Button } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import CreateAdviceType from '@/components/form/CreateAdviceType'
+import { useRouter } from 'next/router'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -44,6 +45,7 @@ const IconVariants = {
   },
 }
 export default function Teacher() {
+  const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -52,6 +54,13 @@ export default function Teacher() {
   const [filterSearch, setFilterSearch] = useState()
   const [teacherFilter, setTeacherFilter] = useState()
   const [createActive, setCreateActive] = useState(false)
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'teacherType' },
+    })
+  }
 
   return (
     mPart && (
@@ -75,9 +84,7 @@ export default function Teacher() {
                       variant="solid"
                       color="primary"
                       className="text-white ml-[0.5rem]"
-                      onClick={() => {
-                        setCreateActive(prev => !prev)
-                      }}
+                      onClick={handleClick}
                     >
                       <ActiveIcon
                         variants={IconVariants}
@@ -104,15 +111,6 @@ export default function Teacher() {
               onFilterSearch={setFilterSearch}
               setTeacherFilter={setTeacherFilter}
             />
-          </Suspense>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <CreateAdviceType isActive={createActive} category="강의분야" />
           </Suspense>
           <ConBox>
             {filterSearch ? (

@@ -320,11 +320,12 @@ export default function StudentsWriteCourse() {
   }, [subjectSelectedData])
 
   const onSubmit = data => {
+    console.log(data)
     if (data.actualAmount >= 0) {
       createStudentPayment({
         variables: {
           campus: '신촌',
-          seScore: data.seScore === null ? 0 : parseInt(data.seScore),
+          seScore: data.seScore === '' ? 0 : parseInt(data.seScore),
           tuitionFee: parseInt(data.tuitionFee),
           studentId: parseInt(studentId),
           subjectId: parseInt(subjectSelected),

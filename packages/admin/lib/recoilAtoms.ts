@@ -26,6 +26,7 @@ export const categoryMenuState = atom<{}>({
     회계관리: true,
     통계: true,
     인사관리: true,
+    환경설정: true,
   },
 })
 

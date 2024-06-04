@@ -52,6 +52,7 @@ const IconVariants = {
 }
 
 export default function Consult() {
+  const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -61,6 +62,13 @@ export default function Consult() {
   const [filterSearch, setFilterSearch] = useRecoilState(consultFilterState)
   const [studentFilter, setStudentFilter] = useRecoilState(consultSearchState)
   const [createActive, setCreateActive] = useState(false)
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'adviceType' },
+    })
+  }
 
   return (
     <>
@@ -81,9 +89,7 @@ export default function Consult() {
                     variant="solid"
                     color="primary"
                     className="text-white ml-[0.5rem]"
-                    onClick={() => {
-                      setCreateActive(prev => !prev)
-                    }}
+                    onClick={handleClick}
                   >
                     <ActiveIcon
                       variants={IconVariants}
@@ -111,15 +117,6 @@ export default function Consult() {
             onFilterSearch={setFilterSearch}
             setStudentFilter={setStudentFilter}
           />
-        </Suspense>
-        <Suspense
-          fallback={
-            <LodingDiv>
-              <i className="xi-spinner-2" />
-            </LodingDiv>
-          }
-        >
-          <CreateAdviceType isActive={createActive} category="상담분야" />
         </Suspense>
         <ConBox>
           {filterSearch ? (

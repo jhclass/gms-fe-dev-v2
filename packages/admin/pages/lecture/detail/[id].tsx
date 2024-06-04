@@ -450,7 +450,7 @@ export default function LectureWrite() {
             //   },
             // ],
           })
-          console.log('result', result)
+
           if (!result.data.editLectures.ok) {
             throw new Error('과정 수정 실패')
           }
@@ -1343,6 +1343,7 @@ export default function LectureWrite() {
           sbjClose={sbjClose}
           setValue={setValue}
           radio={true}
+          isLecture={true}
         />
 
         <LectureDates

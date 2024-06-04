@@ -422,6 +422,23 @@ const category: Category[] = [
     ],
   },
   {
+    href: '/setting',
+    iconSrc: 'xi-cog',
+    name: '환경설정',
+    resetItems: [],
+    exposure: true,
+    children: [
+      {
+        href: '/types',
+        name: '분야관리',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: true,
+        isWrite: '',
+      },
+    ],
+  },
+  {
     href: '/member',
     iconSrc: '',
     name: '프로필',
