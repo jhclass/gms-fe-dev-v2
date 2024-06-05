@@ -201,7 +201,7 @@ export default function StudentsWrite() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     console.log('token:', token)
-    const ws = new WebSocket(`wss://13.125.214.206:4001/wss?token=${token}`)
+    const ws = new WebSocket(`wss://13.125.214.206:4001/ws?token=${token}`)
 
     ws.onopen = () => {
       setStatus('WebSocket connection opened')
