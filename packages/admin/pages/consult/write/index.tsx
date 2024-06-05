@@ -259,7 +259,7 @@ export default function ConsultWirte() {
     ws.onopen = () => {
       setStatus('WebSocket connection opened')
       console.log('WebSocket connection opened')
-      ws.send('클라이언트에서 서버로 메시지 전송')
+      ws.send('클라이언트에서 서버로 메시지 전송!')
     }
 
     ws.onmessage = event => {
