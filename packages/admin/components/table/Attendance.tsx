@@ -17,6 +17,10 @@ import { useTheme } from '@table-library/react-table-library/theme'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
 import WorksLogs from '@/components/modal/WorksLogs'
+import Lecture from '@/pages/hr'
+import { Controller, useForm } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import { CREATE_ATTENDANCE_MUTATION } from '@/graphql/mutations'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -58,196 +62,40 @@ const TodayTag = styled.span`
   vertical-align: middle;
 `
 
-export default function Attendance() {
-  const nodes = [
-    {
-      id: '0',
-      name: '김빨강',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 7,
-      absent: 0,
-      attendanceRate: '100%',
-      day1: '출석',
-      day2: '출석',
-      day3: '출석',
-      day4: '조퇴',
-      day5: '출석',
-      day6: '출석',
-      day7: '출석',
-      day8: '-',
-      day9: '-',
-      day10: '-',
-      _hasContent: false,
-    },
-    {
-      id: '1',
-      name: '김주황',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 5,
-      absent: 2,
-      attendanceRate: '42.8%',
-      day1: '출석',
-      day2: '결석',
-      day3: '출석',
-      day4: '결석',
-      day5: '출석',
-      day6: '출석',
-      day7: '출석',
-      day8: '-',
-      day9: '-',
-      day10: '-',
-      _hasContent: false,
-    },
-    {
-      id: '2',
-      name: '김노랑',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 7,
-      absent: 0,
-      attendanceRate: '100%',
-      day1: '조퇴',
-      day2: '출석',
-      day3: '출석',
-      day4: '조퇴',
-      day5: '출석',
-      day6: '출석',
-      day7: '출석',
-      day8: '-',
-      day9: '-',
-      day10: '-',
-      _hasContent: false,
-    },
-    {
-      id: '3',
-      name: '김초록',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 5,
-      absent: 2,
-      attendanceRate: '42.8%',
-      day1: '출석',
-      day2: '출석',
-      day3: '출석',
-      day4: '결석',
-      day5: '출석',
-      day6: '결석',
-      day7: '출석',
-      day8: '-',
-      day9: '-',
-      day10: '-',
-      _hasContent: false,
-    },
-    {
-      id: '4',
-      name: '김파랑',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 5,
-      absent: 2,
-      attendanceRate: '42.8%',
-      day1: '출석',
-      day2: '출석',
-      day3: '출석',
-      day4: '결석',
-      day5: '출석',
-      day6: '결석',
-      day7: '출석',
-      day8: '-',
-      day9: '-',
-      day10: '-',
-      _hasContent: false,
-    },
-    {
-      id: '5',
-      name: '김남',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 7,
-      absent: 0,
-      attendanceRate: '100%',
-      day1: '출석',
-      day2: '지각',
-      day3: '출석',
-      day4: '-',
-      day5: '-',
-      _hasContent: false,
-    },
-    {
-      id: '6',
-      name: '김보라',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 5,
-      absent: 2,
-      attendanceRate: '42.8%',
-      day1: '출석',
-      day2: '지각',
-      day3: '출석',
-      day4: '-',
-      day5: '-',
-      _hasContent: false,
-    },
-    {
-      id: '7',
-      name: '박빨강',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 7,
-      absent: 0,
-      attendanceRate: '100%',
-      day1: '출석',
-      day2: '지각',
-      day3: '출석',
-      day4: '-',
-      day5: '-',
-      _hasContent: false,
-    },
-    {
-      id: '8',
-      name: '박주황',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 7,
-      absent: 0,
-      attendanceRate: '100%',
-      day1: '출석',
-      day2: '지각',
-      day3: '출석',
-      day4: '-',
-      day5: '-',
-      _hasContent: false,
-    },
-    {
-      id: '9',
-      name: '박노랑',
-      subDiv: '근로자',
-      days: 7,
-      attendance: 7,
-      absent: 0,
-      attendanceRate: '100%',
-      day1: '출석',
-      day2: '지각',
-      day3: '출석',
-      day4: '-',
-      day5: '-',
-      _hasContent: false,
-    },
-  ]
-  // const data = { nodes }
+export default function Attendance({ lectureData }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const today = new Date().toISOString().split('T')[0]
-  const datesArray = [
-    '2024-05-08',
-    '2024-05-09',
-    '2024-05-10',
-    '2024-05-11',
-    '2024-05-12',
-  ]
-  const todayIndex = datesArray.indexOf(today)
+  const [week, setWeek] = useState(null)
+  const [todayIndex, setTodayIndex] = useState(null)
+  const tableRef = useRef(null)
+  const [data, setData] = useState({ nodes: [] })
+  const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
+
+  function splitArrayIntoChunks(array, chunkSize) {
+    const chunks = []
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize))
+    }
+    return chunks
+  }
+
+  function findChunkContainingDate(array, date, chunkSize = 5) {
+    const chunks = splitArrayIntoChunks(array, chunkSize)
+    return chunks.find(chunk => chunk.includes(date))
+  }
+
+  useEffect(() => {
+    if (lectureData) {
+      setWeek(findChunkContainingDate(lectureData?.lectureDetails, today))
+      setData({ nodes: lectureData?.subject.StudentPayment })
+    }
+  }, [lectureData])
+
+  useEffect(() => {
+    if (week) {
+      setTodayIndex(week.indexOf(today))
+    }
+  }, [week])
 
   let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
   let gridTemplateColumnsMo = '100px'
@@ -263,8 +111,6 @@ export default function Attendance() {
     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
   }
-  const tableRef = useRef(null)
-  const [data, setData] = useState({ nodes })
 
   useEffect(() => {
     if (todayIndex > 2 && tableRef.current) {
@@ -299,6 +145,7 @@ export default function Attendance() {
       }),
     }))
   }
+
   //  background: linear-gradient(-90deg, rgba(0,0,0,0.1) calc(100% - 40px), transparent);
   const theme = useTheme([
     // getTheme(),
@@ -430,8 +277,53 @@ export default function Attendance() {
     },
   ])
 
+  const extractProperty = (data, property) => {
+    return data.nodes.map(item => {
+      // 점 표기법을 사용하여 중첩된 속성을 지원
+      const keys = property.split('.')
+      let value = item
+      for (const key of keys) {
+        if (value && key in value) {
+          value = value[key]
+        } else {
+          return null
+        }
+      }
+      return value
+    })
+  }
+
+  const onSubmit = index => {
+    console.log(lectureData.id)
+    const attendanceDate = String(week[index])
+    const id = extractProperty(data, `student.id`)
+    const payMentID = extractProperty(data, `id`)
+    const state = extractProperty(data, `${week[index]}`)
+    console.log('date', attendanceDate)
+    console.log('id', id)
+    console.log('payMentID', payMentID)
+    console.log('state', state)
+
+    createAttendence({
+      variables: {
+        lecturesId: lectureData.id,
+        studentPaymentId: payMentID,
+        attendanceDate: attendanceDate,
+        studentId: id,
+        attendanceState: state,
+      },
+      onCompleted: resData => {
+        console.log(resData)
+        // if (resData.createAttendance.ok) {
+        //   const { result, totalCount } = resData.searchSubject || {}
+        //   setSubjectList({ result, totalCount })
+        // }
+      },
+    })
+  }
+
   return (
-    gridTemplateColumns && (
+    week && (
       <>
         <div>
           <Table
@@ -458,7 +350,7 @@ export default function Attendance() {
                     <HeaderCell pinLeft>출석 일수</HeaderCell>
                     <HeaderCell pinLeft>결석 일수</HeaderCell>
                     <HeaderCell pinLeft>출석률</HeaderCell>
-                    {datesArray.map((item, index) => (
+                    {week.map((item, index) => (
                       <HeaderCell key={index}>
                         <span>{item}</span>
                         {index === todayIndex && <TodayTag>Today</TodayTag>}
@@ -466,160 +358,87 @@ export default function Attendance() {
                     ))}
                   </HeaderRow>
                 </Header>
-
                 <Body>
-                  {tableList.map((item, index) => (
-                    <Row key={item.id} item={item}>
-                      <CellSelect item={item} />
-                      <Cell pinLeft>{index + 1}</Cell>
-                      <Cell pinLeft>{item.name}</Cell>
-                      <Cell pinLeft>{item.subDiv}</Cell>
-                      <Cell pinLeft>{item.days}</Cell>
-                      <Cell pinLeft>{item.attendance}</Cell>
-                      <Cell pinLeft>{item.absent}</Cell>
-                      <Cell pinLeft>{item.attendanceRate}</Cell>
-                      <Cell>
-                        <TestSelect
-                          style={{
-                            width: '100%',
-                            border: 'none',
-                            fontSize: '1rem',
-                            padding: 0,
-                            margin: 0,
-                          }}
-                          value={item.day1}
-                          onChange={event =>
-                            handleUpdate(event.target.value, item.id, 'day1')
-                          }
-                        >
-                          <option value="-">-</option>
-                          <option value="출석">출석</option>
-                          <option value="지각">지각</option>
-                          <option value="조퇴">조퇴</option>
-                          <option value="지각&조퇴">지각&조퇴</option>
-                          <option value="결석">결석</option>
-                          <option value="외출">외출</option>
-                          <option value="지각&외출">지각&외출</option>
-                          <option value="외출&조퇴">외출&조퇴</option>
-                          <option value="지각&외출&조퇴">지각&외출&조퇴</option>
-                          <option value="휴가/공가">휴가/공가</option>
-                          <option value="절반출석">절반출석</option>
-                        </TestSelect>
-                      </Cell>
-                      <Cell>
-                        <TestSelect
-                          style={{
-                            width: '100%',
-                            border: 'none',
-                            fontSize: '1rem',
-                            padding: 0,
-                            margin: 0,
-                          }}
-                          value={item.day2}
-                          onChange={event =>
-                            handleUpdate(event.target.value, item.id, 'day2')
-                          }
-                        >
-                          <option value="-">-</option>
-                          <option value="출석">출석</option>
-                          <option value="지각">지각</option>
-                          <option value="조퇴">조퇴</option>
-                          <option value="지각&조퇴">지각&조퇴</option>
-                          <option value="결석">결석</option>
-                          <option value="외출">외출</option>
-                          <option value="지각&외출">지각&외출</option>
-                          <option value="외출&조퇴">외출&조퇴</option>
-                          <option value="지각&외출&조퇴">지각&외출&조퇴</option>
-                          <option value="휴가/공가">휴가/공가</option>
-                          <option value="절반출석">절반출석</option>
-                        </TestSelect>
-                      </Cell>
-                      <Cell>
-                        <TestSelect
-                          style={{
-                            width: '100%',
-                            border: 'none',
-                            fontSize: '1rem',
-                            padding: 0,
-                            margin: 0,
-                          }}
-                          value={item.day3}
-                          onChange={event =>
-                            handleUpdate(event.target.value, item.id, 'day3')
-                          }
-                        >
-                          <option value="-">-</option>
-                          <option value="출석">출석</option>
-                          <option value="지각">지각</option>
-                          <option value="조퇴">조퇴</option>
-                          <option value="지각&조퇴">지각&조퇴</option>
-                          <option value="결석">결석</option>
-                          <option value="외출">외출</option>
-                          <option value="지각&외출">지각&외출</option>
-                          <option value="외출&조퇴">외출&조퇴</option>
-                          <option value="지각&외출&조퇴">지각&외출&조퇴</option>
-                          <option value="휴가/공가">휴가/공가</option>
-                          <option value="절반출석">절반출석</option>
-                        </TestSelect>
-                      </Cell>
-                      <Cell>
-                        <TestSelect
-                          style={{
-                            width: '100%',
-                            border: 'none',
-                            fontSize: '1rem',
-                            padding: 0,
-                            margin: 0,
-                          }}
-                          value={item.day4}
-                          onChange={event =>
-                            handleUpdate(event.target.value, item.id, 'day4')
-                          }
-                        >
-                          <option value="-">-</option>
-                          <option value="출석">출석</option>
-                          <option value="지각">지각</option>
-                          <option value="조퇴">조퇴</option>
-                          <option value="지각&조퇴">지각&조퇴</option>
-                          <option value="결석">결석</option>
-                          <option value="외출">외출</option>
-                          <option value="지각&외출">지각&외출</option>
-                          <option value="외출&조퇴">외출&조퇴</option>
-                          <option value="지각&외출&조퇴">지각&외출&조퇴</option>
-                          <option value="휴가/공가">휴가/공가</option>
-                          <option value="절반출석">절반출석</option>
-                        </TestSelect>
-                      </Cell>
-                      <Cell>
-                        <TestSelect
-                          style={{
-                            width: '100%',
-                            border: 'none',
-                            fontSize: '1rem',
-                            padding: 0,
-                            margin: 0,
-                          }}
-                          value={item.day5}
-                          onChange={event =>
-                            handleUpdate(event.target.value, item.id, 'day5')
-                          }
-                        >
-                          <option value="-">-</option>
-                          <option value="출석">출석</option>
-                          <option value="지각">지각</option>
-                          <option value="조퇴">조퇴</option>
-                          <option value="지각&조퇴">지각&조퇴</option>
-                          <option value="결석">결석</option>
-                          <option value="외출">외출</option>
-                          <option value="지각&외출">지각&외출</option>
-                          <option value="외출&조퇴">외출&조퇴</option>
-                          <option value="지각&외출&조퇴">지각&외출&조퇴</option>
-                          <option value="휴가/공가">휴가/공가</option>
-                          <option value="절반출석">절반출석</option>
-                        </TestSelect>
-                      </Cell>
-                    </Row>
-                  ))}
+                  {tableList
+                    .filter(student => student.lectureAssignment === '배정')
+                    .map((item, index) => (
+                      <Row key={item.id} item={item}>
+                        <CellSelect item={item} />
+                        <Cell pinLeft>{index + 1}</Cell>
+                        <Cell pinLeft>{item.student.name}</Cell>
+                        <Cell pinLeft>{item.subDiv}</Cell>
+                        <Cell pinLeft>{item.days}</Cell>
+                        <Cell pinLeft>{item.attendance}</Cell>
+                        <Cell pinLeft>{item.absent}</Cell>
+                        <Cell pinLeft>{item.attendanceRate}</Cell>
+                        {Array.from({ length: 4 }).map((_, dayIndex) => (
+                          <Cell key={dayIndex}>
+                            <TestSelect
+                              style={{
+                                width: '100%',
+                                border: 'none',
+                                fontSize: '1rem',
+                                padding: 0,
+                                margin: 0,
+                              }}
+                              // value={item.day1}
+                              onChange={event => {
+                                handleUpdate(
+                                  event.target.value,
+                                  item.id,
+                                  week[dayIndex],
+                                )
+                              }}
+                            >
+                              <option value="-">-</option>
+                              <option value="출석">출석</option>
+                              <option value="지각">지각</option>
+                              <option value="조퇴">조퇴</option>
+                              <option value="지각&조퇴">지각&조퇴</option>
+                              <option value="결석">결석</option>
+                              <option value="외출">외출</option>
+                              <option value="지각&외출">지각&외출</option>
+                              <option value="외출&조퇴">외출&조퇴</option>
+                              <option value="지각&외출&조퇴">
+                                지각&외출&조퇴
+                              </option>
+                              <option value="휴가/공가">휴가/공가</option>
+                              <option value="절반출석">절반출석</option>
+                            </TestSelect>
+                          </Cell>
+                        ))}
+                        <Cell>
+                          <TestSelect
+                            style={{
+                              width: '100%',
+                              border: 'none',
+                              fontSize: '1rem',
+                              padding: 0,
+                              margin: 0,
+                            }}
+                            value={item.day1}
+                            onChange={event =>
+                              handleUpdate(event.target.value, item.id, 'day1')
+                            }
+                          >
+                            <option value="-">-</option>
+                            <option value="출석">출석</option>
+                            <option value="지각">지각</option>
+                            <option value="조퇴">조퇴</option>
+                            <option value="지각&조퇴">지각&조퇴</option>
+                            <option value="결석">결석</option>
+                            <option value="외출">외출</option>
+                            <option value="지각&외출">지각&외출</option>
+                            <option value="외출&조퇴">외출&조퇴</option>
+                            <option value="지각&외출&조퇴">
+                              지각&외출&조퇴
+                            </option>
+                            <option value="휴가/공가">휴가/공가</option>
+                            <option value="절반출석">절반출석</option>
+                          </TestSelect>
+                        </Cell>
+                      </Row>
+                    ))}
                   <Row
                     item={{
                       id: '1',
@@ -634,7 +453,7 @@ export default function Attendance() {
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
-                    {datesArray.map((item, index) => (
+                    {week.map((item, index) => (
                       <Cell key={index}>
                         <BtnCell>
                           <Button
@@ -651,6 +470,7 @@ export default function Attendance() {
                             radius="sm"
                             variant="solid"
                             className="text-white bg-[#07bbae]"
+                            onClick={() => onSubmit(index)}
                           >
                             저장
                           </Button>
@@ -662,6 +482,7 @@ export default function Attendance() {
               </>
             )}
           </Table>
+
           <BtnBox>
             <Button
               size="md"

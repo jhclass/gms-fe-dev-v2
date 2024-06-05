@@ -152,7 +152,7 @@ export default function StudentsWrite() {
         if (result.createStudent.ok) {
           userLogs(`${data.name} 수강생 등록`)
           alert('등록되었습니다.')
-          // window.location.href = '/students'
+          window.location.href = '/students'
         }
       },
     })
@@ -225,7 +225,7 @@ export default function StudentsWrite() {
             2,
             '0',
           )}-${String(day).padStart(2, '0')}`
-          sessionStorage.setItem('today', formattedDate)
+          sessionStorage.setItem('newToday', formattedDate)
           sessionStorage.setItem('newStudent', 'true')
         }
       } catch (error) {

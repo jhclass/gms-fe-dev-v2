@@ -150,38 +150,49 @@ export default function CategoryItem<CategoryItemProps>({
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
   const sessionToday = sessionStorage.getItem('today')
+  const soketToday = sessionStorage.getItem('newToday')
+  const soketTodayState = sessionStorage.getItem('newTodayState')
   const consultTotal = sessionStorage.getItem('newConsult')
   const studentTotal = sessionStorage.getItem('todayStudentTotal')
-  const newStudentState = sessionStorage.getItem('newStudent')
+  const newStudent = sessionStorage.getItem('newStudent')
+  const newStudentState = sessionStorage.getItem('newStudentState')
   const accounTingTotal = sessionStorage.getItem('newAccounting')
 
-  const [newConsult, setNewConsult] = useState(false)
-  const [newStudent, setNewStudent] = useState(false)
-  const [newAccounting, setNewAccounting] = useState(false)
+  const [newConsultFlag, setNewConsultFlag] = useState(false)
+  const [newStudentFlag, setNewStudentFlag] = useState(false)
+  const [newAccountingFlag, setNewAccountingFlag] = useState(false)
   const arrowRef = useRef(null)
-
-  console.log(sessionToday, newStudentState)
 
   useEffect(() => {
     if (name === '상담관리') {
-      if (parseInt(consultTotal) > 0) {
-        setNewConsult(true)
+      if (formattedDate === sessionToday && parseInt(consultTotal) > 0) {
+        setNewConsultFlag(true)
+      }
+      if (formattedDate === soketTodayState && newStudentState === 'true') {
+        setNewConsultFlag(true)
       }
     }
     if (name === '수강생관리') {
-      if (parseInt(studentTotal) > 0 || newStudentState) {
-        setNewStudent(true)
+      if (formattedDate === sessionToday && parseInt(studentTotal) > 0) {
+        setNewStudentFlag(true)
       }
-      if (formattedDate === sessionToday && newStudentState === 'true') {
-        setNewStudent(true)
+      if (formattedDate === soketToday && newStudent === 'true') {
+        setNewStudentFlag(true)
       }
     }
     if (name === '회계관리') {
-      if (parseInt(accounTingTotal) > 0) {
-        setNewAccounting(true)
+      if (formattedDate === sessionToday && parseInt(accounTingTotal) > 0) {
+        setNewAccountingFlag(true)
       }
     }
-  }, [consultTotal, studentTotal, newStudentState, accounTingTotal])
+  }, [
+    consultTotal,
+    studentTotal,
+    newStudentState,
+    accounTingTotal,
+    soketToday,
+    sessionToday,
+  ])
 
   useEffect(() => {
     if (arrowRef.current) {
@@ -259,7 +270,7 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
-              {(newConsult || newStudent || newAccounting) && (
+              {(newConsultFlag || newStudentFlag || newAccountingFlag) && (
                 <MewIcon $navOpen={navOpen}>
                   <i className="xi-new" />
                 </MewIcon>
@@ -320,7 +331,7 @@ export default function CategoryItem<CategoryItemProps>({
                   {name}
                 </Link>
               </CateTitle>
-              {(newConsult || newStudent || newAccounting) && (
+              {(newConsultFlag || newStudentFlag || newAccountingFlag) && (
                 <MewIcon $navOpen={navOpen}>
                   <i className="xi-new" />
                 </MewIcon>
