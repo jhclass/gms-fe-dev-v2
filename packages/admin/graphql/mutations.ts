@@ -1692,35 +1692,53 @@ export const SEARCH_LECTURES_MUTATION = gql`
       message
       error
       data {
-        ApprovedNum
-        campus
-        confirmedNum
-        createdAt
-        eduStatusReport
-        id
+        updatedAt
+        timetableAttached
+        temporaryName
+        teachers {
+          id
+          mUserId
+          mUsername
+        }
+        subjectId
+        subject {
+          subjectCode
+          subjectName
+          id
+          totalTime
+          subDiv
+          roomNum
+          round
+          StudentPayment {
+            id
+            subDiv
+            student {
+              id
+              name
+            }
+            situationReport
+            lectureAssignment
+            isWeekend
+            courseComplete
+            employment
+          }
+        }
+        subDiv
+        sessionNum
+        roomNum
+        lectureTime
         lectureDetails
         lecturePeriodEnd
         lecturePeriodStart
-        lectureTime
-        roomNum
-        sessionNum
-        subDiv
-        subject {
-          subjectName
-          subjectCode
-          subDiv
-          round
+        id
+        eduStatusReport
+        createdAt
+        confirmedNum
+        campus
+        WorkLogs {
           id
         }
-        subjectId
-        teachers {
-          mUserId
-          mUsername
-          id
-        }
-        temporaryName
-        timetableAttached
-        updatedAt
+        ApprovedNum
       }
     }
   }
@@ -1765,6 +1783,27 @@ export const EDIT_LECTURES_MUTATION = gql`
       ok
       message
       error
+    }
+  }
+`
+export const CREATE_ATTENDANCE_MUTATION = gql`
+  mutation Mutation(
+    $studentPaymentId: [Int]!
+    $attendanceDate: String!
+    $studentId: [Int]!
+    $attendanceState: [String]!
+    $lecturesId: Int!
+  ) {
+    createAttendance(
+      studentPaymentId: $studentPaymentId
+      attendanceDate: $attendanceDate
+      studentId: $studentId
+      attendanceState: $attendanceState
+      lecturesId: $lecturesId
+    ) {
+      error
+      message
+      ok
     }
   }
 `

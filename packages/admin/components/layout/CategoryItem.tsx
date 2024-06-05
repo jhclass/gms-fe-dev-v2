@@ -3,7 +3,11 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import { categoryMenuState, navOpenState } from '@/lib/recoilAtoms'
+import {
+  categoryMenuState,
+  navOpenState,
+  newStudentState,
+} from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { useMutation } from '@apollo/client'
 import { Tooltip } from '@nextui-org/react'
@@ -135,35 +139,60 @@ export default function CategoryItem<CategoryItemProps>({
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = today.getMonth() + 1
+  const day = today.getDate()
+  const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
+    day,
+  ).padStart(2, '0')}`
 
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isOpen, setIsOpen] = useRecoilState(categoryMenuState)
+  const sessionToday = sessionStorage.getItem('today')
+  const soketToday = sessionStorage.getItem('newToday')
+  const soketTodayState = sessionStorage.getItem('newTodayState')
   const consultTotal = sessionStorage.getItem('newConsult')
-  const studenTotal = sessionStorage.getItem('newStudent')
+  const studentTotal = sessionStorage.getItem('todayStudentTotal')
+  const newStudent = sessionStorage.getItem('newStudent')
+  const newStudentState = sessionStorage.getItem('newStudentState')
   const accounTingTotal = sessionStorage.getItem('newAccounting')
 
-  const [newConsult, setNewConsult] = useState(false)
-  const [newStudent, setNewStudent] = useState(false)
-  const [newAccounting, setNewAccounting] = useState(false)
+  const [newConsultFlag, setNewConsultFlag] = useState(false)
+  const [newStudentFlag, setNewStudentFlag] = useState(false)
+  const [newAccountingFlag, setNewAccountingFlag] = useState(false)
   const arrowRef = useRef(null)
 
   useEffect(() => {
     if (name === '상담관리') {
-      if (parseInt(consultTotal) > 0) {
-        setNewConsult(true)
+      if (formattedDate === sessionToday && parseInt(consultTotal) > 0) {
+        setNewConsultFlag(true)
+      }
+      if (formattedDate === soketTodayState && newStudentState === 'true') {
+        setNewConsultFlag(true)
       }
     }
     if (name === '수강생관리') {
-      if (parseInt(studenTotal) > 0) {
-        setNewStudent(true)
+      if (formattedDate === sessionToday && parseInt(studentTotal) > 0) {
+        setNewStudentFlag(true)
+      }
+      if (formattedDate === soketToday && newStudent === 'true') {
+        setNewStudentFlag(true)
       }
     }
     if (name === '회계관리') {
-      if (parseInt(accounTingTotal) > 0) {
-        setNewAccounting(true)
+      if (formattedDate === sessionToday && parseInt(accounTingTotal) > 0) {
+        setNewAccountingFlag(true)
       }
     }
-  }, [consultTotal, studenTotal, accounTingTotal])
+  }, [
+    consultTotal,
+    studentTotal,
+    newStudentState,
+    accounTingTotal,
+    soketToday,
+    sessionToday,
+  ])
 
   useEffect(() => {
     if (arrowRef.current) {
@@ -241,7 +270,7 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>{name}</CateTitle>
-              {(newConsult || newStudent || newAccounting) && (
+              {(newConsultFlag || newStudentFlag || newAccountingFlag) && (
                 <MewIcon $navOpen={navOpen}>
                   <i className="xi-new" />
                 </MewIcon>
@@ -302,7 +331,7 @@ export default function CategoryItem<CategoryItemProps>({
                   {name}
                 </Link>
               </CateTitle>
-              {(newConsult || newStudent || newAccounting) && (
+              {(newConsultFlag || newStudentFlag || newAccountingFlag) && (
                 <MewIcon $navOpen={navOpen}>
                   <i className="xi-new" />
                 </MewIcon>

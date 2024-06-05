@@ -6,7 +6,10 @@ import { useRouter } from 'next/router'
 import { Button, Chip, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_LECTURES_MUTATION,
+  SEARCH_PAYMENT_MUTATION,
+} from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
 import AropoutList from '@/components/table/AropoutList'
@@ -97,32 +100,20 @@ const BtnBox = styled.div`
 
 export default function StudentsWrite() {
   const router = useRouter()
-  const paymentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
-  const [studentData, setStudentData] = useState(null)
-  const [studentSubjectData, setStudentSubjectData] = useState(null)
-  const [studentPaymentData, setStudentPaymentData] = useState(null)
-  const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
-
+  const lectureId = typeof router.query.id === 'string' ? router.query.id : null
+  const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
+  const [lectureData, setLectureData] = useState(null)
   const [filterActive1, setFilterActive1] = useState(true)
   useEffect(() => {
-    if (paymentId !== null) {
-      searchStudentPayment({
+    if (lectureId !== null) {
+      searchLectures({
         variables: {
-          searchStudentPaymentId: parseInt(paymentId),
+          searchLecturesId: parseInt(lectureId),
         },
-        onCompleted: ({
-          searchStudentPayment: {
-            ok,
-            data: [firstData],
-          },
-        }) => {
-          if (ok) {
-            const { student, subject, paymentDetail } = firstData
-            setStudentPaymentData(firstData)
-            setStudentData(student)
-            setStudentSubjectData(subject)
-            setStudentPaymentDetailData(paymentDetail)
+        onCompleted: result => {
+          if (result.searchLectures.ok) {
+            const { data } = result.searchLectures
+            setLectureData(data[0])
           }
         },
       })
@@ -162,18 +153,13 @@ export default function StudentsWrite() {
               </Noti>
               <UpdateTime>
                 <span>최근 업데이트 일시 :</span>
-                {formatDate(studentData?.updatedAt, true)}
+                {formatDate(lectureData?.updatedAt, true)}
               </UpdateTime>
             </TopInfo>
             <DetailDiv>
               <AreaTitle>
                 <h4>기본 정보</h4>
                 <Button
-                  isDisabled={
-                    studentPaymentData?.lectureAssignment === '배정'
-                      ? true
-                      : false
-                  }
                   size="sm"
                   radius="sm"
                   variant="solid"
@@ -181,9 +167,7 @@ export default function StudentsWrite() {
                   className="text-white"
                   onClick={() => {
                     {
-                      router.push(
-                        `/students/edit/course/${studentPaymentData?.id}`,
-                      )
+                      router.push(`/lecture/detail/${lectureData?.id}`)
                     }
                   }}
                 >
@@ -247,7 +231,7 @@ export default function StudentsWrite() {
                   // setStudentFilter={undefined}
                 />
               </AreaTitleFilter>
-              <Attendance />
+              <Attendance lectureData={lectureData} />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

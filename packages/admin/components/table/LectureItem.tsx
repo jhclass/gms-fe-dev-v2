@@ -287,7 +287,7 @@ export default function ConsolutItem(props) {
                     className="w-full"
                     onClick={e => {
                       e.preventDefault()
-                      router.push('/lecture/attendance')
+                      router.push(`/lecture/attendance/${lecture.id}`)
                     }}
                   >
                     출석부

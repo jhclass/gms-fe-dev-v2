@@ -51,6 +51,12 @@ export default function Home() {
   )
   const isCheckingLogin = useAuthRedirect()
   const nowDate = new Date()
+  const year = nowDate.getFullYear()
+  const month = nowDate.getMonth() + 1
+  const day = nowDate.getDate()
+  const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
+    day,
+  ).padStart(2, '0')}`
   const startOfDay = new Date(
     nowDate.getFullYear(),
     nowDate.getMonth(),
@@ -61,6 +67,7 @@ export default function Home() {
   )
 
   useEffect(() => {
+    sessionStorage.setItem('today', formattedDate)
     searchStudentStateMutation({
       variables: {
         createdAt: [startOfDay, nowDate],
@@ -68,9 +75,7 @@ export default function Home() {
       onCompleted: resData => {
         if (resData.searchStudentState.ok) {
           const { totalCount } = resData.searchStudentState || {}
-          if (totalCount > 0) {
-            sessionStorage.setItem('newConsult', totalCount)
-          }
+          sessionStorage.setItem('newConsult', totalCount)
         }
       },
     })
@@ -81,9 +86,7 @@ export default function Home() {
       onCompleted: resData => {
         if (resData.searchStudent.ok) {
           const { totalCount } = resData.searchStudent || {}
-          if (totalCount > 0) {
-            sessionStorage.setItem('newStudent', totalCount)
-          }
+          sessionStorage.setItem('todayStudentTotal', totalCount)
         }
       },
     })
@@ -94,9 +97,7 @@ export default function Home() {
       onCompleted: resData => {
         if (resData.searchStudentPayment.ok) {
           const { totalCount } = resData.searchStudentPayment || {}
-          if (totalCount > 0) {
-            sessionStorage.setItem('newAccounting', totalCount)
-          }
+          sessionStorage.setItem('newAccounting', totalCount)
         }
       },
     })

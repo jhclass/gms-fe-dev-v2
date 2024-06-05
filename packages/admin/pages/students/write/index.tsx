@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -20,6 +20,8 @@ import {
   CREATE_STUDENT_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { useRecoilState } from 'recoil'
+import { newStudentState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -126,6 +128,7 @@ const BtnBox = styled.div`
 export default function StudentsWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const [studenTotal, setStudenTotal] = useRecoilState(newStudentState)
   const [createStudent] = useMutation(CREATE_STUDENT_MUTATION)
   const [checkDouble] = useMutation(CHECK_DOUBLE_MUTATION)
   const { register, getValues, control, handleSubmit, formState, reset } =
@@ -191,6 +194,60 @@ export default function StudentsWrite() {
   //     }
   //   }
   // }
+
+  //socketTest
+  const [status, setStatus] = useState('Connecting...')
+  const [messages, setMessages] = useState([])
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    console.log('token:', token)
+    const ws = new WebSocket(`ws://13.125.214.206:4001/ws?token=${token}`)
+
+    ws.onopen = () => {
+      setStatus('WebSocket connection opened')
+      console.log('WebSocket connection opened')
+      ws.send('클라이언트에서 서버로 메시지 전송')
+    }
+
+    ws.onmessage = event => {
+      try {
+        const message = JSON.parse(event.data)
+        console.log('Message from server:', message)
+
+        if (message.type === 'NEW_STUDENT') {
+          setMessages(prevMessages => [...prevMessages, message.data])
+          console.log('NEW_STUDENT message received:', message.data)
+          const currentDate = new Date()
+          const year = currentDate.getFullYear()
+          const month = currentDate.getMonth() + 1
+          const day = currentDate.getDate()
+          const formattedDate = `${year}-${String(month).padStart(
+            2,
+            '0',
+          )}-${String(day).padStart(2, '0')}`
+          sessionStorage.setItem('newToday', formattedDate)
+          sessionStorage.setItem('newStudent', 'true')
+        }
+      } catch (error) {
+        console.error('Error parsing message:', error)
+      }
+    }
+
+    ws.onclose = () => {
+      setStatus('WebSocket connection closed')
+      console.log('WebSocket connection closed')
+    }
+
+    ws.onerror = error => {
+      setStatus('WebSocket error')
+      console.log('WebSocket error:', error)
+    }
+
+    return () => {
+      ws.close()
+    }
+  }, [])
+  //socketTest
   return (
     <>
       <MainWrap>
