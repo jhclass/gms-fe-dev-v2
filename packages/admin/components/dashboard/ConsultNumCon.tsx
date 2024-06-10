@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_UNP_QUERY } from '@/graphql/queries'
 import { DashboardUnpResult } from '@/src/generated/graphql'
+import { useRouter } from 'next/router'
 
 const ItemBox = styled.div`
   padding: 1.5rem;
@@ -63,6 +64,7 @@ type DashboardUN = {
   dashboardUnp: DashboardUnpResult
 }
 export default function ConsultNumCon() {
+  const router = useRouter()
   const { error, data, refetch } =
     useSuspenseQuery<DashboardUN>(DASHBOARD_UNP_QUERY)
   const unpCount = data?.dashboardUnp.unpCount || 0
@@ -78,7 +80,7 @@ export default function ConsultNumCon() {
   }
   useEffect(() => {
     refetch()
-  }, [refetch])
+  }, [router])
 
   if (error) {
     console.log(error)

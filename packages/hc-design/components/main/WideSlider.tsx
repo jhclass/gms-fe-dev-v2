@@ -20,6 +20,24 @@ export default function MainSilder() {
           className="mySwiper1"
         >
           <SwiperSlide>
+            <Link href="/event/kdtJava">
+              <div className="relative flex justify-center">
+                <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%]">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner04_tit.webp"
+                    alt="AI분석 및 활용  백엔드 JAVA 개발자 hacademy & 고용노동부 백엔드 풀스택 JAVA개발자 취업티켓!! K-Digital트레이닝 훈련명 : 인공지능 트랜스포메이션을
+                위한 플랫폼 개발자 양성과정 과정상세보기"
+                  />
+                </figure>
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner04_poster.webp"
+                  alt="AI분석 및 활용  백엔드 JAVA 개발자 hacademy & 고용노동부 백엔드 풀스택 JAVA개발자 취업티켓!! K-Digital트레이닝 훈련명 : 인공지능 트랜스포메이션을
+                위한 플랫폼 개발자 양성과정"
+                />
+              </div>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
             <Link href="/motiongraphic">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%]">

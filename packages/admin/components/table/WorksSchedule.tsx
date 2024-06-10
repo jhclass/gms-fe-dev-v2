@@ -1,15 +1,5 @@
-import { Button, Input, Pagination, ScrollShadow } from '@nextui-org/react'
-import { useState } from 'react'
+import { Input, ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
-registerLocale('ko', ko)
-const _ = require('lodash')
-import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -83,12 +73,6 @@ const Tnum = styled.div`
   min-width: ${1200 * 0.06}px;
 `
 
-const PagerWrap = styled.div`
-  display: flex;
-  margin-top: 1.5rem;
-  justify-content: center;
-`
-
 const TableItem = styled.div`
   position: relative;
   width: 100%;
@@ -119,42 +103,6 @@ const TableRow = styled.div`
   /* display: grid;
   width: 100%;
   grid-template-columns: 0.5rem 2% auto; */
-`
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-`
-const DatePickerBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  z-index: 21;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .react-datepicker {
-    /* margin-left: 50%; */
-  }
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
 `
 
 export default function AbsentList() {

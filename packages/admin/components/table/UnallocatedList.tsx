@@ -1,16 +1,14 @@
-import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import LectureItem from '@/components/table/LectureItem'
 import {
   ManageUser,
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
-import UnallocatedItem from './UnallocatedItem'
+import UnallocatedItem from '@/components/table/UnallocatedItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

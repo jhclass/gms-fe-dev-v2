@@ -1,13 +1,5 @@
 import { styled } from 'styled-components'
-import {
-  Radio,
-  RadioGroup,
-  CheckboxGroup,
-  Checkbox,
-  Textarea,
-} from '@nextui-org/react'
-import { Suspense } from 'react'
-import PaymentInfoManager from '@/components/items/PaymentInfoManager'
+import { Textarea } from '@nextui-org/react'
 
 const DetailBox = styled.div`
   margin-top: 2rem;

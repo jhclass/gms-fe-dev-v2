@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_RD_QUERY } from '@/graphql/queries'
 import { DashboardRdResult } from '@/src/generated/graphql'
+import { useRouter } from 'next/router'
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const ItemBox = styled.div`
@@ -61,7 +62,9 @@ type DashboardRD = {
   dashboardRD: DashboardRdResult[]
 }
 export default function ReceiptDivCon() {
-  const { error, data } = useSuspenseQuery<DashboardRD>(DASHBOARD_RD_QUERY)
+  const router = useRouter()
+  const { error, data, refetch } =
+    useSuspenseQuery<DashboardRD>(DASHBOARD_RD_QUERY)
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
 
@@ -74,6 +77,10 @@ export default function ReceiptDivCon() {
   const countValues = chartData
     ? chartData?.filter(item => item.receiptDiv !== '').map(item => item.count)
     : []
+
+  useEffect(() => {
+    refetch()
+  }, [router])
 
   const chartOption = {
     series: [{ name: '총 건수', data: countValues }],

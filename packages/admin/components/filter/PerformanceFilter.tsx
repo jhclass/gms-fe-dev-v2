@@ -137,15 +137,16 @@ export default function PerformanceFilter({
   setClickReset,
 }) {
   const router = useRouter()
-  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
-    SEARCH_MANAGEUSER_QUERY,
-    {
-      variables: {
-        mPart: '영업팀',
-        resign: 'N',
-      },
+  const {
+    data: managerData,
+    error,
+    refetch,
+  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+    variables: {
+      mPart: '영업팀',
+      resign: 'N',
     },
-  )
+  })
   const managerList = managerData?.searchManageUser.data
   const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
@@ -166,6 +167,10 @@ export default function PerformanceFilter({
       processingManagerId: '',
     },
   })
+
+  // useEffect(() => {
+  //   refetch({ mPart: '영업팀', resign: 'N' })
+  // }, [router])
 
   useEffect(() => {
     if (performanceFilter === null || clickReset) {

@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import SubjectTable from '@/components/table/SubjectList'
 import { styled } from 'styled-components'
@@ -63,6 +63,7 @@ export default function Subjects() {
   const [filterSearch, setFilterSearch] = useRecoilState(subjectFilterState)
   const [subjectFilter, setSubjectFilter] = useRecoilState(subjectSearchState)
   const [createActive, setCreateActive] = useState(false)
+  const [isDataLoaded, setIsDataLoaded] = useState(false)
 
   const handleClick = () => {
     router.push({
@@ -72,62 +73,65 @@ export default function Subjects() {
   }
 
   return (
-    <>
-      <MainWrap>
-        <Breadcrumb
-          onFilterToggle={setFilterActive}
-          isActive={filterActive}
-          isFilter={true}
-          isWrite={true}
-          rightArea={true}
-          addRender={
-            (mGrade < grade.general || mPart.includes('영업팀')) && (
-              <>
-                {
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    color="primary"
-                    className="text-white ml-[0.5rem]"
-                    onClick={handleClick}
-                  >
-                    <ActiveIcon
-                      variants={IconVariants}
-                      initial="initial"
-                      animate={createActive ? 'active' : 'initial'}
-                      className="xi-check-min"
-                    />
-                    분야 관리
-                  </Button>
-                }
-              </>
-            )
-          }
-        />
-        <SubjectsFilter
-          isActive={filterActive}
-          onFilterSearch={setFilterSearch}
-          setSubjectFilter={setSubjectFilter}
-          subjectFilter={subjectFilter}
-        />
-        <ConBox>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
+    mPart !== undefined &&
+    mGrade !== undefined && (
+      <>
+        <MainWrap>
+          <Breadcrumb
+            onFilterToggle={setFilterActive}
+            isActive={filterActive}
+            isFilter={true}
+            isWrite={true}
+            rightArea={true}
+            addRender={
+              (mGrade < grade.general || mPart.includes('영업팀')) && (
+                <>
+                  {
+                    <Button
+                      size="sm"
+                      radius="sm"
+                      variant="solid"
+                      color="primary"
+                      className="text-white ml-[0.5rem]"
+                      onClick={handleClick}
+                    >
+                      <ActiveIcon
+                        variants={IconVariants}
+                        initial="initial"
+                        animate={createActive ? 'active' : 'initial'}
+                        className="xi-check-min"
+                      />
+                      분야 관리
+                    </Button>
+                  }
+                </>
+              )
             }
-          >
-            {filterSearch ? (
-              <SubjectFilter subjectFilter={subjectFilter} />
-            ) : (
-              <SubjectTable />
-            )}
-          </Suspense>
-        </ConBox>
-      </MainWrap>
-    </>
+          />
+          <SubjectsFilter
+            isActive={filterActive}
+            onFilterSearch={setFilterSearch}
+            setSubjectFilter={setSubjectFilter}
+            subjectFilter={subjectFilter}
+          />
+          <ConBox>
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              {filterSearch ? (
+                <SubjectFilter subjectFilter={subjectFilter} />
+              ) : (
+                <SubjectTable />
+              )}
+            </Suspense>
+          </ConBox>
+        </MainWrap>
+      </>
+    )
   )
 }
 Subjects.getLayout = page => <Layout>{page}</Layout>
