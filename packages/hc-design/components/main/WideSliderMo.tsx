@@ -47,6 +47,17 @@ export default function WideSliderMo() {
         >
           <SwiperSlide>
             <div className="flex justify-center">
+              <Link href="/event/kdtJava">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner04.webp"
+                  alt="AI분석 및 활용  백엔드 JAVA 개발자 hacademy & 고용노동부 백엔드 풀스택 JAVA개발자 취업티켓!! K-Digital트레이닝 훈련명 : 인공지능 트랜스포메이션을
+                위한 플랫폼 개발자 양성과정 과정상세보기"
+                />
+              </Link>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="flex justify-center">
               <figure className="absolute w-[59.2593vw] bottom-0 left-0">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner01_tit.webp"
