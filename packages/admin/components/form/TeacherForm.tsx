@@ -668,13 +668,16 @@ export default function StudentsWrite({ managerId }) {
                           }
                         >
                           <AdviceMultiSelect
-                            placeholder={String(managerData.mPart)}
+                            placeholder={
+                              managerData.mPart.length > 0
+                                ? String(managerData.mPart)
+                                : ' '
+                            }
                             selecedKey={adviceType}
                             field={field}
                             label={'강의분야'}
                             handleChange={setAdviceType}
                             category={'강의분야'}
-                            defaultValue={' '}
                           />
                         </Suspense>
                       )}
