@@ -77,7 +77,7 @@ export default function MainWrap({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('token')
     console.log('token:', token)
-    const ws = new WebSocket(`ws://13.125.214.206:4001/ws?token=${token}`)
+    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URI}${token}`)
 
     ws.onopen = () => {
       setStatus('WebSocket connection opened')
