@@ -198,29 +198,31 @@ export const SEE_MANAGEUSER_QUERY = gql`
   }
 `
 export const SEARCH_MANAGEUSER_QUERY = gql`
-  query SearchManageUser(
-    $page: Int
+ㅐ  query Query(
+    $mGrade: Int
     $limit: Int
+    $resign: String
     $searchManageUserId: Int
     $mUserId: String
     $mUsername: String
     $mRank: String
     $mPhoneNum: String
     $mPart: String
-    $resign: String
     $mJoiningDate: [String]
+    $page: Int
   ) {
     searchManageUser(
-      page: $page
+      mGrade: $mGrade
       limit: $limit
+      resign: $resign
       id: $searchManageUserId
       mUserId: $mUserId
       mUsername: $mUsername
       mRank: $mRank
       mPhoneNum: $mPhoneNum
       mPart: $mPart
-      resign: $resign
       mJoiningDate: $mJoiningDate
+      page: $page
     ) {
       totalCount
       ok
