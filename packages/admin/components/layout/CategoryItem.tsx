@@ -223,11 +223,12 @@ export default function CategoryItem<CategoryItemProps>({
         alert('🚧 접근 권한이 없습니다. 🚧')
       }
     } else {
-      if (name === '상담관리') {
-        window.location.href = link
-      } else {
-        router.push(link, undefined, { shallow: true, scroll: false })
-      }
+      // if (name === '상담관리') {
+      //   window.location.href = link
+      // } else {
+      //   router.push(link, undefined, { shallow: true, scroll: false })
+      // }
+      router.push(link, undefined, { shallow: true, scroll: false })
     }
   }
 

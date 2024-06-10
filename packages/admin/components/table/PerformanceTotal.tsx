@@ -2,6 +2,8 @@ import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 type ConsultItemProps = {
   tableData: {
     adviceTypes: any
@@ -99,16 +101,25 @@ export default function PerformanceTotal({
   totalRefundAmount,
   totalRefundCount,
 }) {
-  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
-    SEARCH_MANAGEUSER_QUERY,
-    {
-      variables: {
-        mPart: '영업팀',
-        resign: 'N',
-      },
+  const route = useRouter()
+  const {
+    data: managerData,
+    error,
+    refetch,
+  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+    variables: {
+      mPart: '영업팀',
+      resign: 'N',
     },
-  )
+  })
   const managerList = managerData?.searchManageUser.data
+
+  // useEffect(() => {
+  //   refetch({
+  //     mPart: '영업팀',
+  //     resign: 'N',
+  //   })
+  // }, [route])
 
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')

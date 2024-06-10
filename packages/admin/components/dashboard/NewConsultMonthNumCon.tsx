@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { DASHBOARD_MONTH_QUERY } from '@/graphql/queries'
 import { DashboardMonthResult } from '@/src/generated/graphql'
+import { useRouter } from 'next/router'
 
 const ItemBox = styled.div`
   padding: 1.5rem;
@@ -81,6 +82,7 @@ type DashboardMonth = {
   dashboardMonth: DashboardMonthResult
 }
 export default function NewConsultNumCon() {
+  const router = useRouter()
   const { error, data, refetch } = useSuspenseQuery<DashboardMonth>(
     DASHBOARD_MONTH_QUERY,
   )
@@ -101,7 +103,7 @@ export default function NewConsultNumCon() {
 
   useEffect(() => {
     refetch()
-  }, [refetch])
+  }, [router])
 
   const dateFormet = data => {
     if (parseInt(data) < 10000) {

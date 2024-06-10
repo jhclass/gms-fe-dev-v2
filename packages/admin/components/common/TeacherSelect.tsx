@@ -1,7 +1,9 @@
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
+import { useQuery, useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
@@ -15,13 +17,18 @@ export default function TeacherSelect({
   handleChange,
   optionDefualt,
 }) {
-  const { error: searchManagerError, data: searchManagerData } =
-    useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
-      variables: {
-        mGrade: 20,
-        resign: 'N',
-      },
-    })
+  const router = useRouter()
+  const {
+    error: searchManagerError,
+    data: searchManagerData,
+    refetch,
+  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+    variables: {
+      mGrade: 20,
+      resign: 'N',
+      limit: 100,
+    },
+  })
   const managerList = [
     optionDefualt,
     ...searchManagerData?.searchManageUser.data,
@@ -30,6 +37,14 @@ export default function TeacherSelect({
   if (searchManagerError) {
     console.log(searchManagerError)
   }
+
+  useEffect(() => {
+    refetch({
+      mGrade: 20,
+      resign: 'N',
+      limit: 100,
+    })
+  }, [router])
 
   return (
     <>

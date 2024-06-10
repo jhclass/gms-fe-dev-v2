@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import router from 'next/router'
@@ -174,6 +174,7 @@ export default function SubjectWrite() {
   const [teacher, setTeacher] = useState('강사명 없음')
   const [isSelected, setIsSelected] = useState(false)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const [isDataLoaded, setIsDataLoaded] = useState(false)
 
   const onSubmit = async data => {
     try {
@@ -235,6 +236,16 @@ export default function SubjectWrite() {
       pathname: '/setting/types',
       query: { typeTab: 'subDiv' },
     })
+  }
+
+  useEffect(() => {
+    if (mPart !== undefined && mGrade !== undefined) {
+      setIsDataLoaded(true)
+    }
+  }, [mPart, mGrade])
+
+  if (!isDataLoaded) {
+    return null
   }
 
   return (

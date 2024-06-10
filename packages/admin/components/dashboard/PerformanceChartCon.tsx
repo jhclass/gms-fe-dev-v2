@@ -4,6 +4,8 @@ import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { ScrollShadow } from '@nextui-org/react'
 import { SearchManageUserResult } from '@/src/generated/graphql'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const ConArea = styled.div`
@@ -52,16 +54,25 @@ export default function PerformanceChartCon({
   totalCount,
   totalRefundAmount,
 }) {
-  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
-    SEARCH_MANAGEUSER_QUERY,
-    {
-      variables: {
-        mPart: '영업팀',
-        resign: 'N',
-      },
+  const router = useRouter()
+  const {
+    data: managerData,
+    error,
+    refetch,
+  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
+    variables: {
+      mPart: '영업팀',
+      resign: 'N',
     },
-  )
+  })
   const managerList = managerData?.searchManageUser.data
+
+  useEffect(() => {
+    refetch({
+      mPart: '영업팀',
+      resign: 'N',
+    })
+  }, [router])
 
   const managerUsernames = managerIds.map(
     id => managerList.find(user => user.id === id)?.mUsername,

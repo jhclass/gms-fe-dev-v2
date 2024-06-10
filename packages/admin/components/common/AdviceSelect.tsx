@@ -2,6 +2,8 @@ import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
@@ -17,20 +19,31 @@ export default function managerSelect({
   filter = null,
   category,
 }) {
-  const { error: adviceError, data: adviceData } =
-    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
-      variables: {
-        page: 1,
-        category: category,
-        limit: 100,
-      },
-    })
+  const router = useRouter()
+  const {
+    error: adviceError,
+    data: adviceData,
+    refetch,
+  } = useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
+    variables: {
+      page: 1,
+      category: category,
+      limit: 100,
+    },
+  })
   const adviceList = [optionDefualt, ...adviceData?.seeAdviceType.adviceType]
 
   if (adviceError) {
     console.log(adviceError)
   }
 
+  useEffect(() => {
+    refetch({
+      page: 1,
+      category: category,
+      limit: 100,
+    })
+  }, [router])
   return (
     <>
       <Select

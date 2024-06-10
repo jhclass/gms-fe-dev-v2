@@ -1,10 +1,11 @@
 import { styled } from 'styled-components'
 import { Tooltip } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useSuspenseQuery } from '@apollo/client'
 import { DASHBOARD_AT_QUERY } from '@/graphql/queries'
 import { DashboardAtResult } from '@/src/generated/graphql'
+import { useRouter } from 'next/router'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -90,10 +91,15 @@ type DashboardAT = {
 }
 
 export default function AdviceTypeCon() {
-  const { data } = useSuspenseQuery<DashboardAT>(DASHBOARD_AT_QUERY)
+  const router = useRouter()
+  const { data, refetch } = useSuspenseQuery<DashboardAT>(DASHBOARD_AT_QUERY)
   const adviceTypeData = data?.dashboardAT
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
+
+  useEffect(() => {
+    refetch()
+  }, [router])
 
   const donutData = {
     series: adviceTypeData?.count || [],

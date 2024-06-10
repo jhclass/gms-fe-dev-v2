@@ -8,6 +8,8 @@ import {
 } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
@@ -21,7 +23,8 @@ export default function ManagerSelect({
   handleChange,
   isHyphen,
 }) {
-  const { error, data } = useSuspenseQuery<seeAdviceTypeQuery>(
+  const router = useRouter()
+  const { error, data, refetch } = useSuspenseQuery<seeAdviceTypeQuery>(
     SEE_ADVICE_TYPE_QUERY,
     {
       variables: {
@@ -32,6 +35,14 @@ export default function ManagerSelect({
     },
   )
   const subDivList = data?.seeAdviceType.adviceType || []
+
+  useEffect(() => {
+    refetch({
+      page: 1,
+      category: '수강구분',
+      limit: 100,
+    })
+  }, [router])
 
   if (error) {
     console.log(error)

@@ -1,11 +1,5 @@
 import { styled } from 'styled-components'
-import { useMutation } from '@apollo/client'
-import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
-import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
-import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
-import { Checkbox } from '@nextui-org/react'
 
 const TableItem = styled.div<{ $resign: string }>`
   position: relative;

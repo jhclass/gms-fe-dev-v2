@@ -22,7 +22,7 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -346,7 +346,10 @@ export default function StudentsWriteCourse() {
       createStudentPayment({
         variables: {
           campus: '신촌',
-          seScore: data.seScore === '' ? 0 : parseInt(data.seScore),
+          seScore:
+            data.seScore === '' || data.seScore === null
+              ? 0
+              : parseInt(data.seScore),
           tuitionFee: parseInt(data.tuitionFee),
           studentId: parseInt(studentId),
           subjectId: parseInt(subjectSelected),

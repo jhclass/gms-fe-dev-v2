@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { DASHBOARD_TODAY_QUERY } from '@/graphql/queries'
 import { DashboardTodayResult } from '@/src/generated/graphql'
+import { useRouter } from 'next/router'
 
 const ItemBox = styled.div`
   padding: 1.5rem;
@@ -81,6 +82,7 @@ type DashboardToday = {
   dashboardToday: DashboardTodayResult
 }
 export default function NewConsultNumCon() {
+  const router = useRouter()
   const { error, data, refetch } = useSuspenseQuery<DashboardToday>(
     DASHBOARD_TODAY_QUERY,
   )
@@ -90,6 +92,7 @@ export default function NewConsultNumCon() {
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const date = new Date().getDate()
+
   useEffect(() => {
     if (dataCompare > 0) {
       setIsIncrease(true)
@@ -97,9 +100,11 @@ export default function NewConsultNumCon() {
       setIsIncrease(false)
     }
   }, [data])
+
   useEffect(() => {
     refetch()
-  }, [refetch])
+  }, [router])
+
   const dateFormet = data => {
     if (parseInt(data) < 10000) {
       const result = data.toLocaleString()
