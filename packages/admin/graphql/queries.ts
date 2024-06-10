@@ -198,7 +198,7 @@ export const SEE_MANAGEUSER_QUERY = gql`
   }
 `
 export const SEARCH_MANAGEUSER_QUERY = gql`
-ㅐ  query Query(
+  query Query(
     $mGrade: Int
     $limit: Int
     $resign: String
