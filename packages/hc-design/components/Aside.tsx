@@ -96,7 +96,7 @@ export default function Aside() {
         className="bottom-[8rem] rounded-s-lg left-[1rem] lg:left-auto lg:right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
       >
         <div className="relative w-[5rem] h-[5rem] bg-[#f8e540] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
-          <Ballon>바로 상담 👍</Ballon>
+          <Ballon>바로 상담 👍👍</Ballon>
           <Link
             href="#"
             onClick={clickKakao}
