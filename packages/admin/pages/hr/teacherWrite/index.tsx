@@ -513,7 +513,6 @@ export default function StudentsWrite() {
                             label={'강의분야'}
                             handleChange={setAdviceType}
                             category={'강의분야'}
-                            defaultValue={' '}
                           />
                         </Suspense>
                       )}
