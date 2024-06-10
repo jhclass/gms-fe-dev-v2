@@ -674,6 +674,7 @@ export default function StudentsWrite({ managerId }) {
                             label={'강의분야'}
                             handleChange={setAdviceType}
                             category={'강의분야'}
+                            defaultValue={' '}
                           />
                         </Suspense>
                       )}
