@@ -532,3 +532,29 @@ export const SEE_LECTURES_QUERY = gql`
     }
   }
 `
+
+export const SEE_ATTENDANCE_MUTATION = gql`
+  query SeeAttendance($attendanceDate: String!, $lecturesId: Int!) {
+    seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
+      ok
+      absentCount
+      attendanceCount
+      enrollCount
+      outingCount
+      message
+      leaveEarlyCount
+      error
+      enrollData {
+        id
+        attendanceState
+        attendanceDateTime
+        attendanceDate
+        fastCompletion
+        isCanceled
+        leavingOut
+        studentId
+        studentPaymentId
+      }
+    }
+  }
+`
