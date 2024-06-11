@@ -8,12 +8,10 @@ import {
 } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useRecoilState } from 'recoil'
-import { formGroupSelectedState } from '@/lib/recoilAtoms'
 import badwords from '@/lib/badwords.json'
 import { gql, useMutation, useQuery } from '@apollo/react-hooks'
 
-const STUDENT_STATE_MUTATION = gql`
+const CREATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $stName: String!
     $phoneNum1: String!
@@ -21,10 +19,11 @@ const STUDENT_STATE_MUTATION = gql`
     $agreement: String!
     $progress: Int!
     $adviceTypes: [Int]!
-    $classMethod: [String]
     $campus: String
     $detail: String
+    $classMethod: [String]
     $receiptDiv: String
+    $branchId: Int
   ) {
     createStudentState(
       stName: $stName
@@ -33,14 +32,15 @@ const STUDENT_STATE_MUTATION = gql`
       agreement: $agreement
       progress: $progress
       adviceTypes: $adviceTypes
-      classMethod: $classMethod
       campus: $campus
       detail: $detail
+      classMethod: $classMethod
       receiptDiv: $receiptDiv
+      branchId: $branchId
     ) {
-      ok
-      message
       error
+      message
+      ok
     }
   }
 `
@@ -73,7 +73,7 @@ type FormValues = {
 }
 
 export default function Form() {
-  const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
+  const [createStudentState] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const {
     loading,
     error,
@@ -111,8 +111,9 @@ export default function Form() {
         })
         setFocus('contents')
       } else {
-        await studentStateResult({
+        await createStudentState({
           variables: {
+            branchId: 1,
             stName: data.name,
             phoneNum1: data.phone,
             subject: [],
@@ -151,10 +152,12 @@ export default function Form() {
       const typesArray = groupSelected
         .map(id => {
           const foundObject = adviceList.find(obj => obj.id === id)
-          return foundObject ? foundObject.type : null
+          return foundObject
         })
         .filter(type => type !== null)
       setGroupSelectedName(typesArray)
+    } else {
+      setGroupSelectedName([])
     }
   }, [groupSelected])
 
@@ -170,11 +173,18 @@ export default function Form() {
     setMethodSelect(value)
   }
 
-  const handleRemoveItem = (e, index: number) => {
+  const handleRemoveItem = (e, id) => {
     e.preventDefault()
-    const updatedGroupSelected = groupSelected.filter((_, i) => i !== index)
+    const updatedGroupSelected = groupSelected.filter(i => i !== id)
     setValue('groupSelected', updatedGroupSelected)
     setGroupSelected(updatedGroupSelected)
+  }
+
+  const handleRemoveMethodItem = (e, item) => {
+    e.preventDefault()
+    const updatedGroupSelected = methodSelect.filter(i => i !== item)
+    setValue('methodSelect', updatedGroupSelected)
+    setMethodSelect(updatedGroupSelected)
   }
 
   if (error) {
@@ -286,10 +296,10 @@ export default function Form() {
                   key={index}
                   className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"
                 >
-                  <span>{item}</span>
+                  <span>{item.type}</span>
                   <button
                     type="button"
-                    onClick={e => handleRemoveItem(e, index)}
+                    onClick={e => handleRemoveItem(e, item.id)}
                     className="text-lg text-center text-primary"
                   >
                     <i className="xi-close-min" />
@@ -304,7 +314,7 @@ export default function Form() {
                   <span>{item}</span>
                   <button
                     type="button"
-                    onClick={e => handleRemoveItem(e, index)}
+                    onClick={e => handleRemoveMethodItem(e, item)}
                     className="text-lg text-center text-primary"
                   >
                     <i className="xi-close-min" />

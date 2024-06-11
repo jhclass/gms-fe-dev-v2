@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'https://3e4e-1-236-97-151.ngrok-free.app/graphql'
+schema: 'https://testserver.hart.co.kr/graphql'
 generates:
   src/generated/graphql.tsx:
     plugins:
