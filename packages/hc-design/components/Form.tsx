@@ -11,7 +11,7 @@ import { Controller, useForm } from 'react-hook-form'
 import badwords from '@/lib/badwords.json'
 import { gql, useMutation, useQuery } from '@apollo/react-hooks'
 
-const STUDENT_STATE_MUTATION = gql`
+const CREATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
     $stName: String!
     $phoneNum1: String!
@@ -23,6 +23,7 @@ const STUDENT_STATE_MUTATION = gql`
     $detail: String
     $classMethod: [String]
     $receiptDiv: String
+    $branchId: Int
   ) {
     createStudentState(
       stName: $stName
@@ -35,6 +36,7 @@ const STUDENT_STATE_MUTATION = gql`
       detail: $detail
       classMethod: $classMethod
       receiptDiv: $receiptDiv
+      branchId: $branchId
     ) {
       error
       message
@@ -71,7 +73,7 @@ type FormValues = {
 }
 
 export default function Form() {
-  const [studentStateResult] = useMutation(STUDENT_STATE_MUTATION)
+  const [createStudentState] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const {
     loading,
     error,
@@ -109,21 +111,9 @@ export default function Form() {
         })
         setFocus('contents')
       } else {
-        const test = {
-          stName: data.name,
-          phoneNum1: data.phone,
-          subject: [],
-          agreement: data.privacy ? '동의' : '비동의',
-          progress: 0,
-          adviceTypes: data.groupSelected,
-          campus: '신촌',
-          detail: data.contents,
-          receiptDiv: '온라인',
-          classMethod: data.methodSelect,
-        }
-        console.log(test)
-        await studentStateResult({
+        await createStudentState({
           variables: {
+            branchId: 1,
             stName: data.name,
             phoneNum1: data.phone,
             subject: [],
@@ -136,7 +126,6 @@ export default function Form() {
             classMethod: data.methodSelect,
           },
           onCompleted: result => {
-            console.log(result)
             if (result.createStudentState.ok) {
               window.gtag('event', '상담신청완료', {
                 event_category: 'Form',

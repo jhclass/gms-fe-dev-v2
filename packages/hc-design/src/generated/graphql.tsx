@@ -626,6 +626,7 @@ export type MutationCreateStudentStateArgs = {
   adviceTypes: Array<InputMaybe<Scalars['Int']['input']>>;
   agreement: Scalars['String']['input'];
   birthday?: InputMaybe<Scalars['String']['input']>;
+  branchId?: InputMaybe<Scalars['Int']['input']>;
   campus?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;
   classMethod?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
