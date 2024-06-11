@@ -21,9 +21,9 @@ const STUDENT_STATE_MUTATION = gql`
     $agreement: String!
     $progress: Int!
     $adviceTypes: [Int]!
-    $classMethod: [String]
     $campus: String
     $detail: String
+    $classMethod: [String]
     $receiptDiv: String
   ) {
     createStudentState(
@@ -33,14 +33,14 @@ const STUDENT_STATE_MUTATION = gql`
       agreement: $agreement
       progress: $progress
       adviceTypes: $adviceTypes
-      classMethod: $classMethod
       campus: $campus
       detail: $detail
+      classMethod: $classMethod
       receiptDiv: $receiptDiv
     ) {
-      ok
-      message
       error
+      message
+      ok
     }
   }
 `
@@ -111,6 +111,19 @@ export default function Form() {
         })
         setFocus('contents')
       } else {
+        const test = {
+          stName: data.name,
+          phoneNum1: data.phone,
+          subject: [],
+          agreement: data.privacy ? '동의' : '비동의',
+          progress: 0,
+          adviceTypes: data.groupSelected,
+          campus: '신촌',
+          detail: data.contents,
+          receiptDiv: '온라인',
+          classMethod: data.methodSelect,
+        }
+        console.log(test)
         await studentStateResult({
           variables: {
             stName: data.name,
@@ -125,6 +138,7 @@ export default function Form() {
             classMethod: data.methodSelect,
           },
           onCompleted: result => {
+            console.log(result)
             if (result.createStudentState.ok) {
               window.gtag('event', '상담신청완료', {
                 event_category: 'Form',
@@ -151,7 +165,6 @@ export default function Form() {
       const typesArray = groupSelected
         .map(id => {
           const foundObject = adviceList.find(obj => obj.id === id)
-          // return foundObject ? foundObject.type : null
           return foundObject
         })
         .filter(type => type !== null)
