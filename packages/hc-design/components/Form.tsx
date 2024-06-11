@@ -151,10 +151,13 @@ export default function Form() {
       const typesArray = groupSelected
         .map(id => {
           const foundObject = adviceList.find(obj => obj.id === id)
-          return foundObject ? foundObject.type : null
+          // return foundObject ? foundObject.type : null
+          return foundObject
         })
         .filter(type => type !== null)
       setGroupSelectedName(typesArray)
+    } else {
+      setGroupSelectedName([])
     }
   }, [groupSelected])
 
@@ -170,11 +173,18 @@ export default function Form() {
     setMethodSelect(value)
   }
 
-  const handleRemoveItem = (e, index: number) => {
+  const handleRemoveItem = (e, id) => {
     e.preventDefault()
-    const updatedGroupSelected = groupSelected.filter((_, i) => i !== index)
+    const updatedGroupSelected = groupSelected.filter(i => i !== id)
     setValue('groupSelected', updatedGroupSelected)
     setGroupSelected(updatedGroupSelected)
+  }
+
+  const handleRemoveMethodItem = (e, item) => {
+    e.preventDefault()
+    const updatedGroupSelected = methodSelect.filter(i => i !== item)
+    setValue('methodSelect', updatedGroupSelected)
+    setMethodSelect(updatedGroupSelected)
   }
 
   if (error) {
@@ -286,10 +296,10 @@ export default function Form() {
                   key={index}
                   className="flex items-center px-2 mx-1 my-1 rounded-lg text-sm/sm border-1 border-primary"
                 >
-                  <span>{item}</span>
+                  <span>{item.type}</span>
                   <button
                     type="button"
-                    onClick={e => handleRemoveItem(e, index)}
+                    onClick={e => handleRemoveItem(e, item.id)}
                     className="text-lg text-center text-primary"
                   >
                     <i className="xi-close-min" />
@@ -304,7 +314,7 @@ export default function Form() {
                   <span>{item}</span>
                   <button
                     type="button"
-                    onClick={e => handleRemoveItem(e, index)}
+                    onClick={e => handleRemoveMethodItem(e, item)}
                     className="text-lg text-center text-primary"
                   >
                     <i className="xi-close-min" />
