@@ -8,8 +8,6 @@ import {
 } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useRecoilState } from 'recoil'
-import { formGroupSelectedState } from '@/lib/recoilAtoms'
 import badwords from '@/lib/badwords.json'
 import { gql, useMutation, useQuery } from '@apollo/react-hooks'
 
