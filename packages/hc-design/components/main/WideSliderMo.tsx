@@ -91,13 +91,7 @@ export default function WideSliderMo() {
                   alt="웹툰작가에게 배우는 webtoon 과정상세보기"
                 />
               </figure>
-              <video
-                playsInline
-                autoPlay
-                loop
-                muted
-                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner02_poster.webp"
-              >
+              <video playsInline autoPlay loop muted>
                 <source
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner02.mp4"
                   type="video/mp4"
@@ -118,13 +112,7 @@ export default function WideSliderMo() {
                   alt="5주 완성! 이모티콘 크리에이터 되기! 배우는 webtoon 과정상세보기"
                 />
               </figure>
-              <video
-                playsInline
-                autoPlay
-                loop
-                muted
-                poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner03_poster.webp"
-              >
+              <video playsInline autoPlay loop muted>
                 <source
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner03.mp4"
                   type="video/mp4"
