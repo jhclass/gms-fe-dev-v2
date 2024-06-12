@@ -14,11 +14,9 @@ import {
   useRowSelect,
 } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
 import WorksLogs from '@/components/modal/WorksLogs'
-import Lecture from '@/pages/hr'
-import { Controller, useForm } from 'react-hook-form'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { CREATE_ATTENDANCE_MUTATION } from '@/graphql/mutations'
 import { SEE_ATTENDANCE_MUTATION } from '@/graphql/queries'
@@ -68,11 +66,13 @@ export default function Attendance({ lectureData }) {
   const today = new Date().toISOString().split('T')[0]
   const [page, setPage] = useState(null)
   const [periodArr, setPeriodArr] = useState([])
+  const [periodArrIndex, setPeriodArrIndex] = useState(null)
   const [week, setWeek] = useState(null)
   const [todayIndex, setTodayIndex] = useState(null)
   const [attendanceData, setAttendanceData] = useState([])
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
+  const [selectedValues, setSelectedValues] = useState([])
   const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_MUTATION)
 
@@ -112,10 +112,13 @@ export default function Attendance({ lectureData }) {
       const chunks = splitArrayIntoChunks(lectureData?.lectureDetails, 5)
       setPeriodArr(chunks)
       setWeek(findChunkContainingDate(chunks, today))
-      setPage(findDataInChunks(chunks, today))
+      setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
+      setPage(findDataInChunks(chunks, today) + 1)
       setData({ nodes: lectureData?.subject.StudentPayment })
     }
   }, [lectureData])
+  console.log(periodArrIndex)
+  console.log(page)
 
   useEffect(() => {
     if (periodArr.length > 0 && page !== null) {
@@ -126,9 +129,7 @@ export default function Attendance({ lectureData }) {
   useEffect(() => {
     if (week) {
       const dataIndex = week.indexOf(today)
-      if (dataIndex !== -1) {
-        setTodayIndex(week.indexOf(dataIndex))
-      }
+      setTodayIndex(dataIndex)
       const fetchAllAttendance = async () => {
         if (week.length > 0) {
           const allData = await Promise.all(
@@ -143,8 +144,25 @@ export default function Attendance({ lectureData }) {
     }
   }, [week, today])
 
-  // console.log(lectureData)
-  // console.log('1', attendanceData[0][0].attendanceState)
+  useEffect(() => {
+    if (week) {
+      const initialValues = week.map((day, dayIndex) =>
+        data.nodes.map((item, index) =>
+          attendanceData[dayIndex] && attendanceData[dayIndex][index]
+            ? attendanceData[dayIndex][index].attendanceState
+            : '-',
+        ),
+      )
+      setSelectedValues(initialValues)
+    }
+  }, [attendanceData, week])
+
+  const handleSelectChange = (value, itemIndex, dayIndex) => {
+    const updatedValues = [...selectedValues]
+    updatedValues[dayIndex][itemIndex] = value
+    console.log('updatedValues', updatedValues)
+    setSelectedValues(updatedValues)
+  }
 
   let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
   let gridTemplateColumnsMo = '100px'
@@ -168,15 +186,6 @@ export default function Attendance({ lectureData }) {
     }
   }
 
-  useEffect(() => {
-    if (todayIndex > 2 && tableRef.current) {
-      setTimeout(() => {
-        const scrollWidth = tableRef.current.scrollWidth
-        tableRef.current.scrollLeft = scrollWidth
-      }, 0)
-    }
-  }, [todayIndex])
-
   const test = e => {
     console.log(e)
   }
@@ -189,24 +198,19 @@ export default function Attendance({ lectureData }) {
     console.log(action, state)
   }
 
-  const handleUpdate = (value, id, property) => {
-    setData(state => ({
-      ...state,
-      nodes: state.nodes.map(node => {
-        if (node.id === id) {
-          return { ...node, [property]: value }
-        } else {
-          return node
-        }
-      }),
-    }))
-  }
-
   const handlePageChange = newPage => {
     setPage(newPage)
   }
 
-  //  background: linear-gradient(-90deg, rgba(0,0,0,0.1) calc(100% - 40px), transparent);
+  useEffect(() => {
+    if (todayIndex > 2 && tableRef.current) {
+      setTimeout(() => {
+        const scrollWidth = tableRef.current.scrollWidth
+        tableRef.current.scrollLeft = scrollWidth
+      }, 0)
+    }
+  }, [todayIndex])
+
   const theme = useTheme([
     // getTheme(),
     {
@@ -224,7 +228,7 @@ export default function Attendance({ lectureData }) {
         padding: 1rem;
         // min-width: 70px;
 
-        &:nth-of-type(${todayIndex >= 0 && 9 + todayIndex}) {
+        &:nth-of-type(${todayIndex >= 0 ? 9 + todayIndex : -1}) {
           // background:rgba(0, 125, 233, 0.15);
           border-left: 0.2rem solid #07bbae;
           border-right: 0.2rem solid #07bbae;
@@ -284,7 +288,6 @@ export default function Attendance({ lectureData }) {
           left: 510px;
           font-weight: bold;
           box-shadow: 5px 0 20px -15px rgba(0, 0, 0, 0.7);
-          
 
           @media (max-width: 768px) {
             display:none;
@@ -301,7 +304,7 @@ export default function Attendance({ lectureData }) {
         background:#fff;
       `,
       HeaderCell: `
-        text-align:center;   
+        text-align:center;
         padding: 1rem;
         font-weight: 600;
         color:#111;
@@ -354,13 +357,10 @@ export default function Attendance({ lectureData }) {
   }
 
   const onSubmit = index => {
-    console.log('aaa')
-    console.log(index)
-    console.log(lectureData.id)
     const attendanceDate = String(week[index])
     const id = extractProperty(data, `student.id`)
     const payMentID = extractProperty(data, `id`)
-    const state = extractProperty(data, `${week[index]}`)
+    const state = selectedValues[index]
     console.log('date', attendanceDate)
     console.log('id', id)
     console.log('payMentID', payMentID)
@@ -433,7 +433,7 @@ export default function Attendance({ lectureData }) {
                         <Cell pinLeft>{item.attendanceDate}</Cell>
                         <Cell pinLeft>{item.absent}</Cell>
                         <Cell pinLeft>{item.attendanceRate}</Cell>
-                        {attendanceData.map((attendance, dayIndex) => (
+                        {attendanceData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>
                             <TestSelect
                               style={{
@@ -443,16 +443,17 @@ export default function Attendance({ lectureData }) {
                                 padding: 0,
                                 margin: 0,
                               }}
-                              defaultChecked={
-                                attendance[index]
-                                  ? attendance[index].attendanceState
-                                  : '-'
-                              }
+                              // defaultChecked={
+                              //   attendance[index]
+                              //     ? attendance[index].attendanceState
+                              //     : '-'
+                              // }
+                              value={selectedValues[dayIndex][index]}
                               onChange={event => {
-                                handleUpdate(
+                                handleSelectChange(
                                   event.target.value,
-                                  item.id,
-                                  week[dayIndex],
+                                  index,
+                                  dayIndex,
                                 )
                               }}
                             >
@@ -489,51 +490,72 @@ export default function Attendance({ lectureData }) {
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
-                    {week.map((item, index) => (
-                      <Cell key={index}>
-                        <BtnCell>
-                          <Button
-                            size="sm"
-                            radius="sm"
-                            variant="solid"
-                            color="primary"
-                            onClick={onOpen}
-                          >
-                            일지
-                          </Button>
-                          <Button
-                            size="sm"
-                            radius="sm"
-                            variant="solid"
-                            className="text-white bg-[#07bbae]"
-                            onClick={() => onSubmit(index)}
-                          >
-                            저장
-                          </Button>
-                          {index >= todayIndex ? (
-                            <Button
-                              isDisabled={index > todayIndex ? true : false}
-                              size="sm"
-                              radius="sm"
-                              variant="solid"
-                              className="text-white bg-[#07bbae]"
-                              onClick={() => onSubmit(index)}
-                            >
-                              저장
-                            </Button>
-                          ) : (
-                            <Button
-                              size="sm"
-                              radius="sm"
-                              variant="solid"
-                              className="text-white bg-[#07bbae]"
-                            >
-                              수정
-                            </Button>
-                          )}
-                        </BtnCell>
-                      </Cell>
-                    ))}
+                    {periodArrIndex <= page ? (
+                      <>
+                        {week.map((item, index) => (
+                          <Cell key={index}>
+                            <BtnCell>
+                              <Button
+                                size="sm"
+                                radius="sm"
+                                variant="solid"
+                                color="primary"
+                                onClick={onOpen}
+                              >
+                                일지
+                              </Button>
+                              {index >= todayIndex ? (
+                                <Button
+                                  isDisabled={index > todayIndex ? true : false}
+                                  size="sm"
+                                  radius="sm"
+                                  variant="solid"
+                                  className="text-white bg-[#07bbae]"
+                                  onClick={() => onSubmit(index)}
+                                >
+                                  저장
+                                </Button>
+                              ) : (
+                                <Button
+                                  size="sm"
+                                  radius="sm"
+                                  variant="solid"
+                                  className="text-white bg-[#07bbae]"
+                                >
+                                  수정
+                                </Button>
+                              )}
+                            </BtnCell>
+                          </Cell>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {week.map((item, index) => (
+                          <Cell key={index}>
+                            <BtnCell>
+                              <Button
+                                size="sm"
+                                radius="sm"
+                                variant="solid"
+                                color="primary"
+                                onClick={onOpen}
+                              >
+                                일지
+                              </Button>
+                              <Button
+                                size="sm"
+                                radius="sm"
+                                variant="solid"
+                                className="text-white bg-[#07bbae]"
+                              >
+                                수정
+                              </Button>
+                            </BtnCell>
+                          </Cell>
+                        ))}
+                      </>
+                    )}
                   </Row>
                 </Body>
               </>
@@ -565,7 +587,7 @@ export default function Attendance({ lectureData }) {
           <Pagination
             variant="light"
             showControls
-            initialPage={1}
+            initialPage={page}
             page={page}
             total={periodArr.length}
             onChange={newPage => {
