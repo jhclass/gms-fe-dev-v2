@@ -74,6 +74,8 @@ export default function MainWrap({ children }) {
   //socketTest
   const [status, setStatus] = useState('Connecting...')
   const [messages, setMessages] = useState([])
+  const [socket, setSocket] = useState(null)
+  const [reconnectInterval, setReconnectInterval] = useState(1000) // 초기 재연결 간격 (1초)
   useEffect(() => {
     const token = localStorage.getItem('token')
     console.log('token:', token)
@@ -83,12 +85,28 @@ export default function MainWrap({ children }) {
       setStatus('WebSocket connection opened')
       console.log('WebSocket connection opened')
       ws.send('클라이언트에서 서버로 메시지 전송')
+      // 주기적으로 핑 메시지 전송
+      const pingInterval = setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'PING' }))
+        }
+      }, 30000)
+
+      ws.onclose = () => {
+        clearInterval(pingInterval)
+        setStatus('WebSocket connection closed')
+        console.log('WebSocket connection closed')
+      }
     }
 
     ws.onmessage = event => {
       try {
         const message = JSON.parse(event.data)
         console.log('Message from server:', message)
+
+        if (message.type === 'PONG') {
+          console.log('PONG received from server')
+        }
 
         if (message.type === 'NEW_STUDENTSTATE') {
           setMessages(prevMessages => [...prevMessages, message.data])
@@ -106,11 +124,6 @@ export default function MainWrap({ children }) {
       } catch (error) {
         console.error('Error parsing message:', error)
       }
-    }
-
-    ws.onclose = () => {
-      setStatus('WebSocket connection closed')
-      console.log('WebSocket connection closed')
     }
 
     ws.onerror = error => {
