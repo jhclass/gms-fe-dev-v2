@@ -22,7 +22,7 @@ import {
   CREATE_ATTENDANCE_MUTATION,
   EDIT_ATTENDANCE_MUTATION,
 } from '@/graphql/mutations'
-import { SEE_ATTENDANCE_MUTATION } from '@/graphql/queries'
+import { SEE_ATTENDANCE_QUERY } from '@/graphql/queries'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -79,7 +79,7 @@ export default function Attendance({ lectureData }) {
   const [selectedValues, setSelectedValues] = useState([])
   const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [EditAttendence] = useMutation(EDIT_ATTENDANCE_MUTATION)
-  const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_MUTATION)
+  const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_QUERY)
 
   const fetchAttendanceForDate = async (date, id) => {
     const { data } = await seeAttendence({

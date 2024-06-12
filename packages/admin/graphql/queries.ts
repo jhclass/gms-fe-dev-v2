@@ -533,7 +533,7 @@ export const SEE_LECTURES_QUERY = gql`
   }
 `
 
-export const SEE_ATTENDANCE_MUTATION = gql`
+export const SEE_ATTENDANCE_QUERY = gql`
   query SeeAttendance($attendanceDate: String!, $lecturesId: Int!) {
     seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
       ok
