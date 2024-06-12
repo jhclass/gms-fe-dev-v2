@@ -1844,3 +1844,13 @@ export const CREATE_ATTENDANCE_MUTATION = gql`
     }
   }
 `
+
+export const EDIT_ATTENDANCE_MUTATION = gql`
+  mutation EditAttendance($editAttendanceId: Int!, $attendanceState: String!) {
+    editAttendance(id: $editAttendanceId, attendanceState: $attendanceState) {
+      error
+      message
+      ok
+    }
+  }
+`

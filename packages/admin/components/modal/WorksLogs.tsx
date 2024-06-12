@@ -160,9 +160,13 @@ const FilterLabel = styled.label`
   }
 `
 
-export default function SubjectModal({
+export default function WorksLogsModal({
   isOpen,
   onClose,
+  workId = null,
+  lectureName,
+  lecturePeriod,
+  lectureTime,
   // setValue,
   // subjectSelected,
   // setSubjectSelected,
@@ -170,12 +174,7 @@ export default function SubjectModal({
   // setSubjectSelectedData = null,
   // setSub = null,
 }) {
-  const router = useRouter()
-  const [currentSubjectPage, setCurrentSubjectPage] = useState(1)
-  const [currentSubjectLimit, setCurrentSubjectLimit] = useState(5)
   const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
-  const [subjectList, setSubjectList] = useState(null)
-  const [subjectSearch, setSubjectSearch] = useState(null)
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       subjectName: '',
@@ -186,22 +185,22 @@ export default function SubjectModal({
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  useEffect(() => {
-    searchSubjectMutation({
-      variables: {
-        subjectName: subjectSearch,
-        exposure: true,
-        page: currentSubjectPage,
-        limit: currentSubjectLimit,
-      },
-      onCompleted: resData => {
-        if (resData.searchSubject.ok) {
-          const { result, totalCount } = resData.searchSubject || {}
-          setSubjectList({ result, totalCount })
-        }
-      },
-    })
-  }, [router, currentSubjectPage, subjectSearch])
+  // useEffect(() => {
+  //   searchSubjectMutation({
+  //     variables: {
+  //       subjectName: subjectSearch,
+  //       exposure: true,
+  //       page: currentSubjectPage,
+  //       limit: currentSubjectLimit,
+  //     },
+  //     onCompleted: resData => {
+  //       if (resData.searchSubject.ok) {
+  //         const { result, totalCount } = resData.searchSubject || {}
+  //         setSubjectList({ result, totalCount })
+  //       }
+  //     },
+  //   })
+  // }, [router, currentSubjectPage, subjectSearch])
 
   // const handleSbjChange = values => {
   //   setSubjectSelected(values)
