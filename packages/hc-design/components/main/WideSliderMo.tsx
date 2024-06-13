@@ -47,6 +47,18 @@ export default function WideSliderMo() {
         >
           <SwiperSlide>
             <div className="flex justify-center">
+              <Link href="/event/summerVacation">
+                <video playsInline autoPlay loop muted>
+                  <source
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner05.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </Link>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="flex justify-center">
               <Link href="/event/kdtJava">
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner04.webp"

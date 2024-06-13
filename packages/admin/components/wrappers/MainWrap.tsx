@@ -74,6 +74,8 @@ export default function MainWrap({ children }) {
   //socketTest
   const [status, setStatus] = useState('Connecting...')
   const [messages, setMessages] = useState([])
+  const [socket, setSocket] = useState(null)
+  const [reconnectInterval, setReconnectInterval] = useState(1000) // 초기 재연결 간격 (1초)
   useEffect(() => {
     const token = localStorage.getItem('token')
     console.log('token:', token)
@@ -107,7 +109,6 @@ export default function MainWrap({ children }) {
         console.error('Error parsing message:', error)
       }
     }
-
     ws.onclose = () => {
       setStatus('WebSocket connection closed')
       console.log('WebSocket connection closed')

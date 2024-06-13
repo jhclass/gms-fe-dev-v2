@@ -1671,27 +1671,57 @@ export const CREATE_LECTURES_MUTATION = gql`
   }
 `
 export const SEARCH_LECTURES_MUTATION = gql`
-  mutation Mutation(
+  mutation SearchLectures(
     $searchLecturesId: Int
-    $teacherId: Int
-    $subjectId: Int
-    $temporaryName: String
-    $periodEnd: String
     $periodStart: String
+    $periodEnd: String
+    $temporaryName: String
+    $subjectId: Int
+    $teacherId: Int
   ) {
     searchLectures(
       id: $searchLecturesId
-      teacherId: $teacherId
-      subjectId: $subjectId
-      temporaryName: $temporaryName
-      periodEnd: $periodEnd
       periodStart: $periodStart
+      periodEnd: $periodEnd
+      temporaryName: $temporaryName
+      subjectId: $subjectId
+      teacherId: $teacherId
     ) {
-      totalCount
-      ok
-      message
-      error
       data {
+        subject {
+          StudentPayment {
+            attendance {
+              attendanceDate
+              attendanceDateTime
+              attendanceState
+              createdAt
+              id
+              isCanceled
+              updatedAt
+              studentPaymentId
+              studentId
+              lecturesId
+            }
+            situationReport
+            lectureAssignment
+            isWeekend
+            id
+            subDiv
+            student {
+              id
+              name
+            }
+            employment
+            courseComplete
+          }
+          createdAt
+          subjectName
+          subjectCode
+          subDiv
+          round
+          roomNum
+          id
+        }
         updatedAt
         timetableAttached
         temporaryName
@@ -1700,46 +1730,51 @@ export const SEARCH_LECTURES_MUTATION = gql`
           mUserId
           mUsername
         }
-        subjectId
-        subject {
-          subjectCode
-          subjectName
-          id
-          totalTime
-          subDiv
-          roomNum
-          round
-          StudentPayment {
-            id
-            subDiv
-            student {
-              id
-              name
-            }
-            situationReport
-            lectureAssignment
-            isWeekend
-            courseComplete
-            employment
-          }
-        }
         subDiv
         sessionNum
         roomNum
         lectureTime
-        lectureDetails
-        lecturePeriodEnd
         lecturePeriodStart
+        lecturePeriodEnd
+        lectureDetails
         id
         eduStatusReport
         createdAt
+        subjectId
         confirmedNum
         campus
+        ApprovedNum
         WorkLogs {
           id
+          absentSt
+          attendanceCount
+          createdAt
+          etc
+          instruction
+          leaveEarlySt
+          lecturesId
+          paymentOne
+          paymentThree
+          paymentTwo
+          tardySt
+          workLogsDate
+          updatedAt
+          trainingTimeTotal
+          trainingTimeOneday
+          trainingInfoTwo
+          trainingInfoThree
+          trainingInfoSix
+          trainingInfoSeven
+          trainingInfoOne
+          trainingInfoFour
+          trainingInfoFive
+          trainingInfoEight
         }
-        ApprovedNum
       }
+      totalCount
+      ok
+      message
+      error
     }
   }
 `
@@ -1804,6 +1839,34 @@ export const CREATE_ATTENDANCE_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+export const EDIT_ATTENDANCE_MUTATION = gql`
+  mutation EditAttendance($editAttendanceId: Int!, $attendanceState: String!) {
+    editAttendance(id: $editAttendanceId, attendanceState: $attendanceState) {
+      error
+      message
+      ok
+    }
+  }
+`
+
+export const CREATE_WORKLOGS_MUTATION = gql`
+  mutation CreateWorkLogs(
+    $teacherName: String!
+    $lecturesId: Int!
+    $workLogsDate: String!
+  ) {
+    createWorkLogs(
+      teacherName: $teacherName
+      lecturesId: $lecturesId
+      workLogsDate: $workLogsDate
+    ) {
+      ok
+      message
+      error
     }
   }
 `

@@ -46,6 +46,12 @@ const MainBtn = styled.div`
     display: block;
   }
 `
+const MoQuick = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+`
+
 export default function Home() {
   // const router = useRouter()
   // useEffect(() => {
@@ -73,6 +79,26 @@ export default function Home() {
           />
         </Link>
         <LoopDeco />
+        <MoQuick>
+          <Link
+            href="/cs/curriculum"
+            className="flex items-center justify-center w-[33.4259vw] h-full "
+          >
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/moQuick01.webp"
+              alt="교육과정조회"
+            />
+          </Link>
+          <Link
+            href="/event/summerVacation"
+            className="flex items-center justify-center w-[29.4444vw] h-full"
+          >
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/moQuick02.webp"
+              alt="방학특강수강료조회"
+            />
+          </Link>
+        </MoQuick>
       </MainBtn>
 
       <SectionArea>

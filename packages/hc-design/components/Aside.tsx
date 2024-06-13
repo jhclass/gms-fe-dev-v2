@@ -16,13 +16,13 @@ const ballonKey = keyframes`
 const Ballon = styled.p`
   display: block;
   position: absolute;
-  padding: 0.1rem 0.5rem;
-  width: 7rem;
+  padding: 0.1rem 0.4rem;
+  width: 6rem;
   left: 50%;
-  margin-left: -3.5rem;
+  margin-left: -3rem;
   top: -2.5rem;
   background: #100061;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #c9f237;
   border-radius: 0.5rem;
@@ -93,26 +93,62 @@ export default function Aside() {
     <>
       <aside
         id="aside"
-        className="bottom-[8rem] rounded-s-lg left-[1rem] lg:left-auto lg:right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
+        className="bottom-[8rem] rounded-s-lg right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
       >
-        <div className="relative w-[5rem] h-[5rem] bg-[#f8e540] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+        <div className="relative w-[4rem] h-[4rem] bg-[#f8e540] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
           <Ballon>바로 상담 👍</Ballon>
           <Link
             href="#"
             onClick={clickKakao}
-            className="flex items-center justify-center w-full h-full text-[3.5rem]"
+            className="flex items-center justify-center w-full h-full text-[3rem]"
           >
             <i className="xi-kakaotalk" />
           </Link>
         </div>
-        <div className="w-[5rem] mt-[0.5rem]  lg:mt-[0.8rem]">
+        <div className="hidden lg:block w-[4rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+          <Link
+            href="/cs/curriculum"
+            as="/cs/curriculum"
+            className="flex items-center justify-center w-full h-full"
+          >
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/floating02.webp"
+              alt="교육과정조회"
+            />
+          </Link>
+        </div>
+        <div className="hidden lg:block w-[4rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+          <Link
+            href="/event/summerVacation"
+            as="/event/summerVacation"
+            className="flex items-center justify-center w-full h-full"
+          >
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/floating03.webp"
+              alt="방학특강수강료조회"
+            />
+          </Link>
+        </div>
+        <div className="hidden lg:block w-[4rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+          <Link
+            href="/support"
+            as="/support"
+            className="flex items-center justify-center w-full h-full"
+          >
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/floating04.webp"
+              alt="국비과정조회"
+            />
+          </Link>
+        </div>
+        <div className="w-[4rem] mt-[0.5rem] lg:mt-[0.8rem]">
           <Link
             href="/cs/consult"
             as="/cs/consult"
             className="flex items-center justify-center w-full h-full"
           >
             <img
-              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/floating01.webp"
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/floating01.webp"
               alt="문의하기"
             />
           </Link>

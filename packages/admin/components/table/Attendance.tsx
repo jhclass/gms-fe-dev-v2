@@ -14,13 +14,16 @@ import {
   useRowSelect,
 } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
 import WorksLogs from '@/components/modal/WorksLogs'
-import Lecture from '@/pages/hr'
-import { Controller, useForm } from 'react-hook-form'
-import { useMutation } from '@apollo/client'
-import { CREATE_ATTENDANCE_MUTATION } from '@/graphql/mutations'
+import { useLazyQuery, useMutation } from '@apollo/client'
+import {
+  CREATE_ATTENDANCE_MUTATION,
+  CREATE_WORKLOGS_MUTATION,
+  EDIT_ATTENDANCE_MUTATION,
+} from '@/graphql/mutations'
+import { SEE_ATTENDANCE_QUERY } from '@/graphql/queries'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -65,13 +68,40 @@ const TodayTag = styled.span`
 export default function Attendance({ lectureData }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const today = new Date().toISOString().split('T')[0]
+  const [page, setPage] = useState(null)
+  const [periodArr, setPeriodArr] = useState([])
+  const [periodArrIndex, setPeriodArrIndex] = useState(null)
   const [week, setWeek] = useState(null)
   const [todayIndex, setTodayIndex] = useState(null)
+  const [attendanceData, setAttendanceData] = useState([])
+  const [workId, setWorkId] = useState(null)
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
+  const [selectedValues, setSelectedValues] = useState([])
   const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
+  const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)
+  const [EditAttendence] = useMutation(EDIT_ATTENDANCE_MUTATION)
+  const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_QUERY)
 
-  function splitArrayIntoChunks(array, chunkSize) {
+  const fetchAttendanceForDate = async (date, id) => {
+    const { data } = await seeAttendence({
+      variables: {
+        attendanceDate: date,
+        lecturesId: id,
+      },
+    })
+    return data?.seeAttendance?.enrollData || []
+  }
+  const fetchAllAttendance = async () => {
+    if (week.length > 0) {
+      const allData = await Promise.all(
+        week.map(date => fetchAttendanceForDate(date, lectureData.id)),
+      )
+      setAttendanceData(allData)
+    }
+  }
+
+  const splitArrayIntoChunks = (array, chunkSize) => {
     const chunks = []
     for (let i = 0; i < array.length; i += chunkSize) {
       chunks.push(array.slice(i, i + chunkSize))
@@ -79,38 +109,57 @@ export default function Attendance({ lectureData }) {
     return chunks
   }
 
-  function findChunkContainingDate(array, date, chunkSize = 5) {
-    const chunks = splitArrayIntoChunks(array, chunkSize)
-    return chunks.find(chunk => chunk.includes(date))
+  const findChunkContainingDate = (array, date) => {
+    return array.find(chunk => chunk.includes(date))
+  }
+
+  const findDataInChunks = (chunks, data) => {
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].includes(data)) {
+        return i
+      }
+    }
+    return -1
   }
 
   useEffect(() => {
     if (lectureData) {
-      setWeek(findChunkContainingDate(lectureData?.lectureDetails, today))
+      const chunks = splitArrayIntoChunks(lectureData?.lectureDetails, 5)
+      setPeriodArr(chunks)
+      setWeek(findChunkContainingDate(chunks, today))
+      setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
+      setPage(findDataInChunks(chunks, today) + 1)
       setData({ nodes: lectureData?.subject.StudentPayment })
     }
   }, [lectureData])
 
   useEffect(() => {
     if (week) {
-      setTodayIndex(week.indexOf(today))
-    }
-  }, [week])
+      const dataIndex = week.indexOf(today)
+      setTodayIndex(dataIndex)
 
-  let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
-  let gridTemplateColumnsMo = '100px'
-  if (todayIndex !== 0) {
-    for (let i = 0; i < todayIndex; i++) {
-      gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-      gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+      fetchAllAttendance()
     }
-  }
-  gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
-  gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-  for (let i = 0; i < 4 - todayIndex; i++) {
-    gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-    gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-  }
+  }, [week, today])
+
+  useEffect(() => {
+    if (periodArr.length > 0 && page !== null) {
+      setWeek(periodArr[page - 1])
+    }
+  }, [page, periodArr])
+
+  useEffect(() => {
+    if (week) {
+      const initialValues = week.map((day, dayIndex) =>
+        data.nodes.map((item, index) =>
+          attendanceData[dayIndex] && attendanceData[dayIndex][index]
+            ? attendanceData[dayIndex][index].attendanceState
+            : '-',
+        ),
+      )
+      setSelectedValues(initialValues)
+    }
+  }, [attendanceData, week])
 
   useEffect(() => {
     if (todayIndex > 2 && tableRef.current) {
@@ -121,32 +170,46 @@ export default function Attendance({ lectureData }) {
     }
   }, [todayIndex])
 
-  const test = e => {
-    console.log(e)
+  let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
+  let gridTemplateColumnsMo = '100px'
+  if (todayIndex < 0) {
+    for (let i = 0; i < 5; i++) {
+      gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+      gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+    }
+  } else {
+    if (todayIndex !== 0) {
+      for (let i = 0; i < todayIndex; i++) {
+        gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+        gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+      }
+    }
+    gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
+    gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
+    for (let i = 0; i < 4 - todayIndex; i++) {
+      gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+      gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+    }
+  }
+
+  const onSelectChange = (action, state) => {
+    console.log(action, state)
+  }
+
+  const handleSelectChange = (value, itemIndex, dayIndex) => {
+    const updatedValues = [...selectedValues]
+    updatedValues[dayIndex][itemIndex] = value
+    setSelectedValues(updatedValues)
   }
 
   const select = useRowSelect(data, {
     onChange: onSelectChange,
   })
 
-  function onSelectChange(action, state) {
-    console.log(action, state)
+  const handlePageChange = newPage => {
+    setPage(newPage)
   }
 
-  const handleUpdate = (value, id, property) => {
-    setData(state => ({
-      ...state,
-      nodes: state.nodes.map(node => {
-        if (node.id === id) {
-          return { ...node, [property]: value }
-        } else {
-          return node
-        }
-      }),
-    }))
-  }
-
-  //  background: linear-gradient(-90deg, rgba(0,0,0,0.1) calc(100% - 40px), transparent);
   const theme = useTheme([
     // getTheme(),
     {
@@ -164,7 +227,7 @@ export default function Attendance({ lectureData }) {
         padding: 1rem;
         // min-width: 70px;
 
-        &:nth-of-type(${9 + todayIndex}) {
+        &:nth-of-type(${todayIndex >= 0 ? 9 + todayIndex : -1}) {
           // background:rgba(0, 125, 233, 0.15);
           border-left: 0.2rem solid #07bbae;
           border-right: 0.2rem solid #07bbae;
@@ -224,7 +287,6 @@ export default function Attendance({ lectureData }) {
           left: 510px;
           font-weight: bold;
           box-shadow: 5px 0 20px -15px rgba(0, 0, 0, 0.7);
-          
 
           @media (max-width: 768px) {
             display:none;
@@ -241,13 +303,13 @@ export default function Attendance({ lectureData }) {
         background:#fff;
       `,
       HeaderCell: `
-        text-align:center;   
+        text-align:center;
         padding: 1rem;
         font-weight: 600;
         color:#111;
         border-bottom: 1px solid #e4e4e7;
 
-          &:nth-of-type(${9 + todayIndex}) {
+          &:nth-of-type(${todayIndex >= 0 && 9 + todayIndex}) {
             border-radius: 0.5rem 0.5rem  0 0;
             border-top: 0.2rem solid #07bbae;
           }
@@ -264,7 +326,7 @@ export default function Attendance({ lectureData }) {
         }
 
         &:last-of-type{
-          > td:nth-of-type(${9 + todayIndex}) {
+          > td:nth-of-type(${todayIndex >= 0 && 9 + todayIndex}) {
             border-radius: 0 0 0.5rem 0.5rem;
             border-bottom: 0.2rem solid #07bbae;
           }
@@ -279,7 +341,6 @@ export default function Attendance({ lectureData }) {
 
   const extractProperty = (data, property) => {
     return data.nodes.map(item => {
-      // 점 표기법을 사용하여 중첩된 속성을 지원
       const keys = property.split('.')
       let value = item
       for (const key of keys) {
@@ -293,16 +354,24 @@ export default function Attendance({ lectureData }) {
     })
   }
 
+  const openWorkLog = id => {
+    if (id) {
+      setWorkId(id)
+      onOpen
+    } else {
+      onOpen
+    }
+  }
+
   const onSubmit = index => {
-    console.log(lectureData.id)
     const attendanceDate = String(week[index])
     const id = extractProperty(data, `student.id`)
     const payMentID = extractProperty(data, `id`)
-    const state = extractProperty(data, `${week[index]}`)
-    console.log('date', attendanceDate)
-    console.log('id', id)
-    console.log('payMentID', payMentID)
-    console.log('state', state)
+    const state = selectedValues[index]
+    // console.log('date', attendanceDate)
+    // console.log('id', id)
+    // console.log('payMentID', payMentID)
+    // console.log('state', state)
 
     createAttendence({
       variables: {
@@ -313,13 +382,54 @@ export default function Attendance({ lectureData }) {
         attendanceState: state,
       },
       onCompleted: resData => {
-        console.log(resData)
-        // if (resData.createAttendance.ok) {
-        //   const { result, totalCount } = resData.searchSubject || {}
-        //   setSubjectList({ result, totalCount })
-        // }
+        console.log('resData', resData)
+        if (resData.createAttendance.ok) {
+          createWorkLogs({
+            variables: {
+              teacherName: '김강사',
+              lecturesId: lectureData.id,
+              workLogsDate: attendanceDate,
+            },
+            onCompleted: result => {
+              console.log('result', result)
+              if (result.createWorkLogs.ok) {
+                fetchAllAttendance()
+                alert(`${attendanceDate} 출석체크 완료`)
+              }
+            },
+          })
+        }
       },
     })
+  }
+
+  const onEdit = index => {
+    console.log('수정')
+    const attendanceDate = String(week[index])
+    const id = extractProperty(data, `student.id`)
+    const payMentID = extractProperty(data, `id`)
+    const state = selectedValues[index]
+    console.log('date', attendanceDate)
+    console.log('id', id)
+    console.log('payMentID', payMentID)
+    console.log('state', state)
+
+    // EditAttendence({
+    //   variables: {
+    //     lecturesId: lectureData.id,
+    //     studentPaymentId: payMentID,
+    //     attendanceDate: attendanceDate,
+    //     studentId: id,
+    //     attendanceState: state,
+    //   },
+    //   onCompleted: resData => {
+    //     console.log(resData)
+    //     // if (resData.createAttendance.ok) {
+    //     //   const { result, totalCount } = resData.searchSubject || {}
+    //     //   setSubjectList({ result, totalCount })
+    //     // }
+    //   },
+    // })
   }
 
   return (
@@ -368,10 +478,10 @@ export default function Attendance({ lectureData }) {
                         <Cell pinLeft>{item.student.name}</Cell>
                         <Cell pinLeft>{item.subDiv}</Cell>
                         <Cell pinLeft>{item.days}</Cell>
-                        <Cell pinLeft>{item.attendance}</Cell>
+                        <Cell pinLeft>{item.attendanceDate}</Cell>
                         <Cell pinLeft>{item.absent}</Cell>
                         <Cell pinLeft>{item.attendanceRate}</Cell>
-                        {Array.from({ length: 4 }).map((_, dayIndex) => (
+                        {attendanceData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>
                             <TestSelect
                               style={{
@@ -381,12 +491,17 @@ export default function Attendance({ lectureData }) {
                                 padding: 0,
                                 margin: 0,
                               }}
-                              // value={item.day1}
+                              // defaultChecked={
+                              //   attendance[index]
+                              //     ? attendance[index].attendanceState
+                              //     : '-'
+                              // }
+                              value={selectedValues[dayIndex][index]}
                               onChange={event => {
-                                handleUpdate(
+                                handleSelectChange(
                                   event.target.value,
-                                  item.id,
-                                  week[dayIndex],
+                                  index,
+                                  dayIndex,
                                 )
                               }}
                             >
@@ -394,90 +509,116 @@ export default function Attendance({ lectureData }) {
                               <option value="출석">출석</option>
                               <option value="지각">지각</option>
                               <option value="조퇴">조퇴</option>
-                              <option value="지각&조퇴">지각&조퇴</option>
                               <option value="결석">결석</option>
                               <option value="외출">외출</option>
-                              <option value="지각&외출">지각&외출</option>
-                              <option value="외출&조퇴">외출&조퇴</option>
-                              <option value="지각&외출&조퇴">
-                                지각&외출&조퇴
-                              </option>
                               <option value="휴가/공가">휴가/공가</option>
                               <option value="절반출석">절반출석</option>
                             </TestSelect>
                           </Cell>
                         ))}
-                        <Cell>
-                          <TestSelect
-                            style={{
-                              width: '100%',
-                              border: 'none',
-                              fontSize: '1rem',
-                              padding: 0,
-                              margin: 0,
-                            }}
-                            value={item.day1}
-                            onChange={event =>
-                              handleUpdate(event.target.value, item.id, 'day1')
-                            }
-                          >
-                            <option value="-">-</option>
-                            <option value="출석">출석</option>
-                            <option value="지각">지각</option>
-                            <option value="조퇴">조퇴</option>
-                            <option value="지각&조퇴">지각&조퇴</option>
-                            <option value="결석">결석</option>
-                            <option value="외출">외출</option>
-                            <option value="지각&외출">지각&외출</option>
-                            <option value="외출&조퇴">외출&조퇴</option>
-                            <option value="지각&외출&조퇴">
-                              지각&외출&조퇴
-                            </option>
-                            <option value="휴가/공가">휴가/공가</option>
-                            <option value="절반출석">절반출석</option>
-                          </TestSelect>
-                        </Cell>
                       </Row>
                     ))}
-                  <Row
-                    item={{
-                      id: '1',
-                      nodes: [],
-                    }}
-                  >
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    <Cell pinLeft></Cell>
-                    {week.map((item, index) => (
-                      <Cell key={index}>
-                        <BtnCell>
-                          <Button
-                            size="sm"
-                            radius="sm"
-                            variant="solid"
-                            color="primary"
-                            onClick={onOpen}
-                          >
-                            일지
-                          </Button>
-                          <Button
-                            size="sm"
-                            radius="sm"
-                            variant="solid"
-                            className="text-white bg-[#07bbae]"
-                            onClick={() => onSubmit(index)}
-                          >
-                            저장
-                          </Button>
-                        </BtnCell>
-                      </Cell>
-                    ))}
-                  </Row>
+                  {todayIndex && (
+                    <Row
+                      item={{
+                        id: '1',
+                        nodes: [],
+                      }}
+                    >
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      <Cell pinLeft></Cell>
+                      {periodArrIndex <= page ? (
+                        <>
+                          {week.map((item, index) => (
+                            <Cell key={index}>
+                              <BtnCell>
+                                <Button
+                                  size="sm"
+                                  radius="sm"
+                                  variant="solid"
+                                  color="primary"
+                                  onClick={onOpen}
+                                >
+                                  일지
+                                </Button>
+                                {index >= todayIndex ? (
+                                  <>
+                                    {index === todayIndex &&
+                                    attendanceData[todayIndex]?.length === 0 ? (
+                                      <Button
+                                        size="sm"
+                                        radius="sm"
+                                        variant="solid"
+                                        className="text-white bg-[#07bbae]"
+                                        onClick={() => onSubmit(index)}
+                                      >
+                                        저장
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        isDisabled={
+                                          index > todayIndex ? true : false
+                                        }
+                                        size="sm"
+                                        radius="sm"
+                                        variant="solid"
+                                        className="text-white bg-[#07bbae]"
+                                        onClick={() => onEdit(index)}
+                                      >
+                                        수정
+                                      </Button>
+                                    )}
+                                  </>
+                                ) : (
+                                  <Button
+                                    size="sm"
+                                    radius="sm"
+                                    variant="solid"
+                                    className="text-white bg-[#07bbae]"
+                                    onClick={() => onEdit(index)}
+                                  >
+                                    수정
+                                  </Button>
+                                )}
+                              </BtnCell>
+                            </Cell>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {week.map((item, index) => (
+                            <Cell key={index}>
+                              <BtnCell>
+                                <Button
+                                  size="sm"
+                                  radius="sm"
+                                  variant="solid"
+                                  color="primary"
+                                  onClick={onOpen}
+                                >
+                                  일지
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  radius="sm"
+                                  variant="solid"
+                                  className="text-white bg-[#07bbae]"
+                                >
+                                  수정
+                                </Button>
+                              </BtnCell>
+                            </Cell>
+                          ))}
+                        </>
+                      )}
+                    </Row>
+                  )}
                 </Body>
               </>
             )}
@@ -508,15 +649,15 @@ export default function Attendance({ lectureData }) {
           <Pagination
             variant="light"
             showControls
-            initialPage={1}
-            page={1}
-            total={5}
-            // onChange={newPage => {
-            //   setCurrentPage(newPage)
-            // }}
+            initialPage={page}
+            page={page}
+            total={periodArr.length}
+            onChange={newPage => {
+              handlePageChange(newPage)
+            }}
           />
         </PagerWrap>
-        <WorksLogs isOpen={isOpen} onClose={onClose} />
+        {/* <WorksLogs isOpen={isOpen} onClose={onClose} workId={workId} /> */}
       </>
     )
   )
