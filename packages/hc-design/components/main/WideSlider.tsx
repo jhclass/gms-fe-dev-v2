@@ -20,6 +20,18 @@ export default function MainSilder() {
           className="mySwiper1"
         >
           <SwiperSlide>
+            <Link href="/event/summerVacation">
+              <div className="relative flex justify-center">
+                <video playsInline autoPlay loop muted>
+                  <source
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner05.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
             <Link href="/event/kdtJava">
               <div className="relative flex justify-center">
                 <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%]">
