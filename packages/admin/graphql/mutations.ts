@@ -1854,3 +1854,21 @@ export const EDIT_ATTENDANCE_MUTATION = gql`
     }
   }
 `
+
+export const CREATE_WORKLOGS_MUTATION = gql`
+  mutation CreateWorkLogs(
+    $teacherName: String!
+    $lecturesId: Int!
+    $workLogsDate: String!
+  ) {
+    createWorkLogs(
+      teacherName: $teacherName
+      lecturesId: $lecturesId
+      workLogsDate: $workLogsDate
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`

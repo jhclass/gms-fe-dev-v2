@@ -20,6 +20,7 @@ import WorksLogs from '@/components/modal/WorksLogs'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import {
   CREATE_ATTENDANCE_MUTATION,
+  CREATE_WORKLOGS_MUTATION,
   EDIT_ATTENDANCE_MUTATION,
 } from '@/graphql/mutations'
 import { SEE_ATTENDANCE_QUERY } from '@/graphql/queries'
@@ -78,6 +79,7 @@ export default function Attendance({ lectureData }) {
   const [data, setData] = useState({ nodes: [] })
   const [selectedValues, setSelectedValues] = useState([])
   const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
+  const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)
   const [EditAttendence] = useMutation(EDIT_ATTENDANCE_MUTATION)
   const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_QUERY)
 
@@ -89,6 +91,14 @@ export default function Attendance({ lectureData }) {
       },
     })
     return data?.seeAttendance?.enrollData || []
+  }
+  const fetchAllAttendance = async () => {
+    if (week.length > 0) {
+      const allData = await Promise.all(
+        week.map(date => fetchAttendanceForDate(date, lectureData.id)),
+      )
+      setAttendanceData(allData)
+    }
   }
 
   const splitArrayIntoChunks = (array, chunkSize) => {
@@ -127,14 +137,7 @@ export default function Attendance({ lectureData }) {
     if (week) {
       const dataIndex = week.indexOf(today)
       setTodayIndex(dataIndex)
-      const fetchAllAttendance = async () => {
-        if (week.length > 0) {
-          const allData = await Promise.all(
-            week.map(date => fetchAttendanceForDate(date, lectureData.id)),
-          )
-          setAttendanceData(allData)
-        }
-      }
+
       fetchAllAttendance()
     }
   }, [week, today])
@@ -365,10 +368,10 @@ export default function Attendance({ lectureData }) {
     const id = extractProperty(data, `student.id`)
     const payMentID = extractProperty(data, `id`)
     const state = selectedValues[index]
-    console.log('date', attendanceDate)
-    console.log('id', id)
-    console.log('payMentID', payMentID)
-    console.log('state', state)
+    // console.log('date', attendanceDate)
+    // console.log('id', id)
+    // console.log('payMentID', payMentID)
+    // console.log('state', state)
 
     createAttendence({
       variables: {
@@ -380,10 +383,17 @@ export default function Attendance({ lectureData }) {
       },
       onCompleted: resData => {
         console.log(resData)
-        // if (resData.createAttendance.ok) {
-        //   const { result, totalCount } = resData.searchSubject || {}
-        //   setSubjectList({ result, totalCount })
-        // }
+        if (resData.createAttendance.ok) {
+          createWorkLogs({
+            variables: {
+              teacherName: null,
+              lecturesId: lectureData.id,
+              workLogsDate: attendanceDate,
+            },
+          })
+          fetchAllAttendance()
+          alert(`${attendanceDate} 출석체크 완료`)
+        }
       },
     })
   }
