@@ -382,17 +382,22 @@ export default function Attendance({ lectureData }) {
         attendanceState: state,
       },
       onCompleted: resData => {
-        console.log(resData)
+        console.log('resData', resData)
         if (resData.createAttendance.ok) {
           createWorkLogs({
             variables: {
-              teacherName: null,
+              teacherName: '김강사',
               lecturesId: lectureData.id,
               workLogsDate: attendanceDate,
             },
+            onCompleted: result => {
+              console.log('result', result)
+              if (result.createWorkLogs.ok) {
+                fetchAllAttendance()
+                alert(`${attendanceDate} 출석체크 완료`)
+              }
+            },
           })
-          fetchAllAttendance()
-          alert(`${attendanceDate} 출석체크 완료`)
         }
       },
     })
@@ -504,14 +509,8 @@ export default function Attendance({ lectureData }) {
                               <option value="출석">출석</option>
                               <option value="지각">지각</option>
                               <option value="조퇴">조퇴</option>
-                              <option value="지각&조퇴">지각&조퇴</option>
                               <option value="결석">결석</option>
                               <option value="외출">외출</option>
-                              <option value="지각&외출">지각&외출</option>
-                              <option value="외출&조퇴">외출&조퇴</option>
-                              <option value="지각&외출&조퇴">
-                                지각&외출&조퇴
-                              </option>
                               <option value="휴가/공가">휴가/공가</option>
                               <option value="절반출석">절반출석</option>
                             </TestSelect>

@@ -1695,10 +1695,8 @@ export const SEARCH_LECTURES_MUTATION = gql`
               attendanceDateTime
               attendanceState
               createdAt
-              fastCompletion
               id
               isCanceled
-              leavingOut
               updatedAt
               studentPaymentId
               studentId
