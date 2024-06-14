@@ -119,19 +119,6 @@ export default function StudentsWrite() {
         },
       })
     }
-    if (updateAttendance) {
-      searchLectures({
-        variables: {
-          searchLecturesId: parseInt(lectureId),
-        },
-        onCompleted: result => {
-          if (result.searchLectures.ok) {
-            const { data } = result.searchLectures
-            setLectureData(data[0])
-          }
-        },
-      })
-    }
   }, [router, updateAttendance])
 
   const formatDate = (data, isTime) => {

@@ -215,6 +215,7 @@ export default function WorksLogsModal({
     },
   })
 
+  console.log(workLogData)
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -269,7 +270,15 @@ export default function WorksLogsModal({
       `${date.getDate().toString().padStart(2, '0')} `
     return formatted
   }
-  console.log('1', workLogData)
+  const getWorksLogsDate = data => {
+    const week = ['일', '월', '화', '수', '목', '금', '토']
+
+    const dayOfWeek = week[new Date(data).getDay()]
+
+    return dayOfWeek
+  }
+
+  https: console.log('1', workLogData)
   return (
     <>
       <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
@@ -289,15 +298,27 @@ export default function WorksLogsModal({
                             <div>
                               <FilterLabel>훈련기간</FilterLabel>
                               <LineBox>
-                                {/* {formatDate(workLogData.lectur.lecturePeriodStart)} ~{' '}
-                                {formatDate(workLogData.lectur.lecturePeriodEnd)} */}
+                                {formatDate(
+                                  workLogData?.lectures.lecturePeriodStart,
+                                )}{' '}
+                                ~{' '}
+                                {formatDate(
+                                  workLogData?.lectures.lecturePeriodEnd,
+                                )}
                               </LineBox>
                             </div>
                           </AreaBox>
                           <AreaBox>
                             <div>
                               <FilterLabel>훈련일자</FilterLabel>
-                              <LineBox>2024-02-12 금요일 (2일/20일)</LineBox>
+                              <LineBox>
+                                {workLogeDate} 금요일 (
+                                {workLogData?.lectures.lectureDetails.indexOf(
+                                  workLogeDate,
+                                ) + 1}
+                                일/
+                                {workLogData?.lectures.lectureDetails.length}일)
+                              </LineBox>
                             </div>
                           </AreaBox>
                         </FlexColBox>
@@ -346,7 +367,7 @@ export default function WorksLogsModal({
                               isDisabled={true}
                               isReadOnly={true}
                               labelPlacement="outside"
-                              // value={lectureName}
+                              value={workLogData?.lectures.temporaryName}
                               minRows={1}
                               variant="underlined"
                               size="md"

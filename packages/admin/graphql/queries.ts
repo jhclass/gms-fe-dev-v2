@@ -583,12 +583,8 @@ export const SEE_ATTENDANCE_QUERY = gql`
   }
 `
 export const SEARCH_WORKLOGS_QUERY = gql`
-  query Query($searchWorkLogsId: Int, $workLogsDate: String, $lecturesId: Int) {
-    searchWorkLogs(
-      id: $searchWorkLogsId
-      workLogsDate: $workLogsDate
-      lecturesId: $lecturesId
-    ) {
+  query Query($workLogsDate: String, $lecturesId: Int) {
+    searchWorkLogs(workLogsDate: $workLogsDate, lecturesId: $lecturesId) {
       data {
         absentSt
         attendanceCount
@@ -597,7 +593,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         id
         instruction
         leaveEarlySt
-        lecture {
+        lectures {
           lectureDetails
           lecturePeriodEnd
           lecturePeriodStart

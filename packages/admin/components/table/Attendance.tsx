@@ -67,7 +67,7 @@ const TodayTag = styled.span`
 
 export default function Attendance({ lectureData, setUpdateAttendance }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const today = new Date('2024-06-25').toISOString().split('T')[0]
+  const today = new Date('2024-06-05').toISOString().split('T')[0]
   const [page, setPage] = useState(1)
   const [periodArr, setPeriodArr] = useState([])
   const [periodArrIndex, setPeriodArrIndex] = useState(null)
@@ -79,6 +79,10 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
   const [data, setData] = useState({ nodes: [] })
   const [selectedValues, setSelectedValues] = useState([])
   const [selectWrokLogDate, setSelectWrokLogDate] = useState(null)
+  const [gridTemplateColumns, setGridTemplateColumns] = useState(
+    '50px 50px 100px 100px repeat(4, 70px)',
+  )
+  const [gridTemplateColumnsMo, setGridTemplateColumnsMo] = useState('100px')
   const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)
   const [EditAttendence] = useMutation(EDIT_ATTENDANCE_MUTATION)
@@ -103,23 +107,14 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
     }
   }
 
-  // const splitArrayIntoChunks = (array, chunkSize) => {
-  //   const chunks = []
-  //   for (let i = 0; i < array.length; i += chunkSize) {
-  //     chunks.push(array.slice(i, i + chunkSize))
-  //   }
-  //   return chunks
-  // }
-
   const splitArrayIntoChunks = (array, chunkSize) => {
     const chunks = []
 
     for (let i = 0; i < array.length; i += chunkSize) {
       const chunk = array.slice(i, i + chunkSize)
       if (chunk.length < chunkSize) {
-        // 부족한 갯수를 null로 채움
         while (chunk.length < chunkSize) {
-          chunk.push(null)
+          chunk.push('')
         }
       }
       chunks.push(chunk)
@@ -129,7 +124,6 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
   }
 
   const findChunkContainingDate = (array, date) => {
-    // return array.find(chunk => chunk.includes(date))
     let currentDate = new Date(date)
 
     const formatDate = date => {
@@ -237,40 +231,13 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
     setPage(newPage)
   }
 
-  // let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
-  // let gridTemplateColumnsMo = '100px'
-  // if (todayIndex < 0) {
-  //   for (let i = 0; i < 5; i++) {
-  //     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-  //     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-  //   }
-  // } else {
-  //   if (todayIndex !== 0) {
-  //     for (let i = 0; i < todayIndex; i++) {
-  //       gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-  //       gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-  //     }
-  //   }
-  //   gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
-  //   gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-  //   for (let i = 0; i < 4 - todayIndex; i++) {
-  //     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-  //     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-  //   }
-  // }
-
-  const [gridTemplateColumns, setGridTemplateColumns] = useState(
-    '50px 50px 100px 100px repeat(4, 70px)',
-  )
-  const [gridTemplateColumnsMo, setGridTemplateColumnsMo] = useState('100px')
-
   useEffect(() => {
     if (week) {
       let newGridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
       let newGridTemplateColumnsMo = '100px'
 
       if (todayIndex < 0) {
-        for (let i = 0; i < week.length; i++) {
+        for (let i = 0; i < 5; i++) {
           newGridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
           newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
         }
@@ -283,7 +250,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
         }
         newGridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
         newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-        for (let i = 0; i < week.length - todayIndex - 1; i++) {
+        for (let i = 0; i < 4 - todayIndex; i++) {
           newGridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
           newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
         }
@@ -465,9 +432,8 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
             },
             onCompleted: result => {
               if (result.createWorkLogs.ok) {
-                fetchAllAttendance()
-                // seeAttendanceRefetch()
                 alert(`${attendanceDate} 출석체크 완료`)
+                window.location.reload()
               }
             },
           })
@@ -555,11 +521,10 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                                 padding: 0,
                                 margin: 0,
                               }}
-                              // defaultChecked={
-                              //   attendance[index]
-                              //     ? attendance[index].attendanceState
-                              //     : '-'
-                              // }
+                              disabled={
+                                dayIndex !== todayIndex &&
+                                attendanceData[dayIndex]?.length === 0
+                              }
                               value={selectedValues[dayIndex][index]}
                               onChange={event => {
                                 handleSelectChange(
@@ -618,7 +583,38 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                               {index >= todayIndex ? (
                                 <>
                                   {index === todayIndex &&
-                                  attendanceData[todayIndex]?.length === 0 ? (
+                                  attendanceData[todayIndex]?.length !== 0 ? (
+                                    <Button
+                                      isDisabled={
+                                        index > todayIndex ? true : false
+                                      }
+                                      size="sm"
+                                      radius="sm"
+                                      variant="solid"
+                                      className="text-white bg-[#07bbae]"
+                                      onClick={() => onEdit(index)}
+                                    >
+                                      수정
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      isDisabled={
+                                        index !== todayIndex &&
+                                        attendanceData[index]?.length === 0
+                                      }
+                                      size="sm"
+                                      radius="sm"
+                                      variant="solid"
+                                      className="text-white bg-[#07bbae]"
+                                      onClick={() => onSubmit(index)}
+                                    >
+                                      저장
+                                    </Button>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {attendanceData[index]?.length === 0 ? (
                                     <Button
                                       isDisabled={selectedValues[
                                         todayIndex
@@ -646,16 +642,6 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                                     </Button>
                                   )}
                                 </>
-                              ) : (
-                                <Button
-                                  size="sm"
-                                  radius="sm"
-                                  variant="solid"
-                                  className="text-white bg-[#07bbae]"
-                                  onClick={() => onEdit(index)}
-                                >
-                                  수정
-                                </Button>
                               )}
                             </BtnCell>
                           </Cell>
