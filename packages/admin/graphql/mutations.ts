@@ -1844,26 +1844,21 @@ export const CREATE_ATTENDANCE_MUTATION = gql`
 `
 
 export const EDIT_ATTENDANCE_MUTATION = gql`
-  mutation EditAttendance($editAttendanceId: Int!, $attendanceState: String!) {
+  mutation EditAttendance(
+    $editAttendanceId: [Int]!
+    $attendanceState: [String]!
+  ) {
     editAttendance(id: $editAttendanceId, attendanceState: $attendanceState) {
-      error
-      message
       ok
+      message
+      error
     }
   }
 `
 
 export const CREATE_WORKLOGS_MUTATION = gql`
-  mutation CreateWorkLogs(
-    $teacherName: String!
-    $lecturesId: Int!
-    $workLogsDate: String!
-  ) {
-    createWorkLogs(
-      teacherName: $teacherName
-      lecturesId: $lecturesId
-      workLogsDate: $workLogsDate
-    ) {
+  mutation Mutation($lecturesId: Int!, $workLogsDate: String!) {
+    createWorkLogs(lecturesId: $lecturesId, workLogsDate: $workLogsDate) {
       ok
       message
       error

@@ -65,10 +65,10 @@ const TodayTag = styled.span`
   vertical-align: middle;
 `
 
-export default function Attendance({ lectureData }) {
+export default function Attendance({ lectureData, setUpdateAttendance }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const today = new Date().toISOString().split('T')[0]
-  const [page, setPage] = useState(null)
+  const today = new Date('2024-06-25').toISOString().split('T')[0]
+  const [page, setPage] = useState(1)
   const [periodArr, setPeriodArr] = useState([])
   const [periodArrIndex, setPeriodArrIndex] = useState(null)
   const [week, setWeek] = useState(null)
@@ -78,13 +78,15 @@ export default function Attendance({ lectureData }) {
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
   const [selectedValues, setSelectedValues] = useState([])
+  const [selectWrokLogDate, setSelectWrokLogDate] = useState(null)
   const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)
   const [EditAttendence] = useMutation(EDIT_ATTENDANCE_MUTATION)
-  const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_QUERY)
+  const [seeAttendance, { refetch: seeAttendanceRefetch }] =
+    useLazyQuery(SEE_ATTENDANCE_QUERY)
 
   const fetchAttendanceForDate = async (date, id) => {
-    const { data } = await seeAttendence({
+    const { data } = await seeAttendance({
       variables: {
         attendanceDate: date,
         lecturesId: id,
@@ -101,34 +103,81 @@ export default function Attendance({ lectureData }) {
     }
   }
 
+  // const splitArrayIntoChunks = (array, chunkSize) => {
+  //   const chunks = []
+  //   for (let i = 0; i < array.length; i += chunkSize) {
+  //     chunks.push(array.slice(i, i + chunkSize))
+  //   }
+  //   return chunks
+  // }
+
   const splitArrayIntoChunks = (array, chunkSize) => {
     const chunks = []
+
     for (let i = 0; i < array.length; i += chunkSize) {
-      chunks.push(array.slice(i, i + chunkSize))
+      const chunk = array.slice(i, i + chunkSize)
+      if (chunk.length < chunkSize) {
+        // 부족한 갯수를 null로 채움
+        while (chunk.length < chunkSize) {
+          chunk.push(null)
+        }
+      }
+      chunks.push(chunk)
     }
+
     return chunks
   }
 
   const findChunkContainingDate = (array, date) => {
-    return array.find(chunk => chunk.includes(date))
+    // return array.find(chunk => chunk.includes(date))
+    let currentDate = new Date(date)
+
+    const formatDate = date => {
+      const year = date.getFullYear()
+      const month = ('0' + (date.getMonth() + 1)).slice(-2)
+      const day = ('0' + date.getDate()).slice(-2)
+      return `${year}-${month}-${day}`
+    }
+
+    while (true) {
+      const formattedDate = formatDate(currentDate)
+      const chunk = array.find(chunk => chunk.includes(formattedDate))
+      if (chunk) {
+        return chunk
+      }
+
+      currentDate.setDate(currentDate.getDate() + 1)
+    }
   }
 
   const findDataInChunks = (chunks, data) => {
-    for (let i = 0; i < chunks.length; i++) {
-      if (chunks[i].includes(data)) {
-        return i
-      }
+    const formatDate = date => {
+      const year = date.getFullYear()
+      const month = ('0' + (date.getMonth() + 1)).slice(-2)
+      const day = ('0' + date.getDate()).slice(-2)
+      return `${year}-${month}-${day}`
     }
-    return -1
+
+    let currentDate = new Date(data)
+
+    while (true) {
+      const formattedDate = formatDate(currentDate)
+      for (let i = 0; i < chunks.length; i++) {
+        if (chunks[i].includes(formattedDate)) {
+          return i
+        }
+      }
+      currentDate.setDate(currentDate.getDate() + 1)
+    }
   }
 
   useEffect(() => {
     if (lectureData) {
       const chunks = splitArrayIntoChunks(lectureData?.lectureDetails, 5)
       setPeriodArr(chunks)
-      setWeek(findChunkContainingDate(chunks, today))
       setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
       setPage(findDataInChunks(chunks, today) + 1)
+      setWeek(findChunkContainingDate(chunks, today))
       setData({ nodes: lectureData?.subject.StudentPayment })
     }
   }, [lectureData])
@@ -166,31 +215,9 @@ export default function Attendance({ lectureData }) {
       setTimeout(() => {
         const scrollWidth = tableRef.current.scrollWidth
         tableRef.current.scrollLeft = scrollWidth
-      }, 0)
+      }, 100)
     }
   }, [todayIndex])
-
-  let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
-  let gridTemplateColumnsMo = '100px'
-  if (todayIndex < 0) {
-    for (let i = 0; i < 5; i++) {
-      gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-      gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-    }
-  } else {
-    if (todayIndex !== 0) {
-      for (let i = 0; i < todayIndex; i++) {
-        gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-        gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-      }
-    }
-    gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
-    gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
-    for (let i = 0; i < 4 - todayIndex; i++) {
-      gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
-      gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
-    }
-  }
 
   const onSelectChange = (action, state) => {
     console.log(action, state)
@@ -210,6 +237,62 @@ export default function Attendance({ lectureData }) {
     setPage(newPage)
   }
 
+  // let gridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
+  // let gridTemplateColumnsMo = '100px'
+  // if (todayIndex < 0) {
+  //   for (let i = 0; i < 5; i++) {
+  //     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+  //     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+  //   }
+  // } else {
+  //   if (todayIndex !== 0) {
+  //     for (let i = 0; i < todayIndex; i++) {
+  //       gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+  //       gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+  //     }
+  //   }
+  //   gridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
+  //   gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
+  //   for (let i = 0; i < 4 - todayIndex; i++) {
+  //     gridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+  //     gridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+  //   }
+  // }
+
+  const [gridTemplateColumns, setGridTemplateColumns] = useState(
+    '50px 50px 100px 100px repeat(4, 70px)',
+  )
+  const [gridTemplateColumnsMo, setGridTemplateColumnsMo] = useState('100px')
+
+  useEffect(() => {
+    if (week) {
+      let newGridTemplateColumns = '50px 50px 100px 100px repeat(4, 70px)'
+      let newGridTemplateColumnsMo = '100px'
+
+      if (todayIndex < 0) {
+        for (let i = 0; i < week.length; i++) {
+          newGridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+          newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+        }
+      } else {
+        if (todayIndex !== 0) {
+          for (let i = 0; i < todayIndex; i++) {
+            newGridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+            newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+          }
+        }
+        newGridTemplateColumns += ' repeat(1, minmax(min-content, 2fr))'
+        newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 2fr))'
+        for (let i = 0; i < week.length - todayIndex - 1; i++) {
+          newGridTemplateColumns += ' repeat(1, minmax(min-content, 1fr))'
+          newGridTemplateColumnsMo += ' repeat(1, minmax(min-content, 1fr))'
+        }
+      }
+
+      setGridTemplateColumns(newGridTemplateColumns)
+      setGridTemplateColumnsMo(newGridTemplateColumnsMo)
+    }
+  }, [week, todayIndex])
   const theme = useTheme([
     // getTheme(),
     {
@@ -354,13 +437,9 @@ export default function Attendance({ lectureData }) {
     })
   }
 
-  const openWorkLog = id => {
-    if (id) {
-      setWorkId(id)
-      onOpen
-    } else {
-      onOpen
-    }
+  const openWorkLog = date => {
+    setSelectWrokLogDate(date)
+    onOpen()
   }
 
   const onSubmit = index => {
@@ -368,10 +447,6 @@ export default function Attendance({ lectureData }) {
     const id = extractProperty(data, `student.id`)
     const payMentID = extractProperty(data, `id`)
     const state = selectedValues[index]
-    // console.log('date', attendanceDate)
-    // console.log('id', id)
-    // console.log('payMentID', payMentID)
-    // console.log('state', state)
 
     createAttendence({
       variables: {
@@ -382,18 +457,16 @@ export default function Attendance({ lectureData }) {
         attendanceState: state,
       },
       onCompleted: resData => {
-        console.log('resData', resData)
         if (resData.createAttendance.ok) {
           createWorkLogs({
             variables: {
-              teacherName: '김강사',
               lecturesId: lectureData.id,
               workLogsDate: attendanceDate,
             },
             onCompleted: result => {
-              console.log('result', result)
               if (result.createWorkLogs.ok) {
                 fetchAllAttendance()
+                // seeAttendanceRefetch()
                 alert(`${attendanceDate} 출석체크 완료`)
               }
             },
@@ -404,32 +477,23 @@ export default function Attendance({ lectureData }) {
   }
 
   const onEdit = index => {
-    console.log('수정')
     const attendanceDate = String(week[index])
-    const id = extractProperty(data, `student.id`)
-    const payMentID = extractProperty(data, `id`)
+    const attendanceId = attendanceData[index].map(i => i.id)
     const state = selectedValues[index]
-    console.log('date', attendanceDate)
-    console.log('id', id)
-    console.log('payMentID', payMentID)
-    console.log('state', state)
 
-    // EditAttendence({
-    //   variables: {
-    //     lecturesId: lectureData.id,
-    //     studentPaymentId: payMentID,
-    //     attendanceDate: attendanceDate,
-    //     studentId: id,
-    //     attendanceState: state,
-    //   },
-    //   onCompleted: resData => {
-    //     console.log(resData)
-    //     // if (resData.createAttendance.ok) {
-    //     //   const { result, totalCount } = resData.searchSubject || {}
-    //     //   setSubjectList({ result, totalCount })
-    //     // }
-    //   },
-    // })
+    EditAttendence({
+      variables: {
+        editAttendanceId: attendanceId,
+        attendanceState: state,
+      },
+      onCompleted: resData => {
+        if (resData.editAttendance.ok) {
+          // fetchAllAttendance()
+          seeAttendanceRefetch()
+          alert(`${attendanceDate} 출석수정 완료`)
+        }
+      },
+    })
   }
 
   return (
@@ -512,113 +576,119 @@ export default function Attendance({ lectureData }) {
                               <option value="결석">결석</option>
                               <option value="외출">외출</option>
                               <option value="휴가/공가">휴가/공가</option>
-                              <option value="절반출석">절반출석</option>
                             </TestSelect>
                           </Cell>
                         ))}
                       </Row>
                     ))}
-                  {todayIndex && (
-                    <Row
-                      item={{
-                        id: '1',
-                        nodes: [],
-                      }}
-                    >
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      <Cell pinLeft></Cell>
-                      {periodArrIndex <= page ? (
-                        <>
-                          {week.map((item, index) => (
-                            <Cell key={index}>
-                              <BtnCell>
-                                <Button
-                                  size="sm"
-                                  radius="sm"
-                                  variant="solid"
-                                  color="primary"
-                                  onClick={onOpen}
-                                >
-                                  일지
-                                </Button>
-                                {index >= todayIndex ? (
-                                  <>
-                                    {index === todayIndex &&
-                                    attendanceData[todayIndex]?.length === 0 ? (
-                                      <Button
-                                        size="sm"
-                                        radius="sm"
-                                        variant="solid"
-                                        className="text-white bg-[#07bbae]"
-                                        onClick={() => onSubmit(index)}
-                                      >
-                                        저장
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        isDisabled={
-                                          index > todayIndex ? true : false
-                                        }
-                                        size="sm"
-                                        radius="sm"
-                                        variant="solid"
-                                        className="text-white bg-[#07bbae]"
-                                        onClick={() => onEdit(index)}
-                                      >
-                                        수정
-                                      </Button>
-                                    )}
-                                  </>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    radius="sm"
-                                    variant="solid"
-                                    className="text-white bg-[#07bbae]"
-                                    onClick={() => onEdit(index)}
-                                  >
-                                    수정
-                                  </Button>
-                                )}
-                              </BtnCell>
-                            </Cell>
-                          ))}
-                        </>
-                      ) : (
-                        <>
-                          {week.map((item, index) => (
-                            <Cell key={index}>
-                              <BtnCell>
-                                <Button
-                                  size="sm"
-                                  radius="sm"
-                                  variant="solid"
-                                  color="primary"
-                                  onClick={onOpen}
-                                >
-                                  일지
-                                </Button>
+
+                  <Row
+                    item={{
+                      id: '1',
+                      nodes: [],
+                    }}
+                  >
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    <Cell pinLeft></Cell>
+                    {periodArrIndex <= page ? (
+                      <>
+                        {week.map((item, index) => (
+                          <Cell key={index}>
+                            <BtnCell>
+                              <Button
+                                isDisabled={
+                                  attendanceData[index]?.length === 0
+                                    ? true
+                                    : false
+                                }
+                                size="sm"
+                                radius="sm"
+                                variant="solid"
+                                color="primary"
+                                onClick={() => openWorkLog(item)}
+                              >
+                                일지
+                              </Button>
+                              {index >= todayIndex ? (
+                                <>
+                                  {index === todayIndex &&
+                                  attendanceData[todayIndex]?.length === 0 ? (
+                                    <Button
+                                      isDisabled={selectedValues[
+                                        todayIndex
+                                      ].includes('-')}
+                                      size="sm"
+                                      radius="sm"
+                                      variant="solid"
+                                      className="text-white bg-[#07bbae]"
+                                      onClick={() => onSubmit(index)}
+                                    >
+                                      저장
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      isDisabled={
+                                        index > todayIndex ? true : false
+                                      }
+                                      size="sm"
+                                      radius="sm"
+                                      variant="solid"
+                                      className="text-white bg-[#07bbae]"
+                                      onClick={() => onEdit(index)}
+                                    >
+                                      수정
+                                    </Button>
+                                  )}
+                                </>
+                              ) : (
                                 <Button
                                   size="sm"
                                   radius="sm"
                                   variant="solid"
                                   className="text-white bg-[#07bbae]"
+                                  onClick={() => onEdit(index)}
                                 >
                                   수정
                                 </Button>
-                              </BtnCell>
-                            </Cell>
-                          ))}
-                        </>
-                      )}
-                    </Row>
-                  )}
+                              )}
+                            </BtnCell>
+                          </Cell>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {week.map((item, index) => (
+                          <Cell key={index}>
+                            <BtnCell>
+                              <Button
+                                size="sm"
+                                radius="sm"
+                                variant="solid"
+                                color="primary"
+                                onClick={() => openWorkLog(item)}
+                              >
+                                일지
+                              </Button>
+                              <Button
+                                size="sm"
+                                radius="sm"
+                                variant="solid"
+                                className="text-white bg-[#07bbae]"
+                              >
+                                수정
+                              </Button>
+                            </BtnCell>
+                          </Cell>
+                        ))}
+                      </>
+                    )}
+                  </Row>
                 </Body>
               </>
             )}
@@ -657,7 +727,12 @@ export default function Attendance({ lectureData }) {
             }}
           />
         </PagerWrap>
-        {/* <WorksLogs isOpen={isOpen} onClose={onClose} workId={workId} /> */}
+        <WorksLogs
+          isOpen={isOpen}
+          onClose={onClose}
+          lectureId={lectureData.id}
+          workLogeDate={selectWrokLogDate}
+        />
       </>
     )
   )

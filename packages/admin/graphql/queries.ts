@@ -537,74 +537,94 @@ export const SEE_ATTENDANCE_QUERY = gql`
   query Query($attendanceDate: String!, $lecturesId: Int!) {
     seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
       ok
-      error
       message
+      error
       absentCount
       absentData {
-        attendanceState
         id
-        studentId
         student {
           name
         }
-        attendanceDate
-        studentPaymentId
       }
       attendanceCount
-      attendanceData {
-        id
-        attendanceState
-        attendanceDate
-        student {
-          name
-        }
-        studentId
-        studentPaymentId
-      }
       enrollCount
       enrollData {
-        attendanceDate
-        attendanceState
         id
-        studentId
         student {
           name
         }
+        attendanceDate
+        attendanceState
+        studentId
         studentPaymentId
       }
       leaveEarlyCount
       leaveEarlyData {
-        studentPaymentId
-        studentId
+        id
         student {
           name
         }
-        id
-        attendanceState
-        attendanceDate
       }
       outingCount
       outingData {
-        studentId
-        studentPaymentId
+        id
         student {
           name
         }
-        id
-        attendanceState
-        attendanceDate
       }
       tardyCount
       tardyData {
-        attendanceDate
-        attendanceState
         id
         student {
           name
         }
-        studentId
-        studentPaymentId
       }
+    }
+  }
+`
+export const SEARCH_WORKLOGS_QUERY = gql`
+  query Query($searchWorkLogsId: Int, $workLogsDate: String, $lecturesId: Int) {
+    searchWorkLogs(
+      id: $searchWorkLogsId
+      workLogsDate: $workLogsDate
+      lecturesId: $lecturesId
+    ) {
+      data {
+        absentSt
+        attendanceCount
+        createdAt
+        etc
+        id
+        instruction
+        leaveEarlySt
+        lecture {
+          lectureDetails
+          lecturePeriodEnd
+          lecturePeriodStart
+          temporaryName
+          id
+        }
+        paymentOne
+        paymentThree
+        paymentTwo
+        tardySt
+        trainingInfoEight
+        trainingInfoFive
+        trainingInfoFour
+        trainingInfoOne
+        trainingInfoSeven
+        trainingInfoSix
+        trainingInfoThree
+        trainingInfoTwo
+        trainingTimeOneday
+        trainingTimeTotal
+        updatedAt
+        workLogsDate
+      }
+      totalCount
+      ok
+      message
+      error
     }
   }
 `

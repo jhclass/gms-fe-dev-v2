@@ -11,12 +11,13 @@ import {
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import WorksSchedule from '@/components/table/WorksSchedule'
 import WorksTime from '@/components/table/WorksTime'
 import WorksRemark from '@/components/table/WorksRemark'
+import { SEARCH_WORKLOGS_QUERY, SEE_ATTENDANCE_QUERY } from '@/graphql/queries'
 
 const Title = styled.h2`
   position: relative;
@@ -163,10 +164,8 @@ const FilterLabel = styled.label`
 export default function WorksLogsModal({
   isOpen,
   onClose,
-  workId = null,
-  lectureName,
-  lecturePeriod,
-  lectureTime,
+  lectureId,
+  workLogeDate,
   // setValue,
   // subjectSelected,
   // setSubjectSelected,
@@ -174,7 +173,42 @@ export default function WorksLogsModal({
   // setSubjectSelectedData = null,
   // setSub = null,
 }) {
-  const [searchSubjectMutation] = useMutation(SEARCH_SUBJECT_MUTATION)
+  const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_QUERY)
+  const [searchWorkLog] = useLazyQuery(SEARCH_WORKLOGS_QUERY)
+  const [workLogData, setWorkLogData] = useState(null)
+  const fetchWorkLogData = async (date, id) => {
+    const { data } = await searchWorkLog({
+      variables: {
+        workLogsDate: date,
+        lecturesId: id,
+      },
+    })
+    return data?.searchWorkLogs?.data[0] || []
+  }
+  const fetchWorkLog = async (date, id) => {
+    try {
+      const data = await fetchWorkLogData(date, id)
+      setWorkLogData(data)
+    } catch (error) {
+      console.error('작업 로그 데이터를 가져오는 중 오류 발생:', error)
+    }
+  }
+  const fetchAttendanceForDate = async (date, id) => {
+    const { data } = await seeAttendence({
+      variables: {
+        attendanceDate: date,
+        lecturesId: id,
+      },
+    })
+    return data?.seeAttendance?.enrollData || []
+  }
+
+  useEffect(() => {
+    if (lectureId && workLogeDate) {
+      fetchWorkLog(workLogeDate, lectureId)
+    }
+  }, [workLogeDate, lectureId])
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       subjectName: '',
@@ -226,26 +260,16 @@ export default function WorksLogsModal({
   //   sbjClose()
   // }
 
-  const formatDate = (data, isTime) => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}:` +
-        `${date.getSeconds().toString().padStart(2, '0')}`
-      return formatted
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
-    }
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
   }
+  console.log('1', workLogData)
   return (
     <>
       <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
@@ -264,7 +288,10 @@ export default function WorksLogsModal({
                           <AreaBox>
                             <div>
                               <FilterLabel>훈련기간</FilterLabel>
-                              <LineBox>2024-01-02 ~2024-02-01</LineBox>
+                              <LineBox>
+                                {/* {formatDate(workLogData.lectur.lecturePeriodStart)} ~{' '}
+                                {formatDate(workLogData.lectur.lecturePeriodEnd)} */}
+                              </LineBox>
                             </div>
                           </AreaBox>
                           <AreaBox>
@@ -319,9 +346,7 @@ export default function WorksLogsModal({
                               isDisabled={true}
                               isReadOnly={true}
                               labelPlacement="outside"
-                              defaultValue={
-                                '과정명엄청길다길다길다과정명엄청길다길다길다과정명엄청길다길다길다과정명엄청길다길다길다과정명엄청길다길다길다'
-                              }
+                              // value={lectureName}
                               minRows={1}
                               variant="underlined"
                               size="md"
