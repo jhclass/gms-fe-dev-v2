@@ -533,6 +533,38 @@ export const SEE_LECTURES_QUERY = gql`
   }
 `
 
+export const SEE_ATTENDANCE_ALL_QUERY = gql`
+  query Query($attendanceDate: String!, $lecturesId: Int!) {
+    seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
+      ok
+      message
+      error
+      enrollCount
+      enrollData {
+        id
+        student {
+          name
+        }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
+      }
+      leaveEarlyCount
+      leaveEarlyData {
+        id
+        student {
+          name
+        }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
+      }
+    }
+  }
+`
+
 export const SEE_ATTENDANCE_QUERY = gql`
   query Query($attendanceDate: String!, $lecturesId: Int!) {
     seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
@@ -545,6 +577,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         student {
           name
         }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
       }
       attendanceCount
       enrollCount
@@ -564,6 +600,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         student {
           name
         }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
       }
       outingCount
       outingData {
@@ -571,6 +611,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         student {
           name
         }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
       }
       tardyCount
       tardyData {
@@ -578,6 +622,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         student {
           name
         }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
       }
     }
   }
@@ -594,6 +642,8 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         instruction
         leaveEarlySt
         lectures {
+          ApprovedNum
+          confirmedNum
           lectureDetails
           lecturePeriodEnd
           lecturePeriodStart

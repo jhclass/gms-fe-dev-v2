@@ -23,7 +23,10 @@ import {
   CREATE_WORKLOGS_MUTATION,
   EDIT_ATTENDANCE_MUTATION,
 } from '@/graphql/mutations'
-import { SEE_ATTENDANCE_QUERY } from '@/graphql/queries'
+import {
+  SEE_ATTENDANCE_ALL_QUERY,
+  SEE_ATTENDANCE_QUERY,
+} from '@/graphql/queries'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -67,13 +70,13 @@ const TodayTag = styled.span`
 
 export default function Attendance({ lectureData, setUpdateAttendance }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const today = new Date('2024-06-05').toISOString().split('T')[0]
+  const today = new Date().toISOString().split('T')[0]
   const [page, setPage] = useState(1)
   const [periodArr, setPeriodArr] = useState([])
   const [periodArrIndex, setPeriodArrIndex] = useState(null)
   const [week, setWeek] = useState(null)
   const [todayIndex, setTodayIndex] = useState(null)
-  const [attendanceData, setAttendanceData] = useState([])
+  const [attendanceAllData, setAttendanceAllData] = useState([])
   const [workId, setWorkId] = useState(null)
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
@@ -83,11 +86,12 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
     '50px 50px 100px 100px repeat(4, 70px)',
   )
   const [gridTemplateColumnsMo, setGridTemplateColumnsMo] = useState('100px')
-  const [createAttendence] = useMutation(CREATE_ATTENDANCE_MUTATION)
+  const [createAttendance] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)
-  const [EditAttendence] = useMutation(EDIT_ATTENDANCE_MUTATION)
-  const [seeAttendance, { refetch: seeAttendanceRefetch }] =
-    useLazyQuery(SEE_ATTENDANCE_QUERY)
+  const [EditAttendance] = useMutation(EDIT_ATTENDANCE_MUTATION)
+  const [seeAttendance, { refetch: seeAttendanceRefetch }] = useLazyQuery(
+    SEE_ATTENDANCE_ALL_QUERY,
+  )
 
   const fetchAttendanceForDate = async (date, id) => {
     const { data } = await seeAttendance({
@@ -103,7 +107,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
       const allData = await Promise.all(
         week.map(date => fetchAttendanceForDate(date, lectureData.id)),
       )
-      setAttendanceData(allData)
+      setAttendanceAllData(allData)
     }
   }
 
@@ -195,14 +199,14 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
     if (week) {
       const initialValues = week.map((day, dayIndex) =>
         data.nodes.map((item, index) =>
-          attendanceData[dayIndex] && attendanceData[dayIndex][index]
-            ? attendanceData[dayIndex][index].attendanceState
+          attendanceAllData[dayIndex] && attendanceAllData[dayIndex][index]
+            ? attendanceAllData[dayIndex][index].attendanceState
             : '-',
         ),
       )
       setSelectedValues(initialValues)
     }
-  }, [attendanceData, week])
+  }, [attendanceAllData, week])
 
   useEffect(() => {
     if (todayIndex > 2 && tableRef.current) {
@@ -415,7 +419,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
     const payMentID = extractProperty(data, `id`)
     const state = selectedValues[index]
 
-    createAttendence({
+    createAttendance({
       variables: {
         lecturesId: lectureData.id,
         studentPaymentId: payMentID,
@@ -444,10 +448,10 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
 
   const onEdit = index => {
     const attendanceDate = String(week[index])
-    const attendanceId = attendanceData[index].map(i => i.id)
+    const attendanceId = attendanceAllData[index].map(i => i.id)
     const state = selectedValues[index]
 
-    EditAttendence({
+    EditAttendance({
       variables: {
         editAttendanceId: attendanceId,
         attendanceState: state,
@@ -511,7 +515,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                         <Cell pinLeft>{item.attendanceDate}</Cell>
                         <Cell pinLeft>{item.absent}</Cell>
                         <Cell pinLeft>{item.attendanceRate}</Cell>
-                        {attendanceData.map((dayValue, dayIndex) => (
+                        {attendanceAllData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>
                             <TestSelect
                               style={{
@@ -523,7 +527,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                               }}
                               disabled={
                                 dayIndex !== todayIndex &&
-                                attendanceData[dayIndex]?.length === 0
+                                attendanceAllData[dayIndex]?.length === 0
                               }
                               value={selectedValues[dayIndex][index]}
                               onChange={event => {
@@ -540,7 +544,6 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                               <option value="조퇴">조퇴</option>
                               <option value="결석">결석</option>
                               <option value="외출">외출</option>
-                              <option value="휴가/공가">휴가/공가</option>
                             </TestSelect>
                           </Cell>
                         ))}
@@ -568,7 +571,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                             <BtnCell>
                               <Button
                                 isDisabled={
-                                  attendanceData[index]?.length === 0
+                                  attendanceAllData[index]?.length === 0
                                     ? true
                                     : false
                                 }
@@ -583,7 +586,8 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                               {index >= todayIndex ? (
                                 <>
                                   {index === todayIndex &&
-                                  attendanceData[todayIndex]?.length !== 0 ? (
+                                  attendanceAllData[todayIndex]?.length !==
+                                    0 ? (
                                     <Button
                                       isDisabled={
                                         index > todayIndex ? true : false
@@ -600,7 +604,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                                     <Button
                                       isDisabled={
                                         index !== todayIndex &&
-                                        attendanceData[index]?.length === 0
+                                        attendanceAllData[index]?.length === 0
                                       }
                                       size="sm"
                                       radius="sm"
@@ -614,7 +618,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
                                 </>
                               ) : (
                                 <>
-                                  {attendanceData[index]?.length === 0 ? (
+                                  {attendanceAllData[index]?.length === 0 ? (
                                     <Button
                                       isDisabled={selectedValues[
                                         todayIndex

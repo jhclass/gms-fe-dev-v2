@@ -166,16 +166,11 @@ export default function WorksLogsModal({
   onClose,
   lectureId,
   workLogeDate,
-  // setValue,
-  // subjectSelected,
-  // setSubjectSelected,
-  // radio = false,
-  // setSubjectSelectedData = null,
-  // setSub = null,
 }) {
-  const [seeAttendence] = useLazyQuery(SEE_ATTENDANCE_QUERY)
+  const [seeAttendance] = useLazyQuery(SEE_ATTENDANCE_QUERY)
   const [searchWorkLog] = useLazyQuery(SEARCH_WORKLOGS_QUERY)
   const [workLogData, setWorkLogData] = useState(null)
+  const [attendanceData, setAttendanceData] = useState(null)
   const fetchWorkLogData = async (date, id) => {
     const { data } = await searchWorkLog({
       variables: {
@@ -194,18 +189,28 @@ export default function WorksLogsModal({
     }
   }
   const fetchAttendanceForDate = async (date, id) => {
-    const { data } = await seeAttendence({
+    const { data } = await seeAttendance({
       variables: {
         attendanceDate: date,
         lecturesId: id,
       },
     })
-    return data?.seeAttendance?.enrollData || []
+    return data?.seeAttendance || []
+  }
+
+  const fetchAttendance = async (date, id) => {
+    try {
+      const data = await fetchAttendanceForDate(date, id)
+      setAttendanceData(data)
+    } catch (error) {
+      console.error('작업 로그 데이터를 가져오는 중 오류 발생:', error)
+    }
   }
 
   useEffect(() => {
     if (lectureId && workLogeDate) {
       fetchWorkLog(workLogeDate, lectureId)
+      fetchAttendance(workLogeDate, lectureId)
     }
   }, [workLogeDate, lectureId])
 
@@ -215,7 +220,6 @@ export default function WorksLogsModal({
     },
   })
 
-  console.log(workLogData)
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -278,7 +282,6 @@ export default function WorksLogsModal({
     return dayOfWeek
   }
 
-  https: console.log('1', workLogData)
   return (
     <>
       <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
@@ -312,7 +315,8 @@ export default function WorksLogsModal({
                             <div>
                               <FilterLabel>훈련일자</FilterLabel>
                               <LineBox>
-                                {workLogeDate} 금요일 (
+                                {workLogeDate} {getWorksLogsDate(workLogeDate)}
+                                요일 (
                                 {workLogData?.lectures.lectureDetails.indexOf(
                                   workLogeDate,
                                 ) + 1}
@@ -332,7 +336,11 @@ export default function WorksLogsModal({
                                   alt="Description of image"
                                 />
                               </StempBox>
-                              <BtnBox>2024.02.01</BtnBox>
+                              <BtnBox>
+                                <Button size="sm" color="primary">
+                                  서명
+                                </Button>
+                              </BtnBox>
                             </div>
                           </AreaBox>
                           <AreaBox>
@@ -390,13 +398,13 @@ export default function WorksLogsModal({
                           <div className="text-[#007de9]">
                             <FilterLabel className="color">출석</FilterLabel>
                             <LineBox>
-                              <b>0</b>명
+                              <b>{attendanceData?.attendanceCount}</b>명
                             </LineBox>
                           </div>
                           <div className="text-[#ff5900]">
                             <FilterLabel className="color">결석</FilterLabel>
                             <LineBox>
-                              <b>0</b>명
+                              <b>{attendanceData?.absentCount}</b>명
                             </LineBox>
                           </div>
                         </FlexAreaBox>
@@ -404,19 +412,19 @@ export default function WorksLogsModal({
                           <div>
                             <FilterLabel>지각</FilterLabel>
                             <LineBox>
-                              <b>0</b>명
+                              <b>{attendanceData?.tardyCount}</b>명
                             </LineBox>
                           </div>
                           <div>
                             <FilterLabel>조퇴</FilterLabel>
                             <LineBox>
-                              <b>0</b>명
+                              <b>{attendanceData?.leaveEarlyCount}</b>명
                             </LineBox>
                           </div>
                           <div>
                             <FilterLabel>외출</FilterLabel>
                             <LineBox>
-                              <b>0</b>명
+                              <b>{attendanceData?.outingCount}</b>명
                             </LineBox>
                           </div>
                         </FlexAreaBox>
