@@ -129,7 +129,7 @@ export default function Aside() {
             />
           </Link>
         </div>
-        <div className="hidden lg:block w-[4rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+        {/* <div className="hidden lg:block w-[4rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
           <Link
             href="/support"
             as="/support"
@@ -140,7 +140,7 @@ export default function Aside() {
               alt="국비과정조회"
             />
           </Link>
-        </div>
+        </div> */}
         <div className="w-[4rem] mt-[0.5rem] lg:mt-[0.8rem]">
           <Link
             href="/cs/consult"

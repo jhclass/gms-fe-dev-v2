@@ -104,6 +104,7 @@ export default function StudentsWrite() {
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [lectureData, setLectureData] = useState(null)
   const [filterActive1, setFilterActive1] = useState(true)
+  const [updateAttendance, setUpdateAttendance] = useState(false)
   useEffect(() => {
     if (lectureId !== null) {
       searchLectures({
@@ -118,7 +119,7 @@ export default function StudentsWrite() {
         },
       })
     }
-  }, [router])
+  }, [router, updateAttendance])
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -231,7 +232,10 @@ export default function StudentsWrite() {
                   // setStudentFilter={undefined}
                 />
               </AreaTitleFilter>
-              <Attendance lectureData={lectureData} />
+              <Attendance
+                lectureData={lectureData}
+                setUpdateAttendance={setUpdateAttendance}
+              />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

@@ -533,78 +533,144 @@ export const SEE_LECTURES_QUERY = gql`
   }
 `
 
-export const SEE_ATTENDANCE_QUERY = gql`
+export const SEE_ATTENDANCE_ALL_QUERY = gql`
   query Query($attendanceDate: String!, $lecturesId: Int!) {
     seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
       ok
-      error
       message
-      absentCount
-      absentData {
-        attendanceState
-        id
-        studentId
-        student {
-          name
-        }
-        attendanceDate
-        studentPaymentId
-      }
-      attendanceCount
-      attendanceData {
-        id
-        attendanceState
-        attendanceDate
-        student {
-          name
-        }
-        studentId
-        studentPaymentId
-      }
+      error
       enrollCount
       enrollData {
-        attendanceDate
-        attendanceState
         id
-        studentId
         student {
           name
         }
+        attendanceDate
+        attendanceState
+        studentId
         studentPaymentId
       }
       leaveEarlyCount
       leaveEarlyData {
-        studentPaymentId
-        studentId
+        id
         student {
           name
         }
-        id
-        attendanceState
         attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
+      }
+    }
+  }
+`
+
+export const SEE_ATTENDANCE_QUERY = gql`
+  query Query($attendanceDate: String!, $lecturesId: Int!) {
+    seeAttendance(attendanceDate: $attendanceDate, lecturesId: $lecturesId) {
+      ok
+      message
+      error
+      absentCount
+      absentData {
+        id
+        student {
+          name
+        }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
+      }
+      attendanceCount
+      enrollCount
+      enrollData {
+        id
+        student {
+          name
+        }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
+      }
+      leaveEarlyCount
+      leaveEarlyData {
+        id
+        student {
+          name
+        }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
       }
       outingCount
       outingData {
-        studentId
-        studentPaymentId
+        id
         student {
           name
         }
-        id
-        attendanceState
         attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
       }
       tardyCount
       tardyData {
-        attendanceDate
-        attendanceState
         id
         student {
           name
         }
+        attendanceDate
+        attendanceState
         studentId
         studentPaymentId
       }
+    }
+  }
+`
+export const SEARCH_WORKLOGS_QUERY = gql`
+  query Query($workLogsDate: String, $lecturesId: Int) {
+    searchWorkLogs(workLogsDate: $workLogsDate, lecturesId: $lecturesId) {
+      data {
+        absentSt
+        attendanceCount
+        createdAt
+        etc
+        id
+        instruction
+        leaveEarlySt
+        lectures {
+          ApprovedNum
+          confirmedNum
+          lectureDetails
+          lecturePeriodEnd
+          lecturePeriodStart
+          temporaryName
+          id
+        }
+        paymentOne
+        paymentThree
+        paymentTwo
+        tardySt
+        trainingInfoEight
+        trainingInfoFive
+        trainingInfoFour
+        trainingInfoOne
+        trainingInfoSeven
+        trainingInfoSix
+        trainingInfoThree
+        trainingInfoTwo
+        trainingTimeOneday
+        trainingTimeTotal
+        updatedAt
+        workLogsDate
+      }
+      totalCount
+      ok
+      message
+      error
     }
   }
 `

@@ -132,6 +132,9 @@ export default function Form() {
                 event_label: 'Submit',
                 value: 1,
               })
+              gtag('event', 'conversion', {
+                send_to: 'AW-16560768564/tfARCJWNyrgZELSM5dg9',
+              })
               alert('상담신청이 완료되었습니다. 😊')
             }
           },
