@@ -82,8 +82,9 @@ const TableRow = styled.div`
   grid-template-columns: 0.5rem 2% auto; */
 `
 
-export default function WorksTime() {
+export default function WorksTime({ setValue, workLogData, attendanceData }) {
   const periods = ['결석', '지각', '조퇴', '외출', '기타사항']
+
   return (
     <>
       <TableArea>

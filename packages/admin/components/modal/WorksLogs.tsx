@@ -210,15 +210,20 @@ export default function WorksLogsModal({
   useEffect(() => {
     if (lectureId && workLogeDate) {
       fetchWorkLog(workLogeDate, lectureId)
-      fetchAttendance(workLogeDate, lectureId)
     }
   }, [workLogeDate, lectureId])
 
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      subjectName: '',
-    },
-  })
+  useEffect(() => {
+    if (workLogData) {
+      if (workLogData.paymentOne) {
+        fetchAttendanceForDate(workLogeDate, lectureId)
+      } else {
+        fetchAttendanceForDate(workLogeDate, lectureId)
+      }
+    }
+  }, [workLogData])
+
+  const { register, handleSubmit, reset, setValue } = useForm()
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -375,7 +380,7 @@ export default function WorksLogsModal({
                               isDisabled={true}
                               isReadOnly={true}
                               labelPlacement="outside"
-                              value={workLogData?.lectures.temporaryName}
+                              defaultValue={workLogData?.lectures.temporaryName}
                               minRows={1}
                               variant="underlined"
                               size="md"
@@ -462,7 +467,11 @@ export default function WorksLogsModal({
                           <AreaTitle>
                             <h4>특이사항</h4>
                           </AreaTitle>
-                          <WorksRemark />
+                          <WorksRemark
+                            setValue={setValue}
+                            workLogData={workLogData}
+                            attendanceData={attendanceData}
+                          />
                         </AreaSection>
                       </ScrollShadow>
                     </DetailDiv>

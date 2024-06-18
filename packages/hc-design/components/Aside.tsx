@@ -86,7 +86,7 @@ export default function Aside() {
       event_label: 'channel',
       value: 1,
     })
-    window.open('https://pf.kakao.com/_xhdrYC')
+    window.open('https://pf.kakao.com/_EQExkG')
   }
 
   return (

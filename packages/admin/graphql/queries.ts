@@ -650,6 +650,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
           temporaryName
           id
         }
+        outingSt
         paymentOne
         paymentThree
         paymentTwo
