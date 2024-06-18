@@ -751,40 +751,6 @@ export default function ConsultDetail() {
                 </AreaBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="이름"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label={
-                        <FilterLabel>
-                          이름<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue={studentState?.stName}
-                      onChange={e => {
-                        register('stName').onChange(e)
-                      }}
-                      className="w-full"
-                      {...register('stName', {
-                        required: {
-                          value: true,
-                          message: '이름을 입력해주세요.',
-                        },
-                        pattern: {
-                          value: /^[가-힣a-zA-Z0-9\s]*$/,
-                          message: '한글, 영어, 숫자만 사용 가능합니다.',
-                        },
-                      })}
-                    />
-                    {errors.stName && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.stName.message)}
-                      </p>
-                    )}
-                  </AreaBox>
-                  <AreaBox>
                     <Controller
                       control={control}
                       name="receiptDiv"
