@@ -27,6 +27,7 @@ import {
   SEE_ATTENDANCE_ALL_QUERY,
   SEE_ATTENDANCE_QUERY,
 } from '@/graphql/queries'
+import { useRouter } from 'next/router'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -69,6 +70,7 @@ const TodayTag = styled.span`
 `
 
 export default function Attendance({ lectureData, setUpdateAttendance }) {
+  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const today = new Date().toISOString().split('T')[0]
   const [page, setPage] = useState(1)
@@ -93,6 +95,36 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
     SEE_ATTENDANCE_ALL_QUERY,
   )
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      // 페이지를 떠날 때 스크롤 위치 저장
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('scrollPosition', window.scrollY.toString())
+      }
+    }
+
+    // 라우트 변경 시작 시 스크롤 위치 저장
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    // 컴포넌트가 마운트될 때 스크롤 위치 복원
+    const storedScrollPosition = window.localStorage.getItem('scrollPosition')
+    if (storedScrollPosition !== null) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(storedScrollPosition, 10))
+        window.localStorage.removeItem('scrollPosition') // 복원 후 삭제
+      }, 500) // 페이지가 완전히 로드된 후에 스크롤 위치 복원
+    }
+
+    return () => {
+      // 클린업
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [router.events])
+
+  const naturalCompare = (a, b) => {
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+  }
+
   const fetchAttendanceForDate = async (date, id) => {
     const { data } = await seeAttendance({
       variables: {
@@ -100,18 +132,28 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
         lecturesId: id,
       },
     })
-    const sortedEnrollData = [...(data?.seeAttendance?.enrollData || [])].sort(
-      (a, b) => {
-        return a.student.name.localeCompare(b.student.name)
-      },
-    )
+    const filterData = data?.seeAttendance?.enrollData
+    console.log(filterData)
+    const sortedEnrollData = [...(filterData || [])].sort((a, b) => {
+      return naturalCompare(a.student.name, b.student.name)
+    })
 
     return sortedEnrollData
   }
   const fetchAllAttendance = async () => {
     if (week.length > 0) {
+      const today = new Date()
       const allData = await Promise.all(
-        week.map(date => fetchAttendanceForDate(date, lectureData.id)),
+        week.map(date => {
+          const attendanceDate = new Date(date)
+          if (attendanceDate <= today) {
+            console.log('돈다')
+            return fetchAttendanceForDate(date, lectureData.id)
+          } else {
+            console.log('안돈다')
+            return [] // 오늘 이후 날짜는 빈 배열을 반환
+          }
+        }),
       )
       setAttendanceAllData(allData)
     }
@@ -182,8 +224,11 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
       setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
       setPage(findDataInChunks(chunks, today) + 1)
       setWeek(findChunkContainingDate(chunks, today))
-      const sortOrder = lectureData.subject.StudentPayment.sort((a, b) => {
-        return a.student.name.localeCompare(b.student.name)
+      const sortOrder = lectureData.subject.StudentPayment.filter(
+        student => student.lectureAssignment === '배정',
+      ).sort((a, b) => {
+        return naturalCompare(a.student.name, b.student.name)
+        // return a.student.name.localeCompare(b.student.name)
       })
       setData({ nodes: sortOrder })
     }
@@ -206,6 +251,7 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
 
   useEffect(() => {
     if (week) {
+      console.log(data.nodes)
       const initialValues = week.map((day, dayIndex) =>
         data.nodes.map((item, index) =>
           attendanceAllData[dayIndex] && attendanceAllData[dayIndex][index]
@@ -213,9 +259,11 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
             : '-',
         ),
       )
+      console.log(initialValues)
       setSelectedValues(initialValues)
     }
   }, [attendanceAllData, week])
+  // console.log(selectedValues)
 
   useEffect(() => {
     if (todayIndex > 2 && tableRef.current) {
@@ -467,9 +515,8 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
       },
       onCompleted: resData => {
         if (resData.editAttendance.ok) {
-          // fetchAllAttendance()
-          seeAttendanceRefetch()
           alert(`${attendanceDate} 출석수정 완료`)
+          window.location.reload()
         }
       },
     })

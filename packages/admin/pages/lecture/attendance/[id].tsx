@@ -112,6 +112,7 @@ export default function StudentsWrite() {
           searchLecturesId: parseInt(lectureId),
         },
         onCompleted: result => {
+          console.log('1', result)
           if (result.searchLectures.ok) {
             const { data } = result.searchLectures
             setLectureData(data[0])

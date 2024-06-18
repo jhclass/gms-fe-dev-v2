@@ -549,6 +549,9 @@ export const SEE_ATTENDANCE_ALL_QUERY = gql`
         attendanceState
         studentId
         studentPaymentId
+        studentPayment {
+          lectureAssignment
+        }
       }
       leaveEarlyCount
       leaveEarlyData {

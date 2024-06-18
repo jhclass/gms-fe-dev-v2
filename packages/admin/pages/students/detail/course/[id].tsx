@@ -451,20 +451,23 @@ export default function StudentsWrite() {
 
   const clickWithdrawal = async () => {
     const isCurrentlyWithdrawn =
-      studentPaymentData.courseComplete === '수강철회'
+      studentPaymentData.lectureAssignment === '수강철회'
+
     await handleStudentPaymentUpdate({
       isCurrentlySet: isCurrentlyWithdrawn,
       updateFunction: async (variables, successMessage) => {
         const success = await executeMutation(
-          classCancelMutation,
+          updateStudentCourseMutation,
           variables,
           successMessage,
         )
         if (success) await searchAndUpdateStudentPayment()
       },
       variables: {
-        classCancellationId: parseInt(studentPaymentData.id),
-        courseComplete: isCurrentlyWithdrawn ? '미수료' : '수강철회',
+        editStudentPaymentId: parseInt(studentPaymentData.id),
+        lectureAssignment: isCurrentlyWithdrawn ? '배정' : '수강철회',
+        subjectId: studentPaymentData.subjectId,
+        processingManagerId: studentPaymentData.processingManagerId,
       },
       confirmationMessage: isCurrentlyWithdrawn
         ? `${studentData.name}학생의 수강철회를 취소하시겠습니까?`
@@ -477,6 +480,32 @@ export default function StudentsWrite() {
         : `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회`,
     })
   }
+
+  // const clickWithdrawal = async () => {
+  //   const isCurrentlyAssigned =
+  //     studentPaymentData.lectureAssignment === '배정'
+
+  //   await handleStudentPaymentUpdate({
+  //     isCurrentlySet: isCurrentlyAssigned,
+  //     updateFunction: async (variables, successMessage) => {
+  //       const success = await executeMutation(
+  //         updateStudentCourseMutation,
+  //         variables,
+  //         successMessage,
+  //       )
+  //       if (success) await searchAndUpdateStudentPayment()
+  //     },
+  //     variables: {
+  //       editStudentPaymentId: parseInt(studentPaymentData.id),
+  //       lectureAssignment: '수강철회',
+  //       subjectId: studentPaymentData.subjectId,
+  //       processingManagerId: studentPaymentData.processingManagerId,
+  //     },
+  //     confirmationMessage: `${studentData.name}학생을 수강철회 처리하시겠습니까? \n 철회하시면 다시 배정할 수 없습니다.`,
+  //     successMessage: '수강철회 처리되었습니다.',
+  //     logMessage: `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회`,
+  //   })
+  // }
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -581,7 +610,8 @@ export default function StudentsWrite() {
                       {(mGrade < grade.general || mPart.includes('교무팀')) && (
                         <Button
                           isDisabled={
-                            studentPaymentData?.lectureAssignment === '배정'
+                            studentPaymentData?.lectureAssignment === '배정' ||
+                            studentPaymentData?.lectureAssignment === '수강철회'
                               ? true
                               : false
                           }
@@ -637,9 +667,12 @@ export default function StudentsWrite() {
                             <Button
                               isDisabled={
                                 studentPaymentData?.amountReceived > 0
-                                  ? studentPaymentData?.courseComplete ===
-                                      '미수료' ||
-                                    studentPaymentData?.courseComplete === ''
+                                  ? studentPaymentData?.lectureAssignment ===
+                                    '수강철회'
+                                    ? true
+                                    : studentPaymentData?.courseComplete ===
+                                        '미수료' ||
+                                      studentPaymentData?.courseComplete === ''
                                     ? false
                                     : true
                                   : true
@@ -655,12 +688,14 @@ export default function StudentsWrite() {
                                 ? '배정 취소'
                                 : '강의배정'}
                             </Button>
-                            {studentPaymentData?.lectureAssignment ===
-                              '배정' && (
+                            {(studentPaymentData?.lectureAssignment ===
+                              '배정' ||
+                              studentPaymentData?.lectureAssignment ===
+                                '수강철회') && (
                               <>
                                 <Button
                                   isDisabled={
-                                    studentPaymentData?.courseComplete ===
+                                    studentPaymentData?.lectureAssignment ===
                                       '수강철회' ||
                                     studentPaymentData?.courseComplete ===
                                       '중도포기'
@@ -680,6 +715,8 @@ export default function StudentsWrite() {
                                 </Button>
                                 <Button
                                   isDisabled={
+                                    // studentPaymentData?.lectureAssignment ===
+                                    //   '수강철회' ||
                                     studentPaymentData?.courseComplete ===
                                       '수료' ||
                                     studentPaymentData?.courseComplete ===
@@ -693,7 +730,7 @@ export default function StudentsWrite() {
                                   className="w-full text-flag1 border-flag1"
                                   onClick={clickWithdrawal}
                                 >
-                                  {studentPaymentData?.courseComplete ===
+                                  {studentPaymentData?.lectureAssignment ===
                                   '수강철회'
                                     ? '수강철회 취소'
                                     : '수강철회'}
@@ -702,7 +739,7 @@ export default function StudentsWrite() {
                                   isDisabled={
                                     studentPaymentData?.courseComplete ===
                                       '수료' ||
-                                    studentPaymentData?.courseComplete ===
+                                    studentPaymentData?.lectureAssignment ===
                                       '수강철회'
                                       ? true
                                       : false
@@ -737,7 +774,8 @@ export default function StudentsWrite() {
                       {(mGrade < grade.general || mPart.includes('회계팀')) && (
                         <Button
                           isDisabled={
-                            studentPaymentData?.unCollectedAmount === 0
+                            studentPaymentData?.unCollectedAmount === 0 ||
+                            studentPaymentData?.lectureAssignment === '수강철회'
                               ? true
                               : false
                           }
