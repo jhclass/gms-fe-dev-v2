@@ -11,6 +11,7 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import {
   Button,
+  Chip,
   Input,
   Link,
   Radio,
@@ -238,11 +239,10 @@ export default function ConsultDetail() {
   const [consultation, setConsultation] = useState([])
   const [memoList, setMemoList] = useState([])
   const [studentState, setStudentState] = useState(null)
-  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type) || []
-  const studentMethod = studentState?.classMethod || []
-  const addArr = [...studentAdvice, ...studentMethod]
+  const reContent =
+    `상담방식 : ${studentState?.classMethod}\n${studentState?.detail}` ||
+    `상담방식 :${studentState?.classMethod}\n''`
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-
   const fetchStudentState = async () => {
     if (studentId === null) return
 
@@ -679,7 +679,7 @@ export default function ConsultDetail() {
                         message: '상담 분야를 최소 1개 이상 선택해주세요.',
                       },
                     }}
-                    defaultValue={addArr}
+                    defaultValue={adviceTypeSelected}
                     render={({ field }) => (
                       <>
                         <Textarea
@@ -750,72 +750,76 @@ export default function ConsultDetail() {
                   />
                 </AreaBox>
                 <FlexBox>
-                  <Controller
-                    control={control}
-                    name="receiptDiv"
-                    defaultValue={studentState?.receiptDiv}
-                    render={({ field }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label={<FilterLabel>접수구분</FilterLabel>}
-                        placeholder=" "
-                        className="w-full"
-                        defaultValue={studentState?.receiptDiv}
-                        variant="bordered"
-                        selectedKeys={[receipt]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleReceiptChange(value)
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="receiptDiv"
+                      defaultValue={studentState?.receiptDiv}
+                      render={({ field }) => (
+                        <Select
+                          labelPlacement="outside"
+                          label={<FilterLabel>접수구분</FilterLabel>}
+                          placeholder=" "
+                          className="w-full"
+                          defaultValue={studentState?.receiptDiv}
+                          variant="bordered"
+                          selectedKeys={[receipt]}
+                          onChange={value => {
+                            if (value.target.value !== '') {
+                              field.onChange(value)
+                              handleReceiptChange(value)
+                            }
+                          }}
+                        >
+                          {Object.entries(receiptStatus).map(([key, item]) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      )}
+                    />
+                  </AreaBox>
+                  <AreaBox>
+                    <Controller
+                      control={control}
+                      name="subDiv"
+                      defaultValue={studentState?.subDiv}
+                      render={({ field }) => (
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
                           }
-                        }}
-                      >
-                        {Object.entries(receiptStatus).map(([key, item]) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                        >
+                          <SubDivSelect
+                            selectedKey={sub}
+                            field={field}
+                            label={
+                              <LabelFlex>
+                                <FilterLabel>수강구분</FilterLabel>
+                              </LabelFlex>
+                            }
+                            handleChange={handleSubChange}
+                            isHyphen={false}
+                          />
+                        </Suspense>
+                      )}
+                    />
+                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          수강구분 추가
+                        </Link>
+                      </AddLink>
                     )}
-                  />
-                  <Controller
-                    control={control}
-                    name="subDiv"
-                    defaultValue={studentState?.subDiv}
-                    render={({ field }) => (
-                      <Suspense
-                        fallback={
-                          <LodingDiv>
-                            <i className="xi-spinner-2" />
-                          </LodingDiv>
-                        }
-                      >
-                        <SubDivSelect
-                          selectedKey={sub}
-                          field={field}
-                          label={
-                            <LabelFlex>
-                              <FilterLabel>수강구분</FilterLabel>
-                            </LabelFlex>
-                          }
-                          handleChange={handleSubChange}
-                          isHyphen={false}
-                        />
-                      </Suspense>
-                    )}
-                  />
-                  {(mGrade < grade.general || mPart.includes('영업팀')) && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={handleClick}
-                      >
-                        수강구분 추가
-                      </Link>
-                    </AddLink>
-                  )}
+                  </AreaBox>
                 </FlexBox>
                 <FlexBox>
                   <Controller
@@ -1004,6 +1008,21 @@ export default function ConsultDetail() {
                     />
                   </DatePickerBox>
                 </FlexBox>
+                {(studentState?.classMethod.includes('전화상담') ||
+                  studentState?.classMethod.includes('방문상담')) && (
+                  <FlexBox>
+                    {studentState?.classMethod.includes('전화상담') && (
+                      <Chip variant="bordered" color="primary">
+                        &#128222; 전화상담 원해요.
+                      </Chip>
+                    )}
+                    {studentState?.classMethod.includes('방문상담') && (
+                      <Chip variant="bordered" color="primary">
+                        &#127939; 방문상담 원해요.
+                      </Chip>
+                    )}
+                  </FlexBox>
+                )}
                 <FlexBox>
                   <Textarea
                     label="상담 내용"
