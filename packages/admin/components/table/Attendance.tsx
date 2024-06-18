@@ -100,7 +100,13 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
         lecturesId: id,
       },
     })
-    return data?.seeAttendance?.enrollData || []
+    const sortedEnrollData = [...(data?.seeAttendance?.enrollData || [])].sort(
+      (a, b) => {
+        return a.student.name.localeCompare(b.student.name)
+      },
+    )
+
+    return sortedEnrollData
   }
   const fetchAllAttendance = async () => {
     if (week.length > 0) {
@@ -176,7 +182,10 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
       setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
       setPage(findDataInChunks(chunks, today) + 1)
       setWeek(findChunkContainingDate(chunks, today))
-      setData({ nodes: lectureData?.subject.StudentPayment })
+      const sortOrder = lectureData.subject.StudentPayment.sort((a, b) => {
+        return a.student.name.localeCompare(b.student.name)
+      })
+      setData({ nodes: sortOrder })
     }
   }, [lectureData])
 
