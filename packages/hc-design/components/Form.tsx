@@ -248,7 +248,7 @@ export default function Form() {
                 )}
               />
               <h4 className="font-bold my-[0.5rem] text-primary text-lg">
-                수업 방식 선택
+                상담 방식 선택
               </h4>
               <Controller
                 control={control}
@@ -263,26 +263,24 @@ export default function Form() {
                     }}
                   >
                     <Checkbox
-                      key={'오프라인'}
-                      value={'오프라인'}
+                      key={'전화상담'}
+                      value={'전화상담'}
                       radius={'full'}
                       classNames={{
                         wrapper: 'before:border-[#100061] ',
                       }}
                     >
-                      <span className="text-lg text-[#100061]">오프라인</span>
+                      <span className="text-lg text-[#100061]">전화상담</span>
                     </Checkbox>
                     <Checkbox
-                      key={'실시간 온라인'}
-                      value={'실시간 온라인'}
+                      key={'방문상담'}
+                      value={'방문상담'}
                       radius={'full'}
                       classNames={{
                         wrapper: 'before:border-[#100061] ',
                       }}
                     >
-                      <span className="text-lg text-[#100061]">
-                        실시간 온라인
-                      </span>
+                      <span className="text-lg text-[#100061]">방문상담</span>
                     </Checkbox>
                   </CheckboxGroup>
                 )}
