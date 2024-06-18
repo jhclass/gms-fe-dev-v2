@@ -239,9 +239,8 @@ export default function ConsultDetail() {
   const [consultation, setConsultation] = useState([])
   const [memoList, setMemoList] = useState([])
   const [studentState, setStudentState] = useState(null)
-  const reContent =
-    `상담방식 : ${studentState?.classMethod}\n${studentState?.detail}` ||
-    `상담방식 :${studentState?.classMethod}\n''`
+  const studentAdvice = studentState?.adviceTypes?.map(obj => obj.type) || []
+  const addArr = [...studentAdvice]
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const fetchStudentState = async () => {
     if (studentId === null) return
@@ -679,7 +678,7 @@ export default function ConsultDetail() {
                         message: '상담 분야를 최소 1개 이상 선택해주세요.',
                       },
                     }}
-                    defaultValue={adviceTypeSelected}
+                    defaultValue={addArr}
                     render={({ field }) => (
                       <>
                         <Textarea
