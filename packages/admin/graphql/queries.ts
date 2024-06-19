@@ -584,8 +584,26 @@ export const SEE_ATTENDANCE_QUERY = gql`
         attendanceState
         studentId
         studentPaymentId
+        studentPayment {
+          lectureAssignment
+          courseComplete
+        }
       }
       attendanceCount
+      attendanceData {
+        id
+        student {
+          name
+        }
+        attendanceDate
+        attendanceState
+        studentId
+        studentPaymentId
+        studentPayment {
+          lectureAssignment
+          courseComplete
+        }
+      }
       enrollCount
       enrollData {
         id
@@ -596,6 +614,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         attendanceState
         studentId
         studentPaymentId
+        studentPayment {
+          lectureAssignment
+          courseComplete
+        }
       }
       leaveEarlyCount
       leaveEarlyData {
@@ -607,6 +629,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         attendanceState
         studentId
         studentPaymentId
+        studentPayment {
+          lectureAssignment
+          courseComplete
+        }
       }
       outingCount
       outingData {
@@ -618,6 +644,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         attendanceState
         studentId
         studentPaymentId
+        studentPayment {
+          lectureAssignment
+          courseComplete
+        }
       }
       tardyCount
       tardyData {
@@ -629,6 +659,10 @@ export const SEE_ATTENDANCE_QUERY = gql`
         attendanceState
         studentId
         studentPaymentId
+        studentPayment {
+          lectureAssignment
+          courseComplete
+        }
       }
     }
   }

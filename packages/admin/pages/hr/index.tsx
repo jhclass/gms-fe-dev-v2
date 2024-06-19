@@ -80,7 +80,7 @@ export default function Lecture() {
                 </LodingDiv>
               }
             >
-              <ManagerList />
+              <ManagerList mGrade={mGrade} />
             </Suspense>
           )}
         </ConBox>

@@ -1,4 +1,5 @@
 import { Input, ScrollShadow } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
 const TableArea = styled.div`
@@ -105,16 +106,34 @@ const TableRow = styled.div`
   grid-template-columns: 0.5rem 2% auto; */
 `
 
-export default function AbsentList() {
-  const periods = [
-    '1교시',
-    '2교시',
-    '3교시',
-    '4교시',
-    '5교시',
-    '6교시',
-    '7교시',
+export default function AbsentList({
+  setValue,
+  trainingData,
+  setTrainingData,
+}) {
+  const keys = [
+    'trainingInfoOne',
+    'trainingInfoTwo',
+    'trainingInfoThree',
+    'trainingInfoFour',
+    'trainingInfoFive',
+    'trainingInfoSix',
+    'trainingInfoSeven',
+    'trainingInfoEight',
   ]
+
+  const handleInput = (e, key, index) => {
+    setTrainingData(prevState => {
+      // 새로운 상태를 복사
+      const newTrainingData = { ...prevState }
+
+      // 특정 키의 특정 값을 변경
+      newTrainingData[key][index] = e.target.value
+
+      return newTrainingData
+    })
+  }
+
   return (
     <>
       <TableArea>
@@ -131,7 +150,7 @@ export default function AbsentList() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {periods.map((period, index) => (
+            {keys.map((item, index) => (
               <TableItem key={index}>
                 <TableRow>
                   <ClickBox>
@@ -143,18 +162,21 @@ export default function AbsentList() {
                         radius="sm"
                         size="sm"
                         type="text"
-                        value={period}
+                        defaultValue={trainingData[item][0]}
                         className="w-full"
                       />
                     </Tnum>
                     <Tname>
                       <Input
+                        // name={`${trainingInfos[index]}.teacher`}
                         labelPlacement="outside"
                         variant="bordered"
                         radius="sm"
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 1)}
+                        defaultValue={trainingData[item][1]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -165,12 +187,15 @@ export default function AbsentList() {
                     </Tname>
                     <Ttitle>
                       <Input
+                        // name={`${trainingInfos[index]}.courseName`}
                         labelPlacement="outside"
                         variant="bordered"
                         radius="sm"
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 2)}
+                        defaultValue={trainingData[item][2]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -181,12 +206,15 @@ export default function AbsentList() {
                     </Ttitle>
                     <Ttitle>
                       <Input
+                        // name={`${trainingInfos[index]}.unitName`}
                         labelPlacement="outside"
                         variant="bordered"
                         radius="sm"
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 3)}
+                        defaultValue={trainingData[item][3]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -197,12 +225,18 @@ export default function AbsentList() {
                     </Ttitle>
                     <Ttext>
                       <Input
+                        // name={`${trainingInfos[index]}.content`}
+                        // defaultValue={
+                        //   // trainingData[trainingInfos[index]][fieldIndex]
+                        // }
                         labelPlacement="outside"
                         variant="bordered"
                         radius="sm"
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 4)}
+                        defaultValue={trainingData[item][4]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
