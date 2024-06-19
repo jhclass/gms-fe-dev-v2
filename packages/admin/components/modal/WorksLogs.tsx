@@ -210,18 +210,18 @@ export default function WorksLogsModal({
   useEffect(() => {
     if (lectureId && workLogeDate) {
       fetchWorkLog(workLogeDate, lectureId)
+      fetchAttendance(workLogeDate, lectureId)
     }
   }, [workLogeDate, lectureId])
 
-  useEffect(() => {
-    if (workLogData) {
-      if (workLogData.paymentOne) {
-        fetchAttendanceForDate(workLogeDate, lectureId)
-      } else {
-        fetchAttendanceForDate(workLogeDate, lectureId)
-      }
-    }
-  }, [workLogData])
+  // useEffect(() => {
+  //   if (workLogData) {
+  //     if (workLogData.paymentOne) {
+  //     } else {
+  //       fetchAttendanceForDate(workLogeDate, lectureId)
+  //     }
+  //   }
+  // }, [workLogData])
 
   const { register, handleSubmit, reset, setValue } = useForm()
 
@@ -286,6 +286,8 @@ export default function WorksLogsModal({
 
     return dayOfWeek
   }
+
+  console.log(attendanceData)
 
   return (
     <>
@@ -397,7 +399,7 @@ export default function WorksLogsModal({
                           <div className="text-[#07bbae]">
                             <FilterLabel className="color">재적</FilterLabel>
                             <LineBox>
-                              <b>0</b>명
+                              <b>{attendanceData?.enrollCount}</b>명
                             </LineBox>
                           </div>
                           <div className="text-[#007de9]">
