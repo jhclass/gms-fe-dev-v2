@@ -183,6 +183,13 @@ export default function Header() {
     }
   }, [])
 
+  const clickCall = () => {
+    window.gtag('event', '전화상담클릭', {
+      event_category: 'Phone Call',
+      event_label: '02-393-4321',
+    })
+  }
+
   return (
     <>
       <header
@@ -197,7 +204,15 @@ export default function Header() {
           <div className="bg-[#000] lg:bg-white">
             <MainTopBnr />
 
-            <HeaderBox className="wrap ">
+            <HeaderBox className="wrap">
+              <GnbBtn>
+                <Link onClick={clickCall} href="tel:02-364-0008">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/call_btn.webp"
+                    alt="02)364-0008"
+                  />
+                </Link>
+              </GnbBtn>
               <Logo>
                 <Link href="/" className="block">
                   <img

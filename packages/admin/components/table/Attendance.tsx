@@ -69,7 +69,7 @@ const TodayTag = styled.span`
   vertical-align: middle;
 `
 
-export default function Attendance({ lectureData, setUpdateAttendance }) {
+export default function Attendance({ lectureData }) {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const today = new Date().toISOString().split('T')[0]
@@ -133,7 +133,6 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
       },
     })
     const filterData = data?.seeAttendance?.enrollData
-    console.log(filterData)
     const sortedEnrollData = [...(filterData || [])].sort((a, b) => {
       return naturalCompare(a.student.name, b.student.name)
     })
@@ -147,11 +146,9 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
         week.map(date => {
           const attendanceDate = new Date(date)
           if (attendanceDate <= today) {
-            console.log('돈다')
             return fetchAttendanceForDate(date, lectureData.id)
           } else {
-            console.log('안돈다')
-            return [] // 오늘 이후 날짜는 빈 배열을 반환
+            return []
           }
         }),
       )
@@ -251,7 +248,6 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
 
   useEffect(() => {
     if (week) {
-      console.log(data.nodes)
       const initialValues = week.map((day, dayIndex) =>
         data.nodes.map((item, index) =>
           attendanceAllData[dayIndex] && attendanceAllData[dayIndex][index]
@@ -259,11 +255,9 @@ export default function Attendance({ lectureData, setUpdateAttendance }) {
             : '-',
         ),
       )
-      console.log(initialValues)
       setSelectedValues(initialValues)
     }
   }, [attendanceAllData, week])
-  // console.log(selectedValues)
 
   useEffect(() => {
     if (todayIndex > 2 && tableRef.current) {

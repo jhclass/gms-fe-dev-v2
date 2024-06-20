@@ -171,6 +171,17 @@ export default function WorksLogsModal({
   const [searchWorkLog] = useLazyQuery(SEARCH_WORKLOGS_QUERY)
   const [workLogData, setWorkLogData] = useState(null)
   const [attendanceData, setAttendanceData] = useState(null)
+  const [trainingData, setTrainingData] = useState({
+    trainingInfoOne: ['1교시', '', '', '', ''],
+    trainingInfoTwo: ['2교시', '', '', '', ''],
+    trainingInfoThree: ['3교시', '', '', '', ''],
+    trainingInfoFour: ['4교시', '', '', '', ''],
+    trainingInfoFive: ['5교시', '', '', '', ''],
+    trainingInfoSix: ['6교시', '', '', '', ''],
+    trainingInfoSeven: ['7교시', '', '', '', ''],
+    trainingInfoEight: ['8교시', '', '', '', ''],
+  })
+
   const fetchWorkLogData = async (date, id) => {
     const { data } = await searchWorkLog({
       variables: {
@@ -214,6 +225,45 @@ export default function WorksLogsModal({
     }
   }, [workLogeDate, lectureId])
 
+  useEffect(() => {
+    if (workLogData) {
+      setTrainingData({
+        trainingInfoOne:
+          workLogData.trainingInfoOne.length === 0
+            ? ['1교시', '', '', '', '']
+            : workLogData.trainingInfoOne,
+        trainingInfoTwo:
+          workLogData.trainingInfoTwo.length === 0
+            ? ['2교시', '', '', '', '']
+            : workLogData.trainingInfoTwo,
+        trainingInfoThree:
+          workLogData.trainingInfoThree.length === 0
+            ? ['3교시', '', '', '', '']
+            : workLogData.trainingInfoThree,
+        trainingInfoFour:
+          workLogData.trainingInfoFour.length === 0
+            ? ['4교시', '', '', '', '']
+            : workLogData.trainingInfoFour,
+        trainingInfoFive:
+          workLogData.trainingInfoFive.length === 0
+            ? ['5교시', '', '', '', '']
+            : workLogData.trainingInfoFive,
+        trainingInfoSix:
+          workLogData.trainingInfoSix.length === 0
+            ? ['6교시', '', '', '', '']
+            : workLogData.trainingInfoSix,
+        trainingInfoSeven:
+          workLogData.trainingInfoSeven.length === 0
+            ? ['7교시', '', '', '', '']
+            : workLogData.trainingInfoSeven,
+        trainingInfoEight:
+          workLogData.trainingInfoEight.length === 0
+            ? ['8교시', '', '', '', '']
+            : workLogData.trainingInfoEight,
+      })
+    }
+  }, [workLogData])
+
   // useEffect(() => {
   //   if (workLogData) {
   //     if (workLogData.paymentOne) {
@@ -229,26 +279,22 @@ export default function WorksLogsModal({
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  // useEffect(() => {
-  //   searchSubjectMutation({
-  //     variables: {
-  //       subjectName: subjectSearch,
-  //       exposure: true,
-  //       page: currentSubjectPage,
-  //       limit: currentSubjectLimit,
-  //     },
-  //     onCompleted: resData => {
-  //       if (resData.searchSubject.ok) {
-  //         const { result, totalCount } = resData.searchSubject || {}
-  //         setSubjectList({ result, totalCount })
-  //       }
-  //     },
-  //   })
-  // }, [router, currentSubjectPage, subjectSearch])
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
+  }
+  const getWorksLogsDate = data => {
+    const week = ['일', '월', '화', '수', '목', '금', '토']
 
-  // const handleSbjChange = values => {
-  //   setSubjectSelected(values)
-  // }
+    const dayOfWeek = week[new Date(data).getDay()]
+
+    return dayOfWeek
+  }
 
   // const clickSbjSubmit = async () => {
   //   if (radio) {
@@ -269,25 +315,6 @@ export default function WorksLogsModal({
   //   setValue('subject', subjectSelected, { shouldDirty: true })
   //   sbjClose()
   // }
-
-  const formatDate = data => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} `
-    return formatted
-  }
-  const getWorksLogsDate = data => {
-    const week = ['일', '월', '화', '수', '목', '금', '토']
-
-    const dayOfWeek = week[new Date(data).getDay()]
-
-    return dayOfWeek
-  }
-
-  console.log(attendanceData)
 
   return (
     <>
@@ -399,19 +426,52 @@ export default function WorksLogsModal({
                           <div className="text-[#07bbae]">
                             <FilterLabel className="color">재적</FilterLabel>
                             <LineBox>
-                              <b>{attendanceData?.enrollCount}</b>명
+                              <b>
+                                {
+                                  attendanceData?.enrollData.filter(
+                                    student =>
+                                      student.studentPayment
+                                        .lectureAssignment !== '수강철회' &&
+                                      student.studentPayment.courseComplete !==
+                                        '중도포기',
+                                  ).length
+                                }
+                              </b>
+                              명
                             </LineBox>
                           </div>
                           <div className="text-[#007de9]">
                             <FilterLabel className="color">출석</FilterLabel>
                             <LineBox>
-                              <b>{attendanceData?.attendanceCount}</b>명
+                              <b>
+                                {
+                                  attendanceData?.attendanceData.filter(
+                                    student =>
+                                      student.studentPayment
+                                        .lectureAssignment !== '수강철회' &&
+                                      student.studentPayment.courseComplete !==
+                                        '중도포기',
+                                  ).length
+                                }
+                              </b>
+                              명
                             </LineBox>
                           </div>
                           <div className="text-[#ff5900]">
                             <FilterLabel className="color">결석</FilterLabel>
                             <LineBox>
-                              <b>{attendanceData?.absentCount}</b>명
+                              <b>
+                                {
+                                  attendanceData?.absentData.filter(
+                                    student =>
+                                      student.studentPayment
+                                        .lectureAssignment !== '수강철회' &&
+                                      student.studentPayment.courseComplete !==
+                                        '중도포기',
+                                  ).length
+                                }
+                              </b>
+                              명
                             </LineBox>
                           </div>
                         </FlexAreaBox>
@@ -419,19 +479,52 @@ export default function WorksLogsModal({
                           <div>
                             <FilterLabel>지각</FilterLabel>
                             <LineBox>
-                              <b>{attendanceData?.tardyCount}</b>명
+                              <b>
+                                {
+                                  attendanceData?.tardyData.filter(
+                                    student =>
+                                      student.studentPayment
+                                        .lectureAssignment !== '수강철회' &&
+                                      student.studentPayment.courseComplete !==
+                                        '중도포기',
+                                  ).length
+                                }
+                              </b>
+                              명
                             </LineBox>
                           </div>
                           <div>
                             <FilterLabel>조퇴</FilterLabel>
                             <LineBox>
-                              <b>{attendanceData?.leaveEarlyCount}</b>명
+                              <b>
+                                {
+                                  attendanceData?.leaveEarlyData.filter(
+                                    student =>
+                                      student.studentPayment
+                                        .lectureAssignment !== '수강철회' &&
+                                      student.studentPayment.courseComplete !==
+                                        '중도포기',
+                                  ).length
+                                }
+                              </b>
+                              명
                             </LineBox>
                           </div>
                           <div>
                             <FilterLabel>외출</FilterLabel>
                             <LineBox>
-                              <b>{attendanceData?.outingCount}</b>명
+                              <b>
+                                {
+                                  attendanceData?.outingData.filter(
+                                    student =>
+                                      student.studentPayment
+                                        .lectureAssignment !== '수강철회' &&
+                                      student.studentPayment.courseComplete !==
+                                        '중도포기',
+                                  ).length
+                                }
+                              </b>
+                              명
                             </LineBox>
                           </div>
                         </FlexAreaBox>
@@ -446,7 +539,11 @@ export default function WorksLogsModal({
                           <AreaTitle>
                             <h4>훈련사항</h4>
                           </AreaTitle>
-                          <WorksSchedule />
+                          <WorksSchedule
+                            setValue={setValue}
+                            trainingData={trainingData}
+                            setTrainingData={setTrainingData}
+                          />
                         </AreaSection>
                         <AreaSection>
                           <AreaTitle>
@@ -454,25 +551,27 @@ export default function WorksLogsModal({
                           </AreaTitle>
                           <WorksTime />
                         </AreaSection>
+
                         <AreaSection>
                           <AreaTitle>
-                            <h4>지시사항</h4>
+                            <h4>출결사항</h4>
                           </AreaTitle>
-                          <Textarea
-                            label=""
-                            placeholder="내용을 작성해주세요."
-                            className="w-full"
-                            variant="bordered"
+                          <WorksRemark
+                            setValue={setValue}
+                            workLogData={workLogData}
+                            attendanceData={attendanceData}
                           />
                         </AreaSection>
                         <AreaSection>
                           <AreaTitle>
                             <h4>특이사항</h4>
                           </AreaTitle>
-                          <WorksRemark
-                            setValue={setValue}
-                            workLogData={workLogData}
-                            attendanceData={attendanceData}
+                          <Textarea
+                            label=""
+                            placeholder="내용을 작성해주세요."
+                            className="w-full"
+                            variant="bordered"
+                            minRows={10}
                           />
                         </AreaSection>
                       </ScrollShadow>

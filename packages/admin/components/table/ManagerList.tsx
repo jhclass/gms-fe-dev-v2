@@ -184,7 +184,7 @@ type seeManageUser = {
   seeManageUser: SeeManageUserResult
 }
 
-export default function ConsolutationTable() {
+export default function ConsolutationTable({ mGrade }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const {
@@ -241,17 +241,42 @@ export default function ConsolutationTable() {
                   </ClickBox>
                 </TheaderBox>
               </Theader>
-              {totalCount > 0 &&
-                managerData?.map((item, index) => (
-                  <ManagerItem
-                    forName="student"
-                    key={index}
-                    tableData={item}
-                    itemIndex={index}
-                    currentPage={currentPage}
-                    limit={currentLimit}
-                  />
-                ))}
+              {totalCount > 0 ? (
+                <>
+                  {mGrade <= 1 ? (
+                    <>
+                      {managerData?.map((item, index) => (
+                        <ManagerItem
+                          forName="student"
+                          key={index}
+                          tableData={item}
+                          itemIndex={index}
+                          currentPage={currentPage}
+                          limit={currentLimit}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {managerData
+                        ?.filter(manager => manager.resign === 'N')
+                        .map((item, index) => (
+                          <ManagerItem
+                            forName="student"
+                            key={index}
+                            tableData={item}
+                            itemIndex={index}
+                            currentPage={currentPage}
+                            limit={currentLimit}
+                          />
+                        ))}
+                    </>
+                  )}
+                </>
+              ) : (
+                <Nolist>등록된 직원이 없습니다.</Nolist>
+              )}
+
               {totalCount === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
             </TableWrap>
           </ScrollShadow>
