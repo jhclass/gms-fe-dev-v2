@@ -82,8 +82,21 @@ const TableRow = styled.div`
   grid-template-columns: 0.5rem 2% auto; */
 `
 
-export default function WorksTime({ setValue, workLogData, attendanceData }) {
+export default function WorksTime({
+  setValue,
+  attendanceState,
+  setAttendanceState,
+}) {
   const periods = ['결석', '지각', '조퇴', '외출', '기타사항']
+  const keys = ['absentSt', 'tardySt', 'leaveEarlySt', 'outingSt', 'etc']
+  const handleInput = (e, key) => {
+    setAttendanceState(prevState => {
+      const newAttendanceState = { ...prevState }
+      newAttendanceState[key] = e.target.value
+      return newAttendanceState
+    })
+    setValue(key, attendanceState[key], { shouldDirty: true })
+  }
 
   return (
     <>
@@ -98,7 +111,7 @@ export default function WorksTime({ setValue, workLogData, attendanceData }) {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {periods.map((period, index) => (
+            {keys.map((item, index) => (
               <TableItem key={index}>
                 <ClickBox>
                   <Tnum>
@@ -109,7 +122,7 @@ export default function WorksTime({ setValue, workLogData, attendanceData }) {
                       radius="sm"
                       size="sm"
                       type="text"
-                      value={period}
+                      value={periods[index]}
                       className="w-full"
                     />
                   </Tnum>
@@ -121,6 +134,12 @@ export default function WorksTime({ setValue, workLogData, attendanceData }) {
                       size="sm"
                       type="text"
                       placeholder=" "
+                      onChange={e => handleInput(e, item)}
+                      defaultValue={
+                        attendanceState[item].length > 0
+                          ? String(attendanceState[item])
+                          : ''
+                      }
                       className="w-full"
                       classNames={{
                         inputWrapper: `${

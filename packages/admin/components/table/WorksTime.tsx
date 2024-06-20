@@ -73,8 +73,21 @@ const TableRow = styled.div`
   grid-template-columns: 0.5rem 2% auto; */
 `
 
-export default function WorksTime() {
+export default function WorksTime({
+  setValue,
+  trainingTimes,
+  setTrainingTimes,
+}) {
   const periods = ['일계', '누계']
+  const keys = ['trainingTimeOneday', 'trainingTimeTotal']
+  const handleInput = (e, key, index) => {
+    setTrainingTimes(prevState => {
+      const newTrainingTimes = { ...prevState }
+      newTrainingTimes[key][index] = e.target.value
+      return newTrainingTimes
+    })
+    setValue(key, trainingTimes[key], { shouldDirty: true })
+  }
   return (
     <>
       <TableArea>
@@ -92,7 +105,7 @@ export default function WorksTime() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {periods.map((period, index) => (
+            {keys.map((item, index) => (
               <TableItem key={index}>
                 <TableRow>
                   <ClickBox>
@@ -104,7 +117,7 @@ export default function WorksTime() {
                         radius="sm"
                         size="sm"
                         type="text"
-                        value={period}
+                        value={periods[index]}
                         className="w-full"
                       />
                     </Tnum>
@@ -116,22 +129,8 @@ export default function WorksTime() {
                         size="sm"
                         type="text"
                         placeholder=" "
-                        className="w-full"
-                        classNames={{
-                          inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
-                          }  `,
-                        }}
-                      />
-                    </Tnum>
-                    <Tnum>
-                      <Input
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        placeholder=" "
+                        onChange={e => handleInput(e, item, 0)}
+                        defaultValue={trainingTimes[item][0]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -148,6 +147,8 @@ export default function WorksTime() {
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 1)}
+                        defaultValue={trainingTimes[item][1]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -164,6 +165,8 @@ export default function WorksTime() {
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 2)}
+                        defaultValue={trainingTimes[item][2]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -180,6 +183,26 @@ export default function WorksTime() {
                         size="sm"
                         type="text"
                         placeholder=" "
+                        onChange={e => handleInput(e, item, 3)}
+                        defaultValue={trainingTimes[item][3]}
+                        className="w-full"
+                        classNames={{
+                          inputWrapper: `${
+                            index % 2 === 0 ? '' : 'border-default-300'
+                          }  `,
+                        }}
+                      />
+                    </Tnum>
+                    <Tnum>
+                      <Input
+                        labelPlacement="outside"
+                        variant="bordered"
+                        radius="sm"
+                        size="sm"
+                        type="text"
+                        placeholder=" "
+                        onChange={e => handleInput(e, item, 4)}
+                        defaultValue={trainingTimes[item][4]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
