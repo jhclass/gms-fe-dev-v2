@@ -197,7 +197,7 @@ export default function Header() {
   const clickCall = () => {
     window.gtag('event', '전화상담클릭', {
       event_category: 'Phone Call',
-      event_label: '02-393-4321',
+      event_label: '02-364-0008',
     })
   }
 
