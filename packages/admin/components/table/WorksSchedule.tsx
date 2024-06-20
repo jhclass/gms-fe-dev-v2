@@ -124,14 +124,11 @@ export default function AbsentList({
 
   const handleInput = (e, key, index) => {
     setTrainingData(prevState => {
-      // 새로운 상태를 복사
       const newTrainingData = { ...prevState }
-
-      // 특정 키의 특정 값을 변경
       newTrainingData[key][index] = e.target.value
-
       return newTrainingData
     })
+    setValue(key, trainingData[key], { shouldDirty: true })
   }
 
   return (

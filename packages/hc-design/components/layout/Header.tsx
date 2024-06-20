@@ -42,6 +42,17 @@ const Nav = styled.ul`
     display: none;
   }
 `
+const CallBtn = styled.button`
+  display: none;
+  width: 2.5rem;
+  @media (max-width: 960px) {
+    display: block;
+  }
+  a {
+    opacity: 1 !important;
+    vertical-align: middle;
+  }
+`
 const GnbBtn = styled.button`
   display: none;
   width: 3rem;
@@ -205,14 +216,14 @@ export default function Header() {
             <MainTopBnr />
 
             <HeaderBox className="wrap">
-              <GnbBtn>
+              <CallBtn>
                 <Link onClick={clickCall} href="tel:02-364-0008">
                   <img
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/call_btn.webp"
                     alt="02)364-0008"
                   />
                 </Link>
-              </GnbBtn>
+              </CallBtn>
               <Logo>
                 <Link href="/" className="block">
                   <img
