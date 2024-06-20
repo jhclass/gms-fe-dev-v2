@@ -51,13 +51,6 @@ const BtnItme = styled.li`
 `
 
 export default function TopBnr() {
-  const clickCall = () => {
-    window.gtag('event', '전화상담클릭', {
-      event_category: 'Phone Call',
-      event_label: '02-393-4321',
-    })
-  }
-
   return (
     <>
       <TopBnrBox>
@@ -86,12 +79,10 @@ export default function TopBnr() {
               </Link>
             </BtnItme>
             <BtnItme>
-              <Link onClick={clickCall} href="tel:02-364-0008">
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
-                  alt="02)364-0008"
-                />
-              </Link>
+              <img
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
+                alt="02)364-0008"
+              />
             </BtnItme>
           </BtnList>
         </Wrap>
