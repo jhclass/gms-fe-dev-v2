@@ -33,6 +33,13 @@ const BtnItme = styled.li`
     padding: 0 2rem;
   }
 
+  span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
   &:after {
     content: '';
     width: 2px;
@@ -79,10 +86,12 @@ export default function TopBnr() {
               </Link>
             </BtnItme>
             <BtnItme>
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
-                alt="02)364-0008"
-              />
+              <span>
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/main_top_btn3.webp"
+                  alt="02)364-0008"
+                />
+              </span>
             </BtnItme>
           </BtnList>
         </Wrap>
