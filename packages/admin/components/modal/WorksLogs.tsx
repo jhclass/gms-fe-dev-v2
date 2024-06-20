@@ -551,7 +551,6 @@ export default function WorksLogsModal({
                           </AreaTitle>
                           <WorksTime />
                         </AreaSection>
-
                         <AreaSection>
                           <AreaTitle>
                             <h4>출결사항</h4>
