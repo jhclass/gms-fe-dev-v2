@@ -491,8 +491,7 @@ export default function WorksLogsModal({
       }
     `,
   })
-  console.log(mGrade)
-  console.log(workLogData)
+
   return (
     <>
       <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
