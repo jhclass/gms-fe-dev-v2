@@ -1865,3 +1865,53 @@ export const CREATE_WORKLOGS_MUTATION = gql`
     }
   }
 `
+
+export const EDIT_WORKLOGS_MUTATION = gql`
+  mutation Mutation(
+    $editWorkLogsId: Int!
+    $trainingInfoOne: [String]
+    $trainingInfoTwo: [String]
+    $trainingInfoThree: [String]
+    $trainingInfoFour: [String]
+    $trainingInfoFive: [String]
+    $trainingInfoSix: [String]
+    $trainingInfoSeven: [String]
+    $trainingInfoEight: [String]
+    $trainingTimeOneday: [Int]
+    $trainingTimeTotal: [Int]
+    $instruction: String
+    $absentSt: String
+    $tardySt: String
+    $outingSt: String
+    $etc: String
+    $attendanceCount: [Int]
+    $checkList: [String]
+    $leaveEarlySt: String
+  ) {
+    editWorkLogs(
+      id: $editWorkLogsId
+      trainingInfoOne: $trainingInfoOne
+      trainingInfoTwo: $trainingInfoTwo
+      trainingInfoThree: $trainingInfoThree
+      trainingInfoFour: $trainingInfoFour
+      trainingInfoFive: $trainingInfoFive
+      trainingInfoSix: $trainingInfoSix
+      trainingInfoSeven: $trainingInfoSeven
+      trainingInfoEight: $trainingInfoEight
+      trainingTimeOneday: $trainingTimeOneday
+      trainingTimeTotal: $trainingTimeTotal
+      instruction: $instruction
+      absentSt: $absentSt
+      tardySt: $tardySt
+      outingSt: $outingSt
+      etc: $etc
+      attendanceCount: $attendanceCount
+      checkList: $checkList
+      leaveEarlySt: $leaveEarlySt
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`

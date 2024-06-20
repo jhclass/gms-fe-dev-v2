@@ -672,7 +672,6 @@ export type MutationCreateUserActivityLogsArgs = {
 
 export type MutationCreateWorkLogsArgs = {
   lecturesId: Scalars['Int']['input'];
-  teacherName: Scalars['String']['input'];
   workLogsDate: Scalars['String']['input'];
 };
 
@@ -924,6 +923,7 @@ export type MutationEditStudentPaymentArgs = {
 export type MutationEditWorkLogsArgs = {
   absentSt?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   attendanceCount?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  checkList?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   etc?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
   instruction?: InputMaybe<Scalars['String']['input']>;
@@ -1338,7 +1338,7 @@ export type Query = {
   searchWorkLogs?: Maybe<SearchWorkLogsResult>;
   seeAdviceType?: Maybe<ResultAdviceType>;
   seeAlarm?: Maybe<ResultSeeAlarm>;
-  seeAlarms?: Maybe<CommonResponse>;
+  seeAlarms?: Maybe<ResultSeeAlarms>;
   seeAttendance?: Maybe<SeeAttendanceResult>;
   seeFavorite?: Maybe<Array<Maybe<StudentState>>>;
   seeFeed?: Maybe<Array<Maybe<Photo>>>;
@@ -1433,7 +1433,7 @@ export type QuerySeeAlarmArgs = {
 
 export type QuerySeeAlarmsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
-  onOff?: InputMaybe<Scalars['String']['input']>;
+  onOff: Scalars['String']['input'];
   page?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1598,6 +1598,15 @@ export type ResultSeeAlarm = {
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok?: Maybe<Scalars['Boolean']['output']>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ResultSeeAlarms = {
+  __typename?: 'ResultSeeAlarms';
+  data?: Maybe<Array<Maybe<Alarm>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -2018,15 +2027,19 @@ export type UserActivityLogsResponse = {
 
 export type WorkLogs = {
   __typename?: 'WorkLogs';
+  Branch?: Maybe<Branch>;
+  BranchId?: Maybe<Scalars['Int']['output']>;
   absentSt?: Maybe<Scalars['String']['output']>;
   attendanceCount?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
+  checkList: Array<Maybe<Scalars['String']['output']>>;
   createdAt: Scalars['String']['output'];
   etc?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   instruction?: Maybe<Scalars['String']['output']>;
   leaveEarlySt?: Maybe<Scalars['String']['output']>;
-  lecture?: Maybe<Lectures>;
+  lectures?: Maybe<Lectures>;
   lecturesId: Scalars['Int']['output'];
+  outingSt?: Maybe<Scalars['String']['output']>;
   paymentOne?: Maybe<Scalars['String']['output']>;
   paymentThree?: Maybe<Scalars['String']['output']>;
   paymentTwo?: Maybe<Scalars['String']['output']>;
