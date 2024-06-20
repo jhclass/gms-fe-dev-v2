@@ -95,7 +95,7 @@ export default function Aside() {
         id="aside"
         className="bottom-[8rem] rounded-s-lg right-[1rem] fixed z-40 lg:py-0 lg:px-0 lg:bg-transparent lg:bottom-28 transition-all"
       >
-        <div className="relative w-[4.5rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+        <div className="relative w-[4rem] lg:w-[4.5rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
           <Ballon>바로 상담 👍</Ballon>
           <Link
             href="/cs/consult"
@@ -108,7 +108,7 @@ export default function Aside() {
             />
           </Link>
         </div>
-        <div className="hidden lg:block w-[4.5rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+        <div className="hidden lg:block w-[4rem] lg:w-[4.5rem] mt-[0.5rem] lg:mt-[0.8rem] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
           <Link
             href="/event/summerVacation"
             as="/event/summerVacation"
@@ -132,11 +132,11 @@ export default function Aside() {
             />
           </Link>
         </div> */}
-        <div className="relative w-[4.5rem] h-[4.5rem] mt-[0.5rem] lg:mt-[0.8rem] bg-[#f8e540] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
+        <div className="relative w-[4rem] h-[4rem] lg:w-[4.5rem] lg:h-[4.5rem] mt-[0.5rem] lg:mt-[0.8rem] bg-[#f8e540] rounded-full shadow-[-1px_2px_2px_rgba(0,0,0,0.6)]">
           <Link
             href="#"
             onClick={clickKakao}
-            className="flex items-center justify-center w-full h-full text-[3rem]"
+            className="flex items-center justify-center w-full h-full text-[3rem] lg:text-[3.5rem]"
           >
             <i className="xi-kakaotalk" />
           </Link>
