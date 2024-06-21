@@ -104,7 +104,7 @@ export default function Attendance({ lectureData, students }) {
       setTimeout(() => {
         window.scrollTo(0, parseInt(storedScrollPosition, 10))
         window.localStorage.removeItem('scrollPosition') // 복원 후 삭제
-      }, 100)
+      }, 500)
     }
   }, [])
 
@@ -128,11 +128,11 @@ export default function Attendance({ lectureData, students }) {
   }
   const fetchAllAttendance = async () => {
     if (week.length > 0) {
-      const today = new Date()
+      const fetchToday = new Date(today)
       const allData = await Promise.all(
         week.map(date => {
           const attendanceDate = new Date(date)
-          if (attendanceDate <= today) {
+          if (attendanceDate <= fetchToday) {
             return fetchAttendanceForDate(date, lectureData.id)
           } else {
             return []
@@ -601,9 +601,6 @@ export default function Attendance({ lectureData, students }) {
                                 <option disabled value="외출">
                                   외출
                                 </option>
-                                <option disabled value="외출">
-                                  외출
-                                </option>
                                 <option disabled value="중도탈락">
                                   중도탈락
                                 </option>
@@ -635,7 +632,6 @@ export default function Attendance({ lectureData, students }) {
                                 <option value="지각">지각</option>
                                 <option value="조퇴">조퇴</option>
                                 <option value="결석">결석</option>
-                                <option value="외출">외출</option>
                                 <option value="외출">외출</option>
                               </TestSelect>
                             )}

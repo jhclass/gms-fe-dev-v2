@@ -69,6 +69,9 @@ const DetailDiv = styled.div`
   @media (max-width: 768px) {
     gap: 1rem;
   }
+  @media print {
+    gap: 1.5rem !important;
+  }
 
   &.scroll {
     margin-top: 1rem;
@@ -82,6 +85,9 @@ const FlexBox = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+  }
+  @media print {
+    flex-direction: row !important;
   }
 
   &.reverse {
@@ -430,7 +436,7 @@ export default function WorksLogsModal({
   const clickSign = async type => {
     try {
       const { data } = await signWorkLog({
-        variables: { signWorkLogsId: workLogData.id, gradeType: String(type) },
+        variables: { signWorkLogsId: workLogData.id, gradeType: type },
       })
       if (data.signWorkLogs.ok) {
         const stampUrl = data.signWorkLogs.stampUrl
@@ -543,7 +549,7 @@ export default function WorksLogsModal({
     content: () => componentRef.current,
     pageStyle: `
       @page {
-        size: auto;
+        size: A4;
         margin: 10mm;
       }
       @media print {
