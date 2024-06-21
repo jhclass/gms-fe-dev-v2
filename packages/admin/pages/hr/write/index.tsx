@@ -624,12 +624,20 @@ export default function StudentsWrite() {
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      label={<FilterLabel>직책/직위</FilterLabel>}
+                      label={
+                        <FilterLabel>
+                          직책/직위<span>*</span>
+                        </FilterLabel>
+                      }
                       className="w-full"
                       onChange={e => {
                         register('mRank').onChange(e)
                       }}
                       {...register('mRank', {
+                        required: {
+                          value: true,
+                          message: '직책/직위를 입력해주세요.',
+                        },
                         pattern: {
                           value: /^[가-힣a-zA-Z0-9\s]*$/,
                           message: '한글, 영어, 숫자만 사용 가능합니다.',

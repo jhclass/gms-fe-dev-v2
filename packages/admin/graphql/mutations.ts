@@ -1882,11 +1882,11 @@ export const EDIT_WORKLOGS_MUTATION = gql`
     $instruction: String
     $absentSt: String
     $tardySt: String
+    $leaveEarlySt: String
     $outingSt: String
     $etc: String
     $attendanceCount: [Int]
     $checkList: [String]
-    $leaveEarlySt: String
   ) {
     editWorkLogs(
       id: $editWorkLogsId
@@ -1903,11 +1903,11 @@ export const EDIT_WORKLOGS_MUTATION = gql`
       instruction: $instruction
       absentSt: $absentSt
       tardySt: $tardySt
+      leaveEarlySt: $leaveEarlySt
       outingSt: $outingSt
       etc: $etc
       attendanceCount: $attendanceCount
       checkList: $checkList
-      leaveEarlySt: $leaveEarlySt
     ) {
       error
       message

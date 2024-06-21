@@ -238,7 +238,7 @@ export default function LectureWrite() {
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 입력해주세요.')
   const [lectureData, setLectureData] = useState(null)
-
+  const [changeDate, setChangeDate] = useState(false)
   const {
     isOpen: sbjIsOpen,
     onOpen: sbjOpen,
@@ -339,6 +339,12 @@ export default function LectureWrite() {
         const date = lectureData?.teachers.map(teacher => String(teacher.id))
         setTeacher(date)
       }
+      if (lectureData?.teachers) {
+        const date = lectureData?.teachers.map(teacher => String(teacher.id))
+        setTeacher(date)
+      }
+
+      setDatesSelected(lectureData?.lectureDetails)
 
       if (
         lectureData?.timetableAttached === undefined ||
@@ -988,6 +994,7 @@ export default function LectureWrite() {
                                 : null
                               startField.onChange(adjustedDate)
                               setLectureStartDate(adjustedDate)
+                              setChangeDate(true)
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -1073,6 +1080,7 @@ export default function LectureWrite() {
                                 : null
                               endField.onChange(adjustedEndDate)
                               setLectureEndDate(adjustedEndDate)
+                              setChangeDate(true)
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -1313,7 +1321,10 @@ export default function LectureWrite() {
                         variant="faded"
                         radius="md"
                         type="text"
-                        defaultValue={'asd'}
+                        defaultValue={
+                          lectureData.timetableAttached &&
+                          extractFileName(lectureData.timetableAttached)
+                        }
                         value={fileName}
                         {...register('timetableAttached')}
                       />
@@ -1389,9 +1400,10 @@ export default function LectureWrite() {
           isOpen={isOpen}
           onClose={onClose}
           setValue={setValue}
-          setDatesSelected={setDatesSelected}
+          datesSelected={datesSelected}
           startDate={lectureStartDate}
           endDate={lectureEndDate}
+          changeDate={changeDate}
         />
       </>
     )

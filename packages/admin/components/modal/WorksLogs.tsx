@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import {
   Button,
-  Checkbox,
   Modal,
   ModalBody,
   ModalContent,
@@ -13,12 +12,8 @@ import {
   Textarea,
 } from '@nextui-org/react'
 import { useEffect, useRef, useState } from 'react'
-import {
-  EDIT_WORKLOGS_MUTATION,
-  SEARCH_SUBJECT_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_WORKLOGS_MUTATION } from '@/graphql/mutations'
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import WorksSchedule from '@/components/table/WorksSchedule'
 import WorksTime from '@/components/table/WorksTime'
@@ -30,6 +25,7 @@ import {
 } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import { useReactToPrint } from 'react-to-print'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const Title = styled.h2`
   position: relative;
@@ -48,6 +44,16 @@ const Title = styled.h2`
     border-radius: 0.3rem;
   }
 `
+const SubText = styled.span`
+  font-size: 0.875rem;
+  padding-left: 0.5rem;
+  font-weight: 400;
+
+  > span {
+    color: red;
+  }
+`
+
 const DatailBody = styled.div`
   @media (max-width: 768px) {
     /* overflow-y: auto; */
@@ -194,22 +200,17 @@ export default function WorksLogsModal({
   onClose,
   lectureId,
   workLogeDate,
+  teachers,
 }) {
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
   const mUsername = useMme('mUsername')
+  const { userLogs } = useUserLogsMutation()
   const [seeAttendance] = useLazyQuery(SEE_ATTENDANCE_QUERY)
-  const [searchWorkLog, { refetch: searchWorklogRefetch }] = useLazyQuery(
-    SEARCH_WORKLOGS_QUERY,
-  )
-  const [signWorkLog] = useLazyQuery(SIGN_WORKLOGS_QUERY, {
-    onCompleted: () => {
-      searchWorklogRefetch()
-      setSign(true)
-    },
-  })
+  const [searchWorkLog] = useLazyQuery(SEARCH_WORKLOGS_QUERY)
+  const [signWorkLog] = useLazyQuery(SIGN_WORKLOGS_QUERY)
   const [editWrokLogs] = useMutation(EDIT_WORKLOGS_MUTATION)
   const [workLogData, setWorkLogData] = useState(null)
   const [attendanceData, setAttendanceData] = useState(null)
@@ -222,11 +223,11 @@ export default function WorksLogsModal({
   const [attendanceState, setAttendanceState] = useState(null)
   const [isChecked, setIsChecked] = useState('N')
   const [sign, setSign] = useState(false)
-
   const {
     register,
     handleSubmit,
-    reset,
+    setError,
+    clearErrors,
     setValue,
     control,
     formState: { isDirty, dirtyFields, errors },
@@ -324,11 +325,6 @@ export default function WorksLogsModal({
 
   useEffect(() => {
     if (workLogData && attendanceData) {
-      setSignOne(
-        workLogData.paymentOne
-          ? workLogData.paymentOne
-          : workLogData.trainingInfoOne,
-      )
       if (workLogData.attendanceCount.length > 0) {
         setAttendanceTotals(workLogData.attendanceCount)
       } else {
@@ -404,20 +400,11 @@ export default function WorksLogsModal({
             : workLogData.outingSt,
         etc: workLogData.etc === null ? [] : workLogData.etc,
       })
-      // setIsChecked(
-      //   workLogData.checkList.legnth === 0 ? 'N' : workLogData.checkList[0],
-      // )
+      setIsChecked(
+        workLogData.checkList.legnth === 0 ? 'N' : workLogData.checkList[0],
+      )
     }
   }, [workLogData, attendanceData])
-
-  // useEffect(() => {
-  //   if (workLogData) {
-  //     if (workLogData.paymentOne) {
-  //     } else {
-  //       fetchAttendanceForDate(workLogeDate, lectureId)
-  //     }
-  //   }
-  // }, [workLogData])
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -440,36 +427,115 @@ export default function WorksLogsModal({
     return dayOfWeek
   }
 
-  const clickSign = type => {
-    signWorkLog({
-      variables: { signWorkLogsId: workLogData.id, gradeType: type },
-    })
+  const clickSign = async type => {
+    try {
+      const { data } = await signWorkLog({
+        variables: { signWorkLogsId: workLogData.id, gradeType: String(type) },
+      })
+      if (data.signWorkLogs.ok) {
+        const stampUrl = data.signWorkLogs.stampUrl
+        if (type === '강사') {
+          setSignOne(stampUrl)
+        } else if (type === '팀장') {
+          setSignTwo(stampUrl)
+        } else {
+          setSignThree(stampUrl)
+        }
+        userLogs(`강의ID:${lectureId}의 ${workLogeDate}일지 서명`)
+        setSign(true)
+      } else {
+        if (data.signWorkLogs.message === '권한이 없습니다.') {
+          alert(data.signWorkLogs.message)
+        } else {
+          console.log(data.signWorkLogs.message)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   const onSubmit = data => {
-    console.log(isDirty, dirtyFields)
-    console.log(data)
+    if (isDirty) {
+      const isWrite = workLogData?.paymentOne
+        ? confirm(
+            `강의ID:${lectureId}의 ${workLogeDate} 일지를 수정하시겠습니까?`,
+          )
+        : confirm(
+            `강의ID:${lectureId}의 ${workLogeDate} 일지를 등록하시겠습니까?`,
+          )
+      if (isWrite) {
+        editWrokLogs({
+          variables: {
+            editWorkLogsId: workLogData.id,
+            trainingInfoOne: data.trainingInfoOne
+              ? data.trainingInfoOne
+              : workLogData.trainingInfoOne,
+            trainingInfoTwo: data.trainingInfoTwo
+              ? data.trainingInfoTwo
+              : workLogData.trainingInfoTwo,
+            trainingInfoThree: data.trainingInfoThree
+              ? data.trainingInfoThree
+              : workLogData.trainingInfoThree,
+            trainingInfoFour: data.trainingInfoFour
+              ? data.trainingInfoFour
+              : workLogData.trainingInfoFour,
+            trainingInfoFive: data.trainingInfoFive
+              ? data.trainingInfoFive
+              : workLogData.trainingInfoFive,
+            trainingInfoSix: data.trainingInfoSix
+              ? data.trainingInfoSix
+              : workLogData.trainingInfoSix,
+            trainingInfoSeven: data.trainingInfoSeven
+              ? data.trainingInfoSeven
+              : workLogData.trainingInfoSeven,
+            trainingInfoEight: data.trainingInfoEight
+              ? data.trainingInfoEight
+              : workLogData.trainingInfoEight,
+            trainingTimeOneday: data.trainingTimeOneday
+              ? data.trainingTimeOneday
+              : workLogData.trainingTimeOneday,
+            trainingTimeTotal: data.trainingTimeTotal
+              ? data.trainingTimeTotal
+              : workLogData.trainingTimeTotal,
+            instruction: data.instruction
+              ? data.instruction
+              : workLogData.instruction,
+            absentSt: data.absentSt ? data.absentSt : workLogData.absentSt,
+            tardySt: data.tardySt ? data.tardySt : workLogData.tardySt,
+            leaveEarlySt: data.leaveEarlySt
+              ? data.leaveEarlySt
+              : workLogData.leaveEarlySt,
+            outingSt: data.outingSt ? data.outingSt : workLogData.outingSt,
+            etc: data.etc ? data.etc : workLogData.etc,
+            attendanceCount: data.attendanceCount
+              ? data.attendanceCount
+              : workLogData.attendanceCount,
+            checkList: data.checkList ? data.checkList : workLogData.checkList,
+          },
+          onCompleted: result => {
+            if (result.editWorkLogs.ok) {
+              if (workLogData?.paymentOne) {
+                const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                userLogs(
+                  `${workLogeDate} 일지 수정`,
+                  dirtyFieldsArray.join(', '),
+                )
+                alert(`${workLogeDate} 일지가 수정되었습니다.`)
+              } else {
+                userLogs(`${workLogeDate} 일지 등록`)
+                alert(`${workLogeDate} 일지가 등록되었습니다.`)
+              }
+              setSign(false)
+              onClose()
+            } else {
+              console.log(result.editWorkLogs.message)
+            }
+          },
+        })
+      }
+    }
   }
-
-  // const onSubmit = async () => {
-  //   if (radio) {
-  //     const data = await searchSubjectMutation({
-  //       variables: {
-  //         searchSubjectId: parseInt(subjectSelected),
-  //       },
-  //     })
-  //     if (!data.data.searchSubject.ok) {
-  //       throw new Error('과목 검색 실패')
-  //     }
-  //     const { result } = data.data.searchSubject || {}
-  //     setSubjectSelectedData(result[0])
-  //     if (setSub !== null) {
-  //       setSub(result[0].subDiv)
-  //     }
-  //   }
-  //   setValue('subject', subjectSelected, { shouldDirty: true })
-  //   sbjClose()
-  // }
 
   const componentRef = useRef<HTMLDivElement>(null)
 
@@ -500,11 +566,16 @@ export default function WorksLogsModal({
             <>
               <div ref={componentRef}>
                 <ModalHeader className="flex flex-col gap-1">
-                  <Title>업무일지</Title>
+                  <Title>
+                    업무일지
+                    <SubText>
+                      <span>*</span>서명 후 저장, 수정 가능합니다.
+                    </SubText>
+                  </Title>
                 </ModalHeader>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <ModalBody>
-                    <DatailBody>
+                    <DatailBody className="scrollbar_g">
                       <ScrollShadow
                         orientation="vertical"
                         className="scrollbar"
@@ -518,11 +589,11 @@ export default function WorksLogsModal({
                                   <LineBox>
                                     {formatDate(
                                       workLogData?.lectures.lecturePeriodStart,
-                                    )}{' '}
-                                    ~{' '}
-                                    {formatDate(
-                                      workLogData?.lectures.lecturePeriodEnd,
-                                    )}
+                                    ) +
+                                      ' ~ ' +
+                                      formatDate(
+                                        workLogData?.lectures.lecturePeriodEnd,
+                                      )}
                                   </LineBox>
                                 </div>
                               </AreaBox>
@@ -551,18 +622,28 @@ export default function WorksLogsModal({
                                 <div>
                                   <FilterLabel>강사</FilterLabel>
                                   <StempBox>
-                                    {workLogData?.paymentOne && (
+                                    {sign &&
+                                    (signOne || workLogData?.paymentOne) ? (
                                       <img
-                                        src={workLogData?.paymentOne}
+                                        src={signOne || workLogData?.paymentOne}
                                         alt="강사 사인"
                                       />
+                                    ) : (
+                                      workLogData?.paymentOne && (
+                                        <img
+                                          src={workLogData?.paymentOne}
+                                          alt="강사 사인"
+                                        />
+                                      )
                                     )}
                                   </StempBox>
-                                  {mGrade < 1 || mPart.includes('강사') ? (
+                                  {mGrade < 1 || teachers.includes(mId) ? (
                                     <BtnBox>
                                       <Button
+                                        isDisabled={sign}
                                         size="sm"
                                         color="primary"
+                                        className="bg-[#ff5900]"
                                         onClick={() => clickSign('강사')}
                                       >
                                         서명
@@ -575,18 +656,28 @@ export default function WorksLogsModal({
                                 <div>
                                   <FilterLabel>교무팀</FilterLabel>
                                   <StempBox>
-                                    {workLogData?.paymentTwo && (
+                                    {sign &&
+                                    (signTwo || workLogData?.paymentTwo) ? (
                                       <img
-                                        src={workLogData?.paymentTwo}
-                                        alt="교무팀 사인"
+                                        src={signTwo || workLogData?.paymentTwo}
+                                        alt="강사 사인"
                                       />
+                                    ) : (
+                                      workLogData?.paymentTwo && (
+                                        <img
+                                          src={workLogData?.paymentTwo}
+                                          alt="강사 사인"
+                                        />
+                                      )
                                     )}
                                   </StempBox>
                                   {mGrade < 1 || mPart.includes('교무팀') ? (
                                     <BtnBox>
                                       <Button
+                                        isDisabled={sign}
                                         size="sm"
                                         color="primary"
+                                        className="bg-[#ff5900]"
                                         onClick={() => clickSign('팀장')}
                                       >
                                         서명
@@ -599,19 +690,31 @@ export default function WorksLogsModal({
                                 <div>
                                   <FilterLabel>관리자</FilterLabel>
                                   <StempBox>
-                                    {workLogData?.paymentThree && (
+                                    {sign &&
+                                    (signThree || workLogData?.paymentThree) ? (
                                       <img
-                                        src={workLogData?.paymentThree}
-                                        alt="관리자 사인"
+                                        src={
+                                          signThree || workLogData?.paymentThree
+                                        }
+                                        alt="강사 사인"
                                       />
+                                    ) : (
+                                      workLogData?.paymentThree && (
+                                        <img
+                                          src={workLogData?.paymentThree}
+                                          alt="강사 사인"
+                                        />
+                                      )
                                     )}
                                   </StempBox>
                                   {mGrade <= 1 ? (
                                     <BtnBox>
                                       <Button
+                                        isDisabled={sign}
                                         size="sm"
                                         color="primary"
-                                        onClick={() => clickSign('부원장')}
+                                        className="bg-[#ff5900]"
+                                        onClick={() => clickSign('원장')}
                                       >
                                         서명
                                       </Button>
@@ -720,7 +823,19 @@ export default function WorksLogsModal({
                                   setValue={setValue}
                                   trainingTimes={trainingTimes}
                                   setTrainingTimes={setTrainingTimes}
+                                  setError={setError}
+                                  clearErrors={clearErrors}
                                 />
+                                {errors.trainingTimeTotal && (
+                                  <p className="px-2 pt-2 text-xs text-red-500">
+                                    {String(errors.trainingTimeTotal.message)}
+                                  </p>
+                                )}
+                                {errors.trainingTimeOneday && (
+                                  <p className="px-2 pt-2 text-xs text-red-500">
+                                    {String(errors.trainingTimeOneday.message)}
+                                  </p>
+                                )}
                               </AreaSection>
                             )}
                             {attendanceState && (
@@ -779,9 +894,11 @@ export default function WorksLogsModal({
                                   register('instruction').onChange(e)
                                 }}
                                 {...register('instruction', {
-                                  required: {
-                                    value: isChecked === 'Y' ? true : false,
-                                    message: '출결 특이사항을 작성해주세요.',
+                                  validate: value => {
+                                    if (isChecked === 'Y' && !value) {
+                                      return '출결 특이사항을 작성해주세요.'
+                                    }
+                                    return true
                                   },
                                 })}
                               />

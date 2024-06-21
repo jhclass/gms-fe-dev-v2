@@ -91,12 +91,14 @@ export default function WorksTime({
   const keys = ['absentSt', 'tardySt', 'leaveEarlySt', 'outingSt', 'etc']
   const handleInput = (e, key) => {
     setAttendanceState(prevState => {
-      const newAttendanceState = { ...prevState }
+      const newAttendanceState = {
+        ...prevState,
+        [key]: [...prevState[key]],
+      }
       newAttendanceState[key] = e.target.value
-      console.log(newAttendanceState)
+      setValue(key, newAttendanceState[key], { shouldDirty: true })
       return newAttendanceState
     })
-    setValue(key, attendanceState[key], { shouldDirty: true })
   }
 
   return (

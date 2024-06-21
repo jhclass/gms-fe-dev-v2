@@ -193,6 +193,7 @@ export default function ConsolutItem(props) {
       `${date.getDate().toString().padStart(2, '0')} `
     return formatted
   }
+
   const formatTime = dateString => {
     const date = new Date(dateString)
     const hours = date.getHours().toString().padStart(2, '0')
@@ -206,7 +207,7 @@ export default function ConsolutItem(props) {
     return `${startTime} - ${endTime}`
   }
 
-  function formatUsernames(data) {
+  const formatUsernames = data => {
     return data.map(item => item.mUsername).join(', ')
   }
 

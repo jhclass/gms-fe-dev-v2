@@ -235,8 +235,7 @@ export default function LectureWrite() {
   const [lectureEndTime, setLectureEndTime] = useState(null)
   const [lectureStartDate, setLectureStartDate] = useState(null)
   const [lectureEndDate, setLectureEndDate] = useState(null)
-  const [fF, setFF] = useState(null)
-
+  const [changeDate, setChangeDate] = useState(false)
   const [isReport, setIsReport] = useState('Y')
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 선택하세요.')
@@ -919,6 +918,7 @@ export default function LectureWrite() {
                               : null
                             field.onChange(adjustedDate)
                             setLectureStartDate(adjustedDate)
+                            setChangeDate(true)
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
@@ -1004,6 +1004,7 @@ export default function LectureWrite() {
                               : null
                             field.onChange(adjustedDate)
                             setLectureEndDate(adjustedDate)
+                            setChangeDate(true)
                           }}
                           dateFormat="yyyy/MM/dd"
                           onChangeRaw={e => e.preventDefault()}
@@ -1322,9 +1323,9 @@ export default function LectureWrite() {
           isOpen={isOpen}
           onClose={onClose}
           setValue={setValue}
-          setDatesSelected={setDatesSelected}
           startDate={lectureStartDate}
           endDate={lectureEndDate}
+          changeDate={changeDate}
         />
       )}
     </>

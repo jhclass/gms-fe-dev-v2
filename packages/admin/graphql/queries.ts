@@ -714,7 +714,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
   }
 `
 export const SIGN_WORKLOGS_QUERY = gql`
-  query Query($signWorkLogsId: Int!, $gradeType: String!) {
+  query SignWorkLogs($signWorkLogsId: Int!, $gradeType: String!) {
     signWorkLogs(id: $signWorkLogsId, gradeType: $gradeType) {
       error
       message

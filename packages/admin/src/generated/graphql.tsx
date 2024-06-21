@@ -921,16 +921,16 @@ export type MutationEditStudentPaymentArgs = {
 
 
 export type MutationEditWorkLogsArgs = {
-  absentSt?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  absentSt?: InputMaybe<Scalars['String']['input']>;
   attendanceCount?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   checkList?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   etc?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
   instruction?: InputMaybe<Scalars['String']['input']>;
-  leaveEarlySt?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  leaveEarlySt?: InputMaybe<Scalars['String']['input']>;
   lecturesId?: InputMaybe<Scalars['Int']['input']>;
-  outingSt?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  tardySt?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  outingSt?: InputMaybe<Scalars['String']['input']>;
+  tardySt?: InputMaybe<Scalars['String']['input']>;
   trainingInfoEight?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   trainingInfoFive?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   trainingInfoFour?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
