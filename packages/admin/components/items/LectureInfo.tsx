@@ -140,9 +140,6 @@ export default function PaymentInfo({ lectureData, students }) {
     return data.map(item => item.mUsername).join(', ')
   }
 
-  console.log(lectureData)
-  console.log(students)
-
   return (
     lectureData && (
       <>

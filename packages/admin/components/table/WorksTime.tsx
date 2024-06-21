@@ -92,7 +92,6 @@ export default function WorksTime({
         newTrainingTimes[key][index] = parseInt(e.target.value)
         clearErrors(key)
       } else {
-        console.log(key)
         setError(key, {
           type: 'manual',
           message: '숫자를 입력해주세요.',
