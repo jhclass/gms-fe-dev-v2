@@ -97,6 +97,25 @@ const FlexBox = styled.div`
   }
 `
 
+const FlexBoxNum = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  @media print {
+    flex-direction: column !important;
+  }
+
+  &.reverse {
+    @media (max-width: 768px) {
+      flex-direction: column-reverse;
+    }
+  }
+`
+
 const AreaTitle = styled.div`
   display: flex;
   justify-content: center;
@@ -560,6 +579,9 @@ export default function WorksLogsModal({
           overflow: visible !important;
           height: auto !important;
         }
+        .workLogFooter{
+          display:none !important;
+        }
       }
     `,
   })
@@ -753,7 +775,7 @@ export default function WorksLogsModal({
                             </AreaBox>
                           </FlexBox>
                           {attendanceTotals && (
-                            <FlexBox>
+                            <FlexBoxNum>
                               <FlexAreaBox>
                                 <div className="text-[#07bbae]">
                                   <FilterLabel className="color">
@@ -800,7 +822,7 @@ export default function WorksLogsModal({
                                   </LineBox>
                                 </div>
                               </FlexAreaBox>
-                            </FlexBox>
+                            </FlexBoxNum>
                           )}
                         </DetailDiv>
                         <DetailDiv className="scroll">
@@ -919,7 +941,7 @@ export default function WorksLogsModal({
                       </ScrollShadow>
                     </DatailBody>
                   </ModalBody>
-                  <ModalFooter>
+                  <ModalFooter className="workLogFooter">
                     <Button
                       size="sm"
                       color="danger"

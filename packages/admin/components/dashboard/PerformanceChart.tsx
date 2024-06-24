@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import PerformanceChartCon from '@/components/dashboard/PerformanceChartCon'
 
 const LodingDiv = styled.div`
-  /* padding: 1.5rem;
+  padding: 1.5rem;
   width: 100%;
   min-width: 20rem;
   position: relative;
@@ -12,10 +12,7 @@ const LodingDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; */
-  width: 500px;
-  height: 500px;
-  background: red;
+  align-items: center;
 `
 
 export default function PerformanceChart({
