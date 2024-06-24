@@ -13,10 +13,10 @@ export default function LectureLayout({ children }) {
   if (isCheckingLogin) {
     return null
   }
-  if (mGrade === grade.dev) {
-    return <main>{children}</main>
-  } else {
-    return <MainWrap>미오픈 카테고리입니다.</MainWrap>
-  }
-  // return <main>{children}</main>
+  // if (mGrade === grade.dev) {
+  //   return <main>{children}</main>
+  // } else {
+  //   return <MainWrap>미오픈 카테고리입니다.</MainWrap>
+  // }
+  return <main>{children}</main>
 }

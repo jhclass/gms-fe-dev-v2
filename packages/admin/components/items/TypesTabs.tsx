@@ -35,7 +35,6 @@ export default function TypesTabs() {
 
   useEffect(() => {
     if (typeTab) {
-      console.log(typeTab)
       setSelected(String(typeTab))
     }
   }, [typeTab])

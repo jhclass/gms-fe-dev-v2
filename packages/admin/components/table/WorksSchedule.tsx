@@ -124,11 +124,14 @@ export default function AbsentList({
 
   const handleInput = (e, key, index) => {
     setTrainingData(prevState => {
-      const newTrainingData = { ...prevState }
+      const newTrainingData = {
+        ...prevState,
+        [key]: [...prevState[key]],
+      }
       newTrainingData[key][index] = e.target.value
+      setValue(key, newTrainingData[key], { shouldDirty: true })
       return newTrainingData
     })
-    setValue(key, trainingData[key], { shouldDirty: true })
   }
 
   return (

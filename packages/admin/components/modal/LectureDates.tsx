@@ -68,14 +68,15 @@ export default function LectureDates({
   isOpen,
   onClose,
   setValue,
-  setDatesSelected,
+  datesSelected = null,
   startDate,
   endDate,
+  changeDate,
 }) {
+  const today = new Date('')
   const [disabledDays, setDisabledDays] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
-
   const selectDateAuto = (startDate, endDate) => {
     let currentDate =
       startDate instanceof Date ? new Date(startDate) : new Date(startDate)
@@ -93,7 +94,13 @@ export default function LectureDates({
   useEffect(() => {
     setSelectedDates([])
     selectDateAuto(startDate, endDate)
-  }, [startDate, endDate])
+    if (changeDate) {
+      setSelectedDates([])
+      selectDateAuto(startDate, endDate)
+    } else {
+      setSelectedDates(datesSelected)
+    }
+  }, [startDate, endDate, datesSelected])
 
   const calculateMonthsShown = (startDate, endDate) => {
     const validStartDate =
@@ -191,8 +198,10 @@ export default function LectureDates({
   }
 
   const clickAdviceSubmit = () => {
-    setValue('lectureDetails', selectedDates, { shouldDirty: true })
-    setDatesSelected(selectedDates)
+    const sortedDates = selectedDates.sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+    )
+    setValue('lectureDetails', sortedDates, { shouldDirty: true })
     onClose()
   }
 
@@ -230,7 +239,7 @@ export default function LectureDates({
                       onChange={handleDateSelect}
                       filterDate={date => !isDayDisabled(date)}
                       selected={startDate}
-                      minDate={startDate}
+                      minDate={startDate > today ? startDate : today}
                       maxDate={endDate}
                       monthsShown={monthsShown}
                     />

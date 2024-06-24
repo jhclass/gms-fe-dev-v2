@@ -28,6 +28,7 @@ import {
   SEE_ATTENDANCE_QUERY,
 } from '@/graphql/queries'
 import { useRouter } from 'next/router'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -69,8 +70,9 @@ const TodayTag = styled.span`
   vertical-align: middle;
 `
 
-export default function Attendance({ lectureData }) {
+export default function Attendance({ lectureData, students }) {
   const router = useRouter()
+  const { userLogs } = useUserLogsMutation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const today = new Date().toISOString().split('T')[0]
   const [page, setPage] = useState(1)
@@ -79,7 +81,7 @@ export default function Attendance({ lectureData }) {
   const [week, setWeek] = useState(null)
   const [todayIndex, setTodayIndex] = useState(null)
   const [attendanceAllData, setAttendanceAllData] = useState([])
-  const [workId, setWorkId] = useState(null)
+  const [teachers, setTeachers] = useState(null)
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
   const [selectedValues, setSelectedValues] = useState([])
@@ -87,6 +89,7 @@ export default function Attendance({ lectureData }) {
   const [gridTemplateColumns, setGridTemplateColumns] = useState(
     '50px 50px 100px 100px repeat(4, 70px)',
   )
+
   const [gridTemplateColumnsMo, setGridTemplateColumnsMo] = useState('100px')
   const [createAttendance] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)
@@ -96,30 +99,14 @@ export default function Attendance({ lectureData }) {
   )
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      // 페이지를 떠날 때 스크롤 위치 저장
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem('scrollPosition', window.scrollY.toString())
-      }
-    }
-
-    // 라우트 변경 시작 시 스크롤 위치 저장
-    router.events.on('routeChangeStart', handleRouteChange)
-
-    // 컴포넌트가 마운트될 때 스크롤 위치 복원
     const storedScrollPosition = window.localStorage.getItem('scrollPosition')
     if (storedScrollPosition !== null) {
       setTimeout(() => {
         window.scrollTo(0, parseInt(storedScrollPosition, 10))
         window.localStorage.removeItem('scrollPosition') // 복원 후 삭제
-      }, 500) // 페이지가 완전히 로드된 후에 스크롤 위치 복원
+      }, 500)
     }
-
-    return () => {
-      // 클린업
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
-  }, [router.events])
+  }, [])
 
   const naturalCompare = (a, b) => {
     return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
@@ -141,11 +128,11 @@ export default function Attendance({ lectureData }) {
   }
   const fetchAllAttendance = async () => {
     if (week.length > 0) {
-      const today = new Date()
+      const fetchToday = new Date(today)
       const allData = await Promise.all(
         week.map(date => {
           const attendanceDate = new Date(date)
-          if (attendanceDate <= today) {
+          if (attendanceDate <= fetchToday) {
             return fetchAttendanceForDate(date, lectureData.id)
           } else {
             return []
@@ -221,13 +208,13 @@ export default function Attendance({ lectureData }) {
       setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
       setPage(findDataInChunks(chunks, today) + 1)
       setWeek(findChunkContainingDate(chunks, today))
-      const sortOrder = lectureData.subject.StudentPayment.filter(
-        student => student.lectureAssignment === '배정',
-      ).sort((a, b) => {
+      const sortOrder = students.sort((a, b) => {
         return naturalCompare(a.student.name, b.student.name)
         // return a.student.name.localeCompare(b.student.name)
       })
       setData({ nodes: sortOrder })
+      const teachersId = lectureData.teachers.map(teacher => teacher.id)
+      setTeachers(teachersId)
     }
   }, [lectureData])
 
@@ -252,6 +239,8 @@ export default function Attendance({ lectureData }) {
         data.nodes.map((item, index) =>
           attendanceAllData[dayIndex] && attendanceAllData[dayIndex][index]
             ? attendanceAllData[dayIndex][index].attendanceState
+            : item.courseComplete === '중도포기'
+            ? '중도탈락'
             : '-',
         ),
       )
@@ -487,7 +476,14 @@ export default function Attendance({ lectureData }) {
             },
             onCompleted: result => {
               if (result.createWorkLogs.ok) {
+                userLogs(
+                  `강의ID:${lectureData.id}의 ${attendanceDate} 출석 체크`,
+                )
                 alert(`${attendanceDate} 출석체크 완료`)
+                window.localStorage.setItem(
+                  'scrollPosition',
+                  window.scrollY.toString(),
+                )
                 window.location.reload()
               }
             },
@@ -509,13 +505,17 @@ export default function Attendance({ lectureData }) {
       },
       onCompleted: resData => {
         if (resData.editAttendance.ok) {
+          userLogs(`강의ID:${lectureData.id}의 ${attendanceDate} 출석 수정`)
           alert(`${attendanceDate} 출석수정 완료`)
+          window.localStorage.setItem(
+            'scrollPosition',
+            window.scrollY.toString(),
+          )
           window.location.reload()
         }
       },
     })
   }
-
   return (
     week && (
       <>
@@ -567,34 +567,74 @@ export default function Attendance({ lectureData }) {
                         <Cell pinLeft>{item.attendanceRate}</Cell>
                         {attendanceAllData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>
-                            <TestSelect
-                              style={{
-                                width: '100%',
-                                border: 'none',
-                                fontSize: '1rem',
-                                padding: 0,
-                                margin: 0,
-                              }}
-                              disabled={
-                                dayIndex !== todayIndex &&
-                                attendanceAllData[dayIndex]?.length === 0
-                              }
-                              value={selectedValues[dayIndex][index]}
-                              onChange={event => {
-                                handleSelectChange(
-                                  event.target.value,
-                                  index,
-                                  dayIndex,
-                                )
-                              }}
-                            >
-                              <option value="-">-</option>
-                              <option value="출석">출석</option>
-                              <option value="지각">지각</option>
-                              <option value="조퇴">조퇴</option>
-                              <option value="결석">결석</option>
-                              <option value="외출">외출</option>
-                            </TestSelect>
+                            {item.courseComplete === '중도포기' ? (
+                              <TestSelect
+                                style={{
+                                  width: '100%',
+                                  border: 'none',
+                                  fontSize: '1rem',
+                                  padding: 0,
+                                  margin: 0,
+                                }}
+                                disabled={true}
+                                value={selectedValues[dayIndex][index]}
+                                onChange={event => {
+                                  handleSelectChange(
+                                    event.target.value,
+                                    index,
+                                    dayIndex,
+                                  )
+                                }}
+                              >
+                                <option disabled value="출석">
+                                  출석
+                                </option>
+                                <option disabled value="지각">
+                                  지각
+                                </option>
+                                <option disabled value="조퇴">
+                                  조퇴
+                                </option>
+                                <option disabled value="결석">
+                                  결석
+                                </option>
+                                <option disabled value="외출">
+                                  외출
+                                </option>
+                                <option disabled value="중도탈락">
+                                  중도탈락
+                                </option>
+                              </TestSelect>
+                            ) : (
+                              <TestSelect
+                                style={{
+                                  width: '100%',
+                                  border: 'none',
+                                  fontSize: '1rem',
+                                  padding: 0,
+                                  margin: 0,
+                                }}
+                                disabled={
+                                  dayIndex !== todayIndex &&
+                                  attendanceAllData[dayIndex]?.length === 0
+                                }
+                                value={selectedValues[dayIndex][index]}
+                                onChange={event => {
+                                  handleSelectChange(
+                                    event.target.value,
+                                    index,
+                                    dayIndex,
+                                  )
+                                }}
+                              >
+                                <option value="-">-</option>
+                                <option value="출석">출석</option>
+                                <option value="지각">지각</option>
+                                <option value="조퇴">조퇴</option>
+                                <option value="결석">결석</option>
+                                <option value="외출">외출</option>
+                              </TestSelect>
+                            )}
                           </Cell>
                         ))}
                       </Row>
@@ -770,8 +810,10 @@ export default function Attendance({ lectureData }) {
         <WorksLogs
           isOpen={isOpen}
           onClose={onClose}
+          teachers={teachers}
           lectureId={lectureData.id}
           workLogeDate={selectWrokLogDate}
+          key={selectWrokLogDate}
         />
       </>
     )

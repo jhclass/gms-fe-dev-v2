@@ -77,16 +77,29 @@ export default function WorksTime({
   setValue,
   trainingTimes,
   setTrainingTimes,
+  setError,
+  clearErrors,
 }) {
   const periods = ['일계', '누계']
   const keys = ['trainingTimeOneday', 'trainingTimeTotal']
   const handleInput = (e, key, index) => {
     setTrainingTimes(prevState => {
-      const newTrainingTimes = { ...prevState }
-      newTrainingTimes[key][index] = e.target.value
+      const newTrainingTimes = {
+        ...prevState,
+        [key]: [...prevState[key]],
+      }
+      if (e.target.value !== '') {
+        newTrainingTimes[key][index] = parseInt(e.target.value)
+        clearErrors(key)
+      } else {
+        setError(key, {
+          type: 'manual',
+          message: '숫자를 입력해주세요.',
+        })
+      }
+      setValue(key, newTrainingTimes[key], { shouldDirty: true })
       return newTrainingTimes
     })
-    setValue(key, trainingTimes[key], { shouldDirty: true })
   }
   return (
     <>

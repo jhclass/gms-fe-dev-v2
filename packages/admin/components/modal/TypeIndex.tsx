@@ -173,9 +173,6 @@ export default function TypeIndex({
     setOrderPage(1)
   }
 
-  // console.log(orderPage, orderAdviceList)
-  // console.log(items, bottomReached)
-
   return (
     <>
       <Modal size={'md'} isOpen={isOpen} onClose={closeBtn}>

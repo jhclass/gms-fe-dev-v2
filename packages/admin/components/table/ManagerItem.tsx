@@ -247,7 +247,7 @@ export default function ManagerItem(props) {
     const today = new Date()
     const timeDiff = today.getTime() - joiningDate.getTime()
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
-    return '+' + daysDiff
+    return daysDiff > 0 ? '+' + daysDiff : daysDiff
   }
 
   return (

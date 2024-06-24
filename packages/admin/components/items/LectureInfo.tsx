@@ -112,203 +112,209 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function PaymentInfo({}) {
-  const formatDate = (data, isTime) => {
+export default function PaymentInfo({ lectureData, students }) {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}:` +
-        `${date.getSeconds().toString().padStart(2, '0')}`
-      return formatted
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
-    }
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
   }
 
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
+  const formatTime = dateString => {
+    const date = new Date(dateString)
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${hours}:${minutes}`
+  }
+
+  const extractTimeRange = dates => {
+    const startTime = formatTime(dates[0])
+    const endTime = formatTime(dates[1])
+    return `${startTime} - ${endTime}`
+  }
+
+  const formatUsernames = data => {
+    return data.map(item => item.mUsername).join(', ')
   }
 
   return (
-    <>
-      <FlexBox>
-        <AreaSmallBox style={{ minWidth: '20%' }}>
-          <div>
-            <FilterLabel>과정코드</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>1029384</LineBox>
-          </div>
-        </AreaSmallBox>
-        <AreaBox>
-          <div>
-            <Textarea
-              label="강의명"
-              isDisabled={true}
-              isReadOnly={true}
-              labelPlacement="outside"
-              // defaultValue={studentSubjectData?.subjectName}
-              defaultValue={'광고홍보 영상콘텐츠제작(프리미어,에펙,포토,일러)'}
-              minRows={1}
-              variant="underlined"
-              size="md"
-              radius="sm"
-              classNames={{
-                base: 'opacity-1',
-              }}
-            ></Textarea>
-          </div>
-        </AreaBox>
-        <AreaSmallBox style={{ minWidth: '20%' }}>
-          <div>
-            <FilterLabel>강의장</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>204호</LineBox>
-          </div>
-        </AreaSmallBox>
-      </FlexBox>
-      <FlexBox>
-        <AreaSmallBox style={{ minWidth: '20%' }}>
-          <div>
-            <FilterLabel>수강 구분</FilterLabel>
-            {/* <LineBox>{studentPaymentData?.subDiv}</LineBox> */}
-            <LineBox>근로자</LineBox>
-          </div>
-        </AreaSmallBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>
-              훈련기간<span>*</span>
-            </FilterLabel>
-            {/* <LineBox>{studentPaymentData?.seScore || 0}</LineBox> */}
-            <LineBox>2024-01-03 ~ 2024-05-04</LineBox>
-          </div>
-        </AreaBox>
-        <AreaSmallBox style={{ minWidth: '20%' }}>
-          <div>
-            <FilterLabel>
-              훈련시간<span>*</span>
-            </FilterLabel>
-            {/* <LineBox>{studentPaymentData?.seScore || 0}</LineBox> */}
-            <LineBox>09:30 ~ 18:30</LineBox>
-          </div>
-        </AreaSmallBox>
-        <AreaSmallBox style={{ minWidth: '20%' }}>
-          <div>
-            <FilterLabel>
-              강사명<span>*</span>
-            </FilterLabel>
-            {/* <LineBox>{studentPaymentData?.seScore || 0}</LineBox> */}
-            <LineBox>김강사</LineBox>
-          </div>
-        </AreaSmallBox>
-      </FlexBox>
-      <FlexBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>승인 인원</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>20</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>확정 인원</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>20</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>수강포기</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>미수료</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>조기취업 가입</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>조기취업 미가입</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>훈련 인원</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>7</LineBox>
-          </div>
-        </AreaBox>
-      </FlexBox>
-      <FlexBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>수료 인원</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>수료취업 가입</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>수료취업 미가입</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>중도탈락율</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>수료율</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-        <AreaBox>
-          <div>
-            <FilterLabel>재직증명확보예정</FilterLabel>
-            {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-            <LineBox>0</LineBox>
-          </div>
-        </AreaBox>
-      </FlexBox>
-    </>
+    lectureData && (
+      <>
+        <FlexBox>
+          <AreaSmallBox style={{ minWidth: '20%' }}>
+            <div>
+              <FilterLabel>과정코드</FilterLabel>
+              <LineBox>{lectureData.subject.subjectCode}</LineBox>
+            </div>
+          </AreaSmallBox>
+          <AreaBox>
+            <div>
+              <Textarea
+                label="강의명"
+                isDisabled={true}
+                isReadOnly={true}
+                labelPlacement="outside"
+                defaultValue={lectureData.temporaryName}
+                minRows={1}
+                variant="underlined"
+                size="md"
+                radius="sm"
+                classNames={{
+                  base: 'opacity-1',
+                }}
+              ></Textarea>
+            </div>
+          </AreaBox>
+          <AreaSmallBox style={{ minWidth: '20%' }}>
+            <div>
+              <FilterLabel>강의장</FilterLabel>
+              <LineBox>{lectureData.roomNum}</LineBox>
+            </div>
+          </AreaSmallBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaSmallBox style={{ minWidth: '20%' }}>
+            <div>
+              <FilterLabel>수강 구분</FilterLabel>
+              <LineBox>{lectureData.subDiv}</LineBox>
+            </div>
+          </AreaSmallBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>
+                훈련기간<span>*</span>
+              </FilterLabel>
+              <LineBox>
+                {formatDate(lectureData.lecturePeriodStart) +
+                  ' ~ ' +
+                  formatDate(lectureData.lecturePeriodEnd)}
+              </LineBox>
+            </div>
+          </AreaBox>
+          <AreaSmallBox style={{ minWidth: '20%' }}>
+            <div>
+              <FilterLabel>
+                훈련시간<span>*</span>
+              </FilterLabel>
+              <LineBox>{extractTimeRange(lectureData.lectureTime)}</LineBox>
+            </div>
+          </AreaSmallBox>
+          <AreaSmallBox style={{ minWidth: '20%' }}>
+            <div>
+              <FilterLabel>
+                강사명<span>*</span>
+              </FilterLabel>
+              <LineBox>{formatUsernames(lectureData.teachers)}</LineBox>
+            </div>
+          </AreaSmallBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>승인 인원</FilterLabel>
+              <LineBox>{lectureData.ApprovedNum}</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>확정 인원</FilterLabel>
+              <LineBox>{lectureData.confirmedNum}</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>수강포기</FilterLabel>
+              <LineBox>
+                {
+                  students.filter(
+                    student => student.courseComplete === '중도포기',
+                  ).length
+                }
+              </LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>미수료</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>조기취업 가입</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>조기취업 미가입</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>훈련 인원</FilterLabel>
+              <LineBox>
+                {
+                  students.filter(
+                    student => student.courseComplete !== '중도포기',
+                  ).length
+                }
+              </LineBox>
+            </div>
+          </AreaBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>수료 인원</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>수료취업 가입</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>수료취업 미가입</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>중도탈락율</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>수료율</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+          <AreaBox>
+            <div>
+              <FilterLabel>재직증명확보예정</FilterLabel>
+              {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
+              <LineBox>0</LineBox>
+            </div>
+          </AreaBox>
+        </FlexBox>
+      </>
+    )
   )
 }

@@ -704,11 +704,22 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         trainingTimeTotal
         updatedAt
         workLogsDate
+        checkList
       }
       totalCount
       ok
       message
       error
+    }
+  }
+`
+export const SIGN_WORKLOGS_QUERY = gql`
+  query SignWorkLogs($signWorkLogsId: Int!, $gradeType: String!) {
+    signWorkLogs(id: $signWorkLogsId, gradeType: $gradeType) {
+      error
+      message
+      ok
+      stampUrl
     }
   }
 `

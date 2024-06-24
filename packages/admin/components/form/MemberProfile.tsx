@@ -540,7 +540,11 @@ export default function Profile() {
                       variant="faded"
                       radius="md"
                       type="text"
-                      label="직책/직위"
+                      label={
+                        <FilterLabel>
+                          직책/직위<span>*</span>
+                        </FilterLabel>
+                      }
                       className="w-full"
                       maxLength={11}
                       {...register('mRank')}

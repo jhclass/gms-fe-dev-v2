@@ -253,8 +253,11 @@ export default function StudentsWrite({ managerId }) {
     createTamp,
     { loading: createLoading, error: createError, data: CreateData },
   ] = useLazyQuery(CREATE_STAMP_QUERY, {
-    onCompleted: () => {
-      refetch()
+    onCompleted: result => {
+      if (result.createStamp.ok) {
+        userLogs(`${managerData.mUsername} 직원 stemp 생성`)
+        refetch()
+      }
     },
   })
 

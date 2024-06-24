@@ -103,7 +103,9 @@ export default function StudentsWrite() {
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [lectureData, setLectureData] = useState(null)
+  const [students, setStudents] = useState(null)
   const [filterActive1, setFilterActive1] = useState(true)
+
   useEffect(() => {
     if (lectureId !== null) {
       searchLectures({
@@ -114,6 +116,10 @@ export default function StudentsWrite() {
           if (result.searchLectures.ok) {
             const { data } = result.searchLectures
             setLectureData(data[0])
+            const filterStudent = data[0].subject.StudentPayment.filter(
+              student => student.lectureAssignment === '배정',
+            )
+            setStudents(filterStudent)
           }
         },
       })
@@ -174,7 +180,7 @@ export default function StudentsWrite() {
                   수정
                 </Button>
               </AreaTitle>
-              <LectureInfo />
+              <LectureInfo lectureData={lectureData} students={students} />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -231,7 +237,7 @@ export default function StudentsWrite() {
                   // setStudentFilter={undefined}
                 />
               </AreaTitleFilter>
-              <Attendance lectureData={lectureData} />
+              <Attendance lectureData={lectureData} students={students} />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

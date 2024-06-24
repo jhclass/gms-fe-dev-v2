@@ -91,11 +91,14 @@ export default function WorksTime({
   const keys = ['absentSt', 'tardySt', 'leaveEarlySt', 'outingSt', 'etc']
   const handleInput = (e, key) => {
     setAttendanceState(prevState => {
-      const newAttendanceState = { ...prevState }
+      const newAttendanceState = {
+        ...prevState,
+        [key]: [...prevState[key]],
+      }
       newAttendanceState[key] = e.target.value
+      setValue(key, newAttendanceState[key], { shouldDirty: true })
       return newAttendanceState
     })
-    setValue(key, attendanceState[key], { shouldDirty: true })
   }
 
   return (
@@ -135,11 +138,7 @@ export default function WorksTime({
                       type="text"
                       placeholder=" "
                       onChange={e => handleInput(e, item)}
-                      defaultValue={
-                        attendanceState[item].length > 0
-                          ? String(attendanceState[item])
-                          : ''
-                      }
+                      defaultValue={attendanceState[item]}
                       className="w-full"
                       classNames={{
                         inputWrapper: `${
