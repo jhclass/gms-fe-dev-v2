@@ -31,6 +31,12 @@ const DetailBox = styled.div`
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-top: 0.5rem;
+  padding: 1.5rem;
+`
 const TopInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -104,7 +110,15 @@ export default function StudentsWrite() {
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [lectureData, setLectureData] = useState(null)
   const [students, setStudents] = useState(null)
+  const [sortStudents, setSortStudents] = useState(null)
   const [filterActive1, setFilterActive1] = useState(true)
+
+  const naturalCompare = (a, b) => {
+    return a.localeCompare(b, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    })
+  }
 
   useEffect(() => {
     if (lectureId !== null) {
@@ -120,6 +134,10 @@ export default function StudentsWrite() {
               student => student.lectureAssignment === '배정',
             )
             setStudents(filterStudent)
+            const sortOrder = filterStudent.sort((a, b) => {
+              return naturalCompare(a.student.name, b.student.name)
+            })
+            setSortStudents(sortOrder)
           }
         },
       })
@@ -144,6 +162,13 @@ export default function StudentsWrite() {
         `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
+    }
+  }
+
+  const handleClick = event => {
+    if (lectureData?.timetableAttached === null) {
+      event.preventDefault()
+      alert('등록된 시간표가 없습니다.')
     }
   }
 
@@ -189,44 +214,32 @@ export default function StudentsWrite() {
                 <h4>학적부</h4>
               </AreaTitle>
               <Noti>
-                <span>❗️</span>
+                <span>&#10071;</span>
                 교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지 않습니다.
               </Noti>
               <FlexChipBox>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
+                {sortStudents &&
+                  sortStudents
+                    .filter(student => student.courseComplete !== '중도포기')
+                    .map((item, index) => (
+                      <Link href="#" key={index}>
+                        <Chip color="primary">{item.student.name}</Chip>
+                      </Link>
+                    ))}
               </FlexChipBox>
             </DetailDiv>
           </DetailBox>
-          <DetailBox>
+          <FlexBox>
+            <Link
+              href={lectureData?.timetableAttached || '#'}
+              onClick={handleClick}
+            >
+              <Chip variant="bordered" color="primary">
+                &#128205; 훈련시간표 다운로드
+              </Chip>
+            </Link>
+          </FlexBox>
+          <DetailBox style={{ marginTop: '0.5rem' }}>
             <DetailDiv>
               <AreaTitleFilter>
                 <h4>출석부</h4>

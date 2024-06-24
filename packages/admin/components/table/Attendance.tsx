@@ -14,7 +14,7 @@ import {
   useRowSelect,
 } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
 import WorksLogs from '@/components/modal/WorksLogs'
 import { useLazyQuery, useMutation } from '@apollo/client'
@@ -23,10 +23,7 @@ import {
   CREATE_WORKLOGS_MUTATION,
   EDIT_ATTENDANCE_MUTATION,
 } from '@/graphql/mutations'
-import {
-  SEE_ATTENDANCE_ALL_QUERY,
-  SEE_ATTENDANCE_QUERY,
-} from '@/graphql/queries'
+import { SEE_ATTENDANCE_ALL_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import useUserLogsMutation from '@/utils/userLogs'
 
@@ -258,6 +255,13 @@ export default function Attendance({ lectureData, students }) {
   }, [todayIndex])
 
   const onSelectChange = (action, state) => {
+    if (action.type === 'ADD_ALL') {
+      state.ids = state.ids.filter(id => {
+        const item = data.nodes.find(node => node.id === id)
+        return item && item.courseComplete !== '중도포기'
+      })
+    }
+
     console.log(action, state)
   }
 
@@ -557,8 +561,19 @@ export default function Attendance({ lectureData, students }) {
                     .filter(student => student.lectureAssignment === '배정')
                     .map((item, index) => (
                       <Row key={item.id} item={item}>
-                        <CellSelect item={item} />
-                        <Cell pinLeft>{index + 1}</Cell>
+                        {item.courseComplete === '중도포기' ? (
+                          <Cell pinLeft>
+                            <input type="checkbox" disabled />
+                          </Cell>
+                        ) : (
+                          <CellSelect item={item} />
+                        )}
+
+                        <Cell pinLeft>
+                          {item.courseComplete === '중도포기'
+                            ? 'X'
+                            : `${index + 1}`}
+                        </Cell>
                         <Cell pinLeft>{item.student.name}</Cell>
                         <Cell pinLeft>{item.subDiv}</Cell>
                         <Cell pinLeft>{item.days}</Cell>

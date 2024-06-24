@@ -705,6 +705,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         updatedAt
         workLogsDate
         checkList
+        checkContext
       }
       totalCount
       ok

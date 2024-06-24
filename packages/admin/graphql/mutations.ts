@@ -1887,6 +1887,7 @@ export const EDIT_WORKLOGS_MUTATION = gql`
     $etc: String
     $attendanceCount: [Int]
     $checkList: [String]
+    $checkContext: [String]
   ) {
     editWorkLogs(
       id: $editWorkLogsId
@@ -1908,6 +1909,7 @@ export const EDIT_WORKLOGS_MUTATION = gql`
       etc: $etc
       attendanceCount: $attendanceCount
       checkList: $checkList
+      checkContext: $checkContext
     ) {
       error
       message
