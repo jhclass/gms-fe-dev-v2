@@ -26,20 +26,11 @@ const Tnum = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.08}px;
-
-  span {
-    &.attendance {
-      color: #007de9;
-    }
-    &.absent {
-      color: #ff5900;
-    }
-    &.count {
-      color: #07bbae;
-    }
-    &.bold {
-      font-weight: 700;
-    }
+  &.red {
+    background: #ffa09b;
+  }
+  &.yellow {
+    background: #fffc9b;
   }
 `
 const TableItem = styled.div`
@@ -113,53 +104,49 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
                 </span>
                 회
               </Tnum>
-              <Tnum>
-                <span
-                  className={
-                    countAttendance(student.student.name, '지각') > 1
-                      ? 'count bold'
-                      : ''
-                  }
-                >
-                  {countAttendance(student.student.name, '지각')}
-                </span>
-                회
+              <Tnum
+                className={
+                  countAttendance(student.student.name, '지각') > 9
+                    ? 'red'
+                    : countAttendance(student.student.name, '지각') > 4
+                    ? 'yellow'
+                    : ''
+                }
+              >
+                <span>{countAttendance(student.student.name, '지각')}</span>회
               </Tnum>
-              <Tnum>
-                <span
-                  className={
-                    countAttendance(student.student.name, '외출') > 1
-                      ? 'count bold'
-                      : ''
-                  }
-                >
-                  {countAttendance(student.student.name, '외출')}
-                </span>
-                회
+              <Tnum
+                className={
+                  countAttendance(student.student.name, '외출') > 9
+                    ? 'red'
+                    : countAttendance(student.student.name, '외출') > 4
+                    ? 'yellow'
+                    : ''
+                }
+              >
+                <span>{countAttendance(student.student.name, '외출')}</span>회
               </Tnum>
-              <Tnum>
-                <span
-                  className={
-                    countAttendance(student.student.name, '조퇴') > 1
-                      ? 'count bold'
-                      : ''
-                  }
-                >
-                  {countAttendance(student.student.name, '조퇴')}
-                </span>
-                회
+              <Tnum
+                className={
+                  countAttendance(student.student.name, '조퇴') > 9
+                    ? 'red'
+                    : countAttendance(student.student.name, '조퇴') > 4
+                    ? 'yellow'
+                    : ''
+                }
+              >
+                <span>{countAttendance(student.student.name, '조퇴')}</span>회
               </Tnum>
-              <Tnum>
-                <span
-                  className={
-                    countAttendance(student.student.name, '결석') > 1
-                      ? 'absent bold'
-                      : ''
-                  }
-                >
-                  {countAttendance(student.student.name, '결석')}
-                </span>
-                회
+              <Tnum
+                className={
+                  countAttendance(student.student.name, '결석') > 9
+                    ? 'red'
+                    : countAttendance(student.student.name, '결석') > 4
+                    ? 'yeyellowl'
+                    : ''
+                }
+              >
+                <span>{countAttendance(student.student.name, '결석')}</span>회
               </Tnum>
               <Tnum>
                 <span>
