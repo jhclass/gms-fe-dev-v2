@@ -162,10 +162,7 @@ export default function Attendance({
 
   useEffect(() => {
     if (lectureData) {
-      const chunks = splitArrayIntoChunks(
-        filterAttandanceData.attendanceDate,
-        5,
-      )
+      const chunks = splitArrayIntoChunks(filterAttandanceData, 5)
       setPeriodArr(chunks)
       setPeriodArrIndex(1)
       setPage(1)

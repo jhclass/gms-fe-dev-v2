@@ -86,7 +86,6 @@ export default function Attendance({ lectureData, students }) {
   const [gridTemplateColumns, setGridTemplateColumns] = useState(
     '50px 50px 100px 100px repeat(4, 70px)',
   )
-
   const [gridTemplateColumnsMo, setGridTemplateColumnsMo] = useState('100px')
   const [createAttendance] = useMutation(CREATE_ATTENDANCE_MUTATION)
   const [createWorkLogs] = useMutation(CREATE_WORKLOGS_MUTATION)

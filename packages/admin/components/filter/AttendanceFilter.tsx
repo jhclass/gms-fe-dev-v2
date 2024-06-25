@@ -100,7 +100,7 @@ const FilterVariants = {
   },
 }
 
-export default function ConsultFilter({
+export default function AttendanceFilter({
   isActive,
   lectureData,
   filterAttandanceSearch,
@@ -169,9 +169,7 @@ export default function ConsultFilter({
           data.attendanceDate[1],
         )
         if (checkAttDate) {
-          const filter = {
-            attendanceDate: checkAttDate,
-          }
+          const filter = checkAttDate
           setFilterAttandanceData(filter)
           setFilterAttandanceSearch(true)
         }

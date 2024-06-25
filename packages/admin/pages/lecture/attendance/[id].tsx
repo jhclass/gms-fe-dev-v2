@@ -15,9 +15,10 @@ import AcquisitionList from '@/components/table/AcquisitionList'
 import EmploymentList from '@/components/table/EmploymentList'
 import EvaluationList from '@/components/table/EvaluationList'
 import Attendance from '@/components/table/Attendance'
-import AropoutFilter from '@/components/filter/AropoutFilter'
 import AttendanceFilter from '@/components/filter/AttendanceFilter'
 import AttendanceFilterList from '@/components/table/AttendanceFilterList'
+import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
+import AbsentFilterList from '@/components/table/AbsentFilterList'
 
 const ConArea = styled.div`
   width: 100%;
@@ -112,6 +113,12 @@ export default function StudentsWrite() {
   const [filterAttandanceActive, setFilterAttandanceActive] = useState(true)
   const [filterAttandanceSearch, setFilterAttandanceSearch] = useState()
   const [filterAttandanceData, setFilterAttandanceData] = useState(true)
+  const [filterAttandanceCountActive, setFilterAttandanceCountActive] =
+    useState(true)
+  const [filterAttandanceCountSearch, setFilterAttandanceCountSearch] =
+    useState()
+  const [filterAttandanceCountData, setFilterAttandanceCountData] =
+    useState(true)
 
   const naturalCompare = (a, b) => {
     return a.localeCompare(b, undefined, {
@@ -262,20 +269,37 @@ export default function StudentsWrite() {
               )}
             </DetailDiv>
           </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitleFilter>
-                <h4>결석인원현황</h4>
-                <AropoutFilter
-                  isActive={filterAttandanceActive}
-                  // onFilterSearch={undefined}
-                  // studentFilter={undefined}
-                  // setStudentFilter={undefined}
-                />
-              </AreaTitleFilter>
-              <AbsentList />
-            </DetailDiv>
-          </DetailBox>
+          {sortStudents && (
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitleFilter>
+                  <h4>출결현황</h4>
+                  <AttendanceCountFilter
+                    isActive={filterAttandanceActive}
+                    lectureData={lectureData}
+                    filterAttandanceCountSearch={filterAttandanceCountSearch}
+                    setFilterAttandanceCountData={setFilterAttandanceCountData}
+                    setFilterAttandanceCountSearch={
+                      setFilterAttandanceCountSearch
+                    }
+                  />
+                </AreaTitleFilter>
+                {filterAttandanceCountSearch ? (
+                  <AbsentFilterList
+                    lectureId={lectureData?.id}
+                    filterAttandanceCountData={filterAttandanceCountData}
+                    sortStudents={sortStudents}
+                  />
+                ) : (
+                  <AbsentList
+                    lectureId={lectureData?.id}
+                    lectureDates={lectureData?.lectureDetails}
+                    sortStudents={sortStudents}
+                  />
+                )}
+              </DetailDiv>
+            </DetailBox>
+          )}
           <DetailBox>
             <DetailDiv>
               <AreaTitle>
