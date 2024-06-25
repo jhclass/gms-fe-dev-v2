@@ -500,138 +500,83 @@ export default function WorksLogsModal({
         : confirm(
             `강의ID:${lectureId}의 ${workLogeDate} 일지를 등록하시겠습니까?`,
           )
-      const test = {
-        editWorkLogsId: workLogData.id,
-        trainingInfoOne: data.trainingInfoOne
-          ? data.trainingInfoOne
-          : workLogData.trainingInfoOne,
-        trainingInfoTwo: data.trainingInfoTwo
-          ? data.trainingInfoTwo
-          : workLogData.trainingInfoTwo,
-        trainingInfoThree: data.trainingInfoThree
-          ? data.trainingInfoThree
-          : workLogData.trainingInfoThree,
-        trainingInfoFour: data.trainingInfoFour
-          ? data.trainingInfoFour
-          : workLogData.trainingInfoFour,
-        trainingInfoFive: data.trainingInfoFive
-          ? data.trainingInfoFive
-          : workLogData.trainingInfoFive,
-        trainingInfoSix: data.trainingInfoSix
-          ? data.trainingInfoSix
-          : workLogData.trainingInfoSix,
-        trainingInfoSeven: data.trainingInfoSeven
-          ? data.trainingInfoSeven
-          : workLogData.trainingInfoSeven,
-        trainingInfoEight: data.trainingInfoEight
-          ? data.trainingInfoEight
-          : workLogData.trainingInfoEight,
-        trainingTimeOneday: data.trainingTimeOneday
-          ? data.trainingTimeOneday
-          : workLogData.trainingTimeOneday,
-        trainingTimeTotal: data.trainingTimeTotal
-          ? data.trainingTimeTotal
-          : workLogData.trainingTimeTotal,
-        instruction: data.instruction
-          ? data.instruction
-          : workLogData.instruction,
-        absentSt: data.absentSt ? data.absentSt : workLogData.absentSt,
-        tardySt: data.tardySt ? data.tardySt : workLogData.tardySt,
-        leaveEarlySt: data.leaveEarlySt
-          ? data.leaveEarlySt
-          : workLogData.leaveEarlySt,
-        outingSt: data.outingSt ? data.outingSt : workLogData.outingSt,
-        etc: data.etc ? data.etc : workLogData.etc,
-        attendanceCount: data.attendanceCount
-          ? data.attendanceCount
-          : workLogData.attendanceCount,
-        checkList:
-          data.check1 || data.check2
-            ? [data.check1, data.check2]
-            : workLogData.checkList,
-        checkContext:
-          data.check1con || data.check2con
-            ? [data.check1con, data.check2con]
-            : workLogData.checkList,
+      if (isWrite) {
+        editWrokLogs({
+          variables: {
+            editWorkLogsId: workLogData.id,
+            trainingInfoOne: data.trainingInfoOne
+              ? data.trainingInfoOne
+              : workLogData.trainingInfoOne,
+            trainingInfoTwo: data.trainingInfoTwo
+              ? data.trainingInfoTwo
+              : workLogData.trainingInfoTwo,
+            trainingInfoThree: data.trainingInfoThree
+              ? data.trainingInfoThree
+              : workLogData.trainingInfoThree,
+            trainingInfoFour: data.trainingInfoFour
+              ? data.trainingInfoFour
+              : workLogData.trainingInfoFour,
+            trainingInfoFive: data.trainingInfoFive
+              ? data.trainingInfoFive
+              : workLogData.trainingInfoFive,
+            trainingInfoSix: data.trainingInfoSix
+              ? data.trainingInfoSix
+              : workLogData.trainingInfoSix,
+            trainingInfoSeven: data.trainingInfoSeven
+              ? data.trainingInfoSeven
+              : workLogData.trainingInfoSeven,
+            trainingInfoEight: data.trainingInfoEight
+              ? data.trainingInfoEight
+              : workLogData.trainingInfoEight,
+            trainingTimeOneday: data.trainingTimeOneday
+              ? data.trainingTimeOneday
+              : workLogData.trainingTimeOneday,
+            trainingTimeTotal: data.trainingTimeTotal
+              ? data.trainingTimeTotal
+              : workLogData.trainingTimeTotal,
+            instruction: data.instruction
+              ? data.instruction
+              : workLogData.instruction,
+            absentSt: data.absentSt ? data.absentSt : workLogData.absentSt,
+            tardySt: data.tardySt ? data.tardySt : workLogData.tardySt,
+            leaveEarlySt: data.leaveEarlySt
+              ? data.leaveEarlySt
+              : workLogData.leaveEarlySt,
+            outingSt: data.outingSt ? data.outingSt : workLogData.outingSt,
+            etc: data.etc ? data.etc : workLogData.etc,
+            attendanceCount: data.attendanceCount
+              ? data.attendanceCount
+              : workLogData.attendanceCount,
+            checkList:
+              data.check1 || data.check2
+                ? [data.check1, data.check2]
+                : workLogData.checkList,
+            checkContext:
+              data.check1con || data.check2con
+                ? [data.check1con, data.check2con]
+                : workLogData.checkList,
+          },
+          onCompleted: result => {
+            if (result.editWorkLogs.ok) {
+              if (workLogData?.paymentOne) {
+                const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                userLogs(
+                  `${workLogeDate} 일지 수정`,
+                  dirtyFieldsArray.join(', '),
+                )
+                alert(`${workLogeDate} 일지가 수정되었습니다.`)
+              } else {
+                userLogs(`${workLogeDate} 일지 등록`)
+                alert(`${workLogeDate} 일지가 등록되었습니다.`)
+              }
+              setSign(false)
+              onClose()
+            } else {
+              console.log(result.editWorkLogs.message)
+            }
+          },
+        })
       }
-      console.log(test)
-      // if (isWrite) {
-      //   editWrokLogs({
-      //     variables: {
-      //       editWorkLogsId: workLogData.id,
-      //       trainingInfoOne: data.trainingInfoOne
-      //         ? data.trainingInfoOne
-      //         : workLogData.trainingInfoOne,
-      //       trainingInfoTwo: data.trainingInfoTwo
-      //         ? data.trainingInfoTwo
-      //         : workLogData.trainingInfoTwo,
-      //       trainingInfoThree: data.trainingInfoThree
-      //         ? data.trainingInfoThree
-      //         : workLogData.trainingInfoThree,
-      //       trainingInfoFour: data.trainingInfoFour
-      //         ? data.trainingInfoFour
-      //         : workLogData.trainingInfoFour,
-      //       trainingInfoFive: data.trainingInfoFive
-      //         ? data.trainingInfoFive
-      //         : workLogData.trainingInfoFive,
-      //       trainingInfoSix: data.trainingInfoSix
-      //         ? data.trainingInfoSix
-      //         : workLogData.trainingInfoSix,
-      //       trainingInfoSeven: data.trainingInfoSeven
-      //         ? data.trainingInfoSeven
-      //         : workLogData.trainingInfoSeven,
-      //       trainingInfoEight: data.trainingInfoEight
-      //         ? data.trainingInfoEight
-      //         : workLogData.trainingInfoEight,
-      //       trainingTimeOneday: data.trainingTimeOneday
-      //         ? data.trainingTimeOneday
-      //         : workLogData.trainingTimeOneday,
-      //       trainingTimeTotal: data.trainingTimeTotal
-      //         ? data.trainingTimeTotal
-      //         : workLogData.trainingTimeTotal,
-      //       instruction: data.instruction
-      //         ? data.instruction
-      //         : workLogData.instruction,
-      //       absentSt: data.absentSt ? data.absentSt : workLogData.absentSt,
-      //       tardySt: data.tardySt ? data.tardySt : workLogData.tardySt,
-      //       leaveEarlySt: data.leaveEarlySt
-      //         ? data.leaveEarlySt
-      //         : workLogData.leaveEarlySt,
-      //       outingSt: data.outingSt ? data.outingSt : workLogData.outingSt,
-      //       etc: data.etc ? data.etc : workLogData.etc,
-      //       attendanceCount: data.attendanceCount
-      //         ? data.attendanceCount
-      //         : workLogData.attendanceCount,
-      //       checkList:
-      //         data.check1 || data.check2
-      //           ? [data.check1, data.check2]
-      //           : workLogData.checkList,
-      //       checkContext:
-      //         data.check1con || data.check2con
-      //           ? [data.check1con, data.check2con]
-      //           : workLogData.checkList,
-      //     },
-      //     onCompleted: result => {
-      //       if (result.editWorkLogs.ok) {
-      //         if (workLogData?.paymentOne) {
-      //           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-      //           userLogs(
-      //             `${workLogeDate} 일지 수정`,
-      //             dirtyFieldsArray.join(', '),
-      //           )
-      //           alert(`${workLogeDate} 일지가 수정되었습니다.`)
-      //         } else {
-      //           userLogs(`${workLogeDate} 일지 등록`)
-      //           alert(`${workLogeDate} 일지가 등록되었습니다.`)
-      //         }
-      //         setSign(false)
-      //         onClose()
-      //       } else {
-      //         console.log(result.editWorkLogs.message)
-      //       }
-      //     },
-      //   })
-      // }
     }
   }
 
@@ -654,6 +599,10 @@ export default function WorksLogsModal({
         }
         .workLogFooter{
           display:none !important;
+        }
+
+        .scrollbar {
+          mask-image:none !important;
         }
       }
     `,
@@ -980,7 +929,7 @@ export default function WorksLogsModal({
                                   </RadioGroup>
                                 )}
                               />
-                              {isChecked1 && (
+                              {isChecked1 === 'Y' && (
                                 <>
                                   <AreaTitle>
                                     <h4>특이사항</h4>
@@ -991,7 +940,7 @@ export default function WorksLogsModal({
                                     placeholder="ex) 홍길동 학생이 지각 후 조퇴를 하였는데 수업참여시간이 절반이 되지 않아 결석으로 처리함."
                                     className="w-full"
                                     variant="bordered"
-                                    minRows={10}
+                                    minRows={5}
                                     onChange={e => {
                                       register('check1con').onChange(e)
                                     }}
@@ -1000,6 +949,14 @@ export default function WorksLogsModal({
                                         value: true,
                                         message:
                                           '특이사항을 자세히 입력해주세요.',
+                                      },
+                                      validate: {
+                                        minLength: value => {
+                                          if (value.trim().length < 11) {
+                                            return '특이사항을 최소 10자 이상 입력해주세요.'
+                                          }
+                                          return true
+                                        },
                                       },
                                     })}
                                   />
@@ -1039,7 +996,7 @@ export default function WorksLogsModal({
                                   </RadioGroup>
                                 )}
                               />
-                              {isChecked2 && (
+                              {isChecked2 === 'Y' && (
                                 <>
                                   <AreaTitle>
                                     <h4>조치사항</h4>
@@ -1050,7 +1007,7 @@ export default function WorksLogsModal({
                                     placeholder="ex) 홍길동 학생이 조퇴로 수업을 듣지못한 부분은 수업자료를 공유해주고, 동영상 강의로 대체함"
                                     className="w-full"
                                     variant="bordered"
-                                    minRows={10}
+                                    minRows={5}
                                     onChange={e => {
                                       register('check2con').onChange(e)
                                     }}
@@ -1059,6 +1016,14 @@ export default function WorksLogsModal({
                                         value: true,
                                         message:
                                           '조치사항을 자세히 입력해주세요.',
+                                      },
+                                      validate: {
+                                        minLength: value => {
+                                          if (value.trim().length < 11) {
+                                            return '조치사항을 최소 10자 이상 입력해주세요.'
+                                          }
+                                          return true
+                                        },
                                       },
                                     })}
                                   />
@@ -1072,7 +1037,7 @@ export default function WorksLogsModal({
                             </AreaSection>
                             {/* <AreaSection className="last">
                               <AreaTitle>
-                                <h4>특이사항</h4>
+                                <h4>지시사항</h4>
                               </AreaTitle>
                               <Textarea
                                 label=""
@@ -1080,7 +1045,7 @@ export default function WorksLogsModal({
                                 placeholder="내용을 작성해주세요."
                                 className="w-full"
                                 variant="bordered"
-                                minRows={10}
+                                minRows={5}
                                 onChange={e => {
                                   register('instruction').onChange(e)
                                 }}

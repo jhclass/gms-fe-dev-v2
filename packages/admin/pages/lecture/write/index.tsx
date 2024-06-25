@@ -207,9 +207,6 @@ export default function LectureWrite() {
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart')
   const [campusName, setCampusName] = useState('신촌')
-
-  // const classRoom = useRecoilValue(classRoomState)
-  // const [room, setRoom] = useState('강의실 없음')
   const [createLectures] = useMutation(CREATE_LECTURES_MUTATION, {
     context: {
       headers: {
@@ -221,11 +218,8 @@ export default function LectureWrite() {
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const subStatus = useRecoilValue(subStatusState)
-
   const [sub, setSub] = useState('없음')
-
   const [teacher, setTeacher] = useState([])
-
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [datesSelected, setDatesSelected] = useState(null)

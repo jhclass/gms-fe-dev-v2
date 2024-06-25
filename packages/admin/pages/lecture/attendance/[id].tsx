@@ -6,10 +6,7 @@ import { useRouter } from 'next/router'
 import { Button, Chip, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import {
-  SEARCH_LECTURES_MUTATION,
-  SEARCH_PAYMENT_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
 import AropoutList from '@/components/table/AropoutList'
@@ -20,6 +17,7 @@ import EvaluationList from '@/components/table/EvaluationList'
 import Attendance from '@/components/table/Attendance'
 import AropoutFilter from '@/components/filter/AropoutFilter'
 import AttendanceFilter from '@/components/filter/AttendanceFilter'
+import AttendanceFilterList from '@/components/table/AttendanceFilterList'
 
 const ConArea = styled.div`
   width: 100%;
@@ -111,7 +109,9 @@ export default function StudentsWrite() {
   const [lectureData, setLectureData] = useState(null)
   const [students, setStudents] = useState(null)
   const [sortStudents, setSortStudents] = useState(null)
-  const [filterActive1, setFilterActive1] = useState(true)
+  const [filterAttandanceActive, setFilterAttandanceActive] = useState(true)
+  const [filterAttandanceSearch, setFilterAttandanceSearch] = useState()
+  const [filterAttandanceData, setFilterAttandanceData] = useState(true)
 
   const naturalCompare = (a, b) => {
     return a.localeCompare(b, undefined, {
@@ -244,13 +244,22 @@ export default function StudentsWrite() {
               <AreaTitleFilter>
                 <h4>출석부</h4>
                 <AttendanceFilter
-                  isActive={filterActive1}
-                  // onFilterSearch={undefined}
-                  // studentFilter={undefined}
-                  // setStudentFilter={undefined}
+                  isActive={filterAttandanceActive}
+                  lectureData={lectureData}
+                  filterAttandanceSearch={filterAttandanceSearch}
+                  setFilterAttandanceData={setFilterAttandanceData}
+                  setFilterAttandanceSearch={setFilterAttandanceSearch}
                 />
               </AreaTitleFilter>
-              <Attendance lectureData={lectureData} students={students} />
+              {filterAttandanceSearch ? (
+                <AttendanceFilterList
+                  lectureData={lectureData}
+                  students={students}
+                  filterAttandanceData={filterAttandanceData}
+                />
+              ) : (
+                <Attendance lectureData={lectureData} students={students} />
+              )}
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -258,7 +267,7 @@ export default function StudentsWrite() {
               <AreaTitleFilter>
                 <h4>결석인원현황</h4>
                 <AropoutFilter
-                  isActive={filterActive1}
+                  isActive={filterAttandanceActive}
                   // onFilterSearch={undefined}
                   // studentFilter={undefined}
                   // setStudentFilter={undefined}

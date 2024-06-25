@@ -67,7 +67,11 @@ const TodayTag = styled.span`
   vertical-align: middle;
 `
 
-export default function Attendance({ lectureData, students }) {
+export default function Attendance({
+  lectureData,
+  students,
+  filterAttandanceData,
+}) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -156,70 +160,29 @@ export default function Attendance({ lectureData, students }) {
     return chunks
   }
 
-  const findChunkContainingDate = (array, date) => {
-    let currentDate = new Date(date)
-
-    const formatDate = date => {
-      const year = date.getFullYear()
-      const month = ('0' + (date.getMonth() + 1)).slice(-2)
-      const day = ('0' + date.getDate()).slice(-2)
-      return `${year}-${month}-${day}`
-    }
-
-    while (true) {
-      const formattedDate = formatDate(currentDate)
-      const chunk = array.find(chunk => chunk.includes(formattedDate))
-      if (chunk) {
-        return chunk
-      }
-
-      currentDate.setDate(currentDate.getDate() + 1)
-    }
-  }
-
-  const findDataInChunks = (chunks, data) => {
-    const formatDate = date => {
-      const year = date.getFullYear()
-      const month = ('0' + (date.getMonth() + 1)).slice(-2)
-      const day = ('0' + date.getDate()).slice(-2)
-      return `${year}-${month}-${day}`
-    }
-
-    let currentDate = new Date(data)
-
-    while (true) {
-      const formattedDate = formatDate(currentDate)
-      for (let i = 0; i < chunks.length; i++) {
-        if (chunks[i].includes(formattedDate)) {
-          return i
-        }
-      }
-      currentDate.setDate(currentDate.getDate() + 1)
-    }
-  }
-
   useEffect(() => {
     if (lectureData) {
-      const chunks = splitArrayIntoChunks(lectureData?.lectureDetails, 5)
+      const chunks = splitArrayIntoChunks(
+        filterAttandanceData.attendanceDate,
+        5,
+      )
       setPeriodArr(chunks)
-      setPeriodArrIndex(findDataInChunks(chunks, today) + 1)
-      setPage(findDataInChunks(chunks, today) + 1)
-      setWeek(findChunkContainingDate(chunks, today))
+      setPeriodArrIndex(1)
+      setPage(1)
+      setWeek(chunks[0])
       const sortOrder = students.sort((a, b) => {
         return naturalCompare(a.student.name, b.student.name)
-        // return a.student.name.localeCompare(b.student.name)
       })
       setData({ nodes: sortOrder })
       const teachersId = lectureData.teachers.map(teacher => teacher.id)
       setTeachers(teachersId)
     }
-  }, [lectureData])
+  }, [lectureData, filterAttandanceData])
 
   useEffect(() => {
     if (week) {
       const dataIndex = week.indexOf(today)
       setTodayIndex(dataIndex)
-
       fetchAllAttendance()
     }
   }, [week, today])
@@ -308,6 +271,7 @@ export default function Attendance({ lectureData, students }) {
       setGridTemplateColumnsMo(newGridTemplateColumnsMo)
     }
   }, [week, todayIndex])
+
   const theme = useTheme([
     // getTheme(),
     {
