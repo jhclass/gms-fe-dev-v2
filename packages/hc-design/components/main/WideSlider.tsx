@@ -24,9 +24,10 @@ export default function MainSilder() {
               <div className="relative flex justify-center">
                 <video playsInline autoPlay loop muted>
                   <source
-                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner05.mp4"
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner06.mp4"
                     type="video/mp4"
                   />
+                  <span className="hidden">6월 너의 여름방학</span>
                 </video>
               </div>
             </Link>
