@@ -717,7 +717,8 @@ export default function StudentsWrite() {
                                     : studentPaymentData?.courseComplete ===
                                         completion.inTraining ||
                                       studentPaymentData?.courseComplete ===
-                                        completion.notAttended
+                                        completion.notAttended ||
+                                      studentPaymentData?.courseComplete === ''
                                     ? false
                                     : true
                                   : true
