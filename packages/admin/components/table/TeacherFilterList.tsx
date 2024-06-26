@@ -155,7 +155,7 @@ const Nolist = styled.div`
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
-export default function TeacherFilterTable({ teacherFilter }) {
+export default function TeacherFilterTable({ teacherFilter, mGrade, mPart }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
@@ -233,6 +233,8 @@ export default function TeacherFilterTable({ teacherFilter }) {
                     itemIndex={index}
                     currentPage={currentPage}
                     limit={currentLimit}
+                    mGrade={mGrade}
+                    mPart={mPart}
                   />
                 ))}
               {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}

@@ -6,6 +6,9 @@ const LimitBox = styled.div`
   color: #71717a;
   display: flex;
   gap: 0.5rem;
+  background: #fff;
+  padding: 0.3rem 0.3rem;
+  border-radius: 0.5rem;
 `
 
 const Lable = styled.p`
@@ -20,7 +23,9 @@ export default function ListLimitSelect({ currentLimit, setCurrentLimit }) {
   }, [currentLimit])
 
   const handleSelectionChange = e => {
-    setValue(e.target.value)
+    if (e.anchorKey !== undefined) {
+      setValue(e.anchorKey)
+    }
   }
   const changeLimit = () => {
     setCurrentLimit(parseInt(value))
@@ -31,18 +36,16 @@ export default function ListLimitSelect({ currentLimit, setCurrentLimit }) {
       <LimitBox>
         <Select
           labelPlacement="outside-left"
-          label={<Lable>노출수 :</Lable>}
+          label={<Lable>노출수</Lable>}
           placeholder=" "
           className="w-[7rem] items-center"
           defaultValue={String(currentLimit)}
-          variant="flat"
+          variant="bordered"
           size="sm"
           selectedKeys={[value]}
-          onChange={handleSelectionChange}
+          onSelectionChange={e => handleSelectionChange(e)}
           classNames={{
-            label: 'w-[4.5rem] pr-0',
-            trigger: 'bg-white',
-            listboxWrapper: 'bg-white',
+            label: 'w-[4rem]',
           }}
         >
           <SelectItem value={'10'} key={'10'}>

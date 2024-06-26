@@ -146,7 +146,7 @@ const Nolist = styled.div`
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
-export default function ConsolutationTable() {
+export default function ConsolutationTable({ mGrade, mPart }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
@@ -204,6 +204,8 @@ export default function ConsolutationTable() {
                   itemIndex={index}
                   currentPage={currentPage}
                   limit={currentLimit}
+                  mGrade={mGrade}
+                  mPart={mPart}
                 />
               ))}
             {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}

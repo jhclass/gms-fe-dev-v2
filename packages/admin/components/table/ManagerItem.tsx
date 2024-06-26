@@ -21,7 +21,8 @@ const TableItem = styled.div<{ $resign: string }>`
 
   &:hover {
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
+    background: ${props =>
+      props.$resign === 'Y' ? '#e4e4e7' : 'rgba(255, 255, 255, 0.8)'};
   }
 `
 

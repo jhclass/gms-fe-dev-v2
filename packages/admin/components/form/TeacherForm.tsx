@@ -485,12 +485,6 @@ export default function StudentsWrite({ managerId }) {
                   <AreaBox>
                     <FilterLabel>비밀번호</FilterLabel>
                     <Button
-                      isDisabled={
-                        loginMGrade < grade.general ||
-                        loginMPart?.includes('교무팀')
-                          ? false
-                          : true
-                      }
                       size="md"
                       radius="md"
                       variant="solid"

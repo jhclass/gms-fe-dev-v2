@@ -73,7 +73,11 @@ export default function Lecture() {
                 </LodingDiv>
               }
             >
-              <ManagerFilterList managerFilter={managerFilter} />
+              <ManagerFilterList
+                managerFilter={managerFilter}
+                mGrade={mGrade}
+                mPart={mPart}
+              />
             </Suspense>
           ) : (
             <Suspense
