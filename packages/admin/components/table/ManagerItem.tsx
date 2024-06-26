@@ -195,11 +195,15 @@ const EllipsisBox = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `
+const Masking = styled.span`
+  background: rgba(228, 228, 231, 0.8);
+  -webkit-filter: blur(2.5px);
+  -o-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+`
 
 export default function ManagerItem(props) {
   const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const managerData = props.tableData
@@ -255,7 +259,11 @@ export default function ManagerItem(props) {
       <TableItem $resign={managerData.resign}>
         <TableRow>
           <Link
-            href={mGrade < grade.general ? `/hr/detail/${managerData.id}` : '#'}
+            href={
+              props.mGrade < grade.general || props.mPart.includes('인사팀')
+                ? `/hr/detail/${managerData.id}`
+                : '#'
+            }
           >
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
@@ -298,14 +306,30 @@ export default function ManagerItem(props) {
                 </EllipsisBox>
               </Tphone>
               <Tphone>
-                <EllipsisBox>
-                  {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
-                </EllipsisBox>
+                {managerData.resign === 'Y' ? (
+                  <EllipsisBox>
+                    <Masking>
+                      {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
+                    </Masking>
+                  </EllipsisBox>
+                ) : (
+                  <EllipsisBox>
+                    {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
+                  </EllipsisBox>
+                )}
               </Tphone>
               <Temail>
-                <EllipsisBox>
-                  {managerData.email ? managerData.email : '-'}
-                </EllipsisBox>
+                {managerData.resign === 'Y' ? (
+                  <EllipsisBox>
+                    <Masking>
+                      {managerData.email ? managerData.email : '-'}
+                    </Masking>
+                  </EllipsisBox>
+                ) : (
+                  <EllipsisBox>
+                    {managerData.email ? managerData.email : '-'}
+                  </EllipsisBox>
+                )}
               </Temail>
               <TjoiningDate>
                 <EllipsisBox>

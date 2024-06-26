@@ -1141,6 +1141,8 @@ export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
         }
         subject {
           round
+          subDiv
+          subjectCode
           subjectName
         }
         updatedAt
@@ -1378,6 +1380,8 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
           subjectId
           subject {
             id
+            subDiv
+            subjectCode
             subjectName
             round
           }
@@ -1547,6 +1551,8 @@ export const SALES_STATISTICS_LIST_MUTATION = gql`
           subject {
             round
             id
+            subDiv
+            subjectCode
             subjectName
           }
         }
@@ -1590,6 +1596,8 @@ export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
           subject {
             round
             id
+            subDiv
+            subjectCode
             subjectName
           }
         }

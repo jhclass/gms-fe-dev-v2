@@ -184,7 +184,7 @@ type seeManageUser = {
   seeManageUser: SeeManageUserResult
 }
 
-export default function ConsolutationTable({ mGrade }) {
+export default function ConsolutationTable({ mGrade, mPart }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const {
@@ -243,35 +243,18 @@ export default function ConsolutationTable({ mGrade }) {
               </Theader>
               {totalCount > 0 ? (
                 <>
-                  {mGrade <= 1 ? (
-                    <>
-                      {managerData?.map((item, index) => (
-                        <ManagerItem
-                          forName="student"
-                          key={index}
-                          tableData={item}
-                          itemIndex={index}
-                          currentPage={currentPage}
-                          limit={currentLimit}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {managerData
-                        ?.filter(manager => manager.resign === 'N')
-                        .map((item, index) => (
-                          <ManagerItem
-                            forName="student"
-                            key={index}
-                            tableData={item}
-                            itemIndex={index}
-                            currentPage={currentPage}
-                            limit={currentLimit}
-                          />
-                        ))}
-                    </>
-                  )}
+                  {managerData?.map((item, index) => (
+                    <ManagerItem
+                      forName="student"
+                      key={index}
+                      tableData={item}
+                      itemIndex={index}
+                      currentPage={currentPage}
+                      limit={currentLimit}
+                      mGrade={mGrade}
+                      mPart={mPart}
+                    />
+                  ))}
                 </>
               ) : (
                 <Nolist>등록된 직원이 없습니다.</Nolist>

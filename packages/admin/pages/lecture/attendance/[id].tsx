@@ -19,6 +19,8 @@ import AttendanceFilter from '@/components/filter/AttendanceFilter'
 import AttendanceFilterList from '@/components/table/AttendanceFilterList'
 import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
 import AbsentFilterList from '@/components/table/AbsentFilterList'
+import { useRecoilValue } from 'recoil'
+import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -107,6 +109,8 @@ export default function StudentsWrite() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
+  const assignment = useRecoilValue(assignmentState)
+  const completion = useRecoilValue(completionStatus)
   const [lectureData, setLectureData] = useState(null)
   const [students, setStudents] = useState(null)
   const [sortStudents, setSortStudents] = useState(null)
@@ -138,7 +142,7 @@ export default function StudentsWrite() {
             const { data } = result.searchLectures
             setLectureData(data[0])
             const filterStudent = data[0].subject.StudentPayment.filter(
-              student => student.lectureAssignment === '배정',
+              student => student.lectureAssignment === assignment.assignment,
             )
             setStudents(filterStudent)
             const sortOrder = filterStudent.sort((a, b) => {
@@ -227,7 +231,9 @@ export default function StudentsWrite() {
               <FlexChipBox>
                 {sortStudents &&
                   sortStudents
-                    .filter(student => student.courseComplete !== '중도포기')
+                    .filter(
+                      student => student.courseComplete !== completion.dropout,
+                    )
                     .map((item, index) => (
                       <Link href="#" key={index}>
                         <Chip color="primary">{item.student.name}</Chip>

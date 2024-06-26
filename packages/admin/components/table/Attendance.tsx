@@ -26,6 +26,8 @@ import {
 import { SEE_ATTENDANCE_ALL_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import useUserLogsMutation from '@/utils/userLogs'
+import { useRecoilValue } from 'recoil'
+import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -69,6 +71,8 @@ const TodayTag = styled.span`
 
 export default function Attendance({ lectureData, students }) {
   const router = useRouter()
+  const assignment = useRecoilValue(assignmentState)
+  const completion = useRecoilValue(completionStatus)
   const { userLogs } = useUserLogsMutation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const today = new Date().toISOString().split('T')[0]
@@ -235,7 +239,7 @@ export default function Attendance({ lectureData, students }) {
         data.nodes.map((item, index) =>
           attendanceAllData[dayIndex] && attendanceAllData[dayIndex][index]
             ? attendanceAllData[dayIndex][index].attendanceState
-            : item.courseComplete === '중도포기'
+            : item.courseComplete === completion.dropout
             ? '중도탈락'
             : '-',
         ),
@@ -531,14 +535,19 @@ export default function Attendance({ lectureData, students }) {
                 </Header>
                 <Body>
                   {tableList
-                    .filter(student => student.lectureAssignment === '배정')
+                    .filter(
+                      student =>
+                        student.lectureAssignment === assignment.assignment,
+                    )
                     .map((item, index) => (
                       <Row
                         key={item.id}
                         item={item}
-                        className={item.courseComplete === '중도포기' && 'drop'}
+                        className={
+                          item.courseComplete === completion.dropout && 'drop'
+                        }
                       >
-                        {item.courseComplete === '중도포기' ? (
+                        {item.courseComplete === completion.dropout ? (
                           <Cell pinLeft>
                             <input type="checkbox" disabled />
                           </Cell>
@@ -547,7 +556,7 @@ export default function Attendance({ lectureData, students }) {
                         )}
 
                         <Cell pinLeft>
-                          {item.courseComplete === '중도포기'
+                          {item.courseComplete === completion.dropout
                             ? 'X'
                             : `${index + 1}`}
                         </Cell>
@@ -555,7 +564,7 @@ export default function Attendance({ lectureData, students }) {
                         <Cell pinLeft>{item.subDiv}</Cell>
                         {attendanceAllData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>
-                            {item.courseComplete === '중도포기' ? (
+                            {item.courseComplete === completion.dropout ? (
                               <TestSelect
                                 style={{
                                   width: '100%',

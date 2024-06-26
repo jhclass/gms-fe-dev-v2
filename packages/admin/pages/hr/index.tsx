@@ -34,6 +34,7 @@ export default function Lecture() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
+  const mPart = useMme('mPart')
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [managerFilter, setManagerFilter] = useState()
@@ -45,7 +46,9 @@ export default function Lecture() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           isFilter={true}
-          isWrite={mGrade < grade.general ? true : false}
+          isWrite={
+            mGrade < grade.general || mPart.includes('인사팀') ? true : false
+          }
           rightArea={true}
         />
         <Suspense
@@ -80,7 +83,7 @@ export default function Lecture() {
                 </LodingDiv>
               }
             >
-              <ManagerList mGrade={mGrade} />
+              <ManagerList mGrade={mGrade} mPart={mPart} />
             </Suspense>
           )}
         </ConBox>

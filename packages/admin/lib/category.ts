@@ -40,9 +40,11 @@ const category: Category[] = [
     name: '상담관리',
     resetItems: [
       'resetConsultPage',
+      'resetConsultLimit',
       'resetConsultFilterActive',
       'resetConsultFilterSearch',
       'resetConsultFilter',
+      'resetConsultFilterLimit',
     ],
     exposure: true,
     children: [

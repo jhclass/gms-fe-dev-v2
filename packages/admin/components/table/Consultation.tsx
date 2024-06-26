@@ -11,34 +11,21 @@ import {
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
 import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
+import { consultLimitState, consultPageState } from '@/lib/recoilAtoms'
 import {
   ManageUser,
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
+import TableTop from '@/components/common/TableTop'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
 const ColorHelp = styled.div`
   display: flex;
+  height: 1.3rem;
 `
-
 const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
@@ -213,7 +200,7 @@ type seeFavoriteState = {
 
 export default function ConsolutationTable() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
-  const [currentLimit] = useState(10)
+  const [currentLimit, setCurrentLimit] = useRecoilState(consultLimitState)
   const [totalCount, setTotalCount] = useState(0)
   const { error, data, refetch } = useSuspenseQuery<seeStudentState>(
     SEE_STUDENT_STATE_QUERY,
@@ -271,19 +258,15 @@ export default function ConsolutationTable() {
 
   return (
     <>
-      <TTopic>
-        <Ttotal>
-          총 <span>{studentsData?.totalCount}</span>건
-        </Ttotal>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미처리
-          </ColorCip>
-        </ColorHelp>
-      </TTopic>
+      <TableTop
+        totalCount={studentsData?.totalCount}
+        currentLimit={currentLimit}
+        setCurrentLimit={setCurrentLimit}
+        colorInfo={[
+          { background: '#007de9', text: '신규' },
+          { background: '#FF5900', text: '미처리' },
+        ]}
+      />
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>

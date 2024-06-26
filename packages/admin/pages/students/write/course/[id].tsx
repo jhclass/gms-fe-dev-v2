@@ -30,6 +30,9 @@ import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import {
   additionalAmountState,
+  assignmentState,
+  completionStatus,
+  employmentStatus,
   gradeState,
   subStatusState,
 } from '@/lib/recoilAtoms'
@@ -277,6 +280,9 @@ export default function StudentsWriteCourse() {
   } = useDisclosure()
   const subStatus = useRecoilValue(subStatusState)
   const additionalState = useRecoilValue(additionalAmountState)
+  const { unassigned } = useRecoilValue(assignmentState)
+  const { notAttended } = useRecoilValue(completionStatus)
+  const { unemployed } = useRecoilValue(employmentStatus)
   const [studentData, setStudentData] = useState(null)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
@@ -366,9 +372,9 @@ export default function StudentsWriteCourse() {
           subDiv: data.subDiv,
           dueDate: data.dueDate === null ? null : data.dueDate,
           isWeekend: data.isWeekend === '' ? 'N' : data.isWeekend,
-          lectureAssignment: '미배정',
-          courseComplete: '미수료',
-          employment: '미취업',
+          lectureAssignment: unassigned,
+          courseComplete: notAttended,
+          employment: unemployed,
         },
         onCompleted: result => {
           if (result.createStudentPayment.ok) {
