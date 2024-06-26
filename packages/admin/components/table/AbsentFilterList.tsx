@@ -66,7 +66,11 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function AbsentList({ lectureId, lectureDates, sortStudents }) {
+export default function AbsentList({
+  lectureId,
+  filterAttandanceCountData,
+  sortStudents,
+}) {
   return (
     <>
       <TableArea>
@@ -99,7 +103,7 @@ export default function AbsentList({ lectureId, lectureDates, sortStudents }) {
             >
               <AbsentItem
                 lectureId={lectureId}
-                lectureDates={lectureDates}
+                lectureDates={filterAttandanceCountData}
                 sortStudents={sortStudents}
               />
             </Suspense>

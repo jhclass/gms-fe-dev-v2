@@ -104,7 +104,7 @@ export default function Aside() {
           >
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/floating05.webp"
-              alt="문의하기"
+              alt="10초 예약하기"
             />
           </Link>
         </div>

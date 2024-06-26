@@ -8,7 +8,12 @@ import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
+import {
+  assignmentState,
+  completionStatus,
+  employmentStatus,
+  gradeState,
+} from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import {
   CLASS_CANCEL_MUTATION,
@@ -221,6 +226,9 @@ export default function StudentsWrite() {
   const mPart = useMme('mPart')
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
+  const assignment = useRecoilValue(assignmentState)
+  const completion = useRecoilValue(completionStatus)
+  const employment = useRecoilValue(employmentStatus)
   const [updateStudentCourseMutation] = useMutation(
     UPDATE_STUDENT_COURSE_MUTATION,
   )
@@ -282,9 +290,9 @@ export default function StudentsWrite() {
     }
   }
 
-  const executeMutation = async (mutation, variables, successMessage) => {
+  const executeMutation = async (mutation, variablesAr, successMessage) => {
     try {
-      const { data } = await mutation({ variables })
+      const { data } = await mutation({ variables: variablesAr })
       const firstKey = Object.keys(data)[0]
       const { ok } = data[firstKey]
       if (ok) {
@@ -336,7 +344,8 @@ export default function StudentsWrite() {
   }
 
   const clickLectureAssignment = async () => {
-    const isCurrentlyAssigned = studentPaymentData.lectureAssignment === '배정'
+    const isCurrentlyAssigned =
+      studentPaymentData.lectureAssignment === assignment.assignment
     const confirmationMessage = isCurrentlyAssigned
       ? `${studentData.name}학생의 ${studentSubjectData.subjectName} 강의 배정을 취소 하시겠습니까?`
       : `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 배정 하시겠습니까?`
@@ -348,13 +357,27 @@ export default function StudentsWrite() {
           const success = await executeMutation(
             updateStudentCourseMutation,
             variables,
-            successMessage,
+            null,
           )
-          if (success) await searchAndUpdateStudentPayment()
+          if (success) {
+            const success2 = await executeMutation(
+              classCancelMutation,
+              {
+                classCancellationId: parseInt(studentPaymentData.id),
+                courseComplete: isCurrentlyAssigned
+                  ? completion.notAttended
+                  : completion.inTraining,
+              },
+              successMessage,
+            )
+            if (success2) await searchAndUpdateStudentPayment()
+          }
         },
         variables: {
           editStudentPaymentId: parseInt(studentPaymentData.id),
-          lectureAssignment: isCurrentlyAssigned ? '미배정' : '배정',
+          lectureAssignment: isCurrentlyAssigned
+            ? assignment.unassigned
+            : assignment.assignment,
           subjectId: studentPaymentData.subjectId,
           processingManagerId: studentPaymentData.processingManagerId,
         },
@@ -391,7 +414,8 @@ export default function StudentsWrite() {
   }
 
   const clickCompletion = async () => {
-    const isCurrentlyCompleted = studentPaymentData.courseComplete === '수료'
+    const isCurrentlyCompleted =
+      studentPaymentData.courseComplete === completion.completed
     const confirmationMessage = isCurrentlyCompleted
       ? `${studentData.name}학생의 이수 처리를 취소하시겠습니까?`
       : `${studentData.name}학생을 이수 처리하시겠습니까?`
@@ -408,7 +432,9 @@ export default function StudentsWrite() {
       },
       variables: {
         classCancellationId: parseInt(studentPaymentData.id),
-        courseComplete: isCurrentlyCompleted ? '미수료' : '수료',
+        courseComplete: isCurrentlyCompleted
+          ? completion.notCompleted
+          : completion.completed,
       },
       confirmationMessage,
       successMessage: isCurrentlyCompleted
@@ -422,7 +448,7 @@ export default function StudentsWrite() {
 
   const clickDropout = async () => {
     const isCurrentlyDroppedOut =
-      studentPaymentData.courseComplete === '중도포기'
+      studentPaymentData.courseComplete === completion.dropout
     await handleStudentPaymentUpdate({
       isCurrentlySet: isCurrentlyDroppedOut,
       updateFunction: async (variables, successMessage) => {
@@ -435,23 +461,25 @@ export default function StudentsWrite() {
       },
       variables: {
         classCancellationId: parseInt(studentPaymentData.id),
-        courseComplete: isCurrentlyDroppedOut ? '미수료' : '중도포기',
+        courseComplete: isCurrentlyDroppedOut
+          ? completion.notCompleted
+          : completion.dropout,
       },
       confirmationMessage: isCurrentlyDroppedOut
-        ? `${studentData.name}학생의 중도포기를 취소하시겠습니까?`
-        : `${studentData.name}학생을 중도포기 처리하시겠습니까?`,
+        ? `${studentData.name}학생의 ${completion.dropout}를 취소하시겠습니까?`
+        : `${studentData.name}학생을 ${completion.dropout} 처리하시겠습니까?`,
       successMessage: isCurrentlyDroppedOut
-        ? '중도 포기가 취소되었습니다.'
-        : '중도 포기 처리되었습니다.',
+        ? `${completion.dropout}가 취소되었습니다.`
+        : `${completion.dropout} 처리되었습니다.`,
       logMessage: isCurrentlyDroppedOut
-        ? `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기 철회`
-        : `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 중도포기`,
+        ? `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 ${completion.dropout} 철회`
+        : `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 ${completion.dropout}`,
     })
   }
 
   const clickWithdrawal = async () => {
     const isCurrentlyWithdrawn =
-      studentPaymentData.lectureAssignment === '수강철회'
+      studentPaymentData.lectureAssignment === assignment.withdrawal
 
     await handleStudentPaymentUpdate({
       isCurrentlySet: isCurrentlyWithdrawn,
@@ -459,25 +487,39 @@ export default function StudentsWrite() {
         const success = await executeMutation(
           updateStudentCourseMutation,
           variables,
-          successMessage,
+          null,
         )
-        if (success) await searchAndUpdateStudentPayment()
+        if (success) {
+          const success2 = await executeMutation(
+            classCancelMutation,
+            {
+              classCancellationId: parseInt(studentPaymentData.id),
+              courseComplete: isCurrentlyWithdrawn
+                ? completion.inTraining
+                : completion.notAttended,
+            },
+            successMessage,
+          )
+          if (success2) await searchAndUpdateStudentPayment()
+        }
       },
       variables: {
         editStudentPaymentId: parseInt(studentPaymentData.id),
-        lectureAssignment: isCurrentlyWithdrawn ? '배정' : '수강철회',
+        lectureAssignment: isCurrentlyWithdrawn
+          ? assignment.assignment
+          : assignment.withdrawal,
         subjectId: studentPaymentData.subjectId,
         processingManagerId: studentPaymentData.processingManagerId,
       },
       confirmationMessage: isCurrentlyWithdrawn
-        ? `${studentData.name}학생의 수강철회를 취소하시겠습니까?`
-        : `${studentData.name}학생을 수강철회 처리하시겠습니까?`,
+        ? `${studentData.name}학생의 ${assignment.withdrawal}를 취소하시겠습니까?`
+        : `${studentData.name}학생을 ${assignment.withdrawal}처리하시겠습니까?`,
       successMessage: isCurrentlyWithdrawn
-        ? '수강철회가 취소되었습니다.'
-        : '수강철회 처리되었습니다.',
+        ? `${assignment.withdrawal}가 취소되었습니다.`
+        : `${assignment.withdrawal} 처리되었습니다.`,
       logMessage: isCurrentlyWithdrawn
-        ? `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회 취소`
-        : `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회`,
+        ? `${studentData.name}학생 ${studentSubjectData.subjectName} ${assignment.withdrawal} 취소`
+        : `${studentData.name}학생 ${studentSubjectData.subjectName} ${assignment.withdrawal}`,
     })
   }
 
@@ -610,8 +652,10 @@ export default function StudentsWrite() {
                       {(mGrade < grade.general || mPart.includes('교무팀')) && (
                         <Button
                           isDisabled={
-                            studentPaymentData?.lectureAssignment === '배정' ||
-                            studentPaymentData?.lectureAssignment === '수강철회'
+                            studentPaymentData?.lectureAssignment ===
+                              assignment.assignment ||
+                            studentPaymentData?.lectureAssignment ===
+                              assignment.withdrawal
                               ? true
                               : false
                           }
@@ -668,11 +712,12 @@ export default function StudentsWrite() {
                               isDisabled={
                                 studentPaymentData?.amountReceived > 0
                                   ? studentPaymentData?.lectureAssignment ===
-                                    '수강철회'
+                                    assignment.withdrawal
                                     ? true
                                     : studentPaymentData?.courseComplete ===
-                                        '미수료' ||
-                                      studentPaymentData?.courseComplete === ''
+                                        completion.inTraining ||
+                                      studentPaymentData?.courseComplete ===
+                                        completion.notAttended
                                     ? false
                                     : true
                                   : true
@@ -684,21 +729,22 @@ export default function StudentsWrite() {
                               className="w-full lg:max-w-[50%]"
                               onClick={clickLectureAssignment}
                             >
-                              {studentPaymentData?.lectureAssignment === '배정'
+                              {studentPaymentData?.lectureAssignment ===
+                              assignment.assignment
                                 ? '배정 취소'
                                 : '강의배정'}
                             </Button>
                             {(studentPaymentData?.lectureAssignment ===
-                              '배정' ||
+                              assignment.assignment ||
                               studentPaymentData?.lectureAssignment ===
-                                '수강철회') && (
+                                assignment.withdrawal) && (
                               <>
                                 <Button
                                   isDisabled={
                                     studentPaymentData?.lectureAssignment ===
-                                      '수강철회' ||
+                                      assignment.withdrawal ||
                                     studentPaymentData?.courseComplete ===
-                                      '중도포기'
+                                      completion.dropout
                                       ? true
                                       : false
                                   }
@@ -709,7 +755,8 @@ export default function StudentsWrite() {
                                   className="w-full text-white"
                                   onClick={clickCompletion}
                                 >
-                                  {studentPaymentData?.courseComplete === '수료'
+                                  {studentPaymentData?.courseComplete ===
+                                  completion.completed
                                     ? '이수처리 취소'
                                     : '이수처리'}
                                 </Button>
@@ -718,9 +765,9 @@ export default function StudentsWrite() {
                                     // studentPaymentData?.lectureAssignment ===
                                     //   '수강철회' ||
                                     studentPaymentData?.courseComplete ===
-                                      '수료' ||
+                                      completion.completed ||
                                     studentPaymentData?.courseComplete ===
-                                      '중도포기'
+                                      completion.dropout
                                       ? true
                                       : false
                                   }
@@ -731,16 +778,16 @@ export default function StudentsWrite() {
                                   onClick={clickWithdrawal}
                                 >
                                   {studentPaymentData?.lectureAssignment ===
-                                  '수강철회'
+                                  assignment.withdrawal
                                     ? '수강철회 취소'
                                     : '수강철회'}
                                 </Button>
                                 <Button
                                   isDisabled={
                                     studentPaymentData?.courseComplete ===
-                                      '수료' ||
+                                      completion.completed ||
                                     studentPaymentData?.lectureAssignment ===
-                                      '수강철회'
+                                      assignment.withdrawal
                                       ? true
                                       : false
                                   }
@@ -751,7 +798,7 @@ export default function StudentsWrite() {
                                   onClick={clickDropout}
                                 >
                                   {studentPaymentData?.courseComplete ===
-                                  '중도포기'
+                                  completion.dropout
                                     ? '중도포기 철회'
                                     : '중도포기'}
                                 </Button>
@@ -775,7 +822,8 @@ export default function StudentsWrite() {
                         <Button
                           isDisabled={
                             studentPaymentData?.unCollectedAmount === 0 ||
-                            studentPaymentData?.lectureAssignment === '수강철회'
+                            studentPaymentData?.lectureAssignment ===
+                              assignment.withdrawal
                               ? true
                               : false
                           }

@@ -3,7 +3,9 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import {
   activeCategoryState,
   consultFilterActiveState,
+  consultFilterLimitState,
   consultFilterState,
+  consultLimitState,
   consultPageState,
   consultSearchState,
   gradeState,
@@ -56,9 +58,11 @@ export default function Category() {
     useRecoilState(activeCategoryState)
 
   const resetConsultPage = useResetRecoilState(consultPageState)
+  const resetConsultLimit = useResetRecoilState(consultLimitState)
   const resetConsultFilterActive = useResetRecoilState(consultFilterActiveState)
   const resetConsultFilterSearch = useResetRecoilState(consultFilterState)
   const resetConsultFilter = useResetRecoilState(consultSearchState)
+  const resetConsultFilterLimit = useResetRecoilState(consultFilterLimitState)
   const resetSubjectPage = useResetRecoilState(subjectPageState)
   const resetSubjectFilterActive = useResetRecoilState(subjectFilterActiveState)
   const resetSubjectFilterSearch = useResetRecoilState(subjectFilterState)
@@ -114,9 +118,11 @@ export default function Category() {
 
   const resetFunctions = {
     resetConsultPage,
+    resetConsultLimit,
     resetConsultFilterActive,
     resetConsultFilterSearch,
     resetConsultFilter,
+    resetConsultFilterLimit,
     resetSubjectPage,
     resetSubjectFilterActive,
     resetSubjectFilterSearch,

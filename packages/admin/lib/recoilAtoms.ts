@@ -56,6 +56,34 @@ export const userGraderState = atom<number>({
   default: 99,
 })
 
+export const assignmentState = atom({
+  key: 'assignmentState',
+  default: {
+    assignment: '배정',
+    unassigned: '미배정',
+    withdrawal: '수강철회',
+  },
+})
+
+export const completionStatus = atom({
+  key: 'completionStatus',
+  default: {
+    completed: '수료',
+    notCompleted: '미수료',
+    dropout: '중도포기',
+    inTraining: '훈련중',
+    notAttended: '미참여',
+  },
+})
+
+export const employmentStatus = atom({
+  key: 'employmentStatus',
+  default: {
+    employed: '취업',
+    unemployed: '미취업',
+  },
+})
+
 //grade
 export const gradeState = atom({
   key: 'gradeState',
@@ -274,9 +302,17 @@ export const consultPageState = atom<number>({
   key: 'consultPage',
   default: 1,
 })
+export const consultLimitState = atom<number>({
+  key: 'consultLimit',
+  default: 10,
+})
 export const consultFilterState = atom<boolean>({
   key: 'consultFilter',
   default: false,
+})
+export const consultFilterLimitState = atom<number>({
+  key: 'consultFilterLimit',
+  default: 10,
 })
 export const consultSearchState = atom({
   key: 'consultSearch',

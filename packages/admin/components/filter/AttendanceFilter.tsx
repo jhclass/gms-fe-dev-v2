@@ -100,33 +100,19 @@ const FilterVariants = {
   },
 }
 
-export default function ConsultFilter({
+export default function AttendanceFilter({
   isActive,
-  // onFilterSearch,
-  // studentFilter,
-  // setStudentFilter,
+  lectureData,
+  filterAttandanceSearch,
+  setFilterAttandanceData,
+  setFilterAttandanceSearch,
 }) {
-  const grade = useRecoilValue(gradeState)
-  const router = useRouter()
   const today = new Date()
   const lastSixMonths = subMonths(new Date(), 6)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const consultPage = useResetRecoilState(consultPageState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
-  const subStatus = useRecoilValue(subStatusState)
-  const progressStatus = useRecoilValue(progressStatusState)
-  const [receipt, setReceipt] = useState('-')
-  const [sub, setSub] = useState('-')
-  const [manager, setManager] = useState('-')
-  const [adviceType, setAdviceType] = useState('-')
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
-  const [visitDateRange, setVisitDateRange] = useState([null, null])
-  const [startVisitDate, endVisitDate] = visitDateRange
-  const [phone, setPhone] = useState('')
-  const [name, setName] = useState('')
-  const [progressSelected, setProgressSelected] = useState([])
-
+  const [selectedDates, setSelectedDates] = useState([])
   const {
     register,
     handleSubmit,
@@ -136,169 +122,66 @@ export default function ConsultFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      receiptDiv: '-',
-      subDiv: '-',
-      pic: '-',
-      createdAt: undefined,
-      stVisit: undefined,
-      stName: '',
-      progress: undefined,
-      phoneNum1: '',
-      adviceType: '-',
+      attendanceDate: undefined,
     },
   })
-
-  // useEffect(() => {
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.receiptDiv === null
-  // ) {
-  //   setReceipt('-')
-  // } else {
-  //   setReceipt(studentFilter?.receiptDiv)
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.subDiv === null
-  // ) {
-  //   setSub('-')
-  // } else {
-  //   setSub(studentFilter?.subDiv)
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.pic === null
-  // ) {
-  //   setManager('-')
-  // } else {
-  //   setManager(studentFilter?.pic)
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.adviceType === null
-  // ) {
-  //   setAdviceType('-')
-  // } else {
-  //   setAdviceType(studentFilter?.adviceType)
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.createdAt === null
-  // ) {
-  //   setCreatDateRange([null, null])
-  // } else {
-  //   setCreatDateRange([
-  //     studentFilter?.createdAt[0],
-  //     studentFilter?.createdAt[1],
-  //   ])
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.stVisit === null
-  // ) {
-  //   setVisitDateRange([null, null])
-  // } else {
-  //   setVisitDateRange([studentFilter?.stVisit[0], studentFilter?.stVisit[1]])
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.phoneNum1 === null
-  // ) {
-  //   setPhone('')
-  // } else {
-  //   setPhone(studentFilter?.phoneNum1)
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.stName === null
-  // ) {
-  //   setName('')
-  // } else {
-  //   setName(studentFilter?.stName)
-  // }
-  // if (
-  //   Object.keys(studentFilter).length === 0 ||
-  //   studentFilter?.progress === undefined ||
-  //   studentFilter?.progress === null
-  // ) {
-  //   setProgressSelected([])
-  // } else {
-  //   const numericKeys = studentFilter?.progress.map(key => String(key))
-  //   setProgressSelected(numericKeys)
-  // }
-  // }, [router, studentFilter])
-
-  const handleReceiptChange = e => {
-    setReceipt(e.target.value)
+  const validateDateRange = (dateRange, message) => {
+    if (dateRange !== undefined) {
+      if (dateRange[1] !== null) {
+        return true
+      } else {
+        alert(message)
+        return false
+      }
+    } else {
+      return true
+    }
   }
-
-  const handleSubChange = e => {
-    setSub(e.target.value)
-  }
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-  const handleAdviceChange = e => {
-    setAdviceType(e.target.value)
-  }
-  const handleProgressChange = (value: string[]) => {
-    const numericKeys = value.map(key => parseInt(key, 10))
-    setValue('progress', numericKeys)
-    setProgressSelected(value)
+  const checkDate = (startDate, endDate) => {
+    const start = startDate.toISOString().split('T')[0]
+    const end = endDate.toISOString().split('T')[0]
+    if (
+      !lectureData.lectureDetails.includes(start) ||
+      !lectureData.lectureDetails.includes(end)
+    ) {
+      alert('단위기간을 다시 선택해주세요.')
+      return false
+    } else {
+      const startIndex = lectureData.lectureDetails.indexOf(start) // A 요소의 인덱스
+      const endIndex = lectureData.lectureDetails.indexOf(end) + 1
+      const selectedDates = lectureData.lectureDetails.slice(
+        startIndex,
+        endIndex,
+      )
+      return selectedDates
+    }
   }
 
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
-      const validateDateRange = (dateRange, message) => {
-        if (dateRange !== undefined) {
-          if (dateRange[1] !== null) {
-            return true
-          } else {
-            alert(message)
-            return false
-          }
-        } else {
-          return true
-        }
-      }
-      const creatDate = validateDateRange(
-        data.createdAt,
-        '등록일시의 마지막날을 선택해주세요.',
+    if (isDirty) {
+      const attDate = validateDateRange(
+        data.attendanceDate,
+        '단위기간의 마지막날을 선택해주세요.',
       )
-      const visitDate = validateDateRange(
-        data.stVisit,
-        '방문예정일의 마지막날을 선택해주세요.',
-      )
-      if (creatDate && visitDate) {
-        const filter = {
-          receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
-          subDiv: data.subDiv === '-' ? null : data.subDiv,
-          pic: data.pic === '-' ? null : data.pic,
-          createdAt:
-            data.createdAt === undefined
-              ? [lastSixMonths, today]
-              : data.createdAt,
-          stVisit: data.stVisit === undefined ? null : data.stVisit,
-          stName: data.stName === '' ? null : data.stName,
-          progress: data.progress,
-          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
-          adviceType: data.adviceType === '-' ? null : data.adviceType,
+      if (attDate) {
+        const checkAttDate = checkDate(
+          data.attendanceDate[0],
+          data.attendanceDate[1],
+        )
+        if (checkAttDate) {
+          const filter = checkAttDate
+          setFilterAttandanceData(filter)
+          setFilterAttandanceSearch(true)
         }
-        // setStudentFilter(filter)
-        // onFilterSearch(true)
-        // consultPage()
       }
     }
   }
 
   const handleReset = () => {
-    setReceipt('-')
-    setSub('-')
-    setManager('-')
-    setAdviceType('-')
     setCreatDateRange([null, null])
-    setVisitDateRange([null, null])
     reset()
+    setFilterAttandanceSearch(false)
+    setFilterAttandanceData(null)
   }
 
   return (
@@ -314,7 +197,7 @@ export default function ConsultFilter({
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="createdAt"
+                  name="attendanceDate"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -343,11 +226,11 @@ export default function ConsultFilter({
                         let date
                         if (e[1] !== null) {
                           date = [
-                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[0]?.setHours(10, 0, 0, 0)),
                             new Date(e[1]?.setHours(23, 59, 59, 999)),
                           ]
                         } else {
-                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                          date = [new Date(e[0]?.setHours(10, 0, 0, 0)), null]
                         }
 
                         field.onChange(date)
@@ -359,7 +242,7 @@ export default function ConsultFilter({
                       dateFormat="yyyy/MM/dd"
                       customInput={
                         <Input
-                          label="강의 기간"
+                          label="단위 기간"
                           labelPlacement="outside"
                           type="text"
                           size={'sm'}
@@ -370,39 +253,13 @@ export default function ConsultFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('createdAt')}
+                          {...register('attendanceDate')}
                         />
                       }
                     />
                   )}
                 />
               </DatePickerBox>
-            </ItemBox>
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                size={'sm'}
-                variant="bordered"
-                label="이름"
-                value={name}
-                onValueChange={setName}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                {...register('stName', {
-                  pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
-                  },
-                })}
-              />
-              {errors.stName && (
-                <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.stName.message)}
-                </p>
-              )}
             </ItemBox>
             <BtnBox>
               <Button
@@ -411,19 +268,22 @@ export default function ConsultFilter({
                 variant="solid"
                 color="primary"
                 className={'w-full'}
+                type="submit"
               >
                 검색
               </Button>
-              <Button
-                size="sm"
-                radius="sm"
-                variant="bordered"
-                color="primary"
-                onClick={handleReset}
-                className={'w-full'}
-              >
-                초기화
-              </Button>
+              {filterAttandanceSearch && (
+                <Button
+                  size="sm"
+                  radius="sm"
+                  variant="bordered"
+                  color="primary"
+                  onClick={handleReset}
+                  className="w-full"
+                >
+                  전체보기
+                </Button>
+              )}
             </BtnBox>
           </BoxTop>
         </FilterForm>

@@ -6,10 +6,7 @@ import { useRouter } from 'next/router'
 import { Button, Chip, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import {
-  SEARCH_LECTURES_MUTATION,
-  SEARCH_PAYMENT_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
 import AropoutList from '@/components/table/AropoutList'
@@ -18,8 +15,12 @@ import AcquisitionList from '@/components/table/AcquisitionList'
 import EmploymentList from '@/components/table/EmploymentList'
 import EvaluationList from '@/components/table/EvaluationList'
 import Attendance from '@/components/table/Attendance'
-import AropoutFilter from '@/components/filter/AropoutFilter'
 import AttendanceFilter from '@/components/filter/AttendanceFilter'
+import AttendanceFilterList from '@/components/table/AttendanceFilterList'
+import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
+import AbsentFilterList from '@/components/table/AbsentFilterList'
+import { useRecoilValue } from 'recoil'
+import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -29,6 +30,12 @@ const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
+  padding: 1.5rem;
+`
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-top: 0.5rem;
   padding: 1.5rem;
 `
 const TopInfo = styled.div`
@@ -102,9 +109,27 @@ export default function StudentsWrite() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
+  const assignment = useRecoilValue(assignmentState)
+  const completion = useRecoilValue(completionStatus)
   const [lectureData, setLectureData] = useState(null)
   const [students, setStudents] = useState(null)
-  const [filterActive1, setFilterActive1] = useState(true)
+  const [sortStudents, setSortStudents] = useState(null)
+  const [filterAttandanceActive, setFilterAttandanceActive] = useState(true)
+  const [filterAttandanceSearch, setFilterAttandanceSearch] = useState()
+  const [filterAttandanceData, setFilterAttandanceData] = useState(true)
+  const [filterAttandanceCountActive, setFilterAttandanceCountActive] =
+    useState(true)
+  const [filterAttandanceCountSearch, setFilterAttandanceCountSearch] =
+    useState()
+  const [filterAttandanceCountData, setFilterAttandanceCountData] =
+    useState(true)
+
+  const naturalCompare = (a, b) => {
+    return a.localeCompare(b, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    })
+  }
 
   useEffect(() => {
     if (lectureId !== null) {
@@ -117,9 +142,13 @@ export default function StudentsWrite() {
             const { data } = result.searchLectures
             setLectureData(data[0])
             const filterStudent = data[0].subject.StudentPayment.filter(
-              student => student.lectureAssignment === '배정',
+              student => student.lectureAssignment === assignment.assignment,
             )
             setStudents(filterStudent)
+            const sortOrder = filterStudent.sort((a, b) => {
+              return naturalCompare(a.student.name, b.student.name)
+            })
+            setSortStudents(sortOrder)
           }
         },
       })
@@ -144,6 +173,13 @@ export default function StudentsWrite() {
         `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
+    }
+  }
+
+  const handleClick = event => {
+    if (lectureData?.timetableAttached === null) {
+      event.preventDefault()
+      alert('등록된 시간표가 없습니다.')
     }
   }
 
@@ -189,71 +225,87 @@ export default function StudentsWrite() {
                 <h4>학적부</h4>
               </AreaTitle>
               <Noti>
-                <span>❗️</span>
+                <span>&#10071;</span>
                 교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지 않습니다.
               </Noti>
               <FlexChipBox>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
-                <Link href="">
-                  <Chip color="primary">Primary</Chip>
-                </Link>
+                {sortStudents &&
+                  sortStudents
+                    .filter(
+                      student => student.courseComplete !== completion.dropout,
+                    )
+                    .map((item, index) => (
+                      <Link href="#" key={index}>
+                        <Chip color="primary">{item.student.name}</Chip>
+                      </Link>
+                    ))}
               </FlexChipBox>
             </DetailDiv>
           </DetailBox>
-          <DetailBox>
+          <FlexBox>
+            <Link
+              href={lectureData?.timetableAttached || '#'}
+              onClick={handleClick}
+            >
+              <Chip variant="bordered" color="primary">
+                &#128205; 훈련시간표 다운로드
+              </Chip>
+            </Link>
+          </FlexBox>
+          <DetailBox style={{ marginTop: '0.5rem' }}>
             <DetailDiv>
               <AreaTitleFilter>
                 <h4>출석부</h4>
                 <AttendanceFilter
-                  isActive={filterActive1}
-                  // onFilterSearch={undefined}
-                  // studentFilter={undefined}
-                  // setStudentFilter={undefined}
+                  isActive={filterAttandanceActive}
+                  lectureData={lectureData}
+                  filterAttandanceSearch={filterAttandanceSearch}
+                  setFilterAttandanceData={setFilterAttandanceData}
+                  setFilterAttandanceSearch={setFilterAttandanceSearch}
                 />
               </AreaTitleFilter>
-              <Attendance lectureData={lectureData} students={students} />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitleFilter>
-                <h4>결석인원현황</h4>
-                <AropoutFilter
-                  isActive={filterActive1}
-                  // onFilterSearch={undefined}
-                  // studentFilter={undefined}
-                  // setStudentFilter={undefined}
+              {filterAttandanceSearch ? (
+                <AttendanceFilterList
+                  lectureData={lectureData}
+                  students={students}
+                  filterAttandanceData={filterAttandanceData}
                 />
-              </AreaTitleFilter>
-              <AbsentList />
+              ) : (
+                <Attendance lectureData={lectureData} students={students} />
+              )}
             </DetailDiv>
           </DetailBox>
+          {sortStudents && (
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitleFilter>
+                  <h4>출결현황</h4>
+                  <AttendanceCountFilter
+                    isActive={filterAttandanceActive}
+                    lectureData={lectureData}
+                    filterAttandanceCountSearch={filterAttandanceCountSearch}
+                    setFilterAttandanceCountData={setFilterAttandanceCountData}
+                    setFilterAttandanceCountSearch={
+                      setFilterAttandanceCountSearch
+                    }
+                  />
+                </AreaTitleFilter>
+                {filterAttandanceCountSearch ? (
+                  <AbsentFilterList
+                    lectureId={lectureData?.id}
+                    filterAttandanceCountData={filterAttandanceCountData}
+                    sortStudents={sortStudents}
+                  />
+                ) : (
+                  <AbsentList
+                    lectureId={lectureData?.id}
+                    lectureDates={lectureData?.lectureDetails}
+                    sortStudents={sortStudents}
+                  />
+                )}
+              </DetailDiv>
+            </DetailBox>
+          )}
           <DetailBox>
             <DetailDiv>
               <AreaTitle>

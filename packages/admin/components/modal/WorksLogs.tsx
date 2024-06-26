@@ -130,6 +130,10 @@ const AreaSection = styled.div`
   flex: 1;
   width: 100%;
   margin-top: 1.5rem;
+
+  &.last {
+    padding-bottom: 1rem;
+  }
 `
 
 const AreaBox = styled.div`
@@ -246,7 +250,8 @@ export default function WorksLogsModal({
   const [trainingData, setTrainingData] = useState(null)
   const [trainingTimes, setTrainingTimes] = useState(null)
   const [attendanceState, setAttendanceState] = useState(null)
-  const [isChecked, setIsChecked] = useState('N')
+  const [isChecked1, setIsChecked1] = useState('N')
+  const [isChecked2, setIsChecked2] = useState('N')
   const [sign, setSign] = useState(false)
   const {
     register,
@@ -275,7 +280,10 @@ export default function WorksLogsModal({
       outingSt: workLogData?.outingSt,
       etc: workLogData?.etc,
       attendanceCount: workLogData?.attendanceCount,
-      check: false,
+      check1: workLogData?.checkList[0],
+      check2: workLogData?.checkList[1],
+      check1con: workLogData?.checkContext[0],
+      check2con: workLogData?.checkContext[1],
     },
   })
 
@@ -425,8 +433,11 @@ export default function WorksLogsModal({
             : workLogData.outingSt,
         etc: workLogData.etc === null ? [] : workLogData.etc,
       })
-      setIsChecked(
+      setIsChecked1(
         workLogData.checkList.legnth === 0 ? 'N' : workLogData.checkList[0],
+      )
+      setIsChecked2(
+        workLogData.checkList.legnth === 0 ? 'N' : workLogData.checkList[1],
       )
     }
   }, [workLogData, attendanceData])
@@ -536,7 +547,14 @@ export default function WorksLogsModal({
             attendanceCount: data.attendanceCount
               ? data.attendanceCount
               : workLogData.attendanceCount,
-            checkList: data.checkList ? data.checkList : workLogData.checkList,
+            checkList:
+              data.check1 || data.check2
+                ? [data.check1, data.check2]
+                : workLogData.checkList,
+            checkContext:
+              data.check1con || data.check2con
+                ? [data.check1con, data.check2con]
+                : workLogData.checkList,
           },
           onCompleted: result => {
             if (result.editWorkLogs.ok) {
@@ -581,6 +599,10 @@ export default function WorksLogsModal({
         }
         .workLogFooter{
           display:none !important;
+        }
+
+        .scrollbar {
+          mask-image:none !important;
         }
       }
     `,
@@ -881,7 +903,7 @@ export default function WorksLogsModal({
                             <AreaSection>
                               <Controller
                                 control={control}
-                                name="check"
+                                name="check1"
                                 defaultValue={false}
                                 render={({ field }) => (
                                   <RadioGroup
@@ -890,13 +912,14 @@ export default function WorksLogsModal({
                                         오늘 지각, 외출, 조퇴 시간의 합이 총
                                         수업 시간의 절반을 넘은 학생이 있습니까?
                                         <br />
-                                        "예"를 체크한 경우 특이사항에 자세한
+                                        "예"를 체크한 경우 출석부를 결석으로
+                                        변경해 주시고, 하단 특이사항에 자세한
                                         내용을 남겨주세요.
                                       </CheckLabel>
                                     }
                                     orientation="horizontal"
-                                    value={isChecked}
-                                    onValueChange={setIsChecked}
+                                    value={isChecked1}
+                                    onValueChange={setIsChecked1}
                                     classNames={{
                                       base: 'pl-[1rem]',
                                     }}
@@ -906,10 +929,115 @@ export default function WorksLogsModal({
                                   </RadioGroup>
                                 )}
                               />
+                              {isChecked1 === 'Y' && (
+                                <>
+                                  <AreaTitle>
+                                    <h4>특이사항</h4>
+                                  </AreaTitle>
+                                  <Textarea
+                                    label=""
+                                    defaultValue={workLogData?.checkContext[0]}
+                                    placeholder="ex) 홍길동 학생이 지각 후 조퇴를 하였는데 수업참여시간이 절반이 되지 않아 결석으로 처리함."
+                                    className="w-full"
+                                    variant="bordered"
+                                    minRows={5}
+                                    onChange={e => {
+                                      register('check1con').onChange(e)
+                                    }}
+                                    {...register('check1con', {
+                                      required: {
+                                        value: true,
+                                        message:
+                                          '특이사항을 자세히 입력해주세요.',
+                                      },
+                                      validate: {
+                                        minLength: value => {
+                                          if (value.trim().length < 11) {
+                                            return '특이사항을 최소 10자 이상 입력해주세요.'
+                                          }
+                                          return true
+                                        },
+                                      },
+                                    })}
+                                  />
+                                  {errors.check1con && (
+                                    <p className="px-2 pt-2 text-xs text-red-500">
+                                      {String(errors.check1con.message)}
+                                    </p>
+                                  )}
+                                </>
+                              )}
                             </AreaSection>
-                            <AreaSection>
+                            <AreaSection className="last">
+                              <Controller
+                                control={control}
+                                name="check2"
+                                defaultValue={false}
+                                render={({ field }) => (
+                                  <RadioGroup
+                                    label={
+                                      <CheckLabel>
+                                        수업을 듣지 못했거나, 부진한 학생이 있을
+                                        경우 조치를 취하셨습니까?
+                                        <br />
+                                        "예"를 체크한 경우 하단 조치사항을
+                                        학생이름과 내용을 자세히 작성해주세요.
+                                      </CheckLabel>
+                                    }
+                                    orientation="horizontal"
+                                    value={isChecked2}
+                                    onValueChange={setIsChecked2}
+                                    classNames={{
+                                      base: 'pl-[1rem]',
+                                    }}
+                                  >
+                                    <Radio value="Y">예</Radio>
+                                    <Radio value="N">아니오</Radio>
+                                  </RadioGroup>
+                                )}
+                              />
+                              {isChecked2 === 'Y' && (
+                                <>
+                                  <AreaTitle>
+                                    <h4>조치사항</h4>
+                                  </AreaTitle>
+                                  <Textarea
+                                    label=""
+                                    defaultValue={workLogData?.checkContext[1]}
+                                    placeholder="ex) 홍길동 학생이 조퇴로 수업을 듣지못한 부분은 수업자료를 공유해주고, 동영상 강의로 대체함"
+                                    className="w-full"
+                                    variant="bordered"
+                                    minRows={5}
+                                    onChange={e => {
+                                      register('check2con').onChange(e)
+                                    }}
+                                    {...register('check2con', {
+                                      required: {
+                                        value: true,
+                                        message:
+                                          '조치사항을 자세히 입력해주세요.',
+                                      },
+                                      validate: {
+                                        minLength: value => {
+                                          if (value.trim().length < 11) {
+                                            return '조치사항을 최소 10자 이상 입력해주세요.'
+                                          }
+                                          return true
+                                        },
+                                      },
+                                    })}
+                                  />
+                                  {errors.check2con && (
+                                    <p className="px-2 pt-2 text-xs text-red-500">
+                                      {String(errors.check2con.message)}
+                                    </p>
+                                  )}
+                                </>
+                              )}
+                            </AreaSection>
+                            {/* <AreaSection className="last">
                               <AreaTitle>
-                                <h4>특이사항</h4>
+                                <h4>지시사항</h4>
                               </AreaTitle>
                               <Textarea
                                 label=""
@@ -917,25 +1045,18 @@ export default function WorksLogsModal({
                                 placeholder="내용을 작성해주세요."
                                 className="w-full"
                                 variant="bordered"
-                                minRows={10}
+                                minRows={5}
                                 onChange={e => {
                                   register('instruction').onChange(e)
                                 }}
-                                {...register('instruction', {
-                                  validate: value => {
-                                    if (isChecked === 'Y' && !value) {
-                                      return '출결 특이사항을 작성해주세요.'
-                                    }
-                                    return true
-                                  },
-                                })}
+                                {...register('instruction')}
                               />
                               {errors.instruction && (
                                 <p className="px-2 pt-2 text-xs text-red-500">
                                   {String(errors.instruction.message)}
                                 </p>
                               )}
-                            </AreaSection>
+                            </AreaSection> */}
                           </ScrollShadow>
                         </DetailDiv>
                       </ScrollShadow>

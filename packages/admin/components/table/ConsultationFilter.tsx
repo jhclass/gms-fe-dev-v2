@@ -1,75 +1,20 @@
 import { useMutation, useSuspenseQuery } from '@apollo/client'
-import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
+import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
-import { consultPageState } from '@/lib/recoilAtoms'
+import { consultFilterLimitState, consultPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
 import { subMonths } from 'date-fns'
 import { ManageUser, StudentState } from '@/src/generated/graphql'
+import TableTop from '@/components/common/TableTop'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-    align-items: flex-start;
-  }
-`
-const TopBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-between;
-  }
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-    padding-right: 0.5rem;
-  }
-`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
@@ -226,7 +171,9 @@ type seeFavoriteState = {
 }
 export default function ConsolutationFilterTable({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
-  const [currentLimit] = useState(10)
+  const [currentLimit, setCurrentLimit] = useRecoilState(
+    consultFilterLimitState,
+  )
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const [searchResult, setSearchResult] = useState(null)
   const { error: MMeError, data: MMeData } =
@@ -258,7 +205,7 @@ export default function ConsolutationFilterTable({ studentFilter }) {
         }
       },
     })
-  }, [studentFilter, currentPage])
+  }, [studentFilter, currentPage, currentLimit])
 
   const resetList = () => {
     window.location.href = '/consult'
@@ -273,28 +220,16 @@ export default function ConsolutationFilterTable({ studentFilter }) {
 
   return (
     <>
-      <TTopic>
-        <TopBox>
-          <Ttotal>
-            총
-            <span>
-              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
-            </span>
-            건이 검색되었습니다.
-          </Ttotal>
-          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
-            전체보기
-          </Button>
-        </TopBox>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미처리
-          </ColorCip>
-        </ColorHelp>
-      </TTopic>
+      <TableTop
+        totalCount={searchResult?.totalCount}
+        currentLimit={currentLimit}
+        setCurrentLimit={setCurrentLimit}
+        resetList={resetList}
+        colorInfo={[
+          { background: '#007de9', text: '신규' },
+          { background: '#FF5900', text: '미처리' },
+        ]}
+      />
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>

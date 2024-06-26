@@ -5,6 +5,12 @@ import Layout from '@/pages/students/layout'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
+import {
+  assignmentState,
+  completionStatus,
+  employmentStatus,
+} from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
 
 const FlexCardBox = styled.div<{ $lectureAssignment: boolean }>`
   display: flex;
@@ -81,7 +87,9 @@ type searchManageUserQuery = {
 }
 export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const router = useRouter()
-
+  const assignment = useRecoilValue(assignmentState)
+  const completion = useRecoilValue(completionStatus)
+  const employment = useRecoilValue(employmentStatus)
   const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
@@ -125,7 +133,9 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
     <>
       <FlexCardBox
         onClick={() => clickItem(index)}
-        $lectureAssignment={detailtData?.lectureAssignment === '수강철회'}
+        $lectureAssignment={
+          detailtData?.lectureAssignment === assignment.withdrawal
+        }
       >
         <FlexBox>
           <AreaGroup style={{ width: '30%' }}>
@@ -169,9 +179,10 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                 <FlatBox
                   style={{
                     color:
-                      detailtData?.lectureAssignment === '배정'
+                      detailtData?.lectureAssignment === assignment.assignment
                         ? Color2
-                        : detailtData?.lectureAssignment === '미배정'
+                        : detailtData?.lectureAssignment ===
+                          assignment.unassigned
                         ? Color1
                         : Color3,
                   }}
@@ -186,7 +197,12 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                 <FlatBox
                   style={{
                     color:
-                      detailtData?.courseComplete === '수료' ? Color2 : Color1,
+                      detailtData?.courseComplete === completion.completed ||
+                      detailtData?.courseComplete === completion.inTraining
+                        ? Color2
+                        : detailtData?.courseComplete === completion.notAttended
+                        ? Color1
+                        : Color3,
                   }}
                 >
                   {detailtData?.courseComplete}
@@ -198,7 +214,10 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                 <FilterLabel>취업</FilterLabel>
                 <FlatBox
                   style={{
-                    color: detailtData?.employment === '취업' ? Color2 : Color1,
+                    color:
+                      detailtData?.employment === employment.employed
+                        ? Color2
+                        : Color1,
                   }}
                 >
                   {detailtData?.employment}

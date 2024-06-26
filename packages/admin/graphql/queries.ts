@@ -705,6 +705,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         updatedAt
         workLogsDate
         checkList
+        checkContext
       }
       totalCount
       ok
@@ -720,6 +721,22 @@ export const SIGN_WORKLOGS_QUERY = gql`
       message
       ok
       stampUrl
+    }
+  }
+`
+export const SEARCH_ATTENDANCE_QUERY = gql`
+  query Query($lecturesId: Int!, $attendanceDate: [String]) {
+    searchAttendance(lecturesId: $lecturesId, attendanceDate: $attendanceDate) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        attendanceState
+        student {
+          name
+        }
+      }
     }
   }
 `

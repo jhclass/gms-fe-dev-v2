@@ -330,7 +330,8 @@ export default function ManagerWrite({ managerId }) {
             dirtyFieldsArray.join(', '),
           )
           alert('수정되었습니다.')
-          router.push('/hr', undefined, { shallow: true })
+          refetch()
+          router.push('/hr')
         } catch (error) {
           console.error('직원 정보 수정 중 에러 발생:', error)
           alert('직원 정보 수정 처리 중 오류가 발생했습니다.')
