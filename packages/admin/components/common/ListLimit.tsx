@@ -45,7 +45,7 @@ export default function ListLimitSelect({ currentLimit, setCurrentLimit }) {
           selectedKeys={[value]}
           onSelectionChange={e => handleSelectionChange(e)}
           classNames={{
-            label: 'w-[4rem]',
+            label: 'w-[4rem] pr-0',
           }}
         >
           <SelectItem value={'10'} key={'10'}>
