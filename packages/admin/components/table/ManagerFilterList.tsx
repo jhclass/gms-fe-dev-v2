@@ -177,7 +177,7 @@ const Nolist = styled.div`
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
-export default function ManagerFilterTable({ managerFilter }) {
+export default function ManagerFilterTable({ managerFilter, mGrade, mPart }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
@@ -257,6 +257,8 @@ export default function ManagerFilterTable({ managerFilter }) {
                     itemIndex={index}
                     currentPage={currentPage}
                     limit={currentLimit}
+                    mGrade={mGrade}
+                    mPart={mPart}
                   />
                 ))}
               {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}

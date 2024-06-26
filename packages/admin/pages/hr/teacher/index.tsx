@@ -121,7 +121,11 @@ export default function Teacher() {
                   </LodingDiv>
                 }
               >
-                <TeacherFilterList teacherFilter={teacherFilter} />
+                <TeacherFilterList
+                  teacherFilter={teacherFilter}
+                  mGrade={mGrade}
+                  mPart={mPart}
+                />
               </Suspense>
             ) : (
               <Suspense
@@ -131,7 +135,7 @@ export default function Teacher() {
                   </LodingDiv>
                 }
               >
-                <TeacherList />
+                <TeacherList mGrade={mGrade} mPart={mPart} />
               </Suspense>
             )}
           </ConBox>

@@ -1,5 +1,7 @@
 import { styled } from 'styled-components'
 import Link from 'next/link'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const TableItem = styled.div<{ $resign: string }>`
   position: relative;
@@ -14,7 +16,8 @@ const TableItem = styled.div<{ $resign: string }>`
 
   &:hover {
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
+    background: ${props =>
+      props.$resign === 'Y' ? '#e4e4e7' : 'rgba(255, 255, 255, 0.8)'};
   }
 `
 
@@ -160,6 +163,13 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
+const Masking = styled.span`
+  background: rgba(228, 228, 231, 0.8);
+  -webkit-filter: blur(2.5px);
+  -o-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+`
+
 const isDisplayFlag = (date: string, step: number): string => {
   const currentDate = new Date()
   const differenceInDays = Math.floor(
@@ -176,6 +186,7 @@ const isDisplayFlag = (date: string, step: number): string => {
 }
 
 export default function ConsolutItem(props) {
+  const grade = useRecoilValue(gradeState)
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const managerData = props.tableData
@@ -220,7 +231,19 @@ export default function ConsolutItem(props) {
     <>
       <TableItem $resign={managerData.resign}>
         <TableRow>
-          <Link href={`/hr/teacherDetail/${managerData.id}`}>
+          <Link
+            href={
+              managerData.resign === 'Y'
+                ? props.mGrade < grade.general || props.mPart.includes('인사팀')
+                  ? `/hr/teacherDetail/${managerData.id}`
+                  : '#'
+                : props.mGrade < grade.general ||
+                  props.mPart.includes('인사팀') ||
+                  props.mPart.includes('교무팀')
+                ? `/hr/teacherDetail/${managerData.id}`
+                : '#'
+            }
+          >
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <Tavatar>
@@ -255,14 +278,30 @@ export default function ConsolutItem(props) {
                 <EllipsisBox>{managerData.mRank}</EllipsisBox>
               </Trank>
               <Tphone>
-                <EllipsisBox>
-                  {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
-                </EllipsisBox>
+                {managerData.resign === 'Y' ? (
+                  <EllipsisBox>
+                    <Masking>
+                      {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
+                    </Masking>
+                  </EllipsisBox>
+                ) : (
+                  <EllipsisBox>
+                    {managerData.mPhoneNum ? managerData.mPhoneNum : '-'}
+                  </EllipsisBox>
+                )}
               </Tphone>
               <Temail>
-                <EllipsisBox>
-                  {managerData.email ? managerData.email : '-'}
-                </EllipsisBox>
+                {managerData.resign === 'Y' ? (
+                  <EllipsisBox>
+                    <Masking>
+                      {managerData.email ? managerData.email : '-'}
+                    </Masking>
+                  </EllipsisBox>
+                ) : (
+                  <EllipsisBox>
+                    {managerData.email ? managerData.email : '-'}
+                  </EllipsisBox>
+                )}
               </Temail>
               <TjoiningDate>
                 <EllipsisBox>
