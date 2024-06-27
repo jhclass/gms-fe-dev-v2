@@ -85,35 +85,6 @@ const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
-const AreaSmallBox = styled.div`
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`
-const AreaSmallBox2 = styled.div`
-  display: flex;
-  gap: 1rem;
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`
-const FlexCon = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-
-  label {
-    span {
-      margin-right: 0;
-      margin-top: 0.25rem;
-    }
-  }
-`
-
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-`
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -131,14 +102,14 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-const BtnBox4 = styled.div<{ $isPayment: boolean }>`
+const FlexBtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   @media (max-width: 768px) {
-    ${props => props.$isPayment && 'flex-wrap:wrap;'}
+    flex-wrap: wrap;
     button {
-      ${props => props.$isPayment && ' width: calc(50% - 0.5rem);'}
+      width: calc(33.3333% - 0.5rem);
     }
   }
 `
@@ -239,6 +210,7 @@ export default function StudentsWrite() {
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
+
   useEffect(() => {
     if (paymentId !== null) {
       searchStudentPayment({
@@ -283,271 +255,82 @@ export default function StudentsWrite() {
     return false
   }
 
-  const notifyUser = (message, isError = false) => {
-    alert(message)
-    if (isError) {
-      console.error(message)
-    }
-  }
+  const editAssignment = async state => {
+    const changeAssignment = confirm(
+      `${studentData?.name}학생을 ${state}하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
+    )
+    if (changeAssignment) {
+      const isCurrentlyAssigned =
+        studentPaymentData.lectureAssignment === assignment.assignment
 
-  const executeMutation = async (mutation, variablesAr, successMessage) => {
-    try {
-      const { data } = await mutation({ variables: variablesAr })
-      const firstKey = Object.keys(data)[0]
-      const { ok } = data[firstKey]
-      if (ok) {
-        if (successMessage) notifyUser(successMessage)
-        return true
-      } else {
-        throw new Error('Operation failed')
-      }
-    } catch (error) {
-      notifyUser('처리 중 오류가 발생했습니다.', true)
-      return false
-    }
-  }
-
-  const handleStudentPaymentUpdate = async ({
-    isCurrentlySet,
-    checkFunction = async () => true,
-    updateFunction,
-    variables,
-    confirmationMessage,
-    successMessage,
-    failureMessage = '조건을 만족하지 않아 처리할 수 없습니다.',
-    logMessage,
-  }: HandleStudentPaymentUpdateParams) => {
-    if (!confirm(confirmationMessage)) return
-
-    let updateSuccessful = false
-    try {
-      if (isCurrentlySet) {
-        await updateFunction(variables, successMessage)
-        updateSuccessful = true
-      } else {
-        const ok = await checkFunction(variables)
-        if (ok) {
-          await updateFunction(variables, successMessage)
-          updateSuccessful = true
-        } else {
-          notifyUser(failureMessage)
-        }
-      }
-    } catch (error) {
-      console.error('업데이트 중 에러 발생:', error)
-      notifyUser('업데이트 중 문제가 발생했습니다.')
-      updateSuccessful = false
-    }
-    if (updateSuccessful) {
-      userLogs(logMessage)
-    }
-  }
-
-  const clickLectureAssignment = async () => {
-    const isCurrentlyAssigned =
-      studentPaymentData.lectureAssignment === assignment.assignment
-    const confirmationMessage = isCurrentlyAssigned
-      ? `${studentData.name}학생의 ${studentSubjectData.subjectName} 강의 배정을 취소 하시겠습니까?`
-      : `${studentData.name}학생을 ${studentSubjectData.subjectName} 강의 배정 하시겠습니까?`
-
-    const updateLogic = async () => {
-      const success = await handleStudentPaymentUpdate({
-        isCurrentlySet: isCurrentlyAssigned,
-        updateFunction: async (variables, successMessage) => {
-          const success = await executeMutation(
-            updateStudentCourseMutation,
-            variables,
-            null,
-          )
-          if (success) {
-            const success2 = await executeMutation(
-              classCancelMutation,
-              {
-                classCancellationId: parseInt(studentPaymentData.id),
-                courseComplete: isCurrentlyAssigned
-                  ? completion.notAttended
-                  : completion.inTraining,
-              },
-              successMessage,
-            )
-            if (success2) await searchAndUpdateStudentPayment()
-          }
-        },
-        variables: {
-          editStudentPaymentId: parseInt(studentPaymentData.id),
-          lectureAssignment: isCurrentlyAssigned
-            ? assignment.unassigned
-            : assignment.assignment,
-          subjectId: studentPaymentData.subjectId,
-          processingManagerId: studentPaymentData.processingManagerId,
-        },
-        confirmationMessage,
-        successMessage: isCurrentlyAssigned
-          ? '강의배정 취소되었습니다.'
-          : '강의배정 되었습니다.',
-        logMessage: isCurrentlyAssigned
-          ? `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정 취소`
-          : `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 배정`,
-      })
-      return success
-    }
-
-    if (!isCurrentlyAssigned) {
-      const {
-        data: {
-          duplicateCheck: { ok },
-        },
-      } = await classCheckMutation({
-        variables: {
-          studentId: studentData.id,
-          subjectId: studentPaymentData.subjectId,
-        },
-      })
-      if (ok) {
-        await updateLogic()
-      } else {
-        alert('강의가 중복됩니다. 배정할 수 없습니다.')
-      }
-    } else {
-      await updateLogic()
-    }
-  }
-
-  const clickCompletion = async () => {
-    const isCurrentlyCompleted =
-      studentPaymentData.courseComplete === completion.completed
-    const confirmationMessage = isCurrentlyCompleted
-      ? `${studentData.name}학생의 이수 처리를 취소하시겠습니까?`
-      : `${studentData.name}학생을 이수 처리하시겠습니까?`
-
-    await handleStudentPaymentUpdate({
-      isCurrentlySet: isCurrentlyCompleted,
-      updateFunction: async (variables, successMessage) => {
-        const success = await executeMutation(
-          classCancelMutation,
-          variables,
-          successMessage,
-        )
-        if (success) await searchAndUpdateStudentPayment()
-      },
-      variables: {
-        classCancellationId: parseInt(studentPaymentData.id),
-        courseComplete: isCurrentlyCompleted
-          ? completion.notCompleted
-          : completion.completed,
-      },
-      confirmationMessage,
-      successMessage: isCurrentlyCompleted
-        ? '이수 처리가 취소되었습니다.'
-        : '이수 처리되었습니다.',
-      logMessage: isCurrentlyCompleted
-        ? `${studentData.name}학생 이수처리 취소`
-        : `${studentData.name}학생 이수처리`,
-    })
-  }
-
-  const clickDropout = async () => {
-    const isCurrentlyDroppedOut =
-      studentPaymentData.courseComplete === completion.dropout
-    await handleStudentPaymentUpdate({
-      isCurrentlySet: isCurrentlyDroppedOut,
-      updateFunction: async (variables, successMessage) => {
-        const success = await executeMutation(
-          classCancelMutation,
-          variables,
-          successMessage,
-        )
-        if (success) await searchAndUpdateStudentPayment()
-      },
-      variables: {
-        classCancellationId: parseInt(studentPaymentData.id),
-        courseComplete: isCurrentlyDroppedOut
-          ? completion.notCompleted
-          : completion.dropout,
-      },
-      confirmationMessage: isCurrentlyDroppedOut
-        ? `${studentData.name}학생의 ${completion.dropout}를 취소하시겠습니까?`
-        : `${studentData.name}학생을 ${completion.dropout} 처리하시겠습니까?`,
-      successMessage: isCurrentlyDroppedOut
-        ? `${completion.dropout}가 취소되었습니다.`
-        : `${completion.dropout} 처리되었습니다.`,
-      logMessage: isCurrentlyDroppedOut
-        ? `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 ${completion.dropout} 철회`
-        : `${studentData.name}학생 ${studentSubjectData.subjectName} 강의 ${completion.dropout}`,
-    })
-  }
-
-  const clickWithdrawal = async () => {
-    const isCurrentlyWithdrawn =
-      studentPaymentData.lectureAssignment === assignment.withdrawal
-
-    await handleStudentPaymentUpdate({
-      isCurrentlySet: isCurrentlyWithdrawn,
-      updateFunction: async (variables, successMessage) => {
-        const success = await executeMutation(
-          updateStudentCourseMutation,
-          variables,
-          null,
-        )
+      const updateLogic = async () => {
+        const success = await updateStudentCourseMutation({
+          variables: {
+            editStudentPaymentId: parseInt(studentPaymentData.id),
+            lectureAssignment: state,
+            subjectId: studentPaymentData.subjectId,
+            processingManagerId: studentPaymentData.processingManagerId,
+          },
+        })
         if (success) {
-          const success2 = await executeMutation(
-            classCancelMutation,
-            {
-              classCancellationId: parseInt(studentPaymentData.id),
-              courseComplete: isCurrentlyWithdrawn
-                ? completion.inTraining
-                : completion.notAttended,
-            },
-            successMessage,
-          )
-          if (success2) await searchAndUpdateStudentPayment()
+          const success2 = await searchAndUpdateStudentPayment()
+          if (success2) {
+            console.log(`${studentData?.name}학생을 ${state}처리 하였습니다.`)
+            userLogs(`${studentData?.name}학생 ${state}처리`)
+          }
         }
-      },
-      variables: {
-        editStudentPaymentId: parseInt(studentPaymentData.id),
-        lectureAssignment: isCurrentlyWithdrawn
-          ? assignment.assignment
-          : assignment.withdrawal,
-        subjectId: studentPaymentData.subjectId,
-        processingManagerId: studentPaymentData.processingManagerId,
-      },
-      confirmationMessage: isCurrentlyWithdrawn
-        ? `${studentData.name}학생의 ${assignment.withdrawal}를 취소하시겠습니까?`
-        : `${studentData.name}학생을 ${assignment.withdrawal}처리하시겠습니까?`,
-      successMessage: isCurrentlyWithdrawn
-        ? `${assignment.withdrawal}가 취소되었습니다.`
-        : `${assignment.withdrawal} 처리되었습니다.`,
-      logMessage: isCurrentlyWithdrawn
-        ? `${studentData.name}학생 ${studentSubjectData.subjectName} ${assignment.withdrawal} 취소`
-        : `${studentData.name}학생 ${studentSubjectData.subjectName} ${assignment.withdrawal}`,
-    })
+        return success
+      }
+      if (!isCurrentlyAssigned) {
+        const {
+          data: {
+            duplicateCheck: { ok },
+          },
+        } = await classCheckMutation({
+          variables: {
+            studentId: studentData.id,
+            subjectId: studentPaymentData.subjectId,
+          },
+        })
+        if (ok) {
+          await updateLogic()
+        } else {
+          alert('강의가 중복됩니다. 배정할 수 없습니다.')
+        }
+      } else {
+        await updateLogic()
+      }
+    }
   }
 
-  // const clickWithdrawal = async () => {
-  //   const isCurrentlyAssigned =
-  //     studentPaymentData.lectureAssignment === '배정'
+  const clickAssignment = async state => {
+    if (studentPaymentDetailData?.length === 0) {
+      alert('수강료 결제 후 변경 가능합니다.')
+    } else {
+      editAssignment(state)
+    }
+  }
 
-  //   await handleStudentPaymentUpdate({
-  //     isCurrentlySet: isCurrentlyAssigned,
-  //     updateFunction: async (variables, successMessage) => {
-  //       const success = await executeMutation(
-  //         updateStudentCourseMutation,
-  //         variables,
-  //         successMessage,
-  //       )
-  //       if (success) await searchAndUpdateStudentPayment()
-  //     },
-  //     variables: {
-  //       editStudentPaymentId: parseInt(studentPaymentData.id),
-  //       lectureAssignment: '수강철회',
-  //       subjectId: studentPaymentData.subjectId,
-  //       processingManagerId: studentPaymentData.processingManagerId,
-  //     },
-  //     confirmationMessage: `${studentData.name}학생을 수강철회 처리하시겠습니까? \n 철회하시면 다시 배정할 수 없습니다.`,
-  //     successMessage: '수강철회 처리되었습니다.',
-  //     logMessage: `${studentData.name}학생 ${studentSubjectData.subjectName} 수강철회`,
-  //   })
-  // }
+  const clickCompletion = async state => {
+    const changeCompletion = confirm(
+      `${studentData?.name}학생을 ${state}처리 하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
+    )
+    if (changeCompletion) {
+      const success = await classCancelMutation({
+        variables: {
+          classCancellationId: parseInt(studentPaymentData.id),
+          courseComplete: state,
+        },
+      })
+      if (success) {
+        const success2 = await searchAndUpdateStudentPayment()
+        if (success2) {
+          console.log(`${studentData?.name}학생을 ${state}처리 하였습니다.`)
+          userLogs(`${studentData?.name}학생 ${state}처리`)
+        }
+      }
+    }
+  }
 
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -569,14 +352,7 @@ export default function StudentsWrite() {
       return formatted
     }
   }
-
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
-
+  console.log(studentPaymentData)
   return (
     <>
       {studentData !== null && (
@@ -680,135 +456,264 @@ export default function StudentsWrite() {
                       studentSubjectData={studentSubjectData}
                       studentPaymentData={studentPaymentData}
                     />
-                    {(mGrade < grade.general ||
-                      mPart.includes('교무팀') ||
-                      mPart.includes('회계팀')) && (
-                      <BtnBox4
-                        $isPayment={studentPaymentDetailData?.length === 0}
-                      >
-                        {studentPaymentDetailData?.length === 0 &&
-                          (mGrade < grade.general ||
-                            mPart.includes('회계팀')) && (
-                            <Button
-                              size="md"
-                              radius="md"
-                              variant="solid"
-                              className={`w-full text-white bg-flag1 ${
-                                mPart.includes('회계팀') && 'lg:w-[50%]'
-                              }`}
-                              onClick={() =>
-                                router.push(
-                                  `/students/write/payment/${paymentId}`,
-                                )
-                              }
-                            >
-                              수강 결제
-                            </Button>
-                          )}
-                        {(mGrade < grade.general ||
-                          mPart.includes('교무팀')) && (
-                          <>
+                    {(mGrade < grade.general || mPart.includes('교무팀')) && (
+                      <>
+                        <div>
+                          <FilterLabel>배정 여부</FilterLabel>
+                          <FlexBtnBox>
                             <Button
                               isDisabled={
-                                studentPaymentData?.amountReceived > 0
-                                  ? studentPaymentData?.lectureAssignment ===
-                                    assignment.withdrawal
-                                    ? true
-                                    : studentPaymentData?.courseComplete ===
-                                        completion.inTraining ||
-                                      studentPaymentData?.courseComplete ===
-                                        completion.notAttended ||
-                                      studentPaymentData?.courseComplete === ''
-                                    ? false
-                                    : true
-                                  : true
+                                studentPaymentData?.lectureAssignment ===
+                                  assignment.unassigned ||
+                                studentPaymentData?.lectureAssignment ===
+                                  assignment.assignment ||
+                                studentPaymentData?.lectureAssignment ===
+                                  assignment.withdrawal
+                                  ? true
+                                  : false
                               }
                               size="md"
                               radius="md"
-                              variant="bordered"
-                              color="primary"
-                              className="w-full lg:max-w-[50%]"
-                              onClick={clickLectureAssignment}
+                              variant={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.unassigned
+                                  ? 'solid'
+                                  : 'bordered'
+                              }
+                              className={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.unassigned
+                                  ? 'w-full text-white bg-[#07bbae]'
+                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                              }
+                              onClick={() =>
+                                clickAssignment(assignment.unassigned)
+                              }
                             >
-                              {studentPaymentData?.lectureAssignment ===
-                              assignment.assignment
-                                ? '배정 취소'
-                                : '강의배정'}
+                              {assignment.unassigned}
                             </Button>
-                            {(studentPaymentData?.lectureAssignment ===
-                              assignment.assignment ||
-                              studentPaymentData?.lectureAssignment ===
-                                assignment.withdrawal) && (
-                              <>
-                                <Button
-                                  isDisabled={
-                                    studentPaymentData?.lectureAssignment ===
-                                      assignment.withdrawal ||
-                                    studentPaymentData?.courseComplete ===
-                                      completion.dropout
-                                      ? true
-                                      : false
-                                  }
-                                  size="md"
-                                  radius="md"
-                                  variant="solid"
-                                  color="primary"
-                                  className="w-full text-white"
-                                  onClick={clickCompletion}
-                                >
-                                  {studentPaymentData?.courseComplete ===
-                                  completion.completed
-                                    ? '이수처리 취소'
-                                    : '이수처리'}
-                                </Button>
-                                <Button
-                                  isDisabled={
-                                    // studentPaymentData?.lectureAssignment ===
-                                    //   '수강철회' ||
-                                    studentPaymentData?.courseComplete ===
-                                      completion.completed ||
-                                    studentPaymentData?.courseComplete ===
-                                      completion.dropout
-                                      ? true
-                                      : false
-                                  }
-                                  size="md"
-                                  radius="md"
-                                  variant="bordered"
-                                  className="w-full text-flag1 border-flag1"
-                                  onClick={clickWithdrawal}
-                                >
-                                  {studentPaymentData?.lectureAssignment ===
-                                  assignment.withdrawal
-                                    ? '수강철회 취소'
-                                    : '수강철회'}
-                                </Button>
-                                <Button
-                                  isDisabled={
-                                    studentPaymentData?.courseComplete ===
-                                      completion.completed ||
-                                    studentPaymentData?.lectureAssignment ===
-                                      assignment.withdrawal
-                                      ? true
-                                      : false
-                                  }
-                                  size="md"
-                                  radius="md"
-                                  variant="solid"
-                                  className="w-full text-white bg-flag1"
-                                  onClick={clickDropout}
-                                >
-                                  {studentPaymentData?.courseComplete ===
+                            <Button
+                              isDisabled={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.assignment
+                                  ? true
+                                  : false
+                              }
+                              size="md"
+                              radius="md"
+                              variant={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.assignment
+                                  ? 'solid'
+                                  : 'bordered'
+                              }
+                              className={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.assignment
+                                  ? 'w-full text-white bg-primary'
+                                  : 'w-full text-primary border-primary'
+                              }
+                              onClick={() =>
+                                clickAssignment(assignment.assignment)
+                              }
+                            >
+                              {assignment.assignment}
+                            </Button>
+                            <Button
+                              isDisabled={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.withdrawal
+                                  ? true
+                                  : false
+                              }
+                              size="md"
+                              radius="md"
+                              variant={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.withdrawal
+                                  ? 'solid'
+                                  : 'bordered'
+                              }
+                              className={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.withdrawal
+                                  ? 'w-full text-white bg-flag1'
+                                  : 'w-full text-flag1 border-flag1'
+                              }
+                              onClick={() =>
+                                clickAssignment(assignment.withdrawal)
+                              }
+                            >
+                              {assignment.withdrawal}
+                            </Button>
+                          </FlexBtnBox>
+                        </div>
+                        {studentPaymentData?.lectureAssignment !==
+                          assignment.unassigned && (
+                          <div>
+                            <FilterLabel>수료 여부</FilterLabel>
+                            <FlexBtnBox>
+                              <Button
+                                isDisabled={
+                                  studentPaymentData?.courseComplete ===
+                                    completion.notAttended ||
+                                  studentPaymentData?.courseComplete ===
+                                    completion.completed ||
+                                  studentPaymentData?.courseComplete ===
+                                    completion.notCompleted ||
+                                  studentPaymentData?.courseComplete ===
+                                    completion.dropout
+                                    ? true
+                                    : false
+                                }
+                                size="md"
+                                radius="md"
+                                variant={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.notAttended
+                                    ? 'solid'
+                                    : 'bordered'
+                                }
+                                className={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.notAttended
+                                    ? 'w-full text-white bg-[#07bbae]'
+                                    : 'w-full text-[#07bbae] border-[#07bbae]'
+                                }
+                                onClick={() =>
+                                  clickCompletion(completion.notAttended)
+                                }
+                              >
+                                {completion.notAttended}
+                              </Button>
+                              <Button
+                                isDisabled={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.inTraining
+                                    ? true
+                                    : false
+                                }
+                                size="md"
+                                radius="md"
+                                variant={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.inTraining
+                                    ? 'solid'
+                                    : 'bordered'
+                                }
+                                className={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.inTraining
+                                    ? 'w-full text-white bg-primary'
+                                    : 'w-full text-primary border-primary'
+                                }
+                                onClick={() =>
+                                  clickCompletion(completion.inTraining)
+                                }
+                              >
+                                {completion.inTraining}
+                              </Button>
+                              <Button
+                                isDisabled={
+                                  studentPaymentData?.courseComplete ===
                                   completion.dropout
-                                    ? '중도포기 철회'
-                                    : '중도포기'}
-                                </Button>
-                              </>
-                            )}
-                          </>
+                                    ? true
+                                    : false
+                                }
+                                size="md"
+                                radius="md"
+                                variant={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.dropout
+                                    ? 'solid'
+                                    : 'bordered'
+                                }
+                                className={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.dropout
+                                    ? 'w-full text-white bg-flag1'
+                                    : 'w-full text-flag1 border-flag1'
+                                }
+                                onClick={() =>
+                                  clickCompletion(completion.dropout)
+                                }
+                              >
+                                {completion.dropout}
+                              </Button>
+                              <Button
+                                isDisabled={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.completed
+                                    ? true
+                                    : false
+                                }
+                                size="md"
+                                radius="md"
+                                variant={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.completed
+                                    ? 'solid'
+                                    : 'bordered'
+                                }
+                                className={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.completed
+                                    ? 'w-full text-white bg-primary'
+                                    : 'w-full text-primary border-primary'
+                                }
+                                onClick={() =>
+                                  clickCompletion(completion.completed)
+                                }
+                              >
+                                {completion.completed}
+                              </Button>
+                              <Button
+                                isDisabled={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.notCompleted
+                                    ? true
+                                    : false
+                                }
+                                size="md"
+                                radius="md"
+                                variant={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.notCompleted
+                                    ? 'solid'
+                                    : 'bordered'
+                                }
+                                className={
+                                  studentPaymentData?.courseComplete ===
+                                  completion.notCompleted
+                                    ? 'w-full text-white bg-flag1'
+                                    : 'w-full text-flag1 border-flag1'
+                                }
+                                onClick={() =>
+                                  clickCompletion(completion.notCompleted)
+                                }
+                              >
+                                {completion.notCompleted}
+                              </Button>
+                            </FlexBtnBox>
+                          </div>
                         )}
-                      </BtnBox4>
+                      </>
                     )}
+
+                    {studentPaymentDetailData?.length === 0 &&
+                      (mGrade < grade.general || mPart.includes('회계팀')) && (
+                        <Button
+                          size="md"
+                          radius="md"
+                          variant="solid"
+                          className="w-full mx-auto text-white bg-flag1 lg:w-[50%]"
+                          onClick={() =>
+                            router.push(`/students/write/payment/${paymentId}`)
+                          }
+                        >
+                          수강 결제
+                        </Button>
+                      )}
                   </DetailDiv>
                 </DetailBox>
               </>

@@ -91,8 +91,9 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+  position: relative;
 `
-const AreaSmallBox = styled.div``
+
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -507,6 +508,7 @@ export default function StudentsWrite() {
                             </LodingDiv>
                           }
                         >
+                          <></>
                           <AdviceMultiSelect
                             selecedKey={adviceType}
                             field={field}
