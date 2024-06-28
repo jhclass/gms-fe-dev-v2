@@ -429,9 +429,7 @@ export default function StudentsWrite() {
                         <Button
                           isDisabled={
                             studentPaymentData?.lectureAssignment ===
-                              assignment.assignment ||
-                            studentPaymentData?.lectureAssignment ===
-                              assignment.withdrawal
+                            assignment.withdrawal
                               ? true
                               : false
                           }
@@ -477,15 +475,16 @@ export default function StudentsWrite() {
                               variant={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.unassigned
-                                  ? 'solid'
-                                  : 'bordered'
+                                  ? 'bordered'
+                                  : 'solid'
                               }
-                              className={
+                              color={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.unassigned
-                                  ? 'w-full text-white bg-[#07bbae]'
-                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                                  ? 'primary'
+                                  : 'default'
                               }
+                              className="w-full"
                               onClick={() =>
                                 clickAssignment(assignment.unassigned)
                               }
@@ -504,15 +503,16 @@ export default function StudentsWrite() {
                               variant={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.assignment
-                                  ? 'solid'
-                                  : 'bordered'
+                                  ? 'bordered'
+                                  : 'solid'
                               }
-                              className={
+                              color={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.assignment
-                                  ? 'w-full text-white bg-primary'
-                                  : 'w-full text-primary border-primary'
+                                  ? 'primary'
+                                  : 'default'
                               }
+                              className="w-full"
                               onClick={() =>
                                 clickAssignment(assignment.assignment)
                               }
@@ -531,15 +531,16 @@ export default function StudentsWrite() {
                               variant={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.withdrawal
-                                  ? 'solid'
-                                  : 'bordered'
+                                  ? 'bordered'
+                                  : 'solid'
                               }
-                              className={
+                              color={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.withdrawal
-                                  ? 'w-full text-white bg-flag1'
-                                  : 'w-full text-flag1 border-flag1'
+                                  ? 'primary'
+                                  : 'default'
                               }
+                              className="w-full"
                               onClick={() =>
                                 clickAssignment(assignment.withdrawal)
                               }
@@ -571,15 +572,16 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.notAttended
-                                    ? 'solid'
-                                    : 'bordered'
+                                    ? 'bordered'
+                                    : 'solid'
                                 }
-                                className={
+                                color={
                                   studentPaymentData?.courseComplete ===
                                   completion.notAttended
-                                    ? 'w-full text-white bg-[#07bbae]'
-                                    : 'w-full text-[#07bbae] border-[#07bbae]'
+                                    ? 'primary'
+                                    : 'default'
                                 }
+                                className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.notAttended)
                                 }
@@ -598,15 +600,16 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.inTraining
-                                    ? 'solid'
-                                    : 'bordered'
+                                    ? 'bordered'
+                                    : 'solid'
                                 }
-                                className={
+                                color={
                                   studentPaymentData?.courseComplete ===
                                   completion.inTraining
-                                    ? 'w-full text-white bg-primary'
-                                    : 'w-full text-primary border-primary'
+                                    ? 'primary'
+                                    : 'default'
                                 }
+                                className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.inTraining)
                                 }
@@ -625,15 +628,16 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.dropout
-                                    ? 'solid'
-                                    : 'bordered'
+                                    ? 'bordered'
+                                    : 'solid'
                                 }
-                                className={
+                                color={
                                   studentPaymentData?.courseComplete ===
                                   completion.dropout
-                                    ? 'w-full text-white bg-flag1'
-                                    : 'w-full text-flag1 border-flag1'
+                                    ? 'primary'
+                                    : 'default'
                                 }
+                                className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.dropout)
                                 }
@@ -652,15 +656,16 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.completed
-                                    ? 'solid'
-                                    : 'bordered'
+                                    ? 'bordered'
+                                    : 'solid'
                                 }
-                                className={
+                                color={
                                   studentPaymentData?.courseComplete ===
                                   completion.completed
-                                    ? 'w-full text-white bg-primary'
-                                    : 'w-full text-primary border-primary'
+                                    ? 'primary'
+                                    : 'default'
                                 }
+                                className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.completed)
                                 }
@@ -679,15 +684,16 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.notCompleted
-                                    ? 'solid'
-                                    : 'bordered'
+                                    ? 'bordered'
+                                    : 'solid'
                                 }
-                                className={
+                                color={
                                   studentPaymentData?.courseComplete ===
                                   completion.notCompleted
-                                    ? 'w-full text-white bg-flag1'
-                                    : 'w-full text-flag1 border-flag1'
+                                    ? 'primary'
+                                    : 'default'
                                 }
+                                className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.notCompleted)
                                 }
