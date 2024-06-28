@@ -182,7 +182,7 @@ export default function StudentsWrite() {
       alert('등록된 시간표가 없습니다.')
     }
   }
-
+  console.log(sortStudents)
   return (
     <>
       <MainWrap>
@@ -232,7 +232,9 @@ export default function StudentsWrite() {
                 {sortStudents &&
                   sortStudents
                     .filter(
-                      student => student.courseComplete !== completion.dropout,
+                      student =>
+                        student.courseComplete !== completion.dropout &&
+                        student.subDiv === '국가기간',
                     )
                     .map((item, index) => (
                       <Link href="#" key={index}>
