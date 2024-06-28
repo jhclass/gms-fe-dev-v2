@@ -406,6 +406,14 @@ const category: Category[] = [
     exposure: true,
     children: [
       {
+        href: '/sms',
+        name: 'SMS',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
+      {
         href: '/',
         name: '받은요청 목록',
         exposure: true,

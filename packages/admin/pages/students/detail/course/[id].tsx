@@ -28,41 +28,49 @@ const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
 `
+
 const DetailBox = styled.div`
   margin-top: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
+
 const TopInfo = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 0.5rem;
   font-size: 0.8rem;
+
   @media (max-width: 768px) {
     align-items: flex-end;
     flex-direction: column-reverse;
   }
 `
+
 const Noti = styled.p`
   span {
     color: red;
   }
 `
+
 const UpdateTime = styled.p`
   span {
     color: #555;
   }
 `
+
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
   @media (max-width: 768px) {
     gap: 1rem;
   }
 `
+
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -71,6 +79,7 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
+
 const AreaTitle = styled.div`
   display: flex;
   justify-content: space-between;
@@ -81,10 +90,12 @@ const AreaTitle = styled.div`
     font-weight: 600;
   }
 `
+
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
 `
+
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -92,10 +103,12 @@ const FilterLabel = styled.label`
   color: #11181c;
   display: block;
   padding-bottom: 0.375rem;
+
   span {
     color: red;
   }
 `
+
 const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -109,10 +122,11 @@ const FlexBtnBox = styled.div`
   @media (max-width: 768px) {
     flex-wrap: wrap;
     button {
-      width: calc(33.3333% - 0.5rem);
+      width: calc(50% - 0.5rem);
     }
   }
 `
+
 const LineBox = styled.div`
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -121,6 +135,7 @@ const LineBox = styled.div`
   line-height: 40px;
   font-size: 0.875rem;
 `
+
 const FlatBox = styled.div`
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -130,6 +145,7 @@ const FlatBox = styled.div`
   border-radius: 0.5rem;
   font-size: 0.875rem;
 `
+
 const MemoList = styled.ul`
   width: 100%;
   display: flex;
@@ -140,11 +156,13 @@ const MemoList = styled.ul`
     gap: 1.5rem;
   }
 `
+
 const MemoItem = styled.li`
   width: 100%;
   display: flex;
   gap: 1rem;
   align-items: center;
+
   textarea {
     width: 100%;
   }
@@ -257,7 +275,7 @@ export default function StudentsWrite() {
 
   const editAssignment = async state => {
     const changeAssignment = confirm(
-      `${studentData?.name}학생을 ${state}하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
+      `${studentData?.name}학생을 "${state}"하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
     )
     if (changeAssignment) {
       const isCurrentlyAssigned =
@@ -273,10 +291,26 @@ export default function StudentsWrite() {
           },
         })
         if (success) {
-          const success2 = await searchAndUpdateStudentPayment()
-          if (success2) {
-            console.log(`${studentData?.name}학생을 ${state}처리 하였습니다.`)
-            userLogs(`${studentData?.name}학생 ${state}처리`)
+          if (state !== assignment.assignment) {
+            await classCancelMutation({
+              variables: {
+                classCancellationId: parseInt(studentPaymentData.id),
+                courseComplete: '미참여',
+              },
+              onCompleted: async () => {
+                const success2 = await searchAndUpdateStudentPayment()
+                if (success2) {
+                  alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
+                  userLogs(`${studentData?.name}학생 "${state}"처리`)
+                }
+              },
+            })
+          } else {
+            const success2 = await searchAndUpdateStudentPayment()
+            if (success2) {
+              alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
+              userLogs(`${studentData?.name}학생 "${state}"처리`)
+            }
           }
         }
         return success
@@ -313,7 +347,7 @@ export default function StudentsWrite() {
 
   const clickCompletion = async state => {
     const changeCompletion = confirm(
-      `${studentData?.name}학생을 ${state}처리 하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
+      `${studentData?.name}학생을 "${state}"처리 하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
     )
     if (changeCompletion) {
       const success = await classCancelMutation({
@@ -325,8 +359,8 @@ export default function StudentsWrite() {
       if (success) {
         const success2 = await searchAndUpdateStudentPayment()
         if (success2) {
-          console.log(`${studentData?.name}학생을 ${state}처리 하였습니다.`)
-          userLogs(`${studentData?.name}학생 ${state}처리`)
+          alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
+          userLogs(`${studentData?.name}학생 "${state}"처리`)
         }
       }
     }
@@ -352,7 +386,7 @@ export default function StudentsWrite() {
       return formatted
     }
   }
-  console.log(studentPaymentData)
+
   return (
     <>
       {studentData !== null && (
@@ -462,11 +496,7 @@ export default function StudentsWrite() {
                             <Button
                               isDisabled={
                                 studentPaymentData?.lectureAssignment ===
-                                  assignment.unassigned ||
-                                studentPaymentData?.lectureAssignment ===
-                                  assignment.assignment ||
-                                studentPaymentData?.lectureAssignment ===
-                                  assignment.withdrawal
+                                assignment.unassigned
                                   ? true
                                   : false
                               }
@@ -475,15 +505,10 @@ export default function StudentsWrite() {
                               variant={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.unassigned
-                                  ? 'bordered'
-                                  : 'solid'
+                                  ? 'solid'
+                                  : 'bordered'
                               }
-                              color={
-                                studentPaymentData?.lectureAssignment ===
-                                assignment.unassigned
-                                  ? 'primary'
-                                  : 'default'
-                              }
+                              color="primary"
                               className="w-full"
                               onClick={() =>
                                 clickAssignment(assignment.unassigned)
@@ -503,15 +528,10 @@ export default function StudentsWrite() {
                               variant={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.assignment
-                                  ? 'bordered'
-                                  : 'solid'
+                                  ? 'solid'
+                                  : 'bordered'
                               }
-                              color={
-                                studentPaymentData?.lectureAssignment ===
-                                assignment.assignment
-                                  ? 'primary'
-                                  : 'default'
-                              }
+                              color="primary"
                               className="w-full"
                               onClick={() =>
                                 clickAssignment(assignment.assignment)
@@ -531,15 +551,10 @@ export default function StudentsWrite() {
                               variant={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.withdrawal
-                                  ? 'bordered'
-                                  : 'solid'
+                                  ? 'solid'
+                                  : 'bordered'
                               }
-                              color={
-                                studentPaymentData?.lectureAssignment ===
-                                assignment.withdrawal
-                                  ? 'primary'
-                                  : 'default'
-                              }
+                              color="primary"
                               className="w-full"
                               onClick={() =>
                                 clickAssignment(assignment.withdrawal)
@@ -549,48 +564,14 @@ export default function StudentsWrite() {
                             </Button>
                           </FlexBtnBox>
                         </div>
-                        {studentPaymentData?.lectureAssignment !==
-                          assignment.unassigned && (
+                        {studentPaymentData?.lectureAssignment ==
+                          assignment.assignment && (
                           <div>
                             <FilterLabel>수료 여부</FilterLabel>
                             <FlexBtnBox>
                               <Button
                                 isDisabled={
                                   studentPaymentData?.courseComplete ===
-                                    completion.notAttended ||
-                                  studentPaymentData?.courseComplete ===
-                                    completion.completed ||
-                                  studentPaymentData?.courseComplete ===
-                                    completion.notCompleted ||
-                                  studentPaymentData?.courseComplete ===
-                                    completion.dropout
-                                    ? true
-                                    : false
-                                }
-                                size="md"
-                                radius="md"
-                                variant={
-                                  studentPaymentData?.courseComplete ===
-                                  completion.notAttended
-                                    ? 'bordered'
-                                    : 'solid'
-                                }
-                                color={
-                                  studentPaymentData?.courseComplete ===
-                                  completion.notAttended
-                                    ? 'primary'
-                                    : 'default'
-                                }
-                                className="w-full"
-                                onClick={() =>
-                                  clickCompletion(completion.notAttended)
-                                }
-                              >
-                                {completion.notAttended}
-                              </Button>
-                              <Button
-                                isDisabled={
-                                  studentPaymentData?.courseComplete ===
                                   completion.inTraining
                                     ? true
                                     : false
@@ -600,15 +581,10 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.inTraining
-                                    ? 'bordered'
-                                    : 'solid'
+                                    ? 'solid'
+                                    : 'bordered'
                                 }
-                                color={
-                                  studentPaymentData?.courseComplete ===
-                                  completion.inTraining
-                                    ? 'primary'
-                                    : 'default'
-                                }
+                                color="primary"
                                 className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.inTraining)
@@ -628,15 +604,10 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.dropout
-                                    ? 'bordered'
-                                    : 'solid'
+                                    ? 'solid'
+                                    : 'bordered'
                                 }
-                                color={
-                                  studentPaymentData?.courseComplete ===
-                                  completion.dropout
-                                    ? 'primary'
-                                    : 'default'
-                                }
+                                color="primary"
                                 className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.dropout)
@@ -656,15 +627,10 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.completed
-                                    ? 'bordered'
-                                    : 'solid'
+                                    ? 'solid'
+                                    : 'bordered'
                                 }
-                                color={
-                                  studentPaymentData?.courseComplete ===
-                                  completion.completed
-                                    ? 'primary'
-                                    : 'default'
-                                }
+                                color="primary"
                                 className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.completed)
@@ -684,15 +650,10 @@ export default function StudentsWrite() {
                                 variant={
                                   studentPaymentData?.courseComplete ===
                                   completion.notCompleted
-                                    ? 'bordered'
-                                    : 'solid'
+                                    ? 'solid'
+                                    : 'bordered'
                                 }
-                                color={
-                                  studentPaymentData?.courseComplete ===
-                                  completion.notCompleted
-                                    ? 'primary'
-                                    : 'default'
-                                }
+                                color="primary"
                                 className="w-full"
                                 onClick={() =>
                                   clickCompletion(completion.notCompleted)
