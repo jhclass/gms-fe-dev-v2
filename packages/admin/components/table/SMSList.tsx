@@ -1,31 +1,13 @@
-import { useSuspenseQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { Fragment, useEffect, useState } from 'react'
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Pagination,
+  ScrollShadow,
+} from '@nextui-org/react'
+import { useState } from 'react'
 import { styled } from 'styled-components'
-import ConsultItem from '@/components/table/ConsultItem'
-import {
-  MME_FAVO_QUERY,
-  SEARCH_MANAGEUSER_QUERY,
-  SEE_FAVORITESTATE_QUERY,
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
-import router from 'next/router'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
-import {
-  ManageUser,
-  SearchManageUserResult,
-  StudentState,
-  StudentStateResponse,
-} from '@/src/generated/graphql'
-import MasageItem from './MasageItem'
-import SMSItem from './SMSItem'
 
-const TableArea = styled.div`
-  margin-top: 0.5rem;
-`
 const TTopic = styled.div`
   display: flex;
   align-items: center;
@@ -40,87 +22,25 @@ const Ttotal = styled.p`
     color: #007de9;
   }
 `
-const TableWrap = styled.div`
-  width: 100%;
-  display: table;
-  min-width: calc(100% - 20rem);
-`
-const Theader = styled.div`
-  width: 100%;
-  min-width: fit-content;
-  display: table-row;
-  flex-wrap: nowrap;
-  row-gap: 1rem;
-  color: #111;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
-  text-align: center;
+const FlexBox = styled.div`
+  margin-top: 1rem;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: grid;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 `
 
-const TheaderBox = styled.div`
-  display: flex;
-`
-const ClickBox = styled.div`
-  display: flex;
-  width: 100%;
-`
-const Tnum = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 6%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-`
-const Tname = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 12%;
-  padding: 1rem;
-  font-size: inherit;
-
-  font-weight: 600;
-`
-const Tcon = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 58%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-`
-const TDate = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 12%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-`
-const PagerWrap = styled.div`
-  display: flex;
-  margin-top: 1.5rem;
-  justify-content: center;
-`
-const Nolist = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
-`
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
-}
 export default function SMSList() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+  // const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
 
@@ -135,43 +55,68 @@ export default function SMSList() {
           총 <span>1</span>건
         </Ttotal>
       </TTopic>
-      <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <ClickBox>
-                  <TDate>발송일시</TDate>
-                  <Tnum>문자타입</Tnum>
-                  <TDate>전송결과</TDate>
-                  <Tname>수신번호</Tname>
-                  <TDate>발신번호</TDate>
-                  <Tcon>메세지</Tcon>
-                </ClickBox>
-              </TheaderBox>
-            </Theader>
-            <SMSItem />
-            {/* {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>} */}
-          </TableWrap>
-        </ScrollShadow>
-        {/* {totalCount > 0 && ( */}
-        <PagerWrap>
-          <Pagination
-            variant="light"
-            showControls
-            // initialPage={currentPage}
-            // page={currentPage}
-            initialPage={1}
-            page={1}
-            // total={Math.ceil(totalCount / currentLimit)}
-            total={3}
-            onChange={newPage => {
-              setCurrentPage(newPage)
-            }}
-          />
-        </PagerWrap>
-        {/* )} */}
-      </TableArea>
+      <FlexBox>
+        <Card
+          shadow="none"
+          classNames={{
+            base: 'bg-transparent',
+          }}
+        >
+          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+            <ScrollShadow orientation="horizontal" className="scrollbar">
+              <div className="pr-[0.5rem]">
+                asddasd1234123412341235fdfasdfasdfas
+              </div>
+            </ScrollShadow>
+          </CardBody>
+          <CardFooter className="justify-center gap-[0.5rem] text-small"></CardFooter>
+        </Card>
+        <Card
+          shadow="none"
+          classNames={{
+            base: 'bg-transparent',
+          }}
+        >
+          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+            <ScrollShadow orientation="horizontal" className="scrollbar">
+              <div className="pr-[0.5rem]">
+                asddasd1234123412341235fdfasdfasdfas
+              </div>
+            </ScrollShadow>
+          </CardBody>
+          <CardFooter className="justify-center gap-[0.5rem] text-small"></CardFooter>
+        </Card>
+        <Card
+          shadow="none"
+          classNames={{
+            base: 'bg-transparent',
+          }}
+        >
+          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+            <ScrollShadow orientation="horizontal" className="scrollbar">
+              <div className="pr-[0.5rem]">
+                asddasd1234123412341235fdfasdfasdfas
+              </div>
+            </ScrollShadow>
+          </CardBody>
+          <CardFooter className="justify-center gap-[0.5rem] text-small"></CardFooter>
+        </Card>
+        <Card
+          shadow="none"
+          classNames={{
+            base: 'bg-transparent',
+          }}
+        >
+          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+            <ScrollShadow orientation="horizontal" className="scrollbar">
+              <div className="pr-[0.5rem]">
+                asddasd1234123412341235fdfasdfasdfas
+              </div>
+            </ScrollShadow>
+          </CardBody>
+          <CardFooter className="justify-center gap-[0.5rem] text-small"></CardFooter>
+        </Card>
+      </FlexBox>
     </>
   )
 }
