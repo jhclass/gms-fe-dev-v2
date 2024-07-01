@@ -2,6 +2,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Pagination,
   ScrollShadow,
 } from '@nextui-org/react'
@@ -62,6 +63,12 @@ export default function SMSList() {
             base: 'bg-transparent',
           }}
         >
+          <CardHeader>
+            <div>
+              <p>2024-05-06 11:23:43</p>
+              <p>발송완료</p>
+            </div>
+          </CardHeader>
           <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
             <ScrollShadow orientation="horizontal" className="scrollbar">
               <div className="pr-[0.5rem]">
