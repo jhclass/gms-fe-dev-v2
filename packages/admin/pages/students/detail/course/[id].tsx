@@ -511,8 +511,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.unassigned
-                                  ? 'w-full text-white bg-[#07bbae]'
-                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
+                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.unassigned)
@@ -538,8 +538,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.assignment
-                                  ? 'w-full text-white bg-[#07bbae]'
-                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
+                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.assignment)
@@ -565,8 +565,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.withdrawal
-                                  ? 'w-full text-white bg-[#07bbae]'
-                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
+                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.withdrawal)
@@ -597,7 +597,7 @@ export default function StudentsWrite() {
                                     : 'bordered'
                                 }
                                 color="primary"
-                                className="w-full"
+                                className="w-full opacity-100"
                                 onClick={() =>
                                   clickCompletion(completion.inTraining)
                                 }
@@ -620,7 +620,7 @@ export default function StudentsWrite() {
                                     : 'bordered'
                                 }
                                 color="primary"
-                                className="w-full"
+                                className="w-full opacity-100"
                                 onClick={() =>
                                   clickCompletion(completion.dropout)
                                 }
@@ -643,7 +643,7 @@ export default function StudentsWrite() {
                                     : 'bordered'
                                 }
                                 color="primary"
-                                className="w-full"
+                                className="w-full opacity-100"
                                 onClick={() =>
                                   clickCompletion(completion.completed)
                                 }
@@ -666,7 +666,7 @@ export default function StudentsWrite() {
                                     : 'bordered'
                                 }
                                 color="primary"
-                                className="w-full"
+                                className="w-full opacity-100"
                                 onClick={() =>
                                   clickCompletion(completion.notCompleted)
                                 }
