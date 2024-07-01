@@ -182,7 +182,7 @@ export default function StudentsWrite() {
       alert('등록된 시간표가 없습니다.')
     }
   }
-  console.log(sortStudents)
+
   return (
     <>
       <MainWrap>
