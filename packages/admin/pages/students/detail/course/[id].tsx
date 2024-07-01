@@ -508,8 +508,12 @@ export default function StudentsWrite() {
                                   ? 'solid'
                                   : 'bordered'
                               }
-                              color="primary"
-                              className="w-full"
+                              className={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.unassigned
+                                  ? 'w-full text-white bg-[#07bbae]'
+                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                              }
                               onClick={() =>
                                 clickAssignment(assignment.unassigned)
                               }
@@ -531,8 +535,12 @@ export default function StudentsWrite() {
                                   ? 'solid'
                                   : 'bordered'
                               }
-                              color="primary"
-                              className="w-full"
+                              className={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.assignment
+                                  ? 'w-full text-white bg-[#07bbae]'
+                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                              }
                               onClick={() =>
                                 clickAssignment(assignment.assignment)
                               }
@@ -554,8 +562,12 @@ export default function StudentsWrite() {
                                   ? 'solid'
                                   : 'bordered'
                               }
-                              color="primary"
-                              className="w-full"
+                              className={
+                                studentPaymentData?.lectureAssignment ===
+                                assignment.withdrawal
+                                  ? 'w-full text-white bg-[#07bbae]'
+                                  : 'w-full text-[#07bbae] border-[#07bbae]'
+                              }
                               onClick={() =>
                                 clickAssignment(assignment.withdrawal)
                               }
