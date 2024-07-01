@@ -142,23 +142,9 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: #71717a;
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
 
 export default function StudentsWrite() {
   const router = useRouter()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
   const { userLogs } = useUserLogsMutation()
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
   const {
@@ -239,13 +225,6 @@ export default function StudentsWrite() {
           alert(result.createManagerAccount.error)
         }
       },
-    })
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'teacherType' },
     })
   }
 
@@ -591,7 +570,7 @@ export default function StudentsWrite() {
                       {...register('mPart', {
                         required: {
                           value: true,
-                          message: '강의분야를 입력해주세요.',
+                          message: '부서명을 입력해주세요.',
                         },
                         pattern: {
                           value: /^[가-힣a-zA-Z0-9\s]*$/,
@@ -603,18 +582,6 @@ export default function StudentsWrite() {
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}
                       </p>
-                    )}
-                    {(mGrade < grade.general || mPart.includes('교무팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          강의분야 추가
-                        </Link>
-                      </AddLink>
                     )}
                   </AreaBox>
                   <AreaBox>

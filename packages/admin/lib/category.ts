@@ -421,6 +421,14 @@ const category: Category[] = [
         isFilter: true,
         isWrite: '',
       },
+      {
+        href: '/sms',
+        name: 'SMS',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
     ],
   },
   {

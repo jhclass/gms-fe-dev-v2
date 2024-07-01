@@ -169,6 +169,14 @@ export default function Attendance({ lectureData, students }) {
       return `${year}-${month}-${day}`
     }
 
+    if (today < lectureData.lecturePeriodStart) {
+      return array[0]
+    }
+
+    if (today > lectureData.lecturePeriodEnd) {
+      return array[array.length - 1]
+    }
+
     while (true) {
       const formattedDate = formatDate(currentDate)
       const chunk = array.find(chunk => chunk.includes(formattedDate))
@@ -189,6 +197,14 @@ export default function Attendance({ lectureData, students }) {
     }
 
     let currentDate = new Date(data)
+
+    if (today < lectureData.lecturePeriodStart) {
+      return 0
+    }
+
+    if (today > lectureData.lecturePeriodEnd) {
+      return chunks.length - 1
+    }
 
     while (true) {
       const formattedDate = formatDate(currentDate)
@@ -501,6 +517,7 @@ export default function Attendance({ lectureData, students }) {
       },
     })
   }
+
   return (
     week && (
       <>
