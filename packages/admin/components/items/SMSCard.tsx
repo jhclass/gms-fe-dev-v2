@@ -15,10 +15,10 @@ const FlexBox = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1400px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   @media (max-width: 480px) {

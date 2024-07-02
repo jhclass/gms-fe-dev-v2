@@ -11,7 +11,9 @@ import {
   Radio,
   RadioGroup,
   Textarea,
+  useDisclosure,
 } from '@nextui-org/react'
+import SMSAddrModal from '@/components/modal/SMSAddrModal'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -19,28 +21,57 @@ const ConBox = styled.div`
   position: relative;
   display: flex;
   gap: 1rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `
 
 const LeftBox = styled.div`
-  width: 20rem;
+  width: 24rem;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem 1rem;
+  height: fit-content;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 const RightBox = styled.div`
-  width: calc(100% - 20rem);
+  width: calc(100% - 24rem);
   display: flex;
   flex-direction: column;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 const FlexBox = styled.div`
-  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `
+const ByteBox = styled.div`
+  display: flex;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+  color: #71717a;
+  font-size: 0.875rem;
+  gap: 0.5rem;
+`
+const ChipBox = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`
+
 const RoundBox = styled.div`
-  background: #fff;
-  border-radius: 1rem;
+  padding: 0.5rem;
+  border-top: 1px solid #e3e3e6;
 `
 const FilterLabel = styled.label`
   font-weight: 500;
@@ -68,6 +99,7 @@ export default function message() {
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [studentFilter, setStudentFilter] = useState()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
@@ -88,7 +120,12 @@ export default function message() {
               placeholder="문자내용을 작성해주세요."
               minRows={10}
             />
-            <div>
+            <ByteBox>
+              <p>0/90byte</p>
+              <p>SMS</p>
+            </ByteBox>
+
+            <RoundBox>
               <FlexBox>
                 <RadioGroup
                   defaultValue="개인"
@@ -102,63 +139,91 @@ export default function message() {
                     <FilterLabel>학원</FilterLabel>
                   </Radio>
                 </RadioGroup>
-                <Button size="sm" color="primary">
+                <Button size="sm" color="primary" variant="bordered">
                   문자함 저장
                 </Button>
               </FlexBox>
-              <RoundBox>
-                <FlexBox>
-                  <FilterLabel>받는사람</FilterLabel>
-                  <Button size="sm" color="primary">
-                    검색
-                  </Button>
-                </FlexBox>
-                <FlexBox>
-                  <Chip
-                    variant="bordered"
-                    onClose={() => console.log('a')}
-                    className={'hover:border-primary'}
-                  >
-                    호호 &#91;01012341234&#93;
-                  </Chip>
-                </FlexBox>
-              </RoundBox>
-              <RoundBox>
-                <FlexBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="'-'없이 작성해주세요"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    label={<FilterLabel>보내는사람</FilterLabel>}
-                    maxLength={11}
-                    defaultValue="01059494922"
-                    // onChange={e => {
-                    //   register('phoneNum1').onChange(e)
-                    // }}
-                    className="w-full"
-                    // {...register('phoneNum1', {
-                    //   required: {
-                    //     value: true,
-                    //     message: '휴대폰번호를 입력해주세요.',
-                    //   },
-                    //   maxLength: {
-                    //     value: 11,
-                    //     message: '최대 11자리까지 입력 가능합니다.',
-                    //   },
-                    //   minLength: {
-                    //     value: 10,
-                    //     message: '최소 10자리 이상이어야 합니다.',
-                    //   },
-                    //   pattern: {
-                    //     value: /^010[0-9]{7,8}$/,
-                    //     message: '010으로 시작해주세요.',
-                    //   },
-                    // })}
-                  />
-                </FlexBox>
-              </RoundBox>
+            </RoundBox>
+            <RoundBox>
+              <FlexBox>
+                <FilterLabel>받는사람</FilterLabel>
+                <Button
+                  size="sm"
+                  color="primary"
+                  variant="bordered"
+                  onClick={onOpen}
+                >
+                  검색
+                </Button>
+              </FlexBox>
+              <ChipBox>
+                <Chip
+                  variant="bordered"
+                  onClose={() => console.log('a')}
+                  className={'hover:border-primary'}
+                >
+                  호호 &#91;01012341234&#93;
+                </Chip>
+                <Chip
+                  variant="bordered"
+                  onClose={() => console.log('a')}
+                  className={'hover:border-primary'}
+                >
+                  호호 &#91;01012341234&#93;
+                </Chip>
+                <Chip
+                  variant="bordered"
+                  onClose={() => console.log('a')}
+                  className={'hover:border-primary'}
+                >
+                  호호 &#91;01012341234&#93;
+                </Chip>
+                <Chip
+                  variant="bordered"
+                  onClose={() => console.log('a')}
+                  className={'hover:border-primary'}
+                >
+                  호호 &#91;01012341234&#93;
+                </Chip>
+              </ChipBox>
+            </RoundBox>
+            <RoundBox>
+              <FlexBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="'-'없이 작성해주세요"
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label={<FilterLabel>보내는사람</FilterLabel>}
+                  maxLength={11}
+                  defaultValue="01059494922"
+                  // onChange={e => {
+                  //   register('phoneNum1').onChange(e)
+                  // }}
+                  className="w-full"
+                  // {...register('phoneNum1', {
+                  //   required: {
+                  //     value: true,
+                  //     message: '휴대폰번호를 입력해주세요.',
+                  //   },
+                  //   maxLength: {
+                  //     value: 11,
+                  //     message: '최대 11자리까지 입력 가능합니다.',
+                  //   },
+                  //   minLength: {
+                  //     value: 10,
+                  //     message: '최소 10자리 이상이어야 합니다.',
+                  //   },
+                  //   pattern: {
+                  //     value: /^010[0-9]{7,8}$/,
+                  //     message: '010으로 시작해주세요.',
+                  //   },
+                  // })}
+                />
+              </FlexBox>
+            </RoundBox>
+            <RoundBox>
               <FlexBox>
                 <RadioGroup
                   defaultValue="즉시전송"
@@ -173,13 +238,19 @@ export default function message() {
                   </Radio>
                 </RadioGroup>
               </FlexBox>
-            </div>
+            </RoundBox>
+            <RoundBox>
+              <Button color="primary" className="w-full">
+                문자 보내기
+              </Button>
+            </RoundBox>
           </LeftBox>
           <RightBox>
             <SMSTabs />
           </RightBox>
         </ConBox>
       </MainWrap>
+      <SMSAddrModal isOpen={isOpen} onClose={onClose} />
     </>
   )
 }
