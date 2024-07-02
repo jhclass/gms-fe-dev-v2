@@ -1,4 +1,6 @@
 import {
+  Accordion,
+  AccordionItem,
   Button,
   Checkbox,
   CheckboxGroup,
@@ -10,6 +12,13 @@ import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import badwords from '@/lib/badwords.json'
 import { gql, useMutation, useQuery } from '@apollo/react-hooks'
+import styled from 'styled-components'
+
+const AccoBox = styled.div`
+  hr {
+    display: none;
+  }
+`
 
 const CREATE_STUDENT_STATE_MUTATION = gql`
   mutation Mutation(
@@ -194,11 +203,225 @@ export default function Form() {
     console.log(error)
   }
 
+  console.log(adviceList)
   return (
     <>
       <div className="wrap">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-10">
-          <div className="flex flex-col w-full">
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: '상담 분야를 최소 1개 이상 선택해주세요.',
+              },
+            }}
+            name="groupSelected"
+            render={({ field, fieldState }) => (
+              <AccoBox>
+                <p className="mb-3 text-lg text-[#100061] font-bold">
+                  * 원하시는 분야을 선택해주세요. 중복 선택이 가능합니다.
+                </p>
+                <Accordion
+                  variant="light"
+                  className="flex flex-col gap-[0.5rem] px-0"
+                >
+                  <AccordionItem
+                    key="1"
+                    aria-label="webtoon"
+                    title="웹툰"
+                    indicator={<i className="font-bold xi-angle-down" />}
+                    classNames={{
+                      base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                      title: 'text-lg text-[#100061]',
+                      content: 'py-0',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                    }}
+                  >
+                    <CheckboxGroup
+                      value={groupSelected}
+                      orientation={'horizontal'}
+                      onValueChange={handleCheckboxChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      {adviceList !== null &&
+                        adviceList
+                          .filter(item => item.indexNum < 6)
+                          .map((item, index) => (
+                            <Checkbox
+                              key={index}
+                              value={item.id}
+                              radius={'full'}
+                              classNames={{
+                                wrapper: 'before:border-[#100061]',
+                              }}
+                            >
+                              <span className="text-lg text-[#100061]">
+                                {item.type}
+                              </span>
+                            </Checkbox>
+                          ))}
+                      {adviceList === null && (
+                        <div className="text-zinc-600">
+                          등록된 분야가 없습니다.
+                        </div>
+                      )}
+                    </CheckboxGroup>
+                  </AccordionItem>
+                  <AccordionItem
+                    key="2"
+                    aria-label="motion"
+                    title="영상"
+                    indicator={<i className="font-bold xi-angle-down" />}
+                    classNames={{
+                      base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                      title: 'text-lg text-[#100061]',
+                      content: 'py-0',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                    }}
+                  >
+                    <CheckboxGroup
+                      value={groupSelected}
+                      orientation={'horizontal'}
+                      onValueChange={handleCheckboxChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      {adviceList !== null &&
+                        adviceList
+                          .filter(
+                            item => item.indexNum > 5 && item.indexNum < 10,
+                          )
+                          .map((item, index) => (
+                            <Checkbox
+                              key={index}
+                              value={item.id}
+                              radius={'full'}
+                              classNames={{
+                                wrapper: 'before:border-[#100061]',
+                              }}
+                            >
+                              <span className="text-lg text-[#100061]">
+                                {item.type}
+                              </span>
+                            </Checkbox>
+                          ))}
+                      {adviceList === null && (
+                        <div className="text-zinc-600">
+                          등록된 분야가 없습니다.
+                        </div>
+                      )}
+                    </CheckboxGroup>
+                  </AccordionItem>
+                  <AccordionItem
+                    key="3"
+                    aria-label="design"
+                    title="디자인"
+                    indicator={<i className="font-bold xi-angle-down" />}
+                    classNames={{
+                      base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                      title: 'text-lg text-[#100061]',
+                      content: 'py-0',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                    }}
+                  >
+                    <CheckboxGroup
+                      value={groupSelected}
+                      orientation={'horizontal'}
+                      onValueChange={handleCheckboxChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      {adviceList !== null &&
+                        adviceList
+                          .filter(
+                            item => item.indexNum > 9 && item.indexNum < 15,
+                          )
+                          .map((item, index) => (
+                            <Checkbox
+                              key={index}
+                              value={item.id}
+                              radius={'full'}
+                              classNames={{
+                                wrapper: 'before:border-[#100061]',
+                              }}
+                            >
+                              <span className="text-lg text-[#100061]">
+                                {item.type}
+                              </span>
+                            </Checkbox>
+                          ))}
+                      {adviceList === null && (
+                        <div className="text-zinc-600">
+                          등록된 분야가 없습니다.
+                        </div>
+                      )}
+                    </CheckboxGroup>
+                  </AccordionItem>
+                </Accordion>
+              </AccoBox>
+            )}
+          />
+          <div className="mt-4 f-full">
+            <p className="mb-3 text-lg text-[#100061] font-bold">
+              * 원하시는 상담 방식을 선택해주세요. 중복 선택이 가능합니다.
+            </p>
+            <Accordion variant="light" className="px-0 mt-[0.5rem]">
+              <AccordionItem
+                key="4"
+                aria-label="consulting"
+                title="상담 방식 선택"
+                indicator={<i className="font-bold xi-angle-down" />}
+                classNames={{
+                  base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                  title: 'text-lg text-[#100061]',
+                  content: 'py-0',
+                  indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                }}
+              >
+                <Controller
+                  control={control}
+                  name="groupSelected"
+                  render={({ field, fieldState }) => (
+                    <CheckboxGroup
+                      value={methodSelect}
+                      orientation={'horizontal'}
+                      onValueChange={handleMethodChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      <Checkbox
+                        key={'전화상담'}
+                        value={'전화상담'}
+                        radius={'full'}
+                        classNames={{
+                          wrapper: 'before:border-[#100061] ',
+                        }}
+                      >
+                        <span className="text-lg text-[#100061]">전화상담</span>
+                      </Checkbox>
+                      <Checkbox
+                        key={'방문상담'}
+                        value={'방문상담'}
+                        radius={'full'}
+                        classNames={{
+                          wrapper: 'before:border-[#100061] ',
+                        }}
+                      >
+                        <span className="text-lg text-[#100061]">방문상담</span>
+                      </Checkbox>
+                    </CheckboxGroup>
+                  )}
+                />
+              </AccordionItem>
+            </Accordion>
+          </div>
+          {/* <div className="flex flex-col w-full">
             <p className="mb-3 text-lg text-[#100061] font-bold">
               * 원하시는 분야을 선택해주세요. 중복 선택이 가능합니다.
             </p>
@@ -286,8 +509,8 @@ export default function Form() {
                 )}
               />
             </div>
-          </div>
-          <div className="mt-4 f-full">
+          </div> */}
+          <div className="mt-10 f-full">
             <div className="relative w-full border-2 border-[#100061] rounded-lg pt-[4.5rem] wmd:pt-3 pb-3 pr-3 pl-3 wmd:pl-40 min-h-[10rem] wmd:min-h-[4rem] flex flex-wrap mb-2">
               <p className="absolute top-[1rem] wmd:top-[50%] wmd:left-[2rem] wmd:-translate-y-[50%] bg-[#100061] px-5 py-2 text-center font-bold text-white rounded-full">
                 선택 분야
