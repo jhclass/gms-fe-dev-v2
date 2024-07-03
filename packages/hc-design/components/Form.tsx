@@ -55,8 +55,8 @@ const CREATE_STUDENT_STATE_MUTATION = gql`
 `
 
 export const SEE_ADVICE_TYPE_QUERY = gql`
-  query Query($category: String!) {
-    seeAdviceType(category: $category) {
+  query Query($category: String!, $limit: Int) {
+    seeAdviceType(category: $category, limit: $limit) {
       totalCount
       ok
       message
@@ -90,6 +90,7 @@ export default function Form() {
   } = useQuery(SEE_ADVICE_TYPE_QUERY, {
     variables: {
       category: '상담분야',
+      limit: 100,
     },
   })
   const adviceList = adciveData?.seeAdviceType.adviceType || []
@@ -203,7 +204,6 @@ export default function Form() {
     console.log(error)
   }
 
-  console.log(adviceList)
   return (
     <>
       <div className="wrap">
@@ -229,7 +229,7 @@ export default function Form() {
                   <AccordionItem
                     key="1"
                     aria-label="webtoon"
-                    title="웹툰"
+                    title="웹툰/웹소설"
                     indicator={<i className="font-bold xi-angle-down" />}
                     classNames={{
                       base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
@@ -248,7 +248,9 @@ export default function Form() {
                     >
                       {adviceList !== null &&
                         adviceList
-                          .filter(item => item.indexNum < 6)
+                          .filter(
+                            item => item.indexNum >= 13 && item.indexNum <= 23,
+                          )
                           .map((item, index) => (
                             <Checkbox
                               key={index}
@@ -273,7 +275,7 @@ export default function Form() {
                   <AccordionItem
                     key="2"
                     aria-label="motion"
-                    title="영상"
+                    title="2D/3D 모션그래픽"
                     indicator={<i className="font-bold xi-angle-down" />}
                     classNames={{
                       base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
@@ -293,7 +295,7 @@ export default function Form() {
                       {adviceList !== null &&
                         adviceList
                           .filter(
-                            item => item.indexNum > 5 && item.indexNum < 10,
+                            item => item.indexNum >= 1 && item.indexNum <= 12,
                           )
                           .map((item, index) => (
                             <Checkbox
@@ -318,8 +320,8 @@ export default function Form() {
                   </AccordionItem>
                   <AccordionItem
                     key="3"
-                    aria-label="design"
-                    title="디자인"
+                    aria-label="drawing"
+                    title="디지털드로잉"
                     indicator={<i className="font-bold xi-angle-down" />}
                     classNames={{
                       base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
@@ -339,7 +341,145 @@ export default function Form() {
                       {adviceList !== null &&
                         adviceList
                           .filter(
-                            item => item.indexNum > 9 && item.indexNum < 15,
+                            item => item.indexNum >= 24 && item.indexNum <= 27,
+                          )
+                          .map((item, index) => (
+                            <Checkbox
+                              key={index}
+                              value={item.id}
+                              radius={'full'}
+                              classNames={{
+                                wrapper: 'before:border-[#100061]',
+                              }}
+                            >
+                              <span className="text-lg text-[#100061]">
+                                {item.type}
+                              </span>
+                            </Checkbox>
+                          ))}
+                      {adviceList === null && (
+                        <div className="text-zinc-600">
+                          등록된 분야가 없습니다.
+                        </div>
+                      )}
+                    </CheckboxGroup>
+                  </AccordionItem>
+                  <AccordionItem
+                    key="4"
+                    aria-label="design"
+                    title="시각디자인/디자인자격증"
+                    indicator={<i className="font-bold xi-angle-down" />}
+                    classNames={{
+                      base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                      title: 'text-lg text-[#100061]',
+                      content: 'py-0',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                    }}
+                  >
+                    <CheckboxGroup
+                      value={groupSelected}
+                      orientation={'horizontal'}
+                      onValueChange={handleCheckboxChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      {adviceList !== null &&
+                        adviceList
+                          .filter(
+                            item => item.indexNum >= 28 && item.indexNum <= 36,
+                          )
+                          .map((item, index) => (
+                            <Checkbox
+                              key={index}
+                              value={item.id}
+                              radius={'full'}
+                              classNames={{
+                                wrapper: 'before:border-[#100061]',
+                              }}
+                            >
+                              <span className="text-lg text-[#100061]">
+                                {item.type}
+                              </span>
+                            </Checkbox>
+                          ))}
+                      {adviceList === null && (
+                        <div className="text-zinc-600">
+                          등록된 분야가 없습니다.
+                        </div>
+                      )}
+                    </CheckboxGroup>
+                  </AccordionItem>
+                  <AccordionItem
+                    key="5"
+                    aria-label="it"
+                    title="IT/프로그래머"
+                    indicator={<i className="font-bold xi-angle-down" />}
+                    classNames={{
+                      base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                      title: 'text-lg text-[#100061]',
+                      content: 'py-0',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                    }}
+                  >
+                    <CheckboxGroup
+                      value={groupSelected}
+                      orientation={'horizontal'}
+                      onValueChange={handleCheckboxChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      {adviceList !== null &&
+                        adviceList
+                          .filter(
+                            item => item.indexNum >= 45 && item.indexNum <= 50,
+                          )
+                          .map((item, index) => (
+                            <Checkbox
+                              key={index}
+                              value={item.id}
+                              radius={'full'}
+                              classNames={{
+                                wrapper: 'before:border-[#100061]',
+                              }}
+                            >
+                              <span className="text-lg text-[#100061]">
+                                {item.type}
+                              </span>
+                            </Checkbox>
+                          ))}
+                      {adviceList === null && (
+                        <div className="text-zinc-600">
+                          등록된 분야가 없습니다.
+                        </div>
+                      )}
+                    </CheckboxGroup>
+                  </AccordionItem>
+                  <AccordionItem
+                    key="6"
+                    aria-label="vacation"
+                    title="방학특강"
+                    indicator={<i className="font-bold xi-angle-down" />}
+                    classNames={{
+                      base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
+                      title: 'text-lg text-[#100061]',
+                      content: 'py-0',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                    }}
+                  >
+                    <CheckboxGroup
+                      value={groupSelected}
+                      orientation={'horizontal'}
+                      onValueChange={handleCheckboxChange}
+                      classNames={{
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                      }}
+                    >
+                      {adviceList !== null &&
+                        adviceList
+                          .filter(
+                            item => item.indexNum >= 37 && item.indexNum <= 44,
                           )
                           .map((item, index) => (
                             <Checkbox

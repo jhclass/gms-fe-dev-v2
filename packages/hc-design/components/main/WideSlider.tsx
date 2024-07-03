@@ -20,6 +20,20 @@ export default function MainSilder() {
           className="mySwiper1"
         >
           <SwiperSlide>
+            <Link href="/lectures/webtoon1">
+              <div className="relative flex justify-center">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner07.webp"
+                  alt="Stable Diffusion X Midjourney  
+                  산대특과정이라고 들어봤어? 아직도 모르고 있었니? 웹툰작가 되고싶지? 우리는 (주)RS미디어랑 친해 언제 시작할래? AI 도 같이 사용한데 지금해야되!
+                  웹툰 & 무빙툰 작가데뷔 정규과정 매달 훈련 장려금 816,000원!!
+                  커리큘럼 자세히보기
+                  "
+                />
+              </div>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
             <Link href="/event/summerVacation">
               <div className="relative flex justify-center">
                 <video playsInline autoPlay loop muted>
@@ -27,7 +41,7 @@ export default function MainSilder() {
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner06.mp4"
                     type="video/mp4"
                   />
-                  <span className="hidden">6월 너의 여름방학</span>
+                  <span className="hidden">7월 너의 여름방학</span>
                 </video>
               </div>
             </Link>
