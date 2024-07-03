@@ -214,6 +214,7 @@ export default function eventKdtJava() {
                     loop
                     muted
                     className="w-[100%] scale-[1.3]"
+                    poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/lectures_webtoon1_poster01.webp"
                   >
                     <source
                       src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/lectures_webtoon1_video01.mp4"
