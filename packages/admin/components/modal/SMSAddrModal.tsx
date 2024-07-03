@@ -1,165 +1,20 @@
 import styled from 'styled-components'
 import {
   Button,
-  Checkbox,
-  CheckboxGroup,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Pagination,
-  Radio,
-  RadioGroup,
-  ScrollShadow,
+  Tab,
+  Tabs,
 } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
-import { useRouter } from 'next/router'
-import SubjectItem from '@/components/table/SubjectItem'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-
-const BtnArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`
-const ItemBox = styled.form`
-  display: flex;
-  gap: 0.5rem;
-`
-const TopBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const Theader = styled.div`
-  width: 100%;
-  min-width: fit-content;
-  display: table-row;
-  flex-wrap: nowrap;
-  color: #111;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
-  text-align: center;
-`
-const TableItem = styled.div`
-  display: table;
-  position: relative;
-  width: 100%;
-  min-width: fit-content;
-  flex-wrap: nowrap;
-  border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
-  font-size: 0.875rem;
-  background: #fff;
-  overflow: hidden;
-
-  &:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
-  }
-`
-const TableRow = styled.div`
-  display: table-row;
-  width: 100%;
-  min-width: fit-content;
-  text-align: center;
-`
-const Tcheck = styled.div`
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.5rem;
-`
-const Tname = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
-`
-const Tpart = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
-`
-const Trank = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
-`
-const Tsbject = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 40%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
-`
-
-const PagerWrap = styled.div`
-  display: flex;
-  margin-top: 1.5rem;
-  justify-content: center;
-`
-const Nolist = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  color: #71717a;
-`
+import SMSAddrTeacher from '@/components/form/SMSAddrTeacher'
+import SMSAddrStudent from '@/components/form/SMSAddrStudent'
+import SMSAddrEmployee from '@/components/form/SMSAddrEmployee'
 
 export default function SMSAddrModal({ isOpen, onClose }) {
   const [currentPage, setCurrentPage] = useState(1)
@@ -182,121 +37,60 @@ export default function SMSAddrModal({ isOpen, onClose }) {
                 전화번호 검색
               </ModalHeader>
               <ModalBody>
-                <BtnArea>
-                  <TopBox>
-                    <RadioGroup
-                      orientation="horizontal"
-                      value={selected}
-                      onValueChange={setSelected}
-                      className="gap-[0.65rem]"
-                    >
-                      <Radio key={'직원'} value={'직원'}>
-                        직원
-                      </Radio>
-                      <Radio key={'강사'} value={'강사'}>
-                        강사
-                      </Radio>
-                      <Radio key={'수강생'} value={'수강생'}>
-                        수강생
-                      </Radio>
-                    </RadioGroup>
-                  </TopBox>
-                  <ItemBox>
-                    <Input
-                      labelPlacement="outside-left"
-                      size="sm"
-                      placeholder=" "
-                      type="text"
-                      variant="bordered"
-                      label="과목명"
-                      // defaultValue={subjectSearch}
-                      {...register('subjectName')}
-                    />
-                    <Button
-                      type="submit"
-                      size="sm"
-                      radius="sm"
-                      variant="solid"
-                      color="primary"
-                      className="text-white"
-                    >
-                      검색
-                    </Button>
-                  </ItemBox>
-                </BtnArea>
-                <CheckboxGroup
-                  value={groupSelected || []}
-                  onChange={handleCheck}
+                <Tabs
+                  variant="underlined"
+                  aria-label="Options"
+                  color="primary"
                   classNames={{
-                    wrapper: 'gap-0',
+                    tabList: 'flex-wrap',
+                    tab: 'w-auto',
                   }}
+                  selectedKey={selected}
+                  onSelectionChange={e => setSelected(String(e))}
                 >
-                  {selected === '직원' ? (
-                    <>
-                      <Theader>
-                        <TableRow>
-                          <Tcheck></Tcheck>
-                          <Tname>이름</Tname>
-                          <Tpart>부서명</Tpart>
-                          <Trank>직위/직책</Trank>
-                          <Tphone>휴대폰</Tphone>
-                        </TableRow>
-                      </Theader>
-                      <TableItem>
-                        <TableRow>
-                          <Checkbox key={1} value={'1'}></Checkbox>
-                        </TableRow>
-                      </TableItem>
-                      <Nolist>노출중인 과정이 없습니다.</Nolist>
-                    </>
-                  ) : selected === '강사' ? (
-                    <>
-                      <Theader>
-                        <TableRow>
-                          <Tcheck></Tcheck>
-                          <Tname>이름</Tname>
-                          <Tsbject>강의분야</Tsbject>
-                          <Tphone>휴대폰</Tphone>
-                        </TableRow>
-                      </Theader>
-                      <TableItem>
-                        <TableRow>
-                          <Checkbox key={1} value={'1'}></Checkbox>
-                        </TableRow>
-                      </TableItem>
-                      <Nolist>노출중인 과정이 없습니다.</Nolist>
-                    </>
-                  ) : (
-                    <>
-                      <Theader>
-                        <TableRow>
-                          <Tcheck></Tcheck>
-                          <Tname>이름</Tname>
-                          <Tsbject>수강명</Tsbject>
-                          <Tphone>휴대폰</Tphone>
-                        </TableRow>
-                      </Theader>
-                      <TableItem>
-                        <TableRow>
-                          <Checkbox key={1} value={'1'}></Checkbox>
-                        </TableRow>
-                      </TableItem>
-                      <Nolist>노출중인 과정이 없습니다.</Nolist>
-                    </>
-                  )}
-                </CheckboxGroup>
-                <PagerWrap>
-                  <Pagination
-                    variant="light"
-                    showControls
-                    initialPage={currentPage}
-                    page={currentPage}
-                    total={Math.ceil(20 / currentLimit)}
-                    onChange={newPage => {
-                      setCurrentPage(newPage)
-                    }}
-                  />
-                </PagerWrap>
+                  <Tab key="student" title="수강생">
+                    <SMSAddrStudent />
+                  </Tab>
+                  <Tab key="employee" title="직원">
+                    <SMSAddrEmployee />
+                  </Tab>
+                  <Tab key="teacher" title="강사">
+                    <SMSAddrTeacher />
+                  </Tab>
+                  <Tab key="input" title="직접입력">
+                    <Input
+                      labelPlacement="outside"
+                      placeholder="'-'없이 작성해주세요"
+                      variant="bordered"
+                      radius="md"
+                      type="text"
+                      label="전화번호"
+                      maxLength={11}
+                      // onChange={e => {
+                      //   register('phoneNum1').onChange(e)
+                      // }}
+                      className="w-full"
+                      // {...register('phoneNum1', {
+                      //   required: {
+                      //     value: true,
+                      //     message: '휴대폰번호를 입력해주세요.',
+                      //   },
+                      //   maxLength: {
+                      //     value: 11,
+                      //     message: '최대 11자리까지 입력 가능합니다.',
+                      //   },
+                      //   minLength: {
+                      //     value: 10,
+                      //     message: '최소 10자리 이상이어야 합니다.',
+                      //   },
+                      //   pattern: {
+                      //     value: /^010[0-9]{7,8}$/,
+                      //     message: '010으로 시작해주세요.',
+                      //   },
+                      // })}
+                    />
+                  </Tab>
+                </Tabs>
               </ModalBody>
               <ModalFooter>
                 <Button

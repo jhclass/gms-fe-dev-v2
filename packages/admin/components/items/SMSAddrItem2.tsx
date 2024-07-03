@@ -16,7 +16,19 @@ const Tpart = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 20%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+`
+const Trank = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -57,8 +69,9 @@ export default function SMSAddrItem1(props) {
 
   return (
     <>
-      <Tname>학생이름이름</Tname>
-      <Tpart>2024.03.01</Tpart>
+      <Tname>강사이름이름이름</Tname>
+      <Tpart>부서부서부서명</Tpart>
+      <Trank>직책직책직위직위</Trank>
       <Tphone>01023452345</Tphone>
     </>
   )

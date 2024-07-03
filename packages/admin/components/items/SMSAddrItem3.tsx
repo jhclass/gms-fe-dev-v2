@@ -57,8 +57,8 @@ export default function SMSAddrItem1(props) {
 
   return (
     <>
-      <Tname>학생이름이름</Tname>
-      <Tpart>2024.03.01</Tpart>
+      <Tname>강사이름이름이름</Tname>
+      <Tpart>강의분야분야</Tpart>
       <Tphone>01023452345</Tphone>
     </>
   )

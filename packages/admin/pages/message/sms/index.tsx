@@ -124,7 +124,6 @@ export default function message() {
               <p>0/90byte</p>
               <p>SMS</p>
             </ByteBox>
-
             <RoundBox>
               <FlexBox>
                 <RadioGroup
@@ -153,7 +152,7 @@ export default function message() {
                   variant="bordered"
                   onClick={onOpen}
                 >
-                  검색
+                  추가
                 </Button>
               </FlexBox>
               <ChipBox>
