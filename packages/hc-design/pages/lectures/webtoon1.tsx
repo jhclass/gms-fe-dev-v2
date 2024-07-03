@@ -53,10 +53,10 @@ export default function eventKdtJava() {
               />
               <Link
                 href="/support"
-                className="absolute block bottom-[27.2%] right-[21%] w-[19.7917vw] h-[6.3889vw] max-w-[285px] max-h-[92px] bg-red-100 z-20"
+                className="absolute block bottom-[27.2%] right-[21%] w-[18.8194vw] h-[5.2083vw] max-w-[271px] max-h-[75px] z-20"
               >
                 <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/evt/evt_kdt_btn01.webp"
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_btn01.webp"
                   alt="지원금 문의하기"
                 />
               </Link>
@@ -104,7 +104,7 @@ export default function eventKdtJava() {
                 아직도 고민한다고?! 상담신청하러가기!!
                 "
               />
-              <div className="absolute top-[1.75%] right-[14.3%] max-w-[674px] max-h-[279px] w-[46.8056vw] h-[19.375vw] overflow-hidden">
+              <div className="absolute top-[1.75%] right-[14.3%] max-w-[674px] max-h-[279px] w-[46.8056vw] h-[19.375vw] overflow-hidden z-20">
                 <div className="relative w-[100%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
                   <video
                     playsInline
@@ -162,15 +162,6 @@ export default function eventKdtJava() {
                   AI 활용(Stable Diffusion & MidJourne), 웹툰&무빙툰 제작 (포토샵, 클립스튜디오, 스토리보딩, 연출, 각색, 채색, 드로잉), 웹툰 플랫폼의 이해 해당 플랫폼을 운영중인 제작 및 유통사의 실무 제작 방식과 주의사항 등을 기준으로 멘토링
               "
               />
-              {/* <Link
-                href="/support"
-                className="absolute block bottom-[27.2%] right-[21%] w-[19.7917vw] h-[6.3889vw] max-w-[285px] max-h-[92px] bg-red-100 z-20"
-              >
-                <img
-                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/evt/mo/evt_kdt_btn01.webp"
-                  alt="지원금 문의하기"
-                />
-              </Link> */}
             </div>
             <div className="relative">
               <img
@@ -215,7 +206,7 @@ export default function eventKdtJava() {
                 아직도 고민한다고?! 상담신청하러가기!!
                 "
               />
-              <div className="absolute top-[21.7593vw] left-[50%] translate-x-[-50%] w-[81.8519vw] h-[34.4444vw] overflow-hidden">
+              <div className="absolute top-[21.7593vw] left-[50%] translate-x-[-50%] w-[81.8519vw] h-[34.4444vw] overflow-hidden z-20">
                 <div className="relative w-[100%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
                   <video
                     playsInline
