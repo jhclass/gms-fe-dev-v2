@@ -47,13 +47,26 @@ export default function WideSliderMo() {
         >
           <SwiperSlide>
             <div className="flex justify-center">
+              <Link href="/lectures/webtoon1">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner07.webp"
+                  alt="Stable Diffusion X Midjourney  
+                  웹툰 & 무빙툰 작가데뷔 정규과정 매달 훈련 장려금 816,000원!!
+                  커리큘럼 자세히보기 click
+                  "
+                />
+              </Link>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="flex justify-center">
               <Link href="/event/summerVacation">
                 <video playsInline autoPlay loop muted>
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner06.mp4"
                     type="video/mp4"
                   />
-                  <span className="hidden">6월 너의 여름방학</span>
+                  <span className="hidden">7월 너의 여름방학</span>
                 </video>
               </Link>
             </div>
