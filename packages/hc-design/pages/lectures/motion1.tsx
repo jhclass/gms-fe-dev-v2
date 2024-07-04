@@ -21,22 +21,24 @@ export default function eventKdtJava() {
               "
             />
           </div>
-          <div className="relative w-[100%] max-w-[2000px] mx-auto pb-[30.89%]">
-            <iframe
-              id="youtube-iframe"
-              src="https://www.youtube.com/embed/0ZdC1SJR2SE?start=3&autoplay=1&loop=1&mute=1&playlist=0ZdC1SJR2SE&controls=0&modestbranding=1&rel=0"
-              title="Stable Diffusion X Motion 해당 영상은 에이치아카데미 전임 선생님의 실제 작품으로 무단 복제 및 배포를 금지합니다."
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              style={{
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%',
-              }}
-            ></iframe>
+          <div className="w-[100%] max-w-[2000px] max-h-[720px] mx-auto overflow-hidden">
+            <div className="relative w-full pb-[33.3%]">
+              <iframe
+                id="youtube-iframe"
+                src="https://www.youtube.com/embed/0ZdC1SJR2SE?start=3&autoplay=1&loop=1&mute=1&playlist=0ZdC1SJR2SE&controls=0&modestbranding=1&rel=0"
+                title="Stable Diffusion X Motion 해당 영상은 에이치아카데미 전임 선생님의 실제 작품으로 무단 복제 및 배포를 금지합니다."
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                style={{
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  width: '100%',
+                  height: '100%',
+                }}
+              ></iframe>
+            </div>
           </div>
           <div className="max-w-[1440px] mx-auto my-0">
             <div className="relative">
