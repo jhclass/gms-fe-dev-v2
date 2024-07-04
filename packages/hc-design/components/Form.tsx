@@ -235,7 +235,7 @@ export default function Form() {
                       base: 'border-2 font-bold border-[#100061] rounded-lg px-7',
                       title: 'text-lg text-[#100061]',
                       content: 'py-0',
-                      indicator: 'text-[#100061] data-[open=true]:rotate-180 ',
+                      indicator: 'text-[#100061] data-[open=true]:rotate-180',
                     }}
                   >
                     <CheckboxGroup
@@ -243,8 +243,7 @@ export default function Form() {
                       orientation={'horizontal'}
                       onValueChange={handleCheckboxChange}
                       classNames={{
-                        wrapper:
-                          'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem] overflw-x-hidden',
+                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
                       }}
                     >
                       {adviceList !== null &&
