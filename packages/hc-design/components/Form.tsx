@@ -243,7 +243,8 @@ export default function Form() {
                       orientation={'horizontal'}
                       onValueChange={handleCheckboxChange}
                       classNames={{
-                        wrapper: 'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem]',
+                        wrapper:
+                          'gap-x-[2rem] gap-y-[0.5rem] pb-[1rem] overflw-x-hidden',
                       }}
                     >
                       {adviceList !== null &&
