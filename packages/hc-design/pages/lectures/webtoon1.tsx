@@ -1,6 +1,14 @@
 import Form from '@/components/Form'
 import { Link } from '@nextui-org/react'
 import Head from 'next/head'
+import { styled } from 'styled-components'
+
+const DetailBox = styled.section`
+  background-image: url('https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_bg.webp');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: repeat-y;
+`
 
 export default function eventKdtJava() {
   return (
@@ -12,19 +20,20 @@ export default function eventKdtJava() {
           content="웹툰&무빙툰 작가데뷔 정규과정 Stable Diffusion, Midjourney"
         />
       </Head>
-      <section className="bg-[#fff]">
-        <div className="max-w-[1440px] mx-auto my-0">
-          <div className="relative hidden w-full wmd:block">
+      <DetailBox>
+        <div className="relative hidden w-full wmd:block">
+          <div className="max-w-[2000px] mx-auto my-0 relative">
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_01.webp"
+              alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
+                Clip Studio | Photoshop | illustrator | Stable Diffusion | Midjourney"
+            />
+          </div>
+          <div className="max-w-[1440px] mx-auto my-0">
             <div className="relative">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_deco01.webp"
-                className="absolute top-0 left-0 z-10"
-              />
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_01.webp"
-                alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
-                Clip Studio | Photoshop | illustrator | Stable Diffusion | Midjourney 
-                선생님은 누구? 안정식 작가님 artist. ZIRO 
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_02.webp"
+                alt="선생님은 누구? 안정식 작가님 artist. ZIRO 
                 profile | 넥슨 GT 아트디렉터(AD) 아트부문 직군 위원,
                 네오액트 총괄 아트디렉터(AD),
                 VERTIGO GAMES 아트디렉터(AD),
@@ -53,7 +62,7 @@ export default function eventKdtJava() {
               />
               <Link
                 href="/cs/location"
-                className="absolute block bottom-[27.2%] right-[21%] w-[18.8194vw] h-[5.2083vw] max-w-[271px] max-h-[75px] z-20"
+                className="absolute block bottom-[34.1%] right-[21%] w-[18.8194vw] h-[5.2083vw] max-w-[271px] max-h-[75px] z-20"
               >
                 <img
                   src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_btn01.webp"
@@ -63,11 +72,7 @@ export default function eventKdtJava() {
             </div>
             <div className="relative">
               <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_deco02.webp"
-                className="absolute top-0 left-0 z-10"
-              />
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_02.webp"
+                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_webtoon1_03.webp"
                 alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
                 02. 주요수업내용
                 - 국내와 글로벌 웹툰 시장의 지속적인 성장을 대비하여 AI활용 만화콘텐츠 제작 능력을 양성합니다.
@@ -126,15 +131,12 @@ export default function eventKdtJava() {
               </div>
             </div>
           </div>
-          <div className="block w-full wmd:hidden">
-            <div className="relative">
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/lectures_webtoon1_deco01.webp"
-                className="absolute top-0 left-0 z-10"
-              />
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/lectures_webtoon1_01.webp"
-                alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
+        </div>
+        <div className="relative block w-full wmd:hidden">
+          <div className="relative">
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/lectures_webtoon1_01.webp"
+              alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
                 Clip Studio | Photoshop | illustrator | Stable Diffusion | Midjourney 
                 선생님은 누구? 안정식 작가님 artist. ZIRO 
                 profile | 넥슨 GT 아트디렉터(AD) 아트부문 직군 위원,
@@ -162,16 +164,12 @@ export default function eventKdtJava() {
                  01. 수업 목적과 목표
                   AI 활용(Stable Diffusion & MidJourne), 웹툰&무빙툰 제작 (포토샵, 클립스튜디오, 스토리보딩, 연출, 각색, 채색, 드로잉), 웹툰 플랫폼의 이해 해당 플랫폼을 운영중인 제작 및 유통사의 실무 제작 방식과 주의사항 등을 기준으로 멘토링
               "
-              />
-            </div>
-            <div className="relative">
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/lectures_webtoon1_deco02.webp"
-                className="absolute top-0 left-0 z-10"
-              />
-              <img
-                src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/lectures_webtoon1_02.webp"
-                alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
+            />
+          </div>
+          <div className="relative">
+            <img
+              src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/mo/lectures_webtoon1_02.webp"
+              alt="Stable Diffusion X Midjourney 웹툰 & 무빙툰 작가데뷔 정규과정
                 02. 주요수업내용
                 - 국내와 글로벌 웹툰 시장의 지속적인 성장을 대비하여 AI활용 만화콘텐츠 제작 능력을 양성합니다.
                 - 웹툰&무빙툰 제작(포토샵, 클립스튜디오, 스토리보딩, 연출, 각색, 채색, 드로잉)방식을 습득하고  AI(Stable Diffusion & MidJourne) 명령어를 학습하고 이를 실무에 적용할 수 있도록 양성합니다.
@@ -206,30 +204,29 @@ export default function eventKdtJava() {
                 5-4 AI활용 20~30화 분량 웹툰 제작하기 - 100시간
                 아직도 고민한다고?! 상담신청하러가기!!
                 "
-              />
-              <div className="absolute top-[21.7593vw] left-[50%] translate-x-[-50%] w-[81.8519vw] h-[34.4444vw] overflow-hidden z-20">
-                <div className="relative w-[100%] pb-[56.25%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-                  <iframe
-                    src="https://www.youtube.com/embed/34cn3VZmjp4?start=11&autoplay=1&loop=1&mute=1&playlist=34cn3VZmjp4&controls=0&modestbranding=1&rel=0"
-                    title="웹툰&무빙툰 작가데뷔 정규과정"
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
-                    className="scale-[1.25]"
-                    style={{
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  ></iframe>
-                </div>
+            />
+            <div className="absolute top-[21.7593vw] left-[50%] translate-x-[-50%] w-[81.8519vw] h-[34.4444vw] overflow-hidden z-20">
+              <div className="relative w-[100%] pb-[56.25%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                <iframe
+                  src="https://www.youtube.com/embed/34cn3VZmjp4?start=11&autoplay=1&loop=1&mute=1&playlist=34cn3VZmjp4&controls=0&modestbranding=1&rel=0"
+                  title="웹툰&무빙툰 작가데뷔 정규과정"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="scale-[1.25]"
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                ></iframe>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </DetailBox>
       <section className="pb-[6rem]">
         <Form />
       </section>

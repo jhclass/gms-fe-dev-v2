@@ -11,7 +11,7 @@ export default function eventKdtJava() {
       </Head>
       <section className="bg-[#fff]">
         <div className="relative hidden w-full wmd:block">
-          <div className="max-w-[1440px] mx-auto my-0">
+          <div className="max-w-[2000px] mx-auto my-0 relative">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/lectures_motion1_01.webp"
               alt="Stable Diffusion X Motion
