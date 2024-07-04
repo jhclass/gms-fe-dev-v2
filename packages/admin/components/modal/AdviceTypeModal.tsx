@@ -81,7 +81,7 @@ export default function AdviceTypeModal({
                 <ScrollShadow className="scrollbar min-h-[10rem]">
                   <CheckboxGroup
                     orientation="horizontal"
-                    className="gap-1 radioBox"
+                    className="gap-1 radioBox pb-[1rem]"
                     color="secondary"
                     value={adviceTypeSelected}
                     onChange={handleAdviceChange}
