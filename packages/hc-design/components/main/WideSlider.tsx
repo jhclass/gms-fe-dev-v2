@@ -34,6 +34,38 @@ export default function MainSilder() {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
+            <Link href="/lectures/motion1">
+              <div className="relative flex justify-center">
+                <figure className="absolute w-full top-0 left-[50%] -translate-x-[50%] z-10">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/main_banner08_tit.webp"
+                    alt="Stable Diffusion x Motion 커리큘럼 자세히보기"
+                  />
+                </figure>
+                <div className="relative w-full max-w-[2000px] overflow-hidden">
+                  <div className="relative w-full pb-[36%] top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+                    <iframe
+                      id="youtube-iframe"
+                      src="https://www.youtube.com/embed/0ZdC1SJR2SE?start=3&autoplay=1&loop=1&mute=1&playlist=0ZdC1SJR2SE&controls=0&modestbranding=1&rel=0"
+                      title="Stable Diffusion x Motion 커리큘럼 자세히보기"
+                      frameBorder="0"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                      className="scale-[1.1]"
+                      style={{
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
             <Link href="/event/summerVacation">
               <div className="relative flex justify-center">
                 <video playsInline autoPlay loop muted>

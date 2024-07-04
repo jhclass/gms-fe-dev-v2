@@ -52,7 +52,7 @@ export default function eventKdtJava() {
               "
               />
               <Link
-                href="/support"
+                href="/cs/location"
                 className="absolute block bottom-[27.2%] right-[21%] w-[18.8194vw] h-[5.2083vw] max-w-[271px] max-h-[75px] z-20"
               >
                 <img
@@ -105,22 +105,23 @@ export default function eventKdtJava() {
                 "
               />
               <div className="absolute top-[1.75%] right-[14.3%] max-w-[674px] max-h-[279px] w-[46.8056vw] h-[19.375vw] overflow-hidden z-20">
-                <div className="relative w-[100%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-                  <video
-                    playsInline
-                    autoPlay
-                    loop
-                    muted
-                    className="w-[100%] scale-[1.3]"
-                  >
-                    <source
-                      src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/lectures_webtoon1_video01.mp4"
-                      type="video/mp4"
-                    />
-                    <span className="hidden">
-                      웹툰&무빙툰 작가데뷔 정규과정
-                    </span>
-                  </video>
+                <div className="relative w-[100%] pb-[56.25%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                  <iframe
+                    id="youtube-iframe"
+                    src="https://www.youtube.com/embed/34cn3VZmjp4?start=11&autoplay=1&loop=1&mute=1&playlist=34cn3VZmjp4&controls=0&modestbranding=1&rel=0"
+                    title="웹툰&무빙툰 작가데뷔 정규과정"
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    className="scale-[1.25]"
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  ></iframe>
                 </div>
               </div>
             </div>
@@ -207,23 +208,22 @@ export default function eventKdtJava() {
                 "
               />
               <div className="absolute top-[21.7593vw] left-[50%] translate-x-[-50%] w-[81.8519vw] h-[34.4444vw] overflow-hidden z-20">
-                <div className="relative w-[100%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-                  <video
-                    playsInline
-                    autoPlay
-                    loop
-                    muted
-                    className="w-[100%] scale-[1.3]"
-                    poster="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/lectures_webtoon1_poster01.webp"
-                  >
-                    <source
-                      src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/page/video/lectures_webtoon1_video01.mp4"
-                      type="video/mp4"
-                    />
-                    <span className="hidden">
-                      웹툰&무빙툰 작가데뷔 정규과정
-                    </span>
-                  </video>
+                <div className="relative w-[100%] pb-[56.25%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                  <iframe
+                    src="https://www.youtube.com/embed/34cn3VZmjp4?start=11&autoplay=1&loop=1&mute=1&playlist=34cn3VZmjp4&controls=0&modestbranding=1&rel=0"
+                    title="웹툰&무빙툰 작가데뷔 정규과정"
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    className="scale-[1.25]"
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  ></iframe>
                 </div>
               </div>
             </div>
