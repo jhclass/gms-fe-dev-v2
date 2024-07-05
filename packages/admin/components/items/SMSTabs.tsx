@@ -71,7 +71,7 @@ export default function TypesTabs() {
         <Tab key="mySMS" title="내문자함">
           <SMSCard />
         </Tab>
-        <Tab key="commonSMS" title="학원문자함">
+        <Tab key="commonSMS" title="공통문자함">
           <SMSCard />
         </Tab>
         <Tab key="send" title="보낸문자함">

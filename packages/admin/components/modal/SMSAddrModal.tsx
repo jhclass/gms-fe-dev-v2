@@ -20,7 +20,7 @@ export default function SMSAddrModal({ isOpen, onClose }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
   const [groupSelected, setGroupSelected] = useState(null)
-  const [selected, setSelected] = useState('강사')
+  const [selected, setSelected] = useState('input')
   const { register, handleSubmit, reset } = useForm()
 
   const handleCheck = values => {

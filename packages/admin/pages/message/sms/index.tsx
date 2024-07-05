@@ -134,8 +134,8 @@ export default function message() {
                   <Radio key={'개인'} value={'개인'}>
                     <FilterLabel>개인</FilterLabel>
                   </Radio>
-                  <Radio key={'학원'} value={'학원'}>
-                    <FilterLabel>학원</FilterLabel>
+                  <Radio key={'공통'} value={'공통'}>
+                    <FilterLabel>공통</FilterLabel>
                   </Radio>
                 </RadioGroup>
                 <Button size="sm" color="primary" variant="bordered">
