@@ -32,11 +32,13 @@ const LeftBox = styled.div`
   flex-direction: column;
   background: #fff;
   border-radius: 1rem;
-  padding: 1rem 1rem;
+  padding: 1rem;
+  margin-top: calc(40px + 0.75rem);
   height: fit-content;
 
   @media (max-width: 768px) {
     width: 100%;
+    margin-top: 0;
   }
 `
 
