@@ -47,19 +47,17 @@ const EllipsisBox = styled.p`
 `
 
 export default function SMSAddrItem1(props) {
-  const data = props.tableData
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
+  const data = props.student
+  const getDate = (DataDate: string): string => {
+    const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
+    return LocalDdate
   }
 
   return (
     <>
-      <Tname>학생이름이름</Tname>
-      <Tpart>2024.03.01</Tpart>
-      <Tphone>01023452345</Tphone>
+      <Tname>{data.name}</Tname>
+      <Tpart>{getDate(data.birthday)}</Tpart>
+      <Tphone>{data.phoneNum1}</Tphone>
     </>
   )
 }

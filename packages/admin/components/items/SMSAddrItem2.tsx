@@ -4,7 +4,7 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 20%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -16,7 +16,7 @@ const Tpart = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 20%;
+  width: 30%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
@@ -59,20 +59,25 @@ const EllipsisBox = styled.p`
 `
 
 export default function SMSAddrItem1(props) {
-  const data = props.tableData
+  const data = props.manager
   const feeFormet = fee => {
     const result = fee
       .toString()
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
+  console.log(data)
 
   return (
     <>
-      <Tname>강사이름이름이름</Tname>
-      <Tpart>부서부서부서명</Tpart>
-      <Trank>직책직책직위직위</Trank>
-      <Tphone>01023452345</Tphone>
+      <Tname>{data.mUsername}</Tname>
+      <Tpart>
+        <EllipsisBox>{data.mPart.join(',')}</EllipsisBox>
+      </Tpart>
+      <Trank>
+        <EllipsisBox>{data.mRank}</EllipsisBox>
+      </Trank>
+      <Tphone>{data.mPhoneNum}</Tphone>
     </>
   )
 }

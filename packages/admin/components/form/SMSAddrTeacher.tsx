@@ -6,9 +6,11 @@ import {
   Input,
   Pagination,
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import SMSAddrItem3 from '@/components/items/SMSAddrItem3'
+import { useLazyQuery } from '@apollo/client'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 const SearchArea = styled.div`
   display: flex;
@@ -112,11 +114,57 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function SMSAddrModal() {
+export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit, setCurrentLimit] = useState(5)
-  const [groupSelected, setGroupSelected] = useState(null)
-  const { register, handleSubmit, reset } = useForm()
+  const [currentLimit] = useState(5)
+  const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
+    SEARCH_MANAGEUSER_QUERY,
+  )
+  const [managerData, setManagerData] = useState(null)
+  const [managerTotal, setManagerTotal] = useState(0)
+
+  const { register, handleSubmit, getValues } = useForm()
+  const searchName = getValues('mUsername')
+
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    if (managerData) {
+      searchManager({
+        variables: {
+          mUsername: searchName,
+          mRank: '강사',
+          page: currentPage,
+          limit: currentLimit,
+        },
+        onCompleted: result => {
+          if (result.searchManageUser.ok) {
+            setManagerData(result?.searchManageUser.data)
+            setManagerTotal(result?.searchManageUser.totalCount)
+          }
+        },
+      })
+    }
+  }, [currentPage])
+
+  const onSubmit = data => {
+    searchManager({
+      variables: {
+        mUsername: data.mUsername,
+        mRank: '강사',
+        page: currentPage,
+        limit: currentLimit,
+      },
+      onCompleted: result => {
+        if (result.searchManageUser.ok) {
+          setManagerData(result?.searchManageUser.data)
+          setManagerTotal(result?.searchManageUser.totalCount)
+        }
+      },
+    })
+  }
 
   const handleCheck = values => {
     setGroupSelected(values)
@@ -125,7 +173,7 @@ export default function SMSAddrModal() {
   return (
     <>
       <SearchArea>
-        <ItemBox>
+        <ItemBox onSubmit={handleSubmit(onSubmit)}>
           <Input
             labelPlacement="outside-left"
             size="sm"
@@ -133,8 +181,7 @@ export default function SMSAddrModal() {
             type="text"
             variant="bordered"
             label="이름"
-            // defaultValue={subjectSearch}
-            {...register('subjectName')}
+            {...register('mUsername')}
           />
           <Button
             type="submit"
@@ -163,26 +210,34 @@ export default function SMSAddrModal() {
             <Tphone>휴대폰</Tphone>
           </TableRow>
         </Theader>
-        <TableItem>
-          <TableRow>
-            <Checkbox key={1} value={'1'}></Checkbox>
-            <SMSAddrItem3 />
-          </TableRow>
-        </TableItem>
-        <Nolist>노출중인 과정이 없습니다.</Nolist>
+        {managerTotal > 0 && (
+          <>
+            {managerData?.map((teacher, index) => (
+              <TableItem key={index}>
+                <TableRow>
+                  <Checkbox key={teacher.id} value={teacher}></Checkbox>
+                  <SMSAddrItem3 teacher={teacher} />
+                </TableRow>
+              </TableItem>
+            ))}
+          </>
+        )}
+        {managerTotal === 0 && <Nolist>검색 결과가 없습니다.</Nolist>}
       </CheckboxGroup>
-      <PagerWrap>
-        <Pagination
-          variant="light"
-          showControls
-          initialPage={currentPage}
-          page={currentPage}
-          total={Math.ceil(20 / currentLimit)}
-          onChange={newPage => {
-            setCurrentPage(newPage)
-          }}
-        />
-      </PagerWrap>
+      {managerTotal > 0 && (
+        <PagerWrap>
+          <Pagination
+            variant="light"
+            showControls
+            initialPage={currentPage}
+            page={currentPage}
+            total={Math.ceil(managerTotal / currentLimit)}
+            onChange={newPage => {
+              setCurrentPage(newPage)
+            }}
+          />
+        </PagerWrap>
+      )}
     </>
   )
 }

@@ -182,7 +182,6 @@ export default function ManagerFilterTable({ managerFilter, mGrade, mPart }) {
   const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
     SEARCH_MANAGEUSER_QUERY,
-    {},
   )
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
@@ -195,6 +194,7 @@ export default function ManagerFilterTable({ managerFilter, mGrade, mPart }) {
       searchManager({
         variables: {
           ...managerFilter,
+          resign: 'N',
           page: currentPage,
           limit: currentLimit,
         },

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import {
   Button,
+  Chip,
   Input,
   Modal,
   ModalBody,
@@ -10,21 +11,48 @@ import {
   Tab,
   Tabs,
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import SMSAddrTeacher from '@/components/form/SMSAddrTeacher'
 import SMSAddrStudent from '@/components/form/SMSAddrStudent'
 import SMSAddrEmployee from '@/components/form/SMSAddrEmployee'
+import SMSAddrInput from '../form/SMSAddrInput'
 
-export default function SMSAddrModal({ isOpen, onClose }) {
+const ChipBox = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`
+
+export default function SMSAddrModal({
+  isOpen,
+  onClose,
+  sendGruop,
+  setSendGruop,
+}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
-  const [groupSelected, setGroupSelected] = useState(null)
+  const [groupSelected, setGroupSelected] = useState([])
   const [selected, setSelected] = useState('input')
   const { register, handleSubmit, reset } = useForm()
 
-  const handleCheck = values => {
-    setGroupSelected(values)
+  useEffect(() => {
+    if (sendGruop) {
+      setGroupSelected(sendGruop)
+    }
+  }, [sendGruop])
+
+  const clickAdd = () => {
+    setSendGruop(groupSelected)
+    setGroupSelected([])
+    onClose()
+  }
+
+  const deleteType = index => {
+    const updatedGroup = [...groupSelected]
+    updatedGroup.splice(index, 1)
+    setGroupSelected(updatedGroup)
   }
 
   return (
@@ -49,48 +77,53 @@ export default function SMSAddrModal({ isOpen, onClose }) {
                   onSelectionChange={e => setSelected(String(e))}
                 >
                   <Tab key="student" title="수강생">
-                    <SMSAddrStudent />
+                    <SMSAddrStudent
+                      groupSelected={groupSelected}
+                      setGroupSelected={setGroupSelected}
+                    />
                   </Tab>
                   <Tab key="employee" title="직원">
-                    <SMSAddrEmployee />
+                    <SMSAddrEmployee
+                      groupSelected={groupSelected}
+                      setGroupSelected={setGroupSelected}
+                    />
                   </Tab>
                   <Tab key="teacher" title="강사">
-                    <SMSAddrTeacher />
+                    <SMSAddrTeacher
+                      groupSelected={groupSelected}
+                      setGroupSelected={setGroupSelected}
+                    />
                   </Tab>
                   <Tab key="input" title="직접입력">
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="'-'없이 작성해주세요"
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="전화번호"
-                      maxLength={11}
-                      // onChange={e => {
-                      //   register('phoneNum1').onChange(e)
-                      // }}
-                      className="w-full"
-                      // {...register('phoneNum1', {
-                      //   required: {
-                      //     value: true,
-                      //     message: '휴대폰번호를 입력해주세요.',
-                      //   },
-                      //   maxLength: {
-                      //     value: 11,
-                      //     message: '최대 11자리까지 입력 가능합니다.',
-                      //   },
-                      //   minLength: {
-                      //     value: 10,
-                      //     message: '최소 10자리 이상이어야 합니다.',
-                      //   },
-                      //   pattern: {
-                      //     value: /^010[0-9]{7,8}$/,
-                      //     message: '010으로 시작해주세요.',
-                      //   },
-                      // })}
+                    <SMSAddrInput
+                      groupSelected={groupSelected}
+                      setGroupSelected={setGroupSelected}
                     />
                   </Tab>
                 </Tabs>
+                <ChipBox>
+                  {groupSelected?.map((item, index) => (
+                    <Chip
+                      key={index}
+                      variant="bordered"
+                      onClose={index => deleteType(index)}
+                      className={'hover:border-primary'}
+                    >
+                      {item.mUsername
+                        ? item.mUsername
+                        : item.name
+                        ? item.name
+                        : null}
+                      <span>
+                        {item.mPhoneNum
+                          ? `[${item.mPhoneNum}]`
+                          : item.phoneNum1
+                          ? `[${item.phoneNum1}]`
+                          : item.phoneNumber}
+                      </span>
+                    </Chip>
+                  ))}
+                </ChipBox>
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -101,7 +134,7 @@ export default function SMSAddrModal({ isOpen, onClose }) {
                 >
                   Close
                 </Button>
-                <Button size="sm" color="primary" onPress={onClose}>
+                <Button size="sm" color="primary" onPress={clickAdd}>
                   선택
                 </Button>
               </ModalFooter>

@@ -47,19 +47,15 @@ const EllipsisBox = styled.p`
 `
 
 export default function SMSAddrItem1(props) {
-  const data = props.tableData
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
-  }
+  const data = props.teacher
 
   return (
     <>
-      <Tname>강사이름이름이름</Tname>
-      <Tpart>강의분야분야</Tpart>
-      <Tphone>01023452345</Tphone>
+      <Tname>{data.mUsername}</Tname>
+      <Tpart>
+        <EllipsisBox>{data.mPart.join(',')}</EllipsisBox>
+      </Tpart>
+      <Tphone>{data.mPhoneNum}</Tphone>
     </>
   )
 }

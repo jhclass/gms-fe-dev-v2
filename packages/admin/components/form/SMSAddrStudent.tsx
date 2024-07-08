@@ -6,9 +6,14 @@ import {
   Input,
   Pagination,
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import SMSAddrItem1 from '@/components/items/SMSAddrItem1'
+import { useMutation } from '@apollo/client'
+import {
+  SEARCH_STUDENTSTATE_MUTATION,
+  SEARCH_STUDENT_FILTER_MUTATION,
+} from '@/graphql/mutations'
 
 const SearchArea = styled.div`
   display: flex;
@@ -112,11 +117,53 @@ const Nolist = styled.div`
   color: #71717a;
 `
 
-export default function SMSAddrModal() {
+export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
-  const [groupSelected, setGroupSelected] = useState(null)
-  const { register, handleSubmit, reset } = useForm()
+  const [searchStudentFilterMutation] = useMutation(
+    SEARCH_STUDENT_FILTER_MUTATION,
+  )
+
+  const [studentData, setStudentData] = useState(null)
+  const [studentTotal, setStudentTotal] = useState(0)
+  const { register, handleSubmit, getValues } = useForm()
+  const searchName = getValues('studentName')
+
+  useEffect(() => {
+    if (studentData) {
+      searchStudentFilterMutation({
+        variables: {
+          studentName: searchName,
+          page: currentPage,
+          limit: currentLimit,
+        },
+        onCompleted: resData => {
+          if (resData.searchStudent.ok) {
+            const { student, totalCount } = resData.searchStudent || {}
+            setStudentData(student)
+            setStudentTotal(totalCount)
+          }
+        },
+      })
+    }
+  }, [currentPage])
+
+  const onSubmit = data => {
+    searchStudentFilterMutation({
+      variables: {
+        studentName: data.studentName,
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchStudent.ok) {
+          const { student, totalCount } = resData.searchStudent || {}
+          setStudentData(student)
+          setStudentTotal(totalCount)
+        }
+      },
+    })
+  }
 
   const handleCheck = values => {
     setGroupSelected(values)
@@ -125,7 +172,7 @@ export default function SMSAddrModal() {
   return (
     <>
       <SearchArea>
-        <ItemBox>
+        <ItemBox onSubmit={handleSubmit(onSubmit)}>
           <Input
             labelPlacement="outside-left"
             size="sm"
@@ -133,8 +180,7 @@ export default function SMSAddrModal() {
             type="text"
             variant="bordered"
             label="이름"
-            // defaultValue={subjectSearch}
-            {...register('subjectName')}
+            {...register('studentName')}
           />
           <Button
             type="submit"
@@ -163,26 +209,34 @@ export default function SMSAddrModal() {
             <Tphone>휴대폰</Tphone>
           </TableRow>
         </Theader>
-        <TableItem>
-          <TableRow>
-            <Checkbox key={1} value={'1'}></Checkbox>
-            <SMSAddrItem1 />
-          </TableRow>
-        </TableItem>
-        <Nolist>노출중인 과정이 없습니다.</Nolist>
+        {studentTotal > 0 && (
+          <>
+            {studentData?.map((student, index) => (
+              <TableItem key={index}>
+                <TableRow>
+                  <Checkbox key={student.id} value={student}></Checkbox>
+                  <SMSAddrItem1 student={student} />
+                </TableRow>
+              </TableItem>
+            ))}
+          </>
+        )}
+        {studentTotal === 0 && <Nolist>검색 결과가 없습니다.</Nolist>}
       </CheckboxGroup>
-      <PagerWrap>
-        <Pagination
-          variant="light"
-          showControls
-          initialPage={currentPage}
-          page={currentPage}
-          total={Math.ceil(20 / currentLimit)}
-          onChange={newPage => {
-            setCurrentPage(newPage)
-          }}
-        />
-      </PagerWrap>
+      {studentTotal > 0 && (
+        <PagerWrap>
+          <Pagination
+            variant="light"
+            showControls
+            initialPage={currentPage}
+            page={currentPage}
+            total={Math.ceil(studentTotal / currentLimit)}
+            onChange={newPage => {
+              setCurrentPage(newPage)
+            }}
+          />
+        </PagerWrap>
+      )}
     </>
   )
 }

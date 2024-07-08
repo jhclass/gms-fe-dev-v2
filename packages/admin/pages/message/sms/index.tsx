@@ -96,21 +96,18 @@ const LodingDiv = styled.div`
 `
 
 export default function message() {
-  const [filterActive, setFilterActive] = useState()
-  const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
+  const [sendGruop, setSendGruop] = useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const deleteType = index => {
+    const updatedGroup = [...sendGruop]
+    updatedGroup.splice(index, 1)
+    setSendGruop(updatedGroup)
+  }
 
   return (
     <>
       <MainWrap>
-        <Breadcrumb
-          onFilterToggle={setFilterActive}
-          isActive={filterActive}
-          isFilter={false}
-          isWrite={false}
-          rightArea={false}
-        />
+        <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
         <ConBox>
           <LeftBox>
             <Textarea
@@ -156,34 +153,27 @@ export default function message() {
                 </Button>
               </FlexBox>
               <ChipBox>
-                <Chip
-                  variant="bordered"
-                  onClose={() => console.log('a')}
-                  className={'hover:border-primary'}
-                >
-                  호호 &#91;01012341234&#93;
-                </Chip>
-                <Chip
-                  variant="bordered"
-                  onClose={() => console.log('a')}
-                  className={'hover:border-primary'}
-                >
-                  호호 &#91;01012341234&#93;
-                </Chip>
-                <Chip
-                  variant="bordered"
-                  onClose={() => console.log('a')}
-                  className={'hover:border-primary'}
-                >
-                  호호 &#91;01012341234&#93;
-                </Chip>
-                <Chip
-                  variant="bordered"
-                  onClose={() => console.log('a')}
-                  className={'hover:border-primary'}
-                >
-                  호호 &#91;01012341234&#93;
-                </Chip>
+                {sendGruop?.map((item, index) => (
+                  <Chip
+                    key={index}
+                    variant="bordered"
+                    onClose={index => deleteType(index)}
+                    className={'hover:border-primary'}
+                  >
+                    {item.mUsername
+                      ? item.mUsername
+                      : item.name
+                      ? item.name
+                      : null}
+                    <span>
+                      {item.mPhoneNum
+                        ? `[${item.mPhoneNum}]`
+                        : item.phoneNum1
+                        ? `[${item.phoneNum1}]`
+                        : item.phoneNumber}
+                    </span>
+                  </Chip>
+                ))}
               </ChipBox>
             </RoundBox>
             <RoundBox>
@@ -249,7 +239,12 @@ export default function message() {
           </RightBox>
         </ConBox>
       </MainWrap>
-      <SMSAddrModal isOpen={isOpen} onClose={onClose} />
+      <SMSAddrModal
+        isOpen={isOpen}
+        onClose={onClose}
+        setSendGruop={setSendGruop}
+        sendGruop={sendGruop}
+      />
     </>
   )
 }
