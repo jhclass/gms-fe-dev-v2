@@ -4,7 +4,7 @@ import {
   ScrollShadow,
   useDisclosure,
 } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
 import { useLazyQuery, useMutation } from '@apollo/client'
@@ -183,6 +183,26 @@ export default function HeaderNoti({}) {
   const [seeAlarms, { data }] = useLazyQuery<seeAlarmsQuery>(SEE_ALARMS_QUERY)
   const [readAlarms] = useMutation(READ_ALARMS_MUTATION)
 
+  const notiBoxRef = useRef(null)
+
+  const handleClickOutside = event => {
+    if (notiBoxRef.current && !notiBoxRef.current.contains(event.target)) {
+      setIsListOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isListOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isListOpen])
+
   useEffect(() => {
     if (isListOpen) {
       seeAlarms({
@@ -232,7 +252,7 @@ export default function HeaderNoti({}) {
 
   return (
     <>
-      <NotiBox>
+      <NotiBox ref={notiBoxRef}>
         <NotiBtn onClick={() => setIsListOpen(!isListOpen)}>
           <img
             src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
