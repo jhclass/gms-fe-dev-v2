@@ -7,7 +7,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { SEE_ALARMS_QUERY } from '@/graphql/queries'
 import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -180,7 +180,16 @@ export default function HeaderNoti({}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isListOpen, setIsListOpen] = useState(false)
   const { userLogs } = useUserLogsMutation()
-  const [seeAlarms, { data }] = useLazyQuery<seeAlarmsQuery>(SEE_ALARMS_QUERY)
+  // const [seeAlarms, { data }] = useLazyQuery<seeAlarmsQuery>(SEE_ALARMS_QUERY)
+  const { error, data, refetch } = useSuspenseQuery<seeAlarmsQuery>(
+    SEE_ALARMS_QUERY,
+    {
+      variables: {
+        page: currentPage,
+        limit: currentLimit,
+      },
+    },
+  )
   const [readAlarms] = useMutation(READ_ALARMS_MUTATION)
 
   const notiBoxRef = useRef(null)
@@ -204,15 +213,8 @@ export default function HeaderNoti({}) {
   }, [isListOpen])
 
   useEffect(() => {
-    if (isListOpen) {
-      seeAlarms({
-        variables: {
-          limit: currentLimit,
-          page: currentPage,
-        },
-      })
-    }
-  }, [isListOpen, currentPage])
+    refetch()
+  }, [currentPage])
 
   const clickReadAll = () => {
     const readAll = confirm('모두 읽음 처리하시겠습니까?')
@@ -221,9 +223,9 @@ export default function HeaderNoti({}) {
         variables: {
           all: 'Y',
         },
-        refetchQueries: [SEE_ALARMS_QUERY],
         onCompleted: result => {
           if (result.readAlarms.ok) {
+            refetch()
             userLogs('알람 모두 읽음 처리')
             alert('모두 읽음 처리 하였습니다.')
           }
@@ -239,9 +241,9 @@ export default function HeaderNoti({}) {
         variables: {
           readAlarmsId: id,
         },
-        refetchQueries: [SEE_ALARMS_QUERY],
         onCompleted: result => {
           if (result.readAlarms.ok) {
+            refetch()
             userLogs(`알람ID : ${id} 읽음 처리`)
             alert('읽음 처리 하였습니다.')
           }
@@ -258,7 +260,7 @@ export default function HeaderNoti({}) {
             src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
             alt="알림"
           />
-          <NotiNum>0</NotiNum>
+          <NotiNum>{data.seeAlarms.data?.length}</NotiNum>
         </NotiBtn>
         {isListOpen && (
           <>
