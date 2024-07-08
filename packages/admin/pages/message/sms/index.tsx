@@ -4,6 +4,12 @@ import { styled } from 'styled-components'
 import Layout from '@/pages/message/layout'
 import { useState } from 'react'
 import SMSTabs from '@/components/items/SMSTabs'
+import DatePicker, { registerLocale } from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import ko from 'date-fns/locale/ko'
+import { getYear } from 'date-fns'
+registerLocale('ko', ko)
+const _ = require('lodash')
 import {
   Button,
   Chip,
@@ -14,6 +20,8 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import SMSAddrModal from '@/components/modal/SMSAddrModal'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { Controller, useForm } from 'react-hook-form'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -83,6 +91,25 @@ const FilterLabel = styled.label`
   padding-bottom: 0.1rem;
   display: block;
 `
+const DatePickerBox = styled.div`
+  width: 100%;
+  .react-datepicker-wrapper {
+    display: inline;
+    width: 100%;
+  }
+  .react-datepicker__input-container {
+    display: inline;
+  }
+  .react-datepicker__close-icon {
+    height: 2.5rem;
+    top: auto;
+    bottom: 0;
+  }
+  .react-datepicker__triangle {
+    left: 1.5rem !important;
+    transform: translate(0, 0) !important;
+  }
+`
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -99,6 +126,11 @@ const LodingDiv = styled.div`
 
 export default function message() {
   const [sendGruop, setSendGruop] = useState(null)
+  const [reservationDate, setReservationDate] = useState(null)
+  const [saveType, setSaveType] = useState('개인')
+  const [sendType, setSendType] = useState('즉시발송')
+  const { register, control, setValue, handleSubmit, formState } = useForm()
+  const years = _.range(2000, getYear(new Date()) + 5, 1)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const deleteType = index => {
     const updatedGroup = [...sendGruop]
@@ -127,6 +159,8 @@ export default function message() {
               <FlexBox>
                 <RadioGroup
                   defaultValue="개인"
+                  value={saveType}
+                  onValueChange={setSaveType}
                   orientation="horizontal"
                   className="gap-[0.65rem]"
                 >
@@ -218,6 +252,8 @@ export default function message() {
               <FlexBox>
                 <RadioGroup
                   defaultValue="즉시전송"
+                  value={sendType}
+                  onValueChange={setSendType}
                   orientation="horizontal"
                   className="gap-[0.65rem]"
                 >
@@ -229,6 +265,67 @@ export default function message() {
                   </Radio>
                 </RadioGroup>
               </FlexBox>
+              {sendType === '예약전송' && (
+                <FlexBox className="mt-[1rem]">
+                  <DatePickerBox>
+                    <Controller
+                      control={control}
+                      name="stVisit"
+                      render={({ field }) => (
+                        <DatePicker
+                          renderCustomHeader={({
+                            date,
+                            changeYear,
+                            changeMonth,
+                            decreaseMonth,
+                            increaseMonth,
+                          }) => (
+                            <DatePickerHeader
+                              rangeYears={years}
+                              clickDate={date}
+                              changeYear={changeYear}
+                              changeMonth={changeMonth}
+                              decreaseMonth={decreaseMonth}
+                              increaseMonth={increaseMonth}
+                            />
+                          )}
+                          locale="ko"
+                          showYearDropdown
+                          selected={
+                            reservationDate === null
+                              ? null
+                              : new Date(reservationDate)
+                          }
+                          placeholderText="예약 일시를 선택해주세요."
+                          isClearable
+                          onChange={date => {
+                            field.onChange(date)
+                            setReservationDate(date)
+                          }}
+                          showTimeSelect
+                          dateFormat="yyyy/MM/dd HH:mm"
+                          onChangeRaw={e => e.preventDefault()}
+                          onFocus={e => e.target.blur()}
+                          customInput={
+                            <Input
+                              label="예약일시"
+                              labelPlacement="outside"
+                              type="text"
+                              variant="bordered"
+                              id="date"
+                              classNames={{
+                                input: 'caret-transparent',
+                              }}
+                              isReadOnly={true}
+                              startContent={<i className="xi-calendar" />}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </DatePickerBox>
+                </FlexBox>
+              )}
             </RoundBox>
             <RoundBox>
               <Button color="primary" className="w-full">

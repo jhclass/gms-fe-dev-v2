@@ -82,7 +82,7 @@ const SendState = styled.p`
   font-size: 0.875rem;
   font-weight: 700;
 
-  &.ing {
+  &.res {
     color: #07bbae;
   }
 
@@ -193,7 +193,7 @@ export default function SMSList() {
             </SendInfo>
             <SendInfo>
               <SendType>SMS</SendType>
-              <SendState className="ing">예약</SendState>
+              <SendState className="res">예약</SendState>
             </SendInfo>
           </CardHeader>
           <CardBody className="p-[0.5rem] bg-[#f4f4f6] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
