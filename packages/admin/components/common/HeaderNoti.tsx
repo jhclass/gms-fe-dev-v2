@@ -326,7 +326,7 @@ export default function HeaderNoti({}) {
                       showControls
                       initialPage={currentPage}
                       page={currentPage}
-                      total={Math.ceil(40 / currentLimit)}
+                      total={Math.ceil(100 / currentLimit)}
                       onChange={newPage => {
                         setCurrentPage(newPage)
                       }}
