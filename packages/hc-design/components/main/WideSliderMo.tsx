@@ -47,13 +47,59 @@ export default function WideSliderMo() {
         >
           <SwiperSlide>
             <div className="flex justify-center">
+              <Link href="/lectures/webtoon1">
+                <img
+                  src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner07.webp"
+                  alt="Stable Diffusion X Midjourney  
+                  웹툰 & 무빙툰 작가데뷔 정규과정 매달 훈련 장려금 816,000원!!
+                  커리큘럼 자세히보기 click
+                  "
+                />
+              </Link>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="flex justify-center">
+              <figure className="absolute top-0 left-0 z-10 w-full">
+                <Link href="/lectures/motion1">
+                  <img
+                    src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner08_tit.webp"
+                    alt="Stable Diffusion x Motion AI를 활용한 시네마틱 방송영상 제작 정규과정 커리큘럼 자세히보기"
+                  />
+                </Link>
+              </figure>
+              <div className="relative w-full overflow-hidden">
+                <div className="relative w-[330vw] pb-[120%] top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+                  <iframe
+                    id="youtube-iframe"
+                    src="https://www.youtube.com/embed/0ZdC1SJR2SE?start=3&autoplay=1&loop=1&mute=1&playlist=0ZdC1SJR2SE&controls=0&modestbranding=1&rel=0"
+                    title="Stable Diffusion x Motion 시네마틱 방송영상 제작 정규과정 커리큘럼 자세히보기"
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    className="scale-[1.1]"
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="flex justify-center">
               <Link href="/event/summerVacation">
                 <video playsInline autoPlay loop muted>
                   <source
                     src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/mainBnr/mo/main_banner06.mp4"
                     type="video/mp4"
                   />
-                  <span className="hidden">6월 너의 여름방학</span>
+                  <span className="hidden">7월 너의 여름방학</span>
                 </video>
               </Link>
             </div>

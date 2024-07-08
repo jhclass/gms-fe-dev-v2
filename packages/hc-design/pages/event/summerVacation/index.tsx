@@ -17,7 +17,7 @@ export default function eventSummerVacation() {
           <div className="hidden w-full wmd:block">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/evt/evt_summer_02.webp"
-              alt="6월 너의 여름방학 너와 나의 여름방학을 위해 모두 준비해보았어요.
+              alt="너의 여름방학 너와 나의 여름방학을 위해 모두 준비해보았어요.
               event01. 모든 방학특강 전액 국비 지원 너를 위해 준비했어. 할인보다 전액지원이 좋잖아. | 포토샵, 일러스트, 에펙, webtoon, 컴퓨터그래픽스운용기능사, 웹디자인기능사
               event02. 패키지 과정 전액 국비 지원 너를 위해 준비했어. 알차게 학과별 MASTER 해봐. | 영상편집 MASTER, 웹디자인(UI/UX) MASTER, 시각디자인 MASTER, 웹툰 베이직 MASTER
               event03. 블렌더 에셋 모델링 마스터과정 개설 너를 위해 준비했어. 부담없이 3D 모델링 패키지 과정. | 포토샵 + 일러스트 + 에펙 + 블렌더이 모든게  300,000원!!
@@ -31,7 +31,7 @@ export default function eventSummerVacation() {
           <div className="block w-full wmd:hidden">
             <img
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/evt/mo/evt_summer_02.webp"
-              alt="6월 너의 여름방학 너와 나의 여름방학을 위해 모두 준비해보았어요.
+              alt="너의 여름방학 너와 나의 여름방학을 위해 모두 준비해보았어요.
               event01. 모든 방학특강 전액 국비 지원 너를 위해 준비했어. 할인보다 전액지원이 좋잖아. | 포토샵, 일러스트, 에펙, webtoon, 컴퓨터그래픽스운용기능사, 웹디자인기능사
               event02. 패키지 과정 전액 국비 지원 너를 위해 준비했어. 알차게 학과별 MASTER 해봐. | 영상편집 MASTER, 웹디자인(UI/UX) MASTER, 시각디자인 MASTER, 웹툰 베이직 MASTER
               event03. 블렌더 에셋 모델링 마스터과정 개설 너를 위해 준비했어. 부담없이 3D 모델링 패키지 과정. | 포토샵 + 일러스트 + 에펙 + 블렌더이 모든게  300,000원!!
