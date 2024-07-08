@@ -120,7 +120,7 @@ export default function message() {
               minRows={10}
             />
             <ByteBox>
-              <p>0/90byte</p>
+              <p>0/90자</p>
               <p>SMS</p>
             </ByteBox>
             <RoundBox>
