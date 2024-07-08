@@ -22,6 +22,16 @@ export const USER_LOGS_MUTATION = gql`
   }
 `
 
+export const READ_ALARMS_MUTATION = gql`
+  mutation ReadAlarms($readAlarmsId: Int, $all: String) {
+    readAlarms(id: $readAlarmsId, all: $all) {
+      error
+      message
+      ok
+    }
+  }
+`
+
 // manager
 export const CREATE_MANAGE_USER_MUTATION = gql`
   mutation Mutation(

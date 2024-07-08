@@ -1,16 +1,6 @@
 import styled from 'styled-components'
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Pagination,
-} from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { Button, Input } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import SMSAddrItem2 from '@/components/items/SMSAddrItem2'
-import { useLazyQuery } from '@apollo/client'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 const ItemBox = styled.form`
   display: flex;

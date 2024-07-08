@@ -9,19 +9,14 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Radio, RadioGroup, Switch } from '@nextui-org/react'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { Button, Input } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/hr/layout'
-import {
-  CHECK_DOUBLE_MUTATION,
-  CREATE_MANAGE_USER_MUTATION,
-  CREATE_STUDENT_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import AdviceSelect from '@/components/common/AdviceSelect'
 import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 
 const ConArea = styled.div`

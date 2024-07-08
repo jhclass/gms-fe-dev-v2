@@ -1,31 +1,17 @@
 import styled from 'styled-components'
 import {
   Button,
-  CheckboxGroup,
-  Chip,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ScrollShadow,
 } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import {
-  useLazyQuery,
-  useMutation,
-  useQuery,
-  useSuspenseQuery,
-} from '@apollo/client'
-import {
-  CHANGE_ORDER_AT_MUTATION,
-  DEV_EDIT_MANAGE_USER_MUTATION,
-  EDIT_MANAGE_USER_MUTATION,
-} from '@/graphql/mutations'
-import { useEffect, useRef, useState } from 'react'
-import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
+import { useMutation } from '@apollo/client'
+import { CHANGE_ORDER_AT_MUTATION } from '@/graphql/mutations'
+import { useEffect, useState } from 'react'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
