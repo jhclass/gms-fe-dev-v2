@@ -27,6 +27,7 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
+import Address from '@/components/common/Address'
 
 const ConArea = styled.div`
   width: 100%;
@@ -419,28 +420,6 @@ export default function StudentsWrite() {
                       </p>
                     )}
                   </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="주소"
-                      className="w-full"
-                      onChange={e => {
-                        register('mAddresses').onChange(e)
-                      }}
-                      {...register('mAddresses')}
-                    />
-                    {errors.mAddresses && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.mAddresses.message)}
-                      </p>
-                    )}
-                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
@@ -468,6 +447,7 @@ export default function StudentsWrite() {
                     )}
                   </AreaBox>
                 </FlexBox>
+                <Address valueName={'mAddresses'} setValue={setValue} />
                 <FlexBox>
                   <AreaBox>
                     <Input

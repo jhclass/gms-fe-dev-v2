@@ -18,6 +18,7 @@ import Layout from '@/pages/hr/layout'
 import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
+import Address from '@/components/common/Address'
 
 const ConArea = styled.div`
   width: 100%;
@@ -445,27 +446,8 @@ export default function StudentsWrite() {
                     )}
                   </AreaBox>
                 </FlexBox>
+                <Address valueName={'mAddresses'} setValue={setValue} />
                 <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="주소"
-                      className="w-full"
-                      onChange={e => {
-                        register('mAddresses').onChange(e)
-                      }}
-                      {...register('mAddresses')}
-                    />
-                    {errors.mAddresses && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
-                        {String(errors.mAddresses.message)}
-                      </p>
-                    )}
-                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
@@ -489,8 +471,6 @@ export default function StudentsWrite() {
                       </p>
                     )}
                   </AreaBox>
-                </FlexBox>
-                <FlexBox>
                   <AreaBox>
                     <Controller
                       control={control}

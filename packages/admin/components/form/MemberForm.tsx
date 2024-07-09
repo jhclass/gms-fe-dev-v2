@@ -20,6 +20,7 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
+import Address from '@/components/common/Address'
 
 const ConArea = styled.div`
   width: 100%;
@@ -544,24 +545,6 @@ export default function ManagerWrite({ managerId }) {
                       </p>
                     )}
                   </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="주소"
-                      className="w-full"
-                      defaultValue={managerData.mAddresses}
-                      onChange={e => {
-                        register('mAddresses').onChange(e)
-                      }}
-                      {...register('mAddresses')}
-                    />
-                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
@@ -590,6 +573,13 @@ export default function ManagerWrite({ managerId }) {
                     )}
                   </AreaBox>
                 </FlexBox>
+                <Address
+                  valueName={'mAddresses'}
+                  setValue={setValue}
+                  defaultPostcode={'0101010'}
+                  defaultAddress={managerData.mAddresses}
+                  defaultDetails={'상세주소주소'}
+                />
                 <FlexBox>
                   <AreaBox>
                     <Input
