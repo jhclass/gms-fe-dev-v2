@@ -55,12 +55,12 @@ export default function Address({
   const handleClick = () => {
     const isMobile = window.innerWidth <= 768
     const width = isMobile ? window.innerWidth * 0.9 : 500
-    const height = isMobile ? window.innerHeight * 0.7 : 600
+    const height = isMobile ? window.innerHeight * 0.7 : 500
     const left = isMobile
-      ? (window.screen.width - width) / 2
+      ? (window.innerWidth - width) / 2
       : Math.ceil((window.screen.width - width) / 2)
     const top = isMobile
-      ? (window.screen.height - height) / 2
+      ? (window.innerHeight - height) / 2
       : Math.ceil((window.screen.height - height) / 2)
 
     new (window as any).daum.Postcode({
