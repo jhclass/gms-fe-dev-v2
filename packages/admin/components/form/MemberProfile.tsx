@@ -344,7 +344,11 @@ export default function Profile() {
                   valueName={'mAddresses'}
                   setValue={setValue}
                   defaultPostcode={'0101010'}
-                  defaultAddress={mMeData.mAddresses}
+                  defaultAddress={
+                    mMeData.mAddresses === null
+                      ? '주소 검색을 클릭해주세요.'
+                      : mMeData.mAddresses
+                  }
                   defaultDetails={'상세주소주소'}
                 />
                 <FlexBox>

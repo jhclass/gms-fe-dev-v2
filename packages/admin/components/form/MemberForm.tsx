@@ -279,6 +279,7 @@ export default function ManagerWrite({ managerId }) {
   }, [managerData])
 
   const onSubmit = async data => {
+    console.log(data)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       let part
@@ -323,6 +324,7 @@ export default function ManagerWrite({ managerId }) {
           })
 
           if (!result.data.editManageUser.ok) {
+            console.log(result)
             throw new Error('직원 정보 수정 실패')
           }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -577,7 +579,11 @@ export default function ManagerWrite({ managerId }) {
                   valueName={'mAddresses'}
                   setValue={setValue}
                   defaultPostcode={'0101010'}
-                  defaultAddress={managerData.mAddresses}
+                  defaultAddress={
+                    managerData.mAddresses === null
+                      ? '주소 검색을 클릭해주세요.'
+                      : managerData.mAddresses
+                  }
                   defaultDetails={'상세주소주소'}
                 />
                 <FlexBox>

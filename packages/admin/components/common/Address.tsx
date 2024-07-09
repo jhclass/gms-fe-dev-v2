@@ -39,19 +39,7 @@ export default function Address({
 }) {
   const [postcode, setPostcode] = useState('')
   const [roadAddress, setRoadAddress] = useState('')
-
-  useEffect(() => {
-    if (defaultPostcode !== '') {
-      setPostcode(defaultPostcode)
-    } else {
-      setPostcode('')
-    }
-    if (defaultAddress !== '') {
-      setRoadAddress(defaultAddress)
-    } else {
-      setRoadAddress('')
-    }
-  }, [defaultAddress, defaultPostcode])
+  console.log(defaultAddress)
 
   const handleClick = () => {
     const isMobile = window.innerWidth <= 768
