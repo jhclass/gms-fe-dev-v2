@@ -234,7 +234,7 @@ export default function WorksLogsModal({
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const mUsername = useMme('mUsername')
   const { userLogs } = useUserLogsMutation()
   const [seeAttendance] = useLazyQuery(SEE_ATTENDANCE_QUERY)

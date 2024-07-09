@@ -49,7 +49,7 @@ export default function Teacher() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [teacherFilter, setTeacherFilter] = useState()

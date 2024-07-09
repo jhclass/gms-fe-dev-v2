@@ -238,7 +238,7 @@ export default function StudentsWrite({ managerId }) {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const loginMGrade = useMme('mGrade')
-  const loginMPart = useMme('mPart')
+  const loginMPart = useMme('mPart') || []
   const router = useRouter()
   const [adviceType, setAdviceType] = useState([])
   const { userLogs } = useUserLogsMutation()

@@ -212,7 +212,7 @@ export default function StudentsWrite() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
   const assignment = useRecoilValue(assignmentState)

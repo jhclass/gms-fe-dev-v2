@@ -56,7 +56,7 @@ export default function Subjects() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [filterActive, setFilterActive] = useRecoilState(
     subjectFilterActiveState,
   )

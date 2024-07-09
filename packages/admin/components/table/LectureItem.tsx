@@ -178,7 +178,7 @@ export default function ConsolutItem(props) {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const lecture = props.tableData

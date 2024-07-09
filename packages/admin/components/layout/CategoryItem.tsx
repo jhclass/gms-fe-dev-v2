@@ -138,7 +138,7 @@ export default function CategoryItem<CategoryItemProps>({
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const today = new Date()
   const year = today.getFullYear()
   const month = today.getMonth() + 1

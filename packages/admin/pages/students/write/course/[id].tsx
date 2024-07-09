@@ -233,7 +233,7 @@ export default function StudentsWriteCourse() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
