@@ -1,5 +1,6 @@
 import { Button, Input } from '@nextui-org/react'
 import Head from 'next/head'
+import Script from 'next/script'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
@@ -95,9 +96,7 @@ export default function Address({
 
   return (
     <>
-      <Head>
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-      </Head>
+      <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></Script>
       <FlexBox>
         <AreaBox>
           <div className="flex items-end gap-3">
