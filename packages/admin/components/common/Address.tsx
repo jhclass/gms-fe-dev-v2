@@ -122,7 +122,7 @@ export default function Address({
               variant="solid"
               color="primary"
             >
-              주소 찾기
+              주소 검색
             </Button>
           </div>
         </AreaBox>
