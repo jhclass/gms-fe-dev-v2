@@ -580,8 +580,9 @@ export default function ManagerWrite({ managerId }) {
                   setValue={setValue}
                   defaultPostcode={'0101010'}
                   defaultAddress={
-                    managerData.mAddresses === null
-                      ? '주소 검색을 클릭해주세요.'
+                    managerData.mAddresses === null ||
+                    managerData.mAddresses === ''
+                      ? '주소를 입력해주세요.'
                       : managerData.mAddresses
                   }
                   defaultDetails={'상세주소주소'}

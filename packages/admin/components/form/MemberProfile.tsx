@@ -345,7 +345,7 @@ export default function Profile() {
                   setValue={setValue}
                   defaultPostcode={'0101010'}
                   defaultAddress={
-                    mMeData.mAddresses === null
+                    mMeData.mAddresses === null || mMeData.mAddresses === ''
                       ? '주소 검색을 클릭해주세요.'
                       : mMeData.mAddresses
                   }

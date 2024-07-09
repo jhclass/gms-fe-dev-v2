@@ -611,7 +611,8 @@ export default function StudentsWrite({ managerId }) {
                   setValue={setValue}
                   defaultPostcode={'0101010'}
                   defaultAddress={
-                    managerData.mAddresses === null
+                    managerData.mAddresses === null ||
+                    managerData.mAddresses === ''
                       ? '주소 검색을 클릭해주세요.'
                       : managerData.mAddresses
                   }
