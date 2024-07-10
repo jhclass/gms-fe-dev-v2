@@ -216,6 +216,9 @@ export default function ConsolutItem(props) {
             <Tperiod>
               <EllipsisBox>2024-01-01 ~ 2024-03-15</EllipsisBox>
             </Tperiod>
+            <Tdates>
+              <EllipsisBox>2024-05-03</EllipsisBox>
+            </Tdates>
             <Tteacher>
               <EllipsisBox>김강사</EllipsisBox>
             </Tteacher>
@@ -234,15 +237,6 @@ export default function ConsolutItem(props) {
             <Tcompany>
               <EllipsisBox>주식회사 크로니즈시스템</EllipsisBox>
             </Tcompany>
-            <Tdates>
-              <EllipsisBox>2024-05-03</EllipsisBox>
-            </Tdates>
-            <Tcheck>
-              <EllipsisBox>아니오</EllipsisBox>
-            </Tcheck>
-            <Tdates>
-              <EllipsisBox>2024-05-03</EllipsisBox>
-            </Tdates>
             <Tdates>
               <EllipsisBox>2024-05-03</EllipsisBox>
             </Tdates>

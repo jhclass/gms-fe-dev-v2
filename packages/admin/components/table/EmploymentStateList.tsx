@@ -217,27 +217,14 @@ export default function AbsentList() {
                   <Tnum>No</Tnum>
                   <TlecturName>강의이름</TlecturName>
                   <Tperiod>강의기간</Tperiod>
+                  <Tdates>사후관리종료일</Tdates>
                   <Tteacher>강사명</Tteacher>
-                  <Tname>이름</Tname>
+                  <Tname>이름/나이</Tname>
                   <Tphone>전화번호</Tphone>
-                  <Tcheck>구분</Tcheck>
+                  <Tcheck>취업여부</Tcheck>
                   <Tdates>취업일자</Tdates>
                   <Tcompany>회사명</Tcompany>
-                  <Tdates>면접일자</Tdates>
-                  <Tcheck>
-                    취업 <br />
-                    여부
-                  </Tcheck>
-                  <Tdates>
-                    취업
-                    <br />
-                    상담일자
-                  </Tdates>
-                  <Tdates>
-                    사후관리
-                    <br />
-                    상담일자
-                  </Tdates>
+                  <Tdates>최근상담일</Tdates>
                 </ClickBox>
               </TheaderBox>
             </Theader>
