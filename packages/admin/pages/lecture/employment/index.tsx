@@ -48,9 +48,9 @@ export default function Employment() {
         >
           <EmploymentStateFilter
             isActive={filterActive}
-            // studentFilter={studentFilter}
-            // onFilterSearch={setFilterSearch}
-            // setStudentFilter={setStudentFilter}
+            studentFilter={studentFilter}
+            onFilterSearch={setFilterSearch}
+            setStudentFilter={setStudentFilter}
           />
         </Suspense>
         <ConBox>

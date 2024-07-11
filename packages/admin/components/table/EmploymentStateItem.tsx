@@ -60,21 +60,21 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 18%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.18}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 13%;
+  width: 12%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.13}px;
+  min-width: ${1200 * 0.12}px;
 `
 const Tteacher = styled.div`
   display: table-cell;
@@ -92,10 +92,10 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.08}px;
 `
 
 const Tphone = styled.div`
@@ -114,10 +114,10 @@ const Tcheck = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 5%;
+  width: 6%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.05}px;
+  min-width: ${1200 * 0.06}px;
 `
 
 const Tcompany = styled.div`
@@ -125,10 +125,10 @@ const Tcompany = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.12}px;
+  min-width: ${1200 * 0.11}px;
 `
 const Tdates = styled.div`
   position: relative;
@@ -223,13 +223,13 @@ export default function ConsolutItem(props) {
               <EllipsisBox>김강사</EllipsisBox>
             </Tteacher>
             <Tname>
-              <EllipsisBox>김나라</EllipsisBox>
+              <EllipsisBox>김나라 &#91;30세&#93;</EllipsisBox>
             </Tname>
             <Tphone>
               <EllipsisBox>01023459876</EllipsisBox>
             </Tphone>
             <Tcheck>
-              <EllipsisBox>취업</EllipsisBox>
+              <EllipsisBox>미취업</EllipsisBox>
             </Tcheck>
             <Tdates>
               <EllipsisBox>2024-05-03</EllipsisBox>

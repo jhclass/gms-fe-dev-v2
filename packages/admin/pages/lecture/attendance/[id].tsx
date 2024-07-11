@@ -216,7 +216,11 @@ export default function StudentsWrite() {
                   수정
                 </Button>
               </AreaTitle>
-              <LectureInfo lectureData={lectureData} students={students} />
+              <LectureInfo
+                lectureData={lectureData}
+                students={students}
+                attendance={true}
+              />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

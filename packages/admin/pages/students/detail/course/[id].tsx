@@ -23,6 +23,7 @@ import {
 } from '@/graphql/mutations'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 import PaymentInfo from '@/components/items/PaymentInfo'
+import StudentInfo from '@/components/items/StudentInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -407,50 +408,11 @@ export default function StudentsWrite() {
                 <AreaTitle>
                   <h4>기본정보</h4>
                 </AreaTitle>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        이름<span>*</span>
-                      </FilterLabel>
-                      <LineBox>{studentData?.name}</LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        생년월일<span>*</span>
-                      </FilterLabel>
-                      <LineBox>
-                        {formatDate(studentData?.birthday, false)}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        연락처<span>*</span>
-                      </FilterLabel>
-                      <LineBox>{studentData?.phoneNum1}</LineBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>담당자</FilterLabel>
-                      <LineBox>{studentData?.writer}</LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>등록일시</FilterLabel>
-                      <LineBox>
-                        {formatDate(studentData?.createdAt, false)}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
+                <StudentInfo
+                  studentData={studentData}
+                  detailAll={false}
+                  record={false}
+                />
               </DetailDiv>
             </DetailBox>
             {studentPaymentData !== undefined && (
