@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import Layout from '@/pages/hr/layout'
-import TeacherForm from '@/components/form/TeacherForm'
 import MemberForm from '@/components/form/MemberForm'
 
 const LodingDiv = styled.div`

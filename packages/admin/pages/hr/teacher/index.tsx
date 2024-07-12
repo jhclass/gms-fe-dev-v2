@@ -11,7 +11,6 @@ import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { Button } from '@nextui-org/react'
 import { motion } from 'framer-motion'
-import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { useRouter } from 'next/router'
 
 const ConBox = styled.div`

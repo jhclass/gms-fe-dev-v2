@@ -1,6 +1,6 @@
 import { Card, CardBody, Link, Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import CreateAdviceType from '../form/CreateAdviceType'
+import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { Suspense, useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'

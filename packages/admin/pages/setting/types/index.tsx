@@ -1,10 +1,7 @@
 import { styled } from 'styled-components'
 import Layout from '@/pages/setting/layout'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import ManagerList from '@/components/table/ManagerList'
 import TypesTabs from '@/components/items/TypesTabs'
 
 const ConBox = styled.div`

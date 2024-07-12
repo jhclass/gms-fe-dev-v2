@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRouter } from 'next/router'
 import SMSCard from '@/components/items/SMSCard'
-import SMSList from '../table/SMSList'
+import SMSList from '@/components/table/SMSList'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
