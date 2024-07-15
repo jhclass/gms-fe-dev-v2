@@ -28,6 +28,7 @@ import StudentInfo from '@/components/items/StudentInfo'
 import Address from '@/components/common/Address'
 import EducationalHistory from '@/components/table/EducationalHistory'
 import CareerHistory from '@/components/table/CareerHistory'
+import EmploymentTabs from '@/components/items/EmploymentTabs'
 
 const ConArea = styled.div`
   width: 100%;
@@ -350,35 +351,12 @@ export default function StudentsWrite() {
           <DetailBox>
             <DetailDiv>
               <AreaTitle>
-                <h4>중도탈락 사전점검</h4>
-              </AreaTitle>
-              <AropoutStateList />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
                 <h4>자격취득현황</h4>
               </AreaTitle>
               <AcquisitionList />
             </DetailDiv>
           </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>취업현황</h4>
-              </AreaTitle>
-              <EmploymentList />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>정기평가 내용설정</h4>
-              </AreaTitle>
-              <EvaluationList />
-            </DetailDiv>
-          </DetailBox>
+          <EmploymentTabs />
           <DetailBox>
             <BtnBox>
               <Button

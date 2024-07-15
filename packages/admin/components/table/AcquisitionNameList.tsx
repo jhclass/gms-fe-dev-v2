@@ -3,13 +3,6 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
-registerLocale('ko', ko)
-const _ = require('lodash')
-import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -44,11 +37,11 @@ const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 26%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.25}px;
+  min-width: ${1200 * 0.26}px;
 `
 
 const Tdate = styled.div`
@@ -56,21 +49,21 @@ const Tdate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 14%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.14}px;
 `
 
-const Tbtn = styled.div`
+const Tname = styled.div`
+  position: relative;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 11%;
   padding: 0.5rem;
   font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.011}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -106,51 +99,12 @@ const TableRow = styled.div`
   width: 100%;
   grid-template-columns: 0.5rem 2% auto; */
 `
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-`
-
-const DatePickerBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  z-index: 21;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .react-datepicker {
-    /* margin-left: 50%; */
-  }
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
-`
 
 export default function AbsentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [stVisitDate, setStVisitDate] = useState(null)
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [isOpen, setIsOpen] = useState(false)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -173,17 +127,29 @@ export default function AbsentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
+                  <Tname>이름</Tname>
                   <Tdate>취득일자</Tdate>
                   <Ttext>자격증명</Ttext>
                   <Ttext>급수</Ttext>
                   <Ttext>발행처</Ttext>
-                  <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
             </Theader>
             <TableItem>
               <TableRow>
                 <ClickBox>
+                  <Tname>
+                    <Input
+                      isReadOnly={true}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Tname>
                   <Tdate>
                     <Input
                       labelPlacement="outside"
@@ -202,11 +168,11 @@ export default function AbsentList() {
                         stVisitDate === null ? null : String(stVisitDate)
                       }
                       value={formatDate(stVisitDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
                   <Ttext>
                     <Input
+                      isReadOnly={true}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -218,6 +184,7 @@ export default function AbsentList() {
                   </Ttext>
                   <Ttext>
                     <Input
+                      isReadOnly={true}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -229,6 +196,7 @@ export default function AbsentList() {
                   </Ttext>
                   <Ttext>
                     <Input
+                      isReadOnly={true}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -238,25 +206,25 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        추가
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
                 </ClickBox>
               </TableRow>
             </TableItem>
             <TableItem>
               <TableRow>
                 <ClickBox>
+                  <Tname>
+                    <Input
+                      isReadOnly={true}
+                      defaultValue={'김나라'}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Tname>
                   <Tdate>
                     <Input
                       labelPlacement="outside"
@@ -275,7 +243,6 @@ export default function AbsentList() {
                         stVisitDate === null ? null : String(stVisitDate)
                       }
                       value={formatDate(stVisitDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
                   <Ttext>
@@ -317,28 +284,6 @@ export default function AbsentList() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="bordered"
-                        color="primary"
-                        className="w-full"
-                        // onClick={() => clickCancelReq(item)}
-                      >
-                        삭제
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
                 </ClickBox>
               </TableRow>
             </TableItem>
@@ -359,36 +304,6 @@ export default function AbsentList() {
           </PagerWrap>
         )}
       </TableArea>
-      {isOpen && (
-        <DatePickerBox>
-          <DatePicker
-            inline
-            renderCustomHeader={({
-              date,
-              changeYear,
-              changeMonth,
-              decreaseMonth,
-              increaseMonth,
-            }) => (
-              <DatePickerHeader
-                rangeYears={years}
-                clickDate={date}
-                changeYear={changeYear}
-                changeMonth={changeMonth}
-                decreaseMonth={decreaseMonth}
-                increaseMonth={increaseMonth}
-              />
-            )}
-            locale="ko"
-            showYearDropdown
-            selected={stVisitDate === null ? null : new Date(stVisitDate)}
-            onChange={date => {
-              setStVisitDate(date)
-              setIsOpen(false)
-            }}
-          />
-        </DatePickerBox>
-      )}
     </>
   )
 }

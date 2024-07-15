@@ -10,48 +10,9 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
-registerLocale('ko', ko)
-const _ = require('lodash')
-import DatePickerHeader from '@/components/common/DatePickerHeader'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
-`
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
 `
 const TableWrap = styled.div`
   width: 100%;
@@ -96,10 +57,21 @@ const Tdate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 11%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.11}px;
+`
+
+const Tname = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 0.5rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.06}px;
 `
 
 const Tradio = styled.div`
@@ -111,16 +83,6 @@ const Tradio = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.06}px;
-`
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 5%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.05}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -155,52 +117,12 @@ const TableRow = styled.div`
   width: 100%;
   grid-template-columns: 0.5rem 2% auto; */
 `
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  gap: 0.5rem;
-`
-
-const DatePickerBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  z-index: 21;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .react-datepicker {
-    /* margin-left: 50%; */
-  }
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
-`
 
 export default function EmploymentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [stVisitDate, setStVisitDate] = useState(null)
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [isOpen, setIsOpen] = useState(false)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -223,6 +145,7 @@ export default function EmploymentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
+                  <Tname>이름</Tname>
                   <Tradio>구분</Tradio>
                   <Tdate>취업일자</Tdate>
                   <Ttext>회사명</Ttext>
@@ -248,15 +171,27 @@ export default function EmploymentList() {
                     취업 <br />
                     형태
                   </Tradio>
-                  <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
             </Theader>
             <TableItem>
               <TableRow>
                 <ClickBox>
+                  <Tname>
+                    <Input
+                      isReadOnly={true}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Tname>
                   <Tradio>
                     <RadioGroup
+                      isReadOnly={true}
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
                       defaultValue={'취업'}
@@ -287,7 +222,6 @@ export default function EmploymentList() {
                         stVisitDate === null ? null : String(stVisitDate)
                       }
                       value={formatDate(stVisitDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
                   <Ttext>
@@ -299,6 +233,7 @@ export default function EmploymentList() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      isReadOnly={true}
                     />
                   </Ttext>
                   <Ttext>
@@ -310,6 +245,7 @@ export default function EmploymentList() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      isReadOnly={true}
                     />
                   </Ttext>
                   <Ttext>
@@ -321,6 +257,7 @@ export default function EmploymentList() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      isReadOnly={true}
                     />
                   </Ttext>
                   <Ttext>
@@ -332,6 +269,7 @@ export default function EmploymentList() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      isReadOnly={true}
                     />
                   </Ttext>
                   <Ttext>
@@ -343,6 +281,7 @@ export default function EmploymentList() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      isReadOnly={true}
                     />
                   </Ttext>
                   <Ttext>
@@ -354,10 +293,12 @@ export default function EmploymentList() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      isReadOnly={true}
                     />
                   </Ttext>
                   <Tradio>
                     <RadioGroup
+                      isReadOnly={true}
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
                       defaultValue={'Y'}
@@ -372,6 +313,7 @@ export default function EmploymentList() {
                   </Tradio>
                   <Tradio>
                     <RadioGroup
+                      isReadOnly={true}
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
                       defaultValue={'Y'}
@@ -386,6 +328,7 @@ export default function EmploymentList() {
                   </Tradio>
                   <Tradio>
                     <RadioGroup
+                      isReadOnly={true}
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
                       defaultValue={'동일'}
@@ -403,6 +346,7 @@ export default function EmploymentList() {
                   </Tradio>
                   <Tradio>
                     <RadioGroup
+                      isReadOnly={true}
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
                       defaultValue={'조기'}
@@ -415,27 +359,28 @@ export default function EmploymentList() {
                       </Radio>
                     </RadioGroup>
                   </Tradio>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        추가
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
                 </ClickBox>
               </TableRow>
             </TableItem>
             <TableItem>
               <TableRow>
                 <ClickBox>
+                  <Tname>
+                    <Input
+                      isReadOnly={true}
+                      defaultValue={'김나라'}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                    />
+                  </Tname>
                   <Tradio>
                     <RadioGroup
+                      isReadOnly={true}
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
                       defaultValue={'취업'}
@@ -466,7 +411,6 @@ export default function EmploymentList() {
                         stVisitDate === null ? null : String(stVisitDate)
                       }
                       value={formatDate(stVisitDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
                   <Ttext>
@@ -610,28 +554,6 @@ export default function EmploymentList() {
                       </Radio>
                     </RadioGroup>
                   </Tradio>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="bordered"
-                        color="primary"
-                        className="w-full"
-                        // onClick={() => clickCancelReq(item)}
-                      >
-                        삭제
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
                 </ClickBox>
               </TableRow>
             </TableItem>
@@ -652,36 +574,6 @@ export default function EmploymentList() {
           </PagerWrap>
         )}
       </TableArea>
-      {isOpen && (
-        <DatePickerBox>
-          <DatePicker
-            inline
-            renderCustomHeader={({
-              date,
-              changeYear,
-              changeMonth,
-              decreaseMonth,
-              increaseMonth,
-            }) => (
-              <DatePickerHeader
-                rangeYears={years}
-                clickDate={date}
-                changeYear={changeYear}
-                changeMonth={changeMonth}
-                decreaseMonth={decreaseMonth}
-                increaseMonth={increaseMonth}
-              />
-            )}
-            locale="ko"
-            showYearDropdown
-            selected={stVisitDate === null ? null : new Date(stVisitDate)}
-            onChange={date => {
-              setStVisitDate(date)
-              setIsOpen(false)
-            }}
-          />
-        </DatePickerBox>
-      )}
     </>
   )
 }

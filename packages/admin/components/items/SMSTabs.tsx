@@ -40,20 +40,8 @@ const BtnBox = styled.div`
   gap: 0.5rem;
 `
 
-export default function TypesTabs() {
-  const router = useRouter()
-  const { typeTab } = router.query
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
+export default function SMSTabs() {
   const [selected, setSelected] = useState('mySMS')
-
-  useEffect(() => {
-    if (typeTab) {
-      setSelected(String(typeTab))
-    }
-  }, [typeTab])
 
   return (
     <>

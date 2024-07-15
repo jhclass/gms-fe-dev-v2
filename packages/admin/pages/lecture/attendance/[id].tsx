@@ -21,6 +21,8 @@ import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
 import AbsentFilterList from '@/components/table/AbsentFilterList'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
+import AcquisitionNameList from '@/components/table/AcquisitionNameList'
+import EmploymentNameList from '@/components/table/EmploymentNameList'
 
 const ConArea = styled.div`
   width: 100%;
@@ -333,7 +335,7 @@ export default function StudentsWrite() {
               <AreaTitle>
                 <h4>자격취득현황</h4>
               </AreaTitle>
-              <AcquisitionList />
+              <AcquisitionNameList />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -341,7 +343,7 @@ export default function StudentsWrite() {
               <AreaTitle>
                 <h4>취업현황</h4>
               </AreaTitle>
-              <EmploymentList />
+              <EmploymentNameList />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

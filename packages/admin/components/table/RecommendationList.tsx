@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Input,
   Pagination,
   Radio,
@@ -84,11 +85,22 @@ const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 10%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.1}px;
+`
+
+const Tcon = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 22%;
+  padding: 0.5rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.22}px;
 `
 
 const Tdate = styled.div`
@@ -102,7 +114,7 @@ const Tdate = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 
-const Tradio = styled.div`
+const Tcheck = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -194,13 +206,15 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function EmploymentList() {
+export default function RecommendationList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [stVisitDate, setStVisitDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const [isOpen, setIsOpen] = useState(false)
+  const [isEmployment, setIsEmployment] = useState(false)
+  const [isCertificate, setIsCertificate] = useState(false)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -223,31 +237,19 @@ export default function EmploymentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
-                  <Tradio>구분</Tradio>
-                  <Tdate>취업일자</Tdate>
+                  <Tdate>추천일자</Tdate>
                   <Ttext>회사명</Ttext>
-                  <Ttext>사업자번호</Ttext>
-                  <Ttext>담당업무</Ttext>
+                  <Ttext>채용분야</Ttext>
                   <Ttext>소재지</Ttext>
                   <Ttext>전화번호</Ttext>
-                  <Ttext>사업자규모</Ttext>
-                  <Tradio>
-                    고용
+                  <Tdate>면접일자</Tdate>
+                  <Tcheck>취업여부</Tcheck>
+                  <Tcon>미취업사유</Tcon>
+                  <Tcheck>
+                    재직증명
                     <br />
-                    보험
-                  </Tradio>
-                  <Tradio>
-                    재직 <br />
-                    증명
-                  </Tradio>
-                  <Tradio>
-                    관련 <br />
-                    분야
-                  </Tradio>
-                  <Tradio>
-                    취업 <br />
-                    형태
-                  </Tradio>
+                    확보예정
+                  </Tcheck>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -255,20 +257,6 @@ export default function EmploymentList() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'취업'}
-                    >
-                      <Radio key={'취업'} value={'취업'}>
-                        취업
-                      </Radio>
-                      <Radio key={'창업'} value={'창업'}>
-                        창업
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
                   <Tdate>
                     <Input
                       labelPlacement="outside"
@@ -334,7 +322,38 @@ export default function EmploymentList() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Ttext>
+                  <Tdate>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      id="date"
+                      classNames={{
+                        input: 'caret-transparent',
+                      }}
+                      isReadOnly={true}
+                      startContent={<i className="xi-calendar" />}
+                      defaultValue={
+                        stVisitDate === null ? null : String(stVisitDate)
+                      }
+                      value={formatDate(stVisitDate) || ''}
+                      onClick={() => setIsOpen(!isOpen)}
+                    />
+                  </Tdate>
+                  <Tcheck>
+                    <Checkbox
+                      size="sm"
+                      isSelected={isEmployment}
+                      onValueChange={setIsEmployment}
+                      classNames={{
+                        wrapper: 'mr-0',
+                      }}
+                    />
+                  </Tcheck>
+                  <Tcon>
                     <Input
                       labelPlacement="outside"
                       variant="bordered"
@@ -344,77 +363,17 @@ export default function EmploymentList() {
                       placeholder=" "
                       className="w-full"
                     />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
+                  </Tcon>
+                  <Tcheck>
+                    <Checkbox
                       size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
+                      isSelected={isCertificate}
+                      onValueChange={setIsCertificate}
+                      classNames={{
+                        wrapper: 'mr-0',
+                      }}
                     />
-                  </Ttext>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'동일'}
-                    >
-                      <Radio key={'동일'} value={'동일'}>
-                        동일
-                      </Radio>
-                      <Radio key={'관련'} value={'관련'}>
-                        관련
-                      </Radio>
-                      <Radio key={'다른'} value={'다른'}>
-                        다른
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'조기'}
-                    >
-                      <Radio key={'조기'} value={'조기'}>
-                        조기
-                      </Radio>
-                      <Radio key={'수료'} value={'수료'}>
-                        수료
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
+                  </Tcheck>
                   <Tbtn>
                     <BtnBox>
                       <Button
@@ -434,20 +393,6 @@ export default function EmploymentList() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'취업'}
-                    >
-                      <Radio key={'취업'} value={'취업'}>
-                        취업
-                      </Radio>
-                      <Radio key={'창업'} value={'창업'}>
-                        창업
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
                   <Tdate>
                     <Input
                       labelPlacement="outside"
@@ -471,8 +416,6 @@ export default function EmploymentList() {
                   </Tdate>
                   <Ttext>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'회사명'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -484,8 +427,6 @@ export default function EmploymentList() {
                   </Ttext>
                   <Ttext>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'사업자번호'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -497,8 +438,6 @@ export default function EmploymentList() {
                   </Ttext>
                   <Ttext>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'담당업무'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -510,8 +449,6 @@ export default function EmploymentList() {
                   </Ttext>
                   <Ttext>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'소재지'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -521,23 +458,39 @@ export default function EmploymentList() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Ttext>
+                  <Tdate>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'전화번호'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
                       size="sm"
                       type="text"
                       placeholder=" "
-                      className="w-full"
+                      id="date"
+                      classNames={{
+                        input: 'caret-transparent',
+                      }}
+                      isReadOnly={true}
+                      startContent={<i className="xi-calendar" />}
+                      defaultValue={
+                        stVisitDate === null ? null : String(stVisitDate)
+                      }
+                      value={formatDate(stVisitDate) || ''}
+                      onClick={() => setIsOpen(!isOpen)}
                     />
-                  </Ttext>
-                  <Ttext>
+                  </Tdate>
+                  <Tcheck>
+                    <Checkbox
+                      size="sm"
+                      isSelected={isEmployment}
+                      onValueChange={setIsEmployment}
+                      classNames={{
+                        wrapper: 'mr-0',
+                      }}
+                    />
+                  </Tcheck>
+                  <Tcon>
                     <Input
-                      isReadOnly={true}
-                      defaultValue={'사업장규모'}
                       labelPlacement="outside"
                       variant="bordered"
                       radius="sm"
@@ -546,70 +499,17 @@ export default function EmploymentList() {
                       placeholder=" "
                       className="w-full"
                     />
-                  </Ttext>
-                  <Tradio>
-                    <RadioGroup
-                      isReadOnly={true}
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      isReadOnly={true}
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      isReadOnly={true}
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'동일'}
-                    >
-                      <Radio key={'동일'} value={'동일'}>
-                        동일
-                      </Radio>
-                      <Radio key={'관련'} value={'관련'}>
-                        관련
-                      </Radio>
-                      <Radio key={'다른'} value={'다른'}>
-                        다른
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      isReadOnly={true}
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'조기'}
-                    >
-                      <Radio key={'조기'} value={'조기'}>
-                        조기
-                      </Radio>
-                      <Radio key={'수료'} value={'수료'}>
-                        수료
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
+                  </Tcon>
+                  <Tcheck>
+                    <Checkbox
+                      size="sm"
+                      isSelected={isCertificate}
+                      onValueChange={setIsCertificate}
+                      classNames={{
+                        wrapper: 'mr-0',
+                      }}
+                    />
+                  </Tcheck>
                   <Tbtn>
                     <BtnBox>
                       <Button

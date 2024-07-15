@@ -201,46 +201,48 @@ export default function ConsolutItem(props) {
     <>
       <TableItem>
         <TableRow>
-          <ClickBox>
-            <Tnum>
-              <EllipsisBox>
-                {/* {(props.currentPage - 1) * conLimit + (conIndex + 1)} */}1
-              </EllipsisBox>
-            </Tnum>
-            <TlecturName>
-              <EllipsisBox>
-                [1회차] 웹툰콘텐츠제작 Part2
-                (원화,캐릭터,채색,배경,포토샵,클립스튜디오) B
-              </EllipsisBox>
-            </TlecturName>
-            <Tperiod>
-              <EllipsisBox>2024-01-01 ~ 2024-03-15</EllipsisBox>
-            </Tperiod>
-            <Tdates>
-              <EllipsisBox>2024-05-03</EllipsisBox>
-            </Tdates>
-            <Tteacher>
-              <EllipsisBox>김강사</EllipsisBox>
-            </Tteacher>
-            <Tname>
-              <EllipsisBox>김나라 &#91;30세&#93;</EllipsisBox>
-            </Tname>
-            <Tphone>
-              <EllipsisBox>01023459876</EllipsisBox>
-            </Tphone>
-            <Tcheck>
-              <EllipsisBox>미취업</EllipsisBox>
-            </Tcheck>
-            <Tdates>
-              <EllipsisBox>2024-05-03</EllipsisBox>
-            </Tdates>
-            <Tcompany>
-              <EllipsisBox>주식회사 크로니즈시스템</EllipsisBox>
-            </Tcompany>
-            <Tdates>
-              <EllipsisBox>2024-05-03</EllipsisBox>
-            </Tdates>
-          </ClickBox>
+          <Link href={`/lecture/employment/detail`}>
+            <ClickBox>
+              <Tnum>
+                <EllipsisBox>
+                  {/* {(props.currentPage - 1) * conLimit + (conIndex + 1)} */}1
+                </EllipsisBox>
+              </Tnum>
+              <TlecturName>
+                <EllipsisBox>
+                  [1회차] 웹툰콘텐츠제작 Part2
+                  (원화,캐릭터,채색,배경,포토샵,클립스튜디오) B
+                </EllipsisBox>
+              </TlecturName>
+              <Tperiod>
+                <EllipsisBox>2024-01-01 ~ 2024-03-15</EllipsisBox>
+              </Tperiod>
+              <Tdates>
+                <EllipsisBox>2024-05-03</EllipsisBox>
+              </Tdates>
+              <Tteacher>
+                <EllipsisBox>김강사</EllipsisBox>
+              </Tteacher>
+              <Tname>
+                <EllipsisBox>김나라 &#91;30세&#93;</EllipsisBox>
+              </Tname>
+              <Tphone>
+                <EllipsisBox>01023459876</EllipsisBox>
+              </Tphone>
+              <Tcheck>
+                <EllipsisBox>미취업</EllipsisBox>
+              </Tcheck>
+              <Tdates>
+                <EllipsisBox>2024-05-03</EllipsisBox>
+              </Tdates>
+              <Tcompany>
+                <EllipsisBox>주식회사 크로니즈시스템</EllipsisBox>
+              </Tcompany>
+              <Tdates>
+                <EllipsisBox>2024-05-03</EllipsisBox>
+              </Tdates>
+            </ClickBox>
+          </Link>
         </TableRow>
       </TableItem>
     </>

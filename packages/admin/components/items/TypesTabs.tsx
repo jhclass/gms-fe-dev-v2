@@ -123,6 +123,30 @@ export default function TypesTabs() {
               </Card>
             )}
           </Tab>
+          <Tab key="employmentType" title="취업유형">
+            {/* {mGrade < grade.general || mPart.includes('취업지원팀') ? ( */}
+            {mGrade < 1 ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'취업유형'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    취업유형 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b> 또는 교무팀에 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
         </Tabs>
       </>
     )
