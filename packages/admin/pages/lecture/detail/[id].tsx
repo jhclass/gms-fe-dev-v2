@@ -210,7 +210,7 @@ export default function LectureWrite() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [editLectures] = useMutation(EDIT_LECTURES_MUTATION, {

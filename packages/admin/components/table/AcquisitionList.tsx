@@ -44,11 +44,11 @@ const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 23%;
+  width: 25%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.23}px;
+  min-width: ${1200 * 0.25}px;
 `
 
 const Tdate = styled.div`
@@ -56,22 +56,12 @@ const Tdate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.11}px;
+  min-width: ${1200 * 0.1}px;
 `
 
-const Tname = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 0.5rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.08}px;
-`
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
@@ -107,7 +97,7 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table-row;
+  display: flex;
   width: 100%;
   min-width: fit-content;
   text-align: center;
@@ -183,8 +173,7 @@ export default function AbsentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
-                  <Tname>이름</Tname>
-                  <Tdate>결석일자</Tdate>
+                  <Tdate>취득일자</Tdate>
                   <Ttext>자격증명</Ttext>
                   <Ttext>급수</Ttext>
                   <Ttext>발행처</Ttext>
@@ -195,17 +184,6 @@ export default function AbsentList() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tname>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tname>
                   <Tdate>
                     <Input
                       labelPlacement="outside"
@@ -279,19 +257,6 @@ export default function AbsentList() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tname>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'김나라'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tname>
                   <Tdate>
                     <Input
                       labelPlacement="outside"

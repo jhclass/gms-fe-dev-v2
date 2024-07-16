@@ -13,6 +13,7 @@ import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
 import CreateStudentMemo from '@/components/form/CreateStudentMemo'
 import StudentMemo from '@/components/form/StudentMemo'
 import StudentPaymentItem from '@/components/items/PaymentItem'
+import StudentInfo from '@/components/items/StudentInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -190,7 +191,7 @@ export default function StudentsWrite() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
   const [studentData, setStudentData] = useState(null)
@@ -267,80 +268,11 @@ export default function StudentsWrite() {
                     수정
                   </Button>
                 </AreaTitle>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        이름<span>*</span>
-                      </FilterLabel>
-                      <LineBox>{studentData?.name}</LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        연락처<span>*</span>
-                      </FilterLabel>
-                      <LineBox>{studentData?.phoneNum1}</LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaSmallBox>
-                    <RadioBox>
-                      <RadioGroup
-                        label={
-                          <FilterLabel>
-                            SNS 수신 여부<span>*</span>
-                          </FilterLabel>
-                        }
-                        isReadOnly
-                        defaultValue={studentData?.smsAgreement}
-                        orientation="horizontal"
-                        className="gap-[0.65rem]"
-                      >
-                        <Radio key={'동의'} value={'동의'}>
-                          동의
-                        </Radio>
-                        <Radio key={'비동의'} value={'비동의'}>
-                          비동의
-                        </Radio>
-                      </RadioGroup>
-                    </RadioBox>
-                  </AreaSmallBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>
-                        생년월일<span>*</span>
-                      </FilterLabel>
-                      <LineBox>
-                        {formatDate(studentData?.birthday, false)}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>기타 연락처</FilterLabel>
-                      <LineBox>{studentData?.phoneNum2}</LineBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>담당자</FilterLabel>
-                      <LineBox>{studentData?.writer}</LineBox>
-                    </div>
-                  </AreaBox>
-                  <AreaBox>
-                    <div>
-                      <FilterLabel>등록일시</FilterLabel>
-                      <LineBox>
-                        {formatDate(studentData?.createdAt, false)}
-                      </LineBox>
-                    </div>
-                  </AreaBox>
-                </FlexBox>
+                <StudentInfo
+                  studentData={studentData}
+                  detailAll={true}
+                  record={false}
+                />
                 {(studentPaymentData === null ||
                   studentPaymentData?.length === 0) && (
                   <BtnBox>

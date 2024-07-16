@@ -157,7 +157,7 @@ export default function ConsultWirte() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)

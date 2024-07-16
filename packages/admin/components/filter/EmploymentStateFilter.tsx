@@ -1,23 +1,17 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import {
-  consultPageState,
-  gradeState,
-  progressStatusState,
-  receiptStatusState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { useResetRecoilState } from 'recoil'
+import { studentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/common/Button'
-import { Input, Select, SelectItem } from '@nextui-org/react'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
+import { Input } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
+import { getYear, subMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { getYear } from 'date-fns'
+import { useRouter } from 'next/router'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -25,17 +19,11 @@ const FilterBox = styled(motion.div)`
   z-index: 2;
   position: relative;
 `
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: #fff;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const Noti = styled.p`
+  font-size: 0.8rem;
+  span {
+    color: red;
+  }
 `
 const FilterForm = styled.form`
   display: flex;
@@ -70,16 +58,6 @@ const BoxMiddle = styled.div`
     flex-direction: column;
   }
 `
-const BoxBottom = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
 const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -91,15 +69,6 @@ const BtnBox = styled.div`
   gap: 1rem;
   flex: 1;
 `
-const FilterLabel = styled.label`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #11181c;
-  padding-bottom: 0.1rem;
-  display: block;
-`
-
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -119,7 +88,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -136,30 +104,21 @@ const FilterVariants = {
   },
 }
 
-export default function ConsultFilter({
+export default function StudentsFilter({
   isActive,
-  // onFilterSearch,
-  // studentFilter,
-  // setStudentFilter,
+  onFilterSearch,
+  setStudentFilter,
+  studentFilter,
 }) {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const consultPage = useResetRecoilState(consultPageState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
-  const subStatus = useRecoilValue(subStatusState)
-  const progressStatus = useRecoilValue(progressStatusState)
-  const [receipt, setReceipt] = useState('-')
-  const [sub, setSub] = useState('-')
-  const [manager, setManager] = useState('-')
-  const [adviceType, setAdviceType] = useState('-')
+  const studentPage = useResetRecoilState(studentPageState)
+  const [birthdayRange, setBirthdayRange] = useState([null, null])
+  const [startBirthday, endBirthday] = birthdayRange
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
-  const [visitDateRange, setVisitDateRange] = useState([null, null])
-  const [startVisitDate, endVisitDate] = visitDateRange
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
-  const [progressSelected, setProgressSelected] = useState([])
+  const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
     register,
@@ -170,50 +129,37 @@ export default function ConsultFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      receiptDiv: '-',
-      subDiv: '-',
-      pic: '-',
+      studentName: '',
+      phoneNum: '',
+      birthday: undefined,
       createdAt: undefined,
-      stVisit: undefined,
-      stName: '',
-      progress: undefined,
-      phoneNum1: '',
-      adviceType: '-',
     },
   })
 
   // useEffect(() => {
   //   if (
   //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.receiptDiv === null
+  //     studentFilter?.studentName === null
   //   ) {
-  //     setReceipt('-')
+  //     setName('')
   //   } else {
-  //     setReceipt(studentFilter?.receiptDiv)
+  //     setName(studentFilter?.studentName)
   //   }
   //   if (
   //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.subDiv === null
+  //     studentFilter?.phoneNum === null
   //   ) {
-  //     setSub('-')
+  //     setPhone('')
   //   } else {
-  //     setSub(studentFilter?.subDiv)
+  //     setPhone(studentFilter?.phoneNum)
   //   }
   //   if (
   //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.pic === null
+  //     studentFilter?.birthday === null
   //   ) {
-  //     setManager('-')
+  //     setBirthdayRange([null, null])
   //   } else {
-  //     setManager(studentFilter?.pic)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.adviceType === null
-  //   ) {
-  //     setAdviceType('-')
-  //   } else {
-  //     setAdviceType(studentFilter?.adviceType)
+  //     setBirthdayRange([studentFilter?.birthday[0], studentFilter?.birthday[1]])
   //   }
   //   if (
   //     Object.keys(studentFilter).length === 0 ||
@@ -226,60 +172,7 @@ export default function ConsultFilter({
   //       studentFilter?.createdAt[1],
   //     ])
   //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.stVisit === null
-  //   ) {
-  //     setVisitDateRange([null, null])
-  //   } else {
-  //     setVisitDateRange([studentFilter?.stVisit[0], studentFilter?.stVisit[1]])
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.phoneNum1 === null
-  //   ) {
-  //     setPhone('')
-  //   } else {
-  //     setPhone(studentFilter?.phoneNum1)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.stName === null
-  //   ) {
-  //     setName('')
-  //   } else {
-  //     setName(studentFilter?.stName)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.progress === undefined ||
-  //     studentFilter?.progress === null
-  //   ) {
-  //     setProgressSelected([])
-  //   } else {
-  //     const numericKeys = studentFilter?.progress.map(key => String(key))
-  //     setProgressSelected(numericKeys)
-  //   }
   // }, [router, studentFilter])
-
-  const handleReceiptChange = e => {
-    setReceipt(e.target.value)
-  }
-
-  const handleSubChange = e => {
-    setSub(e.target.value)
-  }
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-  const handleAdviceChange = e => {
-    setAdviceType(e.target.value)
-  }
-  const handleProgressChange = (value: string[]) => {
-    const numericKeys = value.map(key => parseInt(key, 10))
-    setValue('progress', numericKeys)
-    setProgressSelected(value)
-  }
 
   const onSubmit = data => {
     if (isDirty || data.progress !== undefined) {
@@ -295,40 +188,31 @@ export default function ConsultFilter({
           return true
         }
       }
-      const creatDate = validateDateRange(
-        data.createdAt,
-        '등록일시의 마지막날을 선택해주세요.',
+      const birthdayDate = validateDateRange(
+        data.birthday,
+        '생년월일의 마지막날을 선택해주세요.',
       )
-      const visitDate = validateDateRange(
-        data.stVisit,
+      const createDate = validateDateRange(
+        data.createdAt,
         '방문예정일의 마지막날을 선택해주세요.',
       )
-      if (creatDate && visitDate) {
+      if (birthdayDate && createDate) {
         const filter = {
-          receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
-          subDiv: data.subDiv === '-' ? null : data.subDiv,
-          pic: data.pic === '-' ? null : data.pic,
+          studentName: data.studentName === '' ? null : data.studentName,
+          phoneNum: data.phoneNum === '' ? null : data.phoneNum,
+          birthday: data.birthday === undefined ? null : data.birthday,
           createdAt: data.createdAt === undefined ? null : data.createdAt,
-          stVisit: data.stVisit === undefined ? null : data.stVisit,
-          stName: data.stName === '' ? null : data.stName,
-          progress: data.progress,
-          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
-          adviceType: data.adviceType === '-' ? null : data.adviceType,
         }
-        // setStudentFilter(filter)
-        // onFilterSearch(true)
-        consultPage()
+        setStudentFilter(filter)
+        onFilterSearch(true)
+        studentPage()
       }
     }
   }
 
   const handleReset = () => {
-    setReceipt('-')
-    setSub('-')
-    setManager('-')
-    setAdviceType('-')
     setCreatDateRange([null, null])
-    setVisitDateRange([null, null])
+    setBirthdayRange([null, null])
     reset()
   }
 
@@ -342,115 +226,122 @@ export default function ConsultFilter({
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
-              <Controller
-                control={control}
-                name="subDiv"
-                defaultValue={'-'}
-                render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label={<FilterLabel>취업여부</FilterLabel>}
-                    placeholder=" "
-                    defaultValue={'-'}
-                    className="w-full"
-                    variant="bordered"
-                    selectedKeys={[sub]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        field.onChange(value)
-                        handleSubChange(value)
-                      }
-                    }}
-                  >
-                    <SelectItem key={'-'} value={'-'}>
-                      -
-                    </SelectItem>
-                    <SelectItem key={'취업'} value={'취업'}>
-                      취업
-                    </SelectItem>
-                    <SelectItem key={'미취업'} value={'미취업'}>
-                      미취업
-                    </SelectItem>
-                  </Select>
-                )}
-              />
-            </ItemBox>
-            <ItemBox>
               <Input
                 labelPlacement="outside"
                 placeholder=" "
                 type="text"
                 variant="bordered"
-                label="수강생명"
+                label="수강생이름"
                 value={name}
                 onValueChange={setName}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                {...register('stName', {
+                id="studentName"
+                {...register('studentName', {
                   pattern: {
                     value: /^[가-힣a-zA-Z0-9\s]*$/,
                     message: '한글, 영어, 숫자만 사용 가능합니다.',
                   },
                 })}
               />
-              {errors.stName && (
+              {errors.studentName && (
                 <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.stName.message)}
+                  {String(errors.studentName.message)}
                 </p>
               )}
             </ItemBox>
             <ItemBox>
               <Input
                 labelPlacement="outside"
-                placeholder=" "
+                placeholder="'-'없이 작성해주세요"
                 type="text"
                 variant="bordered"
-                label="강사명"
-                value={name}
-                onValueChange={setName}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                {...register('stName', {
+                label="연락처"
+                value={phone}
+                onValueChange={setPhone}
+                maxLength={11}
+                id="phoneNum"
+                {...register('phoneNum', {
+                  maxLength: {
+                    value: 11,
+                    message: '최대 11자리까지 입력 가능합니다.',
+                  },
                   pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
+                    value: /^[0-9]+$/,
+                    message: '숫자만 사용가능합니다.',
                   },
                 })}
               />
-              {errors.stName && (
+              {errors.phoneNum && (
                 <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.stName.message)}
+                  {String(errors.phoneNum.message)}
                 </p>
               )}
             </ItemBox>
           </BoxTop>
-          <BoxMiddle>
+          {/* <BoxMiddle>
             <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="과목명"
-                value={name}
-                onValueChange={setName}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                {...register('stName', {
-                  pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
-                  },
-                })}
-              />
-              {errors.stName && (
-                <p className="px-2 pt-2 text-xs text-red-500">
-                  {String(errors.stName.message)}
-                </p>
-              )}
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="birthday"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      locale="ko"
+                      startDate={startBirthday}
+                      endDate={endBirthday}
+                      onChange={e => {
+                        setBirthdayRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
+
+                        field.onChange(date)
+                      }}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
+                      customInput={
+                        <Input
+                          label="생년월일"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          isReadOnly={true}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('birthday')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
             </ItemBox>
             <ItemBox>
               <DatePickerBox>
@@ -477,7 +368,6 @@ export default function ConsultFilter({
                       )}
                       selectsRange={true}
                       locale="ko"
-                      showYearDropdown
                       startDate={startCreatDate}
                       endDate={endCreatDate}
                       onChange={e => {
@@ -495,13 +385,12 @@ export default function ConsultFilter({
                         field.onChange(date)
                       }}
                       onChangeRaw={e => e.preventDefault()}
-                      disabledKeyboardNavigation
                       onFocus={e => e.target.blur()}
                       placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
                       customInput={
                         <Input
-                          label="훈련종료일"
+                          label="등록일시"
                           labelPlacement="outside"
                           type="text"
                           variant="bordered"
@@ -519,7 +408,7 @@ export default function ConsultFilter({
                 />
               </DatePickerBox>
             </ItemBox>
-          </BoxMiddle>
+          </BoxMiddle> */}
           <BtnBox>
             <Button
               buttonType="submit"

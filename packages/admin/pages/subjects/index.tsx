@@ -5,7 +5,6 @@ import SubjectTable from '@/components/table/SubjectList'
 import { styled } from 'styled-components'
 import SubjectsFilter from '@/components/filter/SubjectsFilter'
 import SubjectFilter from '@/components/table/SubjectFilterTable'
-import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import useMmeQuery from '@/utils/mMe'
@@ -56,7 +55,7 @@ export default function Subjects() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [filterActive, setFilterActive] = useRecoilState(
     subjectFilterActiveState,
   )

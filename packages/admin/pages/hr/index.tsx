@@ -3,8 +3,6 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/hr/layout'
 import { Suspense, useState } from 'react'
-import LectureList from '@/components/table/LectureList'
-import LectureFilter from '@/components/filter/LectureFilter'
 import ManagerList from '@/components/table/ManagerList'
 import ManagerFilter from '@/components/filter/ManagerFilter'
 import { useRecoilValue } from 'recoil'
@@ -34,7 +32,7 @@ export default function Lecture() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [managerFilter, setManagerFilter] = useState()

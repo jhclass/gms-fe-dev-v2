@@ -160,7 +160,7 @@ export default function SubjectWrite() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [createSubject] = useMutation(CREATE_SUBJECT_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const subStatus = useRecoilValue(subStatusState)

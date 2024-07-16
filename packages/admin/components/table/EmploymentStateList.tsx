@@ -27,38 +27,6 @@ import EmploymentStateItem from './EmploymentStateItem'
 const TableArea = styled.div`
   margin-top: 0.5rem;
 `
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
-`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
@@ -101,21 +69,21 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 18%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
+  min-width: ${1200 * 0.18}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 13%;
+  width: 12%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.13}px;
+  min-width: ${1200 * 0.12}px;
 `
 const Tteacher = styled.div`
   display: table-cell;
@@ -133,10 +101,10 @@ const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.08}px;
 `
 
 const Tphone = styled.div`
@@ -155,10 +123,10 @@ const Tcheck = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 5%;
+  width: 6%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.05}px;
+  min-width: ${1200 * 0.06}px;
 `
 
 const Tcompany = styled.div`
@@ -166,10 +134,10 @@ const Tcompany = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  width: 11%;
   padding: 1rem;
   font-size: inherit;
-  min-width: ${1200 * 0.12}px;
+  min-width: ${1200 * 0.11}px;
 `
 const Tdates = styled.div`
   position: relative;
@@ -217,27 +185,14 @@ export default function AbsentList() {
                   <Tnum>No</Tnum>
                   <TlecturName>강의이름</TlecturName>
                   <Tperiod>강의기간</Tperiod>
+                  <Tdates>관리종료일</Tdates>
                   <Tteacher>강사명</Tteacher>
-                  <Tname>이름</Tname>
+                  <Tname>이름/나이</Tname>
                   <Tphone>전화번호</Tphone>
-                  <Tcheck>구분</Tcheck>
+                  <Tcheck>취업여부</Tcheck>
                   <Tdates>취업일자</Tdates>
                   <Tcompany>회사명</Tcompany>
-                  <Tdates>면접일자</Tdates>
-                  <Tcheck>
-                    취업 <br />
-                    여부
-                  </Tcheck>
-                  <Tdates>
-                    취업
-                    <br />
-                    상담일자
-                  </Tdates>
-                  <Tdates>
-                    사후관리
-                    <br />
-                    상담일자
-                  </Tdates>
+                  <Tdates>최근상담일</Tdates>
                 </ClickBox>
               </TheaderBox>
             </Theader>

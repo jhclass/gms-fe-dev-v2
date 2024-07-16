@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRouter } from 'next/router'
 import SMSCard from '@/components/items/SMSCard'
-import SMSList from '../table/SMSList'
+import SMSList from '@/components/table/SMSList'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -40,20 +40,8 @@ const BtnBox = styled.div`
   gap: 0.5rem;
 `
 
-export default function TypesTabs() {
-  const router = useRouter()
-  const { typeTab } = router.query
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+export default function SMSTabs() {
   const [selected, setSelected] = useState('mySMS')
-
-  useEffect(() => {
-    if (typeTab) {
-      setSelected(String(typeTab))
-    }
-  }, [typeTab])
 
   return (
     <>
@@ -71,7 +59,7 @@ export default function TypesTabs() {
         <Tab key="mySMS" title="내문자함">
           <SMSCard />
         </Tab>
-        <Tab key="commonSMS" title="학원문자함">
+        <Tab key="commonSMS" title="공통문자함">
           <SMSCard />
         </Tab>
         <Tab key="send" title="보낸문자함">

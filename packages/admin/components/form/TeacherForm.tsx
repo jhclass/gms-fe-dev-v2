@@ -23,7 +23,8 @@ import { Controller, useForm } from 'react-hook-form'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import AdviceMultiSelect from '../common/AdviceMultiSelect'
+import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
+import Address from '@/components/common/Address'
 
 const ConArea = styled.div`
   width: 100%;
@@ -237,7 +238,7 @@ export default function StudentsWrite({ managerId }) {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const loginMGrade = useMme('mGrade')
-  const loginMPart = useMme('mPart')
+  const loginMPart = useMme('mPart') || []
   const router = useRouter()
   const [adviceType, setAdviceType] = useState([])
   const { userLogs } = useUserLogsMutation()
@@ -605,23 +606,19 @@ export default function StudentsWrite({ managerId }) {
                     )}
                   </AreaBox>
                 </FlexBox>
+                <Address
+                  valueName={'mAddresses'}
+                  setValue={setValue}
+                  defaultPostcode={'0101010'}
+                  defaultAddress={
+                    managerData.mAddresses === null ||
+                    managerData.mAddresses === ''
+                      ? '주소 검색을 클릭해주세요.'
+                      : managerData.mAddresses
+                  }
+                  defaultDetails={'상세주소주소'}
+                />
                 <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="주소"
-                      className="w-full"
-                      defaultValue={managerData.mAddresses}
-                      onChange={e => {
-                        register('mAddresses').onChange(e)
-                      }}
-                      {...register('mAddresses')}
-                    />
-                  </AreaBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
@@ -649,8 +646,6 @@ export default function StudentsWrite({ managerId }) {
                       </p>
                     )}
                   </AreaBox>
-                </FlexBox>
-                <FlexBox>
                   <AreaBox>
                     <Controller
                       control={control}

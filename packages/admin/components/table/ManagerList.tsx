@@ -187,19 +187,18 @@ type seeManageUser = {
 export default function ConsolutationTable({ mGrade, mPart }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const {
-    error,
-    data: seeManagerData,
-    refetch,
-  } = useSuspenseQuery<seeManageUser>(SEE_MANAGEUSER_QUERY, {
-    variables: { page: currentPage, limit: currentLimit },
-  })
+  const { error, data, refetch } = useSuspenseQuery<seeManageUser>(
+    SEE_MANAGEUSER_QUERY,
+    {
+      variables: { page: currentPage, limit: currentLimit },
+    },
+  )
 
   // const managerData = data?.seeManageUser.filter(
   //   manager => manager.mGrade < 20,
   // )
-  const managerData = seeManagerData?.seeManageUser?.data
-  const totalCount = seeManagerData?.seeManageUser?.totalCount
+  const managerData = data?.seeManageUser?.data
+  const totalCount = data?.seeManageUser?.totalCount
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

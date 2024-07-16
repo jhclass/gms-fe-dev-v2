@@ -213,7 +213,7 @@ export default function ConsultDetail() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)

@@ -1,6 +1,6 @@
 import { Card, CardBody, Link, Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import CreateAdviceType from '../form/CreateAdviceType'
+import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { Suspense, useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
@@ -30,7 +30,7 @@ export default function TypesTabs() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [selected, setSelected] = useState('adviceType')
 
   useEffect(() => {
@@ -116,6 +116,30 @@ export default function TypesTabs() {
                 <CardBody>
                   <NotiText>
                     강의분야 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b> 또는 교무팀에 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
+          <Tab key="employmentType" title="취업유형">
+            {/* {mGrade < grade.general || mPart.includes('취업지원팀') ? ( */}
+            {mGrade < 1 ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'취업유형'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    취업유형 설정 권한이 없습니다.
                     <br />
                     <b>Master</b> 또는 교무팀에 요청하세요.
                   </NotiText>

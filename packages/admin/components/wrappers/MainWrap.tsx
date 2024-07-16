@@ -10,6 +10,7 @@ import Footer from '@/components/layout/Footer'
 import { ScrollShadow } from '@nextui-org/react'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
+  position: relative;
   display: flex;
   min-height: 100vh;
   height: 100%;

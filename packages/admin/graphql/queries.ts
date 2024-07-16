@@ -84,6 +84,24 @@ export const MME_QUERY = gql`
     }
   }
 `
+export const SEE_ALARMS_QUERY = gql`
+  query Query($limit: Int, $page: Int) {
+    seeAlarms(limit: $limit, page: $page) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        id
+        personalTarget
+        title
+        updatedAt
+        content
+      }
+    }
+  }
+`
+
 export const MME_FAVO_QUERY = gql`
   query MMe {
     mMe {

@@ -1,6 +1,6 @@
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
-import { useQuery, useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'

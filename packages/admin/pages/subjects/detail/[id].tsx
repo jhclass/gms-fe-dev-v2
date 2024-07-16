@@ -203,7 +203,7 @@ export default function SubjectDetail() {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const subjectId = typeof router.query.id === 'string' ? router.query.id : null
   const subjectsPage = router.query.page
   const subjectsLimit = router.query.limit

@@ -205,7 +205,7 @@ export default function LectureWrite() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart')
+  const mPart = useMme('mPart') || []
   const [campusName, setCampusName] = useState('신촌')
   const [createLectures] = useMutation(CREATE_LECTURES_MUTATION, {
     context: {

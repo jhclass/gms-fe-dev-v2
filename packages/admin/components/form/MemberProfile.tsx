@@ -13,6 +13,7 @@ import Layout from '@/pages/member/layout'
 import { ManageUser } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import { useRef, useState } from 'react'
+import Address from '@/components/common/Address'
 
 const ConArea = styled.div`
   width: 100%;
@@ -338,6 +339,19 @@ export default function Profile() {
                       비밀번호 변경
                     </Button>
                   </AreaBox>
+                </FlexBox>
+                <Address
+                  valueName={'mAddresses'}
+                  setValue={setValue}
+                  defaultPostcode={'0101010'}
+                  defaultAddress={
+                    mMeData.mAddresses === null || mMeData.mAddresses === ''
+                      ? '주소 검색을 클릭해주세요.'
+                      : mMeData.mAddresses
+                  }
+                  defaultDetails={'상세주소주소'}
+                />
+                <FlexBox>
                   <AreaBox>
                     <Input
                       labelPlacement="outside"
@@ -363,24 +377,6 @@ export default function Profile() {
                         {String(errors.mPhoneNumInside.message)}
                       </p>
                     )}
-                  </AreaBox>
-                </FlexBox>
-                <FlexBox>
-                  <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="bordered"
-                      radius="md"
-                      type="text"
-                      label="주소"
-                      className="w-full"
-                      defaultValue={mMeData.mAddresses}
-                      onChange={e => {
-                        register('mAddresses').onChange(e)
-                      }}
-                      {...register('mAddresses')}
-                    />
                   </AreaBox>
                   <AreaBox>
                     <Input

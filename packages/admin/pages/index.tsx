@@ -1,6 +1,6 @@
 import Layout from '@/components/wrappers/MainWrap'
 import styled from 'styled-components'
-import NewConsultMonthNum from '@/components/dashboard/NewConsultMonthNum '
+import NewConsultMonthNum from '@/components/dashboard/NewConsultMonthNum'
 import NewConsultNum from '@/components/dashboard/NewConsultNum'
 import ConsultNum from '@/components/dashboard/ConsultNum'
 import AdviceType from '@/components/dashboard/AdviceType'

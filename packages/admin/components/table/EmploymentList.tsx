@@ -84,11 +84,11 @@ const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 9%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.09}px;
 `
 
 const Tdate = styled.div`
@@ -96,21 +96,10 @@ const Tdate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 11%;
+  width: 10%;
   padding: 0.5rem;
   font-size: inherit;
-  min-width: ${1200 * 0.11}px;
-`
-
-const Tname = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 6%;
-  padding: 0.5rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.1}px;
 `
 
 const Tradio = styled.div`
@@ -127,11 +116,11 @@ const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 5%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.05}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -205,7 +194,7 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function AbsentList() {
+export default function EmploymentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
@@ -234,7 +223,6 @@ export default function AbsentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
-                  <Tname>이름</Tname>
                   <Tradio>구분</Tradio>
                   <Tdate>취업일자</Tdate>
                   <Ttext>회사명</Ttext>
@@ -260,10 +248,6 @@ export default function AbsentList() {
                     취업 <br />
                     형태
                   </Tradio>
-                  <Tradio>
-                    중복 <br />
-                    여부
-                  </Tradio>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -271,17 +255,6 @@ export default function AbsentList() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tname>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tname>
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
@@ -442,20 +415,6 @@ export default function AbsentList() {
                       </Radio>
                     </RadioGroup>
                   </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'N'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
                   <Tbtn>
                     <BtnBox>
                       <Button
@@ -475,19 +434,6 @@ export default function AbsentList() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tname>
-                    <Input
-                      isReadOnly={true}
-                      defaultValue={'김나라'}
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tname>
                   <Tradio>
                     <RadioGroup
                       size={'sm'}
@@ -661,21 +607,6 @@ export default function AbsentList() {
                       </Radio>
                       <Radio key={'수료'} value={'수료'}>
                         수료
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      isReadOnly={true}
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'N'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
                       </Radio>
                     </RadioGroup>
                   </Tradio>

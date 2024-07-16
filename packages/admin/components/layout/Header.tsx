@@ -2,7 +2,7 @@ import { navOpenState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
@@ -232,6 +232,16 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
     padding: 0.4rem 1rem;
   }
 `
+const LodingDiv = styled.div`
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0.3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 export default function Header() {
   const { userLogs } = useUserLogsMutation()
@@ -242,6 +252,26 @@ export default function Header() {
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+
+  const userMenuRef = useRef(null)
+
+  const handleClickOutside = event => {
+    if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+      setHeaderUserMenu(false)
+    }
+  }
+
+  useEffect(() => {
+    if (headerUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [headerUserMenu])
 
   const toggleNav = () => {
     setNavOpen(!navOpen)
@@ -325,7 +355,16 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
-          <HeaderNoti />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <HeaderNoti />
+          </Suspense>
+
           {mGrade === 0 && (
             <ReqBtn onClick={onOpen}>
               <img
@@ -361,6 +400,7 @@ export default function Header() {
               <i className="text-zinc-500 userArrow xi-angle-down-min" />
             </IconArrow>
             <DropUser
+              ref={userMenuRef}
               $headerUserMenu={headerUserMenu}
               className="drop"
               style={{
