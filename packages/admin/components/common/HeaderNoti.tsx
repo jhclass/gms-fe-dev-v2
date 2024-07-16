@@ -268,7 +268,7 @@ export default function HeaderNoti({}) {
             alt="알림"
           />
           <NotiNum>
-            {data.seeAlarms.data === null ? '0' : data.seeAlarms.data?.length}
+            {data.seeAlarms.data === null ? '0' : data.seeAlarms.totalCount}
           </NotiNum>
         </NotiBtn>
         {isListOpen && (
@@ -327,14 +327,14 @@ export default function HeaderNoti({}) {
                 </div>
               </ScrollShadow>
             </ScrollBox>
-            {data.seeAlarms.data?.length > 0 && (
+            {data.seeAlarms.totalCount > 0 && (
               <PagerWrap>
                 <Pagination
                   variant="light"
                   showControls
                   initialPage={currentPage}
                   page={currentPage}
-                  total={Math.ceil(100 / currentLimit)}
+                  total={Math.ceil(data.seeAlarms.totalCount / currentLimit)}
                   onChange={newPage => {
                     setCurrentPage(newPage)
                   }}
