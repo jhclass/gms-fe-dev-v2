@@ -193,6 +193,19 @@ export const additionalAmountState = atom({
   },
 })
 
+export const partState = atom({
+  key: 'part',
+  default: {
+    0: '없음',
+    1: '영업팀',
+    2: '교무팀',
+    3: '회계팀',
+    4: '인사팀',
+    5: '취업지원팀',
+    6: '테크개발팀',
+  },
+})
+
 export const classRoomState = atom({
   key: 'classRoom',
   default: {
