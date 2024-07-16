@@ -19,7 +19,15 @@ const AreaBox = styled.div`
   width: 100%;
   position: relative;
 `
-
+const AreaSmallBox = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  width: 30%;
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
+`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
@@ -32,10 +40,12 @@ const FilterLabel = styled.p`
 
 export default function Address({
   setValue,
+  codeValueName,
   valueName,
-  defaultPostcode = '',
-  defaultAddress = '',
-  defaultDetails = '',
+  detailValueName,
+  defaultPostcode = '우편번호',
+  defaultAddress = '주소',
+  defaultDetails = '상세주소',
 }) {
   const [postcode, setPostcode] = useState('')
   const [roadAddress, setRoadAddress] = useState('')
@@ -44,12 +54,14 @@ export default function Address({
     const isMobile = window.innerWidth <= 768
     const width = isMobile ? window.innerWidth * 0.9 : 500
     const height = isMobile ? window.innerHeight * 0.7 : 500
-    const left = isMobile
-      ? (window.innerWidth - width) / 2
-      : Math.ceil((window.screen.width - width) / 2)
-    const top = isMobile
-      ? (window.innerHeight - height) / 2
-      : Math.ceil((window.screen.height - height) / 2)
+
+    const windowLeft = window.screenX || window.screenLeft
+    const windowTop = window.screenY || window.screenTop
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
+
+    const left = windowLeft + (windowWidth - width) / 2
+    const top = windowTop + (windowHeight - height) / 2
 
     new (window as any).daum.Postcode({
       width: width,
@@ -71,6 +83,7 @@ export default function Address({
 
         setPostcode(data.zonecode)
         setRoadAddress(roadAddr)
+        setValue(codeValueName, data.zonecode, { shouldDirty: true })
         setValue(valueName, roadAddr, { shouldDirty: true })
       },
     }).open({
@@ -80,38 +93,40 @@ export default function Address({
       top: top,
     })
   }
-
+  const handleChange = event => {
+    setValue(detailValueName, event.target.value, { shouldDirty: true })
+  }
   return (
     <>
       <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></Script>
       <FlexBox>
-        <AreaBox>
-          <div className="flex items-end gap-3">
-            <Input
-              type="text"
-              id="sample4_postcode"
-              defaultValue={defaultPostcode}
-              label={<FilterLabel>주소</FilterLabel>}
-              placeholder="우편번호"
-              labelPlacement="outside"
-              variant="flat"
-              radius="md"
-              className="w-full"
-              value={postcode !== '' ? postcode : defaultPostcode}
-              readOnly
-            />
-            <Button
-              onClick={handleClick}
-              className="text-white"
-              size="md"
-              radius="md"
-              variant="solid"
-              color="primary"
-            >
-              주소 검색
-            </Button>
-          </div>
-        </AreaBox>
+        <AreaSmallBox>
+          <Input
+            type="text"
+            id="sample4_postcode"
+            defaultValue={defaultPostcode}
+            label={<FilterLabel>주소</FilterLabel>}
+            placeholder="우편번호"
+            labelPlacement="outside"
+            variant="flat"
+            radius="md"
+            className="w-full"
+            // value={postcode !== '' ? postcode : defaultPostcode}
+            readOnly
+          />
+          <Button
+            onClick={handleClick}
+            className="text-white w-[10rem]"
+            size="md"
+            radius="md"
+            variant="solid"
+            color="primary"
+          >
+            주소 검색
+          </Button>
+        </AreaSmallBox>
+      </FlexBox>
+      <FlexBox>
         <AreaBox>
           <Input
             type="text"
@@ -126,6 +141,8 @@ export default function Address({
             readOnly
           />
         </AreaBox>
+      </FlexBox>
+      <FlexBox>
         <AreaBox>
           <Input
             type="text"
@@ -136,6 +153,7 @@ export default function Address({
             radius="md"
             variant="bordered"
             className="w-full"
+            onChange={handleChange}
           />
         </AreaBox>
       </FlexBox>

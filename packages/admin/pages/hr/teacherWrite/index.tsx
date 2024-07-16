@@ -205,7 +205,18 @@ export default function StudentsWrite() {
           data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend.trim(),
         mJoiningDate:
           data.mJoiningDate === undefined ? null : new Date(data.mJoiningDate),
-        mAddresses: data.mAddresses === '' ? null : data.mAddresses.trim(),
+        mZipCode:
+          data.mZipCode === '' || data.mZipCode === undefined
+            ? null
+            : data.mZipCode.trim(),
+        mAddresses:
+          data.mAddresses === '' || data.mAddresses === undefined
+            ? null
+            : data.mAddresses.trim(),
+        mAddressDetail:
+          data.mAddressDetail === '' || data.mAddressDetail === undefined
+            ? null
+            : data.mAddressDetail.trim(),
         email: data.email === '' ? null : data.email.trim(),
       },
       onCompleted: result => {
@@ -446,7 +457,12 @@ export default function StudentsWrite() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <Address valueName={'mAddresses'} setValue={setValue} />
+                <Address
+                  codeValueName={'mZipCode'}
+                  valueName={'mAddresses'}
+                  detailValueName={'mAddressDetail'}
+                  setValue={setValue}
+                />
                 <FlexBox>
                   <AreaBox>
                     <Input

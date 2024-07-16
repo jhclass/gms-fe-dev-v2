@@ -46,6 +46,8 @@ export const CREATE_MANAGE_USER_MUTATION = gql`
     $mPhoneNumFriend: String
     $mPhoneNumInside: String
     $mJoiningDate: String
+    $mZipCode: String
+    $mAddressDetail: String
     $mAddresses: String
     $email: String
   ) {
@@ -61,6 +63,8 @@ export const CREATE_MANAGE_USER_MUTATION = gql`
       mPhoneNumFriend: $mPhoneNumFriend
       mPhoneNumInside: $mPhoneNumInside
       mJoiningDate: $mJoiningDate
+      mZipCode: $mZipCode
+      mAddressDetail: $mAddressDetail
       mAddresses: $mAddresses
       email: $email
     ) {
@@ -82,6 +86,8 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
     $mPart: [String]
     $mPhoneNumFriend: String
     $mAvatar: Upload
+    $mZipCode: String
+    $mAddressDetail: String
     $mAddresses: String
     $mJoiningDate: String
     $email: String
@@ -98,6 +104,8 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
       mPart: $mPart
       mPhoneNumFriend: $mPhoneNumFriend
       mAvatar: $mAvatar
+      mZipCode: $mZipCode
+      mAddressDetail: $mAddressDetail
       mAddresses: $mAddresses
       mJoiningDate: $mJoiningDate
       email: $email

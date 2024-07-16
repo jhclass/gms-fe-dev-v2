@@ -247,7 +247,9 @@ export default function ManagerWrite({ managerId }) {
       mPhoneNumInside: managerData.mPhoneNumInside,
       mAvatar: managerData.mAvatar,
       mJoiningDate: managerData.mJoiningDate,
+      mZipCode: managerData.mZipCode,
       mAddresses: managerData.mAddresses,
+      mAddressDetail: managerData.mAddressDetail,
       resign: managerData?.resign === 'N' ? false : true,
       email: managerData.email,
     },
@@ -315,15 +317,19 @@ export default function ManagerWrite({ managerId }) {
                   : typeof data.mJoiningDate === 'string'
                   ? new Date(parseInt(data.mJoiningDate))
                   : new Date(data.mJoiningDate),
+              mZipCode: data.mZipCode === null ? null : data.mZipCode.trim(),
               mAddresses:
                 data.mAddresses === null ? null : data.mAddresses.trim(),
+              mAddressDetail:
+                data.mAddressDetail === null
+                  ? null
+                  : data.mAddressDetail.trim(),
               email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
 
           if (!result.data.editManageUser.ok) {
-            console.log(result)
             throw new Error('직원 정보 수정 실패')
           }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -575,16 +581,27 @@ export default function ManagerWrite({ managerId }) {
                   </AreaBox>
                 </FlexBox>
                 <Address
+                  codeValueName={'mZipCode'}
                   valueName={'mAddresses'}
+                  detailValueName={'mAddressDetail'}
                   setValue={setValue}
-                  defaultPostcode={'0101010'}
+                  defaultPostcode={
+                    managerData.mZipCode === null || managerData.mZipCode === ''
+                      ? '우편번호'
+                      : managerData.mZipCode
+                  }
                   defaultAddress={
                     managerData.mAddresses === null ||
                     managerData.mAddresses === ''
-                      ? '주소를 입력해주세요.'
+                      ? '주소 검색을 클릭해주세요.'
                       : managerData.mAddresses
                   }
-                  defaultDetails={'상세주소주소'}
+                  defaultDetails={
+                    managerData.mAddressDetail === null ||
+                    managerData.mAddressDetail === ''
+                      ? '상세주소'
+                      : managerData.mAddressDetail
+                  }
                 />
                 <FlexBox>
                   <AreaBox>

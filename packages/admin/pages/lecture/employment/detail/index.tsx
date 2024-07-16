@@ -324,7 +324,9 @@ export default function StudentsWrite() {
                 </AreaBox>
               </FlexConBox>
               <Address
+                codeValueName={'mZipCode'}
                 valueName={'mAddresses'}
+                detailValueName={'mAddressDetail'}
                 setValue={null}
                 defaultPostcode={'0101010'}
                 defaultAddress={'주소를 입력해주세요.'}

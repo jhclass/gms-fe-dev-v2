@@ -53,6 +53,8 @@ export const MME_QUERY = gql`
         id
         imageUrl
       }
+      mZipCode
+      mAddressDetail
       mAddresses
       mAvatar
       mGrade
@@ -265,6 +267,8 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
         mPhoneNumCompany
         mPhoneNumFriend
         mPhoneNumInside
+        mAddressDetail
+        mZipCode
         mRank
         resign
         updatedAt
