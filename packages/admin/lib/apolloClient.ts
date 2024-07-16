@@ -38,7 +38,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
       )
-      if (message === 'UNAUTHENTICATED') {
+      if (
+        message === 'UNAUTHENTICATED' ||
+        message.includes('Cannot return null for non-nullable field')
+      ) {
         localStorage.removeItem('token')
         window.location.href = '/login'
       }
