@@ -66,7 +66,6 @@ export default function SMSAddrItem1(props) {
       .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
     return result
   }
-  console.log(data)
 
   return (
     <>

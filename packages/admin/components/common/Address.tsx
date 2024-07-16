@@ -39,7 +39,6 @@ export default function Address({
 }) {
   const [postcode, setPostcode] = useState('')
   const [roadAddress, setRoadAddress] = useState('')
-  console.log(defaultAddress)
 
   const handleClick = () => {
     const isMobile = window.innerWidth <= 768
