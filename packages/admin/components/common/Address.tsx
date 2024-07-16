@@ -111,7 +111,7 @@ export default function Address({
             variant="flat"
             radius="md"
             className="w-full"
-            // value={postcode !== '' ? postcode : defaultPostcode}
+            value={postcode !== '' ? postcode : defaultPostcode}
             readOnly
           />
           <Button
