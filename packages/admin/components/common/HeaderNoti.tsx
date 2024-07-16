@@ -167,7 +167,7 @@ const Nolist = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
+  padding: 1rem 0 2rem;
   color: #fff;
 `
 type seeAlarmsQuery = {
@@ -203,6 +203,7 @@ export default function HeaderNoti({}) {
   useEffect(() => {
     if (isListOpen) {
       document.addEventListener('mousedown', handleClickOutside)
+      setCurrentPage(1)
     } else {
       document.removeEventListener('mousedown', handleClickOutside)
     }
@@ -260,45 +261,122 @@ export default function HeaderNoti({}) {
             src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
             alt="알림"
           />
-          <NotiNum>{data.seeAlarms.data?.length}</NotiNum>
+          <NotiNum>
+            {data.seeAlarms.data === null ? '0' : data.seeAlarms.data?.length}
+          </NotiNum>
         </NotiBtn>
         {isListOpen && (
-          <>
-            {data && (
-              <NotiListBox>
-                <FlexBox>
-                  <Button
-                    size="sm"
-                    variant="solid"
-                    className="bg-[#ff5900] text-white"
-                    onClick={clickReadAll}
-                  >
-                    모두 읽음
-                  </Button>
-                </FlexBox>
-                <ScrollBox>
-                  <ScrollShadow orientation="vertical" className="scrollbar">
-                    <div>
-                      <ListBox>
-                        {data.seeAlarms.data?.length > 0 && (
-                          <>
-                            {data.seeAlarms.data?.map((alarm, index) => (
-                              <NotiItem key={index}>
-                                <ClickBox>
-                                  <NotiFlag
-                                    style={{ background: 'blue' }}
-                                  ></NotiFlag>
-                                  <ReqBox>
-                                    <FromID>{alarm.title}</FromID>
-                                    <ReqText>{alarm.content}</ReqText>
-                                  </ReqBox>
-                                </ClickBox>
-                                <NotiClose onClick={() => clickRead(alarm.id)}>
-                                  <i className="xi-close-circle" />
-                                </NotiClose>
-                              </NotiItem>
-                            ))}
-                            {/* <NotiItem key={index}>
+          // <>
+          //   {data && (
+          //     <NotiListBox>
+          //       <FlexBox>
+          //         <Button
+          //           size="sm"
+          //           variant="solid"
+          //           className="bg-[#ff5900] text-white"
+          //           onClick={clickReadAll}
+          //         >
+          //           모두 읽음
+          //         </Button>
+          //       </FlexBox>
+          //       <ScrollBox>
+          //         <ScrollShadow orientation="vertical" className="scrollbar">
+          //           <div>
+          //             <ListBox>
+          //               {data.seeAlarms.data?.length > 0 && (
+          //                 <>
+          //                   {data.seeAlarms.data?.map((alarm, index) => (
+          //                     <NotiItem key={index}>
+          //                       <ClickBox>
+          //                         <NotiFlag
+          //                           style={{ background: 'blue' }}
+          //                         ></NotiFlag>
+          //                         <ReqBox>
+          //                           <FromID>{alarm.title}</FromID>
+          //                           <ReqText>{alarm.content}</ReqText>
+          //                         </ReqBox>
+          //                       </ClickBox>
+          //                       <NotiClose onClick={() => clickRead(alarm.id)}>
+          //                         <i className="xi-close-circle" />
+          //                       </NotiClose>
+          //                     </NotiItem>
+          //                   ))}
+          //                   {/* <NotiItem key={index}>
+          //             <ClickBox onClick={onOpen}>
+          //               <NotiFlag style={{ background: 'blue' }}></NotiFlag>
+          //               <ReqBox>
+          //                 <FromID>{alarm.title}</FromID>
+          //                 <ReqText>{alarm.content}</ReqText>
+          //               </ReqBox>
+          //             </ClickBox>
+          //             <NotiClose>
+          //               <i className="xi-close-circle" />
+          //             </NotiClose>
+          //           </NotiItem> */}
+          //                 </>
+          //               )}
+          //               {(data.seeAlarms.data?.length === 0 ||
+          //                 data === null) && <Nolist>알람이 없습니다.</Nolist>}
+          //             </ListBox>
+          //           </div>
+          //         </ScrollShadow>
+          //       </ScrollBox>
+          //       {data.seeAlarms.data?.length > 0 && (
+          //         <PagerWrap>
+          //           <Pagination
+          //             variant="light"
+          //             showControls
+          //             initialPage={currentPage}
+          //             page={currentPage}
+          //             total={Math.ceil(100 / currentLimit)}
+          //             onChange={newPage => {
+          //               setCurrentPage(newPage)
+          //             }}
+          //             classNames={{
+          //               item: 'text-white hover:text-[#000]',
+          //               prev: 'text-white hover:text-[#000]',
+          //               next: 'text-white hover:text-[#000]',
+          //             }}
+          //           />
+          //         </PagerWrap>
+          //       )}
+          //     </NotiListBox>
+          //   )}
+          // </>
+          <NotiListBox>
+            <FlexBox>
+              <Button
+                size="sm"
+                variant="solid"
+                className="bg-[#ff5900] text-white"
+                onClick={clickReadAll}
+              >
+                모두 읽음
+              </Button>
+            </FlexBox>
+            <ScrollBox>
+              <ScrollShadow orientation="vertical" className="scrollbar">
+                <div>
+                  <ListBox>
+                    {data.seeAlarms.data?.length > 0 && (
+                      <>
+                        {data.seeAlarms.data?.map((alarm, index) => (
+                          <NotiItem key={index}>
+                            <ClickBox>
+                              <NotiFlag
+                                style={{ background: 'blue' }}
+                              ></NotiFlag>
+                              <ReqBox>
+                                <FromID>{alarm.title}</FromID>
+                                <ReqText>{alarm.content}</ReqText>
+                              </ReqBox>
+                            </ClickBox>
+                            <NotiClose onClick={() => clickRead(alarm.id)}>
+                              <i className="xi-close-circle" />
+                            </NotiClose>
+                          </NotiItem>
+                        ))}
+                        {/* <NotiItem key={index}>
                       <ClickBox onClick={onOpen}>
                         <NotiFlag style={{ background: 'blue' }}></NotiFlag>
                         <ReqBox>
@@ -310,37 +388,36 @@ export default function HeaderNoti({}) {
                         <i className="xi-close-circle" />
                       </NotiClose>
                     </NotiItem> */}
-                          </>
-                        )}
-                        {data.seeAlarms.data?.length === 0 && (
-                          <Nolist>알람이 없습니다.</Nolist>
-                        )}
-                      </ListBox>
-                    </div>
-                  </ScrollShadow>
-                </ScrollBox>
-                {data.seeAlarms.data?.length > 0 && (
-                  <PagerWrap>
-                    <Pagination
-                      variant="light"
-                      showControls
-                      initialPage={currentPage}
-                      page={currentPage}
-                      total={Math.ceil(100 / currentLimit)}
-                      onChange={newPage => {
-                        setCurrentPage(newPage)
-                      }}
-                      classNames={{
-                        item: 'text-white hover:text-[#000]',
-                        prev: 'text-white hover:text-[#000]',
-                        next: 'text-white hover:text-[#000]',
-                      }}
-                    />
-                  </PagerWrap>
-                )}
-              </NotiListBox>
+                      </>
+                    )}
+                    {(data.seeAlarms.data?.length === 0 ||
+                      data.seeAlarms.data === null) && (
+                      <Nolist>알람이 없습니다.</Nolist>
+                    )}
+                  </ListBox>
+                </div>
+              </ScrollShadow>
+            </ScrollBox>
+            {data.seeAlarms.data?.length > 0 && (
+              <PagerWrap>
+                <Pagination
+                  variant="light"
+                  showControls
+                  initialPage={currentPage}
+                  page={currentPage}
+                  total={Math.ceil(100 / currentLimit)}
+                  onChange={newPage => {
+                    setCurrentPage(newPage)
+                  }}
+                  classNames={{
+                    item: 'text-white hover:text-[#000]',
+                    prev: 'text-white hover:text-[#000]',
+                    next: 'text-white hover:text-[#000]',
+                  }}
+                />
+              </PagerWrap>
             )}
-          </>
+          </NotiListBox>
         )}
       </NotiBox>
       {/* <SeeRequestMessage isOpen={isOpen} onClose={onClose} /> */}
