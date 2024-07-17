@@ -43,11 +43,6 @@ const TableItem = styled.div`
   border-radius: 0.5rem;
   background: #fff;
   overflow: hidden;
-
-  &:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
-  }
 `
 
 const TableRow = styled.div`

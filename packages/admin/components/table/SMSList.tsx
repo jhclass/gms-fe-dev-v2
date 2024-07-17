@@ -70,6 +70,11 @@ const SendInfo = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
+
+  &.first {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e3e3e6;
+  }
 `
 
 const SendType = styled.p`
@@ -95,8 +100,27 @@ const SendState = styled.p`
   }
 `
 
+const NumInfo = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem;
+  border: 2px solid #007de9;
+  padding: 0.75rem 0.5rem;
+
+  &.caller {
+    border: 2px solid #07bbae;
+  }
+`
+const PagerWrap = styled.div`
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: center;
+`
+
 export default function SMSList() {
-  // const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
 
@@ -115,11 +139,11 @@ export default function SMSList() {
         <Card
           shadow="none"
           classNames={{
-            base: 'bg-white px-3 py-1',
+            base: 'bg-white px-3 py-1 border-2 border-[#007de9]',
           }}
         >
           <CardHeader className="flex flex-col gap-3 p-2">
-            <SendInfo className="flex">
+            <SendInfo className="first">
               <ConLabel>발송일시</ConLabel>
               <ConText>2024-05-01 12:45</ConText>
             </SendInfo>
@@ -135,25 +159,25 @@ export default function SMSList() {
               </div>
             </ScrollShadow>
           </CardBody>
-          <CardFooter className="flex gap-3 p-2 ">
-            <Conbox>
+          <CardFooter className="flex flex-col gap-3 p-2">
+            <SendInfo className="first">
               <ConLabel>수신번호</ConLabel>
               <ConText>010523452323</ConText>
-            </Conbox>
-            <Conbox>
+            </SendInfo>
+            <SendInfo>
               <ConLabel>발신번호</ConLabel>
-              <ConText>01012341234</ConText>
-            </Conbox>
+              <ConText>01041942040</ConText>
+            </SendInfo>
           </CardFooter>
         </Card>
         <Card
           shadow="none"
           classNames={{
-            base: 'bg-white px-3 py-1',
+            base: 'bg-white px-3 py-1 border-2 border-[#ff5900]',
           }}
         >
           <CardHeader className="flex flex-col gap-3 p-2">
-            <SendInfo className="flex">
+            <SendInfo className="first">
               <ConLabel>발송일시</ConLabel>
               <ConText>2024-05-01 12:45</ConText>
             </SendInfo>
@@ -169,26 +193,26 @@ export default function SMSList() {
               </div>
             </ScrollShadow>
           </CardBody>
-          <CardFooter className="flex gap-3 p-2 ">
-            <Conbox>
+          <CardFooter className="flex flex-col gap-3 p-2">
+            <SendInfo className="flex first">
               <ConLabel>수신번호</ConLabel>
               <ConText>010523452323</ConText>
-            </Conbox>
-            <Conbox>
+            </SendInfo>
+            <SendInfo className="flex">
               <ConLabel>발신번호</ConLabel>
-              <ConText>01012341234</ConText>
-            </Conbox>
+              <ConText>01041942040</ConText>
+            </SendInfo>
           </CardFooter>
         </Card>
         <Card
           shadow="none"
           classNames={{
-            base: 'bg-white px-3 py-1',
+            base: 'bg-white px-3 py-1 border-2 border-[#07bbae]',
           }}
         >
           <CardHeader className="flex flex-col gap-3 p-2">
-            <SendInfo className="flex">
-              <ConLabel>발송일시</ConLabel>
+            <SendInfo className="first">
+              <ConLabel>예약일시</ConLabel>
               <ConText>2024-05-01 12:45</ConText>
             </SendInfo>
             <SendInfo>
@@ -203,25 +227,25 @@ export default function SMSList() {
               </div>
             </ScrollShadow>
           </CardBody>
-          <CardFooter className="flex gap-3 p-2 ">
-            <Conbox>
+          <CardFooter className="flex flex-col gap-3 p-2">
+            <SendInfo className="first">
               <ConLabel>수신번호</ConLabel>
               <ConText>010523452323</ConText>
-            </Conbox>
-            <Conbox>
+            </SendInfo>
+            <SendInfo>
               <ConLabel>발신번호</ConLabel>
-              <ConText>01012341234</ConText>
-            </Conbox>
+              <ConText>01041942040</ConText>
+            </SendInfo>
           </CardFooter>
         </Card>
         <Card
           shadow="none"
           classNames={{
-            base: 'bg-white px-3 py-1',
+            base: 'bg-white px-3 py-1 border-2 border-[#71717a]',
           }}
         >
           <CardHeader className="flex flex-col gap-3 p-2">
-            <SendInfo className="flex">
+            <SendInfo className="first">
               <ConLabel>발송일시</ConLabel>
               <ConText>2024-05-01 12:45</ConText>
             </SendInfo>
@@ -237,18 +261,33 @@ export default function SMSList() {
               </div>
             </ScrollShadow>
           </CardBody>
-          <CardFooter className="flex gap-3 p-2 ">
-            <Conbox>
+          <CardFooter className="flex flex-col gap-3 p-2">
+            <SendInfo className="first">
               <ConLabel>수신번호</ConLabel>
               <ConText>010523452323</ConText>
-            </Conbox>
-            <Conbox>
+            </SendInfo>
+            <SendInfo>
               <ConLabel>발신번호</ConLabel>
-              <ConText>01012341234</ConText>
-            </Conbox>
+              <ConText>01041942040</ConText>
+            </SendInfo>
           </CardFooter>
         </Card>
       </FlexBox>
+      {/* {totalCount > 0 && ( */}
+      <PagerWrap>
+        <Pagination
+          variant="light"
+          showControls
+          initialPage={currentPage}
+          page={currentPage}
+          total={3}
+          // total={Math.ceil(totalCount / currentLimit)}
+          onChange={newPage => {
+            setCurrentPage(newPage)
+          }}
+        />
+      </PagerWrap>
+      {/* )} */}
     </>
   )
 }

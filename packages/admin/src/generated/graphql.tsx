@@ -671,6 +671,7 @@ export type MutationCreateSubjectArgs = {
 
 
 export type MutationCreateUserActivityLogsArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   eventName: Scalars['String']['input'];
 };
@@ -831,6 +832,7 @@ export type MutationEditLecturesArgs = {
 export type MutationEditManageUserArgs = {
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  mAddressDetail?: InputMaybe<Scalars['String']['input']>;
   mAddresses?: InputMaybe<Scalars['String']['input']>;
   mAvatar?: InputMaybe<Scalars['Upload']['input']>;
   mGrade?: InputMaybe<Scalars['Int']['input']>;
@@ -843,6 +845,7 @@ export type MutationEditManageUserArgs = {
   mPhoneNumInside?: InputMaybe<Scalars['String']['input']>;
   mRank?: InputMaybe<Scalars['String']['input']>;
   mUsername?: InputMaybe<Scalars['String']['input']>;
+  mZipCode?: InputMaybe<Scalars['String']['input']>;
   resign?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1395,6 +1398,12 @@ export type Query = {
 
 export type QueryCreateStampArgs = {
   manageUserId: Scalars['Int']['input'];
+};
+
+
+export type QueryDashboardTodayArgs = {
+  today?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  yesterday?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -2055,6 +2064,7 @@ export type UserPhotosArgs = {
 
 export type UserActivityLogs = {
   __typename?: 'UserActivityLogs';
+  branchId?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   eventName: Scalars['String']['output'];

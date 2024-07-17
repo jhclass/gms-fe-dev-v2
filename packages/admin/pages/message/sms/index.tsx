@@ -67,7 +67,7 @@ const ByteBox = styled.div`
   display: flex;
   padding: 0.5rem;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   color: #71717a;
   font-size: 0.875rem;
   gap: 0.5rem;
@@ -128,7 +128,10 @@ export default function message() {
   const [sendGruop, setSendGruop] = useState(null)
   const [reservationDate, setReservationDate] = useState(null)
   const [saveType, setSaveType] = useState('개인')
-  const [sendType, setSendType] = useState('즉시발송')
+  const [sendType, setSendType] = useState('즉시전송')
+  const [message, setMessage] = useState('')
+  const [savedMessage, setSavedMessage] = useState('')
+  const [byteLength, setByteLength] = useState(0)
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -138,6 +141,15 @@ export default function message() {
     setSendGruop(updatedGroup)
   }
 
+  const handleSave = () => {
+    setSavedMessage(message)
+  }
+  const handleChange = e => {
+    setMessage(e)
+    const encoder = new TextEncoder()
+    const bytes = encoder.encode(e).length
+    setByteLength(bytes)
+  }
   return (
     <>
       <MainWrap>
@@ -150,10 +162,14 @@ export default function message() {
               labelPlacement="outside"
               placeholder="문자내용을 작성해주세요."
               minRows={10}
+              value={message}
+              onChange={e => handleChange(e.target.value)}
             />
             <ByteBox>
-              <p>0/90자</p>
-              <p>SMS</p>
+              <p>{byteLength > 90 ? 'LMS' : 'SMS'}</p>
+              <p>
+                {byteLength}/{byteLength > 90 ? '1000' : '90'}byte
+              </p>
             </ByteBox>
             <RoundBox>
               <FlexBox>
@@ -171,11 +187,24 @@ export default function message() {
                     <FilterLabel>공통</FilterLabel>
                   </Radio>
                 </RadioGroup>
-                <Button size="sm" color="primary" variant="bordered">
+                <Button
+                  size="sm"
+                  color="primary"
+                  variant="bordered"
+                  onClick={handleSave}
+                >
                   문자함 저장
                 </Button>
               </FlexBox>
             </RoundBox>
+            {/* {savedMessage && (
+              <div
+                style={{ whiteSpace: 'pre-wrap' }}
+                dangerouslySetInnerHTML={{
+                  __html: savedMessage.replace(/\n/g, '<br />'),
+                }}
+              />
+            )} */}
             <RoundBox>
               <FlexBox>
                 <FilterLabel>받는사람</FilterLabel>
@@ -215,14 +244,15 @@ export default function message() {
             <RoundBox>
               <FlexBox>
                 <Input
+                  isReadOnly={true}
                   labelPlacement="outside"
                   placeholder="'-'없이 작성해주세요"
-                  variant="bordered"
+                  variant="faded"
                   radius="md"
                   type="text"
                   label={<FilterLabel>보내는사람</FilterLabel>}
                   maxLength={11}
-                  defaultValue="01059494922"
+                  value={'01041942040'}
                   // onChange={e => {
                   //   register('phoneNum1').onChange(e)
                   // }}
@@ -334,7 +364,7 @@ export default function message() {
             </RoundBox>
           </LeftBox>
           <RightBox>
-            <SMSTabs />
+            <SMSTabs setMessage={setMessage} />
           </RightBox>
         </ConBox>
       </MainWrap>

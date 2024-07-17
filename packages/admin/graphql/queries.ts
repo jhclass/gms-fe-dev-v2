@@ -2,11 +2,13 @@ import { gql } from '@apollo/client'
 
 // Dashboard
 export const DASHBOARD_TODAY_QUERY = gql`
-  query DashboardToday {
-    dashboardToday {
+  query Query($today: [String], $yesterday: [String]) {
+    dashboardToday(today: $today, yesterday: $yesterday) {
+      compareToday
+      error
+      message
       ok
       today
-      compareToday
     }
   }
 `

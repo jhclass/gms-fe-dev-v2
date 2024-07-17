@@ -423,7 +423,7 @@ const category: Category[] = [
       },
       {
         href: '/sms',
-        name: 'SMS',
+        name: '문자발송',
         exposure: true,
         isBreadcrumb: true,
         isFilter: false,

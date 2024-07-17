@@ -112,6 +112,12 @@ const BtnBox = styled.div`
   justify-content: space-between;
   gap: 0.5rem;
 `
+const MoreBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+`
 
 export default function EducationalHistory() {
   const [educationValue, setEducationValue] = useState('학력선택')
@@ -199,6 +205,7 @@ export default function EducationalHistory() {
                   </Ttext>
                   <Tselect>
                     <Select
+                      label={'졸업여부'}
                       labelPlacement="outside"
                       variant="bordered"
                       size="sm"
@@ -354,15 +361,18 @@ export default function EducationalHistory() {
             </TableItem>
           </TableWrap>
         </ScrollShadow>
-        <PagerWrap>
-          <Pagination
-            variant="light"
-            showControls
-            initialPage={1}
-            page={1}
-            total={3}
-          />
-        </PagerWrap>
+        <MoreBtn>
+          <Button
+            size="md"
+            // onClick={loadMore}
+            className="bg-white border-[#07bbae] w-full text-[#07bbae]"
+          >
+            더보기{' '}
+            <span className="text-[#07bbae] text-[1rem]">
+              <i className="xi-plus-circle" />
+            </span>
+          </Button>
+        </MoreBtn>
         {/* {totalCount > 0 && (
           <PagerWrap>
             <Pagination

@@ -29,6 +29,7 @@ import Address from '@/components/common/Address'
 import EducationalHistory from '@/components/table/EducationalHistory'
 import CareerHistory from '@/components/table/CareerHistory'
 import EmploymentTabs from '@/components/items/EmploymentTabs'
+import EmploymentForm from '@/components/form/EmploymentForm'
 
 const ConArea = styled.div`
   width: 100%;
@@ -155,21 +156,6 @@ export default function StudentsWrite() {
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [lectureData, setLectureData] = useState(null)
   const [students, setStudents] = useState(null)
-  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
-  const [studentData, setStudentData] = useState(null)
-
-  const [selectValue, setSelectValue] = useState('유형선택')
-
-  const handleSelectChange = e => {
-    setSelectValue(e.target.value)
-  }
-
-  const naturalCompare = (a, b) => {
-    return a.localeCompare(b, undefined, {
-      numeric: true,
-      sensitivity: 'base',
-    })
-  }
 
   useEffect(() => {
     // if (lectureId !== null) {
@@ -196,16 +182,6 @@ export default function StudentsWrite() {
         }
       },
     })
-    searchStudentMutation({
-      variables: {
-        searchStudentId: 267,
-      },
-      onCompleted: data => {
-        if (data.searchStudent.ok) {
-          setStudentData(data.searchStudent?.student[0])
-        }
-      },
-    })
   }, [router])
 
   const formatDate = (data, isTime) => {
@@ -226,13 +202,6 @@ export default function StudentsWrite() {
         `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
-    }
-  }
-
-  const handleClick = event => {
-    if (lectureData?.timetableAttached === null) {
-      event.preventDefault()
-      alert('등록된 시간표가 없습니다.')
     }
   }
 
@@ -279,59 +248,7 @@ export default function StudentsWrite() {
               <AreaTitle>
                 <h4>학생정보</h4>
               </AreaTitle>
-              <StudentInfo
-                studentData={studentData}
-                detailAll={false}
-                record={true}
-              />
-              <FlexConBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>나이</FilterLabel>
-                    <LineBox>30세</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>선발평가 점수</FilterLabel>
-                    <LineBox>89점</LineBox>
-                  </div>
-                </AreaBox>
-                <AreaBox>
-                  <div>
-                    <FilterLabel>유형</FilterLabel>
-                    <Select
-                      labelPlacement="outside"
-                      className="w-full"
-                      variant="bordered"
-                      selectedKeys={[selectValue]}
-                      onChange={e => handleSelectChange(e)}
-                      classNames={{
-                        label: 'w-[4rem] pr-0',
-                      }}
-                    >
-                      <SelectItem value={'유형선택'} key={'유형선택'}>
-                        유형선택
-                      </SelectItem>
-                      <SelectItem value={'1유형'} key={'1유형'}>
-                        1유형
-                      </SelectItem>
-                      <SelectItem value={'2유형'} key={'2유형'}>
-                        2유형
-                      </SelectItem>
-                    </Select>
-                  </div>
-                </AreaBox>
-              </FlexConBox>
-              <Address
-                codeValueName={'mZipCode'}
-                valueName={'mAddresses'}
-                detailValueName={'mAddressDetail'}
-                setValue={null}
-                defaultPostcode={'0101010'}
-                defaultAddress={'주소를 입력해주세요.'}
-                defaultDetails={'상세주소주소'}
-              />
+              <EmploymentForm />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

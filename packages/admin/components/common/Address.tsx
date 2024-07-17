@@ -4,6 +4,11 @@ import Script from 'next/script'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
+const AddrBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -99,64 +104,66 @@ export default function Address({
   return (
     <>
       <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></Script>
-      <FlexBox>
-        <AreaSmallBox>
-          <Input
-            type="text"
-            id="sample4_postcode"
-            defaultValue={defaultPostcode}
-            label={<FilterLabel>주소</FilterLabel>}
-            placeholder="우편번호"
-            labelPlacement="outside"
-            variant="flat"
-            radius="md"
-            className="w-full"
-            value={postcode !== '' ? postcode : defaultPostcode}
-            readOnly
-          />
-          <Button
-            onClick={handleClick}
-            className="text-white w-[10rem]"
-            size="md"
-            radius="md"
-            variant="solid"
-            color="primary"
-          >
-            주소 검색
-          </Button>
-        </AreaSmallBox>
-      </FlexBox>
-      <FlexBox>
-        <AreaBox>
-          <Input
-            type="text"
-            id="sample4_roadAddress"
-            placeholder="주소"
-            labelPlacement="outside"
-            variant="flat"
-            radius="md"
-            defaultValue={defaultAddress}
-            value={roadAddress !== '' ? roadAddress : defaultAddress}
-            className="w-full"
-            readOnly
-          />
-        </AreaBox>
-      </FlexBox>
-      <FlexBox>
-        <AreaBox>
-          <Input
-            type="text"
-            defaultValue={defaultDetails}
-            id="sample4_detailAddress"
-            placeholder="상세주소"
-            labelPlacement="outside"
-            radius="md"
-            variant="bordered"
-            className="w-full"
-            onChange={handleChange}
-          />
-        </AreaBox>
-      </FlexBox>
+      <AddrBox>
+        <FlexBox>
+          <AreaSmallBox>
+            <Input
+              type="text"
+              id="sample4_postcode"
+              defaultValue={defaultPostcode}
+              label={<FilterLabel>주소</FilterLabel>}
+              placeholder="우편번호"
+              labelPlacement="outside"
+              variant="flat"
+              radius="md"
+              className="w-full"
+              value={postcode !== '' ? postcode : defaultPostcode}
+              readOnly
+            />
+            <Button
+              onClick={handleClick}
+              className="text-white w-[10rem]"
+              size="md"
+              radius="md"
+              variant="solid"
+              color="primary"
+            >
+              주소 검색
+            </Button>
+          </AreaSmallBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaBox>
+            <Input
+              type="text"
+              id="sample4_roadAddress"
+              placeholder="주소"
+              labelPlacement="outside"
+              variant="flat"
+              radius="md"
+              defaultValue={defaultAddress}
+              value={roadAddress !== '' ? roadAddress : defaultAddress}
+              className="w-full"
+              readOnly
+            />
+          </AreaBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaBox>
+            <Input
+              type="text"
+              defaultValue={defaultDetails}
+              id="sample4_detailAddress"
+              placeholder="상세주소"
+              labelPlacement="outside"
+              radius="md"
+              variant="bordered"
+              className="w-full"
+              onChange={handleChange}
+            />
+          </AreaBox>
+        </FlexBox>
+      </AddrBox>
     </>
   )
 }

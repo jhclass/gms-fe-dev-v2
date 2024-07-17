@@ -40,7 +40,7 @@ const BtnBox = styled.div`
   gap: 0.5rem;
 `
 
-export default function SMSTabs() {
+export default function SMSTabs({ setMessage }) {
   const [selected, setSelected] = useState('mySMS')
 
   return (
@@ -57,10 +57,10 @@ export default function SMSTabs() {
         onSelectionChange={e => setSelected(String(e))}
       >
         <Tab key="mySMS" title="내문자함">
-          <SMSCard />
+          <SMSCard setMessage={setMessage} />
         </Tab>
         <Tab key="commonSMS" title="공통문자함">
-          <SMSCard />
+          <SMSCard setMessage={setMessage} />
         </Tab>
         <Tab key="send" title="보낸문자함">
           <SMSList />

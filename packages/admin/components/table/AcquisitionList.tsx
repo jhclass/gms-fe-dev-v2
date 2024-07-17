@@ -143,6 +143,12 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
+const MoreBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+`
 
 export default function AbsentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
@@ -344,7 +350,19 @@ export default function AbsentList() {
             </TableItem>
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        <MoreBtn>
+          <Button
+            size="md"
+            // onClick={loadMore}
+            className="bg-white border-[#07bbae] w-full text-[#07bbae]"
+          >
+            더보기{' '}
+            <span className="text-[#07bbae] text-[1rem]">
+              <i className="xi-plus-circle" />
+            </span>
+          </Button>
+        </MoreBtn>
+        {/* {totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
@@ -357,7 +375,7 @@ export default function AbsentList() {
               }}
             />
           </PagerWrap>
-        )}
+        )} */}
       </TableArea>
       {isOpen && (
         <DatePickerBox>

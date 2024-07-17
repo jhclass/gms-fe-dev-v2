@@ -81,10 +81,33 @@ const MoMIcon = styled.p`
 type DashboardToday = {
   dashboardToday: DashboardTodayResult
 }
+
+const today = new Date()
+const yesterday = new Date(today)
+yesterday.setDate(today.getDate() - 1)
+
+const todayStart = new Date(today)
+todayStart.setHours(0, 0, 0, 0)
+
+const todayEnd = new Date(today)
+todayEnd.setHours(23, 59, 59, 999)
+
+const yesterdayStart = new Date(yesterday)
+yesterdayStart.setHours(0, 0, 0, 0)
+
+const yesterdayEnd = new Date(yesterday)
+yesterdayEnd.setHours(23, 59, 59, 999)
+
 export default function NewConsultNumCon() {
   const router = useRouter()
   const { error, data, refetch } = useSuspenseQuery<DashboardToday>(
     DASHBOARD_TODAY_QUERY,
+    {
+      variables: {
+        today: [todayStart, todayEnd],
+        yesterday: [yesterdayStart, yesterdayEnd],
+      },
+    },
   )
   const dataToday = data?.dashboardToday.today || 0
   const dataCompare = data?.dashboardToday.compareToday || 0
