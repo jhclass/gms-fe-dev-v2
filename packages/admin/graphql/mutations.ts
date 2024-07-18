@@ -1057,6 +1057,8 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         cardAmount
         cashAmount
         classCode
+        dateOfDroppingOut
+        reasonFordroppingOut
         courseComplete
         createdAt
         discountAmount
@@ -1495,13 +1497,17 @@ export const APPROVAL_REFUND_MUTATION = gql`
   }
 `
 export const CLASS_CANCEL_MUTATION = gql`
-  mutation ClassCancellation(
+  mutation Mutation(
     $classCancellationId: Int!
     $courseComplete: String!
+    $dateOfDroppingOut: String
+    $reasonFordroppingOut: String
   ) {
     classCancellation(
       id: $classCancellationId
       courseComplete: $courseComplete
+      dateOfDroppingOut: $dateOfDroppingOut
+      reasonFordroppingOut: $reasonFordroppingOut
     ) {
       error
       message
@@ -1936,6 +1942,27 @@ export const EDIT_WORKLOGS_MUTATION = gql`
       attendanceCount: $attendanceCount
       checkList: $checkList
       checkContext: $checkContext
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const SEND_SMS_MUTATION = gql`
+  mutation SendSms(
+    $receiver: String!
+    $message: String!
+    $rDate: String
+    $rTime: String
+    $senderNum: String
+  ) {
+    sendSms(
+      receiver: $receiver
+      message: $message
+      rDate: $rDate
+      rTime: $rTime
+      senderNum: $senderNum
     ) {
       error
       message

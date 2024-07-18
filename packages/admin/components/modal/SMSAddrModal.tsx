@@ -30,6 +30,7 @@ export default function SMSAddrModal({
   onClose,
   sendGruop,
   setSendGruop,
+  setValue,
 }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
@@ -45,6 +46,7 @@ export default function SMSAddrModal({
 
   const clickAdd = () => {
     setSendGruop(groupSelected)
+    setValue('receiver', groupSelected)
     setGroupSelected([])
     onClose()
   }
@@ -53,6 +55,7 @@ export default function SMSAddrModal({
     const updatedGroup = [...groupSelected]
     updatedGroup.splice(index, 1)
     setGroupSelected(updatedGroup)
+    setValue('receiver', updatedGroup)
   }
 
   return (

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button } from '@nextui-org/react'
+import { Button, Textarea, useDisclosure } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -24,6 +24,7 @@ import {
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import StudentInfo from '@/components/items/StudentInfo'
+import DropOutInput from '@/components/modal/DropOutInput'
 
 const ConArea = styled.div`
   width: 100%;
@@ -95,6 +96,11 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+`
+const AreaSmallBox = styled.div`
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
 `
 
 const FilterLabel = styled.label`
@@ -229,6 +235,8 @@ export default function StudentsWrite() {
   const [studentSubjectData, setStudentSubjectData] = useState(null)
   const [studentPaymentData, setStudentPaymentData] = useState(null)
   const [studentPaymentDetailData, setStudentPaymentDetailData] = useState([])
+  const [dropOutType, setDropOutType] = useState(null)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     if (paymentId !== null) {
@@ -346,17 +354,29 @@ export default function StudentsWrite() {
     }
   }
 
-  const clickCompletion = async state => {
+  const clickCompletion = async (state, dropOut, date?, reason?) => {
     const changeCompletion = confirm(
-      `${studentData?.name}학생을 "${state}"처리 하시겠습니까? \n 과정명 : ${studentSubjectData?.subjectName}`,
+      `${studentData?.name}학생을 "${state}"처리 하시겠습니까?\n다시 수정 불가능합니다. \n 과정명 : ${studentSubjectData?.subjectName}`,
     )
     if (changeCompletion) {
-      const success = await classCancelMutation({
-        variables: {
-          classCancellationId: parseInt(studentPaymentData.id),
-          courseComplete: state,
-        },
-      })
+      let success
+      if (dropOut) {
+        success = await classCancelMutation({
+          variables: {
+            classCancellationId: parseInt(studentPaymentData.id),
+            courseComplete: state,
+            dateOfDroppingOut: date,
+            reasonFordroppingOut: reason,
+          },
+        })
+      } else {
+        success = await classCancelMutation({
+          variables: {
+            classCancellationId: parseInt(studentPaymentData.id),
+            courseComplete: state,
+          },
+        })
+      }
       if (success) {
         const success2 = await searchAndUpdateStudentPayment()
         if (success2) {
@@ -365,6 +385,11 @@ export default function StudentsWrite() {
         }
       }
     }
+  }
+
+  const dropOutClick = type => {
+    setDropOutType(type)
+    onOpen()
   }
 
   const formatDate = (data, isTime) => {
@@ -561,7 +586,7 @@ export default function StudentsWrite() {
                                 color="primary"
                                 className="w-full opacity-100"
                                 onClick={() =>
-                                  clickCompletion(completion.inTraining)
+                                  clickCompletion(completion.inTraining, false)
                                 }
                               >
                                 {completion.inTraining}
@@ -583,9 +608,7 @@ export default function StudentsWrite() {
                                 }
                                 color="primary"
                                 className="w-full opacity-100"
-                                onClick={() =>
-                                  clickCompletion(completion.dropout)
-                                }
+                                onClick={() => dropOutClick(completion.dropout)}
                               >
                                 {completion.dropout}
                               </Button>
@@ -607,7 +630,7 @@ export default function StudentsWrite() {
                                 color="primary"
                                 className="w-full opacity-100"
                                 onClick={() =>
-                                  clickCompletion(completion.completed)
+                                  clickCompletion(completion.completed, false)
                                 }
                               >
                                 {completion.completed}
@@ -630,7 +653,7 @@ export default function StudentsWrite() {
                                 color="primary"
                                 className="w-full opacity-100"
                                 onClick={() =>
-                                  clickCompletion(completion.notCompleted)
+                                  dropOutClick(completion.notCompleted)
                                 }
                               >
                                 {completion.notCompleted}
@@ -638,6 +661,44 @@ export default function StudentsWrite() {
                             </FlexBtnBox>
                           </div>
                         )}
+                        {studentPaymentData?.courseComplete ===
+                          completion.dropout ||
+                        studentPaymentData?.courseComplete ===
+                          completion.notCompleted ? (
+                          <FlexBox>
+                            <AreaSmallBox style={{ minWidth: '20%' }}>
+                              <div>
+                                <FilterLabel>중도탈락 날짜</FilterLabel>
+                                <LineBox>
+                                  {formatDate(
+                                    studentPaymentData?.dateOfDroppingOut,
+                                    false,
+                                  )}
+                                </LineBox>
+                              </div>
+                            </AreaSmallBox>
+                            <AreaBox>
+                              <div>
+                                <Textarea
+                                  label="중도탈락 사유"
+                                  isDisabled={true}
+                                  isReadOnly={true}
+                                  labelPlacement="outside"
+                                  value={
+                                    studentPaymentData?.reasonFordroppingOut
+                                  }
+                                  minRows={1}
+                                  variant="underlined"
+                                  size="md"
+                                  radius="sm"
+                                  classNames={{
+                                    base: 'opacity-1',
+                                  }}
+                                />
+                              </div>
+                            </AreaBox>
+                          </FlexBox>
+                        ) : null}
                       </>
                     )}
 
@@ -723,6 +784,12 @@ export default function StudentsWrite() {
           </ConArea>
         </MainWrap>
       )}
+      <DropOutInput
+        isOpen={isOpen}
+        onClose={onClose}
+        clickCompletion={clickCompletion}
+        dropOutType={dropOutType}
+      />
     </>
   )
 }

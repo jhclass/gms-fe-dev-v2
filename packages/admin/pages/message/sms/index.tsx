@@ -2,7 +2,7 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/message/layout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SMSTabs from '@/components/items/SMSTabs'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -22,6 +22,9 @@ import {
 import SMSAddrModal from '@/components/modal/SMSAddrModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { Controller, useForm } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import { SEND_SMS_MUTATION } from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -34,7 +37,7 @@ const ConBox = styled.div`
   }
 `
 
-const LeftBox = styled.div`
+const LeftBox = styled.form`
   width: 24rem;
   display: flex;
   flex-direction: column;
@@ -125,48 +128,188 @@ const LodingDiv = styled.div`
 `
 
 export default function message() {
-  const [sendGruop, setSendGruop] = useState(null)
+  const [sendGruop, setSendGruop] = useState([])
   const [reservationDate, setReservationDate] = useState(null)
   const [saveType, setSaveType] = useState('개인')
   const [sendType, setSendType] = useState('즉시전송')
-  const [message, setMessage] = useState('')
+  const [messageCon, setMessageCon] = useState('')
   const [savedMessage, setSavedMessage] = useState('')
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const [byteLength, setByteLength] = useState(0)
-  const { register, control, setValue, handleSubmit, formState } = useForm()
+  const [sendSms] = useMutation(SEND_SMS_MUTATION)
+  const { userLogs } = useUserLogsMutation()
+  const {
+    register,
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const formatDate = date => {
+    const d = new Date(date)
+    const year = d.getFullYear()
+    const month = `0${d.getMonth() + 1}`.slice(-2)
+    const day = `0${d.getDate()}`.slice(-2)
+    return `${year}${month}${day}`
+  }
+
+  const formatTime = date => {
+    const d = new Date(date)
+    const hours = `0${d.getHours()}`.slice(-2)
+    const minutes = `0${d.getMinutes()}`.slice(-2)
+    return `${hours}${minutes}`
+  }
+
+  useEffect(() => {
+    if (isSubmitted) {
+      if (!sendGruop || sendGruop.length === 0) {
+        setError('receiver', {
+          type: 'manual',
+          message: '받는사람을 선택해주세요',
+        })
+      } else {
+        clearErrors('receiver')
+      }
+    }
+  }, [isSubmitted, sendGruop])
+
+  const onSubmit = data => {
+    setIsSubmitted(true)
+    let phoneNumbers
+    let sendDate
+    let sendTime
+
+    if (sendType === '예약전송') {
+      sendDate = formatDate(reservationDate)
+      sendTime = formatTime(reservationDate)
+      setValue('rDate', sendDate)
+      setValue('rTime', sendTime)
+    } else {
+      sendDate = formatDate(new Date())
+      setValue('rDate', sendDate)
+    }
+
+    if (data.receiver) {
+      phoneNumbers = data.receiver
+        .map(item => item.phoneNumber || item.mPhoneNum || item.phoneNum1)
+        .filter(Boolean)
+        .join(',')
+    }
+
+    if (phoneNumbers !== undefined) {
+      if (sendType === '예약전송') {
+        if (sendDate !== undefined && sendTime !== undefined) {
+          console.log('예약전송', data, sendDate, sendTime, phoneNumbers)
+          // sendSms({
+          //   variables: {
+          //     receiver: phoneNumbers,
+          //     message: data.message,
+          //     rDate: sendDate,
+          //     rTime: sendTime,
+          //     senderNum: data.senderNum,
+          //   },
+          //   onCompleted: result => {
+          //     if (result.sendSms.ok) {
+          //       userLogs(
+          //         `문자 메시지 발송예약`,
+          //         `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
+          //       )
+          //       alert(
+          //         `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
+          //       )
+          //     }
+          //   },
+          // })
+        }
+      } else {
+        if (sendDate !== undefined) {
+          console.log('즉시', data, sendDate, phoneNumbers)
+          // sendSms({
+          //   variables: {
+          //     receiver: phoneNumbers,
+          //     message: data.message,
+          //     rDate: sendDate,
+          //     senderNum: data.senderNum,
+          //   },
+          //   onCompleted: result => {
+          //     console.log(result)
+          //     if (result.sendSms.ok) {
+          //       userLogs(
+          //         `문자 메시지 발송`,
+          //         `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
+          //       )
+          //       alert(`문자 메시지가 발송 되었습니다.`)
+          //     }
+          //   },
+          // })
+        }
+      }
+    }
+  }
+
   const deleteType = index => {
     const updatedGroup = [...sendGruop]
     updatedGroup.splice(index, 1)
     setSendGruop(updatedGroup)
+    setValue('receiver', updatedGroup)
   }
 
   const handleSave = () => {
-    setSavedMessage(message)
+    setSavedMessage(messageCon)
   }
   const handleChange = e => {
-    setMessage(e)
+    const value = e
+    setMessageCon(value)
     const encoder = new TextEncoder()
-    const bytes = encoder.encode(e).length
+    const bytes = encoder.encode(value).length
     setByteLength(bytes)
+    setValue('message', value)
   }
   return (
     <>
       <MainWrap>
         <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
         <ConBox>
-          <LeftBox>
-            <Textarea
-              variant="flat"
-              label={<FilterLabel>문자내용</FilterLabel>}
-              labelPlacement="outside"
-              placeholder="문자내용을 작성해주세요."
-              minRows={10}
-              value={message}
-              onChange={e => handleChange(e.target.value)}
+          <LeftBox onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="message"
+              control={control}
+              defaultValue=""
+              rules={{ required: '내용을 작성해주세요.' }}
+              render={({ field }) => (
+                <Textarea
+                  variant="flat"
+                  label={<FilterLabel>문자내용</FilterLabel>}
+                  labelPlacement="outside"
+                  placeholder="문자내용을 작성해주세요."
+                  minRows={10}
+                  value={field.value}
+                  onChange={e => {
+                    handleChange(e.target.value)
+                    field.onChange(e)
+                  }}
+                />
+              )}
             />
+            {errors.message && (
+              <p className="px-2 pt-2 text-xs text-red-500">
+                {String(errors.message.message)}
+              </p>
+            )}
             <ByteBox>
-              <p>{byteLength > 90 ? 'LMS' : 'SMS'}</p>
+              <p
+                style={{
+                  color: byteLength > 90 ? '#ff5900' : 'inherit',
+                  fontWeight: 700,
+                }}
+              >
+                {byteLength > 90 ? 'LMS' : 'SMS'}
+              </p>
               <p>
                 {byteLength}/{byteLength > 90 ? '1000' : '90'}byte
               </p>
@@ -240,6 +383,11 @@ export default function message() {
                   </Chip>
                 ))}
               </ChipBox>
+              {errors.receiver && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.receiver.message)}
+                </p>
+              )}
             </RoundBox>
             <RoundBox>
               <FlexBox>
@@ -253,30 +401,35 @@ export default function message() {
                   label={<FilterLabel>보내는사람</FilterLabel>}
                   maxLength={11}
                   value={'01041942040'}
-                  // onChange={e => {
-                  //   register('phoneNum1').onChange(e)
-                  // }}
+                  onChange={e => {
+                    register('senderNum').onChange(e)
+                  }}
                   className="w-full"
-                  // {...register('phoneNum1', {
-                  //   required: {
-                  //     value: true,
-                  //     message: '휴대폰번호를 입력해주세요.',
-                  //   },
-                  //   maxLength: {
-                  //     value: 11,
-                  //     message: '최대 11자리까지 입력 가능합니다.',
-                  //   },
-                  //   minLength: {
-                  //     value: 10,
-                  //     message: '최소 10자리 이상이어야 합니다.',
-                  //   },
-                  //   pattern: {
-                  //     value: /^010[0-9]{7,8}$/,
-                  //     message: '010으로 시작해주세요.',
-                  //   },
-                  // })}
+                  {...register('senderNum', {
+                    required: {
+                      value: true,
+                      message: '휴대폰번호를 입력해주세요.',
+                    },
+                    maxLength: {
+                      value: 11,
+                      message: '최대 11자리까지 입력 가능합니다.',
+                    },
+                    minLength: {
+                      value: 10,
+                      message: '최소 10자리 이상이어야 합니다.',
+                    },
+                    pattern: {
+                      value: /^010[0-9]{7,8}$/,
+                      message: '010으로 시작해주세요.',
+                    },
+                  })}
                 />
               </FlexBox>
+              {errors.senderNum && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.senderNum.message)}
+                </p>
+              )}
             </RoundBox>
             <RoundBox>
               <FlexBox>
@@ -300,7 +453,13 @@ export default function message() {
                   <DatePickerBox>
                     <Controller
                       control={control}
-                      name="stVisit"
+                      name="rTime"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '예약 날짜와 시간을 선택해주세요.',
+                        },
+                      }}
                       render={({ field }) => (
                         <DatePicker
                           renderCustomHeader={({
@@ -356,15 +515,20 @@ export default function message() {
                   </DatePickerBox>
                 </FlexBox>
               )}
+              {errors.rTime && (
+                <p className="px-2 pt-2 text-xs text-red-500">
+                  {String(errors.rTime.message)}
+                </p>
+              )}
             </RoundBox>
             <RoundBox>
-              <Button color="primary" className="w-full">
+              <Button type="submit" color="primary" className="w-full">
                 문자 보내기
               </Button>
             </RoundBox>
           </LeftBox>
           <RightBox>
-            <SMSTabs setMessage={setMessage} />
+            <SMSTabs setMessageCon={setMessageCon} setValue={setValue} />
           </RightBox>
         </ConBox>
       </MainWrap>
@@ -373,6 +537,7 @@ export default function message() {
         onClose={onClose}
         setSendGruop={setSendGruop}
         sendGruop={sendGruop}
+        setValue={setValue}
       />
     </>
   )

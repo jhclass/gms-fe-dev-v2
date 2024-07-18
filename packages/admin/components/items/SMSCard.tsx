@@ -34,13 +34,14 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-export default function SMSItem({ setMessage }) {
+export default function SMSItem({ setMessageCon, setValue }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
 
   const handleApply = id => {
     const divContent = document.getElementById(id).innerHTML
-    setMessage(divContent.replace(/<br\s*\/?>/gi, '\n'))
+    setMessageCon(divContent.replace(/<br\s*\/?>/gi, '\n'))
+    setValue('message', divContent.replace(/<br\s*\/?>/gi, '\n'))
   }
 
   return (
