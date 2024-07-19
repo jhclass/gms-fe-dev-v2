@@ -201,7 +201,7 @@ export default function ConsolutItem(props) {
     <>
       <TableItem>
         <TableRow>
-          <Link href={`/lecture/employment/detail`}>
+          <Link href={`/lecture/employmentDetail`}>
             <ClickBox>
               <Tnum>
                 <EllipsisBox>

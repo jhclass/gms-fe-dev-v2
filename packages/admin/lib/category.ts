@@ -221,6 +221,14 @@ const category: Category[] = [
         isWrite: '',
       },
       {
+        href: '/employmentDetail',
+        name: '학적부',
+        exposure: false,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
+      {
         href: '/write',
         name: '강의 등록',
         exposure: false,
