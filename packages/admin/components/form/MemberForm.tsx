@@ -21,6 +21,7 @@ import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import Address from '@/components/common/Address'
+import PartMultiSelect from '../common/PartMultiSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -212,6 +213,7 @@ type searchManageUserQuery = {
 export default function ManagerWrite({ managerId }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const [selectMpart, setSelectMpart] = useState([])
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
@@ -234,7 +236,6 @@ export default function ManagerWrite({ managerId }) {
 
   const managerData = data?.searchManageUser.data[0]
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
-
   const { register, setValue, control, handleSubmit, formState } = useForm({
     defaultValues: {
       mUserId: managerData.mUserId,
@@ -690,7 +691,29 @@ export default function ManagerWrite({ managerId }) {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
+                    <Controller
+                      control={control}
+                      name="mPart"
+                      defaultValue={managerData.mPart}
+                      render={({ field }) => (
+                        <PartMultiSelect
+                          placeholder={
+                            managerData.mPart.length > 0
+                              ? String(managerData.mPart)
+                              : ' '
+                          }
+                          selecedKey={selectMpart}
+                          field={field}
+                          label={
+                            <FilterLabel>
+                              부서명<span>*</span>
+                            </FilterLabel>
+                          }
+                          handleChange={setSelectMpart}
+                        />
+                      )}
+                    />
+                    {/* <Input
                       labelPlacement="outside"
                       placeholder="ex) 교무팀,인사팀"
                       variant={'bordered'}
@@ -712,7 +735,7 @@ export default function ManagerWrite({ managerId }) {
                           message: '부서를 입력해주세요.',
                         },
                       })}
-                    />
+                    /> */}
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}

@@ -28,6 +28,7 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import Address from '@/components/common/Address'
+import PartMultiSelect from '@/components/common/PartMultiSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -147,6 +148,7 @@ const BtnBox = styled.div`
 export default function StudentsWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
+  const [selectMpart, setSelectMpart] = useState([])
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
   const {
     register,
@@ -548,7 +550,23 @@ export default function StudentsWrite() {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
+                    <Controller
+                      control={control}
+                      name="mPart"
+                      render={({ field }) => (
+                        <PartMultiSelect
+                          selecedKey={selectMpart}
+                          field={field}
+                          label={
+                            <FilterLabel>
+                              부서명<span>*</span>
+                            </FilterLabel>
+                          }
+                          handleChange={setSelectMpart}
+                        />
+                      )}
+                    />
+                    {/* <Input
                       labelPlacement="outside"
                       placeholder="ex) 교무팀,인사팀"
                       variant={'bordered'}
@@ -573,7 +591,7 @@ export default function StudentsWrite() {
                           message: '한글, 영어, 숫자만 사용 가능합니다.',
                         },
                       })}
-                    />
+                    /> */}
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}

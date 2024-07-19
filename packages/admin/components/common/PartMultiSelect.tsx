@@ -20,10 +20,6 @@ const AddLink = styled.p`
   z-index: 5;
 `
 
-type seeAdviceTypeQuery = {
-  seeAdviceType: ResultAdviceType
-}
-
 export default function PartMultiSelect({
   defaultValue = null,
   selecedKey,
