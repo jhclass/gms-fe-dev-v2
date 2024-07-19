@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client'
 import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
 import StudentInfo from '@/components/items/StudentInfo'
 import Address from '@/components/common/Address'
+import { useForm } from 'react-hook-form'
 
 const FlexConBox = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ export default function EmploymentForm() {
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
   const [studentData, setStudentData] = useState(null)
   const [selectValue, setSelectValue] = useState('유형선택')
-
+  const { register, setValue, control, handleSubmit, formState } = useForm({})
   const handleSelectChange = e => {
     setSelectValue(e.target.value)
   }
@@ -117,7 +118,7 @@ export default function EmploymentForm() {
         codeValueName={'mZipCode'}
         valueName={'mAddresses'}
         detailValueName={'mAddressDetail'}
-        setValue={null}
+        setValue={setValue}
         defaultPostcode={'0101010'}
         defaultAddress={'주소를 입력해주세요.'}
         defaultDetails={'상세주소주소'}
