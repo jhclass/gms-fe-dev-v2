@@ -764,3 +764,21 @@ export const SEARCH_ATTENDANCE_QUERY = gql`
     }
   }
 `
+export const SEE_MESSAGE_STORAGE_QUERY = gql`
+  query SeeMessageStorage($limit: Int, $page: Int, $saveType: String!) {
+    seeMessageStorage(limit: $limit, page: $page, saveType: $saveType) {
+      data {
+        saveType
+        message
+        manageUserId
+        branchId
+        id
+        createdAt
+      }
+      totalCount
+      ok
+      message
+      error
+    }
+  }
+`

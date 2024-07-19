@@ -10,7 +10,12 @@ import {
 import { styled } from 'styled-components'
 import useMmeQuery from '@/utils/mMe'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { SEE_MESSAGE_STORAGE_QUERY } from '@/graphql/queries'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { ResultMessageStorage } from '@/src/generated/graphql'
+import { DELETE_MESSAGE_STORAGE_MUTATION } from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexBox = styled.div`
   gap: 1rem;
@@ -34,323 +39,118 @@ const PagerWrap = styled.div`
   justify-content: center;
 `
 
-export default function SMSItem({ setMessageCon, setValue }) {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit] = useState(10)
+type SeeMessageStorageQuery = {
+  seeMessageStorage: ResultMessageStorage
+}
 
-  const handleApply = id => {
-    const divContent = document.getElementById(id).innerHTML
-    setMessageCon(divContent.replace(/<br\s*\/?>/gi, '\n'))
-    setValue('message', divContent.replace(/<br\s*\/?>/gi, '\n'))
+export default function SMSItem({ setMessageCon, setValue, type }) {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [currentLimit, setCurrentLimit] = useState(12)
+  const { error, data, refetch } = useSuspenseQuery<SeeMessageStorageQuery>(
+    SEE_MESSAGE_STORAGE_QUERY,
+    {
+      variables: {
+        saveType: type,
+        limit: currentLimit,
+        page: currentPage,
+      },
+    },
+  )
+  const [deleteMessageStorage] = useMutation(DELETE_MESSAGE_STORAGE_MUTATION)
+  const { userLogs } = useUserLogsMutation()
+
+  const renderMessage = message => {
+    const formattedMessage = message
+      .replace(/\\n/g, '<br>')
+      .replace(/&nbsp;/g, ' ')
+    return { __html: formattedMessage }
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [currentPage])
+
+  const handleApply = message => {
+    const restoredMessage = message
+      .replace(/\\n/g, '\n')
+      .replace(/&nbsp;/g, ' ')
+
+    setMessageCon(restoredMessage)
+    setValue('message', restoredMessage)
+  }
+
+  const handleDelete = id => {
+    deleteMessageStorage({
+      variables: {
+        deleteMessageStorageId: id,
+      },
+      refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
+      onCompleted: result => {
+        if (result.deleteMessageStorage.ok) {
+          userLogs(`문자 보관함 ID : ${id} 삭제`)
+          alert('문자함에서 삭제 되었습니다.')
+        }
+      },
+    })
   }
 
   return (
     <>
       <FlexBox>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms01" className="pr-[0.5rem]">
-                asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms01')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms02" className="pr-[0.5rem]">
-                asddasdfdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms02')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms03" className="pr-[0.5rem]">
-                asddasd1234123412341235fdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms03')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms04" className="pr-[0.5rem]">
-                asddasd1234123412341235fdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms04')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms05" className="pr-[0.5rem]">
-                asddasd1234123412341235fdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms05')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms06" className="pr-[0.5rem]">
-                asddasd1234123412341235fdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms06')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms07" className="pr-[0.5rem]">
-                asddasd1234123412341235fdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms07')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms08" className="pr-[0.5rem]">
-                asddasd1234123412341235fdfasdfasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms08')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card
-          shadow="none"
-          classNames={{
-            base: 'bg-transparent',
-          }}
-        >
-          <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <div id="sms09" className="pr-[0.5rem]">
-                111asddasd123412341 2341235fdfasd asdfadf fasdfas
-              </div>
-            </ScrollShadow>
-          </CardBody>
-          <CardFooter className="justify-center gap-[0.5rem] text-small">
-            <Button
-              size="sm"
-              variant="solid"
-              color="primary"
-              className="text-white"
-              onClick={id => handleApply('sms09')}
-            >
-              적용
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-[#ff5900] text-white"
-            >
-              삭제
-            </Button>
-          </CardFooter>
-        </Card>
+        {data?.seeMessageStorage?.data?.map((item, index) => (
+          <Card
+            key={index}
+            shadow="none"
+            classNames={{
+              base: 'bg-transparent',
+            }}
+          >
+            <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+              <ScrollShadow orientation="horizontal" className="scrollbar">
+                <div
+                  className="pr-[0.5rem]"
+                  dangerouslySetInnerHTML={renderMessage(item.message)}
+                />
+              </ScrollShadow>
+            </CardBody>
+            <CardFooter className="justify-center gap-[0.5rem] text-small">
+              <Button
+                size="sm"
+                variant="solid"
+                color="primary"
+                className="text-white"
+                onClick={() => handleApply(item.message)}
+              >
+                적용
+              </Button>
+              <Button
+                size="sm"
+                variant="solid"
+                className="bg-[#ff5900] text-white"
+                onClick={() => handleDelete(item.id)}
+              >
+                삭제
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </FlexBox>
-      {/* {totalCount > 0 && ( */}
-      <PagerWrap>
-        <Pagination
-          variant="light"
-          showControls
-          initialPage={currentPage}
-          page={currentPage}
-          total={3}
-          // total={Math.ceil(totalCount / currentLimit)}
-          onChange={newPage => {
-            setCurrentPage(newPage)
-          }}
-        />
-      </PagerWrap>
-      {/* )} */}
+      {data?.seeMessageStorage?.totalCount > 0 && (
+        <PagerWrap>
+          <Pagination
+            variant="light"
+            showControls
+            initialPage={currentPage}
+            page={currentPage}
+            total={Math.ceil(
+              data?.seeMessageStorage?.totalCount / currentLimit,
+            )}
+            onChange={newPage => {
+              setCurrentPage(newPage)
+            }}
+          />
+        </PagerWrap>
+      )}
     </>
   )
 }

@@ -23,8 +23,12 @@ import SMSAddrModal from '@/components/modal/SMSAddrModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
-import { SEND_SMS_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_MESSAGE_STORAGE_MUTATION,
+  SEND_SMS_MUTATION,
+} from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
+import { SEE_MESSAGE_STORAGE_QUERY } from '@/graphql/queries'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -137,6 +141,7 @@ export default function message() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [byteLength, setByteLength] = useState(0)
   const [sendSms] = useMutation(SEND_SMS_MUTATION)
+  const [createMessageStorage] = useMutation(CREATE_MESSAGE_STORAGE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const {
     register,
@@ -259,9 +264,25 @@ export default function message() {
     setValue('receiver', updatedGroup)
   }
 
-  const handleSave = () => {
-    setSavedMessage(messageCon)
+  const handleSave = type => {
+    const formattedMessage = messageCon
+      .replace(/\n/g, '\\n')
+      .replace(/ /g, '&nbsp;')
+    createMessageStorage({
+      variables: {
+        message: formattedMessage,
+        saveType: type,
+      },
+      refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
+      onCompleted: result => {
+        if (result.createMessageStorage.ok) {
+          userLogs(`${type} 문자함 저장`, messageCon)
+          alert(`${type} 문자함에 저장 되었습니다.`)
+        }
+      },
+    })
   }
+
   const handleChange = e => {
     const value = e
     setMessageCon(value)
@@ -334,7 +355,7 @@ export default function message() {
                   size="sm"
                   color="primary"
                   variant="bordered"
-                  onClick={handleSave}
+                  onClick={() => handleSave(saveType)}
                 >
                   문자함 저장
                 </Button>

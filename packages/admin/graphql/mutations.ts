@@ -1949,6 +1949,7 @@ export const EDIT_WORKLOGS_MUTATION = gql`
     }
   }
 `
+// SMS
 export const SEND_SMS_MUTATION = gql`
   mutation SendSms(
     $receiver: String!
@@ -1964,6 +1965,24 @@ export const SEND_SMS_MUTATION = gql`
       rTime: $rTime
       senderNum: $senderNum
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_MESSAGE_STORAGE_MUTATION = gql`
+  mutation CreateMessageStorage($message: String!, $saveType: String!) {
+    createMessageStorage(message: $message, saveType: $saveType) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
+  mutation Mutation($deleteMessageStorageId: Int) {
+    deleteMessageStorage(id: $deleteMessageStorageId) {
       error
       message
       ok
