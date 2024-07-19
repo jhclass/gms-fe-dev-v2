@@ -210,48 +210,46 @@ export default function message() {
       if (sendType === '예약전송') {
         if (sendDate !== undefined && sendTime !== undefined) {
           console.log('예약전송', data, sendDate, sendTime, phoneNumbers)
-          // sendSms({
-          //   variables: {
-          //     receiver: phoneNumbers,
-          //     message: data.message,
-          //     rDate: sendDate,
-          //     rTime: sendTime,
-          //     senderNum: data.senderNum,
-          //   },
-          //   onCompleted: result => {
-          //     if (result.sendSms.ok) {
-          //       userLogs(
-          //         `문자 메시지 발송예약`,
-          //         `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
-          //       )
-          //       alert(
-          //         `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
-          //       )
-          //     }
-          //   },
-          // })
+          sendSms({
+            variables: {
+              receiver: phoneNumbers,
+              message: data.message,
+              rDate: sendDate,
+              rTime: sendTime,
+              // senderNum: data.senderNum,
+            },
+            onCompleted: result => {
+              if (result.sendSms.ok) {
+                userLogs(
+                  `문자 메시지 발송예약`,
+                  `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
+                )
+                alert(
+                  `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
+                )
+              }
+            },
+          })
         }
       } else {
         if (sendDate !== undefined) {
           console.log('즉시', data, sendDate, phoneNumbers)
-          // sendSms({
-          //   variables: {
-          //     receiver: phoneNumbers,
-          //     message: data.message,
-          //     rDate: sendDate,
-          //     senderNum: data.senderNum,
-          //   },
-          //   onCompleted: result => {
-          //     console.log(result)
-          //     if (result.sendSms.ok) {
-          //       userLogs(
-          //         `문자 메시지 발송`,
-          //         `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
-          //       )
-          //       alert(`문자 메시지가 발송 되었습니다.`)
-          //     }
-          //   },
-          // })
+          sendSms({
+            variables: {
+              receiver: phoneNumbers,
+              message: data.message,
+            },
+            onCompleted: result => {
+              console.log(result)
+              if (result.sendSms.ok) {
+                userLogs(
+                  `문자 메시지 발송`,
+                  `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
+                )
+                alert(`문자 메시지가 발송 되었습니다.`)
+              }
+            },
+          })
         }
       }
     }
@@ -514,6 +512,7 @@ export default function message() {
                           }}
                           showTimeSelect
                           dateFormat="yyyy/MM/dd HH:mm"
+                          timeIntervals={10}
                           onChangeRaw={e => e.preventDefault()}
                           onFocus={e => e.target.blur()}
                           customInput={

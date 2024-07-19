@@ -18,7 +18,6 @@ const FlexConBox = styled.div`
 `
 
 const AreaBox = styled.div`
-  flex: 1;
   width: 100%;
   display: flex;
 
@@ -90,9 +89,9 @@ export default function EmploymentForm() {
             <LineBox>89점</LineBox>
           </div>
         </AreaBox>
-        <AreaBox>
+        <AreaBox className="h-[66px]">
           <Select
-            label={<FilterLabel>유형</FilterLabel>}
+            label={'유형'}
             labelPlacement="outside"
             className="w-full"
             variant="bordered"
