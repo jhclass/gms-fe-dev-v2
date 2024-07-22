@@ -47,7 +47,6 @@ const MenuBtn = styled(motion.button)`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.3rem;
-  position: relative;
   font-size: 1.5rem;
 
   @media screen and (max-width: 1024px) {
@@ -60,7 +59,6 @@ const MenuBtnMo = styled(motion.button)`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.3rem;
-  position: relative;
   font-size: 1.5rem;
 
   @media screen and (max-width: 1024px) {
@@ -97,7 +95,6 @@ const HeaderRt = styled.div`
   display: flex;
   gap: 1.8rem;
   align-items: center;
-  position: relative;
 `
 const ReqBtn = styled.button`
   display: flex;
@@ -105,7 +102,6 @@ const ReqBtn = styled.button`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.2rem;
-  position: relative;
 
   &:after {
     content: '';
@@ -209,14 +205,19 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
   position: absolute;
   width: 8rem;
   padding: 0.5rem 0;
-  top: 2.7rem;
-  right: 0;
+  top: 3.2rem;
+  right: 50%;
+  margin-right: -4rem;
   cursor: default;
   border-radius: 0.5rem;
   background: #fff;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
   pointer-events: ${props => (props.$headerUserMenu ? 'auto' : 'none')};
-
+  @media screen and (max-width: 1024px) {
+    top: 3rem;
+    right: -1rem;
+    margin-right: 0;
+  }
   li {
     display: flex;
     align-items: center;
@@ -252,7 +253,6 @@ export default function Header() {
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
-
   const userMenuRef = useRef(null)
 
   const handleClickOutside = event => {
@@ -278,7 +278,7 @@ export default function Header() {
   }
 
   const toggleUserMenu = () => {
-    setHeaderUserMenu(headerUserMenu => !headerUserMenu)
+    setHeaderUserMenu(!headerUserMenu)
   }
 
   const gradeStr = data => {
@@ -373,7 +373,7 @@ export default function Header() {
               />
             </ReqBtn>
           )}
-          <UserBox onClick={toggleUserMenu}>
+          <UserBox ref={userMenuRef} onClick={toggleUserMenu}>
             <UserGrade>
               {mAvatar ? (
                 <UserGrade
@@ -400,7 +400,6 @@ export default function Header() {
               <i className="text-zinc-500 userArrow xi-angle-down-min" />
             </IconArrow>
             <DropUser
-              ref={userMenuRef}
               $headerUserMenu={headerUserMenu}
               className="drop"
               style={{

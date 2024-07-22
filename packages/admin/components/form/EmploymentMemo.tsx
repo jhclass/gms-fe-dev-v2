@@ -11,7 +11,7 @@ import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
-import DatePickerHeader from '../common/DatePickerHeader'
+import DatePickerHeader from '@/components/common/DatePickerHeader'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -384,10 +384,6 @@ export default function EmploymentMemo(props) {
                       {/* {props.item.manageUser?.mUsername} */}
                       작성자
                     </MemoName>
-                    <MemoTime>
-                      {/* {formatDate(props.item.updatedAt)} */}
-                      2024.06.04 13:00
-                    </MemoTime>
                   </MemoInfo>
                 }
                 ref={field.ref}
@@ -403,16 +399,6 @@ export default function EmploymentMemo(props) {
         />
         {/* {mId == props.item.manageUser?.id && ( */}
         <MemoListBtn>
-          <Button2
-            buttonType="submit"
-            width="100%"
-            height="2.5rem"
-            typeBorder={true}
-            fontColor="#fff"
-            bgColor="#007de9"
-          >
-            수정
-          </Button2>
           <Button2
             buttonType="button"
             width="100%"

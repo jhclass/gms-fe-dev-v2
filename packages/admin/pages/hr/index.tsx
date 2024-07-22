@@ -28,7 +28,7 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function Lecture() {
+export default function Manager() {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -93,4 +93,4 @@ export default function Lecture() {
     </>
   )
 }
-Lecture.getLayout = page => <Layout>{page}</Layout>
+Manager.getLayout = page => <Layout>{page}</Layout>

@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -9,14 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Button,
-  Input,
-  Link,
-  Radio,
-  RadioGroup,
-  Switch,
-} from '@nextui-org/react'
+import { Button, Input, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
@@ -24,26 +17,15 @@ import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/hr/layout'
 import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import Address from '@/components/common/Address'
+import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
-import Address from '@/components/common/Address'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
-`
-const SwitchDiv = styled.div`
-  display: flex;
-  align-items: center;
-  background: #fff;
-  padding: 0.5rem 0 0.5rem 0.5rem;
-  border-radius: 0.75rem;
-`
-const SwitchText = styled.span`
-  width: max-content;
-  padding-right: 0.5rem;
-  font-size: 0.8rem;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -83,22 +65,11 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
-const AreaTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
   position: relative;
 `
-const AreaSmallBox = styled.div``
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -118,11 +89,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
@@ -130,12 +96,12 @@ const FilterLabel = styled.p`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
-`
-const InputText = styled.span`
-  display: inline-block;
-  font-size: 0.75rem;
-  width: 2rem;
 `
 const BtnBox = styled.div`
   display: flex;
@@ -144,9 +110,37 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function StudentsWrite() {
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
+export default function ManagerWrite() {
   const router = useRouter()
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const loginMGrade = useMme('mGrade')
+  const loginMPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
+  const [selectMpart, setSelectMpart] = useState([])
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
   const {
     register,
@@ -214,7 +208,18 @@ export default function StudentsWrite() {
           data.mPhoneNumInside === '' ? null : data.mPhoneNumInside.trim(),
         mJoiningDate:
           data.mJoiningDate === undefined ? null : new Date(data.mJoiningDate),
-        mAddresses: data.mAddresses === '' ? null : data.mAddresses.trim(),
+        mZipCode:
+          data.mZipCode === '' || data.mZipCode === undefined
+            ? null
+            : data.mZipCode.trim(),
+        mAddresses:
+          data.mAddresses === '' || data.mAddresses === undefined
+            ? null
+            : data.mAddresses.trim(),
+        mAddressDetail:
+          data.mAddressDetail === '' || data.mAddressDetail === undefined
+            ? null
+            : data.mAddressDetail.trim(),
         email: data.email === '' ? null : data.email.trim(),
       },
       onCompleted: result => {
@@ -226,6 +231,13 @@ export default function StudentsWrite() {
           alert(result.createManagerAccount.error)
         }
       },
+    })
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'mPartType' },
     })
   }
 
@@ -447,7 +459,12 @@ export default function StudentsWrite() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <Address valueName={'mAddresses'} setValue={setValue} />
+                <Address
+                  codeValueName={'mZipCode'}
+                  valueName={'mAddresses'}
+                  detailValueName={'mAddressDetail'}
+                  setValue={setValue}
+                />
                 <FlexBox>
                   <AreaBox>
                     <Input
@@ -532,32 +549,51 @@ export default function StudentsWrite() {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="ex) 교무팀,인사팀"
-                      variant={'bordered'}
-                      radius="md"
-                      type="text"
-                      label={
-                        <FilterLabel>
-                          부서명<span>*</span>
-                        </FilterLabel>
-                      }
-                      className="w-full"
-                      onChange={e => {
-                        register('mPart').onChange(e)
-                      }}
-                      {...register('mPart', {
+                    <Controller
+                      control={control}
+                      name="mPart"
+                      rules={{
                         required: {
                           value: true,
-                          message: '부서명을 입력해주세요.',
+                          message: '부서를 선택해주세요.',
                         },
-                        pattern: {
-                          value: /^[가-힣a-zA-Z0-9\s]*$/,
-                          message: '한글, 영어, 숫자만 사용 가능합니다.',
-                        },
-                      })}
+                      }}
+                      render={({ field }) => (
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
+                        >
+                          <AdviceMultiSelect
+                            selecedKey={selectMpart}
+                            field={field}
+                            label={
+                              <FilterLabel>
+                                부서명<span>*</span>{' '}
+                                <span className="multi">(중복가능)</span>
+                              </FilterLabel>
+                            }
+                            handleChange={setSelectMpart}
+                            category={'부서'}
+                          />
+                        </Suspense>
+                      )}
                     />
+                    {(loginMGrade < grade.general ||
+                      loginMPart?.includes('인사팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          부서 추가
+                        </Link>
+                      </AddLink>
+                    )}
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}
@@ -717,4 +753,4 @@ export default function StudentsWrite() {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+ManagerWrite.getLayout = page => <Layout>{page}</Layout>

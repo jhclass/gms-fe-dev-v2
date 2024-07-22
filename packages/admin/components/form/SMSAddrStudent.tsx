@@ -153,7 +153,7 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
       variables: {
         studentName: data.studentName,
         page: currentPage,
-        perPage: currentLimit,
+        limit: currentLimit,
       },
       onCompleted: resData => {
         if (resData.searchStudent.ok) {

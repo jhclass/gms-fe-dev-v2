@@ -1,7 +1,5 @@
 import { styled } from 'styled-components'
 import { Radio, RadioGroup } from '@nextui-org/react'
-import Layout from '@/pages/students/layout'
-import Address from '../common/Address'
 
 const FlexBox = styled.div`
   display: flex;

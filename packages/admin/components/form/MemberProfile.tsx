@@ -155,7 +155,11 @@ export default function Profile() {
             data.mPhoneNumInside === '' ? null : data.mPhoneNumInside,
           mPhoneNumFriend:
             data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend,
+
+          mZipCode: data.mZipCode === '' ? null : data.mZipCode.trim(),
           mAddresses: data.mAddresses === '' ? null : data.mAddresses,
+          mAddressDetail:
+            data.mAddressDetail === '' ? null : data.mAddressDetail.trim(),
           email: data.email === '' ? null : data.email,
           mAvatar: data.mAvatar,
         },
@@ -341,15 +345,26 @@ export default function Profile() {
                   </AreaBox>
                 </FlexBox>
                 <Address
+                  codeValueName={'mZipCode'}
                   valueName={'mAddresses'}
+                  detailValueName={'mAddressDetail'}
                   setValue={setValue}
-                  defaultPostcode={'0101010'}
+                  defaultPostcode={
+                    mMeData.mZipCode === null || mMeData.mZipCode === ''
+                      ? '우편번호'
+                      : mMeData.mZipCode
+                  }
                   defaultAddress={
                     mMeData.mAddresses === null || mMeData.mAddresses === ''
                       ? '주소 검색을 클릭해주세요.'
                       : mMeData.mAddresses
                   }
-                  defaultDetails={'상세주소주소'}
+                  defaultDetails={
+                    mMeData.mAddressDetail === null ||
+                    mMeData.mAddressDetail === ''
+                      ? '상세주소'
+                      : mMeData.mAddressDetail
+                  }
                 />
                 <FlexBox>
                   <AreaBox>

@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import Button2 from '@/components/common/Button'
@@ -21,7 +21,23 @@ import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import Address from '@/components/common/Address'
+import AdviceMultiSelect from '@/components//common/AdviceMultiSelect'
+import useMmeQuery from '@/utils/mMe'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -119,16 +135,7 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
-const AreaTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-`
 const AvatarBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -158,6 +165,7 @@ const AvatarF = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
+  position: relative;
 `
 const AreaSmallBox = styled.div``
 const DatePickerBox = styled.div`
@@ -179,11 +187,7 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
+
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
@@ -191,6 +195,11 @@ const FilterLabel = styled.p`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
 `
 const InputText = styled.span`
@@ -205,13 +214,29 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
 
 export default function ManagerWrite({ managerId }) {
   const router = useRouter()
+  const grade = useRecoilValue(gradeState)
   const { userLogs } = useUserLogsMutation()
+  const { useMme } = useMmeQuery()
+  const loginMGrade = useMme('mGrade')
+  const loginMPart = useMme('mPart') || []
+  const [selectMpart, setSelectMpart] = useState([])
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
@@ -234,7 +259,6 @@ export default function ManagerWrite({ managerId }) {
 
   const managerData = data?.searchManageUser.data[0]
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
-
   const { register, setValue, control, handleSubmit, formState } = useForm({
     defaultValues: {
       mUserId: managerData.mUserId,
@@ -247,7 +271,9 @@ export default function ManagerWrite({ managerId }) {
       mPhoneNumInside: managerData.mPhoneNumInside,
       mAvatar: managerData.mAvatar,
       mJoiningDate: managerData.mJoiningDate,
+      mZipCode: managerData.mZipCode,
       mAddresses: managerData.mAddresses,
+      mAddressDetail: managerData.mAddressDetail,
       resign: managerData?.resign === 'N' ? false : true,
       email: managerData.email,
     },
@@ -315,15 +341,19 @@ export default function ManagerWrite({ managerId }) {
                   : typeof data.mJoiningDate === 'string'
                   ? new Date(parseInt(data.mJoiningDate))
                   : new Date(data.mJoiningDate),
+              mZipCode: data.mZipCode === null ? null : data.mZipCode.trim(),
               mAddresses:
                 data.mAddresses === null ? null : data.mAddresses.trim(),
+              mAddressDetail:
+                data.mAddressDetail === null
+                  ? null
+                  : data.mAddressDetail.trim(),
               email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
 
           if (!result.data.editManageUser.ok) {
-            console.log(result)
             throw new Error('직원 정보 수정 실패')
           }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -357,6 +387,13 @@ export default function ManagerWrite({ managerId }) {
 
   const clickCreate = () => {
     createTamp({ variables: { manageUserId: managerData.id } })
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'mPartType' },
+    })
   }
 
   return (
@@ -575,16 +612,27 @@ export default function ManagerWrite({ managerId }) {
                   </AreaBox>
                 </FlexBox>
                 <Address
+                  codeValueName={'mZipCode'}
                   valueName={'mAddresses'}
+                  detailValueName={'mAddressDetail'}
                   setValue={setValue}
-                  defaultPostcode={'0101010'}
+                  defaultPostcode={
+                    managerData.mZipCode === null || managerData.mZipCode === ''
+                      ? '우편번호'
+                      : managerData.mZipCode
+                  }
                   defaultAddress={
                     managerData.mAddresses === null ||
                     managerData.mAddresses === ''
-                      ? '주소를 입력해주세요.'
+                      ? '주소 검색을 클릭해주세요.'
                       : managerData.mAddresses
                   }
-                  defaultDetails={'상세주소주소'}
+                  defaultDetails={
+                    managerData.mAddressDetail === null ||
+                    managerData.mAddressDetail === ''
+                      ? '상세주소'
+                      : managerData.mAddressDetail
+                  }
                 />
                 <FlexBox>
                   <AreaBox>
@@ -673,29 +721,57 @@ export default function ManagerWrite({ managerId }) {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    <Input
-                      labelPlacement="outside"
-                      placeholder="ex) 교무팀,인사팀"
-                      variant={'bordered'}
-                      radius="md"
-                      type="text"
-                      label={
-                        <FilterLabel>
-                          부서명<span>*</span>
-                        </FilterLabel>
-                      }
-                      defaultValue={managerData.mPart.join(',')}
-                      className="w-full"
-                      onChange={e => {
-                        register('mPart').onChange(e)
-                      }}
-                      {...register('mPart', {
+                    <Controller
+                      control={control}
+                      name="mPart"
+                      rules={{
                         required: {
                           value: true,
-                          message: '부서를 입력해주세요.',
+                          message: '부서를 선택해주세요.',
                         },
-                      })}
+                      }}
+                      defaultValue={managerData.mPart}
+                      render={({ field }) => (
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
+                        >
+                          <AdviceMultiSelect
+                            placeholder={
+                              managerData.mPart.length > 0
+                                ? String(managerData.mPart)
+                                : ' '
+                            }
+                            selecedKey={selectMpart}
+                            field={field}
+                            label={
+                              <FilterLabel>
+                                부서명<span>*</span>{' '}
+                                <span className="multi">(중복가능)</span>
+                              </FilterLabel>
+                            }
+                            handleChange={setSelectMpart}
+                            category={'부서'}
+                          />
+                        </Suspense>
+                      )}
                     />
+                    {(loginMGrade < grade.general ||
+                      loginMPart?.includes('인사팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={handleClick}
+                        >
+                          부서 추가
+                        </Link>
+                      </AddLink>
+                    )}
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red-500">
                         {String(errors.mPart.message)}

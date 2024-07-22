@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form'
 import SMSAddrTeacher from '@/components/form/SMSAddrTeacher'
 import SMSAddrStudent from '@/components/form/SMSAddrStudent'
 import SMSAddrEmployee from '@/components/form/SMSAddrEmployee'
-import SMSAddrInput from '../form/SMSAddrInput'
+import SMSAddrInput from '@/components/form/SMSAddrInput'
 
 const ChipBox = styled.div`
   display: flex;
@@ -30,6 +30,7 @@ export default function SMSAddrModal({
   onClose,
   sendGruop,
   setSendGruop,
+  setValue,
 }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
@@ -45,6 +46,7 @@ export default function SMSAddrModal({
 
   const clickAdd = () => {
     setSendGruop(groupSelected)
+    setValue('receiver', groupSelected)
     setGroupSelected([])
     onClose()
   }
@@ -53,6 +55,7 @@ export default function SMSAddrModal({
     const updatedGroup = [...groupSelected]
     updatedGroup.splice(index, 1)
     setGroupSelected(updatedGroup)
+    setValue('receiver', updatedGroup)
   }
 
   return (

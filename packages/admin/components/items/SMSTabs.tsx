@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
@@ -40,7 +40,7 @@ const BtnBox = styled.div`
   gap: 0.5rem;
 `
 
-export default function SMSTabs() {
+export default function SMSTabs({ setMessageCon, setValue, setByteLength }) {
   const [selected, setSelected] = useState('mySMS')
 
   return (
@@ -57,13 +57,47 @@ export default function SMSTabs() {
         onSelectionChange={e => setSelected(String(e))}
       >
         <Tab key="mySMS" title="내문자함">
-          <SMSCard />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <SMSCard
+              setMessageCon={setMessageCon}
+              setValue={setValue}
+              setByteLength={setByteLength}
+              type={'개인'}
+            />
+          </Suspense>
         </Tab>
         <Tab key="commonSMS" title="공통문자함">
-          <SMSCard />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <SMSCard
+              setMessageCon={setMessageCon}
+              setValue={setValue}
+              setByteLength={setByteLength}
+              type={'공통'}
+            />
+          </Suspense>
         </Tab>
         <Tab key="send" title="보낸문자함">
-          <SMSList />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <SMSList />
+          </Suspense>
         </Tab>
       </Tabs>
     </>

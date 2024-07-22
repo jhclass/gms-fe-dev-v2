@@ -17,7 +17,7 @@ import Layout from '@/pages/students/layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+
 import ChangePassword from '@/components/modal/ChangePassword'
 import { Controller, useForm } from 'react-hook-form'
 import useMmeQuery from '@/utils/mMe'
@@ -25,6 +25,7 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 import Address from '@/components/common/Address'
+import { SearchManageUserResult } from '@/src/generated/graphql'
 
 const ConArea = styled.div`
   width: 100%;
@@ -205,6 +206,11 @@ const FilterLabel = styled.p`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
 `
 const InputText = styled.span`
@@ -275,7 +281,9 @@ export default function StudentsWrite({ managerId }) {
       mPart: managerData.mPart,
       mAvatar: managerData.mAvatar,
       mJoiningDate: managerData.mJoiningDate,
+      mZipCode: managerData.mZipCode,
       mAddresses: managerData.mAddresses,
+      mAddressDetail: managerData.mAddressDetail,
       resign: managerData?.resign === 'N' ? false : true,
       email: managerData.email,
     },
@@ -336,8 +344,13 @@ export default function StudentsWrite({ managerId }) {
                   : typeof data.mJoiningDate === 'string'
                   ? new Date(parseInt(data.mJoiningDate))
                   : new Date(data.mJoiningDate),
+              mZipCode: data.mZipCode === null ? null : data.mZipCode.trim(),
               mAddresses:
                 data.mAddresses === null ? null : data.mAddresses.trim(),
+              mAddressDetail:
+                data.mAddressDetail === null
+                  ? null
+                  : data.mAddressDetail.trim(),
               email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
             },
@@ -607,16 +620,27 @@ export default function StudentsWrite({ managerId }) {
                   </AreaBox>
                 </FlexBox>
                 <Address
+                  codeValueName={'mZipCode'}
                   valueName={'mAddresses'}
+                  detailValueName={'mAddressDetail'}
                   setValue={setValue}
-                  defaultPostcode={'0101010'}
+                  defaultPostcode={
+                    managerData.mZipCode === null || managerData.mZipCode === ''
+                      ? '우편번호'
+                      : managerData.mZipCode
+                  }
                   defaultAddress={
                     managerData.mAddresses === null ||
                     managerData.mAddresses === ''
                       ? '주소 검색을 클릭해주세요.'
                       : managerData.mAddresses
                   }
-                  defaultDetails={'상세주소주소'}
+                  defaultDetails={
+                    managerData.mAddressDetail === null ||
+                    managerData.mAddressDetail === ''
+                      ? '상세주소'
+                      : managerData.mAddressDetail
+                  }
                 />
                 <FlexBox>
                   <AreaBox>
@@ -667,7 +691,12 @@ export default function StudentsWrite({ managerId }) {
                             }
                             selecedKey={adviceType}
                             field={field}
-                            label={'강의분야'}
+                            label={
+                              <FilterLabel>
+                                강의분야{' '}
+                                <span className="multi">(중복가능)</span>
+                              </FilterLabel>
+                            }
                             handleChange={setAdviceType}
                             category={'강의분야'}
                           />

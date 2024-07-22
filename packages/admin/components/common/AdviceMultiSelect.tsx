@@ -4,6 +4,7 @@ import { ResultAdviceType } from '@/src/generated/graphql'
 import useMmeQuery from '@/utils/mMe'
 import { useSuspenseQuery } from '@apollo/client'
 import { Link, Select, SelectItem } from '@nextui-org/react'
+import { createSearchParamsBailoutProxy } from 'next/dist/client/components/searchparams-bailout-proxy'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
@@ -100,13 +101,6 @@ export default function AdviceMultiSelect({
           </SelectItem>
         ))}
       </Select>
-      {(mGrade < grade.general || mPart.includes('교무팀')) && (
-        <AddLink>
-          <Link size="sm" underline="hover" href="#" onClick={handleClick}>
-            강의분야 추가
-          </Link>
-        </AddLink>
-      )}
     </>
   )
 }

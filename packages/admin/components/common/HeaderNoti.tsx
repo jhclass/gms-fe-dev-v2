@@ -64,6 +64,9 @@ const NotiNum = styled.span`
 `
 const NotiBox = styled.div`
   position: relative;
+  @media screen and (max-width: 1024px) {
+    position: unset;
+  }
 `
 const NotiListBox = styled.div`
   position: absolute;
@@ -72,14 +75,14 @@ const NotiListBox = styled.div`
   width: 20rem;
   margin-left: -10rem;
   border: 1px solid #e4e4e7;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 0.5rem;
   height: fit-content;
 
   @media screen and (max-width: 1024px) {
-    width: 70vw;
-    left: auto;
-    right: 0;
+    width: 100vw;
+    top: 3.9rem;
+    left: 0;
     margin-left: 0;
   }
 `
@@ -95,6 +98,9 @@ const ScrollBox = styled.div`
   gap: 0.5rem;
   height: 100%;
   max-height: 20vh;
+  @media screen and (max-width: 1024px) {
+    max-height: 60vh;
+  }
 `
 const ListBox = styled.div`
   display: flex;
@@ -262,87 +268,10 @@ export default function HeaderNoti({}) {
             alt="알림"
           />
           <NotiNum>
-            {data.seeAlarms.data === null ? '0' : data.seeAlarms.data?.length}
+            {data.seeAlarms.data === null ? '0' : data.seeAlarms.totalCount}
           </NotiNum>
         </NotiBtn>
         {isListOpen && (
-          // <>
-          //   {data && (
-          //     <NotiListBox>
-          //       <FlexBox>
-          //         <Button
-          //           size="sm"
-          //           variant="solid"
-          //           className="bg-[#ff5900] text-white"
-          //           onClick={clickReadAll}
-          //         >
-          //           모두 읽음
-          //         </Button>
-          //       </FlexBox>
-          //       <ScrollBox>
-          //         <ScrollShadow orientation="vertical" className="scrollbar">
-          //           <div>
-          //             <ListBox>
-          //               {data.seeAlarms.data?.length > 0 && (
-          //                 <>
-          //                   {data.seeAlarms.data?.map((alarm, index) => (
-          //                     <NotiItem key={index}>
-          //                       <ClickBox>
-          //                         <NotiFlag
-          //                           style={{ background: 'blue' }}
-          //                         ></NotiFlag>
-          //                         <ReqBox>
-          //                           <FromID>{alarm.title}</FromID>
-          //                           <ReqText>{alarm.content}</ReqText>
-          //                         </ReqBox>
-          //                       </ClickBox>
-          //                       <NotiClose onClick={() => clickRead(alarm.id)}>
-          //                         <i className="xi-close-circle" />
-          //                       </NotiClose>
-          //                     </NotiItem>
-          //                   ))}
-          //                   {/* <NotiItem key={index}>
-          //             <ClickBox onClick={onOpen}>
-          //               <NotiFlag style={{ background: 'blue' }}></NotiFlag>
-          //               <ReqBox>
-          //                 <FromID>{alarm.title}</FromID>
-          //                 <ReqText>{alarm.content}</ReqText>
-          //               </ReqBox>
-          //             </ClickBox>
-          //             <NotiClose>
-          //               <i className="xi-close-circle" />
-          //             </NotiClose>
-          //           </NotiItem> */}
-          //                 </>
-          //               )}
-          //               {(data.seeAlarms.data?.length === 0 ||
-          //                 data === null) && <Nolist>알람이 없습니다.</Nolist>}
-          //             </ListBox>
-          //           </div>
-          //         </ScrollShadow>
-          //       </ScrollBox>
-          //       {data.seeAlarms.data?.length > 0 && (
-          //         <PagerWrap>
-          //           <Pagination
-          //             variant="light"
-          //             showControls
-          //             initialPage={currentPage}
-          //             page={currentPage}
-          //             total={Math.ceil(100 / currentLimit)}
-          //             onChange={newPage => {
-          //               setCurrentPage(newPage)
-          //             }}
-          //             classNames={{
-          //               item: 'text-white hover:text-[#000]',
-          //               prev: 'text-white hover:text-[#000]',
-          //               next: 'text-white hover:text-[#000]',
-          //             }}
-          //           />
-          //         </PagerWrap>
-          //       )}
-          //     </NotiListBox>
-          //   )}
-          // </>
           <NotiListBox>
             <FlexBox>
               <Button
@@ -364,7 +293,7 @@ export default function HeaderNoti({}) {
                           <NotiItem key={index}>
                             <ClickBox>
                               <NotiFlag
-                                style={{ background: 'blue' }}
+                                style={{ background: '#07bbae' }}
                               ></NotiFlag>
                               <ReqBox>
                                 <FromID>{alarm.title}</FromID>
@@ -398,14 +327,14 @@ export default function HeaderNoti({}) {
                 </div>
               </ScrollShadow>
             </ScrollBox>
-            {data.seeAlarms.data?.length > 0 && (
+            {data.seeAlarms.totalCount > 0 && (
               <PagerWrap>
                 <Pagination
                   variant="light"
                   showControls
                   initialPage={currentPage}
                   page={currentPage}
-                  total={Math.ceil(100 / currentLimit)}
+                  total={Math.ceil(data.seeAlarms.totalCount / currentLimit)}
                   onChange={newPage => {
                     setCurrentPage(newPage)
                   }}

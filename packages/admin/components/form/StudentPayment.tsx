@@ -35,7 +35,7 @@ import {
   subStatusState,
 } from '@/lib/recoilAtoms'
 import ManagerSelectID from '@/components/common/ManagerSelectID'
-import SubDivSelect from '../common/SubDivSelect'
+import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
 
 const DetailBox = styled.div`

@@ -2,11 +2,13 @@ import { gql } from '@apollo/client'
 
 // Dashboard
 export const DASHBOARD_TODAY_QUERY = gql`
-  query DashboardToday {
-    dashboardToday {
+  query Query($today: [String], $yesterday: [String]) {
+    dashboardToday(today: $today, yesterday: $yesterday) {
+      compareToday
+      error
+      message
       ok
       today
-      compareToday
     }
   }
 `
@@ -53,6 +55,8 @@ export const MME_QUERY = gql`
         id
         imageUrl
       }
+      mZipCode
+      mAddressDetail
       mAddresses
       mAvatar
       mGrade
@@ -265,6 +269,8 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
         mPhoneNumCompany
         mPhoneNumFriend
         mPhoneNumInside
+        mAddressDetail
+        mZipCode
         mRank
         resign
         updatedAt
@@ -754,6 +760,55 @@ export const SEARCH_ATTENDANCE_QUERY = gql`
         student {
           name
         }
+      }
+    }
+  }
+`
+export const SEE_MESSAGE_STORAGE_QUERY = gql`
+  query SeeMessageStorage($limit: Int, $page: Int, $saveType: String!) {
+    seeMessageStorage(limit: $limit, page: $page, saveType: $saveType) {
+      data {
+        saveType
+        message
+        manageUserId
+        branchId
+        id
+        createdAt
+      }
+      totalCount
+      ok
+      message
+      error
+    }
+  }
+`
+
+export const SEARCH_MESSAGE_QUERY = gql`
+  query Query(
+    $page: Int
+    $limit: Int
+    $receiver: String
+    $period: [String]
+    $branchId: Int
+  ) {
+    searchSms(
+      page: $page
+      limit: $limit
+      receiver: $receiver
+      period: $period
+      branchId: $branchId
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        receiver
+        rTime
+        rDate
+        message
+        id
+        createdAt
       }
     }
   }

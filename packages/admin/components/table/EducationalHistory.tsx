@@ -103,6 +103,18 @@ const TableItem = styled.div`
     background: rgba(255, 255, 255, 0.8);
   }
 `
+const TopInfo = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  padding: 0 0.5rem 0.5rem;
+`
+const UpdateTime = styled.p`
+  span {
+    /* color: #555; */
+    color: #ff5900;
+  }
+`
 
 const TableRow = styled.div`
   display: flex;
@@ -111,6 +123,12 @@ const BtnBox = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
+`
+const MoreBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
 `
 
 export default function EducationalHistory() {
@@ -127,26 +145,142 @@ export default function EducationalHistory() {
   return (
     <>
       <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <ClickBox>
-                  <Tselect>학력</Tselect>
-                  <Ttext>학교명</Ttext>
-                  <Ttext>전공</Ttext>
-                  <Tselect>졸업여부</Tselect>
-                  <Tbtn></Tbtn>
-                </ClickBox>
-              </TheaderBox>
-            </Theader>
-            <TableItem>
+        <TableWrap>
+          <Theader>
+            <TheaderBox>
+              <ClickBox>
+                <Tselect>학력</Tselect>
+                <Ttext>학교명</Ttext>
+                <Ttext>전공</Ttext>
+                <Tselect>졸업여부</Tselect>
+                <Tbtn></Tbtn>
+              </ClickBox>
+            </TheaderBox>
+          </Theader>
+          <TableItem>
+            <TableRow>
+              <ClickBox>
+                <Tselect>
+                  <Select
+                    labelPlacement="outside"
+                    label={<p className="hidden">학력</p>}
+                    variant="bordered"
+                    size="sm"
+                    selectedKeys={[educationValue]}
+                    onChange={e => handleEducationChange(e)}
+                    classNames={{
+                      label: 'w-[4rem] pr-0',
+                    }}
+                  >
+                    <SelectItem value={'학력선택'} key={'학력선택'}>
+                      학력선택
+                    </SelectItem>
+                    <SelectItem value={'초등학교'} key={'초등학교'}>
+                      초등학교
+                    </SelectItem>
+                    <SelectItem value={'중학교'} key={'중학교'}>
+                      중학교
+                    </SelectItem>
+                    <SelectItem value={'고등학교'} key={'고등학교'}>
+                      고등학교
+                    </SelectItem>
+                    <SelectItem value={'대학,대학원'} key={'대학,대학원'}>
+                      대학,대학원
+                    </SelectItem>
+                    <SelectItem value={'기타학력'} key={'기타학력'}>
+                      기타학력
+                    </SelectItem>
+                  </Select>
+                </Tselect>
+                <Ttext>
+                  <Input
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    size="sm"
+                    type="text"
+                    placeholder=" "
+                    className="w-full"
+                  />
+                </Ttext>
+                <Ttext>
+                  <Input
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    size="sm"
+                    type="text"
+                    placeholder=" "
+                    className="w-full"
+                  />
+                </Ttext>
+                <Tselect>
+                  <Select
+                    label={<p className="hidden">졸업여부</p>}
+                    labelPlacement="outside"
+                    variant="bordered"
+                    size="sm"
+                    selectedKeys={[graduationValue]}
+                    onChange={e => handleGraduationChange(e)}
+                    classNames={{
+                      label: 'w-[4rem] pr-0',
+                    }}
+                  >
+                    <SelectItem value={'졸업여부'} key={'졸업여부'}>
+                      졸업여부
+                    </SelectItem>
+                    <SelectItem value={'학력 선택'} key={'학력 선택'}>
+                      졸업
+                    </SelectItem>
+                    <SelectItem value={'초등학교'} key={'초등학교'}>
+                      휴학
+                    </SelectItem>
+                    <SelectItem value={'중학교'} key={'중학교'}>
+                      재학
+                    </SelectItem>
+                    <SelectItem value={'고등학교'} key={'고등학교'}>
+                      중퇴
+                    </SelectItem>
+                  </Select>
+                </Tselect>
+                <Tbtn>
+                  <BtnBox>
+                    <Button
+                      size="sm"
+                      variant="solid"
+                      color="primary"
+                      className="w-full bg-[#07bbae] text-white"
+                      // onClick={() => setIsOpen(!isOpen)}
+                    >
+                      추가
+                    </Button>
+                  </BtnBox>
+                </Tbtn>
+              </ClickBox>
+            </TableRow>
+          </TableItem>
+        </TableWrap>
+        <TableWrap>
+          <ScrollShadow orientation="horizontal" className="scrollbar">
+            <TableWrap>
+              <Theader>
+                <TheaderBox>
+                  <ClickBox>
+                    <Tselect>학력</Tselect>
+                    <Ttext>학교명</Ttext>
+                    <Ttext>전공</Ttext>
+                    <Tselect>졸업여부</Tselect>
+                    <Tbtn></Tbtn>
+                  </ClickBox>
+                </TheaderBox>
+              </Theader>
+              {/* <TableItem>
               <TableRow>
                 <ClickBox>
                   <Tselect>
                     <Select
                       labelPlacement="outside"
-                      label={'학력'}
+                      label={<p className="hidden">학력</p>}
                       variant="bordered"
                       size="sm"
                       selectedKeys={[educationValue]}
@@ -199,6 +333,7 @@ export default function EducationalHistory() {
                   </Ttext>
                   <Tselect>
                     <Select
+                      label={<p className="hidden">졸업여부</p>}
                       labelPlacement="outside"
                       variant="bordered"
                       size="sm"
@@ -240,143 +375,262 @@ export default function EducationalHistory() {
                   </Tbtn>
                 </ClickBox>
               </TableRow>
-            </TableItem>
-            <TableItem>
-              <TableRow>
-                <ClickBox>
-                  <Tselect>
-                    <Select
-                      labelPlacement="outside"
-                      label={'학력'}
-                      variant="bordered"
-                      size="sm"
-                      selectedKeys={[educationValue]}
-                      onChange={e => handleEducationChange(e)}
-                      classNames={{
-                        label: 'w-[4rem] pr-0',
-                      }}
-                    >
-                      <SelectItem value={'학력선택'} key={'학력선택'}>
-                        학력선택
-                      </SelectItem>
-                      <SelectItem value={'초등학교'} key={'초등학교'}>
-                        초등학교
-                      </SelectItem>
-                      <SelectItem value={'중학교'} key={'중학교'}>
-                        중학교
-                      </SelectItem>
-                      <SelectItem value={'고등학교'} key={'고등학교'}>
-                        고등학교
-                      </SelectItem>
-                      <SelectItem value={'대학,대학원'} key={'대학,대학원'}>
-                        대학,대학원
-                      </SelectItem>
-                      <SelectItem value={'기타학력'} key={'기타학력'}>
-                        기타학력
-                      </SelectItem>
-                    </Select>
-                  </Tselect>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Tselect>
-                    <Select
-                      labelPlacement="outside"
-                      label={'학력'}
-                      variant="bordered"
-                      size="sm"
-                      selectedKeys={[graduationValue]}
-                      onChange={e => handleGraduationChange(e)}
-                      classNames={{
-                        label: 'w-[4rem] pr-0',
-                      }}
-                    >
-                      <SelectItem value={'졸업여부'} key={'졸업여부'}>
-                        졸업여부
-                      </SelectItem>
-                      <SelectItem value={'학력 선택'} key={'학력 선택'}>
-                        졸업
-                      </SelectItem>
-                      <SelectItem value={'초등학교'} key={'초등학교'}>
-                        휴학
-                      </SelectItem>
-                      <SelectItem value={'중학교'} key={'중학교'}>
-                        재학
-                      </SelectItem>
-                      <SelectItem value={'고등학교'} key={'고등학교'}>
-                        중퇴
-                      </SelectItem>
-                    </Select>
-                  </Tselect>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        size="sm"
+            </TableItem> */}
+              <TableItem>
+                <TableRow>
+                  <ClickBox>
+                    <Tselect>
+                      <Select
+                        labelPlacement="outside"
+                        label={<p className="hidden">학력</p>}
                         variant="bordered"
-                        color="primary"
-                        className="w-full"
-                        // onClick={() => clickCancelReq(item)}
+                        size="sm"
+                        selectedKeys={[educationValue]}
+                        onChange={e => handleEducationChange(e)}
+                        classNames={{
+                          label: 'w-[4rem] pr-0',
+                        }}
                       >
-                        삭제
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
-                </ClickBox>
-              </TableRow>
-            </TableItem>
-          </TableWrap>
-        </ScrollShadow>
-        <PagerWrap>
-          <Pagination
-            variant="light"
-            showControls
-            initialPage={1}
-            page={1}
-            total={3}
-          />
-        </PagerWrap>
-        {/* {totalCount > 0 && (
-          <PagerWrap>
-            <Pagination
-              variant="light"
-              showControls
-              initialPage={currentPage}
-              page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
-              onChange={newPage => {
-                setCurrentPage(newPage)
-              }}
-            />
-          </PagerWrap>
-        )} */}
+                        <SelectItem value={'학력선택'} key={'학력선택'}>
+                          학력선택
+                        </SelectItem>
+                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                          초등학교
+                        </SelectItem>
+                        <SelectItem value={'중학교'} key={'중학교'}>
+                          중학교
+                        </SelectItem>
+                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                          고등학교
+                        </SelectItem>
+                        <SelectItem value={'대학,대학원'} key={'대학,대학원'}>
+                          대학,대학원
+                        </SelectItem>
+                        <SelectItem value={'기타학력'} key={'기타학력'}>
+                          기타학력
+                        </SelectItem>
+                      </Select>
+                    </Tselect>
+                    <Ttext>
+                      <Input
+                        labelPlacement="outside"
+                        variant="bordered"
+                        radius="sm"
+                        size="sm"
+                        type="text"
+                        placeholder=" "
+                        className="w-full"
+                      />
+                    </Ttext>
+                    <Ttext>
+                      <Input
+                        labelPlacement="outside"
+                        variant="bordered"
+                        radius="sm"
+                        size="sm"
+                        type="text"
+                        placeholder=" "
+                        className="w-full"
+                      />
+                    </Ttext>
+                    <Tselect>
+                      <Select
+                        labelPlacement="outside"
+                        label={<p className="hidden">졸업여부</p>}
+                        variant="bordered"
+                        size="sm"
+                        selectedKeys={[graduationValue]}
+                        onChange={e => handleGraduationChange(e)}
+                        classNames={{
+                          label: 'w-[4rem] pr-0',
+                        }}
+                      >
+                        <SelectItem value={'졸업여부'} key={'졸업여부'}>
+                          졸업여부
+                        </SelectItem>
+                        <SelectItem value={'학력 선택'} key={'학력 선택'}>
+                          졸업
+                        </SelectItem>
+                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                          휴학
+                        </SelectItem>
+                        <SelectItem value={'중학교'} key={'중학교'}>
+                          재학
+                        </SelectItem>
+                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                          중퇴
+                        </SelectItem>
+                      </Select>
+                    </Tselect>
+                    <Tbtn>
+                      <BtnBox>
+                        <Button
+                          size="sm"
+                          variant="solid"
+                          color="primary"
+                          className="w-full text-white"
+                          // onClick={() => setIsOpen(!isOpen)}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="bordered"
+                          color="primary"
+                          className="w-full"
+                          // onClick={() => clickCancelReq(item)}
+                        >
+                          삭제
+                        </Button>
+                      </BtnBox>
+                    </Tbtn>
+                  </ClickBox>
+                </TableRow>
+                <TopInfo>
+                  <UpdateTime>
+                    <span>
+                      · 마지막 업데이트 :{' '}
+                      <b>영업팀 아무개 2024-06-21 18:36:58</b> 에 수정됨
+                    </span>
+                    {/* {formatDate(lectureData?.updatedAt, true)} */}
+                  </UpdateTime>
+                </TopInfo>
+              </TableItem>
+              <TableItem>
+                <TableRow>
+                  <ClickBox>
+                    <Tselect>
+                      <Select
+                        labelPlacement="outside"
+                        label={<p className="hidden">학력</p>}
+                        variant="bordered"
+                        size="sm"
+                        selectedKeys={[educationValue]}
+                        onChange={e => handleEducationChange(e)}
+                        classNames={{
+                          label: 'w-[4rem] pr-0',
+                        }}
+                      >
+                        <SelectItem value={'학력선택'} key={'학력선택'}>
+                          학력선택
+                        </SelectItem>
+                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                          초등학교
+                        </SelectItem>
+                        <SelectItem value={'중학교'} key={'중학교'}>
+                          중학교
+                        </SelectItem>
+                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                          고등학교
+                        </SelectItem>
+                        <SelectItem value={'대학,대학원'} key={'대학,대학원'}>
+                          대학,대학원
+                        </SelectItem>
+                        <SelectItem value={'기타학력'} key={'기타학력'}>
+                          기타학력
+                        </SelectItem>
+                      </Select>
+                    </Tselect>
+                    <Ttext>
+                      <Input
+                        labelPlacement="outside"
+                        variant="bordered"
+                        radius="sm"
+                        size="sm"
+                        type="text"
+                        placeholder=" "
+                        className="w-full"
+                      />
+                    </Ttext>
+                    <Ttext>
+                      <Input
+                        labelPlacement="outside"
+                        variant="bordered"
+                        radius="sm"
+                        size="sm"
+                        type="text"
+                        placeholder=" "
+                        className="w-full"
+                      />
+                    </Ttext>
+                    <Tselect>
+                      <Select
+                        labelPlacement="outside"
+                        label={<p className="hidden">졸업여부</p>}
+                        variant="bordered"
+                        size="sm"
+                        selectedKeys={[graduationValue]}
+                        onChange={e => handleGraduationChange(e)}
+                        classNames={{
+                          label: 'w-[4rem] pr-0',
+                        }}
+                      >
+                        <SelectItem value={'졸업여부'} key={'졸업여부'}>
+                          졸업여부
+                        </SelectItem>
+                        <SelectItem value={'학력 선택'} key={'학력 선택'}>
+                          졸업
+                        </SelectItem>
+                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                          휴학
+                        </SelectItem>
+                        <SelectItem value={'중학교'} key={'중학교'}>
+                          재학
+                        </SelectItem>
+                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                          중퇴
+                        </SelectItem>
+                      </Select>
+                    </Tselect>
+                    <Tbtn>
+                      <BtnBox>
+                        <Button
+                          size="sm"
+                          variant="solid"
+                          color="primary"
+                          className="w-full text-white"
+                          // onClick={() => setIsOpen(!isOpen)}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="bordered"
+                          color="primary"
+                          className="w-full"
+                          // onClick={() => clickCancelReq(item)}
+                        >
+                          삭제
+                        </Button>
+                      </BtnBox>
+                    </Tbtn>
+                  </ClickBox>
+                </TableRow>
+                <TopInfo>
+                  <UpdateTime>
+                    <span>
+                      · 마지막 업데이트 :{' '}
+                      <b>영업팀 아무개 2024-06-21 18:36:58</b> 에 수정됨
+                    </span>
+                    {/* {formatDate(lectureData?.updatedAt, true)} */}
+                  </UpdateTime>
+                </TopInfo>
+              </TableItem>
+            </TableWrap>
+          </ScrollShadow>
+        </TableWrap>
+        <MoreBtn>
+          <Button
+            size="md"
+            // onClick={loadMore}
+            className="bg-white border-[#07bbae] w-full text-[#07bbae]"
+          >
+            더보기{' '}
+            <span className="text-[#07bbae] text-[1rem]">
+              <i className="xi-plus-circle" />
+            </span>
+          </Button>
+        </MoreBtn>
       </TableArea>
     </>
   )

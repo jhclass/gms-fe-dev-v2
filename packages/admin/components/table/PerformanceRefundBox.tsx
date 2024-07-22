@@ -177,7 +177,7 @@ export default function PerformanceRefundBox({
   return (
     detailRefund && (
       <>
-        <Title>횐불 내역</Title>
+        <Title>환불 내역</Title>
         <TableArea>
           <ScrollShadow orientation="horizontal" className="scrollbar">
             <TableWrap>

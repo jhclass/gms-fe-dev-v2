@@ -1,37 +1,16 @@
-import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense, useEffect, useState } from 'react'
-import Breadcrumb from '@/components/common/Breadcrumb'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
-registerLocale('ko', ko)
-const _ = require('lodash')
-import {
-  Button,
-  Input,
-  Link,
-  Switch,
-  Textarea,
-  useDisclosure,
-} from '@nextui-org/react'
-import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
+import { Button, Input, Textarea, useDisclosure } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
 import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
-import Layout from '@/pages/students/layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
-import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
-import ChangePassword from '@/components/modal/ChangePassword'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
-import Address from '@/components/common/Address'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -245,9 +224,6 @@ export default function WishForm() {
 
   const { register, control, handleSubmit, setValue, formState } = useForm()
   const { errors, dirtyFields, isDirty } = formState
-  const [joiningDate, setJoiningDate] = useState(null)
-  const years = _.range(1950, getYear(new Date()) + 1, 1)
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const gradeStr = data => {
     if (data == null) {

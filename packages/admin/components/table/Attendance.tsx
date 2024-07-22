@@ -11,6 +11,7 @@ import {
 import {
   CellSelect,
   HeaderCellSelect,
+  SelectClickTypes,
   useRowSelect,
 } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
@@ -28,6 +29,7 @@ import { useRouter } from 'next/router'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
+import Link from 'next/link'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -290,9 +292,15 @@ export default function Attendance({ lectureData, students }) {
     setSelectedValues(updatedValues)
   }
 
-  const select = useRowSelect(data, {
-    onChange: onSelectChange,
-  })
+  const select = useRowSelect(
+    data,
+    {
+      onChange: onSelectChange,
+    },
+    {
+      clickType: SelectClickTypes.ButtonClick,
+    },
+  )
 
   const handlePageChange = newPage => {
     setPage(newPage)
@@ -383,6 +391,11 @@ export default function Attendance({ lectureData, students }) {
           overflow:unset;
           white-space:unset;
           text-overflow:unset;
+
+      
+        }
+        select {
+          cursor:pointer;
         }
       `,
       HeaderRow: `
@@ -407,6 +420,9 @@ export default function Attendance({ lectureData, students }) {
       `,
       Row: `
         background:#fff;
+        &:nth-of-type(odd){
+          background:#fff;
+        }
         &:nth-of-type(even){
           background:#e2eafc;
           
@@ -423,7 +439,7 @@ export default function Attendance({ lectureData, students }) {
         }
 
         &:hover {
-          background:#f7fafc;
+          cursor: default;
         }
 
         &.drop {
@@ -577,7 +593,11 @@ export default function Attendance({ lectureData, students }) {
                             ? 'X'
                             : `${index + 1}`}
                         </Cell>
-                        <Cell pinLeft>{item.student.name}</Cell>
+                        <Cell pinLeft>
+                          <Link href={`/students/detail/course/${item.id}`}>
+                            {item.student.name}
+                          </Link>
+                        </Cell>
                         <Cell pinLeft>{item.subDiv}</Cell>
                         {attendanceAllData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>

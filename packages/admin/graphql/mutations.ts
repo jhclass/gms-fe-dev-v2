@@ -46,6 +46,8 @@ export const CREATE_MANAGE_USER_MUTATION = gql`
     $mPhoneNumFriend: String
     $mPhoneNumInside: String
     $mJoiningDate: String
+    $mZipCode: String
+    $mAddressDetail: String
     $mAddresses: String
     $email: String
   ) {
@@ -61,6 +63,8 @@ export const CREATE_MANAGE_USER_MUTATION = gql`
       mPhoneNumFriend: $mPhoneNumFriend
       mPhoneNumInside: $mPhoneNumInside
       mJoiningDate: $mJoiningDate
+      mZipCode: $mZipCode
+      mAddressDetail: $mAddressDetail
       mAddresses: $mAddresses
       email: $email
     ) {
@@ -82,6 +86,8 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
     $mPart: [String]
     $mPhoneNumFriend: String
     $mAvatar: Upload
+    $mZipCode: String
+    $mAddressDetail: String
     $mAddresses: String
     $mJoiningDate: String
     $email: String
@@ -98,6 +104,8 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
       mPart: $mPart
       mPhoneNumFriend: $mPhoneNumFriend
       mAvatar: $mAvatar
+      mZipCode: $mZipCode
+      mAddressDetail: $mAddressDetail
       mAddresses: $mAddresses
       mJoiningDate: $mJoiningDate
       email: $email
@@ -1049,6 +1057,8 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         cardAmount
         cashAmount
         classCode
+        dateOfDroppingOut
+        reasonFordroppingOut
         courseComplete
         createdAt
         discountAmount
@@ -1487,13 +1497,17 @@ export const APPROVAL_REFUND_MUTATION = gql`
   }
 `
 export const CLASS_CANCEL_MUTATION = gql`
-  mutation ClassCancellation(
+  mutation Mutation(
     $classCancellationId: Int!
     $courseComplete: String!
+    $dateOfDroppingOut: String
+    $reasonFordroppingOut: String
   ) {
     classCancellation(
       id: $classCancellationId
       courseComplete: $courseComplete
+      dateOfDroppingOut: $dateOfDroppingOut
+      reasonFordroppingOut: $reasonFordroppingOut
     ) {
       error
       message
@@ -1929,6 +1943,46 @@ export const EDIT_WORKLOGS_MUTATION = gql`
       checkList: $checkList
       checkContext: $checkContext
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+// SMS
+export const SEND_SMS_MUTATION = gql`
+  mutation SendSms(
+    $receiver: String!
+    $message: String!
+    $rDate: String
+    $rTime: String
+    $senderNum: String
+  ) {
+    sendSms(
+      receiver: $receiver
+      message: $message
+      rDate: $rDate
+      rTime: $rTime
+      senderNum: $senderNum
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_MESSAGE_STORAGE_MUTATION = gql`
+  mutation CreateMessageStorage($message: String!, $saveType: String!) {
+    createMessageStorage(message: $message, saveType: $saveType) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
+  mutation Mutation($deleteMessageStorageId: Int) {
+    deleteMessageStorage(id: $deleteMessageStorageId) {
       error
       message
       ok

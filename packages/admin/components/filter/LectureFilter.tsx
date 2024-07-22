@@ -11,7 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import SubDivSelect from '../common/SubDivSelect'
+import SubDivSelect from '@/components/common/SubDivSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 

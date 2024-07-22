@@ -133,6 +133,11 @@ const FilterLabel = styled.label`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
 `
 const BtnBox = styled.div`
@@ -441,7 +446,8 @@ export default function ConsultWirte() {
                         value={String(adviceTypeSelectedName)}
                         label={
                           <FilterLabel>
-                            상담 분야<span>*</span>
+                            상담 분야<span>*</span>{' '}
+                            <span className="multi">(중복가능)</span>
                           </FilterLabel>
                         }
                         labelPlacement="outside"
@@ -491,7 +497,11 @@ export default function ConsultWirte() {
               <AreaBox>
                 <Textarea
                   readOnly
-                  label="상담 과정 선택"
+                  label={
+                    <FilterLabel>
+                      상담 과정 선택 <span className="multi">(중복가능)</span>
+                    </FilterLabel>
+                  }
                   labelPlacement="outside"
                   className="max-w-full"
                   variant="bordered"
