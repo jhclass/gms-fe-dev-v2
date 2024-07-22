@@ -2,6 +2,7 @@ import { Button, Input } from '@nextui-org/react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
+import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { styled } from 'styled-components'
 
 const AddrBox = styled.div`
@@ -48,26 +49,26 @@ export default function Address({
   codeValueName,
   valueName,
   detailValueName,
-  defaultPostcode,
-  defaultAddress,
-  defaultDetails,
+  defaultPostcode = '',
+  defaultAddress = '',
+  defaultDetails = '',
 }) {
   const [postcode, setPostcode] = useState('')
   const [roadAddress, setRoadAddress] = useState('')
   const [detailAddress, setDetailAddress] = useState('')
 
   useEffect(() => {
-    if (defaultPostcode) {
+    if (defaultPostcode !== '') {
       setPostcode(defaultPostcode)
     } else {
       setPostcode('')
     }
-    if (defaultAddress) {
+    if (defaultAddress !== '') {
       setRoadAddress(defaultAddress)
     } else {
       setRoadAddress('')
     }
-    if (defaultDetails) {
+    if (defaultDetails !== '') {
       setDetailAddress(defaultDetails)
     } else {
       setDetailAddress('')

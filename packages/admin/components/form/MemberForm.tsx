@@ -617,20 +617,16 @@ export default function ManagerWrite({ managerId }) {
                   detailValueName={'mAddressDetail'}
                   setValue={setValue}
                   defaultPostcode={
-                    managerData.mZipCode === null || managerData.mZipCode === ''
-                      ? '우편번호'
-                      : managerData.mZipCode
+                    managerData.mZipCode === null ? '' : managerData.mZipCode
                   }
                   defaultAddress={
-                    managerData.mAddresses === null ||
-                    managerData.mAddresses === ''
-                      ? '주소 검색을 클릭해주세요.'
+                    managerData.mAddresses === null
+                      ? ''
                       : managerData.mAddresses
                   }
                   defaultDetails={
-                    managerData.mAddressDetail === null ||
-                    managerData.mAddressDetail === ''
-                      ? '상세주소'
+                    managerData.mAddressDetail === null
+                      ? ''
                       : managerData.mAddressDetail
                   }
                 />
