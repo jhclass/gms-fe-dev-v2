@@ -101,13 +101,6 @@ export default function AdviceMultiSelect({
           </SelectItem>
         ))}
       </Select>
-      {(mGrade < grade.general || mPart.includes('교무팀')) && (
-        <AddLink>
-          <Link size="sm" underline="hover" href="#" onClick={handleClick}>
-            강의분야 추가
-          </Link>
-        </AddLink>
-      )}
     </>
   )
 }

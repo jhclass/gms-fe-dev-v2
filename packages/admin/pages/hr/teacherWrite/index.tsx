@@ -121,6 +121,11 @@ const FilterLabel = styled.p`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
 `
 const InputText = styled.span`
@@ -135,7 +140,7 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function StudentsWrite() {
+export default function TeacherWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
@@ -502,7 +507,12 @@ export default function StudentsWrite() {
                           <AdviceMultiSelect
                             selecedKey={adviceType}
                             field={field}
-                            label={'강의분야'}
+                            label={
+                              <FilterLabel>
+                                강의분야<span>*</span>{' '}
+                                <span className="multi">(중복가능)</span>
+                              </FilterLabel>
+                            }
                             handleChange={setAdviceType}
                             category={'강의분야'}
                           />
@@ -621,4 +631,4 @@ export default function StudentsWrite() {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+TeacherWrite.getLayout = page => <Layout>{page}</Layout>

@@ -165,6 +165,11 @@ const FilterLabel = styled.label`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
 
   &.file {
@@ -630,7 +635,8 @@ export default function LectureWrite() {
                             field={field}
                             label={
                               <FilterLabel>
-                                강사명<span>*</span>
+                                강사명<span>*</span>{' '}
+                                <span className="multi">(중복가능)</span>
                               </FilterLabel>
                             }
                             handleChange={setTeacher}

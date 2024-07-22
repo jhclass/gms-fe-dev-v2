@@ -206,6 +206,11 @@ const FilterLabel = styled.p`
 
   span {
     color: red;
+
+    &.multi {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
   }
 `
 const InputText = styled.span`
@@ -686,7 +691,12 @@ export default function StudentsWrite({ managerId }) {
                             }
                             selecedKey={adviceType}
                             field={field}
-                            label={'강의분야'}
+                            label={
+                              <FilterLabel>
+                                강의분야{' '}
+                                <span className="multi">(중복가능)</span>
+                              </FilterLabel>
+                            }
                             handleChange={setAdviceType}
                             category={'강의분야'}
                           />

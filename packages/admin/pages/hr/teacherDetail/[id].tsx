@@ -17,7 +17,7 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function StudentsWrite() {
+export default function TeacherDetail() {
   const router = useRouter()
   const managerId = typeof router.query.id === 'string' ? router.query.id : null
 
@@ -35,4 +35,4 @@ export default function StudentsWrite() {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+TeacherDetail.getLayout = page => <Layout>{page}</Layout>

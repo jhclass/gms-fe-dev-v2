@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form'
 import SMSAddrTeacher from '@/components/form/SMSAddrTeacher'
 import SMSAddrStudent from '@/components/form/SMSAddrStudent'
 import SMSAddrEmployee from '@/components/form/SMSAddrEmployee'
-import SMSAddrInput from '../form/SMSAddrInput'
+import SMSAddrInput from '@/components/form/SMSAddrInput'
 
 const ChipBox = styled.div`
   display: flex;

@@ -20,8 +20,8 @@ import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
 import ManagerSelect from '@/components/common/ManagerSelect'
-import AdviceSelect from '@/components//common/AdviceSelect'
-import SubDivSelect from '../common/SubDivSelect'
+import AdviceSelect from '@/components/common/AdviceSelect'
+import SubDivSelect from '@/components/common/SubDivSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 

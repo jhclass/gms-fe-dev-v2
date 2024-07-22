@@ -11,7 +11,7 @@ import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import SubDivSelect from '../common/SubDivSelect'
+import SubDivSelect from '@/components/common/SubDivSelect'
 
 const FilterBox = styled(motion.div)`
   z-index: 2;

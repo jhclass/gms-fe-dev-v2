@@ -12,7 +12,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRouter } from 'next/router'
-import SubDivSelect from '../common/SubDivSelect'
+import SubDivSelect from '@/components/common/SubDivSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
