@@ -350,19 +350,14 @@ export default function Profile() {
                   detailValueName={'mAddressDetail'}
                   setValue={setValue}
                   defaultPostcode={
-                    mMeData.mZipCode === null || mMeData.mZipCode === ''
-                      ? '우편번호'
-                      : mMeData.mZipCode
+                    mMeData.mZipCode === null ? '' : mMeData.mZipCode
                   }
                   defaultAddress={
-                    mMeData.mAddresses === null || mMeData.mAddresses === ''
-                      ? '주소 검색을 클릭해주세요.'
-                      : mMeData.mAddresses
+                    mMeData.mAddresses === null ? '' : mMeData.mAddresses
                   }
                   defaultDetails={
-                    mMeData.mAddressDetail === null ||
-                    mMeData.mAddressDetail === ''
-                      ? '상세주소'
+                    mMeData.mAddressDetail === null
+                      ? ''
                       : mMeData.mAddressDetail
                   }
                 />

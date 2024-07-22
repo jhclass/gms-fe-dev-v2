@@ -24,8 +24,8 @@ import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
-import Address from '@/components/common/Address'
 import { SearchManageUserResult } from '@/src/generated/graphql'
+import Address from '../common/Address'
 
 const ConArea = styled.div`
   width: 100%;
@@ -625,20 +625,16 @@ export default function StudentsWrite({ managerId }) {
                   detailValueName={'mAddressDetail'}
                   setValue={setValue}
                   defaultPostcode={
-                    managerData.mZipCode === null || managerData.mZipCode === ''
-                      ? '우편번호'
-                      : managerData.mZipCode
+                    managerData.mZipCode === null ? '' : managerData.mZipCode
                   }
                   defaultAddress={
-                    managerData.mAddresses === null ||
-                    managerData.mAddresses === ''
-                      ? '주소 검색을 클릭해주세요.'
+                    managerData.mAddresses === null
+                      ? ''
                       : managerData.mAddresses
                   }
                   defaultDetails={
-                    managerData.mAddressDetail === null ||
-                    managerData.mAddressDetail === ''
-                      ? '상세주소'
+                    managerData.mAddressDetail === null
+                      ? ''
                       : managerData.mAddressDetail
                   }
                 />
