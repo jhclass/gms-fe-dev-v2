@@ -6,8 +6,7 @@ import {
 } from '@nextui-org/react'
 import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
-import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { SEE_ALARMS_QUERY } from '@/graphql/queries'
 import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -330,6 +329,7 @@ export default function HeaderNoti({}) {
             {data.seeAlarms.totalCount > 0 && (
               <PagerWrap>
                 <Pagination
+                  size="sm"
                   variant="light"
                   showControls
                   initialPage={currentPage}
