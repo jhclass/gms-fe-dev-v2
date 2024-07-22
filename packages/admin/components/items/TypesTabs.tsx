@@ -123,30 +123,31 @@ export default function TypesTabs() {
               </Card>
             )}
           </Tab>
-          <Tab key="employmentType" title="취업유형">
-            {/* {mGrade < grade.general || mPart.includes('취업지원팀') ? ( */}
-            {mGrade < 1 ? (
-              <Suspense
-                fallback={
-                  <LodingDiv>
-                    <i className="xi-spinner-2" />
-                  </LodingDiv>
-                }
-              >
-                <CreateAdviceType isActive={true} category={'취업유형'} />
-              </Suspense>
-            ) : (
-              <Card radius="sm">
-                <CardBody>
-                  <NotiText>
-                    취업유형 설정 권한이 없습니다.
-                    <br />
-                    <b>Master</b> 또는 교무팀에 요청하세요.
-                  </NotiText>
-                </CardBody>
-              </Card>
-            )}
-          </Tab>
+          {mGrade < 1 ? (
+            <Tab key="employmentType" title="취업유형">
+              {mGrade < grade.general || mPart.includes('취업지원팀') ? (
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <CreateAdviceType isActive={true} category={'취업유형'} />
+                </Suspense>
+              ) : (
+                <Card radius="sm">
+                  <CardBody>
+                    <NotiText>
+                      취업유형 설정 권한이 없습니다.
+                      <br />
+                      <b>Master</b> 또는 취업지원팀에 요청하세요.
+                    </NotiText>
+                  </CardBody>
+                </Card>
+              )}
+            </Tab>
+          ) : null}
           <Tab key="mPartType" title="부서명">
             {mGrade < grade.general || mPart.includes('인사팀') ? (
               <Suspense
@@ -162,9 +163,9 @@ export default function TypesTabs() {
               <Card radius="sm">
                 <CardBody>
                   <NotiText>
-                    취업유형 설정 권한이 없습니다.
+                    부서 설정 권한이 없습니다.
                     <br />
-                    <b>Master</b> 또는 교무팀에 요청하세요.
+                    <b>Master</b> 또는 인사팀에 요청하세요.
                   </NotiText>
                 </CardBody>
               </Card>

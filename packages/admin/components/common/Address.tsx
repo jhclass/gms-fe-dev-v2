@@ -48,12 +48,31 @@ export default function Address({
   codeValueName,
   valueName,
   detailValueName,
-  defaultPostcode = '우편번호',
-  defaultAddress = '주소',
-  defaultDetails = '상세주소',
+  defaultPostcode,
+  defaultAddress,
+  defaultDetails,
 }) {
   const [postcode, setPostcode] = useState('')
   const [roadAddress, setRoadAddress] = useState('')
+  const [detailAddress, setDetailAddress] = useState('')
+
+  useEffect(() => {
+    if (defaultPostcode) {
+      setPostcode(defaultPostcode)
+    } else {
+      setPostcode('')
+    }
+    if (defaultAddress) {
+      setRoadAddress(defaultAddress)
+    } else {
+      setRoadAddress('')
+    }
+    if (defaultDetails) {
+      setDetailAddress(defaultDetails)
+    } else {
+      setDetailAddress('')
+    }
+  }, [defaultPostcode, defaultAddress, defaultDetails])
 
   const handleClick = () => {
     const isMobile = window.innerWidth <= 768
@@ -88,6 +107,7 @@ export default function Address({
 
         setPostcode(data.zonecode)
         setRoadAddress(roadAddr)
+        setDetailAddress('')
         setValue(codeValueName, data.zonecode, { shouldDirty: true })
         setValue(valueName, roadAddr, { shouldDirty: true })
       },
@@ -99,6 +119,7 @@ export default function Address({
     })
   }
   const handleChange = event => {
+    setDetailAddress(event.target.value)
     setValue(detailValueName, event.target.value, { shouldDirty: true })
   }
   return (
@@ -110,14 +131,14 @@ export default function Address({
             <Input
               type="text"
               id="sample4_postcode"
-              defaultValue={defaultPostcode}
+              // defaultValue={defaultPostcode}
               label={<FilterLabel>주소</FilterLabel>}
               placeholder="우편번호"
               labelPlacement="outside"
               variant="flat"
               radius="md"
               className="w-full"
-              value={postcode !== '' ? postcode : defaultPostcode}
+              value={postcode}
               readOnly
             />
             <Button
@@ -141,8 +162,8 @@ export default function Address({
               labelPlacement="outside"
               variant="flat"
               radius="md"
-              defaultValue={defaultAddress}
-              value={roadAddress !== '' ? roadAddress : defaultAddress}
+              // defaultValue={defaultAddress}
+              value={roadAddress}
               className="w-full"
               readOnly
             />
@@ -152,14 +173,16 @@ export default function Address({
           <AreaBox>
             <Input
               type="text"
-              defaultValue={defaultDetails}
+              // defaultValue={defaultAddress}
+              value={detailAddress}
+              // onChange={e => setValue(e.target.value)}
               id="sample4_detailAddress"
               placeholder="상세주소"
               labelPlacement="outside"
               radius="md"
               variant="bordered"
               className="w-full"
-              onChange={handleChange}
+              onChange={e => handleChange(e)}
             />
           </AreaBox>
         </FlexBox>
