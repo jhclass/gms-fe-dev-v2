@@ -724,6 +724,12 @@ export default function ManagerWrite({ managerId }) {
                     <Controller
                       control={control}
                       name="mPart"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '부서를 선택해주세요.',
+                        },
+                      }}
                       defaultValue={managerData.mPart}
                       render={({ field }) => (
                         <Suspense

@@ -3,6 +3,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Pagination,
   ScrollShadow,
   Textarea,
@@ -22,14 +23,70 @@ const FlexBox = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1580px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (max-width: 480px) {
+  @media (max-width: 920px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 540px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+`
+
+const ConLabel = styled.p`
+  color: #11181c;
+  font-size: 0.875rem;
+`
+
+const ConText = styled.p`
+  color: #71717a;
+  font-size: 0.875rem;
+`
+
+const SendInfo = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  &.first {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e3e3e6;
+  }
+`
+
+const SendType = styled.p`
+  color: #11181c;
+  font-size: 0.875rem;
+
+  span {
+    color: #71717a;
+  }
+`
+
+const SendState = styled.p`
+  color: #71717a;
+  font-size: 0.875rem;
+  font-weight: 700;
+
+  &.res {
+    color: #07bbae;
+  }
+
+  &.succ {
+    color: #007de9;
+  }
+
+  &.err {
+    color: #ff5900;
   }
 `
 
@@ -43,7 +100,12 @@ type SeeMessageStorageQuery = {
   seeMessageStorage: ResultMessageStorage
 }
 
-export default function SMSItem({ setMessageCon, setValue, type }) {
+export default function SMSItem({
+  setMessageCon,
+  setValue,
+  type,
+  setByteLength,
+}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(12)
   const { error, data, refetch } = useSuspenseQuery<SeeMessageStorageQuery>(
@@ -59,24 +121,38 @@ export default function SMSItem({ setMessageCon, setValue, type }) {
   const [deleteMessageStorage] = useMutation(DELETE_MESSAGE_STORAGE_MUTATION)
   const { userLogs } = useUserLogsMutation()
 
-  const renderMessage = message => {
-    const formattedMessage = message
-      .replace(/\\n/g, '<br>')
-      .replace(/&nbsp;/g, ' ')
-    return { __html: formattedMessage }
-  }
-
   useEffect(() => {
     refetch()
   }, [currentPage])
 
-  const handleApply = message => {
-    const restoredMessage = message
-      .replace(/\\n/g, '\n')
-      .replace(/&nbsp;/g, ' ')
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}`
+    return formatted
+  }
 
-    setMessageCon(restoredMessage)
-    setValue('message', restoredMessage)
+  const getHtmlByteSize = htmlString => {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlString, 'text/html')
+
+    const textContent = doc.body.innerHTML
+      .replace(/&nbsp;/g, ' ')
+      .replace(/<br\/?>/g, '\n')
+
+    const encoder = new TextEncoder()
+    return encoder.encode(textContent).length
+  }
+
+  const handleApply = message => {
+    setMessageCon(message)
+    setByteLength(getHtmlByteSize(message))
+    setValue('message', message)
   }
 
   const handleDelete = id => {
@@ -102,14 +178,35 @@ export default function SMSItem({ setMessageCon, setValue, type }) {
             key={index}
             shadow="none"
             classNames={{
-              base: 'bg-transparent',
+              base: `bg-white px-3 py-1 border-2 ${
+                type === '개인' ? 'border-[#07bbae]' : 'border-[#007de9]'
+              }`,
             }}
           >
-            <CardBody className="p-[0.5rem] bg-white rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+            <CardHeader className="flex flex-col gap-3 p-2">
+              <SendInfo className="first">
+                <ConLabel>저장일</ConLabel>
+                <ConText>{formatDate(item.createdAt)}</ConText>
+              </SendInfo>
+              <SendInfo>
+                {getHtmlByteSize(item.message) > 90 ? (
+                  <SendState className="err">LMS</SendState>
+                ) : (
+                  <SendState className="succ">SMS</SendState>
+                )}
+
+                <SendType>
+                  {getHtmlByteSize(item.message)}
+                  <span>byte</span>
+                </SendType>
+              </SendInfo>
+            </CardHeader>
+            <CardBody className="p-[0.5rem] bg-[#f4f4f6] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
               <ScrollShadow orientation="horizontal" className="scrollbar">
                 <div
+                  style={{ whiteSpace: 'pre-wrap' }}
                   className="pr-[0.5rem]"
-                  dangerouslySetInnerHTML={renderMessage(item.message)}
+                  dangerouslySetInnerHTML={{ __html: item.message }}
                 />
               </ScrollShadow>
             </CardBody>

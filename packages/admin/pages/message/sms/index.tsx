@@ -209,14 +209,12 @@ export default function message() {
     if (phoneNumbers !== undefined) {
       if (sendType === '예약전송') {
         if (sendDate !== undefined && sendTime !== undefined) {
-          console.log('예약전송', data, sendDate, sendTime, phoneNumbers)
           sendSms({
             variables: {
               receiver: phoneNumbers,
               message: data.message,
               rDate: sendDate,
               rTime: sendTime,
-              // senderNum: data.senderNum,
             },
             onCompleted: result => {
               if (result.sendSms.ok) {
@@ -233,14 +231,12 @@ export default function message() {
         }
       } else {
         if (sendDate !== undefined) {
-          console.log('즉시', data, sendDate, phoneNumbers)
           sendSms({
             variables: {
               receiver: phoneNumbers,
               message: data.message,
             },
             onCompleted: result => {
-              console.log(result)
               if (result.sendSms.ok) {
                 userLogs(
                   `문자 메시지 발송`,
@@ -263,12 +259,9 @@ export default function message() {
   }
 
   const handleSave = type => {
-    const formattedMessage = messageCon
-      .replace(/\n/g, '\\n')
-      .replace(/ /g, '&nbsp;')
     createMessageStorage({
       variables: {
-        message: formattedMessage,
+        message: messageCon,
         saveType: type,
       },
       refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
@@ -359,14 +352,7 @@ export default function message() {
                 </Button>
               </FlexBox>
             </RoundBox>
-            {/* {savedMessage && (
-              <div
-                style={{ whiteSpace: 'pre-wrap' }}
-                dangerouslySetInnerHTML={{
-                  __html: savedMessage.replace(/\n/g, '<br />'),
-                }}
-              />
-            )} */}
+
             <RoundBox>
               <FlexBox>
                 <FilterLabel>받는사람</FilterLabel>
@@ -548,7 +534,11 @@ export default function message() {
             </RoundBox>
           </LeftBox>
           <RightBox>
-            <SMSTabs setMessageCon={setMessageCon} setValue={setValue} />
+            <SMSTabs
+              setMessageCon={setMessageCon}
+              setValue={setValue}
+              setByteLength={setByteLength}
+            />
           </RightBox>
         </ConBox>
       </MainWrap>

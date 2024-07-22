@@ -782,3 +782,34 @@ export const SEE_MESSAGE_STORAGE_QUERY = gql`
     }
   }
 `
+
+export const SEARCH_MESSAGE_QUERY = gql`
+  query Query(
+    $page: Int
+    $limit: Int
+    $receiver: String
+    $period: [String]
+    $branchId: Int
+  ) {
+    searchSms(
+      page: $page
+      limit: $limit
+      receiver: $receiver
+      period: $period
+      branchId: $branchId
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        receiver
+        rTime
+        rDate
+        message
+        id
+        createdAt
+      }
+    }
+  }
+`

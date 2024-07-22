@@ -40,7 +40,7 @@ const BtnBox = styled.div`
   gap: 0.5rem;
 `
 
-export default function SMSTabs({ setMessageCon, setValue }) {
+export default function SMSTabs({ setMessageCon, setValue, setByteLength }) {
   const [selected, setSelected] = useState('mySMS')
 
   return (
@@ -67,6 +67,7 @@ export default function SMSTabs({ setMessageCon, setValue }) {
             <SMSCard
               setMessageCon={setMessageCon}
               setValue={setValue}
+              setByteLength={setByteLength}
               type={'개인'}
             />
           </Suspense>
@@ -82,12 +83,21 @@ export default function SMSTabs({ setMessageCon, setValue }) {
             <SMSCard
               setMessageCon={setMessageCon}
               setValue={setValue}
+              setByteLength={setByteLength}
               type={'공통'}
             />
           </Suspense>
         </Tab>
         <Tab key="send" title="보낸문자함">
-          <SMSList />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <SMSList />
+          </Suspense>
         </Tab>
       </Tabs>
     </>

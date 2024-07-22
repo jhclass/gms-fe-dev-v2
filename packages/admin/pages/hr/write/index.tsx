@@ -552,6 +552,12 @@ export default function ManagerWrite() {
                     <Controller
                       control={control}
                       name="mPart"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '부서를 선택해주세요.',
+                        },
+                      }}
                       render={({ field }) => (
                         <Suspense
                           fallback={
