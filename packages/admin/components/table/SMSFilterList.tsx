@@ -145,7 +145,7 @@ type SearchMessageQuery = {
   searchSms: ResultSearchSms
 }
 
-export default function SMSList() {
+export default function SMSFilterList({ smsFilter }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(12)
 

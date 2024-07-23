@@ -1,12 +1,16 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { Suspense, useEffect, useState } from 'react'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
-import { useRouter } from 'next/router'
+import { Suspense, useState } from 'react'
+import { useRecoilState } from 'recoil'
+import {
+  smsFilterActiveState,
+  smsFilterState,
+  smsSearchState,
+} from '@/lib/recoilAtoms'
 import SMSCard from '@/components/items/SMSCard'
 import SMSList from '@/components/table/SMSList'
+import SMSFilterList from '../table/SMSFilterList'
+import SmsSendFilter from '../filter/SmsSendFilter'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -42,6 +46,9 @@ const BtnBox = styled.div`
 
 export default function SMSTabs({ setMessageCon, setValue, setByteLength }) {
   const [selected, setSelected] = useState('mySMS')
+  const [filterActive, setFilterActive] = useRecoilState(smsFilterActiveState)
+  const [filterSearch, setFilterSearch] = useRecoilState(smsFilterState)
+  const [smsFilter, setSmsFilter] = useRecoilState(smsSearchState)
 
   return (
     <>
@@ -89,15 +96,33 @@ export default function SMSTabs({ setMessageCon, setValue, setByteLength }) {
           </Suspense>
         </Tab>
         <Tab key="send" title="보낸문자함">
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <SMSList />
-          </Suspense>
+          <SmsSendFilter
+            isActive={filterActive}
+            onFilterSearch={setFilterSearch}
+            setSmsFilter={setSmsFilter}
+            smsFilter={smsFilter}
+          />
+          {filterSearch ? (
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <SMSFilterList smsFilter={smsFilter} />
+            </Suspense>
+          ) : (
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <SMSList />
+            </Suspense>
+          )}
         </Tab>
       </Tabs>
     </>

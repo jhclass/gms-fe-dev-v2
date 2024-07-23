@@ -784,18 +784,18 @@ export const SEE_MESSAGE_STORAGE_QUERY = gql`
 `
 
 export const SEARCH_MESSAGE_QUERY = gql`
-  query Query(
+  query SearchSms(
     $page: Int
     $limit: Int
-    $receiver: String
     $period: [String]
+    $receiver: String
     $branchId: Int
   ) {
     searchSms(
       page: $page
       limit: $limit
-      receiver: $receiver
       period: $period
+      receiver: $receiver
       branchId: $branchId
     ) {
       totalCount
@@ -803,11 +803,15 @@ export const SEARCH_MESSAGE_QUERY = gql`
       message
       error
       data {
+        successType
         receiver
         rTime
         rDate
         message
         id
+        manageUser {
+          mUsername
+        }
         createdAt
       }
     }

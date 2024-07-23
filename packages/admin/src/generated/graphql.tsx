@@ -410,6 +410,7 @@ export type Mutation = {
   createAdviceType?: Maybe<CommonResponse>;
   createAttendance?: Maybe<CommonResponse>;
   createBranch?: Maybe<CommonResponse>;
+  createCareer?: Maybe<CommonResponse>;
   createComment: MutationResponse;
   createConsultationMemo?: Maybe<CreateConsultationMemoResult>;
   createEduInfomation: CommonResponse;
@@ -566,6 +567,13 @@ export type MutationCreateAttendanceArgs = {
 
 export type MutationCreateBranchArgs = {
   branchName?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateCareerArgs = {
+  careerDetails?: InputMaybe<Scalars['String']['input']>;
+  studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
+  subjectId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1981,6 +1989,7 @@ export type Sms = {
   rTime?: Maybe<Scalars['String']['output']>;
   receiver: Scalars['String']['output'];
   saveType?: Maybe<Scalars['String']['output']>;
+  successType?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['String']['output'];
 };
 

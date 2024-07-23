@@ -77,6 +77,7 @@ const NotiListBox = styled.div`
   background: rgba(0, 0, 0, 0.7);
   border-radius: 0.5rem;
   height: fit-content;
+  padding-bottom: 1rem;
 
   @media screen and (max-width: 1024px) {
     width: 100vw;
@@ -98,7 +99,7 @@ const ScrollBox = styled.div`
   height: 100%;
   max-height: 20vh;
   @media screen and (max-width: 1024px) {
-    max-height: 60vh;
+    height: 60vh;
   }
 `
 const ListBox = styled.div`
@@ -107,6 +108,7 @@ const ListBox = styled.div`
   gap: 0.5rem;
   padding: 0.5rem;
   height: 100%;
+  overflow: auto;
 `
 const NotiItem = styled.div`
   display: flex;
@@ -182,21 +184,20 @@ type seeAlarmsQuery = {
 export default function HeaderNoti({}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(30)
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [isListOpen, setIsListOpen] = useState(false)
   const { userLogs } = useUserLogsMutation()
-  // const [seeAlarms, { data }] = useLazyQuery<seeAlarmsQuery>(SEE_ALARMS_QUERY)
-  const { error, data, refetch } = useSuspenseQuery<seeAlarmsQuery>(
+  const { error, data, fetchMore, refetch } = useSuspenseQuery<seeAlarmsQuery>(
     SEE_ALARMS_QUERY,
     {
       variables: {
-        page: currentPage,
+        page: 1,
         limit: currentLimit,
       },
     },
   )
+  const [alarms, setAlarms] = useState([])
   const [readAlarms] = useMutation(READ_ALARMS_MUTATION)
-
+  const [isFetching, setIsFetching] = useState(false)
   const notiBoxRef = useRef(null)
 
   const handleClickOutside = event => {
@@ -204,6 +205,12 @@ export default function HeaderNoti({}) {
       setIsListOpen(false)
     }
   }
+
+  useEffect(() => {
+    if (data && data.seeAlarms) {
+      setAlarms(data.seeAlarms.data)
+    }
+  }, [data])
 
   useEffect(() => {
     if (isListOpen) {
@@ -218,9 +225,44 @@ export default function HeaderNoti({}) {
     }
   }, [isListOpen])
 
-  useEffect(() => {
-    refetch()
-  }, [currentPage])
+  const handleScroll = async e => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target
+
+    if (scrollTop + clientHeight >= scrollHeight - 10 && !isFetching) {
+      if (currentPage < Math.ceil(data.seeAlarms.totalCount / currentLimit)) {
+        setIsFetching(true)
+        try {
+          const nextPage = currentPage + 1
+          await fetchMore({
+            variables: { page: nextPage },
+            updateQuery: (prevResult, { fetchMoreResult }) => {
+              if (!fetchMoreResult) return prevResult
+
+              const newAlarms = [
+                ...prevResult.seeAlarms.data,
+                ...fetchMoreResult.seeAlarms.data,
+              ]
+
+              setAlarms(newAlarms)
+
+              return {
+                ...prevResult,
+                seeAlarms: {
+                  ...prevResult.seeAlarms,
+                  data: newAlarms,
+                  totalCount: fetchMoreResult.seeAlarms.totalCount,
+                },
+              }
+            },
+          })
+
+          setCurrentPage(nextPage)
+        } finally {
+          setIsFetching(false)
+        }
+      }
+    }
+  }
 
   const clickReadAll = () => {
     const readAll = confirm('모두 읽음 처리하시겠습니까?')
@@ -240,24 +282,6 @@ export default function HeaderNoti({}) {
     }
   }
 
-  const clickRead = id => {
-    const readAlarm = confirm('읽음 처리하시겠습니까?')
-    if (readAlarm) {
-      readAlarms({
-        variables: {
-          readAlarmsId: id,
-        },
-        onCompleted: result => {
-          if (result.readAlarms.ok) {
-            refetch()
-            userLogs(`알람ID : ${id} 읽음 처리`)
-            alert('읽음 처리 하였습니다.')
-          }
-        },
-      })
-    }
-  }
-
   return (
     <>
       <NotiBox ref={notiBoxRef}>
@@ -266,9 +290,7 @@ export default function HeaderNoti({}) {
             src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
             alt="알림"
           />
-          <NotiNum>
-            {data.seeAlarms.data === null ? '0' : data.seeAlarms.totalCount}
-          </NotiNum>
+          <NotiNum>{alarms === null ? '0' : data.seeAlarms.totalCount}</NotiNum>
         </NotiBtn>
         {isListOpen && (
           <NotiListBox>
@@ -283,28 +305,28 @@ export default function HeaderNoti({}) {
               </Button>
             </FlexBox>
             <ScrollBox>
-              <ScrollShadow orientation="vertical" className="scrollbar">
-                <div>
-                  <ListBox>
-                    {data.seeAlarms.data?.length > 0 && (
-                      <>
-                        {data.seeAlarms.data?.map((alarm, index) => (
-                          <NotiItem key={index}>
-                            <ClickBox>
-                              <NotiFlag
-                                style={{ background: '#07bbae' }}
-                              ></NotiFlag>
-                              <ReqBox>
-                                <FromID>{alarm.title}</FromID>
-                                <ReqText>{alarm.content}</ReqText>
-                              </ReqBox>
-                            </ClickBox>
-                            <NotiClose onClick={() => clickRead(alarm.id)}>
-                              <i className="xi-close-circle" />
-                            </NotiClose>
-                          </NotiItem>
-                        ))}
-                        {/* <NotiItem key={index}>
+              <ScrollShadow
+                onScroll={handleScroll}
+                orientation="vertical"
+                className="scrollbar"
+              >
+                <ListBox>
+                  {alarms?.length > 0 && (
+                    <>
+                      {alarms?.map((alarm, index) => (
+                        <NotiItem key={index}>
+                          <ClickBox>
+                            <NotiFlag
+                              style={{ background: '#07bbae' }}
+                            ></NotiFlag>
+                            <ReqBox>
+                              <FromID>{alarm.title}</FromID>
+                              <ReqText>{alarm.content}</ReqText>
+                            </ReqBox>
+                          </ClickBox>
+                        </NotiItem>
+                      ))}
+                      {/* <NotiItem key={index}>
                       <ClickBox onClick={onOpen}>
                         <NotiFlag style={{ background: 'blue' }}></NotiFlag>
                         <ReqBox>
@@ -316,36 +338,14 @@ export default function HeaderNoti({}) {
                         <i className="xi-close-circle" />
                       </NotiClose>
                     </NotiItem> */}
-                      </>
-                    )}
-                    {(data.seeAlarms.data?.length === 0 ||
-                      data.seeAlarms.data === null) && (
-                      <Nolist>알람이 없습니다.</Nolist>
-                    )}
-                  </ListBox>
-                </div>
+                    </>
+                  )}
+                  {(alarms?.length === 0 || alarms === null) && (
+                    <Nolist>알람이 없습니다.</Nolist>
+                  )}
+                </ListBox>
               </ScrollShadow>
             </ScrollBox>
-            {data.seeAlarms.totalCount > 0 && (
-              <PagerWrap>
-                <Pagination
-                  size="sm"
-                  variant="light"
-                  showControls
-                  initialPage={currentPage}
-                  page={currentPage}
-                  total={Math.ceil(data.seeAlarms.totalCount / currentLimit)}
-                  onChange={newPage => {
-                    setCurrentPage(newPage)
-                  }}
-                  classNames={{
-                    item: 'text-white hover:text-[#000]',
-                    prev: 'text-white hover:text-[#000]',
-                    next: 'text-white hover:text-[#000]',
-                  }}
-                />
-              </PagerWrap>
-            )}
           </NotiListBox>
         )}
       </NotiBox>
