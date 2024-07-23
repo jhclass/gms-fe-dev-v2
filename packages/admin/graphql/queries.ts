@@ -99,7 +99,7 @@ export const SEE_ALARMS_QUERY = gql`
         id
         personalTarget
         title
-        updatedAt
+        createdAt
         content
       }
     }

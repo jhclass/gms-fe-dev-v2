@@ -99,7 +99,7 @@ const ScrollBox = styled.div`
   height: 100%;
   max-height: 20vh;
   @media screen and (max-width: 1024px) {
-    height: 60vh;
+    max-height: 60vh;
   }
 `
 const ListBox = styled.div`
@@ -134,7 +134,7 @@ const NotiFlag = styled.span`
 const ClickBox = styled.div`
   display: flex;
   gap: 0.5rem;
-  width: calc(95% - 0.5rem);
+  width: 100%;
 `
 const ReqBox = styled.div`
   display: flex;
@@ -148,6 +148,12 @@ const NotiClose = styled.button`
   width: 5%;
   height: 100%;
 `
+const ReqTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+`
 const FromID = styled.p`
   white-space: nowrap;
   overflow: hidden;
@@ -155,6 +161,13 @@ const FromID = styled.p`
   color: #171717;
   font-weight: 700;
   font-size: 0.875rem;
+  flex: 1;
+`
+const AlarmsTime = styled.p`
+  color: #71717a;
+  font-size: 0.875rem;
+  flex: 1;
+  text-align: end;
 `
 const ReqText = styled.p`
   white-space: nowrap;
@@ -176,6 +189,9 @@ const Nolist = styled.div`
   align-items: center;
   padding: 1rem 0 2rem;
   color: #fff;
+  @media screen and (max-width: 1024px) {
+    height: 20vh;
+  }
 `
 type seeAlarmsQuery = {
   seeAlarms: ResultSeeAlarms
@@ -282,6 +298,17 @@ export default function HeaderNoti({}) {
     }
   }
 
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}`
+    return formatted
+  }
   return (
     <>
       <NotiBox ref={notiBoxRef}>
@@ -320,7 +347,12 @@ export default function HeaderNoti({}) {
                               style={{ background: '#07bbae' }}
                             ></NotiFlag>
                             <ReqBox>
-                              <FromID>{alarm.title}</FromID>
+                              <ReqTop>
+                                <FromID>{alarm.title}</FromID>
+                                <AlarmsTime>
+                                  {formatDate(alarm.createdAt)}
+                                </AlarmsTime>
+                              </ReqTop>
                               <ReqText>{alarm.content}</ReqText>
                             </ReqBox>
                           </ClickBox>
