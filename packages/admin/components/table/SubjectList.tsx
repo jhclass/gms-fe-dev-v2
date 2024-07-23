@@ -74,6 +74,10 @@ const Tflag = styled.div`
   height: 100%;
   min-width: 7px;
 `
+const ClickBox = styled.div`
+  display: flex;
+  width: 100%;
+`
 const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
@@ -86,8 +90,14 @@ const Tnum = styled.div`
   vertical-align: middle;
 `
 const Tdiv = styled.div`
-  display: flex;
-  align-items: center;
+  display: table-cell;
+
+  > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 53px;
+  }
 `
 const Tname = styled.div`
   display: table-cell;
@@ -290,9 +300,11 @@ export default function SubjectTable() {
                 <Tflag></Tflag>
                 <Tnum>No</Tnum>
                 <Tdiv>
-                  <Tname>과정명</Tname>
-                  <TsubDiv>수강구분</TsubDiv>
-                  <Tfee>수강료</Tfee>
+                  <div>
+                    <Tname>과정명</Tname>
+                    <TsubDiv>수강구분</TsubDiv>
+                    <Tfee>수강료</Tfee>
+                  </div>
                 </Tdiv>
                 <Texposure>노출여부</Texposure>
                 <Tdate>개강일</Tdate>
@@ -322,11 +334,14 @@ export default function SubjectTable() {
                         opacity: item.exposure ? '1' : '0.8',
                       }}
                     ></Tflag>
+
                     <Tnum>
                       {(currentPage - 1) * currentLimit + (index + 1)}
                     </Tnum>
                     <Tdiv>
-                      <SubjectItem tableData={item} />
+                      <div>
+                        <SubjectItem tableData={item} />
+                      </div>
                     </Tdiv>
                     <Texposure>
                       {item.exposure ? (
