@@ -99,6 +99,7 @@ const ScrollBox = styled.div`
   max-height: 20vh;
   @media screen and (max-width: 1024px) {
     height: 60vh;
+    max-height: 60vh;
   }
 `
 const ListBox = styled.div`
