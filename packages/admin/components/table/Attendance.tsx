@@ -277,7 +277,7 @@ export default function Attendance({ lectureData, students }) {
 
   const onSelectChange = (action, state) => {
     if (action.type === 'ADD_ALL') {
-      state.ids = state.ids.filter(id => {
+      state = state.filter(id => {
         const item = data.nodes.find(node => node.id === id)
         return item && item.courseComplete !== '중도포기'
       })

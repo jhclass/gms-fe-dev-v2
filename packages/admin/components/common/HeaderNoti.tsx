@@ -328,6 +328,9 @@ export default function HeaderNoti({}) {
                 className="bg-[#ff5900] text-white"
                 onClick={clickReadAll}
               >
+                <p className="text-[1rem]">
+                  <i className="xi-trash"></i>
+                </p>
                 모두 읽음
               </Button>
             </FlexBox>

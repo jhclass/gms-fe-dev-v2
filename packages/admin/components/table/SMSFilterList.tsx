@@ -5,6 +5,7 @@ import {
   CardHeader,
   Pagination,
   ScrollShadow,
+  Tooltip,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -16,6 +17,11 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 25px;
+
+  @media (max-width: 768px) {
+    padding-top: 0;
+  }
 `
 const Ttotal = styled.p`
   font-weight: 300;
@@ -32,13 +38,13 @@ const FlexBox = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
 
-  @media (max-width: 1580px) {
+  @media (max-width: 1610px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  @media (max-width: 1300px) {
+  @media (max-width: 1450px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
@@ -48,12 +54,6 @@ const FlexBox = styled.div`
   @media (max-width: 540px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-`
-
-const Conbox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 `
 
 const ConLabel = styled.p`
@@ -79,11 +79,15 @@ const SendInfo = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 
   &.first {
     padding-bottom: 0.75rem;
     border-bottom: 1px solid #e3e3e6;
+  }
+
+  &.receiver {
+    align-items: flex-start;
   }
 `
 
@@ -92,9 +96,12 @@ const SendType = styled.p`
   font-size: 0.875rem;
 `
 
-const SendState = styled.p`
+const SendState = styled.div`
+  display: flex;
+  gap: 0.1rem;
   font-size: 0.875rem;
   font-weight: 700;
+  align-items: center;
 
   &.succ {
     color: #007de9;
@@ -111,21 +118,13 @@ const SendState = styled.p`
   &.resErr {
     color: #71717a;
   }
-`
 
-const NumInfo = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 0.5rem;
-  border: 2px solid #007de9;
-  padding: 0.75rem 0.5rem;
-
-  &.caller {
-    border: 2px solid #07bbae;
+  i {
+    font-size: 1rem;
+    color: #71717a;
   }
 `
+
 const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
@@ -148,12 +147,13 @@ type SearchMessageQuery = {
 export default function SMSFilterList({ smsFilter }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(12)
+  const [openTooltipIndex, setOpenTooltipIndex] = useState(null)
 
   const { error, data, refetch } = useSuspenseQuery<SearchMessageQuery>(
     SEARCH_MESSAGE_QUERY,
     {
       variables: {
-        branchId: 1,
+        ...smsFilter,
         page: currentPage,
         limit: currentLimit,
       },
@@ -162,7 +162,7 @@ export default function SMSFilterList({ smsFilter }) {
 
   useEffect(() => {
     refetch()
-  }, [currentPage])
+  }, [smsFilter, currentPage])
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
@@ -176,6 +176,28 @@ export default function SMSFilterList({ smsFilter }) {
     return formatted
   }
 
+  const formatDateTime = (rDate, rTime) => {
+    const year = rDate.substring(0, 4)
+    const month = rDate.substring(4, 6)
+    const day = rDate.substring(6, 8)
+    const hour = rTime.substring(0, 2)
+    const minute = rTime.substring(2, 4)
+
+    return `${year}-${month}-${day} ${hour}:${minute}`
+  }
+
+  const getHtmlByteSize = htmlString => {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlString, 'text/html')
+
+    const textContent = doc.body.innerHTML
+      .replace(/&nbsp;/g, ' ')
+      .replace(/<br\/?>/g, '\n')
+
+    const encoder = new TextEncoder()
+    return encoder.encode(textContent).length
+  }
+
   return (
     <>
       <TTopic>
@@ -186,7 +208,7 @@ export default function SMSFilterList({ smsFilter }) {
               ? '0'
               : data?.searchSms?.totalCount}
           </span>
-          건
+          건이 검색되었습니다.
         </Ttotal>
       </TTopic>
       {data?.searchSms?.totalCount && data.searchSms.totalCount > 0 ? (
@@ -216,11 +238,15 @@ export default function SMSFilterList({ smsFilter }) {
                 ) : (
                   <SendInfo className="first">
                     <ConLabel>예약일시</ConLabel>
-                    <ConText>{formatDate(item.createdAt)}</ConText>
+                    <ConText>{formatDateTime(item.rDate, item.rTime)}</ConText>
                   </SendInfo>
                 )}
                 <SendInfo>
-                  <SendType>SMS</SendType>
+                  {getHtmlByteSize(item.message) > 90 ? (
+                    <SendType>LMS</SendType>
+                  ) : (
+                    <SendType>SMS</SendType>
+                  )}
                   <SendState
                     className={`${
                       item.rDate === null
@@ -232,8 +258,39 @@ export default function SMSFilterList({ smsFilter }) {
                         : 'resErr'
                     } `}
                   >
-                    {item.rDate === null ? '즉시전송' : '예약전송'} /{' '}
-                    {item.successType === 'Y' ? '성공' : '실패'}
+                    <p>
+                      {item.rDate === null ? '즉시전송' : '예약전송'} /{' '}
+                      {item.successType === 'Y' ? '성공' : '실패'}
+                    </p>
+                    {item.successType === 'N' && (
+                      <Tooltip
+                        content={
+                          <div className="px-1 py-2">
+                            <p className="text-tiny">{item.failureReason}</p>
+                          </div>
+                        }
+                        placement="bottom"
+                        isOpen={openTooltipIndex === index}
+                        onOpenChange={open => {
+                          if (open) {
+                            setOpenTooltipIndex(index)
+                          } else {
+                            setOpenTooltipIndex(null)
+                          }
+                        }}
+                      >
+                        <i
+                          className="xi-help"
+                          onClick={() => {
+                            if (openTooltipIndex === index) {
+                              setOpenTooltipIndex(null)
+                            } else {
+                              setOpenTooltipIndex(index)
+                            }
+                          }}
+                        />
+                      </Tooltip>
+                    )}
                   </SendState>
                 </SendInfo>
               </CardHeader>
@@ -253,9 +310,9 @@ export default function SMSFilterList({ smsFilter }) {
                 </SendInfo>
                 <SendInfo className="first">
                   <ConLabel>발신번호</ConLabel>
-                  <ConText>01041942040</ConText>
+                  <ConText>{item.sender}</ConText>
                 </SendInfo>
-                <SendInfo>
+                <SendInfo className="receiver">
                   <ConLabel>수신번호</ConLabel>
                   <ConBox className="scrollbar_g">
                     <ScrollShadow className="scrollbar">

@@ -237,6 +237,7 @@ export default function message() {
               message: data.message,
             },
             onCompleted: result => {
+              // console.log(result)
               if (result.sendSms.ok) {
                 userLogs(
                   `문자 메시지 발송`,

@@ -487,10 +487,6 @@ export const recruitmentSearchState = atom({
   },
 })
 
-export const smsFilterActiveState = atom<boolean>({
-  key: 'smsFilterActive',
-  default: false,
-})
 export const smsPageState = atom<number>({
   key: 'smsPage',
   default: 1,
@@ -502,7 +498,6 @@ export const smsFilterState = atom<boolean>({
 export const smsSearchState = atom({
   key: 'smsSearch',
   default: {} as {
-    period: string[]
     receiver: string
   },
 })

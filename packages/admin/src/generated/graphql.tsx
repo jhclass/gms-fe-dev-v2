@@ -428,6 +428,7 @@ export type Mutation = {
   createWorkLogs?: Maybe<CommonResponse>;
   createWorkRequest?: Maybe<CommonResponse>;
   deleteAdviceType?: Maybe<CommonResponse>;
+  deleteCareer: CommonResponse;
   deleteComment: MutationResponse;
   deleteConsultationMemo?: Maybe<DeleteConsultationMemoResult>;
   deleteEduInfomation: CommonResponse;
@@ -448,6 +449,7 @@ export type Mutation = {
   duplicateCheck?: Maybe<CommonResponse>;
   editAdviceType?: Maybe<CommonResponse>;
   editAttendance?: Maybe<CommonResponse>;
+  editCareer: CommonResponse;
   editComment: MutationResponse;
   editEduInfomation: CommonResponse;
   editLectures?: Maybe<CommonResponse>;
@@ -775,6 +777,11 @@ export type MutationDeleteAdviceTypeArgs = {
 };
 
 
+export type MutationDeleteCareerArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type MutationDeleteCommentArgs = {
   id: Scalars['Int']['input'];
 };
@@ -891,6 +898,12 @@ export type MutationEditAdviceTypeArgs = {
 export type MutationEditAttendanceArgs = {
   attendanceState: Array<InputMaybe<Scalars['String']['input']>>;
   id: Array<InputMaybe<Scalars['Int']['input']>>;
+};
+
+
+export type MutationEditCareerArgs = {
+  careerDetails: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1981,6 +1994,7 @@ export type Sms = {
   Branch?: Maybe<Branch>;
   branchId?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['String']['output'];
+  failureReason?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   manageUser?: Maybe<ManageUser>;
   manageUserId?: Maybe<Scalars['Int']['output']>;
@@ -1989,6 +2003,7 @@ export type Sms = {
   rTime?: Maybe<Scalars['String']['output']>;
   receiver: Scalars['String']['output'];
   saveType?: Maybe<Scalars['String']['output']>;
+  sender?: Maybe<Scalars['String']['output']>;
   successType?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['String']['output'];
 };

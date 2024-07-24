@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     font-family:'Pretendard-Regular', 'Roboto', sans-serif;
     font-size: 16px;
+    min-width: 320px;
 
     @media screen and (max-width: 640px) {
       font-size: 11px;

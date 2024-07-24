@@ -19,17 +19,18 @@ import { DELETE_MESSAGE_STORAGE_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexBox = styled.div`
+  margin-top: 1rem;
   gap: 1rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
 
-  @media (max-width: 1580px) {
+  @media (max-width: 1610px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  @media (max-width: 1300px) {
+  @media (max-width: 1450px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (max-width: 920px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
