@@ -246,41 +246,46 @@ export default function HeaderNoti({}) {
     }
   }, [isListOpen])
 
+  const fetchMoreData = async nextPage => {
+    await fetchMore({
+      variables: { page: nextPage },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prevResult
+
+        const newAlarms = [
+          ...prevResult.seeAlarms.data,
+          ...fetchMoreResult.seeAlarms.data,
+        ]
+
+        setAlarms(newAlarms)
+
+        return {
+          ...prevResult,
+          seeAlarms: {
+            ...prevResult.seeAlarms,
+            data: newAlarms,
+            totalCount: fetchMoreResult.seeAlarms.totalCount,
+          },
+        }
+      },
+    })
+    setCurrentPage(nextPage)
+  }
+
+  useEffect(() => {
+    if (isFetching) {
+      const nextPage = currentPage + 1
+      fetchMoreData(nextPage).finally(() => {
+        setIsFetching(false)
+      })
+    }
+  }, [isFetching])
+
   const handleScroll = async e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
-
     if (scrollTop + clientHeight >= scrollHeight - 10 && !isFetching) {
       if (currentPage < Math.ceil(data.seeAlarms.totalCount / currentLimit)) {
         setIsFetching(true)
-        try {
-          const nextPage = currentPage + 1
-          await fetchMore({
-            variables: { page: nextPage },
-            updateQuery: (prevResult, { fetchMoreResult }) => {
-              if (!fetchMoreResult) return prevResult
-
-              const newAlarms = [
-                ...prevResult.seeAlarms.data,
-                ...fetchMoreResult.seeAlarms.data,
-              ]
-
-              setAlarms(newAlarms)
-
-              return {
-                ...prevResult,
-                seeAlarms: {
-                  ...prevResult.seeAlarms,
-                  data: newAlarms,
-                  totalCount: fetchMoreResult.seeAlarms.totalCount,
-                },
-              }
-            },
-          })
-
-          setCurrentPage(nextPage)
-        } finally {
-          setIsFetching(false)
-        }
       }
     }
   }
