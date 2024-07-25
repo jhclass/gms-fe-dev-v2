@@ -102,7 +102,7 @@ const ScrollBox = styled.div`
     padding: 0.5rem;
     max-height: 20vh;
     @media screen and (max-width: 1024px) {
-      max-height: 60vh;
+      max-height: 60vh !important;
     }
   }
 `
