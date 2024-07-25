@@ -96,14 +96,13 @@ const ScrollBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  height: 100%;
 
   .flexList {
     padding: 0.5rem;
     max-height: 20vh;
     height: 100%;
     @media screen and (max-width: 1024px) {
-      max-height: 60vh;
+      max-height: 60vh !important;
     }
   }
 `
@@ -194,6 +193,7 @@ const Nolist = styled.div`
   align-items: center;
   padding: 1rem 0 2rem;
   color: #fff;
+
   @media screen and (max-width: 1024px) {
     height: 20vh;
   }
