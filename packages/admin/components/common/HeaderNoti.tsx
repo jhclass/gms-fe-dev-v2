@@ -97,10 +97,14 @@ const ScrollBox = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   height: 100%;
-  /* max-height: 20vh;
-  @media screen and (max-width: 1024px) {
-    max-height: 60vh;
-  } */
+
+  .flexList {
+    padding: 0.5rem;
+    max-height: 20vh;
+    @media screen and (max-width: 1024px) {
+      max-height: 60vh;
+    }
+  }
 `
 const ListBox = styled.div`
   display: flex;
@@ -110,6 +114,7 @@ const ListBox = styled.div`
   height: 100%;
 `
 const NotiItem = styled.div`
+  margin-bottom: 0.5rem;
   display: flex;
   gap: 0.5rem;
   width: 100%;
@@ -337,30 +342,29 @@ export default function HeaderNoti({}) {
               <ScrollShadow
                 onScroll={handleScroll}
                 orientation="vertical"
-                className="scrollbar max-h-[60vh] xl:max-h-[20vh]"
+                className="scrollbar flexList"
               >
-                <ListBox>
-                  {alarms?.length > 0 && (
-                    <>
-                      {alarms?.map((alarm, index) => (
-                        <NotiItem key={index}>
-                          <ClickBox>
-                            <NotiFlag
-                              style={{ background: '#07bbae' }}
-                            ></NotiFlag>
-                            <ReqBox>
-                              <ReqTop>
-                                <FromID>{alarm.title}</FromID>
-                                <AlarmsTime>
-                                  {formatDate(alarm.createdAt)}
-                                </AlarmsTime>
-                              </ReqTop>
-                              <ReqText>{alarm.content}</ReqText>
-                            </ReqBox>
-                          </ClickBox>
-                        </NotiItem>
-                      ))}
-                      {/* <NotiItem key={index}>
+                {alarms?.length > 0 && (
+                  <>
+                    {alarms?.map((alarm, index) => (
+                      <NotiItem key={index}>
+                        <ClickBox>
+                          <NotiFlag
+                            style={{ background: '#07bbae' }}
+                          ></NotiFlag>
+                          <ReqBox>
+                            <ReqTop>
+                              <FromID>{alarm.title}</FromID>
+                              <AlarmsTime>
+                                {formatDate(alarm.createdAt)}
+                              </AlarmsTime>
+                            </ReqTop>
+                            <ReqText>{alarm.content}</ReqText>
+                          </ReqBox>
+                        </ClickBox>
+                      </NotiItem>
+                    ))}
+                    {/* <NotiItem key={index}>
                       <ClickBox onClick={onOpen}>
                         <NotiFlag style={{ background: 'blue' }}></NotiFlag>
                         <ReqBox>
@@ -372,12 +376,11 @@ export default function HeaderNoti({}) {
                         <i className="xi-close-circle" />
                       </NotiClose>
                     </NotiItem> */}
-                    </>
-                  )}
-                  {(alarms?.length === 0 || alarms === null) && (
-                    <Nolist>알람이 없습니다.</Nolist>
-                  )}
-                </ListBox>
+                  </>
+                )}
+                {(alarms?.length === 0 || alarms === null) && (
+                  <Nolist>알람이 없습니다.</Nolist>
+                )}
               </ScrollShadow>
             </ScrollBox>
           </NotiListBox>
