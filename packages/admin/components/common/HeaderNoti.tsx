@@ -97,10 +97,10 @@ const ScrollBox = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   height: 100%;
-  max-height: 20vh;
+  /* max-height: 20vh;
   @media screen and (max-width: 1024px) {
     max-height: 60vh;
-  }
+  } */
 `
 const ListBox = styled.div`
   display: flex;
@@ -108,7 +108,6 @@ const ListBox = styled.div`
   gap: 0.5rem;
   padding: 0.5rem;
   height: 100%;
-  overflow: auto;
 `
 const NotiItem = styled.div`
   display: flex;
@@ -338,7 +337,7 @@ export default function HeaderNoti({}) {
               <ScrollShadow
                 onScroll={handleScroll}
                 orientation="vertical"
-                className="scrollbar"
+                className="scrollbar max-h-[60vh] xl:max-h-[20vh]"
               >
                 <ListBox>
                   {alarms?.length > 0 && (
