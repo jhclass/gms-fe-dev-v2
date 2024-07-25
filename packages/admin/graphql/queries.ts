@@ -99,7 +99,7 @@ export const SEE_ALARMS_QUERY = gql`
         id
         personalTarget
         title
-        updatedAt
+        createdAt
         content
       }
     }
@@ -784,30 +784,29 @@ export const SEE_MESSAGE_STORAGE_QUERY = gql`
 `
 
 export const SEARCH_MESSAGE_QUERY = gql`
-  query Query(
-    $page: Int
-    $limit: Int
-    $receiver: String
-    $period: [String]
-    $branchId: Int
-  ) {
+  query Query($page: Int, $limit: Int, $branchId: Int, $receiver: String) {
     searchSms(
       page: $page
       limit: $limit
-      receiver: $receiver
-      period: $period
       branchId: $branchId
+      receiver: $receiver
     ) {
       totalCount
       ok
       message
       error
       data {
+        id
+        manageUser {
+          mUsername
+        }
+        failureReason
+        successType
+        sender
         receiver
         rTime
         rDate
         message
-        id
         createdAt
       }
     }

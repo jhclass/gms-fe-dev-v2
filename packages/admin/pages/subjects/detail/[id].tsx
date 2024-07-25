@@ -896,7 +896,7 @@ export default function SubjectDetail() {
                           name="teacherName"
                           render={({ field, fieldState }) => (
                             <TeacherSelect
-                              selecedKey={teacher}
+                              selectedKey={teacher}
                               defaultValue={subjectState?.teacherName}
                               field={field}
                               label={'강사명'}

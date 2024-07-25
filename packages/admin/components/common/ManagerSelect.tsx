@@ -11,7 +11,7 @@ type searchManageUserQuery = {
 
 export default function managerSelect({
   defaultValue = null,
-  selecedKey,
+  selectedKey,
   field,
   label,
   handleChange,
@@ -60,7 +60,7 @@ export default function managerSelect({
         className="w-full"
         defaultValue={defaultValue}
         variant="bordered"
-        selectedKeys={[selecedKey]}
+        selectedKeys={[selectedKey]}
         onChange={value => {
           if (value.target.value !== '') {
             field.onChange(value)

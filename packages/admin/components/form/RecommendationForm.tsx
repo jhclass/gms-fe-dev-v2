@@ -1,16 +1,5 @@
-import {
-  Button,
-  Checkbox,
-  Input,
-  Pagination,
-  Radio,
-  RadioGroup,
-  ScrollShadow,
-} from '@nextui-org/react'
-import { useState } from 'react'
+import { Button, Checkbox, Input, ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -18,42 +7,12 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { useState } from 'react'
 
 const TableArea = styled.div`
-  margin-top: 0.5rem;
-`
-const TTopic = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const Ttotal = styled.p`
-  font-weight: 300;
-  margin-right: 0.5rem;
-
-  span {
-    font-weight: 400;
-    color: #007de9;
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
+  padding-bottom: 1.5rem;
 `
 
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: #71717a;
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
-`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
@@ -123,6 +82,7 @@ const Tcheck = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.06}px;
+  text-align: center;
 `
 const Tbtn = styled.div`
   display: table-cell;
@@ -134,43 +94,23 @@ const Tbtn = styled.div`
   color: inherit;
   min-width: ${1200 * 0.05}px;
 `
-const PagerWrap = styled.div`
-  display: flex;
-  margin-top: 1.5rem;
-  justify-content: center;
-`
 const TableItem = styled.div`
   position: relative;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #e4e4e7;
   color: #71717a;
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
   overflow: hidden;
-
-  &:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.8);
-  }
 `
 
 const TableRow = styled.div`
-  position: relative;
-  display: table-row;
-  width: 100%;
-  min-width: fit-content;
-  text-align: center;
-  z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem 2% auto; */
+  display: flex;
 `
 const BtnBox = styled.div`
   display: flex;
   justify-content: space-between;
-  flex-direction: column;
   gap: 0.5rem;
 `
 
@@ -206,20 +146,13 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function RecommendationList() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
-  const [currentLimit] = useState(10)
-  const [totalCount, setTotalCount] = useState(0)
-  const [stVisitDate, setStVisitDate] = useState(null)
-  const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [isOpen, setIsOpen] = useState(false)
+export default function RecommendationForm() {
+  const [recommendationDate, setRecommendationDate] = useState(null)
+  const [interviewDate, setInterviewDate] = useState(null)
   const [isEmployment, setIsEmployment] = useState(false)
   const [isCertificate, setIsCertificate] = useState(false)
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
+  const [isOpen, setIsOpen] = useState(false)
+  const years = _.range(2000, getYear(new Date()) + 5, 1)
   const formatDate = data => {
     const date = new Date(data)
     const formatted =
@@ -228,7 +161,6 @@ export default function RecommendationList() {
       `${date.getDate().toString().padStart(2, '0')}`
     return formatted
   }
-
   return (
     <>
       <TableArea>
@@ -272,9 +204,11 @@ export default function RecommendationList() {
                       isReadOnly={true}
                       startContent={<i className="xi-calendar" />}
                       defaultValue={
-                        stVisitDate === null ? null : String(stVisitDate)
+                        recommendationDate === null
+                          ? null
+                          : String(recommendationDate)
                       }
-                      value={formatDate(stVisitDate) || ''}
+                      value={formatDate(recommendationDate) || ''}
                       onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
@@ -337,9 +271,9 @@ export default function RecommendationList() {
                       isReadOnly={true}
                       startContent={<i className="xi-calendar" />}
                       defaultValue={
-                        stVisitDate === null ? null : String(stVisitDate)
+                        interviewDate === null ? null : String(interviewDate)
                       }
-                      value={formatDate(stVisitDate) || ''}
+                      value={formatDate(interviewDate) || ''}
                       onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
@@ -380,7 +314,7 @@ export default function RecommendationList() {
                         size="sm"
                         variant="solid"
                         color="primary"
-                        className="w-full text-white"
+                        className="w-full bg-[#07bbae] text-white"
                         // onClick={() => setIsOpen(!isOpen)}
                       >
                         추가
@@ -390,167 +324,8 @@ export default function RecommendationList() {
                 </ClickBox>
               </TableRow>
             </TableItem>
-            <TableItem>
-              <TableRow>
-                <ClickBox>
-                  <Tdate>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      id="date"
-                      classNames={{
-                        input: 'caret-transparent',
-                      }}
-                      isReadOnly={true}
-                      startContent={<i className="xi-calendar" />}
-                      defaultValue={
-                        stVisitDate === null ? null : String(stVisitDate)
-                      }
-                      value={formatDate(stVisitDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
-                    />
-                  </Tdate>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Tdate>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      id="date"
-                      classNames={{
-                        input: 'caret-transparent',
-                      }}
-                      isReadOnly={true}
-                      startContent={<i className="xi-calendar" />}
-                      defaultValue={
-                        stVisitDate === null ? null : String(stVisitDate)
-                      }
-                      value={formatDate(stVisitDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
-                    />
-                  </Tdate>
-                  <Tcheck>
-                    <Checkbox
-                      size="sm"
-                      isSelected={isEmployment}
-                      onValueChange={setIsEmployment}
-                      classNames={{
-                        wrapper: 'mr-0',
-                      }}
-                    />
-                  </Tcheck>
-                  <Tcon>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Tcon>
-                  <Tcheck>
-                    <Checkbox
-                      size="sm"
-                      isSelected={isCertificate}
-                      onValueChange={setIsCertificate}
-                      classNames={{
-                        wrapper: 'mr-0',
-                      }}
-                    />
-                  </Tcheck>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="bordered"
-                        color="primary"
-                        className="w-full"
-                        // onClick={() => clickCancelReq(item)}
-                      >
-                        삭제
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
-                </ClickBox>
-              </TableRow>
-            </TableItem>
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
-          <PagerWrap>
-            <Pagination
-              variant="light"
-              showControls
-              initialPage={currentPage}
-              page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
-              onChange={newPage => {
-                setCurrentPage(newPage)
-              }}
-            />
-          </PagerWrap>
-        )}
       </TableArea>
       {isOpen && (
         <DatePickerBox>
@@ -574,9 +349,11 @@ export default function RecommendationList() {
             )}
             locale="ko"
             showYearDropdown
-            selected={stVisitDate === null ? null : new Date(stVisitDate)}
+            selected={
+              recommendationDate === null ? null : new Date(recommendationDate)
+            }
             onChange={date => {
-              setStVisitDate(date)
+              setRecommendationDate(date)
               setIsOpen(false)
             }}
           />

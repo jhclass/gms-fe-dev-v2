@@ -1,11 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Input,
-  Radio,
-  RadioGroup,
-  ScrollShadow,
-} from '@nextui-org/react'
+import { Button, Input, ScrollShadow } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -51,11 +44,11 @@ const Ttext = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 25%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.25}px;
 `
 
 const Tdate = styled.div`
@@ -69,25 +62,15 @@ const Tdate = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 
-const Tradio = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 6%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.06}px;
-`
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 5%;
+  width: 15%;
   padding: 0.5rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.05}px;
+  min-width: ${1200 * 0.15}px;
 `
 const TableItem = styled.div`
   position: relative;
@@ -141,10 +124,10 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function EmploymentForm() {
-  const [employmentDate, setEmploymentDate] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+export default function AcquisitionForm() {
+  const [acquisitionDate, setAcquisitionDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const [isOpen, setIsOpen] = useState(false)
   const formatDate = data => {
     const date = new Date(data)
     const formatted =
@@ -162,31 +145,10 @@ export default function EmploymentForm() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
-                  <Tradio>구분</Tradio>
-                  <Tdate>취업일자</Tdate>
-                  <Ttext>회사명</Ttext>
-                  <Ttext>사업자번호</Ttext>
-                  <Ttext>담당업무</Ttext>
-                  <Ttext>소재지</Ttext>
-                  <Ttext>전화번호</Ttext>
-                  <Ttext>사업자규모</Ttext>
-                  <Tradio>
-                    고용
-                    <br />
-                    보험
-                  </Tradio>
-                  <Tradio>
-                    재직 <br />
-                    증명
-                  </Tradio>
-                  <Tradio>
-                    관련 <br />
-                    분야
-                  </Tradio>
-                  <Tradio>
-                    취업 <br />
-                    형태
-                  </Tradio>
+                  <Tdate>취득일자</Tdate>
+                  <Ttext>자격증명</Ttext>
+                  <Ttext>급수</Ttext>
+                  <Ttext>발행처</Ttext>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
@@ -194,20 +156,6 @@ export default function EmploymentForm() {
             <TableItem>
               <TableRow>
                 <ClickBox>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'취업'}
-                    >
-                      <Radio key={'취업'} value={'취업'}>
-                        취업
-                      </Radio>
-                      <Radio key={'창업'} value={'창업'}>
-                        창업
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
                   <Tdate>
                     <Input
                       labelPlacement="outside"
@@ -223,9 +171,11 @@ export default function EmploymentForm() {
                       isReadOnly={true}
                       startContent={<i className="xi-calendar" />}
                       defaultValue={
-                        employmentDate === null ? null : String(employmentDate)
+                        acquisitionDate === null
+                          ? null
+                          : String(acquisitionDate)
                       }
-                      value={formatDate(employmentDate) || ''}
+                      value={formatDate(acquisitionDate) || ''}
                       onClick={() => setIsOpen(!isOpen)}
                     />
                   </Tdate>
@@ -262,98 +212,6 @@ export default function EmploymentForm() {
                       className="w-full"
                     />
                   </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'동일'}
-                    >
-                      <Radio key={'동일'} value={'동일'}>
-                        동일
-                      </Radio>
-                      <Radio key={'관련'} value={'관련'}>
-                        관련
-                      </Radio>
-                      <Radio key={'다른'} value={'다른'}>
-                        다른
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'조기'}
-                    >
-                      <Radio key={'조기'} value={'조기'}>
-                        조기
-                      </Radio>
-                      <Radio key={'수료'} value={'수료'}>
-                        수료
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
                   <Tbtn>
                     <BtnBox>
                       <Button
@@ -395,9 +253,11 @@ export default function EmploymentForm() {
             )}
             locale="ko"
             showYearDropdown
-            selected={employmentDate === null ? null : new Date(employmentDate)}
+            selected={
+              acquisitionDate === null ? null : new Date(acquisitionDate)
+            }
             onChange={date => {
-              setEmploymentDate(date)
+              setAcquisitionDate(date)
               setIsOpen(false)
             }}
           />

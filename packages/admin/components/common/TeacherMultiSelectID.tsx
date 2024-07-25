@@ -11,7 +11,7 @@ type searchManageUserQuery = {
 
 export default function TeacherMultiSelect({
   defaultSelectedKeys = null,
-  selecedKey,
+  selectedKey,
   field,
   label,
   handleChange,
@@ -56,8 +56,7 @@ export default function TeacherMultiSelect({
         selectionMode="multiple"
         defaultSelectedKeys={defaultSelectedKeys}
         variant="bordered"
-        // selectedKeys={selecedKey}
-        selectedKeys={selecedKey}
+        selectedKeys={selectedKey}
         onChange={value => {
           if (value.target.value !== '') {
             field.onChange(value)

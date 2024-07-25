@@ -1091,7 +1091,7 @@ export default function StudentsWriteCourse() {
                           }
                         >
                           <ManagerSelectID
-                            selecedKey={subjectManager}
+                            selectedKey={subjectManager}
                             field={field}
                             label={
                               <FilterLabel>

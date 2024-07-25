@@ -11,11 +11,12 @@ type seeAdviceTypeQuery = {
 
 export default function managerSelect({
   defaultValue = null,
-  selecedKey,
+  selectedKey,
   field,
   label,
   handleChange,
-  optionDefualt,
+  placeholder = ' ',
+  optionDefualt = null,
   filter = null,
   category,
 }) {
@@ -31,7 +32,10 @@ export default function managerSelect({
       limit: 100,
     },
   })
-  const adviceList = [optionDefualt, ...adviceData?.seeAdviceType.adviceType]
+
+  const adviceList = optionDefualt
+    ? [optionDefualt, ...adviceData?.seeAdviceType.adviceType]
+    : adviceData?.seeAdviceType.adviceType
 
   if (adviceError) {
     console.log(adviceError)
@@ -44,16 +48,17 @@ export default function managerSelect({
       limit: 100,
     })
   }, [router])
+
   return (
     <>
       <Select
         labelPlacement="outside"
         label={label}
-        placeholder=" "
+        placeholder={placeholder}
         className="w-full"
         defaultValue={defaultValue}
         variant="bordered"
-        selectedKeys={[selecedKey]}
+        selectedKeys={[selectedKey]}
         onChange={value => {
           if (value.target.value !== '') {
             field.onChange(value)

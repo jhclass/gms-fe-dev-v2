@@ -102,6 +102,7 @@ const ReqBtn = styled.button`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.2rem;
+  position: relative;
 
   &:after {
     content: '';

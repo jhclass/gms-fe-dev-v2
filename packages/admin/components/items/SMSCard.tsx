@@ -19,17 +19,18 @@ import { DELETE_MESSAGE_STORAGE_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexBox = styled.div`
+  margin-top: 1rem;
   gap: 1rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
 
-  @media (max-width: 1580px) {
+  @media (max-width: 1610px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  @media (max-width: 1300px) {
+  @media (max-width: 1450px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (max-width: 920px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
@@ -94,6 +95,15 @@ const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
+`
+
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: #71717a;
 `
 
 type SeeMessageStorageQuery = {
@@ -172,66 +182,71 @@ export default function SMSItem({
 
   return (
     <>
-      <FlexBox>
-        {data?.seeMessageStorage?.data?.map((item, index) => (
-          <Card
-            key={index}
-            shadow="none"
-            classNames={{
-              base: `bg-white px-3 py-1 border-2 ${
-                type === '개인' ? 'border-[#07bbae]' : 'border-[#007de9]'
-              }`,
-            }}
-          >
-            <CardHeader className="flex flex-col gap-3 p-2">
-              <SendInfo className="first">
-                <ConLabel>저장일</ConLabel>
-                <ConText>{formatDate(item.createdAt)}</ConText>
-              </SendInfo>
-              <SendInfo>
-                {getHtmlByteSize(item.message) > 90 ? (
-                  <SendState className="err">LMS</SendState>
-                ) : (
-                  <SendState className="succ">SMS</SendState>
-                )}
+      {data?.seeMessageStorage?.totalCount > 0 ? (
+        <FlexBox>
+          {data?.seeMessageStorage?.data?.map((item, index) => (
+            <Card
+              key={index}
+              shadow="none"
+              classNames={{
+                base: `bg-white px-3 py-1 border-2 ${
+                  type === '개인' ? 'border-[#07bbae]' : 'border-[#007de9]'
+                }`,
+              }}
+            >
+              <CardHeader className="flex flex-col gap-3 p-2">
+                <SendInfo className="first">
+                  <ConLabel>저장일</ConLabel>
+                  <ConText>{formatDate(item.createdAt)}</ConText>
+                </SendInfo>
+                <SendInfo>
+                  {getHtmlByteSize(item.message) > 90 ? (
+                    <SendState className="err">LMS</SendState>
+                  ) : (
+                    <SendState className="succ">SMS</SendState>
+                  )}
 
-                <SendType>
-                  {getHtmlByteSize(item.message)}
-                  <span>byte</span>
-                </SendType>
-              </SendInfo>
-            </CardHeader>
-            <CardBody className="p-[0.5rem] bg-[#f4f4f6] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
-              <ScrollShadow orientation="horizontal" className="scrollbar">
-                <div
-                  style={{ whiteSpace: 'pre-wrap' }}
-                  className="pr-[0.5rem]"
-                  dangerouslySetInnerHTML={{ __html: item.message }}
-                />
-              </ScrollShadow>
-            </CardBody>
-            <CardFooter className="justify-center gap-[0.5rem] text-small">
-              <Button
-                size="sm"
-                variant="solid"
-                color="primary"
-                className="text-white"
-                onClick={() => handleApply(item.message)}
-              >
-                적용
-              </Button>
-              <Button
-                size="sm"
-                variant="solid"
-                className="bg-[#ff5900] text-white"
-                onClick={() => handleDelete(item.id)}
-              >
-                삭제
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </FlexBox>
+                  <SendType>
+                    {getHtmlByteSize(item.message)}
+                    <span>byte</span>
+                  </SendType>
+                </SendInfo>
+              </CardHeader>
+              <CardBody className="p-[0.5rem] bg-[#f4f4f6] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+                <ScrollShadow orientation="horizontal" className="scrollbar">
+                  <div
+                    style={{ whiteSpace: 'pre-wrap' }}
+                    className="pr-[0.5rem]"
+                    dangerouslySetInnerHTML={{ __html: item.message }}
+                  />
+                </ScrollShadow>
+              </CardBody>
+              <CardFooter className="justify-center gap-[0.5rem] text-small">
+                <Button
+                  size="sm"
+                  variant="solid"
+                  color="primary"
+                  className="text-white"
+                  onClick={() => handleApply(item.message)}
+                >
+                  적용
+                </Button>
+                <Button
+                  size="sm"
+                  variant="solid"
+                  className="bg-[#ff5900] text-white"
+                  onClick={() => handleDelete(item.id)}
+                >
+                  삭제
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </FlexBox>
+      ) : (
+        <Nolist>보관된 문자가 없습니다.</Nolist>
+      )}
+
       {data?.seeMessageStorage?.totalCount > 0 && (
         <PagerWrap>
           <Pagination

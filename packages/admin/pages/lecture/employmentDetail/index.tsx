@@ -3,33 +3,16 @@ import { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button, Chip, Link, Select, SelectItem } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import {
-  SEARCH_LECTURES_MUTATION,
-  SEARCH_STUDENT_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
-import AbsentList from '@/components/table/AbsentList'
-import AropoutList from '@/components/table/AropoutList'
-import AropoutStateList from '@/components/table/AropoutStateList'
 import AcquisitionList from '@/components/table/AcquisitionList'
-import EmploymentList from '@/components/table/EmploymentList'
-import EvaluationList from '@/components/table/EvaluationList'
-import Attendance from '@/components/table/Attendance'
-import AttendanceFilter from '@/components/filter/AttendanceFilter'
-import AttendanceFilterList from '@/components/table/AttendanceFilterList'
-import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
-import AbsentFilterList from '@/components/table/AbsentFilterList'
-import { useRecoilValue } from 'recoil'
-import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
-import StudentInfo from '@/components/items/StudentInfo'
-import Address from '@/components/common/Address'
 import EducationalHistory from '@/components/table/EducationalHistory'
 import CareerHistory from '@/components/table/CareerHistory'
 import EmploymentTabs from '@/components/items/EmploymentTabs'
-import EmploymentForm from '@/components/form/EmploymentForm'
+import EmploymentInfoForm from '@/components/form/EmploymentInfoForm'
 
 const ConArea = styled.div`
   width: 100%;
@@ -248,7 +231,7 @@ export default function StudentsWrite() {
               <AreaTitle>
                 <h4>학생정보</h4>
               </AreaTitle>
-              <EmploymentForm />
+              <EmploymentInfoForm />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

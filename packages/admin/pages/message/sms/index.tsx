@@ -2,7 +2,7 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/message/layout'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import SMSTabs from '@/components/items/SMSTabs'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -14,6 +14,7 @@ import {
   Button,
   Chip,
   Input,
+  Link,
   Radio,
   RadioGroup,
   Textarea,
@@ -29,6 +30,13 @@ import {
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_MESSAGE_STORAGE_QUERY } from '@/graphql/queries'
+import { useRouter } from 'next/router'
+import AdviceSelect from '@/components/common/AdviceSelect'
+import { useRecoilValue } from 'recoil'
+import {
+  attendanceSelectedStudentState,
+  attendanceSMSState,
+} from '@/lib/recoilAtoms'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -69,6 +77,7 @@ const FlexBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 `
 const ByteBox = styled.div`
   display: flex;
@@ -131,15 +140,30 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
+
 export default function message() {
+  const router = useRouter()
   const [sendGruop, setSendGruop] = useState([])
   const [reservationDate, setReservationDate] = useState(null)
   const [saveType, setSaveType] = useState('개인')
   const [sendType, setSendType] = useState('즉시전송')
+  const [sender, setSender] = useState('선택해주세요')
   const [messageCon, setMessageCon] = useState('')
   const [savedMessage, setSavedMessage] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [byteLength, setByteLength] = useState(0)
+  const attendanceSMS = useRecoilValue(attendanceSMSState)
+  const attendanceStudents = useRecoilValue(attendanceSelectedStudentState)
   const [sendSms] = useMutation(SEND_SMS_MUTATION)
   const [createMessageStorage] = useMutation(CREATE_MESSAGE_STORAGE_MUTATION)
   const { userLogs } = useUserLogsMutation()
@@ -183,6 +207,13 @@ export default function message() {
     }
   }, [isSubmitted, sendGruop])
 
+  useEffect(() => {
+    if (attendanceSMS) {
+      setSendGruop(attendanceStudents)
+      setValue('receiver', attendanceStudents, { shouldDirty: true })
+    }
+  }, [attendanceSMS])
+
   const onSubmit = data => {
     setIsSubmitted(true)
     let phoneNumbers
@@ -215,6 +246,7 @@ export default function message() {
               message: data.message,
               rDate: sendDate,
               rTime: sendTime,
+              senderNum: data.senderNum,
             },
             onCompleted: result => {
               if (result.sendSms.ok) {
@@ -225,6 +257,8 @@ export default function message() {
                 alert(
                   `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
                 )
+              } else {
+                alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
               }
             },
           })
@@ -235,6 +269,7 @@ export default function message() {
             variables: {
               receiver: phoneNumbers,
               message: data.message,
+              senderNum: data.senderNum,
             },
             onCompleted: result => {
               if (result.sendSms.ok) {
@@ -243,6 +278,8 @@ export default function message() {
                   `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
                 )
                 alert(`문자 메시지가 발송 되었습니다.`)
+              } else {
+                alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
               }
             },
           })
@@ -282,6 +319,18 @@ export default function message() {
     setByteLength(bytes)
     setValue('message', value)
   }
+
+  const handleSubChange = e => {
+    setSender(e.target.value)
+  }
+
+  const handleClick = () => {
+    router.push({
+      pathname: '/setting/types',
+      query: { typeTab: 'smsSender' },
+    })
+  }
+
   return (
     <>
       <MainWrap>
@@ -396,39 +445,46 @@ export default function message() {
             </RoundBox>
             <RoundBox>
               <FlexBox>
-                <Input
-                  isReadOnly={true}
-                  labelPlacement="outside"
-                  placeholder="'-'없이 작성해주세요"
-                  variant="faded"
-                  radius="md"
-                  type="text"
-                  label={<FilterLabel>보내는사람</FilterLabel>}
-                  maxLength={11}
-                  value={'01041942040'}
-                  onChange={e => {
-                    register('senderNum').onChange(e)
-                  }}
-                  className="w-full"
-                  {...register('senderNum', {
+                <Controller
+                  control={control}
+                  name="senderNum"
+                  rules={{
                     required: {
                       value: true,
-                      message: '휴대폰번호를 입력해주세요.',
+                      message: '보내는사람 번호를 선택해주세요.',
                     },
-                    maxLength: {
-                      value: 11,
-                      message: '최대 11자리까지 입력 가능합니다.',
-                    },
-                    minLength: {
-                      value: 10,
-                      message: '최소 10자리 이상이어야 합니다.',
-                    },
-                    pattern: {
-                      value: /^010[0-9]{7,8}$/,
-                      message: '010으로 시작해주세요.',
-                    },
-                  })}
+                  }}
+                  render={({ field, fieldState }) => (
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <AdviceSelect
+                        selectedKey={sender}
+                        field={field}
+                        optionDefualt={{
+                          type: '선택해주세요',
+                        }}
+                        label={<FilterLabel>보내는사람</FilterLabel>}
+                        handleChange={handleSubChange}
+                        category={'발신인증번호'}
+                      />
+                    </Suspense>
+                  )}
                 />
+                <AddLink>
+                  <Link
+                    size="sm"
+                    underline="hover"
+                    href="#"
+                    onClick={handleClick}
+                  >
+                    전화번호추가
+                  </Link>
+                </AddLink>
               </FlexBox>
               {errors.senderNum && (
                 <p className="px-2 pt-2 text-xs text-red-500">

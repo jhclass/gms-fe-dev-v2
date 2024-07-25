@@ -3,9 +3,9 @@ import { styled } from 'styled-components'
 import { useState } from 'react'
 import EmploymentMemo from '@/components/form/EmploymentMemo'
 import CreateEmploymentMemo from '@/components/form/CreateEmploymentMemo'
-import EmploymentList from '@/components/table/EmploymentList'
 import WishForm from '@/components/form/WishForm'
-import RecommendationList from '@/components/table/RecommendationList'
+import Recommendation from '@/components/table/Recommendation'
+import Employment from '@/components/table/Employment'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -83,7 +83,7 @@ export default function EmploymentTabs() {
               <AreaTitle>
                 <h4>취업 추천 현황</h4>
               </AreaTitle>
-              <RecommendationList />
+              <Recommendation />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -91,7 +91,7 @@ export default function EmploymentTabs() {
               <AreaTitle>
                 <h4>취업현황</h4>
               </AreaTitle>
-              <EmploymentList />
+              <Employment />
             </DetailDiv>
           </DetailBox>
         </Tab>

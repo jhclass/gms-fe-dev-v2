@@ -1,11 +1,12 @@
 import { Card, CardBody, Link, Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import CreateAdviceType from '@/components/form/CreateAdviceType'
 import { Suspense, useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRouter } from 'next/router'
+import CreateAdviceType from '@/components/form/CreateAdviceType'
+import CreateSmsSender from '@/components/form/CreateSmsSender'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -171,6 +172,31 @@ export default function TypesTabs() {
               </Card>
             )}
           </Tab>
+          {mGrade < 1 ? (
+            <Tab key="smsSender" title="발신인증번호">
+              {mGrade < grade.general ? (
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <CreateSmsSender isActive={true} category={'발신인증번호'} />
+                </Suspense>
+              ) : (
+                <Card radius="sm">
+                  <CardBody>
+                    <NotiText>
+                      발신인증번호 설정 권한이 없습니다.
+                      <br />
+                      <b>Master</b>에게 요청하세요.
+                    </NotiText>
+                  </CardBody>
+                </Card>
+              )}
+            </Tab>
+          ) : null}
         </Tabs>
       </>
     )

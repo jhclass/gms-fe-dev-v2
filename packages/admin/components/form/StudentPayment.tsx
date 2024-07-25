@@ -1195,7 +1195,7 @@ export default function StudentPaymentForm({
                         }
                       >
                         <ManagerSelectID
-                          selecedKey={subjectManager}
+                          selectedKey={subjectManager}
                           field={field}
                           label={
                             <FilterLabel>

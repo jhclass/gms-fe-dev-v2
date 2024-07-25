@@ -144,16 +144,16 @@ type SearchMessageQuery = {
   searchSms: ResultSearchSms
 }
 
-export default function SMSList() {
+export default function SMSFilterList({ smsFilter }) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit, setCurrentLimit] = useState(12)
+  const [currentLimit] = useState(12)
   const [openTooltipIndex, setOpenTooltipIndex] = useState(null)
 
   const { error, data, refetch } = useSuspenseQuery<SearchMessageQuery>(
     SEARCH_MESSAGE_QUERY,
     {
       variables: {
-        branchId: 1,
+        ...smsFilter,
         page: currentPage,
         limit: currentLimit,
       },
@@ -162,12 +162,11 @@ export default function SMSList() {
 
   useEffect(() => {
     refetch()
-  }, [currentPage])
+  }, [smsFilter, currentPage])
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-
     const formatted =
       `${date.getFullYear()}-` +
       `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
@@ -209,7 +208,7 @@ export default function SMSList() {
               ? '0'
               : data?.searchSms?.totalCount}
           </span>
-          건
+          건이 검색되었습니다.
         </Ttotal>
       </TTopic>
       {data?.searchSms?.totalCount && data.searchSms.totalCount > 0 ? (

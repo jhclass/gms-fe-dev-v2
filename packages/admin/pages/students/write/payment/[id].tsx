@@ -582,7 +582,7 @@ export default function StudentsWritePayment() {
                           }
                         >
                           <ManagerSelectID
-                            selecedKey={receiver}
+                            selectedKey={receiver}
                             field={field}
                             label={'영업 담당자'}
                             handleChange={handleSubManagerChange}

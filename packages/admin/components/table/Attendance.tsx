@@ -27,8 +27,13 @@ import {
 import { SEE_ATTENDANCE_ALL_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useRecoilValue } from 'recoil'
-import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import {
+  assignmentState,
+  attendanceSelectedStudentState,
+  attendanceSMSState,
+  completionStatus,
+} from '@/lib/recoilAtoms'
 import Link from 'next/link'
 
 const PagerWrap = styled.div`
@@ -88,6 +93,11 @@ export default function Attendance({ lectureData, students }) {
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
   const [selectedValues, setSelectedValues] = useState([])
+  const [selectedStudent, setSelectedStudent] = useRecoilState(
+    attendanceSelectedStudentState,
+  )
+  const [clickSms, setClickSms] = useRecoilState(attendanceSMSState)
+
   const [selectWrokLogDate, setSelectWrokLogDate] = useState(null)
   const [gridTemplateColumns, setGridTemplateColumns] = useState(
     '50px 50px 100px 100px repeat(4, 70px)',
@@ -276,14 +286,22 @@ export default function Attendance({ lectureData, students }) {
   }, [todayIndex])
 
   const onSelectChange = (action, state) => {
+    let selectedIds = state.ids ? state.ids : []
+
     if (action.type === 'ADD_ALL') {
-      state.ids = state.ids.filter(id => {
+      selectedIds = selectedIds.filter(id => {
         const item = data.nodes.find(node => node.id === id)
         return item && item.courseComplete !== '중도포기'
       })
     }
 
-    console.log(action, state)
+    const selectedAaaData = selectedIds.map(id => {
+      const student = data.nodes.find(node => node.id === id)
+      return student ? student.student : null // aaa 필드만 반환
+    })
+    setSelectedStudent(selectedAaaData)
+    setClickSms(true)
+    // console.log(action, selectedAaaData)
   }
 
   const handleSelectChange = (value, itemIndex, dayIndex) => {
@@ -818,7 +836,7 @@ export default function Attendance({ lectureData, students }) {
               variant="bordered"
               color="primary"
               className="w-full"
-              // onClick={() => clickCancelReq(item)}
+              onClick={() => router.push('/message/sms')}
             >
               SMS발송
             </Button>

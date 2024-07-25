@@ -27,7 +27,7 @@ type seeAdviceTypeQuery = {
 
 export default function AdviceMultiSelect({
   defaultValue = null,
-  selecedKey,
+  selectedKey,
   field,
   label,
   handleChange,
@@ -66,13 +66,6 @@ export default function AdviceMultiSelect({
     })
   }, [router])
 
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'teacherType' },
-    })
-  }
-
   return (
     <>
       <Select
@@ -87,7 +80,7 @@ export default function AdviceMultiSelect({
         selectionMode="multiple"
         defaultValue={defaultValue}
         variant="bordered"
-        selectedKeys={selecedKey}
+        selectedKeys={selectedKey}
         onChange={value => {
           if (value.target.value !== '') {
             field.onChange(value)

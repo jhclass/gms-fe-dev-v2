@@ -584,7 +584,7 @@ export default function ConsultWirte() {
                       }
                     >
                       <ManagerSelect
-                        selecedKey={manager}
+                        selectedKey={manager}
                         field={field}
                         label={'담당자'}
                         handleChange={handleManagerChange}
