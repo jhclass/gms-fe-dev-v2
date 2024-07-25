@@ -11,7 +11,7 @@ type searchManageUserQuery = {
 
 export default function TeacherSelect({
   defaultValue = null,
-  selecedKey,
+  selectedKey,
   field,
   label,
   handleChange,
@@ -55,7 +55,7 @@ export default function TeacherSelect({
         className="w-full"
         defaultValue={defaultValue}
         variant="bordered"
-        selectedKeys={[selecedKey]}
+        selectedKeys={[selectedKey]}
         onChange={value => {
           if (value.target.value !== '') {
             field.onChange(value)

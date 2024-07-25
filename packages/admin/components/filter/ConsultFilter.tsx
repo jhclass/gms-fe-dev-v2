@@ -433,7 +433,7 @@ export default function ConsultFilter({
                     }
                   >
                     <ManagerSelect
-                      selecedKey={manager}
+                      selectedKey={manager}
                       field={field}
                       label={'담당자'}
                       handleChange={handleManagerChange}
@@ -468,7 +468,7 @@ export default function ConsultFilter({
                     }
                   >
                     <AdviceSelect
-                      selecedKey={adviceType}
+                      selectedKey={adviceType}
                       field={field}
                       label={'상담분야'}
                       handleChange={handleAdviceChange}

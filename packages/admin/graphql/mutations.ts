@@ -1722,6 +1722,10 @@ export const SEARCH_LECTURES_MUTATION = gql`
       data {
         subject {
           StudentPayment {
+            student {
+              name
+              phoneNum1
+            }
             attendance {
               attendanceDate
               attendanceDateTime

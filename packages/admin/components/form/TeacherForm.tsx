@@ -685,7 +685,7 @@ export default function StudentsWrite({ managerId }) {
                                 ? String(managerData.mPart)
                                 : ' '
                             }
-                            selecedKey={adviceType}
+                            selectedKey={adviceType}
                             field={field}
                             label={
                               <FilterLabel>

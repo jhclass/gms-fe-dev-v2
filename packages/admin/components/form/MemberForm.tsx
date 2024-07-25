@@ -741,7 +741,7 @@ export default function ManagerWrite({ managerId }) {
                                 ? String(managerData.mPart)
                                 : ' '
                             }
-                            selecedKey={selectMpart}
+                            selectedKey={selectMpart}
                             field={field}
                             label={
                               <FilterLabel>

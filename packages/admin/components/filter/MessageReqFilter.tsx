@@ -346,7 +346,7 @@ export default function ConsultFilter({
                     }
                   >
                     <ManagerSelect
-                      selecedKey={manager}
+                      selectedKey={manager}
                       field={field}
                       label={'받는사람'}
                       handleChange={handleManagerChange}

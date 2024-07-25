@@ -571,7 +571,7 @@ export default function SubjectWrite() {
                     name="teacherName"
                     render={({ field, fieldState }) => (
                       <TeacherSelect
-                        selecedKey={teacher}
+                        selectedKey={teacher}
                         field={field}
                         label={'강사명'}
                         handleChange={handleTeacherChange}

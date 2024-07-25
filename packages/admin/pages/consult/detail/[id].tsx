@@ -844,7 +844,7 @@ export default function ConsultDetail() {
                         }
                       >
                         <ManagerSelect
-                          selecedKey={manager}
+                          selectedKey={manager}
                           field={field}
                           label={'담당자'}
                           defaultValue={studentState ? studentState.pic : null}

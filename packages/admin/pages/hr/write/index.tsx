@@ -567,7 +567,7 @@ export default function ManagerWrite() {
                           }
                         >
                           <AdviceMultiSelect
-                            selecedKey={selectMpart}
+                            selectedKey={selectMpart}
                             field={field}
                             label={
                               <FilterLabel>

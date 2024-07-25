@@ -631,7 +631,7 @@ export default function LectureWrite() {
                         name="teachersId"
                         render={({ field, fieldState }) => (
                           <TeacherMultiSelectID
-                            selecedKey={teacher}
+                            selectedKey={teacher}
                             field={field}
                             label={
                               <FilterLabel>

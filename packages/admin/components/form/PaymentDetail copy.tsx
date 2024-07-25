@@ -850,7 +850,7 @@ export default function StudentsWriteCourse({
                         }
                       >
                         <ManagerSelectID
-                          selecedKey={subjectManager}
+                          selectedKey={subjectManager}
                           field={field}
                           label={'수강 담당자'}
                           defaultValue={studentPaymentData?.processingManagerId}

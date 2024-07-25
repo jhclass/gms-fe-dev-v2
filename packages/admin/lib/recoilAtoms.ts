@@ -293,6 +293,16 @@ export const bankNameState = atom({
   },
 })
 
+// SMS data
+export const attendanceSMSState = atom<boolean>({
+  key: 'attendanceSMS',
+  default: false,
+})
+export const attendanceSelectedStudentState = atom<[]>({
+  key: 'attendanceSelectedStudent',
+  default: [],
+})
+
 //filter
 export const consultFilterActiveState = atom<boolean>({
   key: 'consultFilterActive',

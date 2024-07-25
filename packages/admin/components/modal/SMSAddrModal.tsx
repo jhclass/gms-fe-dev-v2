@@ -46,7 +46,7 @@ export default function SMSAddrModal({
 
   const clickAdd = () => {
     setSendGruop(groupSelected)
-    setValue('receiver', groupSelected)
+    setValue('receiver', groupSelected, { shouldDirty: true })
     setGroupSelected([])
     onClose()
   }
@@ -55,7 +55,7 @@ export default function SMSAddrModal({
     const updatedGroup = [...groupSelected]
     updatedGroup.splice(index, 1)
     setGroupSelected(updatedGroup)
-    setValue('receiver', updatedGroup)
+    setValue('receiver', updatedGroup, { shouldDirty: true })
   }
 
   return (

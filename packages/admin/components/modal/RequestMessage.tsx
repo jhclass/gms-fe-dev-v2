@@ -151,7 +151,7 @@ export default function RequestMessage({
                                 }
                               >
                                 <ManagerSelectID
-                                  selecedKey={manager}
+                                  selectedKey={manager}
                                   field={field}
                                   label={'To.'}
                                   handleChange={handleManagerChange}
