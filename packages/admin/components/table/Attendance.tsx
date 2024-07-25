@@ -297,7 +297,7 @@ export default function Attendance({ lectureData, students }) {
 
     const selectedAaaData = selectedIds.map(id => {
       const student = data.nodes.find(node => node.id === id)
-      return student ? student.student : null // aaa 필드만 반환
+      return student ? student.student : null
     })
     setSelectedStudent(selectedAaaData)
     setClickSms(true)
