@@ -101,8 +101,9 @@ const ScrollBox = styled.div`
   .flexList {
     padding: 0.5rem;
     max-height: 20vh;
+    height: 100%;
     @media screen and (max-width: 1024px) {
-      max-height: 60vh !important;
+      max-height: 60vh;
     }
   }
 `
