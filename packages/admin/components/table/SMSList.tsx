@@ -29,7 +29,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const FlexBox = styled.div`
@@ -104,7 +104,7 @@ const SendState = styled.div`
   align-items: center;
 
   &.succ {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   &.err {
@@ -222,11 +222,11 @@ export default function SMSList() {
                 base: `bg-white px-3 py-1 border-2 ${
                   item.rDate === null
                     ? item.successType === 'Y'
-                      ? 'border-[#007de9]'
-                      : 'border-[#ff5900]'
+                      ? 'border-primary'
+                      : 'border-accent'
                     : item.successType === 'Y'
-                    ? 'border-[#07bbae]'
-                    : 'border-[#71717a]'
+                    ? 'border-secondary'
+                    : 'border-default'
                 }`,
               }}
             >

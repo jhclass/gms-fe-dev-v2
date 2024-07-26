@@ -92,7 +92,7 @@ const TadviceType = styled.div`
   }
 `
 const OnExposure = styled.span`
-  color: #007de9;
+  color: ${({ theme }) => theme.colors.primary};
 `
 const OffExposure = styled.span`
   color: #71717a;

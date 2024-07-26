@@ -579,7 +579,7 @@ export default function TestCate() {
                             size="sm"
                             radius="sm"
                             variant="solid"
-                            className="text-white bg-flag1"
+                            className="text-white bg-accent"
                           >
                             저장
                           </Button>
@@ -600,7 +600,7 @@ export default function TestCate() {
                             size="sm"
                             radius="sm"
                             variant="solid"
-                            className="text-white bg-flag1"
+                            className="text-white bg-accent"
                           >
                             저장
                           </Button>
@@ -621,7 +621,7 @@ export default function TestCate() {
                             size="sm"
                             radius="sm"
                             variant="solid"
-                            className="text-white bg-flag1"
+                            className="text-white bg-accent"
                           >
                             저장
                           </Button>
@@ -642,7 +642,7 @@ export default function TestCate() {
                             size="sm"
                             radius="sm"
                             variant="solid"
-                            className="text-white bg-flag1"
+                            className="text-white bg-accent"
                           >
                             저장
                           </Button>
@@ -663,7 +663,7 @@ export default function TestCate() {
                             size="sm"
                             radius="sm"
                             variant="solid"
-                            className="text-white bg-flag1"
+                            className="text-white bg-accent"
                           >
                             저장
                           </Button>

@@ -113,7 +113,6 @@ export default function TypeIndex({ isOpen, onClose, category }) {
 
   useEffect(() => {
     if (data && data.seeAdviceType) {
-      console.log('넌왜안먹혀?')
       setItems(data.seeAdviceType.adviceType)
     }
   }, [data])

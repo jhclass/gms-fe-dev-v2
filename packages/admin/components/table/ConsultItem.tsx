@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { progressStatusState } from '@/lib/recoilAtoms'
@@ -173,15 +173,16 @@ const EllipsisBox = styled.p`
 `
 
 const isDisplayFlag = (date: string, step: number): string => {
+  const theme = useTheme()
   const currentDate = new Date()
   const differenceInDays = Math.floor(
     (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
   )
 
   if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
+    return theme.colors.primary
   } else if (differenceInDays >= 3 && step === 999) {
-    return '#FF5900'
+    return theme.colors.accent
   } else {
     return 'transparent'
   }

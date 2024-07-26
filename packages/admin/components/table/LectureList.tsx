@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
 import LectureItem from '@/components/table/LectureItem'
@@ -22,7 +22,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -185,6 +185,7 @@ type seeLectures = {
 }
 
 export default function LectureList() {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
 
@@ -217,10 +218,10 @@ export default function LectureList() {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
+            <span style={{ background: theme.colors.primary }}></span> : 신규
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미처리
+            <span style={{ background: theme.colors.accent }}></span> : 미처리
           </ColorCip>
         </ColorHelp>
       </TTopic>

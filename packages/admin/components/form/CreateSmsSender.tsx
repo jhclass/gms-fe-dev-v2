@@ -225,7 +225,7 @@ export default function CreateSmsSender({ isActive, category }) {
               size="sm"
               // variant="light"
               variant="solid"
-              className="bg-[#ff5900] text-white px-2 h-unit-7"
+              className="bg-accent text-white px-2 h-unit-7"
               onClick={() => notiOnOPen()}
             >
               자세히보기

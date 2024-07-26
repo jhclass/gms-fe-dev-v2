@@ -26,7 +26,7 @@ const FlexCardBox = styled.div<{ $lectureAssignment: boolean }>`
   color: #11181c;
   &:hover {
     cursor: pointer;
-    border: 2px solid #007de9;
+    border: 2px solid ${({ theme }) => theme.colors.primary};
     background: rgba(255, 255, 255, 0.8);
   }
 `

@@ -95,7 +95,7 @@ export default function ConsultRegistered() {
                 size="sm"
                 radius="sm"
                 variant="solid"
-                className="text-white bg-flag1"
+                className="text-white bg-accent"
                 onClick={() => clickDelete(checkItem)}
               >
                 {checkItem?.length !== 0 && <>{checkItem?.length}건 </>}

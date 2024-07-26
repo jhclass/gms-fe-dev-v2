@@ -5,7 +5,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useEffect, useRef, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { SEE_ALARMS_QUERY } from '@/graphql/queries'
 import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
@@ -47,7 +47,7 @@ const NotiNum = styled.span`
   position: absolute;
   right: -0.2rem;
   top: -0.2rem;
-  background: #007de9;
+  background: ${({ theme }) => theme.colors.primary};
   font-size: 0.8rem;
   color: #fff;
   line-height: 1rem;
@@ -203,6 +203,7 @@ type seeAlarmsQuery = {
 }
 
 export default function HeaderNoti({}) {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(30)
   const [isListOpen, setIsListOpen] = useState(false)
@@ -335,7 +336,7 @@ export default function HeaderNoti({}) {
               <Button
                 size="sm"
                 variant="solid"
-                className="bg-[#ff5900] text-white"
+                className="text-white bg-accent"
                 onClick={clickReadAll}
               >
                 <p className="text-[1rem]">
@@ -356,7 +357,7 @@ export default function HeaderNoti({}) {
                       <NotiItem key={index}>
                         <ClickBox>
                           <NotiFlag
-                            style={{ background: '#07bbae' }}
+                            style={{ background: theme.colors.secondary }}
                           ></NotiFlag>
                           <ReqBox>
                             <ReqTop>

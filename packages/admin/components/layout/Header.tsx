@@ -224,7 +224,7 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
     align-items: center;
     font-size: 0.875rem;
     &:hover {
-      color: #007de9;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
   button {

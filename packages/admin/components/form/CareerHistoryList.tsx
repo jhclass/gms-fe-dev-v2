@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 
 const TableArea = styled.div`
   padding-top: 2rem;
-  border-top: 1px solid #07bbae;
+  border-top: 1px solid ${({ theme }) => theme.colors.secondary};
 `
 const TableWrap = styled.div`
   width: 100%;
@@ -223,10 +223,10 @@ export default function CareerHistoryList() {
         <Button
           size="md"
           // onClick={loadMore}
-          className="bg-white border-[#07bbae] w-full text-[#07bbae]"
+          className="w-full bg-white border-secondary text-secondary"
         >
           더보기{' '}
-          <span className="text-[#07bbae] text-[1rem]">
+          <span className="text-secondary text-[1rem]">
             <i className="xi-plus-circle" />
           </span>
         </Button>

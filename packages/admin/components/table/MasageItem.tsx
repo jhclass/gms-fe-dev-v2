@@ -82,21 +82,6 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-const isDisplayFlag = (date: string, step: number): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && step === 999) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
-
 export default function ConsolutItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex

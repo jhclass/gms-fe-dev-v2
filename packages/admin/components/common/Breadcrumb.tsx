@@ -78,7 +78,7 @@ const BoxRt = styled.div`
 const FilterBtn = styled(motion.button)`
   display: flex;
   height: 2rem;
-  border: 1px solid #007de9;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
   border-radius: 0.5rem;
   align-items: center;
   margin-right: 0.5rem;
@@ -187,7 +187,7 @@ export default function Breadcrumb(props) {
                   size="sm"
                   radius="sm"
                   variant="solid"
-                  className="text-white bg-flag1"
+                  className="text-white bg-accent"
                   onClick={() => router.push(currentCate.isWrite)}
                 >
                   등록

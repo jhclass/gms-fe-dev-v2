@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
@@ -44,7 +44,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -198,7 +198,7 @@ const Tamount = styled.div<{ $width: number }>`
   font-weight: 600;
 
   &.card {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
   &.cash {
     color: #ff5900;
@@ -239,6 +239,7 @@ const Nolist = styled.div`
 `
 
 export default function ReqRefundFilterTable({ studentFilter }) {
+  const theme = useTheme()
   const { userLogs } = useUserLogsMutation()
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
@@ -389,10 +390,10 @@ export default function ReqRefundFilterTable({ studentFilter }) {
         </TopBox>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
+            <span style={{ background: theme.colors.primary }}></span> : 신규
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미배정
+            <span style={{ background: theme.colors.accent }}></span> : 미배정
           </ColorCip>
         </ColorHelp>
       </TTopic>

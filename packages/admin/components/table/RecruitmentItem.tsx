@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import Link from 'next/link'
 
 type ConsultItemProps = {
@@ -122,6 +122,7 @@ const EllipsisBox = styled.p`
 `
 
 export default function RecruitmentItem(props) {
+  const theme = useTheme()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const subject = props.tableData
@@ -133,9 +134,9 @@ export default function RecruitmentItem(props) {
     )
 
     if (differenceInDays >= 0) {
-      return '#007de9'
+      return theme.colors.primary
     } else {
-      return '#71717a'
+      return theme.colors.default
     }
   }
   const flagString = isDisplayFlag(subject.startDate)

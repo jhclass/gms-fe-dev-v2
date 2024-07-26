@@ -502,7 +502,7 @@ export default function StudentsWrite({ managerId }) {
                       size="md"
                       radius="md"
                       variant="solid"
-                      className="w-full mt-1 text-white bg-flag1"
+                      className="w-full mt-1 text-white bg-accent"
                       onClick={onOpen}
                     >
                       비밀번호 변경

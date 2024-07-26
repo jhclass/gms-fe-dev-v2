@@ -74,20 +74,20 @@ const SendType = styled.p`
 `
 
 const SendState = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.default};
   font-size: 0.875rem;
   font-weight: 700;
 
   &.res {
-    color: #07bbae;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 
   &.succ {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   &.err {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 
@@ -189,9 +189,7 @@ export default function SMSItem({
               key={index}
               shadow="none"
               classNames={{
-                base: `bg-white px-3 py-1 border-2 ${
-                  type === '개인' ? 'border-[#07bbae]' : 'border-[#007de9]'
-                }`,
+                base: 'bg-white px-3 py-1 border-2 border-primary',
               }}
             >
               <CardHeader className="flex flex-col gap-3 p-2">
@@ -234,7 +232,7 @@ export default function SMSItem({
                 <Button
                   size="sm"
                   variant="solid"
-                  className="bg-[#ff5900] text-white"
+                  className="text-white bg-accent"
                   onClick={() => handleDelete(item.id)}
                 >
                   삭제

@@ -536,10 +536,10 @@ export default function RecommendationList() {
         <Button
           size="md"
           // onClick={loadMore}
-          className="bg-white border-[#07bbae] w-full text-[#07bbae]"
+          className="bg-white border-secondary w-full text-secondary"
         >
           더보기{' '}
-          <span className="text-[#07bbae] text-[1rem]">
+          <span className="text-secondary text-[1rem]">
             <i className="xi-plus-circle" />
           </span>
         </Button>

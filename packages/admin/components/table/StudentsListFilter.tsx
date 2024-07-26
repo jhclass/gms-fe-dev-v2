@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 import StudentItem from './StudentItem'
 import { useRecoilState } from 'recoil'
@@ -38,7 +38,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -186,6 +186,7 @@ const Nolist = styled.div`
 `
 
 export default function StudentsFilterTable({ studentFilter }) {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(studentPageState)
   const [currentLimit] = useState(10)
   const [searchStudentFilterMutation] = useMutation(
@@ -236,10 +237,10 @@ export default function StudentsFilterTable({ studentFilter }) {
         </TopBox>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
+            <span style={{ background: theme.colors.primary }}></span> : 신규
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미배정
+            <span style={{ background: theme.colors.accent }}></span> : 미배정
           </ColorCip>
         </ColorHelp>
       </TTopic>

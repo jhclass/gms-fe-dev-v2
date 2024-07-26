@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import { useRecoilState } from 'recoil'
@@ -22,7 +22,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -134,6 +134,7 @@ const Nolist = styled.div`
 `
 
 export default function RecruitmentTable() {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(recruitmentPageState)
   const [currentLimit] = useState(10)
   const { loading, error, data, refetch } = useQuery(SEE_SUBJECT_QUERY, {
@@ -163,10 +164,10 @@ export default function RecruitmentTable() {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 모집중
+            <span style={{ background: theme.colors.primary }}></span> : 모집중
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#71717a' }}></span> : 종료
+            <span style={{ background: theme.colors.default }}></span> : 종료
           </ColorCip>
         </ColorHelp>
       </TTopic>

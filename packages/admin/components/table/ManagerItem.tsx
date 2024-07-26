@@ -108,7 +108,7 @@ const Tname = styled.div`
   width: 9%;
   padding: 1rem;
   font-size: inherit;
-  color: #007de9;
+  color: ${({ theme }) => theme.colors.primary};
   min-width: ${1200 * 0.09}px;
   font-weight: 600;
 `
@@ -184,7 +184,7 @@ const ResignTag = styled.span`
 `
 const DateTag = styled.span`
   display: inline-block;
-  background: #007de9;
+  background: ${({ theme }) => theme.colors.primary};
   border-radius: 0.5rem;
   color: #fff;
   font-size: 0.8rem;

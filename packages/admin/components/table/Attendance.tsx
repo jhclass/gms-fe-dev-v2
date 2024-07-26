@@ -732,7 +732,7 @@ export default function Attendance({ lectureData, students }) {
                                       size="sm"
                                       radius="sm"
                                       variant="solid"
-                                      className="text-white bg-[#07bbae]"
+                                      className="text-white bg-secondary"
                                       onClick={() => onEdit(index)}
                                     >
                                       수정
@@ -746,7 +746,7 @@ export default function Attendance({ lectureData, students }) {
                                       size="sm"
                                       radius="sm"
                                       variant="solid"
-                                      className="text-white bg-[#07bbae]"
+                                      className="text-white bg-secondary"
                                       onClick={() => onSubmit(index)}
                                     >
                                       저장
@@ -763,7 +763,7 @@ export default function Attendance({ lectureData, students }) {
                                       size="sm"
                                       radius="sm"
                                       variant="solid"
-                                      className="text-white bg-[#07bbae]"
+                                      className="text-white bg-secondary"
                                       onClick={() => onSubmit(index)}
                                     >
                                       저장
@@ -776,7 +776,7 @@ export default function Attendance({ lectureData, students }) {
                                       size="sm"
                                       radius="sm"
                                       variant="solid"
-                                      className="text-white bg-[#07bbae]"
+                                      className="text-white bg-secondary"
                                       onClick={() => onEdit(index)}
                                     >
                                       수정
@@ -806,7 +806,7 @@ export default function Attendance({ lectureData, students }) {
                                 size="sm"
                                 radius="sm"
                                 variant="solid"
-                                className="text-white bg-[#07bbae]"
+                                className="text-white bg-secondary"
                               >
                                 수정
                               </Button>

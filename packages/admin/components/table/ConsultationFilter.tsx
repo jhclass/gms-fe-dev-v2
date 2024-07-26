@@ -1,7 +1,7 @@
 import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
@@ -170,6 +170,7 @@ type seeFavoriteState = {
   seeFavorite: StudentState[]
 }
 export default function ConsolutationFilterTable({ studentFilter }) {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit, setCurrentLimit] = useRecoilState(
     consultFilterLimitState,
@@ -226,8 +227,11 @@ export default function ConsolutationFilterTable({ studentFilter }) {
         setCurrentLimit={setCurrentLimit}
         resetList={resetList}
         colorInfo={[
-          { background: '#007de9', text: '신규' },
-          { background: '#FF5900', text: '미처리' },
+          {
+            background: theme.colors.primary,
+            text: '신규',
+          },
+          { background: theme.colors.accent, text: '미처리' },
         ]}
       />
       <TableArea>

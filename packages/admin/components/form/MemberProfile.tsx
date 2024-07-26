@@ -286,7 +286,7 @@ export default function Profile() {
                     size="sm"
                     color={'primary'}
                     onClick={handleButtonClick}
-                    className="bg-[#07bbae]"
+                    className="bg-secondary"
                   >
                     프로필 변경
                   </Button>
@@ -337,7 +337,7 @@ export default function Profile() {
                       size="md"
                       radius="md"
                       variant="solid"
-                      className="w-full mt-1 text-white bg-flag1"
+                      className="w-full mt-1 text-white bg-accent"
                       onClick={onOpen}
                     >
                       비밀번호 변경
@@ -613,7 +613,7 @@ export default function Profile() {
                     height="2.5rem"
                     typeBorder={true}
                     fontColor="#fff"
-                    bgColor="#007de9"
+                    bgColor="${({ theme }) => theme.colors.primary}"
                   >
                     정보 수정
                   </Button2>
@@ -621,9 +621,9 @@ export default function Profile() {
                     buttonType="button"
                     width="100%"
                     height="2.5rem"
-                    fontColor="#007de9"
+                    fontColor="${({ theme }) => theme.colors.primary}"
                     bgColor="#fff"
-                    borderColor="#007de9"
+                    borderColor="${({ theme }) => theme.colors.primary}"
                     typeBorder={true}
                     onClick={() => router.back()}
                   >

@@ -323,7 +323,7 @@ export default function StudentsEditInfo() {
                         variant={noDouble ? 'bordered' : 'solid'}
                         color="primary"
                         className={`w-full ${
-                          noDouble ? 'text-[#007de9]' : 'bg-flag1 text-white'
+                          noDouble ? 'text-primary' : 'bg-accent text-white'
                         }  `}
                         onClick={() => {
                           if (!noDouble) {

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRouter } from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { useRecoilState } from 'recoil'
@@ -28,7 +28,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -173,7 +173,7 @@ const Tamount = styled.div<{ $width: number }>`
   font-weight: 600;
 
   &.card {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
   &.cash {
     color: #ff5900;
@@ -214,6 +214,7 @@ const Nolist = styled.div`
 `
 
 export default function RequestRefundTable() {
+  const theme = useTheme()
   const router = useRouter()
   const [currentPage, setCurrentPage] = useRecoilState(reqRefundPageState)
   const [currentLimit] = useState(10)
@@ -346,10 +347,10 @@ export default function RequestRefundTable() {
           </Ttotal>
           <ColorHelp>
             <ColorCip>
-              <span style={{ background: '#007de9' }}></span> : 현금
+              <span style={{ background: theme.colors.primary }}></span> : 현금
             </ColorCip>
             <ColorCip>
-              <span style={{ background: '#FF5900' }}></span> : 카드
+              <span style={{ background: theme.colors.accent }}></span> : 카드
             </ColorCip>
           </ColorHelp>
         </TTopic>

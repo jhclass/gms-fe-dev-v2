@@ -498,8 +498,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.unassigned
-                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
-                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
+                                  ? 'w-full text-white bg-secondary opacity-100'
+                                  : 'w-full text-secondary border-secondary opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.unassigned)
@@ -525,8 +525,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.assignment
-                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
-                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
+                                  ? 'w-full text-white bg-secondary opacity-100'
+                                  : 'w-full text-secondary border-secondary opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.assignment)
@@ -552,8 +552,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.withdrawal
-                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
-                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
+                                  ? 'w-full text-white bg-secondary opacity-100'
+                                  : 'w-full text-secondary border-secondary opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.withdrawal)
@@ -708,7 +708,7 @@ export default function StudentsWrite() {
                           size="md"
                           radius="md"
                           variant="solid"
-                          className="w-full mx-auto text-white bg-flag1 lg:w-[50%]"
+                          className="w-full mx-auto text-white bg-accent lg:w-[50%]"
                           onClick={() =>
                             router.push(`/students/write/payment/${paymentId}`)
                           }
@@ -738,7 +738,7 @@ export default function StudentsWrite() {
                           size="sm"
                           radius="sm"
                           variant="solid"
-                          className="text-white bg-flag1"
+                          className="text-white bg-accent"
                           onClick={() => {
                             {
                               router.push(

@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { Fragment, useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import ConsultItem from '@/components/table/ConsultItem'
 import {
   MME_FAVO_QUERY,
@@ -199,6 +199,7 @@ type seeFavoriteState = {
 }
 
 export default function ConsolutationTable() {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit, setCurrentLimit] = useRecoilState(consultLimitState)
   const [totalCount, setTotalCount] = useState(0)
@@ -263,8 +264,11 @@ export default function ConsolutationTable() {
         currentLimit={currentLimit}
         setCurrentLimit={setCurrentLimit}
         colorInfo={[
-          { background: '#007de9', text: '신규' },
-          { background: '#FF5900', text: '미처리' },
+          {
+            background: theme.colors.primary,
+            text: '신규',
+          },
+          { background: theme.colors.accent, text: '미처리' },
         ]}
       />
       <TableArea>

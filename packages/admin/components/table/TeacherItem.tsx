@@ -103,7 +103,7 @@ const Tname = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  color: #007de9;
+  color: ${({ theme }) => theme.colors.primary};
   min-width: ${1200 * 0.11}px;
   font-weight: 600;
 `
@@ -169,21 +169,6 @@ const Masking = styled.span`
   -o-filter: blur(2.5px);
   backdrop-filter: blur(2.5px);
 `
-
-const isDisplayFlag = (date: string, step: number): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && step === 999) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
 
 export default function ConsolutItem(props) {
   const grade = useRecoilValue(gradeState)

@@ -84,8 +84,8 @@ const Menu = styled(motion.ul)<{ $isOpen: boolean }>`
 `
 const MenuItem = styled.li<{ $isActive: boolean }>`
   width: 100%;
-  color: ${props => (props.$isActive ? '#007de9' : '#71717a')};
-
+  color: ${props =>
+    props.$isActive ? props.theme.colors.primary : props.theme.colors.default};
   a {
     display: block;
     width: 100%;
@@ -103,7 +103,7 @@ const CateActive = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
-  background: #007de9;
+  background: ${({ theme }) => theme.colors.primary};
   z-index: -1;
   border-radius: 0.375rem;
   width: 100%;

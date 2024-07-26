@@ -44,7 +44,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const Theader = styled.div`
@@ -246,7 +246,7 @@ export default function SubjectModal({
                       size="sm"
                       radius="sm"
                       variant="solid"
-                      className="text-white bg-flag1"
+                      className="text-white bg-accent"
                       onClick={() => {
                         router.push('/subjects')
                       }}

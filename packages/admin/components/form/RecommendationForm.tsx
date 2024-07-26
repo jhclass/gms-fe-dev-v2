@@ -314,7 +314,7 @@ export default function RecommendationForm() {
                         size="sm"
                         variant="solid"
                         color="primary"
-                        className="w-full bg-[#07bbae] text-white"
+                        className="w-full bg-secondary text-white"
                         // onClick={() => setIsOpen(!isOpen)}
                       >
                         추가

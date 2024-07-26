@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import SubjectItem from '@/components/table/SubjectItem'
@@ -23,7 +23,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -177,7 +177,7 @@ const Tteacher = styled.div`
   vertical-align: middle;
 `
 const OnExposure = styled.span`
-  color: #007de9;
+  color: ${({ theme }) => theme.colors.primary};
 `
 const OffExposure = styled.span`
   color: #71717a;
@@ -236,6 +236,7 @@ type seeSubjectQuery = {
   seeSubject: SeeSubjectResult
 }
 export default function SubjectTable() {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(subjectPageState)
   const [currentLimit] = useState(10)
   const { error, data, refetch } = useSuspenseQuery<seeSubjectQuery>(
@@ -284,11 +285,13 @@ export default function SubjectTable() {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 노출
+            <span style={{ background: theme.colors.primary }}></span> : 노출
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#71717a', opacity: '0.8' }}></span> :
-            미노출
+            <span
+              style={{ background: theme.colors.default, opacity: '0.8' }}
+            ></span>{' '}
+            : 미노출
           </ColorCip>
         </ColorHelp>
       </TTopic>
@@ -330,7 +333,9 @@ export default function SubjectTable() {
                   <TableRow>
                     <Tflag
                       style={{
-                        background: item.exposure ? '#007de9' : '#71717a',
+                        background: item.exposure
+                          ? theme.colors.primary
+                          : theme.colors.default,
                         opacity: item.exposure ? '1' : '0.8',
                       }}
                     ></Tflag>

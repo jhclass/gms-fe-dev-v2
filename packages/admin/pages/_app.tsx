@@ -10,6 +10,8 @@ import { NextPage } from 'next'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { ThemeProvider } from 'styled-components'
+import { lightTheme } from '@/styles/theme'
 // import { __DEV__ } from '@apollo/client/utilities/globals'
 // import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -48,18 +50,20 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ApolloProvider client={apolloClient}>
       <RecoilRoot>
-        <NextUIProvider>
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-            />
-            <title>HMS</title>
-          </Head>
-          <GlobalStyle />
-          <ToastContainer limit={toastLimit} />
-          {getLayout(<Component {...pageProps} />)}
-        </NextUIProvider>
+        <ThemeProvider theme={lightTheme}>
+          <NextUIProvider>
+            <Head>
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+              />
+              <title>HMS</title>
+            </Head>
+            <GlobalStyle />
+            <ToastContainer limit={toastLimit} />
+            {getLayout(<Component {...pageProps} />)}
+          </NextUIProvider>
+        </ThemeProvider>
       </RecoilRoot>
     </ApolloProvider>
   )

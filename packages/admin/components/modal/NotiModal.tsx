@@ -73,7 +73,7 @@ const AreaBox = styled.div`
 `
 
 const ImgBox = styled.figure`
-  border-top: 2px solid #007de9;
+  border-top: 2px solid ${({ theme }) => theme.colors.primary};
   padding: 1rem;
   margin-top: 1rem;
   flex: 1;

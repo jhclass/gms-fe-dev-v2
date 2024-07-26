@@ -319,7 +319,7 @@ export default function StudentsWrite() {
                         radius="sm"
                         variant="solid"
                         color="primary"
-                        className="text-white bg-flag1"
+                        className="text-white bg-accent"
                         onClick={() => {
                           {
                             router.push(
