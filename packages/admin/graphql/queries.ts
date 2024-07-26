@@ -164,6 +164,24 @@ export const SEE_ADVICE_TYPE_QUERY = gql`
   }
 `
 
+export const SEE_ADVICE_TYPE_ORDER_QUERY = gql`
+  query SeeAdviceType($category: String!, $page: Int, $limit: Int) {
+    seeAdviceType(category: $category, page: $page, limit: $limit) {
+      ok
+      message
+      error
+      adviceType {
+        category
+        id
+        indexNum
+        onOff
+        type
+      }
+      totalCount
+    }
+  }
+`
+
 export const CREATE_STAMP_QUERY = gql`
   query Query($manageUserId: Int!) {
     createStamp(manageUserId: $manageUserId) {

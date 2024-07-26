@@ -1,29 +1,121 @@
-import { Chip } from '@nextui-org/react'
-import { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-registerLocale('ko', ko)
-import { useMutation } from '@apollo/client'
+import { Button, Chip } from '@nextui-org/react'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import {
   CHANGE_ORDER_AT_MUTATION,
   EDIT_ADVICE_TYPE_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { styled } from 'styled-components'
+import {
+  SEE_ADVICE_TYPE_ORDER_QUERY,
+  SEE_ADVICE_TYPE_QUERY,
+} from '@/graphql/queries'
+import { useEffect, useState } from 'react'
+import { ResultAdviceType } from '@/src/generated/graphql'
+
+const ChipBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`
+const MoreBtn = styled.div`
+  border-top: 1px solid #eee;
+  display: flex;
+`
+
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
+}
 
 export default function CreateAdviceTypeChip({
-  adviceList,
-  refetch,
   category,
-  seeRefetch,
-  openOrder,
-  setPage,
-  setOrderPage,
+  setTotalCount,
+  typeIsOpne,
 }) {
   const { userLogs } = useUserLogsMutation()
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(50)
   const [editAdvice] = useMutation(EDIT_ADVICE_TYPE_MUTATION)
   const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
   const createNumberArray = n => Array.from({ length: n }, (_, i) => i + 1)
+
+  const [isFetching, setIsFetching] = useState(false)
+  const [adviceList, setAdviceList] = useState([])
+  const {
+    error,
+    data,
+    fetchMore,
+    refetch: seeRefetch,
+  } = useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
+    variables: {
+      page: 1,
+      category: category,
+      limit: limit,
+    },
+  })
+
+  const fetchMoreData = async nextPage => {
+    await fetchMore({
+      variables: { page: nextPage },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prevResult
+
+        console.log(prevResult)
+        console.log(fetchMoreResult)
+        const newTypes = [
+          ...prevResult.seeAdviceType.adviceType,
+          ...fetchMoreResult.seeAdviceType.adviceType,
+        ]
+
+        setAdviceList(newTypes)
+
+        return {
+          ...prevResult,
+          seeAdviceType: {
+            ...prevResult.seeAdviceType,
+            data: newTypes,
+            totalCount: fetchMoreResult.seeAdviceType.totalCount,
+          },
+        }
+      },
+    })
+    setPage(nextPage)
+  }
+
+  useEffect(() => {
+    if (isFetching) {
+      const nextPage = page + 1
+      fetchMoreData(nextPage).finally(() => {
+        setIsFetching(false)
+      })
+    }
+  }, [isFetching])
+
+  const loadMore = () => {
+    if (page < Math.ceil(data?.seeAdviceType.totalCount / limit)) {
+      setIsFetching(true)
+    }
+  }
+
+  useEffect(() => {
+    if (data && data.seeAdviceType) {
+      setAdviceList(data.seeAdviceType.adviceType)
+      setTotalCount(data?.seeAdviceType.totalCount)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (typeIsOpne) {
+      setPage(1)
+      seeRefetch({
+        page: 1,
+        category: category,
+        limit: limit,
+      }).then(result => {
+        setAdviceList(result.data.seeAdviceType.adviceType)
+      })
+    }
+  }, [typeIsOpne])
 
   const deleteType = async item => {
     const isDelete = confirm(
@@ -37,6 +129,16 @@ export default function CreateAdviceTypeChip({
           editAdviceTypeId: item.id,
           onOff: 'N',
         },
+        refetchQueries: [
+          {
+            query: SEE_ADVICE_TYPE_ORDER_QUERY,
+            variables: {
+              page: 1,
+              limit: 30,
+              category: category,
+            },
+          },
+        ],
       })
       const typeID = adviceList
         .filter(type => type.id !== item.id)
@@ -55,15 +157,7 @@ export default function CreateAdviceTypeChip({
         throw new Error(`${category} 삭제 후 순서 재설정 실패`)
       }
       setPage(1)
-      refetch()
-      if (openOrder) {
-        setOrderPage(1)
-        seeRefetch({
-          page: 1,
-          category: category,
-          limit: 30,
-        })
-      }
+      seeRefetch()
 
       alert(`${category}가 삭제되었습니다.`)
       userLogs(`${item.type} ${category} 삭제`)
@@ -74,17 +168,34 @@ export default function CreateAdviceTypeChip({
 
   return (
     <>
-      {adviceList &&
-        adviceList?.map((item, index) => (
-          <Chip
-            key={index}
-            variant="bordered"
-            onClose={() => deleteType(item)}
-            className={'hover:border-primary'}
+      <ChipBox>
+        {adviceList &&
+          adviceList.map((item, index) => (
+            <Chip
+              key={index}
+              variant="bordered"
+              onClose={() => deleteType(item)}
+              className={'hover:border-primary'}
+            >
+              {item.type}
+            </Chip>
+          ))}
+      </ChipBox>
+
+      {page < Math.ceil(data?.seeAdviceType.totalCount / limit) && (
+        <MoreBtn>
+          <Button
+            color="primary"
+            onClick={loadMore}
+            className="bg-[transparent] w-[100%] text-[#11181c]"
           >
-            {item.type}
-          </Chip>
-        ))}
+            더보기{' '}
+            <span className="text-primary text-[1rem]">
+              <i className="xi-plus-circle" />
+            </span>
+          </Button>
+        </MoreBtn>
+      )}
     </>
   )
 }

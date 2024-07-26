@@ -3,16 +3,18 @@ import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 // import Button from '@/components/common/Button'
 import { Button, Input, useDisclosure } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
+import { registerLocale } from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import ko from 'date-fns/locale/ko'
+registerLocale('ko', ko)
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { CREATE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
-import {
-  SEE_ADVICE_TYPE_ORDER_QUERY,
-  SEE_ADVICE_TYPE_QUERY,
-} from '@/graphql/queries'
+import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import CreateAdviceTypeChip from './CreateAdviceTypeChip'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import TypeIndex from '@/components/modal/TypeIndex'
+import { ResultAdviceType } from '@/src/generated/graphql'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -49,6 +51,15 @@ const FilterForm = styled.form`
   display: flex;
   width: 100%;
   gap: 1rem;
+`
+const BoxTop = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`
+const MoreBtn = styled.div`
+  border-top: 1px solid #eee;
+  display: flex;
 `
 const BoxBtn = styled.div`
   display: flex;
@@ -109,11 +120,50 @@ const FilterVariants = {
     },
   },
 }
-
+type seeAdviceTypeQuery = {
+  seeAdviceType: ResultAdviceType
+}
 export default function CreateAdviceType({ isActive, category }) {
   const { userLogs } = useUserLogsMutation()
   const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
-  const [totalCount, setTotalCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(50)
+  const [adviceList, setAdviceList] = useState([])
+  const [orderPage, setOrderPage] = useState(1)
+  const [orderAdviceList, setOrderAdviceList] = useState([])
+  const [openOrder, setOpenOrder] = useState(false)
+  const {
+    error,
+    data,
+    refetch: seeRefetch,
+  } = useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_QUERY, {
+    variables: {
+      page: page,
+      category: category,
+      limit: limit,
+    },
+  })
+  const totalCount = data?.seeAdviceType.totalCount
+  // const [seeAdviceQuery] = useLazyQuery(SEE_ADVICE_TYPE_QUERY, {
+  //   onCompleted: result => {
+  //     const orederAdvice = result?.seeAdviceType.adviceType
+  //     setOrderAdviceList(orederAdvice)
+  //   },
+  // })
+  const [seeAdviceQuery, { refetch: orderRefetch }] = useLazyQuery(
+    SEE_ADVICE_TYPE_QUERY,
+    {
+      onCompleted: result => {
+        if (orderPage === 1) {
+          setOrderAdviceList(result.seeAdviceType.adviceType)
+        } else {
+          const newAdvice = result?.seeAdviceType.adviceType
+          setOrderAdviceList(prevList => [...prevList, ...newAdvice])
+        }
+      },
+    },
+  )
+
   const {
     isOpen: typeIsOpne,
     onOpen: typeOnOPen,
@@ -130,8 +180,30 @@ export default function CreateAdviceType({ isActive, category }) {
     },
   })
 
+  useEffect(() => {
+    if (data) {
+      if (page === 1) {
+        setAdviceList(data.seeAdviceType.adviceType)
+      } else {
+        setAdviceList(prevList => [
+          ...prevList,
+          ...data.seeAdviceType.adviceType,
+        ])
+      }
+    }
+  }, [data, page])
+
   const openOrderChange = () => {
+    setOrderPage(1)
+    seeAdviceQuery({
+      variables: {
+        page: 1,
+        category: category,
+        limit: 30,
+      },
+    })
     typeOnOPen()
+    setOpenOrder(true)
   }
 
   const onSubmit = async data => {
@@ -144,33 +216,33 @@ export default function CreateAdviceType({ isActive, category }) {
           indexNum: totalCount + 1,
           category: category,
         },
-        refetchQueries: [
-          {
-            query: SEE_ADVICE_TYPE_QUERY,
-            variables: {
-              page: 1,
-              limit: 50,
-              category: category,
-            },
-          },
-          {
-            query: SEE_ADVICE_TYPE_ORDER_QUERY,
-            variables: {
-              page: 1,
-              limit: 30,
-              category: category,
-            },
-          },
-        ],
       })
       if (!result.data.createAdviceType.ok) {
         throw new Error(`${category} 등록 실패`)
+      }
+      setPage(1)
+      seeRefetch()
+      if (openOrder) {
+        setOrderPage(1)
+        seeAdviceQuery({
+          variables: {
+            page: 1,
+            category: category,
+            limit: 30,
+          },
+        })
       }
       alert(`${category} 분야가 등록되었습니다.`)
       userLogs(`${data.type} ${category} 등록`)
       reset()
     } catch (error) {
       console.error(`${category} 등록 중 에러 발생:`, error)
+    }
+  }
+
+  const loadMore = () => {
+    if (page < Math.ceil(totalCount / limit)) {
+      setPage(prevPage => prevPage + 1)
     }
   }
 
@@ -235,35 +307,48 @@ export default function CreateAdviceType({ isActive, category }) {
               </ItemBox>
             </FilterForm>
           </BoxBtn>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
+          <BoxTop>
             <CreateAdviceTypeChip
+              adviceList={adviceList}
+              refetch={seeRefetch}
               category={category}
-              setTotalCount={setTotalCount}
-              typeIsOpne={typeIsOpne}
+              seeRefetch={seeRefetch}
+              openOrder={openOrder}
+              setPage={setPage}
+              setOrderPage={setOrderPage}
             />
-          </Suspense>
+          </BoxTop>
+          {page < Math.ceil(totalCount / limit) && (
+            <MoreBtn>
+              <Button
+                color="primary"
+                onClick={loadMore}
+                className="bg-[transparent] w-[100%] text-[#11181c]"
+              >
+                더보기{' '}
+                <span className="text-primary text-[1rem]">
+                  <i className="xi-plus-circle" />
+                </span>
+              </Button>
+            </MoreBtn>
+          )}
         </BoxArea>
       </FilterBox>
       {typeIsOpne && (
-        <Suspense
-          fallback={
-            <LodingDiv>
-              <i className="xi-spinner-2" />
-            </LodingDiv>
-          }
-        >
-          <TypeIndex
-            isOpen={typeIsOpne}
-            onClose={typeOnClose}
-            category={category}
-          />
-        </Suspense>
+        <TypeIndex
+          isOpen={typeIsOpne}
+          onClose={typeOnClose}
+          refetch={seeRefetch}
+          orderAdviceList={orderAdviceList}
+          orderPage={orderPage}
+          setOrderPage={setOrderPage}
+          seeAdviceQuery={seeAdviceQuery}
+          totalCount={totalCount}
+          category={category}
+          limit={limit}
+          orderRefetch={orderRefetch}
+          setPage={setPage}
+        />
       )}
     </>
   )
