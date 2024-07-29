@@ -230,74 +230,81 @@ export default function message() {
   }, [attendanceSMS])
 
   const onSubmit = data => {
-    setIsSubmitted(true)
-    let phoneNumbers
-    let sendDate
-    let sendTime
-
-    if (sendType === '예약전송') {
-      sendDate = formatDate(reservationDate)
-      sendTime = formatTime(reservationDate)
-      setValue('rDate', sendDate)
-      setValue('rTime', sendTime)
+    if (data.senderNum === '선택해주세요') {
+      setError('senderNum', {
+        type: 'manual',
+        message: '보내는사람을 선택해주세요',
+      })
     } else {
-      sendDate = formatDate(new Date())
-      setValue('rDate', sendDate)
-    }
+      setIsSubmitted(true)
+      let phoneNumbers
+      let sendDate
+      let sendTime
 
-    if (data.receiver) {
-      phoneNumbers = data.receiver
-        .map(item => item.phoneNumber || item.mPhoneNum || item.phoneNum1)
-        .filter(Boolean)
-        .join(',')
-    }
-
-    if (phoneNumbers !== undefined) {
       if (sendType === '예약전송') {
-        if (sendDate !== undefined && sendTime !== undefined) {
-          sendSms({
-            variables: {
-              receiver: phoneNumbers,
-              message: data.message,
-              rDate: sendDate,
-              rTime: sendTime,
-              senderNum: data.senderNum,
-            },
-            onCompleted: result => {
-              if (result.sendSms.ok) {
-                userLogs(
-                  `문자 메시지 발송예약`,
-                  `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
-                )
-                alert(
-                  `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
-                )
-              } else {
-                alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
-              }
-            },
-          })
-        }
+        sendDate = formatDate(reservationDate)
+        sendTime = formatTime(reservationDate)
+        setValue('rDate', sendDate)
+        setValue('rTime', sendTime)
       } else {
-        if (sendDate !== undefined) {
-          sendSms({
-            variables: {
-              receiver: phoneNumbers,
-              message: data.message,
-              senderNum: data.senderNum,
-            },
-            onCompleted: result => {
-              if (result.sendSms.ok) {
-                userLogs(
-                  `문자 메시지 발송`,
-                  `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
-                )
-                alert(`문자 메시지가 발송 되었습니다.`)
-              } else {
-                alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
-              }
-            },
-          })
+        sendDate = formatDate(new Date())
+        setValue('rDate', sendDate)
+      }
+
+      if (data.receiver) {
+        phoneNumbers = data.receiver
+          .map(item => item.phoneNumber || item.mPhoneNum || item.phoneNum1)
+          .filter(Boolean)
+          .join(',')
+      }
+
+      if (phoneNumbers !== undefined) {
+        if (sendType === '예약전송') {
+          if (sendDate !== undefined && sendTime !== undefined) {
+            sendSms({
+              variables: {
+                receiver: phoneNumbers,
+                message: data.message,
+                rDate: sendDate,
+                rTime: sendTime,
+                senderNum: data.senderNum,
+              },
+              onCompleted: result => {
+                if (result.sendSms.ok) {
+                  userLogs(
+                    `문자 메시지 발송예약`,
+                    `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
+                  )
+                  alert(
+                    `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
+                  )
+                } else {
+                  alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
+                }
+              },
+            })
+          }
+        } else {
+          if (sendDate !== undefined) {
+            sendSms({
+              variables: {
+                receiver: phoneNumbers,
+                message: data.message,
+                senderNum: data.senderNum,
+              },
+              onCompleted: result => {
+                if (result.sendSms.ok) {
+                  userLogs(
+                    `문자 메시지 발송`,
+                    `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
+                  )
+                  alert(`문자 메시지가 발송 되었습니다.`)
+                } else {
+                  alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
+                }
+              },
+            })
+          }
         }
       }
     }
