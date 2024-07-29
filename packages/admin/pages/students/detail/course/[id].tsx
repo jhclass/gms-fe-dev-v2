@@ -347,7 +347,9 @@ export default function StudentsWrite() {
   }
 
   const clickAssignment = async state => {
-    if (studentPaymentDetailData?.length === 0) {
+    if (studentSubjectData?.lectures === null) {
+      alert('강의가 생성된 과정만 변경 가능합니다.')
+    } else if (studentPaymentDetailData?.length === 0) {
       alert('수강료 결제 후 변경 가능합니다.')
     } else {
       editAssignment(state)
@@ -413,8 +415,6 @@ export default function StudentsWrite() {
     }
   }
 
-  console.log(studentSubjectData)
-  console.log(studentPaymentData)
   return (
     <>
       {studentData !== null && (
@@ -512,9 +512,7 @@ export default function StudentsWrite() {
                             <Button
                               isDisabled={
                                 studentPaymentData?.lectureAssignment ===
-                                  assignment.assignment ||
-                                studentSubjectData?.lectures?.id === null ||
-                                studentPaymentDetailData?.length === 0
+                                assignment.assignment
                                   ? true
                                   : false
                               }
@@ -541,9 +539,7 @@ export default function StudentsWrite() {
                             <Button
                               isDisabled={
                                 studentPaymentData?.lectureAssignment ===
-                                  assignment.withdrawal ||
-                                studentSubjectData?.lectures?.id === null ||
-                                studentPaymentDetailData?.length === 0
+                                assignment.withdrawal
                                   ? true
                                   : false
                               }

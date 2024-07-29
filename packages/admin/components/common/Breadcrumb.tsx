@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import category from '@/lib/category'
@@ -90,35 +90,37 @@ const ActiveIcon = styled(motion.i)`
   color: #fff;
 `
 
-const FilterVariants = {
-  initial: {
-    padding: '0 1rem',
-    background: '#fff',
-    color: '#007de9',
-    transition: {},
-  },
-  active: {
-    padding: '0 1rem 0 0.5rem',
-    background: '#007de9',
-    color: '#fff',
-    transition: {},
-  },
-}
-
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
-
 export default function Breadcrumb(props) {
+  const theme = useTheme()
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
+
+  const PrimaryColor = theme.colors.primary
+  const FilterVariants = {
+    initial: {
+      padding: '0 1rem',
+      background: '#fff',
+      color: PrimaryColor,
+      transition: {},
+    },
+    active: {
+      padding: '0 1rem 0 0.5rem',
+      background: PrimaryColor,
+      color: '#fff',
+      transition: {},
+    },
+  }
+
+  const IconVariants = {
+    initial: {
+      scale: 0,
+      display: 'none',
+    },
+    active: {
+      scale: 1,
+      display: 'inline',
+    },
+  }
 
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)
