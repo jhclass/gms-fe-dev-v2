@@ -9,7 +9,7 @@ const FlexCardBox = styled.div`
   border-radius: 0.5rem;
   align-items: center;
   width: 100%;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   text-align: center;
 
@@ -95,7 +95,7 @@ const OnExposure = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `
 const OffExposure = styled.span`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   opacity: 0.5;
 `
 

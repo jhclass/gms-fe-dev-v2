@@ -261,7 +261,7 @@ export default function TestCate() {
         --data-table-library_grid-template-columns:${gridTemplateColumns};
         text-align:center;
         font-size: 0.875rem;
-        color: #71717a;
+        color: ${({ theme }) => theme.colors.gray};
 
          @media (max-width: 768px) {
         --data-table-library_grid-template-columns:${gridTemplateColumnsMo};

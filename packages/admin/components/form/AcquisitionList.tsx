@@ -83,7 +83,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -105,7 +105,7 @@ const TopInfo = styled.div`
 `
 const UpdateTime = styled.p`
   span {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 const TableRow = styled.div`

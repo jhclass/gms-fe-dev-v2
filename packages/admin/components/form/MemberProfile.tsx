@@ -1,6 +1,6 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Input, Button, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
@@ -115,6 +115,7 @@ type mmeQuery = {
 
 export default function Profile() {
   const router = useRouter()
+  const theme = useTheme()
   const { error, data, refetch } = useSuspenseQuery<mmeQuery>(MME_QUERY)
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION, {
     context: {
@@ -267,7 +268,9 @@ export default function Profile() {
                     <AvatarF
                       style={{
                         backgroundColor:
-                          avatarImg === null ? '#4f46e5' : 'transparent',
+                          avatarImg === null
+                            ? theme.colors.teriary
+                            : 'transparent',
                         backgroundImage:
                           avatarImg !== null ? `url('${avatarImg}')` : 'none',
                       }}

@@ -44,7 +44,7 @@ const ConLabel = styled.p`
 `
 
 const ConText = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
 `
 
@@ -65,7 +65,7 @@ const SendType = styled.p`
   font-size: 0.875rem;
 
   span {
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
 `
 
@@ -99,7 +99,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 type SeeMessageStorageQuery = {

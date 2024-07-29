@@ -43,10 +43,10 @@ const BackIcon = styled.figure`
   height: 2rem;
   color: #fff;
   margin-right: 0.5rem;
-  background: #007de8;
+  background: ${({ theme }) => theme.colors.primary};
 
   &:hover {
-    background: #71717a;
+    background: ${({ theme }) => theme.colors.gray};
   }
 `
 const TitleBox = styled.div`

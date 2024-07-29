@@ -65,7 +65,7 @@ const TableItem = styled.div`
   min-width: fit-content;
   flex-wrap: nowrap;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   background: #fff;
   overflow: hidden;
@@ -136,7 +136,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 export default function SubjectModal({

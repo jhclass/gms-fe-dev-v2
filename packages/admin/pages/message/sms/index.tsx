@@ -1,6 +1,6 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import Layout from '@/pages/message/layout'
 import { Suspense, useEffect, useState } from 'react'
 import SMSTabs from '@/components/items/SMSTabs'
@@ -84,7 +84,7 @@ const ByteBox = styled.div`
   padding: 0.5rem;
   align-items: center;
   justify-content: space-between;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   gap: 0.5rem;
 `
@@ -157,7 +157,7 @@ const LodingDiv = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;
@@ -167,6 +167,7 @@ const AddLink = styled.p`
 
 export default function message() {
   const router = useRouter()
+  const theme = useTheme()
   const [sendGruop, setSendGruop] = useState([])
   const [reservationDate, setReservationDate] = useState(null)
   const [saveType, setSaveType] = useState('개인')
@@ -379,7 +380,7 @@ export default function message() {
             <ByteBox>
               <p
                 style={{
-                  color: byteLength > 90 ? '#ff5900' : 'inherit',
+                  color: byteLength > 90 ? theme.colors.accent : 'inherit',
                   fontWeight: 700,
                 }}
               >

@@ -59,7 +59,7 @@ const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.7rem;
 
   span {
@@ -105,7 +105,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -201,7 +201,7 @@ const Tamount = styled.div<{ $width: number }>`
     color: ${({ theme }) => theme.colors.primary};
   }
   &.cash {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 const Tlist = styled.div`
@@ -235,7 +235,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 export default function ReqRefundFilterTable({ studentFilter }) {

@@ -1,6 +1,6 @@
 import { Textarea } from '@nextui-org/react'
 import { useRouter } from 'next/router'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import Layout from '@/pages/students/layout'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
@@ -18,7 +18,7 @@ const FlexCardBox = styled.div<{ $lectureAssignment: boolean }>`
   gap: 1rem;
   border: ${props =>
     props.$lectureAssignment
-      ? '2px solid #4f46e5;'
+      ? `2px solid ${({ theme }) => theme.colors.teriary};`
       : '2px solid hsl(240 6% 90%);'};
   padding: 1rem;
   border-radius: 0.5rem;
@@ -87,6 +87,7 @@ type searchManageUserQuery = {
 }
 export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const router = useRouter()
+  const theme = useTheme()
   const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)
   const employment = useRecoilValue(employmentStatus)
@@ -101,9 +102,6 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   )
   const managerList = managerData?.searchManageUser.data
 
-  const Color1 = '#FF5900'
-  const Color2 = '#0D9488'
-  const Color3 = '#4f46e5'
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -180,11 +178,11 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                   style={{
                     color:
                       detailtData?.lectureAssignment === assignment.assignment
-                        ? Color2
+                        ? theme.colors.secondary
                         : detailtData?.lectureAssignment ===
                           assignment.unassigned
-                        ? Color1
-                        : Color3,
+                        ? theme.colors.accent
+                        : theme.colors.teriary,
                   }}
                 >
                   {detailtData?.lectureAssignment}
@@ -199,10 +197,10 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                     color:
                       detailtData?.courseComplete === completion.completed ||
                       detailtData?.courseComplete === completion.inTraining
-                        ? Color2
+                        ? theme.colors.secondary
                         : detailtData?.courseComplete === completion.notAttended
-                        ? Color1
-                        : Color3,
+                        ? theme.colors.accent
+                        : theme.colors.teriary,
                   }}
                 >
                   {detailtData?.courseComplete}
@@ -216,8 +214,8 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                   style={{
                     color:
                       detailtData?.employment === employment.employed
-                        ? Color2
-                        : Color1,
+                        ? theme.colors.secondary
+                        : theme.colors.accent,
                   }}
                 >
                   {detailtData?.employment}

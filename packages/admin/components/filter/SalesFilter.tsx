@@ -83,7 +83,7 @@ const Noti = styled.ul`
   gap: 0.5rem;
 
   > li {
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
     font-size: 0.8rem;
     padding-left: 0.5rem;
     position: relative;
@@ -97,7 +97,7 @@ const Noti = styled.ul`
       width: 2px;
       height: 2px;
       margin-top: -1px;
-      background: #007de9;
+      background: ${({ theme }) => theme.colors.primary};
     }
   }
 `

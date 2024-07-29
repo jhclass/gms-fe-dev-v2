@@ -31,7 +31,7 @@ const Container = styled.div`
 const Item = styled.div`
   padding: 0.5rem 1rem;
   background: #fff;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border: 1px solid #e4e4e7;
   border-radius: 0.5rem;

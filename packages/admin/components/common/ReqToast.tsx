@@ -12,7 +12,7 @@ const FromID = styled.p`
   -webkit-box-orient: vertical;
 `
 const ReqText = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   width: inherit;
   font-size: 0.875rem;
   overflow: hidden;

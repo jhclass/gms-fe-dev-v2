@@ -50,7 +50,7 @@ const MemoGrade = styled.span`
   height: 0.8rem;
   overflow: hidden;
   border-radius: 100%;
-  background: #4f46e5;
+  background: ${({ theme }) => theme.colors.teriary};
   text-align: center;
   font-weight: 700;
   color: #fff;

@@ -1,5 +1,6 @@
 import { Select, SelectItem } from '@nextui-org/react'
 import { getMonth, getYear } from 'date-fns'
+import { useTheme } from 'styled-components'
 const _ = require('lodash')
 
 export default function DatePickerHeader({
@@ -10,6 +11,7 @@ export default function DatePickerHeader({
   increaseMonth,
   rangeYears,
 }) {
+  const theme = useTheme()
   const months = [
     '1월',
     '2월',
@@ -61,7 +63,7 @@ export default function DatePickerHeader({
           }
         }}
         style={{
-          borderBottom: '1px solid #71717a',
+          borderBottom: `1px solid ${theme.colors.gray}`,
           width: '6rem',
         }}
       >
@@ -89,7 +91,7 @@ export default function DatePickerHeader({
           }
         }}
         style={{
-          borderBottom: '1px solid #71717a',
+          borderBottom: `1px solid ${theme.colors.gray}`,
           width: '6rem',
         }}
       >

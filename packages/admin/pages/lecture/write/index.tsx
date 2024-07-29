@@ -90,7 +90,7 @@ const SemiTitle = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #ff5900;
+  color: ${({ theme }) => theme.colors.accent};
   padding-bottom: 0.375rem;
   display: block;
 `
@@ -167,7 +167,7 @@ const FilterLabel = styled.label`
 
     &.multi {
       font-size: 0.8rem;
-      color: #71717a;
+      color: ${({ theme }) => theme.colors.gray};
     }
   }
 
@@ -195,7 +195,7 @@ const LodingDiv = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;

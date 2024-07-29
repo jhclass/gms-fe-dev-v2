@@ -49,7 +49,7 @@ const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.7rem;
 
   span {
@@ -183,7 +183,7 @@ const OnExposure = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `
 const OffExposure = styled.span`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   opacity: 0.5;
 `
 const Nolist = styled.div`
@@ -192,7 +192,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 const TableItem = styled.div`
   display: table;
@@ -202,7 +202,7 @@ const TableItem = styled.div`
   flex-wrap: nowrap;
   row-gap: 1rem;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;

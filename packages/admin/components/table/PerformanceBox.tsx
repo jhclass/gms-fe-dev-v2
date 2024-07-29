@@ -104,7 +104,7 @@ const Nolist = styled.div`
   align-items: center;
   padding: 1rem 0;
   font-size: 0.875rem;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 const PagerWrap = styled.div`
   display: flex;

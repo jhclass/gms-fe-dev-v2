@@ -148,7 +148,7 @@ const LodingDiv = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;

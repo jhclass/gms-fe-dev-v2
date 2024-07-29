@@ -37,7 +37,7 @@ const Title = styled.h2`
     content: '';
     width: 0.3rem;
     height: 100%;
-    background: #07bbae;
+    background: ${({ theme }) => theme.colors.secondary};
     position: absolute;
     top: 0;
     left: 0;

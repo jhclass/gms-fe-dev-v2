@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme as styledComponentsTheme } from 'styled-components'
 import {
   Table,
   Header,
@@ -13,7 +13,7 @@ import {
   HeaderCellSelect,
   useRowSelect,
 } from '@table-library/react-table-library/select'
-import { useTheme } from '@table-library/react-table-library/theme'
+import { useTheme as tableLibraryTheme } from '@table-library/react-table-library/theme'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
 import WorksLogs from '@/components/modal/WorksLogs'
@@ -60,7 +60,7 @@ const BtnBox = styled.div`
 
 const TodayTag = styled.span`
   display: inline-block;
-  background: #07bbae;
+  background: ${({ theme }) => theme.colors.secondary};
   border-radius: 0.5rem;
   color: #fff;
   font-size: 0.8rem;
@@ -75,6 +75,7 @@ export default function Attendance({
   filterAttandanceData,
 }) {
   const router = useRouter()
+  const themeColor = styledComponentsTheme()
   const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)
   const { userLogs } = useUserLogsMutation()
@@ -273,14 +274,14 @@ export default function Attendance({
     }
   }, [week, todayIndex])
 
-  const theme = useTheme([
+  const theme = tableLibraryTheme([
     // getTheme(),
     {
       Table: `
         --data-table-library_grid-template-columns:${gridTemplateColumns};
         text-align:center;
         font-size: 0.875rem;
-        color: #71717a;
+        color: ${themeColor.colors.gray};
 
         @media (max-width: 768px) {
         --data-table-library_grid-template-columns:${gridTemplateColumnsMo};
@@ -292,8 +293,8 @@ export default function Attendance({
 
         &:nth-of-type(${todayIndex >= 0 ? 5 + todayIndex : -1}) {
           // background:rgba(0, 125, 233, 0.15);
-          border-left: 0.2rem solid #07bbae;
-          border-right: 0.2rem solid #07bbae;
+          border-left: 0.2rem solid ${themeColor.colors.secondary};
+          border-right: 0.2rem solid ${themeColor.colors.secondary};
         }
         &:nth-of-type(1) {
           position: sticky;
@@ -329,6 +330,11 @@ export default function Attendance({
           overflow:unset;
           white-space:unset;
           text-overflow:unset;
+
+      
+        }
+        select {
+          cursor:pointer;
         }
       `,
       HeaderRow: `
@@ -343,7 +349,7 @@ export default function Attendance({
 
           &:nth-of-type(${todayIndex >= 0 && 5 + todayIndex}) {
             border-radius: 0.5rem 0.5rem  0 0;
-            border-top: 0.2rem solid #07bbae;
+            border-top: 0.2rem solid ${themeColor.colors.secondary};
           }
 
           span {
@@ -353,6 +359,9 @@ export default function Attendance({
       `,
       Row: `
         background:#fff;
+        &:nth-of-type(odd){
+          background:#fff;
+        }
         &:nth-of-type(even){
           background:#e2eafc;
           
@@ -364,12 +373,12 @@ export default function Attendance({
         &:last-of-type{
           > td:nth-of-type(${todayIndex >= 0 && 5 + todayIndex}) {
             border-radius: 0 0 0.5rem 0.5rem;
-            border-bottom: 0.2rem solid #07bbae;
+            border-bottom: 0.2rem solid ${themeColor.colors.secondary};
           }
         }
 
         &:hover {
-          background:#f7fafc;
+          cursor: default;
         }
 
         &.drop {

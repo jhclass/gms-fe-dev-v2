@@ -180,7 +180,7 @@ const FromID = styled.p`
   flex: 1;
 `
 const AlarmsTime = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   flex: 1;
   text-align: end;
@@ -189,7 +189,7 @@ const ReqText = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
 `
 const PagerWrap = styled.div`

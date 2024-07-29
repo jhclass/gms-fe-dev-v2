@@ -84,7 +84,7 @@ const AreaTitle = styled.div`
   }
 `
 const ToolTipBox = styled.i`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   vertical-align: -1px;
 `
 const AreaBox = styled.div`
@@ -165,7 +165,7 @@ const BtnBox = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;

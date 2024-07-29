@@ -71,7 +71,7 @@ const ConBox = styled.div`
 `
 
 const ConText = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
 `
 
@@ -108,20 +108,20 @@ const SendState = styled.div`
   }
 
   &.err {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 
   &.resSucc {
-    color: #07bbae;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 
   &.resErr {
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
 
   i {
     font-size: 1rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
 `
 
@@ -137,7 +137,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 type SearchMessageQuery = {

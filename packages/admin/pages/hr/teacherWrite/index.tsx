@@ -123,7 +123,7 @@ const FilterLabel = styled.p`
 
     &.multi {
       font-size: 0.8rem;
-      color: #71717a;
+      color: ${({ theme }) => theme.colors.gray};
     }
   }
 `

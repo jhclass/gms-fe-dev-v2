@@ -184,7 +184,7 @@ const RadioBox = styled.div`
   align-items: center;
 `
 const ToolTipBox = styled.i`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   vertical-align: -1px;
 `
 const FilterLabel = styled.p`
@@ -219,7 +219,7 @@ const LineBox = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;

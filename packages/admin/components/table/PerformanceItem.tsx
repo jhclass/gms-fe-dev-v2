@@ -33,7 +33,7 @@ const TableItem = styled.div`
   min-width: fit-content;
   border: 1px solid #e4e4e7;
   border-bottom: 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -77,7 +77,7 @@ const Tamount = styled.div`
   color: #043999;
 
   &.refund {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 const Tname = styled.div`
