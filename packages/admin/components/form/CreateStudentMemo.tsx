@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Textarea } from '@nextui-org/react'
+import { Button, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
   CREATE_STUDENT_MEMO_MUTATION,
   SEARCH_STUDENT_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 
 const DetailForm = styled.form`
@@ -119,16 +118,9 @@ export default function CreateMemo(props) {
             {...register('content')}
           />
           <MemoBtn>
-            <Button2
-              buttonType="submit"
-              width="100%"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
-            >
+            <Button type="submit" color="primary" className="w-full text-white">
               등록
-            </Button2>
+            </Button>
           </MemoBtn>
         </MemoBox>
       </DetailForm>

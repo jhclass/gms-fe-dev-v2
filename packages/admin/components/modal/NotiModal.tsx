@@ -63,7 +63,7 @@ const TextBox = styled.div`
 
   span {
     padding-left: 0.5rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
 `
 const AreaBox = styled.div`
@@ -73,7 +73,7 @@ const AreaBox = styled.div`
 `
 
 const ImgBox = styled.figure`
-  border-top: 2px solid #007de9;
+  border-top: 2px solid ${({ theme }) => theme.colors.primary};
   padding: 1rem;
   margin-top: 1rem;
   flex: 1;
@@ -81,7 +81,6 @@ const ImgBox = styled.figure`
   font-size: 0.875rem;
 
   p {
-    /* color: #71717a; */
     text-align: center;
     margin-bottom: 1rem;
   }
@@ -90,7 +89,7 @@ const ImgBox = styled.figure`
 const ImgFigure = styled.figure`
   width: 100%;
   margin: 0 auto;
-  border: 1px solid #71717a;
+  border: 1px solid ${({ theme }) => theme.colors.gray};
 `
 
 export default function NotiModal({ isOpen, onClose }) {

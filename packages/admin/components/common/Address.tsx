@@ -40,7 +40,7 @@ const FilterLabel = styled.p`
   color: #11181c;
 
   span {
-    color: red;
+    color: #ff0000;
   }
 `
 

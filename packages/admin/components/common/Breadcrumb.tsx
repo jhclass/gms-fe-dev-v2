@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import category from '@/lib/category'
@@ -43,10 +43,10 @@ const BackIcon = styled.figure`
   height: 2rem;
   color: #fff;
   margin-right: 0.5rem;
-  background: #007de8;
+  background: ${({ theme }) => theme.colors.primary};
 
   &:hover {
-    background: #71717a;
+    background: ${({ theme }) => theme.colors.gray};
   }
 `
 const TitleBox = styled.div`
@@ -78,7 +78,7 @@ const BoxRt = styled.div`
 const FilterBtn = styled(motion.button)`
   display: flex;
   height: 2rem;
-  border: 1px solid #007de9;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
   border-radius: 0.5rem;
   align-items: center;
   margin-right: 0.5rem;
@@ -90,35 +90,37 @@ const ActiveIcon = styled(motion.i)`
   color: #fff;
 `
 
-const FilterVariants = {
-  initial: {
-    padding: '0 1rem',
-    background: '#fff',
-    color: '#007de9',
-    transition: {},
-  },
-  active: {
-    padding: '0 1rem 0 0.5rem',
-    background: '#007de9',
-    color: '#fff',
-    transition: {},
-  },
-}
-
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
-
 export default function Breadcrumb(props) {
+  const theme = useTheme()
   const router = useRouter()
   const [breadcrumb, setBreadcrumb] = useState<string[]>([])
+
+  const PrimaryColor = theme.colors.primary
+  const FilterVariants = {
+    initial: {
+      padding: '0 1rem',
+      background: '#fff',
+      color: PrimaryColor,
+      transition: {},
+    },
+    active: {
+      padding: '0 1rem 0 0.5rem',
+      background: PrimaryColor,
+      color: '#fff',
+      transition: {},
+    },
+  }
+
+  const IconVariants = {
+    initial: {
+      scale: 0,
+      display: 'none',
+    },
+    active: {
+      scale: 1,
+      display: 'inline',
+    },
+  }
 
   useEffect(() => {
     const pathnames = router.pathname.split('/').filter(x => x)
@@ -187,7 +189,7 @@ export default function Breadcrumb(props) {
                   size="sm"
                   radius="sm"
                   variant="solid"
-                  className="text-white bg-flag1"
+                  className="text-white bg-accent"
                   onClick={() => router.push(currentCate.isWrite)}
                 >
                   등록

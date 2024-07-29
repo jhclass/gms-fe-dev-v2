@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -129,7 +129,7 @@ const ReqBtn = styled.button`
     width: 3rem;
     height: 3rem;
     background: #fff;
-    border: 4px solid #07bbae;
+    border: 4px solid ${({ theme }) => theme.colors.secondary};
     border-radius: 100%;
     padding: 0.3rem;
     position: fixed;
@@ -224,7 +224,7 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
     align-items: center;
     font-size: 0.875rem;
     &:hover {
-      color: #007de9;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
   button {
@@ -246,6 +246,7 @@ const LodingDiv = styled.div`
 `
 
 export default function Header() {
+  const theme = useTheme()
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
@@ -386,7 +387,7 @@ export default function Header() {
               ) : (
                 <UserGrade
                   style={{
-                    backgroundColor: `#4f46e5`,
+                    backgroundColor: theme.colors.teriary,
                   }}
                 >
                   {gradeStr(mUserId)}

@@ -1,12 +1,11 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Input, Button, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { CREATE_STAMP_QUERY, MME_QUERY } from '@/graphql/queries'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import Layout from '@/pages/member/layout'
@@ -116,6 +115,7 @@ type mmeQuery = {
 
 export default function Profile() {
   const router = useRouter()
+  const theme = useTheme()
   const { error, data, refetch } = useSuspenseQuery<mmeQuery>(MME_QUERY)
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION, {
     context: {
@@ -268,7 +268,9 @@ export default function Profile() {
                     <AvatarF
                       style={{
                         backgroundColor:
-                          avatarImg === null ? '#4f46e5' : 'transparent',
+                          avatarImg === null
+                            ? theme.colors.teriary
+                            : 'transparent',
                         backgroundImage:
                           avatarImg !== null ? `url('${avatarImg}')` : 'none',
                       }}
@@ -286,7 +288,7 @@ export default function Profile() {
                     size="sm"
                     color={'primary'}
                     onClick={handleButtonClick}
-                    className="bg-[#07bbae]"
+                    className="bg-secondary"
                   >
                     프로필 변경
                   </Button>
@@ -337,7 +339,7 @@ export default function Profile() {
                       size="md"
                       radius="md"
                       variant="solid"
-                      className="w-full mt-1 text-white bg-flag1"
+                      className="w-full mt-1 text-white bg-accent"
                       onClick={onOpen}
                     >
                       비밀번호 변경
@@ -607,28 +609,21 @@ export default function Profile() {
                   <AreaBox></AreaBox>
                 </FlexBox>
                 <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
+                  <Button
+                    type="submit"
+                    color="primary"
+                    className="w-full text-white"
                   >
                     정보 수정
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailForm>
             </DetailBox>

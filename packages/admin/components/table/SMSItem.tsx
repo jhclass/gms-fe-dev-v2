@@ -8,7 +8,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -78,21 +78,6 @@ const EllipsisBox = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `
-
-const isDisplayFlag = (date: string, step: number): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && step === 999) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
 
 export default function ConsolutItem(props) {
   const conLimit = props.limit || 0

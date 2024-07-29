@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -12,7 +12,6 @@ const _ = require('lodash')
 import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
@@ -198,7 +197,7 @@ const FilterLabel = styled.p`
 
     &.multi {
       font-size: 0.8rem;
-      color: #71717a;
+      color: ${({ theme }) => theme.colors.gray};
     }
   }
 `
@@ -217,7 +216,7 @@ const BtnBox = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;
@@ -231,6 +230,7 @@ type searchManageUserQuery = {
 
 export default function ManagerWrite({ managerId }) {
   const router = useRouter()
+  const theme = useTheme()
   const grade = useRecoilValue(gradeState)
   const { userLogs } = useUserLogsMutation()
   const { useMme } = useMmeQuery()
@@ -449,7 +449,7 @@ export default function ManagerWrite({ managerId }) {
                   ) : (
                     <AvatarF
                       style={{
-                        backgroundColor: `#4f46e5`,
+                        backgroundColor: theme.colors.teriary,
                       }}
                     >
                       {gradeStr(managerData?.mUserId)}
@@ -498,7 +498,7 @@ export default function ManagerWrite({ managerId }) {
                       size="md"
                       radius="md"
                       variant="solid"
-                      className="w-full mt-1 text-white bg-flag1"
+                      className="w-full mt-1 text-white bg-accent"
                       onClick={onOpen}
                     >
                       비밀번호 변경
@@ -915,26 +915,20 @@ export default function ManagerWrite({ managerId }) {
                 <BtnBox>
                   <Button
                     type="submit"
-                    size="md"
-                    radius="md"
                     variant="solid"
                     color="primary"
                     className="w-full text-white"
                   >
                     수정
                   </Button>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailDiv>
             </form>

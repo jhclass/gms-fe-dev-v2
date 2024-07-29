@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '@/components/common/Button'
-import { Input, Select, SelectItem } from '@nextui-org/react'
+import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -393,23 +392,16 @@ export default function PerformanceFilter({
           </BoxTop>
           <BtnBox>
             <Button
-              buttonType="submit"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
+              type="submit"
+              color="primary"
+              className="w-[50%] text-white"
             >
               검색
             </Button>
             <Button
-              buttonType="reset"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              fontColor="#007de9"
-              bgColor="#fff"
-              borderColor="#007de9"
-              typeBorder={true}
+              color="primary"
+              variant="bordered"
+              className="w-[50%] text-primary"
               onClick={handleReset}
             >
               초기화

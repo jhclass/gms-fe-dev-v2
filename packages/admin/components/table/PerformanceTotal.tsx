@@ -35,7 +35,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -67,7 +67,7 @@ const AreaBox = styled.div`
   width: 100%;
 `
 const Refund = styled.span`
-  color: #ff5900;
+  color: ${({ theme }) => theme.colors.accent};
 `
 const AreaBoxS = styled.div`
   min-width: 5%;

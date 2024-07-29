@@ -34,7 +34,7 @@ const SemiText = styled.div`
   margin-top: 1rem;
   display: block;
   font-size: 1rem;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-weight: 400;
   margin-bottom: 2rem;
 `

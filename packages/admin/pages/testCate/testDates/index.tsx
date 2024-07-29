@@ -16,7 +16,7 @@ const DatePickerBox = styled.div`
     background-color: transparent;
   }
   .react-datepicker__day--highlighted {
-    background-color: #007de9;
+    background-color: ${({ theme }) => theme.colors.primary};
     color: #fff;
   }
 `

@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { SEE_PAYMENT_DETAIL_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import { PaymentDetailResult } from '@/src/generated/graphql'
@@ -21,7 +21,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -31,7 +31,7 @@ const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.7rem;
 
   span {
@@ -149,7 +149,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 type SeePaymentDetailQuery = {
@@ -157,6 +157,7 @@ type SeePaymentDetailQuery = {
 }
 
 export default function PaymentDetailTable({ currentPage, setCurrentPage }) {
+  const theme = useTheme()
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const { error, data, refetch } = useSuspenseQuery<SeePaymentDetailQuery>(
@@ -203,7 +204,7 @@ export default function PaymentDetailTable({ currentPage, setCurrentPage }) {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 환불
+            <span style={{ background: theme.colors.accent }}></span> : 환불
           </ColorCip>
         </ColorHelp>
       </TTopic>

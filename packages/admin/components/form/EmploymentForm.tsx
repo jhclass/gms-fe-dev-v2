@@ -93,7 +93,7 @@ const TableItem = styled.div`
   position: relative;
   width: 100%;
   min-width: fit-content;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -360,7 +360,7 @@ export default function EmploymentForm() {
                         size="sm"
                         variant="solid"
                         color="primary"
-                        className="w-full bg-[#07bbae] text-white"
+                        className="w-full text-white bg-secondary"
                         // onClick={() => setIsOpen(!isOpen)}
                       >
                         추가

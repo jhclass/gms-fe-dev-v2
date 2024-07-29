@@ -347,7 +347,9 @@ export default function StudentsWrite() {
   }
 
   const clickAssignment = async state => {
-    if (studentPaymentDetailData?.length === 0) {
+    if (studentSubjectData?.lectures === null) {
+      alert('강의가 생성된 과정만 변경 가능합니다.')
+    } else if (studentPaymentDetailData?.length === 0) {
       alert('수강료 결제 후 변경 가능합니다.')
     } else {
       editAssignment(state)
@@ -498,8 +500,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.unassigned
-                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
-                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
+                                  ? 'w-full text-white bg-secondary opacity-100'
+                                  : 'w-full text-secondary border-secondary opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.unassigned)
@@ -525,8 +527,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.assignment
-                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
-                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
+                                  ? 'w-full text-white bg-secondary opacity-100'
+                                  : 'w-full text-secondary border-secondary opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.assignment)
@@ -552,8 +554,8 @@ export default function StudentsWrite() {
                               className={
                                 studentPaymentData?.lectureAssignment ===
                                 assignment.withdrawal
-                                  ? 'w-full text-white bg-[#07bbae] opacity-100'
-                                  : 'w-full text-[#07bbae] border-[#07bbae] opacity-100'
+                                  ? 'w-full text-white bg-secondary opacity-100'
+                                  : 'w-full text-secondary border-secondary opacity-100'
                               }
                               onClick={() =>
                                 clickAssignment(assignment.withdrawal)
@@ -685,7 +687,8 @@ export default function StudentsWrite() {
                                   isReadOnly={true}
                                   labelPlacement="outside"
                                   value={
-                                    studentPaymentData?.reasonFordroppingOut
+                                    studentPaymentData?.reasonFordroppingOut ||
+                                    ''
                                   }
                                   minRows={1}
                                   variant="underlined"
@@ -701,21 +704,6 @@ export default function StudentsWrite() {
                         ) : null}
                       </>
                     )}
-
-                    {studentPaymentDetailData?.length === 0 &&
-                      (mGrade < grade.general || mPart.includes('회계팀')) && (
-                        <Button
-                          size="md"
-                          radius="md"
-                          variant="solid"
-                          className="w-full mx-auto text-white bg-flag1 lg:w-[50%]"
-                          onClick={() =>
-                            router.push(`/students/write/payment/${paymentId}`)
-                          }
-                        >
-                          수강 결제
-                        </Button>
-                      )}
                   </DetailDiv>
                 </DetailBox>
               </>
@@ -738,7 +726,7 @@ export default function StudentsWrite() {
                           size="sm"
                           radius="sm"
                           variant="solid"
-                          className="text-white bg-flag1"
+                          className="text-white bg-accent"
                           onClick={() => {
                             {
                               router.push(
@@ -767,6 +755,20 @@ export default function StudentsWrite() {
             )}
             <DetailBox>
               <BtnBox>
+                {studentPaymentDetailData?.length === 0 &&
+                  (mGrade < grade.general || mPart.includes('회계팀')) && (
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="solid"
+                      className="w-full mx-auto text-white bg-accent lg:w-[50%]"
+                      onClick={() =>
+                        router.push(`/students/write/payment/${paymentId}`)
+                      }
+                    >
+                      수강 결제
+                    </Button>
+                  )}
                 <Button
                   size="md"
                   radius="md"

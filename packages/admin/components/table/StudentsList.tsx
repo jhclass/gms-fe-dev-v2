@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { SEE_STUDENT_QUERY } from '@/graphql/queries'
 import router from 'next/router'
 import StudentItem from '@/components/table/StudentItem'
@@ -23,7 +23,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -34,7 +34,7 @@ const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.7rem;
 
   span {
@@ -158,12 +158,13 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 type seeStudentQuery = {
   seeStudent: SeeStudentResult
 }
 export default function StudentsTable() {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(studentPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
@@ -212,10 +213,10 @@ export default function StudentsTable() {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#007de9' }}></span> : 신규
+            <span style={{ background: theme.colors.primary }}></span> : 신규
           </ColorCip>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 미배정
+            <span style={{ background: theme.colors.accent }}></span> : 미배정
           </ColorCip>
         </ColorHelp>
       </TTopic>

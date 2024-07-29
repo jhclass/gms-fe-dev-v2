@@ -14,7 +14,7 @@ const FooterCon = styled.footer`
 `
 const Copyright = styled.div`
   font-size: 0.75rem;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 
   @media screen and (max-width: 1024px) {
     font-size: 0.75rem;

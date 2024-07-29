@@ -18,7 +18,7 @@ const Title = styled.h2`
     content: '';
     width: 0.3rem;
     height: 100%;
-    background: #007de9;
+    background: ${({ theme }) => theme.colors.primary};
     position: absolute;
     top: 0;
     left: 0;
@@ -104,7 +104,7 @@ const Nolist = styled.div`
   align-items: center;
   padding: 1rem 0;
   font-size: 0.875rem;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 const PagerWrap = styled.div`
   display: flex;

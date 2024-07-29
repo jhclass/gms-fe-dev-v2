@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -33,7 +33,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -86,7 +86,7 @@ const Tamount = styled.div`
   color: #043999;
 
   &.refund {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 const Tname = styled.div`
@@ -149,6 +149,7 @@ const EllipsisBox = styled.p`
 
 export default function StudentsItem(props) {
   const router = useRouter()
+  const theme = useTheme()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const payment = props.tableData
@@ -185,7 +186,7 @@ export default function StudentsItem(props) {
               <Tflag
                 style={{
                   background: payment?.refundApproval
-                    ? '#ff5900'
+                    ? theme.colors.accent
                     : 'transparent',
                 }}
               ></Tflag>

@@ -102,10 +102,10 @@ const Tamount = styled.div<{ $width: number }>`
   font-weight: 600;
 
   &.card {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
   &.cash {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const EllipsisBox = styled.p`

@@ -9,15 +9,11 @@ import {
 } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { CHANGE_ORDER_AT_MUTATION } from '@/graphql/mutations'
 import { useEffect, useState } from 'react'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import {
-  SEE_ADVICE_TYPE_ORDER_QUERY,
-  SEE_ADVICE_TYPE_QUERY,
-} from '@/graphql/queries'
 
 const Container = styled.div`
   width: 100%;
@@ -49,73 +45,66 @@ type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
 
-export default function TypeIndex({ isOpen, onClose, category }) {
-  const [orderPage, setOrderPage] = useState(1)
-  const [currentLimit, setCurrentLimit] = useState(30)
+export default function TypeIndex({
+  refetch,
+  isOpen,
+  onClose,
+  orderAdviceList,
+  orderPage,
+  setOrderPage,
+  seeAdviceQuery,
+  totalCount,
+  category,
+  limit,
+  orderRefetch,
+  setPage,
+}) {
   const { userLogs } = useUserLogsMutation()
+  const [items, setItems] = useState([])
   const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
   const { handleSubmit, formState, setValue } = useForm()
   const { errors, isDirty } = formState
-  const { error, data, fetchMore, refetch } =
-    useSuspenseQuery<seeAdviceTypeQuery>(SEE_ADVICE_TYPE_ORDER_QUERY, {
-      variables: {
-        page: 1,
-        limit: currentLimit,
-        category: category,
-      },
-    })
-  const [items, setItems] = useState([])
-  const [isFetching, setIsFetching] = useState(false)
-
-  const fetchMoreData = async nextPage => {
-    await fetchMore({
-      variables: { page: nextPage },
-      updateQuery: (prevResult, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prevResult
-
-        const newTypes = [
-          ...prevResult.seeAdviceType.adviceType,
-          ...fetchMoreResult.seeAdviceType.adviceType,
-        ]
-
-        setItems(newTypes)
-
-        return {
-          ...prevResult,
-          seeAdviceType: {
-            ...prevResult.seeAdviceType,
-            data: newTypes,
-            totalCount: fetchMoreResult.seeAdviceType.totalCount,
-          },
-        }
-      },
-    })
-    setOrderPage(nextPage)
-  }
-
-  useEffect(() => {
-    if (isFetching) {
-      const nextPage = orderPage + 1
-      fetchMoreData(nextPage).finally(() => {
-        setIsFetching(false)
-      })
-    }
-  }, [isFetching])
-
+  const [bottomReached, setBottomReached] = useState(false)
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target
-    if (scrollTop + clientHeight >= scrollHeight - 10 && !isFetching) {
-      if (orderPage < Math.ceil(data.seeAdviceType.totalCount / currentLimit)) {
-        setIsFetching(true)
+    if (scrollTop + clientHeight >= scrollHeight - 40) {
+      if (orderPage < Math.ceil(totalCount / 3)) {
+        setOrderPage(prev => prev + 1)
+        setBottomReached(true)
       }
     }
   }
 
+  // useEffect(() => {
+  //   if (bottomReached) {
+  //   }
+  // }, [bottomReached])
+
   useEffect(() => {
-    if (data && data.seeAdviceType) {
-      setItems(data.seeAdviceType.adviceType)
+    if (orderPage > 1) {
+      seeAdviceQuery({
+        variables: {
+          page: orderPage,
+          category: category,
+          limit: 30,
+        },
+      })
+    } else {
+      seeAdviceQuery({
+        variables: {
+          page: 1,
+          category: category,
+          limit: 30,
+        },
+      })
     }
-  }, [data])
+
+    setBottomReached(false)
+  }, [bottomReached])
+
+  useEffect(() => {
+    setItems(orderAdviceList)
+  }, [orderAdviceList])
 
   const handleOnDragEnd = result => {
     if (!result.destination) return
@@ -139,22 +128,23 @@ export default function TypeIndex({ isOpen, onClose, category }) {
           ids: typeID,
           indexNums: typeIndex,
         },
-        refetchQueries: [
-          {
-            query: SEE_ADVICE_TYPE_QUERY,
-            variables: {
-              page: 1,
-              limit: 50,
-              category: category,
-            },
-          },
-        ],
       })
 
       if (!result.data.changeOrderAT.ok) {
         throw new Error(`${category} 순서 변경 실패`)
       }
-      refetch()
+      setPage(1)
+      refetch({
+        page: 1,
+        category: category,
+        limit: limit,
+      })
+      setOrderPage(1)
+      orderRefetch({
+        page: 1,
+        category: category,
+        limit: 30,
+      })
 
       alert(`${category} 순서가 변경되었습니다.`)
       userLogs(`${category} 순서 변경`)
@@ -166,6 +156,7 @@ export default function TypeIndex({ isOpen, onClose, category }) {
 
   const closeBtn = () => {
     onClose()
+    setOrderPage(1)
   }
 
   return (

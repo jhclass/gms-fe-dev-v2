@@ -12,7 +12,6 @@ const _ = require('lodash')
 import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import {
@@ -294,7 +293,7 @@ export default function StudentsWrite() {
                       variant={noDouble ? 'bordered' : 'solid'}
                       color="primary"
                       className={`w-full ${
-                        noDouble ? 'text-[#007de9]' : 'bg-flag1 text-white'
+                        noDouble ? 'text-primary' : 'bg-accent text-white'
                       }  `}
                       onClick={() => {
                         if (!noDouble) {
@@ -480,18 +479,14 @@ export default function StudentsWrite() {
                   >
                     등록
                   </Button>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailDiv>
             </form>

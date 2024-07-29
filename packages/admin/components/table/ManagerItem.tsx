@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { gradeState, progressStatusState } from '@/lib/recoilAtoms'
@@ -13,7 +13,7 @@ const TableItem = styled.div<{ $resign: string }>`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -96,7 +96,7 @@ const Tid = styled.div`
   width: 10%;
   padding: 1rem;
   font-size: inherit;
-  color: #07bbae;
+  color: ${({ theme }) => theme.colors.secondary};
   min-width: ${1200 * 0.1}px;
   font-weight: 600;
 `
@@ -108,7 +108,7 @@ const Tname = styled.div`
   width: 9%;
   padding: 1rem;
   font-size: inherit;
-  color: #007de9;
+  color: ${({ theme }) => theme.colors.primary};
   min-width: ${1200 * 0.09}px;
   font-weight: 600;
 `
@@ -175,7 +175,7 @@ const Tdate = styled.div`
 `
 const ResignTag = styled.span`
   display: inline-block;
-  background: #ff5900;
+  background: ${({ theme }) => theme.colors.accent};
   border-radius: 0.5rem;
   color: #fff;
   font-size: 0.8rem;
@@ -184,7 +184,7 @@ const ResignTag = styled.span`
 `
 const DateTag = styled.span`
   display: inline-block;
-  background: #007de9;
+  background: ${({ theme }) => theme.colors.primary};
   border-radius: 0.5rem;
   color: #fff;
   font-size: 0.8rem;
@@ -204,6 +204,7 @@ const Masking = styled.span`
 `
 
 export default function ManagerItem(props) {
+  const theme = useTheme()
   const grade = useRecoilValue(gradeState)
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
@@ -279,7 +280,7 @@ export default function ManagerItem(props) {
                   ) : (
                     <AvatarF
                       style={{
-                        backgroundColor: `#4f46e5`,
+                        backgroundColor: theme.colors.teriary,
                       }}
                     >
                       {gradeStr(managerData?.mUserId)}

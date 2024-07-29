@@ -16,7 +16,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 
 type CategoryItemProps = {
   href: string
@@ -84,8 +84,8 @@ const Menu = styled(motion.ul)<{ $isOpen: boolean }>`
 `
 const MenuItem = styled.li<{ $isActive: boolean }>`
   width: 100%;
-  color: ${props => (props.$isActive ? '#007de9' : '#71717a')};
-
+  color: ${props =>
+    props.$isActive ? props.theme.colors.primary : props.theme.colors.gray};
   a {
     display: block;
     width: 100%;
@@ -103,7 +103,7 @@ const CateActive = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
-  background: #007de9;
+  background: ${({ theme }) => theme.colors.primary};
   z-index: -1;
   border-radius: 0.375rem;
   width: 100%;
@@ -136,6 +136,7 @@ export default function CategoryItem<CategoryItemProps>({
   cateGrade = null,
 }) {
   const router = useRouter()
+  const theme = useTheme()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart') || []
@@ -237,7 +238,7 @@ export default function CategoryItem<CategoryItemProps>({
       <CateItem
         onClick={onClick}
         animate={{
-          color: isActive ? '#fff' : '#007de9',
+          color: isActive ? '#fff' : theme.colors.primary,
           transition: { duration: 0.3 },
         }}
       >
@@ -289,7 +290,7 @@ export default function CategoryItem<CategoryItemProps>({
               <i
                 ref={arrowRef}
                 className={`${
-                  isActive ? 'color-white' : 'color-[#0007de9]'
+                  isActive ? 'text-white' : 'text-primary'
                 } xi-angle-up-min`}
               />
             </MenuBtn>

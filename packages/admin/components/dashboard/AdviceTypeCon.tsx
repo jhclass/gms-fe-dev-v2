@@ -30,10 +30,10 @@ const Title = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 const ToolTipBox = styled.div`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 1.2rem;
 `
 const DashTooltip = styled.div`
@@ -72,7 +72,7 @@ const Content = styled.div`
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgb(0, 125, 233);
+      background: ${({ theme }) => theme.color.primary};
       border-radius: 0.75rem;
     }
 

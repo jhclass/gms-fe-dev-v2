@@ -12,7 +12,6 @@ const _ = require('lodash')
 import { Button, Input, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/hr/layout'
 import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
@@ -99,7 +98,7 @@ const FilterLabel = styled.p`
 
     &.multi {
       font-size: 0.8rem;
-      color: #71717a;
+      color: ${({ theme }) => theme.colors.gray};
     }
   }
 `
@@ -125,7 +124,7 @@ const LodingDiv = styled.div`
 const AddLink = styled.p`
   > a {
     font-size: 0.8rem;
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
   position: absolute;
   top: 0;
@@ -724,26 +723,19 @@ export default function ManagerWrite() {
                 <BtnBox>
                   <Button
                     type="submit"
-                    size="md"
-                    radius="md"
-                    variant="solid"
                     color="primary"
                     className="w-full text-white"
                   >
                     등록
                   </Button>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailDiv>
             </form>

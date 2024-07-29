@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import Link from 'next/link'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
@@ -8,7 +8,7 @@ const TableItem = styled.div<{ $resign: string }>`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -91,7 +91,7 @@ const Tid = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  color: #07bbae;
+  color: ${({ theme }) => theme.colors.secondary};
   min-width: ${1200 * 0.11}px;
   font-weight: 600;
 `
@@ -103,7 +103,7 @@ const Tname = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  color: #007de9;
+  color: ${({ theme }) => theme.colors.primary};
   min-width: ${1200 * 0.11}px;
   font-weight: 600;
 `
@@ -170,22 +170,8 @@ const Masking = styled.span`
   backdrop-filter: blur(2.5px);
 `
 
-const isDisplayFlag = (date: string, step: number): string => {
-  const currentDate = new Date()
-  const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
-  )
-
-  if (differenceInDays >= 0 && differenceInDays < 3) {
-    return '#007de9'
-  } else if (differenceInDays >= 3 && step === 999) {
-    return '#FF5900'
-  } else {
-    return 'transparent'
-  }
-}
-
 export default function ConsolutItem(props) {
+  const theme = useTheme()
   const grade = useRecoilValue(gradeState)
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
@@ -257,7 +243,7 @@ export default function ConsolutItem(props) {
                   ) : (
                     <AvatarF
                       style={{
-                        backgroundColor: `#4f46e5`,
+                        backgroundColor: theme.colors.teriary,
                       }}
                     >
                       {gradeStr(managerData?.mUserId)}

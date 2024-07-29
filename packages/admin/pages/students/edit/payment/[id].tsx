@@ -9,7 +9,14 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Input, Radio, RadioGroup, Select, SelectItem } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -20,7 +27,6 @@ import {
   UPDATE_PAYMENT_DETAIL_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
-import Button2 from '@/components/common/Button'
 import Layout from '@/pages/students/layout'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
@@ -1231,28 +1237,21 @@ export default function StudentsWritePayment() {
                     </>
                   )}
                   <BtnBox>
-                    <Button2
-                      buttonType="submit"
-                      width="100%"
-                      height="2.5rem"
-                      typeBorder={true}
-                      fontColor="#fff"
-                      bgColor="#007de9"
+                    <Button
+                      type="submit"
+                      color="primary"
+                      className="w-full text-white"
                     >
                       결제 수정
-                    </Button2>
-                    <Button2
-                      buttonType="button"
-                      width="100%"
-                      height="2.5rem"
-                      fontColor="#007de9"
-                      bgColor="#fff"
-                      borderColor="#007de9"
-                      typeBorder={true}
+                    </Button>
+                    <Button
+                      variant="bordered"
+                      color="primary"
+                      className="w-full text-primary"
                       onClick={() => router.back()}
                     >
                       이전으로
-                    </Button2>
+                    </Button>
                   </BtnBox>
                 </DetailDiv>
               </DetailBox>

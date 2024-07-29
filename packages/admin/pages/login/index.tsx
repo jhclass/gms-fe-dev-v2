@@ -3,11 +3,10 @@ import { useForm, useWatch } from 'react-hook-form'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { loginIdFocuseState, loginPasswordFocuseState } from '@/lib/recoilAtoms'
-import Button from '@/components/common/Button'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import { LogUserIn } from '@/lib/apolloClient'
-import { Input } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
 import { useState } from 'react'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -233,10 +232,9 @@ export default function Login() {
             {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
             <BtnBox>
               <Button
-                buttonType="submit"
-                typeBorder={true}
-                fontColor="#fff"
-                bgColor="#007de9"
+                type="submit"
+                color="primary"
+                className="w-full text-white"
               >
                 로그인
               </Button>

@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
 import { reqRefundPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import { Button, Input } from '@nextui-org/react'
 import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -319,28 +318,21 @@ export default function ReqRefundFilter({
             </ItemBox>
           </BoxTop>
           <BtnBox>
-            <Button2
-              buttonType="submit"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
+            <Button
+              type="submit"
+              color="primary"
+              className="w-[50%] text-white"
             >
               검색
-            </Button2>
-            <Button2
-              buttonType="reset"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              fontColor="#007de9"
-              bgColor="#fff"
-              borderColor="#007de9"
-              typeBorder={true}
+            </Button>
+            <Button
+              color="primary"
+              variant="bordered"
+              className="w-[50%] text-primary"
               onClick={handleReset}
             >
               초기화
-            </Button2>
+            </Button>
           </BtnBox>
         </FilterForm>
       </FilterBox>

@@ -13,7 +13,7 @@ const Tname = styled.div`
   font-weight: 600;
   vertical-align: middle;
   text-align: left;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   @media (max-width: 768px) {
     padding: 0.5rem;
   }
@@ -28,7 +28,7 @@ const TsubDiv = styled.div`
   color: inherit;
   min-width: 102px;
   font-size: 0.875rem;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   vertical-align: middle;
   @media (max-width: 768px) {
     padding: 0.5rem;
@@ -45,7 +45,7 @@ const Tfee = styled.div`
   min-width: 132px;
   vertical-align: middle;
   font-size: 0.875rem;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   @media (max-width: 768px) {
     padding: 0.5rem;
   }

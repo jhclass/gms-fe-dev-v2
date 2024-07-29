@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Input, Textarea } from '@nextui-org/react'
+import { Button, Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
   DELETE_CONSULTATION_MEMO_MUTATION,
@@ -8,7 +8,6 @@ import {
   UPDATE_CONSULTATION_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 
@@ -16,6 +15,7 @@ const DetailForm = styled.form`
   width: 100%;
   display: flex;
   gap: 1rem;
+  align-items: center;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -49,7 +49,7 @@ const MemoGrade = styled.span`
   height: 0.8rem;
   overflow: hidden;
   border-radius: 100%;
-  background: #4f46e5;
+  background: ${({ theme }) => theme.colors.teriary};
   text-align: center;
   font-weight: 700;
   color: #fff;
@@ -228,28 +228,17 @@ export default function ConsultMemo(props) {
       />
       {mId == props.item.manageUser?.id && (
         <MemoListBtn>
-          <Button2
-            buttonType="submit"
-            width="100%"
-            height="2.5rem"
-            typeBorder={true}
-            fontColor="#fff"
-            bgColor="#007de9"
-          >
+          <Button type="submit" color="primary" className="w-full text-white">
             수정
-          </Button2>
-          <Button2
-            buttonType="button"
-            width="100%"
-            height="2.5rem"
-            fontColor="#007de9"
-            bgColor="#fff"
-            borderColor="#007de9"
-            typeBorder={true}
+          </Button>
+          <Button
+            color="primary"
+            variant="bordered"
+            className="w-[50%] text-primary"
             onClick={() => onDelete(props.item)}
           >
             삭제
-          </Button2>
+          </Button>
         </MemoListBtn>
       )}
     </DetailForm>

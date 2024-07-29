@@ -15,7 +15,7 @@ const TableItem = styled.div`
   flex-wrap: wrap;
   background-color: #fff;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   padding: 1rem 1.5rem;
@@ -53,7 +53,7 @@ const Tprogress = styled.div`
   width: 50%;
   font-size: inherit;
   padding: 0.3rem 0;
-  color: #4f46e5;
+  color: ${({ theme }) => theme.colors.teriary};
   font-size: 1rem;
   font-weight: 600;
 `

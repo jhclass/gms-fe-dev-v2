@@ -18,7 +18,7 @@ import { useState } from 'react'
 
 const TableArea = styled.div`
   padding-top: 2rem;
-  border-top: 1px solid #07bbae;
+  border-top: 1px solid ${({ theme }) => theme.colors.secondary};
 `
 const TableWrap = styled.div`
   width: 100%;
@@ -100,7 +100,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -122,7 +122,7 @@ const TopInfo = styled.div`
 `
 const UpdateTime = styled.p`
   span {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 const TableRow = styled.div`
@@ -660,10 +660,10 @@ export default function EmploymentList() {
         <Button
           size="md"
           // onClick={loadMore}
-          className="bg-white border-[#07bbae] w-full text-[#07bbae]"
+          className="w-full bg-white border-secondary text-secondary"
         >
           더보기{' '}
-          <span className="text-[#07bbae] text-[1rem]">
+          <span className="text-secondary text-[1rem]">
             <i className="xi-plus-circle" />
           </span>
         </Button>

@@ -21,10 +21,10 @@ module.exports = {
       },
       colors: {
         primary: '#007de9',
-        secondary: '#0D9488',
-        flag1: '#FF5900',
-        flag2: '#FFC600',
-        flag3: '#4f46e5',
+        secondary: '#07bbae',
+        teriary: '#4f46e5',
+        accent: '#ff5900',
+        gray: '#71717a',
       },
       fontSize: {
         // Title

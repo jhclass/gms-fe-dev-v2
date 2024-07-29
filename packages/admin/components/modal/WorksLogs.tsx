@@ -37,7 +37,7 @@ const Title = styled.h2`
     content: '';
     width: 0.3rem;
     height: 100%;
-    background: #07bbae;
+    background: ${({ theme }) => theme.colors.secondary};
     position: absolute;
     top: 0;
     left: 0;
@@ -216,7 +216,7 @@ const CheckLabel = styled.p`
     content: '';
     width: 0.5rem;
     height: 0.5rem;
-    background: #007de9;
+    background: ${({ theme }) => theme.colors.primary};
     position: absolute;
     top: 0.6rem;
     left: -1rem;
@@ -693,7 +693,7 @@ export default function WorksLogsModal({
                                         isDisabled={sign}
                                         size="sm"
                                         color="primary"
-                                        className="bg-[#ff5900]"
+                                        className="bg-accent"
                                         onClick={() => clickSign('강사')}
                                       >
                                         서명
@@ -727,7 +727,7 @@ export default function WorksLogsModal({
                                         isDisabled={sign}
                                         size="sm"
                                         color="primary"
-                                        className="bg-[#ff5900]"
+                                        className="bg-accent"
                                         onClick={() => clickSign('팀장')}
                                       >
                                         서명
@@ -763,7 +763,7 @@ export default function WorksLogsModal({
                                         isDisabled={sign}
                                         size="sm"
                                         color="primary"
-                                        className="bg-[#ff5900]"
+                                        className="bg-accent"
                                         onClick={() => clickSign('원장')}
                                       >
                                         서명
@@ -799,7 +799,7 @@ export default function WorksLogsModal({
                           {attendanceTotals && (
                             <FlexBoxNum>
                               <FlexAreaBox>
-                                <div className="text-[#07bbae]">
+                                <div className="text-secondary">
                                   <FilterLabel className="color">
                                     재적
                                   </FilterLabel>
@@ -807,7 +807,7 @@ export default function WorksLogsModal({
                                     <b>{attendanceTotals[0]}</b>명
                                   </LineBox>
                                 </div>
-                                <div className="text-[#007de9]">
+                                <div className="text-primary">
                                   <FilterLabel className="color">
                                     출석
                                   </FilterLabel>
@@ -815,7 +815,7 @@ export default function WorksLogsModal({
                                     <b>{attendanceTotals[1]}</b>명
                                   </LineBox>
                                 </div>
-                                <div className="text-[#ff5900]">
+                                <div className="text-accent">
                                   <FilterLabel className="color">
                                     결석
                                   </FilterLabel>

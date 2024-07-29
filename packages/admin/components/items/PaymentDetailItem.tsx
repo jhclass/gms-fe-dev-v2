@@ -278,7 +278,7 @@ export default function StudentPaymentDetailItem({
                     <Button
                       size="md"
                       radius="md"
-                      className="w-full lg:max-w-[50%] text-white bg-flag1"
+                      className="w-full lg:max-w-[50%] text-white bg-accent"
                       onClick={() => clickReqRefund()}
                     >
                       결제 취소요청 철회
@@ -289,7 +289,7 @@ export default function StudentPaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="w-full lg:max-w-[50%] text-flag1 border-flag1"
+                    className="w-full lg:max-w-[50%] text-accent border-accent"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청
@@ -410,7 +410,7 @@ export default function StudentPaymentDetailItem({
                     isDisabled={detailtData.refundApproval ? true : false}
                     size="md"
                     radius="md"
-                    className="w-full lg:max-w-[50%] text-white bg-flag1"
+                    className="w-full lg:max-w-[50%] text-white bg-accent"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소요청 철회
@@ -420,7 +420,7 @@ export default function StudentPaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="w-full lg:max-w-[50%] text-flag1 border-flag1"
+                    className="w-full lg:max-w-[50%] text-accent border-accent"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청

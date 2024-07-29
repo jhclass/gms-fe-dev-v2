@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRouter } from 'next/router'
 import RefundItem from '@/components/table/RefundItem'
 import { refundPageState } from '@/lib/recoilAtoms'
@@ -22,7 +22,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -33,7 +33,7 @@ const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.7rem;
 
   span {
@@ -74,7 +74,7 @@ const TableItem = styled.div`
   width: 100%;
   min-width: fit-content;
   border-bottom: 1px solid #e4e4e7;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   background: #fff;
@@ -187,10 +187,10 @@ const Tamount = styled.div<{ $width: number }>`
   font-weight: 600;
 
   &.card {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
   &.cash {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 const EllipsisBox = styled.p`
@@ -216,10 +216,11 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 export default function RefundTable() {
+  const theme = useTheme()
   const router = useRouter()
   const [currentPage, setCurrentPage] = useRecoilState(refundPageState)
   const [currentLimit] = useState(10)
@@ -264,10 +265,10 @@ export default function RefundTable() {
           </Ttotal>
           <ColorHelp>
             <ColorCip>
-              <span style={{ background: '#007de9' }}></span> : 현금
+              <span style={{ background: theme.colors.primary }}></span> : 현금
             </ColorCip>
             <ColorCip>
-              <span style={{ background: '#FF5900' }}></span> : 카드
+              <span style={{ background: theme.colors.accent }}></span> : 카드
             </ColorCip>
           </ColorHelp>
         </TTopic>

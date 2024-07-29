@@ -6,11 +6,8 @@ import {
   CardHeader,
   Pagination,
   ScrollShadow,
-  Textarea,
 } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import useMmeQuery from '@/utils/mMe'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { SEE_MESSAGE_STORAGE_QUERY } from '@/graphql/queries'
 import { useMutation, useSuspenseQuery } from '@apollo/client'
@@ -19,7 +16,6 @@ import { DELETE_MESSAGE_STORAGE_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexBox = styled.div`
-  margin-top: 1rem;
   gap: 1rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
@@ -48,7 +44,7 @@ const ConLabel = styled.p`
 `
 
 const ConText = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
 `
 
@@ -69,25 +65,25 @@ const SendType = styled.p`
   font-size: 0.875rem;
 
   span {
-    color: #71717a;
+    color: ${({ theme }) => theme.colors.gray};
   }
 `
 
 const SendState = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   font-weight: 700;
 
   &.res {
-    color: #07bbae;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 
   &.succ {
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   &.err {
-    color: #ff5900;
+    color: ${({ theme }) => theme.colors.accent};
   }
 `
 
@@ -103,7 +99,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 type SeeMessageStorageQuery = {
@@ -189,9 +185,7 @@ export default function SMSItem({
               key={index}
               shadow="none"
               classNames={{
-                base: `bg-white px-3 py-1 border-2 ${
-                  type === '개인' ? 'border-[#07bbae]' : 'border-[#007de9]'
-                }`,
+                base: 'bg-white px-3 py-1 border-2 border-primary',
               }}
             >
               <CardHeader className="flex flex-col gap-3 p-2">
@@ -234,7 +228,7 @@ export default function SMSItem({
                 <Button
                   size="sm"
                   variant="solid"
-                  className="bg-[#ff5900] text-white"
+                  className="text-white bg-accent"
                   onClick={() => handleDelete(item.id)}
                 >
                   삭제

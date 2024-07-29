@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
+import { Button, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
   CREATE_STUDENT_MEMO_MUTATION,
   SEARCH_STUDENT_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -303,16 +302,9 @@ export default function CreateEmploymentMemo(props) {
             {...register('content')}
           />
           <MemoBtn>
-            <Button2
-              buttonType="submit"
-              width="100%"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
-            >
+            <Button type="submit" color="primary" className="w-full text-white">
               등록
-            </Button2>
+            </Button>
           </MemoBtn>
         </MemoBox>
       </DetailForm>

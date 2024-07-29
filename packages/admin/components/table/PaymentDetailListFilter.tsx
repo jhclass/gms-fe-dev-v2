@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { PaymentDetailResult } from '@/src/generated/graphql'
 import PaymentDetailItem from '@/components/table/PaymentDetailItem'
 import { SEARCH_PAYMENT_DETAIL_FILTER_MUTATION } from '@/graphql/mutations'
@@ -39,7 +39,7 @@ const Ttotal = styled.p`
 
   span {
     font-weight: 400;
-    color: #007de9;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 const ColorHelp = styled.div`
@@ -54,7 +54,7 @@ const ColorCip = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.7rem;
 
   span {
@@ -177,7 +177,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 type SeePaymentDetailQuery = {
@@ -185,6 +185,7 @@ type SeePaymentDetailQuery = {
 }
 
 export default function PaymentDetailFilterTable({ studentFilter }) {
+  const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(
     paymentDetailFilterPageState,
   )
@@ -239,7 +240,7 @@ export default function PaymentDetailFilterTable({ studentFilter }) {
         </TopBox>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: '#FF5900' }}></span> : 환불
+            <span style={{ background: theme.colors.accent }}></span> : 환불
           </ColorCip>
         </ColorHelp>
       </TTopic>

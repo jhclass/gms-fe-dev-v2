@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
 const LimitBox = styled.div`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
   display: flex;
   gap: 0.5rem;
   background: #fff;
@@ -12,7 +12,7 @@ const LimitBox = styled.div`
 `
 
 const Lable = styled.p`
-  color: #71717a;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 export default function ListLimitSelect({ currentLimit, setCurrentLimit }) {
