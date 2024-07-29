@@ -357,17 +357,15 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
-          {mGrade === 0 && (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <HeaderNoti />
-            </Suspense>
-          )}
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <HeaderNoti />
+          </Suspense>
           {mGrade === 0 && (
             <ReqBtn onClick={onOpen}>
               <img
