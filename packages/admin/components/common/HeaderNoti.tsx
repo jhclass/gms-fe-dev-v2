@@ -74,7 +74,7 @@ const NotiListBox = styled.div`
   width: 20rem;
   margin-left: -10rem;
   border: 1px solid #e4e4e7;
-  background: rgba(0, 0, 0, 0.7);
+  background: #fff;
   border-radius: 0.5rem;
   height: fit-content;
   padding-bottom: 1rem;
@@ -106,13 +106,7 @@ const ScrollBox = styled.div`
     }
   }
 `
-const ListBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  height: 100%;
-`
+
 const NotiItem = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
@@ -121,7 +115,7 @@ const NotiItem = styled.div`
   height: 55px;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: #fff;
+  background: #d9e3fa;
   padding-right: 0.5rem;
 
   &.read {
@@ -357,7 +351,7 @@ export default function HeaderNoti({}) {
                       <NotiItem key={index}>
                         <ClickBox>
                           <NotiFlag
-                            style={{ background: theme.colors.secondary }}
+                            style={{ background: theme.colors.primary }}
                           ></NotiFlag>
                           <ReqBox>
                             <ReqTop>
