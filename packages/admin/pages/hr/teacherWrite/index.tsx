@@ -508,7 +508,7 @@ export default function TeacherWrite() {
                             field={field}
                             label={
                               <FilterLabel>
-                                강의분야<span>*</span>{' '}
+                                강의분야{' '}
                                 <span className="multi">(중복가능)</span>
                               </FilterLabel>
                             }
