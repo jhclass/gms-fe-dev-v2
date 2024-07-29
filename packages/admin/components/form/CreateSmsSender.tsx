@@ -243,13 +243,7 @@ export default function CreateSmsSender({ isActive, category }) {
                     label={category}
                     maxLength={11}
                     classNames={{
-                      label: [
-                        `${
-                          category === '발신인증번호'
-                            ? 'w-[6rem]'
-                            : 'w-[5.5rem]'
-                        }`,
-                      ],
+                      label: ['w-[6.5rem]'],
                       mainWrapper: ['w-[calc(100%-4rem)]'],
                     }}
                     onChange={e => {
