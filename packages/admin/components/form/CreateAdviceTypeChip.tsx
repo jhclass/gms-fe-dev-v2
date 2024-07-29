@@ -60,8 +60,6 @@ export default function CreateAdviceTypeChip({
       updateQuery: (prevResult, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prevResult
 
-        console.log(prevResult)
-        console.log(fetchMoreResult)
         const newTypes = [
           ...prevResult.seeAdviceType.adviceType,
           ...fetchMoreResult.seeAdviceType.adviceType,

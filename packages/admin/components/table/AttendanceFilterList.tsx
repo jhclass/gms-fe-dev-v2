@@ -227,7 +227,7 @@ export default function Attendance({
       })
     }
 
-    console.log(action, state)
+    // console.log(action, state)
   }
 
   const handleSelectChange = (value, itemIndex, dayIndex) => {
