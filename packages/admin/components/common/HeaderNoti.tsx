@@ -15,10 +15,8 @@ import { ResultSeeAlarms } from '@/src/generated/graphql'
 const NotiBtn = styled.button`
   display: flex;
   align-items: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0.3rem;
   position: relative;
+  font-size: 2.2rem;
 
   @media screen and (max-width: 1024px) {
     width: 2rem;
@@ -36,6 +34,20 @@ const NotiBtn = styled.button`
     background: #d4d4d8;
     transition: 0.3s;
   }
+
+  /* &:before {
+    bottom: -1.5rem;
+    left: 50%;
+    margin-left: -0.5rem;
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-bottom: 0.5rem solid #fff;
+    border-top: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+  } */
 `
 
 const NotiNum = styled.span`
@@ -71,13 +83,9 @@ const NotiListBox = styled.div`
   position: absolute;
   top: 3rem;
   left: 50%;
-  width: 20rem;
-  margin-left: -10rem;
-  border: 1px solid #e4e4e7;
-  background: #fff;
-  border-radius: 0.5rem;
-  height: fit-content;
-  padding-bottom: 1rem;
+  width: 24rem;
+  margin-left: -12rem;
+  /* padding-top: 0.7rem; */
 
   @media screen and (max-width: 1024px) {
     width: 100vw;
@@ -86,11 +94,26 @@ const NotiListBox = styled.div`
     margin-left: 0;
   }
 `
+const DropBox = styled.div`
+  position: relative;
+  border: 1px solid #e4e4e7;
+  background: #fff;
+  border-radius: 0.5rem;
+  height: fit-content;
+  padding-bottom: 1rem;
+`
+
 const FlexBox = styled.div`
   display: flex;
   gap: 0.5rem;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0.5rem;
+`
+const Noti = styled.p`
+  font-size: 0.875rem;
+  span {
+    color: red;
+  }
 `
 const ScrollBox = styled.div`
   display: flex;
@@ -99,7 +122,7 @@ const ScrollBox = styled.div`
 
   .flexList {
     padding: 0.5rem;
-    max-height: 20vh;
+    max-height: 25vh;
     height: 100%;
     @media screen and (max-width: 1024px) {
       max-height: 60vh !important;
@@ -140,11 +163,6 @@ const ReqBox = styled.div`
   gap: 0.1rem;
   width: calc(100% - 1rem);
   padding: 0.3rem 0;
-`
-const NotiClose = styled.button`
-  display: block;
-  width: 5%;
-  height: 100%;
 `
 const ReqTop = styled.div`
   display: flex;
@@ -318,54 +336,55 @@ export default function HeaderNoti({}) {
     <>
       <NotiBox ref={notiBoxRef}>
         <NotiBtn onClick={() => setIsListOpen(!isListOpen)}>
-          <img
-            src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_noti.webp"
-            alt="알림"
-          />
+          <i className={isListOpen ? 'xi-bell' : 'xi-bell-o'} />
           <NotiNum>{alarms === null ? '0' : data.seeAlarms.totalCount}</NotiNum>
         </NotiBtn>
         {isListOpen && (
           <NotiListBox>
-            <FlexBox>
-              <Button
-                size="sm"
-                variant="solid"
-                className="text-white bg-accent"
-                onClick={clickReadAll}
-              >
-                <p className="text-[1rem]">
-                  <i className="xi-trash"></i>
-                </p>
-                모두 읽음
-              </Button>
-            </FlexBox>
-            <ScrollBox>
-              <ScrollShadow
-                onScroll={handleScroll}
-                orientation="vertical"
-                className="scrollbar flexList"
-              >
-                {alarms?.length > 0 && (
-                  <>
-                    {alarms?.map((alarm, index) => (
-                      <NotiItem key={index}>
-                        <ClickBox>
-                          <NotiFlag
-                            style={{ background: theme.colors.primary }}
-                          ></NotiFlag>
-                          <ReqBox>
-                            <ReqTop>
-                              <FromID>{alarm.title}</FromID>
-                              <AlarmsTime>
-                                {formatDate(alarm.createdAt)}
-                              </AlarmsTime>
-                            </ReqTop>
-                            <ReqText>{alarm.content}</ReqText>
-                          </ReqBox>
-                        </ClickBox>
-                      </NotiItem>
-                    ))}
-                    {/* <NotiItem key={index}>
+            <DropBox>
+              <FlexBox>
+                <Noti>
+                  <span>*</span> 알람은 30일간 보관 후 삭제처리 됩니다.
+                </Noti>
+                <Button
+                  size="sm"
+                  variant="solid"
+                  className="text-white bg-accent"
+                  onClick={clickReadAll}
+                >
+                  <p className="text-[1rem]">
+                    <i className="xi-trash"></i>
+                  </p>
+                  모두 읽음
+                </Button>
+              </FlexBox>
+              <ScrollBox>
+                <ScrollShadow
+                  onScroll={handleScroll}
+                  orientation="vertical"
+                  className="scrollbar flexList"
+                >
+                  {alarms?.length > 0 && (
+                    <>
+                      {alarms?.map((alarm, index) => (
+                        <NotiItem key={index}>
+                          <ClickBox>
+                            <NotiFlag
+                              style={{ background: theme.colors.primary }}
+                            ></NotiFlag>
+                            <ReqBox>
+                              <ReqTop>
+                                <FromID>{alarm.title}</FromID>
+                                <AlarmsTime>
+                                  {formatDate(alarm.createdAt)}
+                                </AlarmsTime>
+                              </ReqTop>
+                              <ReqText>{alarm.content}</ReqText>
+                            </ReqBox>
+                          </ClickBox>
+                        </NotiItem>
+                      ))}
+                      {/* <NotiItem key={index}>
                       <ClickBox onClick={onOpen}>
                         <NotiFlag style={{ background: 'blue' }}></NotiFlag>
                         <ReqBox>
@@ -377,13 +396,14 @@ export default function HeaderNoti({}) {
                         <i className="xi-close-circle" />
                       </NotiClose>
                     </NotiItem> */}
-                  </>
-                )}
-                {(alarms?.length === 0 || alarms === null) && (
-                  <Nolist>알람이 없습니다.</Nolist>
-                )}
-              </ScrollShadow>
-            </ScrollBox>
+                    </>
+                  )}
+                  {(alarms?.length === 0 || alarms === null) && (
+                    <Nolist>알람이 없습니다.</Nolist>
+                  )}
+                </ScrollShadow>
+              </ScrollBox>
+            </DropBox>
           </NotiListBox>
         )}
       </NotiBox>

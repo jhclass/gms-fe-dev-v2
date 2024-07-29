@@ -413,6 +413,8 @@ export default function StudentsWrite() {
     }
   }
 
+  console.log(studentSubjectData)
+  console.log(studentPaymentData)
   return (
     <>
       {studentData !== null && (
@@ -510,7 +512,9 @@ export default function StudentsWrite() {
                             <Button
                               isDisabled={
                                 studentPaymentData?.lectureAssignment ===
-                                assignment.assignment
+                                  assignment.assignment ||
+                                studentSubjectData?.lectures?.id === null ||
+                                studentPaymentDetailData?.length === 0
                                   ? true
                                   : false
                               }
@@ -537,7 +541,9 @@ export default function StudentsWrite() {
                             <Button
                               isDisabled={
                                 studentPaymentData?.lectureAssignment ===
-                                assignment.withdrawal
+                                  assignment.withdrawal ||
+                                studentSubjectData?.lectures?.id === null ||
+                                studentPaymentDetailData?.length === 0
                                   ? true
                                   : false
                               }
@@ -685,7 +691,8 @@ export default function StudentsWrite() {
                                   isReadOnly={true}
                                   labelPlacement="outside"
                                   value={
-                                    studentPaymentData?.reasonFordroppingOut
+                                    studentPaymentData?.reasonFordroppingOut ||
+                                    ''
                                   }
                                   minRows={1}
                                   variant="underlined"
@@ -701,21 +708,6 @@ export default function StudentsWrite() {
                         ) : null}
                       </>
                     )}
-
-                    {studentPaymentDetailData?.length === 0 &&
-                      (mGrade < grade.general || mPart.includes('회계팀')) && (
-                        <Button
-                          size="md"
-                          radius="md"
-                          variant="solid"
-                          className="w-full mx-auto text-white bg-accent lg:w-[50%]"
-                          onClick={() =>
-                            router.push(`/students/write/payment/${paymentId}`)
-                          }
-                        >
-                          수강 결제
-                        </Button>
-                      )}
                   </DetailDiv>
                 </DetailBox>
               </>
@@ -767,6 +759,20 @@ export default function StudentsWrite() {
             )}
             <DetailBox>
               <BtnBox>
+                {studentPaymentDetailData?.length === 0 &&
+                  (mGrade < grade.general || mPart.includes('회계팀')) && (
+                    <Button
+                      size="md"
+                      radius="md"
+                      variant="solid"
+                      className="w-full mx-auto text-white bg-accent lg:w-[50%]"
+                      onClick={() =>
+                        router.push(`/students/write/payment/${paymentId}`)
+                      }
+                    >
+                      수강 결제
+                    </Button>
+                  )}
                 <Button
                   size="md"
                   radius="md"

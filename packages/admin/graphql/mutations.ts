@@ -1124,6 +1124,9 @@ export const SEARCH_PAYMENT_MUTATION = gql`
           subDiv
           subjectName
           subjectCode
+          lectures {
+            id
+          }
         }
         subjectId
         tuitionFee
