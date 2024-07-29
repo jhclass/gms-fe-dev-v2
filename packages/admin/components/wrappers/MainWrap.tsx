@@ -79,7 +79,7 @@ export default function MainWrap({ children }) {
   const [reconnectInterval, setReconnectInterval] = useState(1000) // 초기 재연결 간격 (1초)
   useEffect(() => {
     const token = localStorage.getItem('token')
-    console.log('token:', token)
+    // console.log('token:', token)
     const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URI}${token}`)
 
     ws.onopen = () => {
