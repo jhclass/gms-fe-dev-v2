@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
+import { Button, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
   DELETE_STUDENT_MEMO_MUTATION,
@@ -8,7 +8,6 @@ import {
   UPDATE_STUDENT_MEMO_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
@@ -399,18 +398,14 @@ export default function EmploymentMemo(props) {
         />
         {/* {mId == props.item.manageUser?.id && ( */}
         <MemoListBtn>
-          <Button2
-            buttonType="button"
-            width="100%"
-            height="2.5rem"
-            fontColor="#007de9"
-            bgColor="#fff"
-            borderColor="#007de9"
-            typeBorder={true}
+          <Button
+            variant="bordered"
+            color="primary"
+            className="w-full text-primary"
             onClick={() => onDelete(props.item.id)}
           >
             삭제
-          </Button2>
+          </Button>
         </MemoListBtn>
         {/* )} */}
       </FlexBox>

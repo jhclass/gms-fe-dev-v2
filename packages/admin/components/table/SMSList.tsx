@@ -226,7 +226,7 @@ export default function SMSList() {
                       : 'border-accent'
                     : item.successType === 'Y'
                     ? 'border-secondary'
-                    : 'border-default'
+                    : 'border-gray'
                 }`,
               }}
             >

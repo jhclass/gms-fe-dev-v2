@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
-// import Button from '@/components/common/Button'
 import { Button, Input, useDisclosure } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { CREATE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'

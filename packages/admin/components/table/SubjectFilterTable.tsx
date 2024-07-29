@@ -283,7 +283,7 @@ export default function SubjectFilterTable({ subjectFilter }) {
           </ColorCip>
           <ColorCip>
             <span
-              style={{ background: theme.colors.default, opacity: '0.8' }}
+              style={{ background: theme.colors.gray, opacity: '0.8' }}
             ></span>{' '}
             : 미노출
           </ColorCip>
@@ -327,7 +327,7 @@ export default function SubjectFilterTable({ subjectFilter }) {
                       style={{
                         background: item.exposure
                           ? theme.colors.primary
-                          : theme.colors.default,
+                          : theme.colors.gray,
                         opacity: item.exposure ? '1' : '0.8',
                       }}
                     ></Tflag>

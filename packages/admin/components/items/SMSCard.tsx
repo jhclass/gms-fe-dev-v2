@@ -6,11 +6,8 @@ import {
   CardHeader,
   Pagination,
   ScrollShadow,
-  Textarea,
 } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import useMmeQuery from '@/utils/mMe'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { SEE_MESSAGE_STORAGE_QUERY } from '@/graphql/queries'
 import { useMutation, useSuspenseQuery } from '@apollo/client'
@@ -19,7 +16,6 @@ import { DELETE_MESSAGE_STORAGE_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexBox = styled.div`
-  margin-top: 1rem;
   gap: 1rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   display: grid;
@@ -74,7 +70,7 @@ const SendType = styled.p`
 `
 
 const SendState = styled.p`
-  color: ${({ theme }) => theme.colors.default};
+  color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   font-weight: 700;
 

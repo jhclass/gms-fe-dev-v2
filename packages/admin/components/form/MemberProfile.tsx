@@ -6,7 +6,6 @@ import { Input, Button, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { CREATE_STAMP_QUERY, MME_QUERY } from '@/graphql/queries'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import Layout from '@/pages/member/layout'
@@ -607,28 +606,21 @@ export default function Profile() {
                   <AreaBox></AreaBox>
                 </FlexBox>
                 <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="${({ theme }) => theme.colors.primary}"
+                  <Button
+                    type="submit"
+                    color="primary"
+                    className="w-full text-white"
                   >
                     정보 수정
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="${({ theme }) => theme.colors.primary}"
-                    bgColor="#fff"
-                    borderColor="${({ theme }) => theme.colors.primary}"
-                    typeBorder={true}
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailForm>
             </DetailBox>

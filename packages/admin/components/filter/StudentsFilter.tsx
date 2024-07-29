@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
 import { studentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '@/components/common/Button'
-import { Input } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -415,23 +414,16 @@ export default function StudentsFilter({
           </BoxMiddle>
           <BtnBox>
             <Button
-              buttonType="submit"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
+              type="submit"
+              color="primary"
+              className="w-[50%] text-white"
             >
               검색
             </Button>
             <Button
-              buttonType="reset"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              fontColor="#007de9"
-              bgColor="#fff"
-              borderColor="#007de9"
-              typeBorder={true}
+              color="primary"
+              variant="bordered"
+              className="w-[50%] text-primary"
               onClick={handleReset}
             >
               초기화

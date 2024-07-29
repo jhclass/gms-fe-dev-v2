@@ -1,17 +1,13 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useResetRecoilState } from 'recoil'
-import { studentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button from '@/components/common/Button'
-import { Input } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { Button, Input } from '@nextui-org/react'
+import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
-import { getYear, subMonths } from 'date-fns'
+import { getYear } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { useRouter } from 'next/router'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -285,23 +281,16 @@ export default function ManagerFilter({
           </BoxTop>
           <BtnBox>
             <Button
-              buttonType="submit"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              typeBorder={true}
-              fontColor="#fff"
-              bgColor="#007de9"
+              type="submit"
+              color="primary"
+              className="w-[50%] text-white"
             >
               검색
             </Button>
             <Button
-              buttonType="reset"
-              width="calc(50% - 0.5rem)"
-              height="2.5rem"
-              fontColor="#007de9"
-              bgColor="#fff"
-              borderColor="#007de9"
-              typeBorder={true}
+              color="primary"
+              variant="bordered"
+              className="w-[50%] text-primary"
               onClick={handleReset}
             >
               초기화

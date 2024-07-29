@@ -136,7 +136,7 @@ export default function RecruitmentItem(props) {
     if (differenceInDays >= 0) {
       return theme.colors.primary
     } else {
-      return theme.colors.default
+      return theme.colors.gray
     }
   }
   const flagString = isDisplayFlag(subject.startDate)

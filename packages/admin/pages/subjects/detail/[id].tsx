@@ -10,6 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
+  Button,
   Input,
   Link,
   Select,
@@ -27,7 +28,6 @@ import {
   UPDATE_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
@@ -1057,52 +1057,35 @@ export default function SubjectDetail() {
                   </AreaBox>
                 </FlexBox>
                 <BtnBox $isMaster={mGrade < grade.general}>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
+                  <Button
+                    type="submit"
+                    color="primary"
+                    className="w-full text-white"
                   >
                     수정
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#ff5900"
-                    bgColor="#fff"
-                    borderColor="#ff5900"
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    className="w-full border-accent text-accent"
                     onClick={() => onCopy()}
                   >
                     복사하기
-                  </Button2>
+                  </Button>
                   {mGrade < grade.general && (
-                    <Button2
-                      buttonType="button"
-                      width="100%"
-                      height="2.5rem"
-                      typeBorder={true}
-                      fontColor="#fff"
-                      bgColor="#ff5900"
+                    <Button
+                      className="w-full text-white bg-accent"
                       onClick={() => onDelete(subjectState.id)}
                     >
                       삭제
-                    </Button2>
+                    </Button>
                   )}
                 </BtnBox>
               </DetailForm>

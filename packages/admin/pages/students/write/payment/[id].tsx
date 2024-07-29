@@ -11,28 +11,25 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
+  Button,
   Input,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
-  Textarea,
 } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-
 import {
   CREATE_PAYMENT_DETAIL_MUTATION,
   SEARCH_PAYMENT_MUTATION,
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
-import Button2 from '@/components/common/Button'
 import { useRecoilValue } from 'recoil'
 import { bankNameState, cardNameState } from '@/lib/recoilAtoms'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { ManageUser } from '@/src/generated/graphql'
 import ManagerSelectID from '@/components/common/ManagerSelectID'
 
 const ConArea = styled.div`
@@ -1187,28 +1184,21 @@ export default function StudentsWritePayment() {
                   </>
                 )}
                 <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
+                  <Button
+                    type="submit"
+                    color="primary"
+                    className="w-full text-white"
                   >
                     결제 추가
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailDiv>
             </DetailBox>

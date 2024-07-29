@@ -85,7 +85,7 @@ const Menu = styled(motion.ul)<{ $isOpen: boolean }>`
 const MenuItem = styled.li<{ $isActive: boolean }>`
   width: 100%;
   color: ${props =>
-    props.$isActive ? props.theme.colors.primary : props.theme.colors.default};
+    props.$isActive ? props.theme.colors.primary : props.theme.colors.gray};
   a {
     display: block;
     width: 100%;

@@ -3,7 +3,6 @@ import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button, Input, Textarea, useDisclosure } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import { SearchManageUserResult } from '@/src/generated/graphql'
@@ -472,18 +471,14 @@ export default function WishForm() {
                   수정
                 </Button>
               ) : null}
-              <Button2
-                buttonType="button"
-                width="100%"
-                height="2.5rem"
-                fontColor="#007de9"
-                bgColor="#fff"
-                borderColor="#007de9"
-                typeBorder={true}
+              <Button
+                variant="bordered"
+                color="primary"
+                className="w-full text-primary"
                 onClick={() => router.back()}
               >
                 이전으로
-              </Button2>
+              </Button>
             </BtnBox>
           </DetailDiv>
         </form>

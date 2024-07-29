@@ -167,7 +167,7 @@ export default function RecruitmentTable() {
             <span style={{ background: theme.colors.primary }}></span> : 모집중
           </ColorCip>
           <ColorCip>
-            <span style={{ background: theme.colors.default }}></span> : 종료
+            <span style={{ background: theme.colors.gray }}></span> : 종료
           </ColorCip>
         </ColorHelp>
       </TTopic>

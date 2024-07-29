@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { useResetRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
-import { Input } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -272,16 +271,13 @@ export default function SalesFilter({
               </DatePickerBox>
             </ItemBox>
             <BtnBox>
-              <Button2
-                buttonType="submit"
-                width="100%"
-                height="2.5rem"
-                typeBorder={true}
-                fontColor="#fff"
-                bgColor="#007de9"
+              <Button
+                type="submit"
+                color="primary"
+                className="w-full text-white"
               >
                 적용
-              </Button2>
+              </Button>
             </BtnBox>
             <NotiBox>
               <Noti>

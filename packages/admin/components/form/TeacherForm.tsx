@@ -11,7 +11,6 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
@@ -817,18 +816,14 @@ export default function StudentsWrite({ managerId }) {
                       수정
                     </Button>
                   ) : null}
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailDiv>
             </form>

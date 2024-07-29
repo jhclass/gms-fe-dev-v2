@@ -12,7 +12,6 @@ const _ = require('lodash')
 import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
 import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
@@ -915,26 +914,20 @@ export default function ManagerWrite({ managerId }) {
                 <BtnBox>
                   <Button
                     type="submit"
-                    size="md"
-                    radius="md"
                     variant="solid"
                     color="primary"
                     className="w-full text-white"
                   >
                     수정
                   </Button>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailDiv>
             </form>

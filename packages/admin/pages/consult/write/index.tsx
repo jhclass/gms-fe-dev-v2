@@ -10,6 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import {
+  Button,
   Input,
   Link,
   Radio,
@@ -30,7 +31,6 @@ import { useMutation } from '@apollo/client'
 import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_STUDENT_STATE_QUERY } from '@/graphql/queries'
-import Button2 from '@/components/common/Button'
 import useUserLogsMutation from '@/utils/userLogs'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
@@ -763,28 +763,21 @@ export default function ConsultWirte() {
                 />
               </FlexBox>
               <BtnBox>
-                <Button2
-                  buttonType="submit"
-                  width="100%"
-                  height="2.5rem"
-                  typeBorder={true}
-                  fontColor="#fff"
-                  bgColor="#007de9"
+                <Button
+                  type="submit"
+                  color="primary"
+                  className="w-full text-white"
                 >
                   등록
-                </Button2>
-                <Button2
-                  buttonType="button"
-                  width="100%"
-                  height="2.5rem"
-                  fontColor="#007de9"
-                  bgColor="#fff"
-                  borderColor="#007de9"
-                  typeBorder={true}
+                </Button>
+                <Button
+                  variant="bordered"
+                  color="primary"
+                  className="w-full text-primary"
                   onClick={() => router.back()}
                 >
                   이전으로
-                </Button2>
+                </Button>
               </BtnBox>
             </DetailForm>
           </DetailBox>

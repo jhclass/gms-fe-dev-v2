@@ -225,7 +225,7 @@ export default function SMSFilterList({ smsFilter }) {
                       : 'border-accent'
                     : item.successType === 'Y'
                     ? 'border-secondary'
-                    : 'border-default'
+                    : 'border-gray'
                 }`,
               }}
             >

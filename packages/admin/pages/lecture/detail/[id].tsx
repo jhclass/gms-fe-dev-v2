@@ -26,7 +26,6 @@ import {
   SEARCH_LECTURES_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
-import Button2 from '@/components/common/Button'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/subjects/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
@@ -1364,28 +1363,21 @@ export default function LectureWrite() {
                   </AreaBox>
                 </FlexBox>
                 <BtnBox>
-                  <Button2
-                    buttonType="submit"
-                    width="100%"
-                    height="2.5rem"
-                    typeBorder={true}
-                    fontColor="#fff"
-                    bgColor="#007de9"
+                  <Button
+                    type="submit"
+                    color="primary"
+                    className="w-full text-white"
                   >
                     수정
-                  </Button2>
-                  <Button2
-                    buttonType="button"
-                    width="100%"
-                    height="2.5rem"
-                    fontColor="#007de9"
-                    bgColor="#fff"
-                    borderColor="#007de9"
-                    typeBorder={true}
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-primary"
                     onClick={() => router.back()}
                   >
                     이전으로
-                  </Button2>
+                  </Button>
                 </BtnBox>
               </DetailForm>
             </DetailBox>
