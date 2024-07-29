@@ -146,8 +146,8 @@ export default function Form() {
               gtag('event', 'conversion', {
                 send_to: 'AW-16560768564/tfARCJWNyrgZELSM5dg9',
               })
-              setGroupSelected([])
               reset()
+              setGroupSelected([])
               alert('상담신청이 완료되었습니다. 😊')
             }
           },
