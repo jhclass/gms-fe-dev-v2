@@ -82,15 +82,15 @@ const NotiBox = styled.div`
 const NotiListBox = styled.div`
   position: absolute;
   top: 3rem;
-  left: 50%;
+  right: -9.3rem;
   width: 24rem;
-  margin-left: -12rem;
+  /* margin-left: -12rem; */
   /* padding-top: 0.7rem; */
 
   @media screen and (max-width: 1024px) {
     width: 100vw;
     top: 3.9rem;
-    left: 0;
+    right: 0;
     margin-left: 0;
   }
 `
@@ -206,7 +206,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem 0 2rem;
-  color: #fff;
+  color: #11181c;
 
   @media screen and (max-width: 1024px) {
     height: 20vh;
