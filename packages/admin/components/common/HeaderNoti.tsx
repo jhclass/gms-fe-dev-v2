@@ -108,9 +108,11 @@ const FlexBox = styled.div`
   gap: 0.5rem;
   justify-content: space-between;
   padding: 0.5rem;
+  align-items: center;
 `
 const Noti = styled.p`
-  font-size: 0.875rem;
+  font-size: 0.8rem;
+
   span {
     color: red;
   }
@@ -336,7 +338,7 @@ export default function HeaderNoti({}) {
     <>
       <NotiBox ref={notiBoxRef}>
         <NotiBtn onClick={() => setIsListOpen(!isListOpen)}>
-          <i className={isListOpen ? 'xi-bell' : 'xi-bell-o'} />
+          <i className="xi-bell-o" />
           <NotiNum>{alarms === null ? '0' : data.seeAlarms.totalCount}</NotiNum>
         </NotiBtn>
         {isListOpen && (
@@ -362,7 +364,7 @@ export default function HeaderNoti({}) {
                 <ScrollShadow
                   onScroll={handleScroll}
                   orientation="vertical"
-                  className="scrollbar flexList"
+                  className="scrollbar_g flexList"
                 >
                   {alarms?.length > 0 && (
                     <>
