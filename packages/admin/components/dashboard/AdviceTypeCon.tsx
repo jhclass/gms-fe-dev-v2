@@ -72,7 +72,7 @@ const Content = styled.div`
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgb(0, 125, 233);
+      background: ${({ theme }) => theme.color.primary};
       border-radius: 0.75rem;
     }
 

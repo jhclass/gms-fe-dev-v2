@@ -91,7 +91,7 @@ const Tid = styled.div`
   width: 11%;
   padding: 1rem;
   font-size: inherit;
-  color: #${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.secondary};
   min-width: ${1200 * 0.11}px;
   font-weight: 600;
 `

@@ -295,7 +295,7 @@ export default function SMSList() {
                   </SendState>
                 </SendInfo>
               </CardHeader>
-              <CardBody className="p-[0.5rem] bg-[#f4f4f6] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+              <CardBody className="p-[0.5rem] bg-[#e4e4e7] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
                 <ScrollShadow orientation="horizontal" className="scrollbar">
                   <div
                     style={{ whiteSpace: 'pre-wrap' }}
