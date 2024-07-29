@@ -172,31 +172,29 @@ export default function TypesTabs() {
               </Card>
             )}
           </Tab>
-          {mGrade < 1 ? (
-            <Tab key="smsSender" title="발신인증번호">
-              {mGrade < grade.general ? (
-                <Suspense
-                  fallback={
-                    <LodingDiv>
-                      <i className="xi-spinner-2" />
-                    </LodingDiv>
-                  }
-                >
-                  <CreateSmsSender isActive={true} category={'발신인증번호'} />
-                </Suspense>
-              ) : (
-                <Card radius="sm">
-                  <CardBody>
-                    <NotiText>
-                      발신인증번호 설정 권한이 없습니다.
-                      <br />
-                      <b>Master</b>에게 요청하세요.
-                    </NotiText>
-                  </CardBody>
-                </Card>
-              )}
-            </Tab>
-          ) : null}
+          <Tab key="smsSender" title="발신인증번호">
+            {mGrade < grade.general ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateSmsSender isActive={true} category={'발신인증번호'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    발신인증번호 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b>에게 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
         </Tabs>
       </>
     )

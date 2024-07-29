@@ -407,7 +407,7 @@ const category: Category[] = [
     ],
   },
   {
-    href: '/message',
+    href: '/message/sms',
     iconSrc: 'xi-mail-o',
     name: '메시지',
     resetItems: [],
@@ -416,7 +416,7 @@ const category: Category[] = [
       {
         href: '/',
         name: '받은요청 목록',
-        exposure: true,
+        exposure: false,
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
@@ -424,13 +424,13 @@ const category: Category[] = [
       {
         href: '/request',
         name: '보낸요청 목록',
-        exposure: true,
+        exposure: false,
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
       },
       {
-        href: '/sms',
+        href: '/',
         name: '문자발송',
         exposure: true,
         isBreadcrumb: true,

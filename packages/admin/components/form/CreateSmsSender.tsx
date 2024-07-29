@@ -174,7 +174,7 @@ export default function CreateSmsSender({ isActive, category }) {
         const result = await createAdvice({
           variables: {
             type: data.type,
-            indexNum: data?.seeAdviceType.totalCount + 1,
+            indexNum: totalCount + 1,
             category: category,
           },
           refetchQueries: [
@@ -225,7 +225,7 @@ export default function CreateSmsSender({ isActive, category }) {
               size="sm"
               // variant="light"
               variant="solid"
-              className="bg-accent text-white px-2 h-unit-7"
+              className="px-2 text-white bg-accent h-unit-7"
               onClick={() => notiOnOPen()}
             >
               자세히보기
