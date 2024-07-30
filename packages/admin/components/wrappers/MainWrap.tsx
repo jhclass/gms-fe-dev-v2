@@ -29,6 +29,7 @@ const ContainerWrap = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: calc(100vh - 4rem);
 `
 const Container = styled.div`
   display: flex;
@@ -37,12 +38,7 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - 4rem);
-  /* min-height: calc(100vh - 7rem);
-
-  @media screen and (max-width: 1024px) {
-    min-height: calc(100vh - 6rem);
-  } */
+  flex: 1;
 `
 const ConBox = styled.div`
   display: block;
@@ -143,13 +139,13 @@ export default function MainWrap({ children }) {
       <Wrap $navOpen={navOpen}>
         <Header />
         <Nav />
-        {/* <ContainerWrap> */}
-        {/* <SubCategory /> */}
-        <Container>
-          <ConBox>{children}</ConBox>
-          <Footer />
-        </Container>
-        {/* </ContainerWrap> */}
+        <ContainerWrap>
+          <SubCategory />
+          <Container>
+            <ConBox>{children}</ConBox>
+            <Footer />
+          </Container>
+        </ContainerWrap>
       </Wrap>
     </>
   )

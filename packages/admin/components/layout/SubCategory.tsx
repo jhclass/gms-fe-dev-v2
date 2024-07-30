@@ -5,27 +5,27 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
+import { ScrollShadow } from '@nextui-org/react'
 
-const CateWrap = styled.div`
+const CateWrap = styled.div<{ $navOpen: boolean }>`
   width: 100%;
   height: 3rem;
   position: relative;
+  display: ${props => (props.$navOpen ? 'none' : 'block')};
+
+  @media screen and (max-width: 1024px) {
+    display: block;
+  }
 `
 
-const CateBox = styled(motion.ul)<{ $navOpen: boolean }>`
-  max-width: ${props =>
-    props.$navOpen ? 'calc(100% - 18rem)' : 'calc(100% - 5rem)'};
+const CateBox = styled(motion.div)`
+  max-width: calc(100% - 5rem);
   width: 100%;
   height: 3rem;
   position: fixed;
-  display: flex;
   right: 0;
   top: 4rem;
-  padding: 0 1rem;
   z-index: 40;
-  justify-content: flex-start;
-  gap: 1rem;
-  align-items: center;
   border-bottom: 1px solid #d4d4d8;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   background-color: #fff;
@@ -36,8 +36,18 @@ const CateBox = styled(motion.ul)<{ $navOpen: boolean }>`
     width: calc(100vw);
   }
 `
-
-const MenuItem = styled.li<{ $isActive: boolean }>`
+const MenuBox = styled.div`
+  display: flex;
+  padding: 0 1rem;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`
+const MenuItem = styled.div<{ $isActive: boolean }>`
+  flex-shrink: 0;
+  width: fit-content;
   color: ${props =>
     props.$isActive ? props.theme.colors.primary : props.theme.colors.gray};
 
@@ -74,20 +84,29 @@ export default function SubCategory() {
 
   useEffect(() => {
     const findCategory = path => {
-      for (const cat of categories) {
-        if (cat.href === path) return cat
-        for (const child of cat.children) {
-          if (cat.href + child.href === path) return cat
-        }
+      let matchCategory = null
+      const pathParts = path.split('/').filter(Boolean)
+
+      for (let i = pathParts.length; i >= 0; i--) {
+        const partialPath = `/${pathParts.slice(0, i).join('/')}`
+        matchCategory = categories.find(
+          cat =>
+            cat.href === partialPath ||
+            cat.children.some(
+              child => `${cat.href}${child.href}` === partialPath,
+            ),
+        )
+        if (matchCategory) break
       }
-      return null
+
+      return matchCategory
     }
 
     setCurrentCategory(findCategory(currentPath))
-  }, [currentPath, categories])
+  }, [currentPath])
 
   const getFullHref = (parentHref, childHref) => {
-    return childHref === '/' ? childHref : parentHref + childHref
+    return childHref === '/' ? parentHref : parentHref + childHref
   }
 
   const isActive = (parentHref, childHref, currentPath) => {
@@ -101,24 +120,31 @@ export default function SubCategory() {
     <>
       {currentCategory &&
         currentCategory.children.filter(child => child.exposure).length > 0 && (
-          <CateWrap>
-            <CateBox $navOpen={navOpen}>
-              {currentCategory.children
-                .filter(child => child.exposure)
-                .map((child, index) => (
-                  <MenuItem
-                    key={index}
-                    $isActive={isActive(
-                      currentCategory.href,
-                      child.href,
-                      currentPath,
-                    )}
-                  >
-                    <a href={getFullHref(currentCategory.href, child.href)}>
-                      {child.name}
-                    </a>
-                  </MenuItem>
-                ))}
+          <CateWrap $navOpen={navOpen}>
+            <CateBox>
+              <ScrollShadow
+                orientation="horizontal"
+                className="h-full scrollbar scrollbar_s"
+              >
+                <MenuBox>
+                  {currentCategory.children
+                    .filter(child => child.exposure)
+                    .map((child, index) => (
+                      <MenuItem
+                        key={index}
+                        $isActive={isActive(
+                          currentCategory.href,
+                          child.href,
+                          currentPath,
+                        )}
+                      >
+                        <a href={getFullHref(currentCategory.href, child.href)}>
+                          {child.name}
+                        </a>
+                      </MenuItem>
+                    ))}
+                </MenuBox>
+              </ScrollShadow>
             </CateBox>
           </CateWrap>
         )}

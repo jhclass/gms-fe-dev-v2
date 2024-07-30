@@ -18,6 +18,7 @@
   .info_pager .swiper-pagination-bullet-active {
     @apply bg-primary;
   }
+
   .scrollbar {
     overflow-y: overlay;
   }
@@ -40,6 +41,24 @@
     overflow-y: overlay;
   }
 
+  .scrollbar {
+    overflow-y: overlay;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(0, 125, 233);
+    border-radius: 0.75rem;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: rgb(0, 125, 233, 0.1);
+  }
+
   .scrollbar_g::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
@@ -56,6 +75,11 @@
   }
   .scrollbar_g::-webkit-scrollbar-thumb:hover {
     background: gray;
+  }
+
+  .scrollbar_s::-webkit-scrollbar {
+    width: 0.2rem !important;
+    height: 0.2rem !important;
   }
 }
 @media only screen and (max-width: 480px) {

@@ -14,7 +14,7 @@ export const navScrollPositionState = atom({
 
 export const navOpenState = atom<boolean>({
   key: 'navOpenState',
-  default: true,
+  default: false,
 })
 
 export const newStudentState = atom<boolean>({

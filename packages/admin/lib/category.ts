@@ -414,7 +414,7 @@ const category: Category[] = [
     exposure: true,
     children: [
       {
-        href: '/aa',
+        href: '/',
         name: '받은요청 목록',
         exposure: false,
         isBreadcrumb: true,

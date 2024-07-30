@@ -233,6 +233,13 @@ export default function CategoryItem<CategoryItemProps>({
     }
   }
 
+  const isActiveF = (parentHref, childHref, currentPath) => {
+    if (childHref === '/') {
+      return parentHref === currentPath
+    }
+    return parentHref + childHref === currentPath
+  }
+
   return (
     <>
       <CateItem
@@ -345,7 +352,7 @@ export default function CategoryItem<CategoryItemProps>({
                 {subCate?.map((item, index) => (
                   <MenuItem
                     key={index}
-                    $isActive={router.pathname == item.href}
+                    $isActive={isActiveF(href, item.href, router.pathname)}
                   >
                     <Link
                       href={'#'}
