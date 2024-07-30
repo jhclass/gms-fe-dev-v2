@@ -398,12 +398,12 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
-          <WebBtn
+          {/* <WebBtn
             href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`}
             target="_blank"
           >
             <i className="xi-desktop" />
-          </WebBtn>
+          </WebBtn> */}
           <Suspense
             fallback={
               <LodingDiv>

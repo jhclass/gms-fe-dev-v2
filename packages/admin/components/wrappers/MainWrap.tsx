@@ -8,6 +8,7 @@ import CheckToken from '@/components/wrappers/CheckToken'
 import { useEffect, useState } from 'react'
 import Footer from '@/components/layout/Footer'
 import { ScrollShadow } from '@nextui-org/react'
+import SubCategory from '../layout/SubCategory'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   position: relative;
@@ -22,6 +23,13 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
     padding: 4rem 0 0 0;
   }
 `
+const ContainerWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,6 +38,11 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   min-height: calc(100vh - 4rem);
+  /* min-height: calc(100vh - 7rem);
+
+  @media screen and (max-width: 1024px) {
+    min-height: calc(100vh - 6rem);
+  } */
 `
 const ConBox = styled.div`
   display: block;
@@ -130,10 +143,13 @@ export default function MainWrap({ children }) {
       <Wrap $navOpen={navOpen}>
         <Header />
         <Nav />
+        {/* <ContainerWrap> */}
+        {/* <SubCategory /> */}
         <Container>
           <ConBox>{children}</ConBox>
           <Footer />
         </Container>
+        {/* </ContainerWrap> */}
       </Wrap>
     </>
   )
