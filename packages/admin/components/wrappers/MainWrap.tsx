@@ -4,10 +4,8 @@ import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import CheckToken from '@/components/wrappers/CheckToken'
 import { useEffect, useState } from 'react'
 import Footer from '@/components/layout/Footer'
-import { ScrollShadow } from '@nextui-org/react'
 import SubCategory from '../layout/SubCategory'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
