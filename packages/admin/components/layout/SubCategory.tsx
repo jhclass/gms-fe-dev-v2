@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
-import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
+import { isScreenState, navOpenState, navSubCateState } from '@/lib/recoilAtoms'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -25,7 +25,7 @@ const CateBox = styled(motion.div)`
   position: fixed;
   right: 0;
   top: 4rem;
-  z-index: 40;
+  z-index: 39;
   border-bottom: 1px solid #d4d4d8;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   background-color: #fff;
@@ -63,6 +63,7 @@ export default function SubCategory() {
   const [currentCategory, setCurrentCategory] = useState(null)
   const [isScreen, setIsScreen] = useRecoilState(isScreenState)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+  const [isSubCate, setIsSubCate] = useRecoilState(navSubCateState)
 
   useEffect(() => {
     const handleResize = () => {
@@ -80,7 +81,19 @@ export default function SubCategory() {
     if (isScreen) {
       setNavOpen(false)
     }
-  }, [isScreen, setNavOpen])
+  }, [isScreen])
+
+  useEffect(() => {
+    if (!navOpen && currentCategory) {
+      if (currentCategory.children.filter(child => child.exposure).length > 0) {
+        setIsSubCate(true)
+      } else {
+        setIsSubCate(false)
+      }
+    } else {
+      setIsSubCate(false)
+    }
+  }, [currentCategory, navOpen])
 
   useEffect(() => {
     const findCategory = path => {

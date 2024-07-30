@@ -7,6 +7,12 @@ export const isScreenState = atom<boolean>({
 })
 
 // GNB
+
+export const navSubCateState = atom({
+  key: 'navSubCate',
+  default: false,
+})
+
 export const navScrollPositionState = atom({
   key: 'navScrollPosition',
   default: 0,

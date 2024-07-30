@@ -1,4 +1,4 @@
-import { navOpenState } from '@/lib/recoilAtoms'
+import { navOpenState, navSubCateState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -12,7 +12,10 @@ import { Tooltip, useDisclosure } from '@nextui-org/react'
 import RequestMessage from '@/components/modal/RequestMessage'
 import HeaderNoti from '@/components/common/HeaderNoti'
 
-const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
+const HeaderSec = styled(motion.header)<{
+  $navOpen: boolean
+  $isSubCate: boolean
+}>`
   max-width: ${props =>
     props.$navOpen ? 'calc(100% - 18rem)' : 'calc(100% - 5rem)'};
   width: 100%;
@@ -26,7 +29,10 @@ const HeaderSec = styled(motion.header)<{ $navOpen: boolean }>`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #d4d4d8;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+  box-shadow: ${props =>
+    props.$isSubCate
+      ? '0 0 1rem rgba(0, 0, 0, 0);'
+      : '0 0 1rem rgba(0, 0, 0, 0.3);'};
   background-color: #fff;
 
   @media screen and (max-width: 1024px) {
@@ -295,6 +301,7 @@ export default function Header() {
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+  const [isSubCate, setIsSubCate] = useRecoilState(navSubCateState)
   const userMenuRef = useRef(null)
 
   const handleClickOutside = event => {
@@ -377,7 +384,7 @@ export default function Header() {
 
   return (
     <>
-      <HeaderSec $navOpen={navOpen}>
+      <HeaderSec $navOpen={navOpen} $isSubCate={isSubCate}>
         <HeaderLt>
           <MenuBtn onClick={toggleNav}>
             <i className="text-zinc-500 xi-hamburger-back" />
