@@ -17,11 +17,7 @@ const NotiBtn = styled.button`
   align-items: center;
   position: relative;
   font-size: 2.2rem;
-
-  @media screen and (max-width: 1024px) {
-    width: 2rem;
-    height: 2rem;
-  }
+  justify-content: center;
 
   &:after {
     content: '';
@@ -29,10 +25,17 @@ const NotiBtn = styled.button`
     width: 1px;
     height: 1.5rem;
     top: 50%;
-    left: 3.1rem;
+    right: -0.9rem;
     margin-top: -0.75rem;
     background: #d4d4d8;
     transition: 0.3s;
+  }
+
+  @media screen and (max-width: 1024px) {
+    font-size: 2rem;
+    &:after {
+      right: -0.4rem;
+    }
   }
 
   /* &:before {
