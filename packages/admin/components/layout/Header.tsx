@@ -95,6 +95,42 @@ const HeaderRt = styled.div`
   display: flex;
   gap: 1.8rem;
   align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    gap: 0.8rem;
+  }
+`
+
+const WebBtn = styled.a`
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-size: 1.8rem;
+  justify-content: center;
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 1.5rem;
+    top: 50%;
+    right: -0.9rem;
+    margin-top: -0.75rem;
+    background: #d4d4d8;
+    transition: 0.3s;
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 2rem;
+    font-size: 1.5rem;
+    &:after {
+      right: -0.4rem;
+    }
+  }
+
+  @media screen and (max-width: 460px) {
+    display: none;
+  }
 `
 const ReqBtn = styled.button`
   display: flex;
@@ -103,6 +139,7 @@ const ReqBtn = styled.button`
   height: 2.2rem;
   padding: 0.2rem;
   position: relative;
+  justify-content: center;
 
   &:after {
     content: '';
@@ -110,7 +147,7 @@ const ReqBtn = styled.button`
     width: 1px;
     height: 1.5rem;
     top: 50%;
-    left: 3.1rem;
+    right: -0.9rem;
     margin-top: -0.75rem;
     background: #d4d4d8;
     transition: 0.3s;
@@ -123,6 +160,10 @@ const ReqBtn = styled.button`
   @media screen and (max-width: 1024px) {
     width: 2rem;
     height: 2rem;
+
+    &:after {
+      right: -0.4rem;
+    }
   }
 
   @media screen and (max-width: 604px) {
@@ -357,6 +398,9 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
+          <WebBtn href={`${process.env.NEXT_PUBLIC_WEB_URI}`} target="_blank">
+            <i className="xi-desktop" />
+          </WebBtn>
           <Suspense
             fallback={
               <LodingDiv>
