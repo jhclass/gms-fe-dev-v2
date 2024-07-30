@@ -398,7 +398,10 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
-          <WebBtn href={`${process.env.NEXT_PUBLIC_WEB_URI}`} target="_blank">
+          <WebBtn
+            href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`}
+            target="_blank"
+          >
             <i className="xi-desktop" />
           </WebBtn>
           <Suspense
