@@ -8,8 +8,7 @@ import styled, { useTheme } from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import useMmeQuery from '@/utils/mMe'
-import { useDisclosure } from '@nextui-org/react'
+import { Tooltip, useDisclosure } from '@nextui-org/react'
 import RequestMessage from '@/components/modal/RequestMessage'
 import HeaderNoti from '@/components/common/HeaderNoti'
 
@@ -398,12 +397,18 @@ export default function Header() {
           </Logo>
         </HeaderCt>
         <HeaderRt>
-          <WebBtn
-            href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`}
-            target="_blank"
+          <Tooltip
+            content="아카데미 홈페이지 바로가기"
+            placement="left"
+            isDisabled={navOpen ? true : false}
           >
-            <i className="xi-desktop" />
-          </WebBtn>
+            <WebBtn
+              href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`}
+              target="_blank"
+            >
+              <i className="xi-desktop" />
+            </WebBtn>
+          </Tooltip>
           <Suspense
             fallback={
               <LodingDiv>
