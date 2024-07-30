@@ -36,10 +36,10 @@ export default function FooterComponent() {
   return (
     <>
       <FooterCon>
-        {/* <WebBtn href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`} target="_blank">
+        <WebBtn href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`} target="_blank">
           <i className="xi-mobile" />
           아카데미 바로가기
-        </WebBtn> */}
+        </WebBtn>
         <Copyright>
           <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
           reserved.
