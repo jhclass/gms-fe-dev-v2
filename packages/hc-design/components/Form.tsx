@@ -148,6 +148,7 @@ export default function Form() {
               })
               reset()
               setGroupSelected([])
+              setMethodSelect([])
               alert('상담신청이 완료되었습니다. 😊')
             }
           },
