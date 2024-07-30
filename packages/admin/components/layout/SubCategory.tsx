@@ -31,7 +31,6 @@ const CateBox = styled(motion.div)`
   background-color: #fff;
 
   @media screen and (max-width: 1024px) {
-    height: 2rem;
     max-width: 100%;
     width: calc(100vw);
   }
@@ -46,14 +45,29 @@ const MenuBox = styled.div`
   height: 100%;
 `
 const MenuItem = styled.div<{ $isActive: boolean }>`
+  position: relative;
   flex-shrink: 0;
   width: fit-content;
+  height: 100%;
   color: ${props =>
     props.$isActive ? props.theme.colors.primary : props.theme.colors.gray};
 
   a {
-    display: block;
+    display: flex;
     width: 100%;
+    height: 100%;
+    align-items: center;
+  }
+
+  &:after {
+    content: '';
+    display: ${props => (props.$isActive ? 'block' : 'none')};
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.1rem;
+    background: ${({ theme }) => theme.colors.primary};
   }
 `
 
