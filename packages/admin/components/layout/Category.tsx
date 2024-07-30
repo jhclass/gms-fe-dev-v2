@@ -180,9 +180,6 @@ export default function Category() {
   }, [router.pathname])
   const active = breadcrumb[0] === undefined ? '/' : `/${breadcrumb[0]}`
 
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
   return (
     <>
       <CateWrap>

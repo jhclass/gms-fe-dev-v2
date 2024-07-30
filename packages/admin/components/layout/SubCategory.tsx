@@ -84,17 +84,26 @@ export default function SubCategory() {
 
   useEffect(() => {
     const findCategory = path => {
-      for (const cat of categories) {
-        if (cat.href === path) return cat
-        for (const child of cat.children) {
-          if (cat.href + child.href === path) return cat
-        }
+      let matchCategory = null
+      const pathParts = path.split('/').filter(Boolean)
+
+      for (let i = pathParts.length; i >= 0; i--) {
+        const partialPath = `/${pathParts.slice(0, i).join('/')}`
+        matchCategory = categories.find(
+          cat =>
+            cat.href === partialPath ||
+            cat.children.some(
+              child => `${cat.href}${child.href}` === partialPath,
+            ),
+        )
+        if (matchCategory) break
       }
-      return null
+
+      return matchCategory
     }
 
     setCurrentCategory(findCategory(currentPath))
-  }, [currentPath, categories])
+  }, [currentPath])
 
   const getFullHref = (parentHref, childHref) => {
     return childHref === '/' ? parentHref : parentHref + childHref
