@@ -23,28 +23,35 @@ const Copyright = styled.div`
   }
 `
 const WebBtn = styled.a`
-  display: flex;
+  padding: 0.5rem 0;
+  width: 100%;
+  display: none;
   align-items: baseline;
   position: relative;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.gray};
+  color: #fff;
   font-weight: bold;
+  background: ${({ theme }) => theme.colors.primary};
+
+  @media screen and (max-width: 460px) {
+    display: flex;
+  }
 `
 
 export default function FooterComponent() {
   return (
     <>
       <FooterCon>
-        <WebBtn href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`} target="_blank">
-          <i className="xi-mobile" />
-          아카데미 바로가기
-        </WebBtn>
         <Copyright>
           <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
           reserved.
         </Copyright>
       </FooterCon>
+      <WebBtn href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`} target="_blank">
+        <i className="xi-mobile" />
+        아카데미 홈페이지 바로가기
+      </WebBtn>
     </>
   )
 }
