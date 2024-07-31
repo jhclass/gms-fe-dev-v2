@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import dynamic from 'next/dynamic'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
@@ -55,6 +55,7 @@ export default function PerformanceChartCon({
   totalRefundAmount,
 }) {
   const router = useRouter()
+  const theme = useTheme()
   const {
     data: managerData,
     error,
@@ -145,7 +146,7 @@ export default function PerformanceChartCon({
             top: 1,
             left: 1,
             blur: 1,
-            color: '#11181c',
+            color: `${theme.colors.black}`,
             opacity: 0.45,
           },
         },
