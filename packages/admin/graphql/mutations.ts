@@ -1070,6 +1070,7 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         paymentDate
         paymentDetail {
           ApprovalNum
+          accountingManager
           amountPayment
           bankName
           cardCompany
