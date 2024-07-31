@@ -121,7 +121,6 @@ export default function AlarmsModal({ isListOpen }) {
     if (isListOpen) {
       setCurrentPage(1)
       refetch()
-      console.log(alarms)
     }
   }, [isListOpen])
 
