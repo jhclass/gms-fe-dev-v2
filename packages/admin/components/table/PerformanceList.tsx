@@ -16,7 +16,7 @@ const ListBox = styled.div`
 
 const TotalList = styled.div`
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #d4d4d8;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   margin-bottom: 1.5rem;
 `
 const LodingDiv = styled.div`

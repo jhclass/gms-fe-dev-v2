@@ -345,7 +345,7 @@ export default function Attendance({
         padding: 1rem;
         font-weight: 600;
         color:#111;
-        border-bottom: 1px solid #d4d4d8;
+        border-bottom: 1px solid ${themeColor.colors.lightGray};
 
           &:nth-of-type(${todayIndex >= 0 && 5 + todayIndex}) {
             border-radius: 0.5rem 0.5rem  0 0;
@@ -363,10 +363,10 @@ export default function Attendance({
           background:#fff;
         }
         &:nth-of-type(even){
-          background:#d9e3fa;
+          background:${themeColor.colors.lightPrimary};
           
           &.drop {
-            background-color: #d9e3fa !important; 
+            background-color: ${themeColor.colors.lightPrimary}!important; 
           }
         }
 
@@ -741,7 +741,7 @@ export default function Attendance({
             <Button
               size="md"
               variant="solid"
-              className="w-full text-[#11181c] bg-[#FEE500]"
+              className="w-full text-black bg-[#FEE500]"
               // onClick={() => setIsOpen(!isOpen)}
             >
               <i className="xi-kakaotalk text-[1.5rem]" />

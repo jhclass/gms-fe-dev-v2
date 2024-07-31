@@ -58,7 +58,7 @@ const Title1 = styled.span`
   letter-spacing: -0.025em;
   font-weight: 700;
   line-height: 1;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   padding: 0 0.25rem;
   @media (max-width: 768px) {
     font-size: 1.5rem;

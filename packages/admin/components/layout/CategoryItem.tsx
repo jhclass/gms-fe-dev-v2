@@ -76,7 +76,7 @@ const MenuBtn = styled(motion.button)<{ $navOpen: boolean }>`
 const Menu = styled(motion.ul)<{ $isOpen: boolean }>`
   display: ${props => (props.$isOpen ? 'flex' : 'none')};
   padding: 1rem;
-  background: #d9e3fa;
+  background: ${({ theme }) => theme.colors.lightPrimary};
   gap: 0.5rem;
   flex-direction: column;
   width: 100%;
@@ -96,7 +96,7 @@ const MewIcon = styled.span<{ $navOpen: boolean }>`
   position: ${props => (props.$navOpen ? 'relative' : 'absolute')};
   right: ${props => (props.$navOpen ? 'auto' : '0.3rem')};
   top: ${props => (props.$navOpen ? 'auto' : '0')};
-  color: #ff0000;
+  color: ${({ theme }) => theme.colors.red};
 `
 
 const CateActive = styled(motion.div)`

@@ -26,7 +26,7 @@ const CateBox = styled(motion.div)`
   right: 0;
   top: 4rem;
   z-index: 39;
-  border-bottom: 1px solid #d4d4d8;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   background-color: #fff;
 

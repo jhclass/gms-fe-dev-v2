@@ -39,7 +39,7 @@ const FlexBox = styled.div`
 `
 
 const ConLabel = styled.p`
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-size: 0.875rem;
 `
 
@@ -56,12 +56,12 @@ const SendInfo = styled.div`
 
   &.first {
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #d4d4d8;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   }
 `
 
 const SendType = styled.p`
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-size: 0.875rem;
 
   span {

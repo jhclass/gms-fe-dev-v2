@@ -28,11 +28,11 @@ const NotiItem = styled.div`
   height: 55px;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: #d9e3fa;
+  background: ${({ theme }) => theme.colors.lightPrimary};
   padding-right: 0.5rem;
 
   &.read {
-    background: #d4d4d8;
+    background: ${({ theme }) => theme.colors.lightGray};
   }
 `
 
@@ -63,7 +63,7 @@ const FromID = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-weight: 700;
   font-size: 0.875rem;
   flex: 1;
@@ -88,7 +88,7 @@ const Nolist = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem 0 2rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   @media screen and (max-width: 1024px) {
     height: 20vh;

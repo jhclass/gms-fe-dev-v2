@@ -97,13 +97,13 @@ const ChipBox = styled.div`
 
 const RoundBox = styled.div`
   padding: 0.5rem;
-  border-top: 1px solid #d4d4d8;
+  border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
 `
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
 `

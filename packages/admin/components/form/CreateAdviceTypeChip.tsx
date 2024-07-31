@@ -19,7 +19,7 @@ const ChipBox = styled.div`
   gap: 0.5rem;
 `
 const MoreBtn = styled.div`
-  border-top: 1px solid #eee;
+  border-top: 1px solid ${({ theme }) => theme.colors.offWhite};
   display: flex;
 `
 
@@ -185,7 +185,7 @@ export default function CreateAdviceTypeChip({
           <Button
             color="primary"
             onClick={loadMore}
-            className="bg-[transparent] w-[100%] text-[#11181c]"
+            className="bg-[transparent] w-[100%] text-black"
           >
             더보기{' '}
             <span className="text-primary text-[1rem]">

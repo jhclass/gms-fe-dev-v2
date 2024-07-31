@@ -58,7 +58,7 @@ const MemoGrade = styled.span`
   font-size: 0.5rem;
 `
 const MemoName = styled.span`
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-weight: 600;
 `
 const MemoTime = styled.span``

@@ -110,7 +110,7 @@ const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
 `

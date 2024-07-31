@@ -6,7 +6,7 @@ const FooterCon = styled.footer`
   padding: 3rem 2rem;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid #d4d4d8;
+  border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
   flex-direction: column;
   gap: 0.5rem;
 

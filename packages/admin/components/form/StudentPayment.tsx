@@ -144,7 +144,7 @@ const RadioBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -695,7 +695,7 @@ export default function StudentPaymentForm({
                             onValueChange={handleCheckboxChange}
                             classNames={{
                               wrapper: 'items-center',
-                              label: 'text-[0.875rem] text-[#11181c]',
+                              label: 'text-[0.875rem] text-black',
                             }}
                           >
                             <Checkbox value="Y"></Checkbox>

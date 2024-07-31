@@ -41,7 +41,7 @@ const FlexItem = styled.div`
   width: 100%;
 
   @media (max-width: 1200px) {
-    border-top: 2px solid #eee;
+    border-top: 2px solid ${({ theme }) => theme.colors.offWhite};
   }
 
   @media (max-width: 640px) {
@@ -90,7 +90,7 @@ const TadviceType = styled.div`
     padding: 0.5rem;
   }
   @media (max-width: 640px) {
-    border-top: 2px solid #eee;
+    border-top: 2px solid ${({ theme }) => theme.colors.offWhite};
   }
 `
 const OnExposure = styled.span`

@@ -33,7 +33,7 @@ const Item = styled.div`
   background: #fff;
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
-  border: 1px solid #d4d4d8;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 0.5rem;
   gap: 0.5rem;
   display: flex;
@@ -41,7 +41,7 @@ const Item = styled.div`
   align-items: center;
 
   &:hover {
-    background-color: #d9e3fa;
+    background-color: ${({ theme }) => theme.colors.lightPrimary};
   }
 `
 

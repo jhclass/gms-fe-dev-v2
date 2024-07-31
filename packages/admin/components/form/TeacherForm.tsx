@@ -95,7 +95,7 @@ const UpdateCon = styled.p`
       content: '';
       width: 0.3rem;
       height: 1px;
-      background: #11181c;
+      background: ${({ theme }) => theme.colors.black};
       position: absolute;
       top: 50%;
       margin-top: -0.5px;
@@ -201,7 +201,7 @@ const RadioBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;

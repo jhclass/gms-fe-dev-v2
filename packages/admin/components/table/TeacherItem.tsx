@@ -7,17 +7,20 @@ const TableItem = styled.div<{ $resign: string }>`
   position: relative;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #d4d4d8;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: ${props => (props.$resign === 'Y' ? '#d4d4d8' : '#fff')};
+  background: ${props =>
+    props.$resign === 'Y' ? props.theme.colors.lightGray : '#fff'};
 
   &:hover {
     cursor: pointer;
     background: ${props =>
-      props.$resign === 'Y' ? '#d4d4d8' : 'rgba(255, 255, 255, 0.8)'};
+      props.$resign === 'Y'
+        ? props.theme.colors.lightGray
+        : 'rgba(255, 255, 255, 0.8)'};
   }
 `
 
