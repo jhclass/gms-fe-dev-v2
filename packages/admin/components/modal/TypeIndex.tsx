@@ -33,7 +33,7 @@ const Item = styled.div`
   background: #fff;
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
-  border: 1px solid #e4e4e7;
+  border: 1px solid #d4d4d8;
   border-radius: 0.5rem;
   gap: 0.5rem;
   display: flex;

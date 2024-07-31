@@ -83,7 +83,7 @@ const SendInfo = styled.div`
 
   &.first {
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e3e3e6;
+    border-bottom: 1px solid #d4d4d8;
   }
 
   &.receiver {
@@ -294,7 +294,7 @@ export default function SMSFilterList({ smsFilter }) {
                   </SendState>
                 </SendInfo>
               </CardHeader>
-              <CardBody className="p-[0.5rem] bg-[#e4e4e7] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
+              <CardBody className="p-[0.5rem] bg-[#d4d4d8] rounded-[1rem] min-h-[13rem] max-h-[13rem]">
                 <ScrollShadow orientation="horizontal" className="scrollbar">
                   <div
                     style={{ whiteSpace: 'pre-wrap' }}

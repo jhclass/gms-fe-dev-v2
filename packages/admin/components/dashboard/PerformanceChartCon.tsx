@@ -145,7 +145,7 @@ export default function PerformanceChartCon({
             top: 1,
             left: 1,
             blur: 1,
-            color: '#000',
+            color: '#11181c',
             opacity: 0.45,
           },
         },

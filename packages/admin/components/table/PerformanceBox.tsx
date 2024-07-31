@@ -29,7 +29,7 @@ const TableWrap = styled.div`
   width: 100%;
   display: table;
   min-width: 700px;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid #d4d4d8;
   border-radius: 0.5rem;
 `
 const Theader = styled.div`

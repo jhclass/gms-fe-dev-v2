@@ -32,7 +32,7 @@ const NotiItem = styled.div`
   padding-right: 0.5rem;
 
   &.read {
-    background: #ccc;
+    background: #d4d4d8;
   }
 `
 
@@ -40,7 +40,6 @@ const NotiFlag = styled.span`
   display: block;
   width: 0.5rem;
   height: 100%;
-  background: #222;
 `
 const ClickBox = styled.div`
   display: flex;
@@ -64,7 +63,7 @@ const FromID = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #171717;
+  color: #11181c;
   font-weight: 700;
   font-size: 0.875rem;
   flex: 1;

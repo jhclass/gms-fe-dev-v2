@@ -96,7 +96,7 @@ const MewIcon = styled.span<{ $navOpen: boolean }>`
   position: ${props => (props.$navOpen ? 'relative' : 'absolute')};
   right: ${props => (props.$navOpen ? 'auto' : '0.3rem')};
   top: ${props => (props.$navOpen ? 'auto' : '0')};
-  color: #dd1e59;
+  color: #ff0000;
 `
 
 const CateActive = styled(motion.div)`

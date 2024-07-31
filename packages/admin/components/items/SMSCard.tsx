@@ -56,7 +56,7 @@ const SendInfo = styled.div`
 
   &.first {
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e3e3e6;
+    border-bottom: 1px solid #d4d4d8;
   }
 `
 

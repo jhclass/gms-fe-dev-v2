@@ -14,7 +14,7 @@ const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   min-height: 100vh;
   height: 100%;
   padding: ${props => (props.$navOpen ? '4rem 0 0 18rem;' : '4rem 0 0 5rem;')};
-  background-color: #d6e4f1;
+  background-color: #d9e3fa;
   justify-content: center;
 
   @media screen and (max-width: 1024px) {

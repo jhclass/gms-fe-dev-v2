@@ -32,6 +32,7 @@ const AreaBox = styled.div`
   display: flex;
   width: 25%;
   min-width: 270px;
+
   @media (max-width: 768px) {
     width: 100%;
     border-bottom: 2px solid #eee;

@@ -425,7 +425,7 @@ export default function Attendance({ lectureData, students }) {
         padding: 1rem;
         font-weight: 600;
         color:#111;
-        border-bottom: 1px solid #e4e4e7;
+        border-bottom: 1px solid #d4d4d8;
 
           &:nth-of-type(${todayIndex >= 0 && 5 + todayIndex}) {
             border-radius: 0.5rem 0.5rem  0 0;
@@ -443,10 +443,10 @@ export default function Attendance({ lectureData, students }) {
           background:#fff;
         }
         &:nth-of-type(even){
-          background:#e2eafc;
+          background:#d9e3fa;
           
           &.drop {
-            background-color: #e2eafc !important; 
+            background-color: #d9e3fa !important; 
           }
         }
 
@@ -826,7 +826,7 @@ export default function Attendance({ lectureData, students }) {
             <Button
               size="md"
               variant="solid"
-              className="w-full text-[#000] bg-[#FEE500]"
+              className="w-full text-[#11181c] bg-[#FEE500]"
               // onClick={() => setIsOpen(!isOpen)}
             >
               <i className="xi-kakaotalk text-[1.5rem]" />

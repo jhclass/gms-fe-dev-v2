@@ -97,7 +97,7 @@ const ChipBox = styled.div`
 
 const RoundBox = styled.div`
   padding: 0.5rem;
-  border-top: 1px solid #e3e3e6;
+  border-top: 1px solid #d4d4d8;
 `
 const FilterLabel = styled.label`
   font-weight: 500;

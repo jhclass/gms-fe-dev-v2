@@ -39,9 +39,11 @@ const AreaBox = styled.div`
 const FlexItem = styled.div`
   display: flex;
   width: 100%;
+
   @media (max-width: 1200px) {
     border-top: 2px solid #eee;
   }
+
   @media (max-width: 640px) {
     flex-direction: column;
   }
@@ -107,7 +109,7 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function StudentPaymentDetailItem({ listData }) {
+export default function SubjectRoundItem({ listData }) {
   const studentAdvice = listData?.adviceTypes?.map(item => item.type)
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()

@@ -71,7 +71,7 @@ const NotiListBox = styled.div`
 `
 const DropBox = styled.div`
   position: relative;
-  border: 1px solid #e4e4e7;
+  border: 1px solid #d4d4d8;
   background: #fff;
   border-radius: 0.5rem;
   height: fit-content;

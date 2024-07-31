@@ -40,7 +40,7 @@ const FilterForm = styled.form`
   display: flex;
   width: 100%;
   flex-direction: column;
-  /* border-bottom: 1px solid #ccc; */
+  /* border-bottom: 1px solid #d4d4d8; */
 
   @media (max-width: 768px) {
     margin-bottom: 0.5rem;
