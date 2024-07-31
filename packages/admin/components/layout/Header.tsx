@@ -102,7 +102,7 @@ const HeaderRt = styled.div`
   align-items: center;
 
   @media screen and (max-width: 1024px) {
-    gap: 0.8rem;
+    gap: 1rem;
   }
 `
 
@@ -416,16 +416,8 @@ export default function Header() {
               <i className="xi-desktop" />
             </WebBtn>
           </Tooltip>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <HeaderNoti />
-          </Suspense>
-          {mGrade === 0 && (
+          <HeaderNoti />
+          {mGrade === 1 && (
             <ReqBtn onClick={onOpen}>
               <img
                 src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_help3.webp"
