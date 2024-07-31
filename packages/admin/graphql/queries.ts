@@ -88,6 +88,16 @@ export const MME_QUERY = gql`
     }
   }
 `
+export const SEE_ALARMS_TOTAL_QUERY = gql`
+  query SeeAlarms {
+    seeAlarms {
+      totalCount
+      ok
+      message
+      error
+    }
+  }
+`
 export const SEE_ALARMS_QUERY = gql`
   query Query($limit: Int, $page: Int) {
     seeAlarms(limit: $limit, page: $page) {
