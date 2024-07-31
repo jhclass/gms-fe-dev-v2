@@ -230,8 +230,12 @@ export default function StudentPaymentDetailItem({
               </AreaBox>
               <AreaBox>
                 <div>
-                  <FilterLabel>수납자</FilterLabel>
-                  <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
+                  <FilterLabel>회계담당자</FilterLabel>
+                  <FlatBox>
+                    {detailtData?.accountingManager
+                      ? detailtData?.accountingManager
+                      : '-'}
+                  </FlatBox>
                 </div>
               </AreaBox>
             </FlexBox>
@@ -354,8 +358,12 @@ export default function StudentPaymentDetailItem({
                   </AreaBox>
                   <AreaBox>
                     <div>
-                      <FilterLabel>수납자</FilterLabel>
-                      <FlatBox>{detailtData?.receiver.mUsername}</FlatBox>
+                      <FilterLabel>회계담당자</FilterLabel>
+                      <FlatBox>
+                        {detailtData?.accountingManager
+                          ? detailtData?.accountingManager
+                          : '-'}
+                      </FlatBox>
                     </div>
                   </AreaBox>
                 </Flex>
