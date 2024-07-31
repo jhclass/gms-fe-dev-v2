@@ -2,6 +2,8 @@ import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
 import { ResultSeeAlarms } from '@/src/generated/graphql'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const NotiNum = styled.span`
   display: flex;
@@ -33,9 +35,14 @@ type seeAlarmsQuery = {
 }
 
 export default function AlarmsTotal({}) {
-  const { error, data } = useSuspenseQuery<seeAlarmsQuery>(
+  const router = useRouter()
+  const { error, data, refetch } = useSuspenseQuery<seeAlarmsQuery>(
     SEE_ALARMS_TOTAL_QUERY,
   )
+
+  useEffect(() => {
+    refetch()
+  }, [router.pathname])
 
   return (
     <NotiNum>
