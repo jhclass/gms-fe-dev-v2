@@ -330,7 +330,7 @@ export default function RequestRefundTable() {
                 }
               },
             })
-            alert('결제 취소요청 되었습니다.')
+            alert('환불 거부 되었습니다.')
             userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
           }
         },
