@@ -30,8 +30,8 @@ export const DASHBOARD_UNP_QUERY = gql`
   }
 `
 export const DASHBOARD_AT_QUERY = gql`
-  query Query {
-    dashboardAT {
+  query DashboardAT($period: [String]) {
+    dashboardAT(period: $period) {
       count
       topFiveName
       totalStudentState
@@ -39,10 +39,10 @@ export const DASHBOARD_AT_QUERY = gql`
   }
 `
 export const DASHBOARD_RD_QUERY = gql`
-  query DashboardRD {
-    dashboardRD {
-      receiptDiv
+  query DashboardRD($period: [String]) {
+    dashboardRD(period: $period) {
       count
+      receiptDiv
     }
   }
 `

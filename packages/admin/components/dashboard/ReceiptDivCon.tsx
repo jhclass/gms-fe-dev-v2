@@ -30,6 +30,10 @@ const Title = styled.div`
   white-space: nowrap;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.gray};
+
+  span {
+    font-size: 0.7rem;
+  }
 `
 const ToolTipBox = styled.div`
   color: ${({ theme }) => theme.colors.gray};
@@ -61,10 +65,28 @@ const Content = styled.div`
 type DashboardRD = {
   dashboardRD: DashboardRdResult[]
 }
+const today = new Date()
+
+const todayStart = new Date(today)
+todayStart.setHours(23, 59, 59, 999)
+
+const threeMonthsAgo = new Date(
+  today.getFullYear(),
+  today.getMonth() - 3,
+  today.getDate(),
+)
+threeMonthsAgo.setHours(0, 0, 0, 0)
+
 export default function ReceiptDivCon() {
   const router = useRouter()
-  const { error, data, refetch } =
-    useSuspenseQuery<DashboardRD>(DASHBOARD_RD_QUERY)
+  const { error, data, refetch } = useSuspenseQuery<DashboardRD>(
+    DASHBOARD_RD_QUERY,
+    {
+      variables: {
+        period: [threeMonthsAgo, todayStart],
+      },
+    },
+  )
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
 
@@ -115,7 +137,9 @@ export default function ReceiptDivCon() {
   return (
     <ItemBox>
       <Title>
-        <span>상담 접수 구분</span>
+        <p>
+          상담 접수 구분 <span>&#40;최근 3개월&#41;</span>
+        </p>
         <ToolTipBox>
           <Tooltip
             content={
