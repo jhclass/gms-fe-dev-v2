@@ -34,7 +34,7 @@ const TableItem = styled.div`
   display: table;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
@@ -55,7 +55,7 @@ const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   display: block;
   padding-bottom: 0.375rem;
   span {

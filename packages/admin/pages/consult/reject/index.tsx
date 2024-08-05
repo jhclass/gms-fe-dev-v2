@@ -45,6 +45,11 @@ export default function ConsultReject() {
           deleteStudentStateId: data,
         },
         onCompleted: result => {
+          const dirtyFieldsArray = [...Object.values(checkItem)]
+          userLogs(
+            `ID : [${dirtyFieldsArray}] 상담카드 삭제`,
+            `ok : ${result.deleteStudentState.ok}`,
+          )
           if (result.deleteStudentState.ok) {
             searchStudentStateMutation({
               variables: {
@@ -58,8 +63,6 @@ export default function ConsultReject() {
                     resData.searchStudentState || {}
                   setSearchResult({ studentState, totalCount })
                   setCheckItem([])
-                  const dirtyFieldsArray = [...Object.values(checkItem)]
-                  userLogs(`ID : [${dirtyFieldsArray}] 상담카드 삭제`)
                   alert('상담카드가 삭제되었습니다.')
                 }
               },

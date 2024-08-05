@@ -40,7 +40,6 @@ const FilterForm = styled.form`
   display: flex;
   width: 100%;
   flex-direction: column;
-  /* border-bottom: 1px solid #ccc; */
 
   @media (max-width: 768px) {
     margin-bottom: 0.5rem;
@@ -164,7 +163,7 @@ export default function SmsSendFilter({
                 })}
               />
               {errors.receiver && (
-                <p className="px-2 pt-2 text-xs text-red-500">
+                <p className="px-2 pt-2 text-xs text-red">
                   {String(errors.receiver.message)}
                 </p>
               )}

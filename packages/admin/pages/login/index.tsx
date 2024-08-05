@@ -46,7 +46,6 @@ const LoginBox = styled.div`
 `
 const InputBox = styled.div`
   margin-top: 0.7rem;
-  color: #fafafa;
   font-size: 1rem;
 
   label {
@@ -78,7 +77,7 @@ const Alink = styled.p`
   margin-top: 0.7rem;
   font-size: 0.9rem;
   font-weight: 200;
-  color: #f4f4f5;
+  color: #fff;
   padding-left: 0.2rem;
 
   a {
@@ -89,7 +88,7 @@ const Alink = styled.p`
     content: '';
     width: 100%;
     height: 1px;
-    background: #f4f4f5;
+    background: #fff;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -148,10 +147,12 @@ export default function Login() {
         const {
           mLogin: { ok, token, error },
         } = data
+
+        userLogs(`로그인`, `ok : ${ok}`)
+
         if (ok) {
           LogUserIn(token)
           router.push('/')
-          userLogs(`로그인`)
         } else {
           setLoginError(error)
         }
@@ -210,6 +211,7 @@ export default function Login() {
                 variant="bordered"
                 label="password"
                 id="password"
+                className="text-white"
                 onFocus={() => setLoginPasswordFocus(true)}
                 {...register('password', {
                   required: {

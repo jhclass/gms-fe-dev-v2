@@ -188,7 +188,7 @@ export default function ManagerFilter({
                 })}
               />
               {errors.mUsername && (
-                <p className="px-2 pt-2 text-xs text-red-500">
+                <p className="px-2 pt-2 text-xs text-red">
                   {String(errors.mUsername.message)}
                 </p>
               )}
@@ -208,7 +208,7 @@ export default function ManagerFilter({
                 })}
               />
               {errors.mPart && (
-                <p className="px-2 pt-2 text-xs text-red-500">
+                <p className="px-2 pt-2 text-xs text-red">
                   {String(errors.mPart.message)}
                 </p>
               )}

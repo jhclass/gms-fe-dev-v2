@@ -110,7 +110,7 @@ const RadioBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -185,12 +185,12 @@ export default function StudentsEditInfo() {
                 : new Date(data.birthday),
           },
           onCompleted: result => {
+            const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+            userLogs(
+              `${studentData.name} 수강생 기본정보 수정`,
+              `ok : ${result.editStudent.ok} / ${dirtyFieldsArray.join(', ')}`,
+            )
             if (result.editStudent.ok) {
-              const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-              userLogs(
-                `${studentData.name} 수강생 기본정보 수정`,
-                dirtyFieldsArray.join(', '),
-              )
               alert('수정되었습니다.')
               router.back()
             }
@@ -264,7 +264,7 @@ export default function StudentsEditInfo() {
                         })}
                       />
                       {errors.name && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           {String(errors.name.message)}
                         </p>
                       )}
@@ -308,7 +308,7 @@ export default function StudentsEditInfo() {
                         })}
                       />
                       {errors.phoneNum1 && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           {String(errors.phoneNum1.message)}
                         </p>
                       )}
@@ -351,7 +351,7 @@ export default function StudentsEditInfo() {
                           : '중복확인'}
                       </Button>
                       {noDoubleError && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           같은 정보가 존재합니다. 이름과 연락처를 다시한번
                           확인해주세요.
                         </p>
@@ -429,7 +429,7 @@ export default function StudentsEditInfo() {
                         />
                       </DatePickerBox>
                       {errors.birthday && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           {String(errors.birthday.message)}
                         </p>
                       )}
@@ -457,7 +457,7 @@ export default function StudentsEditInfo() {
                         })}
                       />
                       {errors.phoneNum2 && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           {String(errors.phoneNum2.message)}
                         </p>
                       )}
@@ -499,7 +499,7 @@ export default function StudentsEditInfo() {
                         />
                       </RadioBox>
                       {errors.smsAgreement && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           {String(errors.smsAgreement.message)}
                         </p>
                       )}

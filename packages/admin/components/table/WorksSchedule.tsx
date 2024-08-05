@@ -19,13 +19,13 @@ const Theader = styled.div`
   color: #111;
   font-size: 0.875rem;
   font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   text-align: center;
 `
 
 const TheaderBox = styled.div`
   display: flex;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
 `
 
 const ClickBox = styled.div`
@@ -90,7 +90,7 @@ const TableItem = styled.div`
   }
 
   &:nth-child(odd) {
-    background: #e2eafc;
+    background: ${({ theme }) => theme.colors.lightPrimary};
   }
 `
 

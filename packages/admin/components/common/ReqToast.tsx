@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 
 const FromID = styled.p`
-  color: #171717;
+  color: ${({ theme }) => theme.colors.black};
   font-weight: 700;
   width: inherit;
   font-size: 0.875rem;

@@ -161,7 +161,7 @@ const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
 
@@ -481,15 +481,18 @@ export default function LectureWrite() {
             // ],
           })
 
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${lectureId} ${data.temporaryName} 강의 정보 수정`,
+            `ok : ${result.data.editLectures.ok} / ${dirtyFieldsArray.join(
+              ', ',
+            )}`,
+          )
+
           if (!result.data.editLectures.ok) {
             throw new Error('과정 수정 실패')
           }
           alert('수정되었습니다.')
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            `${lectureId} ${data.temporaryName} 강의 정보 수정`,
-            dirtyFieldsArray.join(', '),
-          )
           router.push('/lecture')
         } catch (error) {
           console.error('강의 수정 중 에러 발생:', error)
@@ -565,7 +568,7 @@ export default function LectureWrite() {
                       )}
                     />
                     {errors.campus && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.campus.message)}
                       </p>
                     )}
@@ -604,7 +607,7 @@ export default function LectureWrite() {
                       )}
                     />
                     {errors.subDiv && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.subDiv.message)}
                       </p>
                     )}
@@ -649,7 +652,7 @@ export default function LectureWrite() {
                       })}
                     />
                     {errors.temporaryName && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.temporaryName.message)}
                       </p>
                     )}
@@ -685,7 +688,7 @@ export default function LectureWrite() {
                       })}
                     />
                     {errors.subjectId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.subjectId.message)}
                       </p>
                     )}
@@ -728,7 +731,7 @@ export default function LectureWrite() {
                       )}
                     />
                     {errors.teachersId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.teachersId.message)}
                       </p>
                     )}
@@ -762,7 +765,7 @@ export default function LectureWrite() {
                       })}
                     />
                     {errors.roomNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.roomNum.message)}
                       </p>
                     )}
@@ -940,7 +943,7 @@ export default function LectureWrite() {
                       </DatePickerBox>
                     </TimeBox>
                     {errors.lectureTime && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.lectureTime.message)}
                       </p>
                     )}
@@ -1027,7 +1030,7 @@ export default function LectureWrite() {
                       />
                     </DatePickerBox>
                     {errors.lecturePeriodStart && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.lecturePeriodStart.message)}
                       </p>
                     )}
@@ -1113,7 +1116,7 @@ export default function LectureWrite() {
                       />
                     </DatePickerBox>
                     {errors.lecturePeriodEnd && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.lecturePeriodEnd.message)}
                       </p>
                     )}
@@ -1152,7 +1155,7 @@ export default function LectureWrite() {
                       />
                     </div>
                     {errors.lectureDetails && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.lectureDetails.message)}
                       </p>
                     )}
@@ -1197,7 +1200,7 @@ export default function LectureWrite() {
                       />
                     </RadioBox>
                     {errors.eduStatusReport && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.eduStatusReport.message)}
                       </p>
                     )}
@@ -1233,7 +1236,7 @@ export default function LectureWrite() {
                       })}
                     />
                     {errors.approvedNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.approvedNum.message)}
                       </p>
                     )}
@@ -1267,7 +1270,7 @@ export default function LectureWrite() {
                       })}
                     />
                     {errors.confirmedNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.confirmedNum.message)}
                       </p>
                     )}
@@ -1301,7 +1304,7 @@ export default function LectureWrite() {
                       })}
                     />
                     {errors.sessionNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.sessionNum.message)}
                       </p>
                     )}
@@ -1335,7 +1338,7 @@ export default function LectureWrite() {
                       />
                     </TimeBox>
                     {errors.timetableAttached && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.timetableAttached.message)}
                       </p>
                     )}

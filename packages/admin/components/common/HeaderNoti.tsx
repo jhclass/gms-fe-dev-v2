@@ -24,7 +24,7 @@ const NotiBtn = styled.button`
     top: 50%;
     right: -0.9rem;
     margin-top: -0.75rem;
-    background: #d4d4d8;
+    background: ${({ theme }) => theme.colors.lightGray};
     transition: 0.3s;
   }
 
@@ -71,7 +71,7 @@ const NotiListBox = styled.div`
 `
 const DropBox = styled.div`
   position: relative;
-  border: 1px solid #e4e4e7;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   background: #fff;
   border-radius: 0.5rem;
   height: fit-content;
@@ -135,8 +135,8 @@ export default function HeaderNoti({}) {
         },
         refetchQueries: [SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY],
         onCompleted: result => {
+          userLogs('알람 모두 읽음 처리', `ok: ${result.readAlarms.ok}`)
           if (result.readAlarms.ok) {
-            userLogs('알람 모두 읽음 처리')
             alert('모두 읽음 처리 하였습니다.')
           }
         },

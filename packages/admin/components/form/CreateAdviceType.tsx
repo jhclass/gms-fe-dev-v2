@@ -162,11 +162,14 @@ export default function CreateAdviceType({ isActive, category }) {
           },
         ],
       })
+      userLogs(
+        `${data.type} ${category} 등록`,
+        `ok: ${result.data.createAdviceType.ok}`,
+      )
       if (!result.data.createAdviceType.ok) {
         throw new Error(`${category} 등록 실패`)
       }
       alert(`${category} 분야가 등록되었습니다.`)
-      userLogs(`${data.type} ${category} 등록`)
       reset()
     } catch (error) {
       console.error(`${category} 등록 중 에러 발생:`, error)
@@ -206,7 +209,7 @@ export default function CreateAdviceType({ isActive, category }) {
                     })}
                   />
                   {errors.type && (
-                    <p className="w-full ml-[4.5rem] text-xs text-red-500">
+                    <p className="w-full ml-[4.5rem] text-xs text-red">
                       {String(errors.type.message)}
                     </p>
                   )}

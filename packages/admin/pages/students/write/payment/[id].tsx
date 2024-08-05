@@ -145,7 +145,7 @@ const RadioBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -595,7 +595,7 @@ export default function StudentsWritePayment() {
                       )}
                     />
                     {errors.receiverId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.receiverId.message)}
                       </p>
                     )}
@@ -640,7 +640,7 @@ export default function StudentsWritePayment() {
                           )}
                         />
                         {errors.cardCompany && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cardCompany.message)}
                           </p>
                         )}
@@ -667,7 +667,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.cardNum && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cardNum.message)}
                           </p>
                         )} */}
@@ -735,17 +735,17 @@ export default function StudentsWritePayment() {
                           />
                         </CardNumBox>
                         {errors.cardNum1 && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cardNum1.message)}
                           </p>
                         )}
                         {errors.cardNum2 && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cardNum2.message)}
                           </p>
                         )}
                         {errors.cardNum4 && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cardNum4.message)}
                           </p>
                         )}
@@ -799,7 +799,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.approvalNum && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.approvalNum.message)}
                           </p>
                         )}
@@ -828,7 +828,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.amountPayment && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.amountPayment.message)}
                           </p>
                         )}
@@ -902,7 +902,7 @@ export default function StudentsWritePayment() {
                           />
                         </DatePickerBox>
                         {errors.paymentDate && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
@@ -948,7 +948,7 @@ export default function StudentsWritePayment() {
                           )}
                         />
                         {errors.bankName && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.bankName.message)}
                           </p>
                         )}
@@ -977,7 +977,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.depositorName && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.depositorName.message)}
                           </p>
                         )}
@@ -1006,7 +1006,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.depositAmount && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.depositAmount.message)}
                           </p>
                         )}
@@ -1078,7 +1078,7 @@ export default function StudentsWritePayment() {
                           />
                         </DatePickerBox>
                         {errors.paymentDate && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.paymentDate.message)}
                           </p>
                         )}
@@ -1123,7 +1123,7 @@ export default function StudentsWritePayment() {
                           />
                         </RadioBox>
                         {errors.cashReceiptType && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cashReceiptType.message)}
                           </p>
                         )}
@@ -1153,7 +1153,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.cashReceiptNum && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cashReceiptNum.message)}
                           </p>
                         )}
@@ -1175,7 +1175,7 @@ export default function StudentsWritePayment() {
                           })}
                         />
                         {errors.cashReceiptApprovalNum && (
-                          <p className="px-2 pt-2 text-xs text-red-500">
+                          <p className="px-2 pt-2 text-xs text-red">
                             {String(errors.cashReceiptApprovalNum.message)}
                           </p>
                         )}

@@ -57,7 +57,7 @@ const MemoGrade = styled.span`
   font-size: 0.5rem;
 `
 const MemoName = styled.span`
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-weight: 600;
 `
 const MemoTime = styled.span``
@@ -120,7 +120,7 @@ export default function ConsultMemo(props) {
             deleteConsultationMemoId: item.id,
           },
         })
-
+        userLogs(`상담학생 id:${item.id} 메모 삭제`, `ok: ${ok}`)
         if (!ok) {
           throw new Error('메모 삭제 실패')
         }
@@ -128,7 +128,6 @@ export default function ConsultMemo(props) {
         props.setMemoList([])
 
         await fetchAndUpdateStudentState(item.studentStateId)
-        userLogs(`상담학생 id:${item.id} 메모 삭제`)
       } catch (error) {
         console.error('에러 발생:', error)
       }
@@ -148,7 +147,7 @@ export default function ConsultMemo(props) {
             content: data.content.trim(),
           },
         })
-
+        userLogs(`상담학생 id:${data.id} 메모 수정`, `ok: ${ok}`)
         if (!ok) {
           throw new Error('메모 수정 실패')
         }
@@ -156,7 +155,6 @@ export default function ConsultMemo(props) {
         props.setMemoList([])
 
         await fetchAndUpdateStudentState(props.studentId)
-        userLogs(`상담학생 id:${data.id} 메모 수정`)
       } catch (error) {
         console.error('에러 발생:', error)
       }

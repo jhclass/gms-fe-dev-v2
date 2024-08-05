@@ -57,12 +57,17 @@ export default function CreateMemo(props) {
   const onSubmit = async data => {
     if (isDirty) {
       try {
-        await createMemo({
+        const result = await createMemo({
           variables: {
             content: data.content.trim(),
             studentStateId: studentId,
           },
         })
+
+        userLogs(
+          `상담학생 ID:${studentId} 메모 등록`,
+          `ok: ${result.data.createConsultationMemo.ok}`,
+        )
 
         props.setMemoList([])
 
@@ -83,8 +88,6 @@ export default function CreateMemo(props) {
           throw new Error('메모 등록 실패')
         }
         props.setMemoList(consultationMemo)
-
-        userLogs(`상담학생 ID:${studentId} 메모 등록`)
       } catch (error) {
         console.error('에러 발생:', error)
       }

@@ -14,7 +14,7 @@ const TableItem = styled.div`
   display: flex;
   flex-wrap: wrap;
   background-color: #fff;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
@@ -84,7 +84,7 @@ const Info = styled.ul`
   padding-right: 10%;
   flex-wrap: wrap;
   margin-top: 0.5rem;
-  border-top: 1px solid #e4e4e7;
+  border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
 
   li {
     display: flex;

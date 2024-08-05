@@ -33,7 +33,7 @@ const Item = styled.div`
   background: #fff;
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
-  border: 1px solid #e4e4e7;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 0.5rem;
   gap: 0.5rem;
   display: flex;
@@ -41,7 +41,7 @@ const Item = styled.div`
   align-items: center;
 
   &:hover {
-    background-color: #d9e3fa;
+    background-color: ${({ theme }) => theme.colors.lightPrimary};
   }
 `
 
@@ -151,13 +151,15 @@ export default function TypeIndex({ isOpen, onClose, category }) {
         ],
       })
 
+      userLogs(`${category} 순서 변경`, `ok : ${result.data.changeOrderAT.ok}`)
+
       if (!result.data.changeOrderAT.ok) {
         throw new Error(`${category} 순서 변경 실패`)
       }
       refetch()
 
       alert(`${category} 순서가 변경되었습니다.`)
-      userLogs(`${category} 순서 변경`)
+
       closeBtn()
     } catch (error) {
       console.error(`${category} 순서 변경 중 에러 발생:`, error)

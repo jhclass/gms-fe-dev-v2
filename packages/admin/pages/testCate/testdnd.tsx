@@ -27,7 +27,7 @@ const DraggableItem = styled.div`
   height: 100px;
   margin: 10px;
   background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 4px;
   user-select: none;
 `

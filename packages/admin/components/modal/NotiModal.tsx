@@ -7,12 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   ScrollShadow,
-  Textarea,
-  useDisclosure,
 } from '@nextui-org/react'
-import { useForm } from 'react-hook-form'
-import useUserLogsMutation from '@/utils/userLogs'
-import { useState } from 'react'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;

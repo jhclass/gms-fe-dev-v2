@@ -74,7 +74,7 @@ export default function AdviceMultiSelect({
         placeholder={placeholder}
         className="w-full"
         classNames={{
-          value: 'text-[#11141c] opacity-1',
+          value: 'text-black opacity-1',
         }}
         isMultiline={true}
         selectionMode="multiple"

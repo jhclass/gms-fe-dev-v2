@@ -31,6 +31,10 @@ const Title = styled.div`
   white-space: nowrap;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.gray};
+
+  span {
+    font-size: 0.7rem;
+  }
 `
 const ToolTipBox = styled.div`
   color: ${({ theme }) => theme.colors.gray};
@@ -90,9 +94,26 @@ type DashboardAT = {
   dashboardAT: DashboardAtResult
 }
 
+const today = new Date()
+
+const todayStart = new Date(today)
+todayStart.setHours(23, 59, 59, 999)
+
+const threeMonthsAgo = new Date(
+  today.getFullYear(),
+  today.getMonth() - 3,
+  today.getDate(),
+)
+threeMonthsAgo.setHours(0, 0, 0, 0)
+
 export default function AdviceTypeCon() {
   const router = useRouter()
-  const { data, refetch } = useSuspenseQuery<DashboardAT>(DASHBOARD_AT_QUERY)
+
+  const { data, refetch } = useSuspenseQuery<DashboardAT>(DASHBOARD_AT_QUERY, {
+    variables: {
+      period: [threeMonthsAgo, todayStart],
+    },
+  })
   const adviceTypeData = data?.dashboardAT
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
@@ -144,7 +165,10 @@ export default function AdviceTypeCon() {
       {adviceTypeData !== null && (
         <>
           <Title>
-            <span>상담분야 TOP{adviceTypeData?.topFiveName.length}</span>
+            <p>
+              상담분야 TOP{adviceTypeData?.topFiveName.length}{' '}
+              <span>&#40;최근 3개월&#41;</span>
+            </p>
             <ToolTipBox>
               <Tooltip
                 content={

@@ -94,7 +94,7 @@ const UpdateCon = styled.p`
       content: '';
       width: 0.3rem;
       height: 1px;
-      background: #11181c;
+      background: ${({ theme }) => theme.colors.black};
       position: absolute;
       top: 50%;
       margin-top: -0.5px;
@@ -190,7 +190,7 @@ const DatePickerBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -250,8 +250,11 @@ export default function ManagerWrite({ managerId }) {
     { loading: createLoading, error: createError, data: CreateData },
   ] = useLazyQuery(CREATE_STAMP_QUERY, {
     onCompleted: result => {
+      userLogs(
+        `${managerData.mUsername} 직원 stemp 생성`,
+        `ok:${result.createStamp.ok}`,
+      )
       if (result.createStamp.ok) {
-        userLogs(`${managerData.mUsername} 직원 stemp 생성`)
         refetch()
       }
     },
@@ -352,15 +355,18 @@ export default function ManagerWrite({ managerId }) {
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${managerData.mUsername} 직원 정보 수정`,
+            `ok: ${result.data.editManageUser.ok} / ${dirtyFieldsArray.join(
+              ', ',
+            )}`,
+          )
 
           if (!result.data.editManageUser.ok) {
             throw new Error('직원 정보 수정 실패')
           }
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            `${managerData.mUsername} 직원 정보 수정`,
-            dirtyFieldsArray.join(', '),
-          )
+
           alert('수정되었습니다.')
           refetch()
           router.push('/hr')
@@ -487,7 +493,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mUserId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mUserId.message)}
                       </p>
                     )}
@@ -535,7 +541,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mUsername && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mUsername.message)}
                       </p>
                     )}
@@ -578,7 +584,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mPhoneNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNum.message)}
                       </p>
                     )}
@@ -605,7 +611,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.email && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.email.message)}
                       </p>
                     )}
@@ -652,7 +658,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mPhoneNumCompany && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumCompany.message)}
                       </p>
                     )}
@@ -678,7 +684,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mPhoneNumInside && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumInside.message)}
                       </p>
                     )}
@@ -709,7 +715,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mPhoneNumFriend && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumFriend.message)}
                       </p>
                     )}
@@ -769,7 +775,7 @@ export default function ManagerWrite({ managerId }) {
                       </AddLink>
                     )}
                     {errors.mPart && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPart.message)}
                       </p>
                     )}
@@ -803,7 +809,7 @@ export default function ManagerWrite({ managerId }) {
                       })}
                     />
                     {errors.mRank && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mRank.message)}
                       </p>
                     )}
@@ -878,7 +884,7 @@ export default function ManagerWrite({ managerId }) {
                       />
                     </DatePickerBox>
                     {errors.mJoiningDate && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mJoiningDate.message)}
                       </p>
                     )}

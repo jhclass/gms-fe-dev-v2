@@ -190,7 +190,7 @@ const ToolTipBox = styled.i`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -620,7 +620,7 @@ export default function StudentsWriteCourse() {
                       })}
                     />
                     {errors.subject && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.subject.message)}
                       </p>
                     )}
@@ -665,7 +665,7 @@ export default function StudentsWriteCourse() {
                               onValueChange={handleCheckboxChange}
                               classNames={{
                                 wrapper: 'items-center',
-                                label: 'text-[0.875rem] text-[#11181c]',
+                                label: 'text-[0.875rem] text-black',
                               }}
                             >
                               <Checkbox value="Y"></Checkbox>
@@ -737,7 +737,7 @@ export default function StudentsWriteCourse() {
                       })}
                     />
                     {errors.seScore && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.seScore.message)}
                       </p>
                     )}
@@ -887,7 +887,7 @@ export default function StudentsWriteCourse() {
                       {...register('actualAmount')}
                     />
                     {errors.actualAmount && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.actualAmount.message)}
                       </p>
                     )}
@@ -1009,7 +1009,7 @@ export default function StudentsWriteCourse() {
                         )}
                       />
                       {errors.paymentDate && (
-                        <p className="px-2 pt-2 text-xs text-red-500">
+                        <p className="px-2 pt-2 text-xs text-red">
                           {String(errors.paymentDate.message)}
                         </p>
                       )}
@@ -1111,7 +1111,7 @@ export default function StudentsWriteCourse() {
                       )}
                     />
                     {errors.processingManagerId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.processingManagerId.message)}
                       </p>
                     )}

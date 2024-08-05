@@ -26,10 +26,10 @@ const DatePickerBox = styled.div`
   }
   .react-datepicker__day--selected {
     background: none;
-    color: #000;
+    color: ${({ theme }) => theme.colors.black};
 
     &.react-datepicker__day--disabled {
-      color: #ccc;
+      color: ${({ theme }) => theme.colors.lightGray};
     }
   }
   .react-datepicker__current-month,

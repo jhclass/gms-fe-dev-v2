@@ -39,7 +39,7 @@ const FlexBox = styled.div`
 `
 
 const ConLabel = styled.p`
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-size: 0.875rem;
 `
 
@@ -56,12 +56,12 @@ const SendInfo = styled.div`
 
   &.first {
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e3e3e6;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   }
 `
 
 const SendType = styled.p`
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   font-size: 0.875rem;
 
   span {
@@ -168,8 +168,11 @@ export default function SMSItem({
       },
       refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
       onCompleted: result => {
+        userLogs(
+          `문자 보관함 ID : ${id} 삭제`,
+          `ok : ${result.deleteMessageStorage.ok}`,
+        )
         if (result.deleteMessageStorage.ok) {
-          userLogs(`문자 보관함 ID : ${id} 삭제`)
           alert('문자함에서 삭제 되었습니다.')
         }
       },

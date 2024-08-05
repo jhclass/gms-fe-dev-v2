@@ -60,7 +60,7 @@ const AreaBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -167,7 +167,7 @@ export default function RequestMessage({
                             )}
                           />
                           {errors.processingManagerId && (
-                            <p className="px-2 pt-2 text-xs text-red-500">
+                            <p className="px-2 pt-2 text-xs text-red">
                               {String(errors.processingManagerId.message)}
                             </p>
                           )}

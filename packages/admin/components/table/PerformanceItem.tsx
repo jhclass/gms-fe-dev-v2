@@ -31,7 +31,7 @@ const TableItem = styled.div`
   display: table;
   width: 100%;
   min-width: fit-content;
-  border: 1px solid #e4e4e7;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-bottom: 0;
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;

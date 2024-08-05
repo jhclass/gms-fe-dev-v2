@@ -21,7 +21,7 @@ export default function MainSilder() {
           modules={[Autoplay, Pagination]}
           className="mySwiper1"
         >
-          <SwiperSlide style={{ background: '#000' }}>
+          <SwiperSlide style={{ background: '#11181c' }}>
             <Link href="#" onClick={handleTest}>
               <div className="flex justify-end wrap">
                 <img

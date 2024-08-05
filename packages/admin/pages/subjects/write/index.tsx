@@ -118,7 +118,7 @@ const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
 
@@ -211,12 +211,16 @@ export default function SubjectWrite() {
         ],
       })
 
+      userLogs(
+        `${data.subjectName}과정 등록`,
+        `ok : ${result.data.createSubject.ok}`,
+      )
+
       if (!result.data.createSubject.ok) {
         throw new Error('과정 등록 실패')
       }
 
       alert('등록되었습니다.')
-      userLogs(`${data.subjectName}과정 등록`)
       router.push('/subjects')
     } catch (error) {
       console.error('과정 등록 중 에러 발생:', error)
@@ -301,7 +305,7 @@ export default function SubjectWrite() {
                     })}
                   />
                   {errors.subjectName && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.subjectName.message)}
                     </p>
                   )}
@@ -336,7 +340,7 @@ export default function SubjectWrite() {
                     })}
                   />
                   {errors.subjectCode && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.subjectCode.message)}
                     </p>
                   )}
@@ -369,7 +373,7 @@ export default function SubjectWrite() {
                     })}
                   />
                   {errors.fee && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.fee.message)}
                     </p>
                   )}
@@ -407,7 +411,7 @@ export default function SubjectWrite() {
                     )}
                   />
                   {errors.subDiv && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.subDiv.message)}
                     </p>
                   )}
@@ -560,7 +564,7 @@ export default function SubjectWrite() {
                     })}
                   />
                   {errors.roomNum && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.roomNum.message)}
                     </p>
                   )}
@@ -717,7 +721,7 @@ export default function SubjectWrite() {
                     })}
                   />
                   {errors.totalTime && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.totalTime.message)}
                     </p>
                   )}

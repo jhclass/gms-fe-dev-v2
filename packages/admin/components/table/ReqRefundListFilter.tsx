@@ -88,7 +88,7 @@ const Theader = styled.div`
   color: #111;
   font-size: 0.875rem;
   font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   text-align: center;
 `
 
@@ -104,7 +104,7 @@ const TableItem = styled.div`
   display: table;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
@@ -295,6 +295,10 @@ export default function ReqRefundFilterTable({ studentFilter }) {
           studentPaymentId: item.studentPaymentId,
         },
         onCompleted: resData => {
+          userLogs(
+            `paymentDetail ID : ${item.id} / 환불 승인`,
+            `ok : ${resData.refundApproval.ok}`,
+          )
           if (resData.refundApproval.ok) {
             updateReceived({
               variables: {
@@ -324,7 +328,6 @@ export default function ReqRefundFilterTable({ studentFilter }) {
                     },
                   })
                   alert('환불 승인 되었습니다.')
-                  userLogs(`paymentDetail ID : ${item.id} / 환불 승인`)
                 }
               },
             })
@@ -344,6 +347,10 @@ export default function ReqRefundFilterTable({ studentFilter }) {
           reqRefundDate: '',
         },
         onCompleted: result => {
+          userLogs(
+            `paymentDetail ID : ${item.id} / 환불 거부`,
+            `ok : ${result.reqRefund.ok}`,
+          )
           if (result.reqRefund.ok) {
             searchPaymentDetailFilterMutation({
               variables: {
@@ -362,7 +369,6 @@ export default function ReqRefundFilterTable({ studentFilter }) {
               },
             })
             alert('결제 취소요청 되었습니다.')
-            userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
           }
         },
       })
@@ -378,7 +384,7 @@ export default function ReqRefundFilterTable({ studentFilter }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총
+            총{' '}
             <span>
               {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
             </span>

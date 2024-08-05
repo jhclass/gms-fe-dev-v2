@@ -91,7 +91,7 @@ const DatePickerBox = styled.div`
 const FilterLabel = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
 
   span {
     color: red;
@@ -222,8 +222,11 @@ export default function ManagerWrite() {
         email: data.email === '' ? null : data.email.trim(),
       },
       onCompleted: result => {
+        userLogs(
+          `${data.mUsername}직원 등록`,
+          `ok : ${result.createManagerAccount.ok}`,
+        )
         if (result.createManagerAccount.ok) {
-          userLogs(`${data.mUsername}직원 등록`)
           alert('등록되었습니다.')
           router.back()
         } else {
@@ -287,7 +290,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mUserId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mUserId.message)}
                       </p>
                     )}
@@ -320,7 +323,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mPassword && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPassword.message)}
                       </p>
                     )}
@@ -349,7 +352,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mPassword1 && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPassword1.message)}
                       </p>
                     )}
@@ -384,7 +387,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mUsername && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mUsername.message)}
                       </p>
                     )}
@@ -426,7 +429,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mPhoneNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNum.message)}
                       </p>
                     )}
@@ -452,7 +455,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.email && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.email.message)}
                       </p>
                     )}
@@ -485,7 +488,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mPhoneNumCompany && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumCompany.message)}
                       </p>
                     )}
@@ -510,7 +513,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mPhoneNumInside && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumInside.message)}
                       </p>
                     )}
@@ -540,7 +543,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mPhoneNumFriend && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumFriend.message)}
                       </p>
                     )}
@@ -594,7 +597,7 @@ export default function ManagerWrite() {
                       </AddLink>
                     )}
                     {errors.mPart && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPart.message)}
                       </p>
                     )}
@@ -627,7 +630,7 @@ export default function ManagerWrite() {
                       })}
                     />
                     {errors.mRank && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mRank.message)}
                       </p>
                     )}
@@ -701,7 +704,7 @@ export default function ManagerWrite() {
                       />
                     </DatePickerBox>
                     {errors.mJoiningDate && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mJoiningDate.message)}
                       </p>
                     )}

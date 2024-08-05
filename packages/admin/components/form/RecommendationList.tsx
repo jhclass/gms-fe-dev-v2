@@ -27,7 +27,7 @@ const Theader = styled.div`
   color: #111;
   font-size: 0.875rem;
   font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   text-align: center;
 `
 
@@ -103,7 +103,7 @@ const TableItem = styled.div`
   position: relative;
   width: 100%;
   min-width: fit-content;
-  border: 1px solid #e4e4e7;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;

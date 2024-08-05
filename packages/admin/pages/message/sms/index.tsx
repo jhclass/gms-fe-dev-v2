@@ -97,13 +97,13 @@ const ChipBox = styled.div`
 
 const RoundBox = styled.div`
   padding: 0.5rem;
-  border-top: 1px solid #e3e3e6;
+  border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
 `
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
 `
@@ -270,11 +270,11 @@ export default function message() {
                 senderNum: data.senderNum,
               },
               onCompleted: result => {
+                userLogs(
+                  `문자 메시지 발송예약`,
+                  `ok : ${result.sendSms.ok} / 발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
+                )
                 if (result.sendSms.ok) {
-                  userLogs(
-                    `문자 메시지 발송예약`,
-                    `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
-                  )
                   alert(
                     `문자 메시지 발송 예약이 되었습니다.\n예약날짜: ${sendDate}\n 예약시간: ${sendTime}.`,
                   )
@@ -293,11 +293,11 @@ export default function message() {
                 senderNum: data.senderNum,
               },
               onCompleted: result => {
+                userLogs(
+                  `문자 메시지 발송`,
+                  `ok : ${result.sendSms.ok} / 발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
+                )
                 if (result.sendSms.ok) {
-                  userLogs(
-                    `문자 메시지 발송`,
-                    `발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
-                  )
                   alert(`문자 메시지가 발송 되었습니다.`)
                 } else {
                   alert(`${result.sendSms.message}\n보낸문자함을 확인해주세요.`)
@@ -325,8 +325,12 @@ export default function message() {
       },
       refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
       onCompleted: result => {
+        userLogs(
+          `${type} 문자함 저장`,
+          `ok : ${result.createMessageStorage.ok} / ${messageCon}`,
+        )
+
         if (result.createMessageStorage.ok) {
-          userLogs(`${type} 문자함 저장`, messageCon)
           alert(`${type} 문자함에 저장 되었습니다.`)
         }
       },
@@ -380,7 +384,7 @@ export default function message() {
               )}
             />
             {errors.message && (
-              <p className="px-2 pt-2 text-xs text-red-500">
+              <p className="px-2 pt-2 text-xs text-red">
                 {String(errors.message.message)}
               </p>
             )}
@@ -460,7 +464,7 @@ export default function message() {
                 ))}
               </ChipBox>
               {errors.receiver && (
-                <p className="px-2 pt-2 text-xs text-red-500">
+                <p className="px-2 pt-2 text-xs text-red">
                   {String(errors.receiver.message)}
                 </p>
               )}
@@ -509,7 +513,7 @@ export default function message() {
                 </AddLink>
               </FlexBox>
               {errors.senderNum && (
-                <p className="px-2 pt-2 text-xs text-red-500">
+                <p className="px-2 pt-2 text-xs text-red">
                   {String(errors.senderNum.message)}
                 </p>
               )}
@@ -600,7 +604,7 @@ export default function message() {
                 </FlexBox>
               )}
               {errors.rTime && (
-                <p className="px-2 pt-2 text-xs text-red-500">
+                <p className="px-2 pt-2 text-xs text-red">
                   {String(errors.rTime.message)}
                 </p>
               )}

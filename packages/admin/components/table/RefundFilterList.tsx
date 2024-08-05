@@ -82,7 +82,7 @@ const Theader = styled.div`
   color: #111;
   font-size: 0.875rem;
   font-weight: 700;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   text-align: center;
 `
 const TheaderBox = styled.div`
@@ -97,7 +97,7 @@ const TableItem = styled.div`
   display: table;
   width: 100%;
   min-width: fit-content;
-  border-bottom: 1px solid #e4e4e7;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   color: ${({ theme }) => theme.colors.gray};
   font-size: 0.875rem;
   border-radius: 0.5rem;
@@ -295,7 +295,7 @@ export default function RefundFilterTable({ studentFilter }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총
+            총{' '}
             <span>
               {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
             </span>

@@ -212,7 +212,7 @@ export default function Header() {
             headerFixed ? 'fixed top-0 left-0 z-40' : 'relative'
           } flex-col w-full  max-w-full px-0`}
         >
-          <div className="bg-[#000] lg:bg-white">
+          <div className="bg-[#11181c] lg:bg-white">
             <MainTopBnr />
 
             <HeaderBox className="wrap">

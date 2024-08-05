@@ -107,7 +107,7 @@ const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #11181c;
+  color: ${({ theme }) => theme.colors.black};
   display: block;
   padding-bottom: 0.375rem;
 
@@ -299,7 +299,13 @@ export default function StudentsWrite() {
             processingManagerId: studentPaymentData.processingManagerId,
           },
         })
-        if (success) {
+
+        userLogs(
+          `${studentData?.name}학생 "${state}"처리`,
+          `ok : ${success.data.editStudentPayment.ok}`,
+        )
+
+        if (success.data.editStudentPayment.ok) {
           if (state !== assignment.assignment) {
             await classCancelMutation({
               variables: {
@@ -310,7 +316,6 @@ export default function StudentsWrite() {
                 const success2 = await searchAndUpdateStudentPayment()
                 if (success2) {
                   alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
-                  userLogs(`${studentData?.name}학생 "${state}"처리`)
                 }
               },
             })
@@ -318,7 +323,6 @@ export default function StudentsWrite() {
             const success2 = await searchAndUpdateStudentPayment()
             if (success2) {
               alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
-              userLogs(`${studentData?.name}학생 "${state}"처리`)
             }
           }
         }
@@ -379,11 +383,14 @@ export default function StudentsWrite() {
           },
         })
       }
-      if (success) {
+      userLogs(
+        `${studentData?.name}학생 "${state}"처리`,
+        `ok : ${success.data.classCancellation.ok}`,
+      )
+      if (success.data.classCancellation.ok) {
         const success2 = await searchAndUpdateStudentPayment()
         if (success2) {
           alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
-          userLogs(`${studentData?.name}학생 "${state}"처리`)
         }
       }
     }

@@ -36,7 +36,6 @@ const FilterForm = styled.form`
   padding: 0 1rem 1.5rem 1rem;
   margin-top: 1rem;
   flex-direction: column;
-  /* border-bottom: 1px solid #ccc; */
 
   @media (max-width: 768px) {
     gap: 1rem;
