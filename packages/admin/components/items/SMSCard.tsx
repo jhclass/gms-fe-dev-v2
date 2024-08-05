@@ -162,21 +162,24 @@ export default function SMSItem({
   }
 
   const handleDelete = id => {
-    deleteMessageStorage({
-      variables: {
-        deleteMessageStorageId: id,
-      },
-      refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `문자 보관함 ID : ${id} 삭제`,
-          `ok: ${result.deleteMessageStorage.ok}`,
-        )
-        if (result.deleteMessageStorage.ok) {
-          alert('문자함에서 삭제 되었습니다.')
-        }
-      },
-    })
+    const isDelete = confirm('저장된 문자를 삭제하시겠습니까?')
+    if (isDelete) {
+      deleteMessageStorage({
+        variables: {
+          deleteMessageStorageId: id,
+        },
+        refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
+        onCompleted: result => {
+          userLogs(
+            `문자 보관함 ID : ${id} 삭제`,
+            `ok: ${result.deleteMessageStorage.ok}`,
+          )
+          if (result.deleteMessageStorage.ok) {
+            alert('문자함에서 삭제 되었습니다.')
+          }
+        },
+      })
+    }
   }
 
   return (
