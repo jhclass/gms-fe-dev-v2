@@ -356,7 +356,7 @@ export default function StudentsWritePayment() {
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
               userLogs(
                 `${paymentDetailData?.id} 카드 결제 수정`,
-                `ok : ${result.editPaymentDetail.ok} / ${dirtyFieldsArray.join(
+                `ok: ${result.editPaymentDetail.ok} / ${dirtyFieldsArray.join(
                   ', ',
                 )}`,
               )
@@ -413,7 +413,7 @@ export default function StudentsWritePayment() {
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
               userLogs(
                 `${paymentDetailData?.id} 현금 결제 수정 `,
-                `ok : ${result.editPaymentDetail.ok} / ${dirtyFieldsArray.join(
+                `ok: ${result.editPaymentDetail.ok} / ${dirtyFieldsArray.join(
                   ', ',
                 )}`,
               )

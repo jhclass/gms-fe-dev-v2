@@ -48,7 +48,7 @@ export default function ConsultRegistered() {
           const dirtyFieldsArray = [...Object.values(checkItem)]
           userLogs(
             `ID : [${dirtyFieldsArray}] 상담카드 삭제`,
-            `ok : ${result.deleteStudentState.ok}`,
+            `ok: ${result.deleteStudentState.ok}`,
           )
           if (result.deleteStudentState.ok) {
             searchStudentStateMutation({

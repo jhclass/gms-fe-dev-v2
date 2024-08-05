@@ -70,7 +70,7 @@ export default function CreateMemo(props) {
           },
         })
 
-        userLogs(`수강생 ID:${studentId} 메모 등록`, `ok : ${ok}`)
+        userLogs(`수강생 ID:${studentId} 메모 등록`, `ok: ${ok}`)
 
         if (!ok) {
           throw new Error('메모 등록 실패')

@@ -413,7 +413,7 @@ export default function ConsultDetail() {
             const dirtyFieldsArray = [...Object.keys(dirtyFields)]
             userLogs(
               `${studentState.stName}의 상담 수정`,
-              ` ok : ${result.updateStudentState.ok} / ${dirtyFieldsArray.join(
+              ` ok: ${result.updateStudentState.ok} / ${dirtyFieldsArray.join(
                 ', ',
               )}`,
             )
@@ -443,7 +443,7 @@ export default function ConsultDetail() {
         onCompleted: result => {
           userLogs(
             `ID : ${studentState.name} 상담카드 삭제`,
-            `ok : ${result.deleteStudentState.ok}`,
+            `ok: ${result.deleteStudentState.ok}`,
           )
           if (result.deleteStudentState.ok) {
             alert('상담카드가 삭제되었습니다.')

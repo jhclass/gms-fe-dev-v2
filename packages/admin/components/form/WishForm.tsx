@@ -284,7 +284,7 @@ export default function WishForm() {
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             // `${managerData.mUsername} 강사 정보 수정`,
-            `ok : ${result.data.editManageUser.ok} | ${dirtyFieldsArray.join(
+            `ok: ${result.data.editManageUser.ok} / ${dirtyFieldsArray.join(
               ', ',
             )}`,
           )

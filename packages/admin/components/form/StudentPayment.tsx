@@ -417,7 +417,7 @@ export default function StudentPaymentForm({
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
               userLogs(
                 `${studentData.name} 수강신청 수정`,
-                `ok:${result.editStudentPayment.ok} | ${dirtyFieldsArray.join(
+                `ok: ${result.editStudentPayment.ok} / ${dirtyFieldsArray.join(
                   ', ',
                 )}`,
               )

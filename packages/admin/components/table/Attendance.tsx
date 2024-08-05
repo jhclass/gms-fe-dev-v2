@@ -506,7 +506,7 @@ export default function Attendance({ lectureData, students }) {
       onCompleted: resData => {
         userLogs(
           `강의ID:${lectureData.id}의 ${attendanceDate} 출석 체크`,
-          `ok : ${resData.createAttendance.ok}`,
+          `ok: ${resData.createAttendance.ok}`,
         )
         if (resData.createAttendance.ok) {
           createWorkLogs({
@@ -543,7 +543,7 @@ export default function Attendance({ lectureData, students }) {
       onCompleted: resData => {
         userLogs(
           `강의ID:${lectureData.id}의 ${attendanceDate} 출석 수정`,
-          `ok : ${resData.editAttendance.ok}`,
+          `ok: ${resData.editAttendance.ok}`,
         )
         if (resData.editAttendance.ok) {
           alert(`${attendanceDate} 출석수정 완료`)
