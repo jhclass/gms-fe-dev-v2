@@ -264,6 +264,10 @@ export default function RequestRefundTable() {
           studentPaymentId: item.studentPaymentId,
         },
         onCompleted: resData => {
+          userLogs(
+            `paymentDetail ID : ${item.id} / 환불 승인`,
+            `ok : ${resData.refundApproval.ok}`,
+          )
           if (resData.refundApproval.ok) {
             updateReceived({
               variables: {
@@ -293,7 +297,6 @@ export default function RequestRefundTable() {
                     },
                   })
                   alert('환불 승인 되었습니다.')
-                  userLogs(`paymentDetail ID : ${item.id} / 환불 승인`)
                 }
               },
             })
@@ -313,6 +316,10 @@ export default function RequestRefundTable() {
           reqRefundDate: '',
         },
         onCompleted: result => {
+          userLogs(
+            `paymentDetail ID : ${item.id} / 환불 거부`,
+            `ok : ${result.reqRefund.ok}`,
+          )
           if (result.reqRefund.ok) {
             searchPaymentDetailFilterMutation({
               variables: {
@@ -331,7 +338,6 @@ export default function RequestRefundTable() {
               },
             })
             alert('환불 거부 되었습니다.')
-            userLogs(`paymentDetail ID : ${item.id} / 환불 거부`)
           }
         },
       })

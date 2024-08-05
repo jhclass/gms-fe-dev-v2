@@ -192,23 +192,25 @@ export default function PerformanceChartCon({
   }
 
   return (
-    <ConArea>
-      <DetailBox>
-        <DetailDiv>
-          <Content>
-            <ScrollShadow orientation="horizontal" className="scrollbar">
-              <ChartWrap>
-                <ApexChart
-                  options={chartData.options}
-                  series={chartData.series}
-                  type="bar"
-                  height="350"
-                />
-              </ChartWrap>
-            </ScrollShadow>
-          </Content>
-        </DetailDiv>
-      </DetailBox>
-    </ConArea>
+    chartData && (
+      <ConArea>
+        <DetailBox>
+          <DetailDiv>
+            <Content>
+              <ScrollShadow orientation="horizontal" className="scrollbar">
+                <ChartWrap>
+                  <ApexChart
+                    options={chartData.options}
+                    series={chartData.series}
+                    type="bar"
+                    height="350"
+                  />
+                </ChartWrap>
+              </ScrollShadow>
+            </Content>
+          </DetailDiv>
+        </DetailBox>
+      </ConArea>
+    )
   )
 }

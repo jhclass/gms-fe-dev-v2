@@ -295,7 +295,7 @@ export default function RefundFilterTable({ studentFilter }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총
+            총{' '}
             <span>
               {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
             </span>

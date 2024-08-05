@@ -270,7 +270,7 @@ export default function SubjectFilterTable({ subjectFilter }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총<span>{searchResult?.totalCount}</span>
+            총 <span>{searchResult?.totalCount}</span>
             건이 검색되었습니다.
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>

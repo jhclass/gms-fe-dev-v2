@@ -148,6 +148,10 @@ export default function CreateAdviceTypeChip({
           indexNums: typeIndex,
         },
       })
+      userLogs(
+        `${item.type} ${category} 삭제`,
+        `ok: ${result.data.editAdviceType.ok}`,
+      )
       if (!result.data.editAdviceType.ok) {
         throw new Error(`${category} 삭제 실패`)
       }
@@ -158,7 +162,6 @@ export default function CreateAdviceTypeChip({
       seeRefetch()
 
       alert(`${category}가 삭제되었습니다.`)
-      userLogs(`${item.type} ${category} 삭제`)
     } catch (error) {
       console.error(`${category} 삭제 중 에러 발생:`, error)
     }

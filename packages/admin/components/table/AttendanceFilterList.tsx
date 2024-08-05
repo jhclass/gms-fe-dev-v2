@@ -424,6 +424,10 @@ export default function Attendance({
         attendanceState: state,
       },
       onCompleted: resData => {
+        userLogs(
+          `강의ID:${lectureData.id}의 ${attendanceDate} 출석 체크`,
+          `ok : ${resData.createAttendance.ok}`,
+        )
         if (resData.createAttendance.ok) {
           createWorkLogs({
             variables: {
@@ -432,9 +436,6 @@ export default function Attendance({
             },
             onCompleted: result => {
               if (result.createWorkLogs.ok) {
-                userLogs(
-                  `강의ID:${lectureData.id}의 ${attendanceDate} 출석 체크`,
-                )
                 alert(`${attendanceDate} 출석체크 완료`)
                 window.localStorage.setItem(
                   'scrollPosition',
@@ -460,8 +461,11 @@ export default function Attendance({
         attendanceState: state,
       },
       onCompleted: resData => {
+        userLogs(
+          `강의ID:${lectureData.id}의 ${attendanceDate} 출석 수정`,
+          `ok : ${resData.editAttendance.ok}`,
+        )
         if (resData.editAttendance.ok) {
-          userLogs(`강의ID:${lectureData.id}의 ${attendanceDate} 출석 수정`)
           alert(`${attendanceDate} 출석수정 완료`)
           window.localStorage.setItem(
             'scrollPosition',

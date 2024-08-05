@@ -224,8 +224,11 @@ export default function TeacherWrite() {
         email: data.email === '' ? null : data.email.trim(),
       },
       onCompleted: result => {
+        userLogs(
+          `${data.mUsername}강사 등록`,
+          `ok : ${result.createManagerAccount.ok}`,
+        )
         if (result.createManagerAccount.ok) {
-          userLogs(`${data.mUsername}강사 등록`)
           alert('등록되었습니다.')
           router.back()
         } else {
@@ -286,7 +289,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.mUserId && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mUserId.message)}
                       </p>
                     )}
@@ -319,7 +322,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.mPassword && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPassword.message)}
                       </p>
                     )}
@@ -348,7 +351,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.mPassword1 && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPassword1.message)}
                       </p>
                     )}
@@ -383,7 +386,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.mUsername && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mUsername.message)}
                       </p>
                     )}
@@ -425,7 +428,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.mPhoneNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNum.message)}
                       </p>
                     )}
@@ -455,7 +458,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.mPhoneNumFriend && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPhoneNumFriend.message)}
                       </p>
                     )}
@@ -486,7 +489,7 @@ export default function TeacherWrite() {
                       })}
                     />
                     {errors.email && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.email.message)}
                       </p>
                     )}
@@ -579,7 +582,7 @@ export default function TeacherWrite() {
                       />
                     </DatePickerBox>
                     {errors.joiningDate && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.joiningDate.message)}
                       </p>
                     )}

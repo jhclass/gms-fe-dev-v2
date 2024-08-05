@@ -351,14 +351,18 @@ export default function SubjectDetail() {
             },
           })
 
-          if (!result.data.updateSubject.ok) {
-            throw new Error('과정 수정 실패')
-          }
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${subjectState.subjectName} 과목 수정`,
-            dirtyFieldsArray.join(', '),
+            `ok : ${result.data.updateSubject.ok} / ${dirtyFieldsArray.join(
+              ', ',
+            )}`,
           )
+
+          if (!result.data.updateSubject.ok) {
+            throw new Error('과정 수정 실패')
+          }
+
           alert('수정되었습니다.')
           router.back()
         } catch (error) {
@@ -416,11 +420,15 @@ export default function SubjectDetail() {
         ],
       })
 
+      userLogs(
+        `${subjectState.subjectName} 과정 복사`,
+        `ok : ${result.data.createSubject.ok}`,
+      )
+
       if (!result.data.createSubject.ok) {
         throw new Error('과정 복사 실패')
       }
 
-      userLogs(`${subjectState.subjectName} 과정 복사`)
       alert('복사되었습니다.')
       router.back()
     } catch (error) {
@@ -448,11 +456,15 @@ export default function SubjectDetail() {
         ],
       })
 
+      userLogs(
+        `${subjectState.subjectName} 과목 삭제`,
+        `ok : ${result.data.deleteSubject.ok}`,
+      )
+
       if (!result.data.deleteSubject.ok) {
         throw new Error('과정 삭제 실패')
       }
 
-      userLogs(`${subjectState.subjectName} 과목 삭제`)
       alert('과정이 삭제되었습니다.')
       router.back()
     } catch (error) {
@@ -552,7 +564,7 @@ export default function SubjectDetail() {
                       })}
                     />
                     {errors.subjectName && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.subjectName.message)}
                       </p>
                     )}
@@ -580,7 +592,7 @@ export default function SubjectDetail() {
                       })}
                     />
                     {errors.round && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.round.message)}
                       </p>
                     )}
@@ -616,7 +628,7 @@ export default function SubjectDetail() {
                       })}
                     />
                     {errors.subjectCode && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.subjectCode.message)}
                       </p>
                     )}
@@ -650,7 +662,7 @@ export default function SubjectDetail() {
                       })}
                     />
                     {errors.fee && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.fee.message)}
                       </p>
                     )}
@@ -684,7 +696,7 @@ export default function SubjectDetail() {
                       )}
                     />
                     {errors.subDiv && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.subDiv.message)}
                       </p>
                     )}
@@ -880,7 +892,7 @@ export default function SubjectDetail() {
                       })}
                     />
                     {errors.roomNum && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.roomNum.message)}
                       </p>
                     )}
@@ -1050,7 +1062,7 @@ export default function SubjectDetail() {
                       })}
                     />
                     {errors.totalTime && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.totalTime.message)}
                       </p>
                     )}

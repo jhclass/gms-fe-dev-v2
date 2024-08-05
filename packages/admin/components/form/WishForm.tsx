@@ -281,15 +281,18 @@ export default function WishForm() {
               resign: data.resign === true ? 'Y' : 'N',
             },
           })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            // `${managerData.mUsername} 강사 정보 수정`,
+            `ok : ${result.data.editManageUser.ok} | ${dirtyFieldsArray.join(
+              ', ',
+            )}`,
+          )
 
           if (!result.data.editManageUser.ok) {
             throw new Error('강사 정보 수정 실패')
           }
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            // `${managerData.mUsername} 강사 정보 수정`,
-            dirtyFieldsArray.join(', '),
-          )
+
           alert('수정되었습니다.')
           window.location.href = '/hr/teacher'
         } catch (error) {
@@ -388,7 +391,7 @@ export default function WishForm() {
                   })}
                 />
                 {errors.mPhoneNum && (
-                  <p className="px-2 pt-2 text-xs text-red-500">
+                  <p className="px-2 pt-2 text-xs text-red">
                     {String(errors.mPhoneNum.message)}
                   </p>
                 )}

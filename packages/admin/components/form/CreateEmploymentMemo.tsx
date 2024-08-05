@@ -142,6 +142,8 @@ export default function CreateEmploymentMemo(props) {
           },
         })
 
+        userLogs(`수강생 ID:${studentId} 메모 등록`, `ok: ${ok}`)
+
         if (!ok) {
           throw new Error('메모 등록 실패')
         }
@@ -162,8 +164,6 @@ export default function CreateEmploymentMemo(props) {
 
         const { studentMemo } = searchStudent.student[0]
         props.setMemoList(studentMemo)
-
-        userLogs(`수강생 ID:${studentId} 메모 등록`)
       } catch (error) {
         console.error('에러 발생:', error)
       }
@@ -279,7 +279,7 @@ export default function CreateEmploymentMemo(props) {
               />
             </DatePickerBox>
             {/* {errors.paymentDate && (
-              <p className="px-2 pt-2 text-xs text-red-500">
+              <p className="px-2 pt-2 text-xs text-red">
                 {String(errors.paymentDate.message)}
               </p>
             )} */}

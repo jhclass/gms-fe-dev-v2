@@ -410,12 +410,14 @@ export default function ConsultDetail() {
             receiptDiv: data.receiptDiv,
           },
           onCompleted: result => {
+            const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+            userLogs(
+              `${studentState.stName}의 상담 수정`,
+              ` ok : ${result.updateStudentState.ok} / ${dirtyFieldsArray.join(
+                ', ',
+              )}`,
+            )
             if (result.updateStudentState.ok) {
-              const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-              userLogs(
-                `${studentState.stName}의 상담 수정`,
-                dirtyFieldsArray.join(', '),
-              )
               alert('수정되었습니다.')
               router.back()
             }
@@ -439,8 +441,11 @@ export default function ConsultDetail() {
           },
         ],
         onCompleted: result => {
+          userLogs(
+            `ID : ${studentState.name} 상담카드 삭제`,
+            `ok : ${result.deleteStudentState.ok}`,
+          )
           if (result.deleteStudentState.ok) {
-            userLogs(`ID : ${studentState.name} 상담카드 삭제`)
             alert('상담카드가 삭제되었습니다.')
             router.back()
           }
@@ -532,7 +537,7 @@ export default function ConsultDetail() {
                       })}
                     />
                     {errors.stName && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.stName.message)}
                       </p>
                     )}
@@ -559,7 +564,7 @@ export default function ConsultDetail() {
                       })}
                     />
                     {errors.stEmail && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.stEmail.message)}
                       </p>
                     )}
@@ -604,7 +609,7 @@ export default function ConsultDetail() {
                       })}
                     />
                     {errors.phoneNum1 && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.phoneNum1.message)}
                       </p>
                     )}
@@ -635,7 +640,7 @@ export default function ConsultDetail() {
                       })}
                     />
                     {errors.phoneNum2 && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.phoneNum2.message)}
                       </p>
                     )}
@@ -666,7 +671,7 @@ export default function ConsultDetail() {
                       })}
                     />
                     {errors.phoneNum3 && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.phoneNum3.message)}
                       </p>
                     )}
@@ -723,7 +728,7 @@ export default function ConsultDetail() {
                     )}
                   />
                   {errors.adviceTypes && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.adviceTypes.message)}
                     </p>
                   )}

@@ -138,6 +138,10 @@ export default function StudentPaymentDetailItem({
             reqRefundDate: new Date(),
           },
           onCompleted: result => {
+            userLogs(
+              `paymentDetail ID : ${detailtData.id} / 결제취소 요청`,
+              `ok : ${result.reqRefund.ok}`,
+            )
             if (result.reqRefund.ok) {
               searchStudentPayment({
                 variables: {
@@ -149,9 +153,6 @@ export default function StudentPaymentDetailItem({
                       data.searchStudentPayment?.data[0]?.paymentDetail,
                     )
                     alert('결제 취소요청 되었습니다.')
-                    userLogs(
-                      `paymentDetail ID : ${detailtData.id} / 결제취소 요청`,
-                    )
                   }
                 },
               })

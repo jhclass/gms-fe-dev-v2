@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import ListLimit from '@/components/common/ListLimit'
-import ColorInfo from './ColorInfo'
+import ColorInfo from '@/components/common/ColorInfo'
 
 const TTopic = styled.div<{ $colorInfo: boolean; $resetList: boolean }>`
   display: flex;

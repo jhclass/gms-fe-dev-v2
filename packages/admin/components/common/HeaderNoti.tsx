@@ -135,8 +135,8 @@ export default function HeaderNoti({}) {
         },
         refetchQueries: [SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY],
         onCompleted: result => {
+          userLogs('알람 모두 읽음 처리', `ok: ${result.readAlarms.ok}`)
           if (result.readAlarms.ok) {
-            userLogs('알람 모두 읽음 처리')
             alert('모두 읽음 처리 하였습니다.')
           }
         },

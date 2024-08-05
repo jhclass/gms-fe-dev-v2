@@ -557,16 +557,25 @@ export default function WorksLogsModal({
                 : workLogData.checkList,
           },
           onCompleted: result => {
+            if (workLogData?.paymentOne) {
+              const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+              userLogs(
+                `${workLogeDate} 일지 수정`,
+                `ok : ${result.editWorkLogs.ok} / ${dirtyFieldsArray.join(
+                  ', ',
+                )}`,
+              )
+            } else {
+              userLogs(
+                `${workLogeDate} 일지 등록`,
+                `ok : ${result.editWorkLogs.ok}`,
+              )
+            }
+
             if (result.editWorkLogs.ok) {
               if (workLogData?.paymentOne) {
-                const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-                userLogs(
-                  `${workLogeDate} 일지 수정`,
-                  dirtyFieldsArray.join(', '),
-                )
                 alert(`${workLogeDate} 일지가 수정되었습니다.`)
               } else {
-                userLogs(`${workLogeDate} 일지 등록`)
                 alert(`${workLogeDate} 일지가 등록되었습니다.`)
               }
               setSign(false)
@@ -877,12 +886,12 @@ export default function WorksLogsModal({
                                   clearErrors={clearErrors}
                                 />
                                 {errors.trainingTimeTotal && (
-                                  <p className="px-2 pt-2 text-xs text-red-500">
+                                  <p className="px-2 pt-2 text-xs text-red">
                                     {String(errors.trainingTimeTotal.message)}
                                   </p>
                                 )}
                                 {errors.trainingTimeOneday && (
-                                  <p className="px-2 pt-2 text-xs text-red-500">
+                                  <p className="px-2 pt-2 text-xs text-red">
                                     {String(errors.trainingTimeOneday.message)}
                                   </p>
                                 )}
@@ -961,7 +970,7 @@ export default function WorksLogsModal({
                                     })}
                                   />
                                   {errors.check1con && (
-                                    <p className="px-2 pt-2 text-xs text-red-500">
+                                    <p className="px-2 pt-2 text-xs text-red">
                                       {String(errors.check1con.message)}
                                     </p>
                                   )}
@@ -1028,7 +1037,7 @@ export default function WorksLogsModal({
                                     })}
                                   />
                                   {errors.check2con && (
-                                    <p className="px-2 pt-2 text-xs text-red-500">
+                                    <p className="px-2 pt-2 text-xs text-red">
                                       {String(errors.check2con.message)}
                                     </p>
                                   )}
@@ -1052,7 +1061,7 @@ export default function WorksLogsModal({
                                 {...register('instruction')}
                               />
                               {errors.instruction && (
-                                <p className="px-2 pt-2 text-xs text-red-500">
+                                <p className="px-2 pt-2 text-xs text-red">
                                   {String(errors.instruction.message)}
                                 </p>
                               )}

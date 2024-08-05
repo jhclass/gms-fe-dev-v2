@@ -93,6 +93,10 @@ export default function ConsultMemo(props) {
           deleteStudentMemoId: data,
         },
         onCompleted: result => {
+          userLogs(
+            `수강생 id:${data} 메모 삭제`,
+            `ok:${result.deleteStudentMemo.ok}`,
+          )
           if (result.deleteStudentMemo.ok) {
             props.setMemoList([])
             searchStudentMutation({
@@ -102,7 +106,6 @@ export default function ConsultMemo(props) {
               onCompleted: data => {
                 if (data.searchStudent.ok) {
                   props.setMemoList(data.searchStudent.student[0].studentMemo)
-                  userLogs(`수강생 id:${data} 메모 삭제`)
                 }
               },
             })
@@ -120,6 +123,10 @@ export default function ConsultMemo(props) {
           content: data.content.trim(),
         },
         onCompleted: result => {
+          userLogs(
+            `수강생 id:${data.id} 메모 수정`,
+            `ok:${result.editStudentMemo.ok}`,
+          )
           if (result.editStudentMemo.ok) {
             props.setMemoList([])
             searchStudentMutation({
@@ -135,7 +142,6 @@ export default function ConsultMemo(props) {
           }
         },
       })
-      userLogs(`수강생 id:${data.id} 메모 수정`)
     }
   }
 

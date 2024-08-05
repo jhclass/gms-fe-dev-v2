@@ -134,10 +134,15 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
         },
       })
 
+      userLogs(
+        `${managerData.mUsername} 비밀번호 변경`,
+        `ok : ${result.data.editManageUser.ok}`,
+      )
+
       if (!result.data.editManageUser.ok) {
         throw new Error('비밀번호 변경 실패')
       }
-      userLogs(`${managerData.mUsername} 비밀번호 변경`, 'password')
+
       alert('변경되었습니다.')
       closePopup()
     } catch (error) {
@@ -195,7 +200,7 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
                             })}
                           />
                           {errors.mPassword && (
-                            <p className="px-2 pt-2 text-xs text-red-500">
+                            <p className="px-2 pt-2 text-xs text-red">
                               {String(errors.mPassword.message)}
                             </p>
                           )}
@@ -224,7 +229,7 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
                             })}
                           />
                           {errors.mPassword1 && (
-                            <p className="px-2 pt-2 text-xs text-red-500">
+                            <p className="px-2 pt-2 text-xs text-red">
                               {String(errors.mPassword1.message)}
                             </p>
                           )}

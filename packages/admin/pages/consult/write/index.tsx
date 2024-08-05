@@ -220,8 +220,11 @@ export default function ConsultWirte() {
         },
       ],
       onCompleted: result => {
+        userLogs(
+          `${data.stName}의 상담 등록`,
+          `ok : ${result.createStudentState.ok}`,
+        )
         if (result.createStudentState.ok) {
-          userLogs(`${data.stName}의 상담 등록`)
           alert('등록되었습니다.')
           router.back()
         }
@@ -294,7 +297,7 @@ export default function ConsultWirte() {
                     })}
                   />
                   {errors.stName && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.stName.message)}
                     </p>
                   )}
@@ -319,7 +322,7 @@ export default function ConsultWirte() {
                     })}
                   />
                   {errors.stEmail && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.stEmail.message)}
                     </p>
                   )}
@@ -363,7 +366,7 @@ export default function ConsultWirte() {
                     })}
                   />
                   {errors.phoneNum1 && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.phoneNum1.message)}
                     </p>
                   )}
@@ -393,7 +396,7 @@ export default function ConsultWirte() {
                     })}
                   />
                   {errors.phoneNum2 && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.phoneNum2.message)}
                     </p>
                   )}
@@ -423,7 +426,7 @@ export default function ConsultWirte() {
                     })}
                   />
                   {errors.phoneNum3 && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.phoneNum3.message)}
                     </p>
                   )}
@@ -477,7 +480,7 @@ export default function ConsultWirte() {
                   )}
                 />
                 {errors.adviceTypes && (
-                  <p className="px-2 pt-2 text-xs text-red-500">
+                  <p className="px-2 pt-2 text-xs text-red">
                     {String(errors.adviceTypes.message)}
                   </p>
                 )}

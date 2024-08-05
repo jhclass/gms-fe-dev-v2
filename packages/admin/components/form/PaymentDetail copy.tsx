@@ -423,7 +423,7 @@ export default function StudentsWriteCourse({
                     })}
                   />
                   {errors.subject && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.subject.message)}
                     </p>
                   )}
@@ -493,7 +493,7 @@ export default function StudentsWriteCourse({
                     })}
                   />
                   {errors.seScore && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.seScore.message)}
                     </p>
                   )}
@@ -766,7 +766,7 @@ export default function StudentsWriteCourse({
                       )}
                     />
                     {errors.paymentDate && (
-                      <p className="px-2 pt-2 text-xs text-red-500">
+                      <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.paymentDate.message)}
                       </p>
                     )}
@@ -901,7 +901,7 @@ export default function StudentsWriteCourse({
                     )}
                   />
                   {errors.processingManagerId && (
-                    <p className="px-2 pt-2 text-xs text-red-500">
+                    <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.processingManagerId.message)}
                     </p>
                   )}

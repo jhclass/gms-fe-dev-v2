@@ -70,6 +70,8 @@ export default function CreateMemo(props) {
           },
         })
 
+        userLogs(`수강생 ID:${studentId} 메모 등록`, `ok : ${ok}`)
+
         if (!ok) {
           throw new Error('메모 등록 실패')
         }
@@ -90,8 +92,6 @@ export default function CreateMemo(props) {
 
         const { studentMemo } = searchStudent.student[0]
         props.setMemoList(studentMemo)
-
-        userLogs(`수강생 ID:${studentId} 메모 등록`)
       } catch (error) {
         console.error('에러 발생:', error)
       }

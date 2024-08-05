@@ -129,6 +129,7 @@ export default function TypeIndex({
           indexNums: typeIndex,
         },
       })
+      userLogs(`${category} 순서 변경`, `ok : ${result.data.changeOrderAT.ok}`)
 
       if (!result.data.changeOrderAT.ok) {
         throw new Error(`${category} 순서 변경 실패`)
@@ -147,7 +148,6 @@ export default function TypeIndex({
       })
 
       alert(`${category} 순서가 변경되었습니다.`)
-      userLogs(`${category} 순서 변경`)
       closeBtn()
     } catch (error) {
       console.error(`${category} 순서 변경 중 에러 발생:`, error)

@@ -220,7 +220,7 @@ export default function ManagerFilterTable({ managerFilter, mGrade, mPart }) {
         <TTopic>
           <TopBox>
             <Ttotal>
-              총<span>{managerTotal === null ? 0 : managerTotal}</span>
+              총 <span>{managerTotal === null ? 0 : managerTotal}</span>
               건이 검색되었습니다.
             </Ttotal>
             <Button size="sm" radius="sm" color="primary" onClick={resetList}>

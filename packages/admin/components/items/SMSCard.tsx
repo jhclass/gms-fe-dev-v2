@@ -168,8 +168,11 @@ export default function SMSItem({
       },
       refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
       onCompleted: result => {
+        userLogs(
+          `문자 보관함 ID : ${id} 삭제`,
+          `ok : ${result.deleteMessageStorage.ok}`,
+        )
         if (result.deleteMessageStorage.ok) {
-          userLogs(`문자 보관함 ID : ${id} 삭제`)
           alert('문자함에서 삭제 되었습니다.')
         }
       },
