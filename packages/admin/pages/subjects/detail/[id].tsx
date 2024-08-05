@@ -354,7 +354,7 @@ export default function SubjectDetail() {
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${subjectState.subjectName} 과목 수정`,
-            `ok : ${result.data.updateSubject.ok} / ${dirtyFieldsArray.join(
+            `ok: ${result.data.updateSubject.ok} / ${dirtyFieldsArray.join(
               ', ',
             )}`,
           )
@@ -422,7 +422,7 @@ export default function SubjectDetail() {
 
       userLogs(
         `${subjectState.subjectName} 과정 복사`,
-        `ok : ${result.data.createSubject.ok}`,
+        `ok: ${result.data.createSubject.ok}`,
       )
 
       if (!result.data.createSubject.ok) {
@@ -458,7 +458,7 @@ export default function SubjectDetail() {
 
       userLogs(
         `${subjectState.subjectName} 과목 삭제`,
-        `ok : ${result.data.deleteSubject.ok}`,
+        `ok: ${result.data.deleteSubject.ok}`,
       )
 
       if (!result.data.deleteSubject.ok) {

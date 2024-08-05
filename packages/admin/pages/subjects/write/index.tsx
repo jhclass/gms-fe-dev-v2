@@ -213,7 +213,7 @@ export default function SubjectWrite() {
 
       userLogs(
         `${data.subjectName}과정 등록`,
-        `ok : ${result.data.createSubject.ok}`,
+        `ok: ${result.data.createSubject.ok}`,
       )
 
       if (!result.data.createSubject.ok) {

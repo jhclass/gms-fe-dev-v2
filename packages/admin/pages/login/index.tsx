@@ -148,7 +148,7 @@ export default function Login() {
           mLogin: { ok, token, error },
         } = data
 
-        userLogs(`로그인`, `ok : ${ok}`)
+        userLogs(`로그인`, `ok: ${ok}`)
 
         if (ok) {
           LogUserIn(token)

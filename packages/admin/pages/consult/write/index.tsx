@@ -222,7 +222,7 @@ export default function ConsultWirte() {
       onCompleted: result => {
         userLogs(
           `${data.stName}의 상담 등록`,
-          `ok : ${result.createStudentState.ok}`,
+          `ok: ${result.createStudentState.ok}`,
         )
         if (result.createStudentState.ok) {
           alert('등록되었습니다.')

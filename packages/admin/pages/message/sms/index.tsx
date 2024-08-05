@@ -272,7 +272,7 @@ export default function message() {
               onCompleted: result => {
                 userLogs(
                   `문자 메시지 발송예약`,
-                  `ok : ${result.sendSms.ok} / 발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
+                  `ok: ${result.sendSms.ok} / 발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 예약일시:${sendDate} ${sendTime}`,
                 )
                 if (result.sendSms.ok) {
                   alert(
@@ -295,7 +295,7 @@ export default function message() {
               onCompleted: result => {
                 userLogs(
                   `문자 메시지 발송`,
-                  `ok : ${result.sendSms.ok} / 발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
+                  `ok: ${result.sendSms.ok} / 발송번호:${data.senderNum} | 수신번호:${phoneNumbers} | 즉시발송`,
                 )
                 if (result.sendSms.ok) {
                   alert(`문자 메시지가 발송 되었습니다.`)
@@ -327,7 +327,7 @@ export default function message() {
       onCompleted: result => {
         userLogs(
           `${type} 문자함 저장`,
-          `ok : ${result.createMessageStorage.ok} / ${messageCon}`,
+          `ok: ${result.createMessageStorage.ok} / ${messageCon}`,
         )
 
         if (result.createMessageStorage.ok) {

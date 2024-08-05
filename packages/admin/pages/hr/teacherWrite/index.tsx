@@ -226,7 +226,7 @@ export default function TeacherWrite() {
       onCompleted: result => {
         userLogs(
           `${data.mUsername}강사 등록`,
-          `ok : ${result.createManagerAccount.ok}`,
+          `ok: ${result.createManagerAccount.ok}`,
         )
         if (result.createManagerAccount.ok) {
           alert('등록되었습니다.')

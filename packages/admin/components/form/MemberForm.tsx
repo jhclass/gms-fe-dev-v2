@@ -252,7 +252,7 @@ export default function ManagerWrite({ managerId }) {
     onCompleted: result => {
       userLogs(
         `${managerData.mUsername} 직원 stemp 생성`,
-        `ok:${result.createStamp.ok}`,
+        `ok: ${result.createStamp.ok}`,
       )
       if (result.createStamp.ok) {
         refetch()

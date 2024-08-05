@@ -263,7 +263,7 @@ export default function StudentsWrite({ managerId }) {
     onCompleted: result => {
       userLogs(
         `${managerData.mUsername} 직원 stemp 생성`,
-        `ok:${result.createStamp.ok}`,
+        `ok: ${result.createStamp.ok}`,
       )
       if (result.createStamp.ok) {
         refetch()
@@ -362,7 +362,7 @@ export default function StudentsWrite({ managerId }) {
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${managerData.mUsername} 강사 정보 수정`,
-            `ok:${result.data.editManageUser.ok} | ${dirtyFieldsArray.join(
+            `ok: ${result.data.editManageUser.ok} / ${dirtyFieldsArray.join(
               ', ',
             )}`,
           )

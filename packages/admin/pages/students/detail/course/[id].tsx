@@ -302,7 +302,7 @@ export default function StudentsWrite() {
 
         userLogs(
           `${studentData?.name}학생 "${state}"처리`,
-          `ok : ${success.data.editStudentPayment.ok}`,
+          `ok: ${success.data.editStudentPayment.ok}`,
         )
 
         if (success.data.editStudentPayment.ok) {
@@ -385,7 +385,7 @@ export default function StudentsWrite() {
       }
       userLogs(
         `${studentData?.name}학생 "${state}"처리`,
-        `ok : ${success.data.classCancellation.ok}`,
+        `ok: ${success.data.classCancellation.ok}`,
       )
       if (success.data.classCancellation.ok) {
         const success2 = await searchAndUpdateStudentPayment()

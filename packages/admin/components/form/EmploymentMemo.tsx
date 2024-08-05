@@ -177,7 +177,7 @@ export default function EmploymentMemo(props) {
         onCompleted: result => {
           userLogs(
             `수강생 id:${data} 메모 삭제`,
-            `ok : ${result.deleteStudentMemo.ok}`,
+            `ok: ${result.deleteStudentMemo.ok}`,
           )
           if (result.deleteStudentMemo.ok) {
             props.setMemoList([])
@@ -207,7 +207,7 @@ export default function EmploymentMemo(props) {
         onCompleted: result => {
           userLogs(
             `수강생 id:${data.id} 메모 수정`,
-            `ok : ${result.editStudentMemo.ok}`,
+            `ok: ${result.editStudentMemo.ok}`,
           )
           if (result.editStudentMemo.ok) {
             props.setMemoList([])

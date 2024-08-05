@@ -199,7 +199,7 @@ export default function CreateSmsSender({ isActive, category }) {
 
         userLogs(
           `${data.type} ${category} 등록`,
-          `ok : ${result.data.createAdviceType.ok}`,
+          `ok: ${result.data.createAdviceType.ok}`,
         )
 
         if (!result.data.createAdviceType.ok) {

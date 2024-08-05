@@ -561,14 +561,14 @@ export default function WorksLogsModal({
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
               userLogs(
                 `${workLogeDate} 일지 수정`,
-                `ok : ${result.editWorkLogs.ok} / ${dirtyFieldsArray.join(
+                `ok: ${result.editWorkLogs.ok} / ${dirtyFieldsArray.join(
                   ', ',
                 )}`,
               )
             } else {
               userLogs(
                 `${workLogeDate} 일지 등록`,
-                `ok : ${result.editWorkLogs.ok}`,
+                `ok: ${result.editWorkLogs.ok}`,
               )
             }
 

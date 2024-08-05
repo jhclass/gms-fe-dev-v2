@@ -188,7 +188,7 @@ export default function StudentsEditInfo() {
             const dirtyFieldsArray = [...Object.keys(dirtyFields)]
             userLogs(
               `${studentData.name} 수강생 기본정보 수정`,
-              `ok : ${result.editStudent.ok} / ${dirtyFieldsArray.join(', ')}`,
+              `ok: ${result.editStudent.ok} / ${dirtyFieldsArray.join(', ')}`,
             )
             if (result.editStudent.ok) {
               alert('수정되었습니다.')

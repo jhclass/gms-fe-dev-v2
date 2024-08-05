@@ -358,7 +358,7 @@ export default function LectureWrite() {
 
       userLogs(
         `${data.temporaryName}강의 등록`,
-        `ok : ${result.data.createLectures.ok}`,
+        `ok: ${result.data.createLectures.ok}`,
       )
 
       if (!result.data.createLectures.ok) {

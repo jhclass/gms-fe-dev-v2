@@ -129,7 +129,7 @@ export default function TypeIndex({
           indexNums: typeIndex,
         },
       })
-      userLogs(`${category} 순서 변경`, `ok : ${result.data.changeOrderAT.ok}`)
+      userLogs(`${category} 순서 변경`, `ok: ${result.data.changeOrderAT.ok}`)
 
       if (!result.data.changeOrderAT.ok) {
         throw new Error(`${category} 순서 변경 실패`)

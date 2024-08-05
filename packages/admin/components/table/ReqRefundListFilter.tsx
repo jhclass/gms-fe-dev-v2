@@ -297,7 +297,7 @@ export default function ReqRefundFilterTable({ studentFilter }) {
         onCompleted: resData => {
           userLogs(
             `paymentDetail ID : ${item.id} / 환불 승인`,
-            `ok : ${resData.refundApproval.ok}`,
+            `ok: ${resData.refundApproval.ok}`,
           )
           if (resData.refundApproval.ok) {
             updateReceived({
@@ -349,7 +349,7 @@ export default function ReqRefundFilterTable({ studentFilter }) {
         onCompleted: result => {
           userLogs(
             `paymentDetail ID : ${item.id} / 환불 거부`,
-            `ok : ${result.reqRefund.ok}`,
+            `ok: ${result.reqRefund.ok}`,
           )
           if (result.reqRefund.ok) {
             searchPaymentDetailFilterMutation({

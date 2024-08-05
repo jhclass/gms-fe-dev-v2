@@ -484,7 +484,7 @@ export default function LectureWrite() {
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${lectureId} ${data.temporaryName} 강의 정보 수정`,
-            `ok : ${result.data.editLectures.ok} / ${dirtyFieldsArray.join(
+            `ok: ${result.data.editLectures.ok} / ${dirtyFieldsArray.join(
               ', ',
             )}`,
           )

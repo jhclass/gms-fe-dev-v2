@@ -136,7 +136,7 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
 
       userLogs(
         `${managerData.mUsername} 비밀번호 변경`,
-        `ok : ${result.data.editManageUser.ok}`,
+        `ok: ${result.data.editManageUser.ok}`,
       )
 
       if (!result.data.editManageUser.ok) {

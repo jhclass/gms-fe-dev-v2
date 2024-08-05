@@ -224,7 +224,7 @@ export default function ManagerWrite() {
       onCompleted: result => {
         userLogs(
           `${data.mUsername}직원 등록`,
-          `ok : ${result.createManagerAccount.ok}`,
+          `ok: ${result.createManagerAccount.ok}`,
         )
         if (result.createManagerAccount.ok) {
           alert('등록되었습니다.')
