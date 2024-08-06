@@ -37,7 +37,6 @@ const CateBox = styled(motion.div)`
 `
 const MenuBox = styled.div`
   display: flex;
-  padding: 0 1rem;
   justify-content: flex-start;
   gap: 1.5rem;
   align-items: center;
@@ -68,6 +67,14 @@ const MenuItem = styled.div<{ $isActive: boolean }>`
     width: 100%;
     height: 0.1rem;
     background: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:first-child {
+    padding-left: 1rem;
+  }
+
+  &:last-child {
+    padding-right: 1rem;
   }
 `
 
