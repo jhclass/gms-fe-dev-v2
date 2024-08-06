@@ -391,6 +391,16 @@ export type HourlySalesData = {
   thisTimeRefundTotal?: Maybe<Scalars['Int']['output']>;
 };
 
+export type IpRecord = {
+  __typename?: 'IpRecord';
+  allowed: Scalars['String']['output'];
+  createdAt: Scalars['String']['output'];
+  details?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  ipRecord: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
 export type IsMeResult = {
   __typename?: 'IsMeResult';
   error?: Maybe<Scalars['String']['output']>;
@@ -519,6 +529,7 @@ export type Mutation = {
   createEmploymentRecommendation: CommonResponse;
   createEmploymentStatus: CommonResponse;
   createHopeForEmployment: CommonResponse;
+  createIpRecord: CommonResponse;
   createLectures?: Maybe<CommonResponse>;
   createManagerAccount?: Maybe<CreateManagerAccountResult>;
   createMessageStorage?: Maybe<CommonResponse>;
@@ -780,6 +791,14 @@ export type MutationCreateHopeForEmploymentArgs = {
 };
 
 
+export type MutationCreateIpRecordArgs = {
+  allowed: Scalars['String']['input'];
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
+  ipRecord: Scalars['String']['input'];
+};
+
+
 export type MutationCreateLecturesArgs = {
   ApprovedNum: Scalars['Int']['input'];
   campus: Scalars['String']['input'];
@@ -940,6 +959,7 @@ export type MutationCreateStudentStateArgs = {
   stVisit?: InputMaybe<Scalars['String']['input']>;
   subDiv?: InputMaybe<Scalars['String']['input']>;
   subject: Array<InputMaybe<Scalars['String']['input']>>;
+  today?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -1819,6 +1839,7 @@ export type ProcessingManagerGroupResult = {
 
 export type Query = {
   __typename?: 'Query';
+  checkingIpRecord: CommonResponse;
   createStamp?: Maybe<CommonResponse>;
   dashboardAT?: Maybe<DashboardAtResult>;
   dashboardMonth?: Maybe<DashboardMonthResult>;
@@ -1861,6 +1882,12 @@ export type Query = {
   seeUserActivityLogs?: Maybe<UserActivityLogsResponse>;
   seeWorkRequest?: Maybe<SeeWorkRequestResult>;
   signWorkLogs?: Maybe<SignWorkLogsResult>;
+};
+
+
+export type QueryCheckingIpRecordArgs = {
+  ipRecord: Scalars['String']['input'];
+  today: Array<InputMaybe<Scalars['String']['input']>>;
 };
 
 

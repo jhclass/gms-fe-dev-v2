@@ -5,6 +5,7 @@ import {
   Radio,
   RadioGroup,
   ScrollShadow,
+  Textarea,
 } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -15,114 +16,130 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import useUserLogsMutation from '@/utils/userLogs'
+import { useRouter } from 'next/router'
 
-const TableArea = styled.div`
-  padding-bottom: 1.5rem;
-`
-
-const TableWrap = styled.div`
-  width: 100%;
-  display: table;
-  min-width: 1200px;
-`
-const Theader = styled.div`
-  width: 100%;
-  min-width: fit-content;
-  display: table-row;
-  flex-wrap: nowrap;
-  row-gap: 1rem;
-  color: #111;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
-  text-align: center;
-`
-
-const TheaderBox = styled.div`
-  display: flex;
-`
-
-const ClickBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
-const Ttext = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 9%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.09}px;
-`
-
-const Tdate = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 0.5rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-
-const Tradio = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 6%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.06}px;
-`
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 5%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.05}px;
-`
-const TableItem = styled.div`
-  position: relative;
-  width: 100%;
-  min-width: fit-content;
-  color: ${({ theme }) => theme.colors.gray};
-  font-size: 0.875rem;
-  border-radius: 0.5rem;
+const DetailBox = styled.div`
   background: #fff;
-  overflow: hidden;
+  border-radius: 0.5rem;
+  /* padding: 1.5rem; */
 `
-
-const TableRow = styled.div`
-  display: flex;
-`
-const BtnBox = styled.div`
+const TopInfo = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1.5rem;
   gap: 0.5rem;
+  font-size: 0.8rem;
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
 `
+const Noti = styled.p`
+  span {
+    color: red;
+  }
+`
+const UpdateTime = styled.div`
+  display: flex;
+  gap: 0.5rem;
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-end;
+  }
+`
+const UpdateCon = styled.p`
+  position: relative;
+  &:first-child {
+    padding-right: 0.4rem;
+    &:after {
+      content: '';
+      width: 0.3rem;
+      height: 1px;
+      background: ${({ theme }) => theme.colors.black};
+      position: absolute;
+      top: 50%;
+      margin-top: -0.5px;
+      right: -0.2rem;
+    }
+  }
+  > span {
+    color: #555;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-end;
+    &:first-child {
+      padding-right: 0;
+      &:after {
+        display: none;
+      }
+    }
+  }
+`
+const DetailDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
+`
+const FlexBox = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+const AreaTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+`
+const AvatarBox = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  /* @media (max-width: 768px) {
+    flex-direction: column;
+  } */
+`
+const AvatarF = styled.div`
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  background-color: #fff;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-size: 4rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  line-height: 5rem;
+`
+const AreaBox = styled.div`
+  flex: 1;
+  width: 100%;
+  position: relative;
+`
+const AreaSmallBox = styled.div``
 const DatePickerBox = styled.div`
   width: 100%;
-  height: 100%;
-  position: fixed;
-  z-index: 21;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .react-datepicker {
-    /* margin-left: 50%; */
-  }
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -140,11 +157,50 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
+const RadioBox = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`
+const FilterLabel = styled.p`
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.black};
+
+  span {
+    color: red;
+  }
+`
+const InputText = styled.span`
+  display: inline-block;
+  font-size: 0.75rem;
+  width: 2rem;
+`
+const BtnBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+`
+const AddLink = styled.p`
+  > a {
+    font-size: 0.8rem;
+    color: ${({ theme }) => theme.colors.gray};
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+`
 
 export default function EmploymentForm() {
+  const router = useRouter()
   const [employmentDate, setEmploymentDate] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const { userLogs } = useUserLogsMutation()
+  const { register, control, handleSubmit, setValue, formState } = useForm()
+  const { errors, dirtyFields, isDirty } = formState
+
   const formatDate = data => {
     const date = new Date(data)
     const formatted =
@@ -154,255 +210,167 @@ export default function EmploymentForm() {
     return formatted
   }
 
+  const onSubmit = data => {
+    console.log(data)
+  }
+
   return (
     <>
-      <TableArea>
-        <ScrollShadow orientation="horizontal" className="scrollbar">
-          <TableWrap>
-            <Theader>
-              <TheaderBox>
-                <ClickBox>
-                  <Tradio>구분</Tradio>
-                  <Tdate>취업일자</Tdate>
-                  <Ttext>회사명</Ttext>
-                  <Ttext>사업자번호</Ttext>
-                  <Ttext>담당업무</Ttext>
-                  <Ttext>소재지</Ttext>
-                  <Ttext>전화번호</Ttext>
-                  <Ttext>사업자규모</Ttext>
-                  <Tradio>
-                    고용
-                    <br />
-                    보험
-                  </Tradio>
-                  <Tradio>
-                    재직 <br />
-                    증명
-                  </Tradio>
-                  <Tradio>
-                    관련 <br />
-                    분야
-                  </Tradio>
-                  <Tradio>
-                    취업 <br />
-                    형태
-                  </Tradio>
-                  <Tbtn></Tbtn>
-                </ClickBox>
-              </TheaderBox>
-            </Theader>
-            <TableItem>
-              <TableRow>
-                <ClickBox>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'취업'}
-                    >
-                      <Radio key={'취업'} value={'취업'}>
-                        취업
-                      </Radio>
-                      <Radio key={'창업'} value={'창업'}>
-                        창업
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tdate>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      id="date"
-                      classNames={{
-                        input: 'caret-transparent',
-                      }}
-                      isReadOnly={true}
-                      startContent={<i className="xi-calendar" />}
-                      defaultValue={
-                        employmentDate === null ? null : String(employmentDate)
-                      }
-                      value={formatDate(employmentDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
-                    />
-                  </Tdate>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
-                  </Ttext>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'Y'}
-                    >
-                      <Radio key={'Y'} value={'Y'}>
-                        Y
-                      </Radio>
-                      <Radio key={'N'} value={'N'}>
-                        N
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'동일'}
-                    >
-                      <Radio key={'동일'} value={'동일'}>
-                        동일
-                      </Radio>
-                      <Radio key={'관련'} value={'관련'}>
-                        관련
-                      </Radio>
-                      <Radio key={'다른'} value={'다른'}>
-                        다른
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tradio>
-                    <RadioGroup
-                      size={'sm'}
-                      className="gap-[0.5rem] items-center"
-                      defaultValue={'조기'}
-                    >
-                      <Radio key={'조기'} value={'조기'}>
-                        조기
-                      </Radio>
-                      <Radio key={'수료'} value={'수료'}>
-                        수료
-                      </Radio>
-                    </RadioGroup>
-                  </Tradio>
-                  <Tbtn>
-                    <BtnBox>
-                      <Button
-                        size="sm"
-                        variant="solid"
-                        color="primary"
-                        className="w-full text-white bg-secondary"
-                        // onClick={() => setIsOpen(!isOpen)}
-                      >
-                        추가
-                      </Button>
-                    </BtnBox>
-                  </Tbtn>
-                </ClickBox>
-              </TableRow>
-            </TableItem>
-          </TableWrap>
-        </ScrollShadow>
-      </TableArea>
-      {isOpen && (
-        <DatePickerBox>
-          <DatePicker
-            inline
-            renderCustomHeader={({
-              date,
-              changeYear,
-              changeMonth,
-              decreaseMonth,
-              increaseMonth,
-            }) => (
-              <DatePickerHeader
-                rangeYears={years}
-                clickDate={date}
-                changeYear={changeYear}
-                changeMonth={changeMonth}
-                decreaseMonth={decreaseMonth}
-                increaseMonth={increaseMonth}
+      <DetailBox>
+        <TopInfo>
+          <Noti>
+            <span>*</span> 는 필수입력입니다.
+          </Noti>
+          <UpdateTime>
+            <UpdateCon>
+              <span>최근 업데이트 : </span>
+              {/* {managerData.lastModifiedBy} */}
+            </UpdateCon>
+            <UpdateCon>{/* {formatDate(managerData?.updatedAt) */}</UpdateCon>
+          </UpdateTime>
+        </TopInfo>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DetailDiv>
+            <FlexBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="근무지역"
+                  variant={'bordered'}
+                  radius="md"
+                  type="text"
+                  // defaultValue={managerData.mUsername}
+                  label={<FilterLabel>근무지역</FilterLabel>}
+                  className="w-full"
+                  onChange={e => {
+                    register('mUsername').onChange(e)
+                  }}
+                  {...register('mUsername', {
+                    required: {
+                      value: true,
+                      message: '이름을 입력해주세요.',
+                    },
+                  })}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="희망분야"
+                  variant={'bordered'}
+                  radius="md"
+                  type="text"
+                  // defaultValue={managerData.mPhoneNum}
+                  label={
+                    <FilterLabel>
+                      희망분야<span>*</span>
+                    </FilterLabel>
+                  }
+                  className="w-full"
+                  onChange={e => {
+                    register('mPhoneNum').onChange(e)
+                  }}
+                  {...register('mPhoneNum', {
+                    required: {
+                      value: true,
+                      message: '희망분야를 입력해주세요.',
+                    },
+                  })}
+                />
+                {errors.mPhoneNum && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.mPhoneNum.message)}
+                  </p>
+                )}
+              </AreaBox>
+            </FlexBox>
+            <FlexBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="희망보수"
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="희망보수"
+                  // defaultValue={managerData.mPhoneNumFriend}
+                  className="w-full"
+                  maxLength={12}
+                  onChange={e => {
+                    register('mPhoneNumFriend').onChange(e)
+                  }}
+                  {...register('mPhoneNumFriend')}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder=" "
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  // defaultValue={managerData.email}
+                  label="근무형태"
+                  className="w-full"
+                  onChange={e => {
+                    register('email').onChange(e)
+                  }}
+                  {...register('email')}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder=" "
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  // defaultValue={managerData.email}
+                  label="근무시간"
+                  className="w-full"
+                  onChange={e => {
+                    register('email').onChange(e)
+                  }}
+                  {...register('email')}
+                />
+              </AreaBox>
+            </FlexBox>
+            <FlexBox>
+              <Textarea
+                label={<FilterLabel>교육수료 후 취업에 대한 의견</FilterLabel>}
+                labelPlacement="outside"
+                className="max-w-full"
+                variant="bordered"
+                minRows={5}
+                onChange={e => {
+                  register('detail').onChange(e)
+                }}
+                {...register('detail')}
               />
-            )}
-            locale="ko"
-            showYearDropdown
-            selected={employmentDate === null ? null : new Date(employmentDate)}
-            onChange={date => {
-              setEmploymentDate(date)
-              setIsOpen(false)
-            }}
-          />
-        </DatePickerBox>
-      )}
+            </FlexBox>
+            <BtnBox>
+              <Button
+                type="submit"
+                size="md"
+                radius="md"
+                variant="solid"
+                color="primary"
+                className="w-full text-white"
+              >
+                저장
+              </Button>
+              <Button
+                variant="bordered"
+                color="primary"
+                className="w-full text-primary"
+                onClick={() => router.back()}
+              >
+                이전으로
+              </Button>
+            </BtnBox>
+          </DetailDiv>
+        </form>
+      </DetailBox>
     </>
   )
 }

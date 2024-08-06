@@ -318,23 +318,25 @@ export default function message() {
   }
 
   const handleSave = type => {
-    createMessageStorage({
-      variables: {
-        message: messageCon,
-        saveType: type,
-      },
-      refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `${type} 문자함 저장`,
-          `ok: ${result.createMessageStorage.ok} / ${messageCon}`,
-        )
+    if (messageCon !== '') {
+      createMessageStorage({
+        variables: {
+          message: messageCon,
+          saveType: type,
+        },
+        refetchQueries: [SEE_MESSAGE_STORAGE_QUERY],
+        onCompleted: result => {
+          userLogs(
+            `${type} 문자함 저장`,
+            `ok: ${result.createMessageStorage.ok} / ${messageCon}`,
+          )
 
-        if (result.createMessageStorage.ok) {
-          alert(`${type} 문자함에 저장 되었습니다.`)
-        }
-      },
-    })
+          if (result.createMessageStorage.ok) {
+            alert(`${type} 문자함에 저장 되었습니다.`)
+          }
+        },
+      })
+    }
   }
 
   const handleChange = e => {
