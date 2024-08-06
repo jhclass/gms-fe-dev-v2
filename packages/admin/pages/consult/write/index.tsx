@@ -156,6 +156,13 @@ const AddLink = styled.p`
   right: 0;
   z-index: 5;
 `
+const today = new Date()
+
+const todayStart = new Date(today)
+todayStart.setHours(0, 0, 0, 0)
+
+const todayEnd = new Date(today)
+todayEnd.setHours(23, 59, 59, 999)
 
 export default function ConsultWirte() {
   const router = useRouter()
@@ -212,6 +219,7 @@ export default function ConsultWirte() {
         progress: data.progress === undefined ? 0 : data.progress,
         receiptDiv: data.receiptDiv === undefined ? '' : data.receiptDiv,
         pic: data.pic === undefined ? '담당자 지정필요' : data.pic,
+        today: [todayStart, todayEnd],
       },
       refetchQueries: [
         {

@@ -42,7 +42,6 @@ const UpdateTime = styled.div`
     align-items: flex-end;
   }
 `
-
 const UpdateCon = styled.p`
   position: relative;
   &:first-child {
@@ -90,69 +89,10 @@ const FlexBox = styled.div`
     flex-direction: column;
   }
 `
-const AreaTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-`
-const AvatarBox = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  /* @media (max-width: 768px) {
-    flex-direction: column;
-  } */
-`
-const AvatarF = styled.div`
-  position: relative;
-  border-radius: 100%;
-  overflow: hidden;
-  width: 5rem;
-  height: 5rem;
-  background-color: #fff;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  font-size: 4rem;
-  text-align: center;
-  color: #fff;
-  font-weight: 700;
-  line-height: 5rem;
-`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
   position: relative;
-`
-const AreaSmallBox = styled.div``
-const DatePickerBox = styled.div`
-  width: 100%;
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
-`
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
 `
 const FilterLabel = styled.p`
   font-weight: 500;
@@ -163,32 +103,12 @@ const FilterLabel = styled.p`
     color: red;
   }
 `
-const InputText = styled.span`
-  display: inline-block;
-  font-size: 0.75rem;
-  width: 2rem;
-`
 const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
 `
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
-
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
-}
 
 export default function WishForm() {
   const grade = useRecoilValue(gradeState)

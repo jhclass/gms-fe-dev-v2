@@ -21,7 +21,7 @@ const AccoBox = styled.div`
 `
 
 const CREATE_STUDENT_STATE_MUTATION = gql`
-  mutation Mutation(
+  mutation CreateStudentState(
     $stName: String!
     $phoneNum1: String!
     $subject: [String]!
@@ -31,8 +31,9 @@ const CREATE_STUDENT_STATE_MUTATION = gql`
     $campus: String
     $detail: String
     $classMethod: [String]
-    $receiptDiv: String
     $branchId: Int
+    $today: [String]
+    $receiptDiv: String
   ) {
     createStudentState(
       stName: $stName
@@ -44,12 +45,13 @@ const CREATE_STUDENT_STATE_MUTATION = gql`
       campus: $campus
       detail: $detail
       classMethod: $classMethod
-      receiptDiv: $receiptDiv
       branchId: $branchId
+      today: $today
+      receiptDiv: $receiptDiv
     ) {
+      ok
       error
       message
-      ok
     }
   }
 `
@@ -80,6 +82,14 @@ type FormValues = {
   contents: string
   privacy: string
 }
+
+const today = new Date()
+
+const todayStart = new Date(today)
+todayStart.setHours(0, 0, 0, 0)
+
+const todayEnd = new Date(today)
+todayEnd.setHours(23, 59, 59, 999)
 
 export default function Form() {
   const [createStudentState] = useMutation(CREATE_STUDENT_STATE_MUTATION)
@@ -135,6 +145,7 @@ export default function Form() {
             detail: data.contents,
             receiptDiv: '온라인',
             classMethod: data.methodSelect,
+            today: [todayStart, todayEnd],
           },
           onCompleted: result => {
             if (result.createStudentState.ok) {
@@ -150,6 +161,15 @@ export default function Form() {
               setGroupSelected([])
               setMethodSelect([])
               alert('상담신청이 완료되었습니다. 😊')
+            } else {
+              if (
+                result.createStudentState.message ===
+                '오늘 하루 동안 비정상적으로 많은 게시물이 생성된 ip addr 입니다.'
+              ) {
+                alert(
+                  '동일 IP로 작성할 수 있는 상담문의 신청 개수를 초과하였습니다.',
+                )
+              }
             }
           },
         })

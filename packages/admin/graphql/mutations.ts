@@ -250,6 +250,8 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
     $birthday: String
     $receiptDiv: String
     $pic: String
+    $today: [String]
+    $branchId: Int
   ) {
     createStudentState(
       stName: $stName
@@ -272,6 +274,8 @@ export const CREATE_STUDENT_STATE_MUTATION = gql`
       birthday: $birthday
       receiptDiv: $receiptDiv
       pic: $pic
+      today: $today
+      branchId: $branchId
     ) {
       error
       message
