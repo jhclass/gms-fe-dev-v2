@@ -840,3 +840,173 @@ export const SEARCH_MESSAGE_QUERY = gql`
     }
   }
 `
+// 학적부
+export const SEARCH_SM_QUERY = gql`
+  query SearchSM(
+    $modelType: String!
+    $lectureId: Int
+    $studentPaymentId: Int
+    $subjectId: Int
+    $limit: Int
+    $page: Int
+  ) {
+    searchSM(
+      modelType: $modelType
+      lectureId: $lectureId
+      studentPaymentId: $studentPaymentId
+      subjectId: $subjectId
+      limit: $limit
+      page: $page
+    ) {
+      data {
+        ... on Career {
+          id
+          lectureId
+          studentId
+          stName
+          careerDetails
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+        }
+        ... on EduInfomation {
+          id
+          lectureId
+          studentId
+          stName
+          eduType
+          eduName
+          major
+          graduationStatus
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+        ... on Certificate {
+          id
+          lectureId
+          studentId
+          stName
+          certificateName
+          certificateLevel
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+          CertificateIssuer
+          CAdate
+        }
+        ... on StudentConsultation {
+          id
+          lectureId
+          studentId
+          stName
+          typeOfConsultation
+          dateOfConsultation
+          detailsOfConsultation
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+        ... on HopeForEmployment {
+          id
+          lectureId
+          studentId
+          stName
+          workingArea
+          fieldOfHope
+          hopefulReward
+          workType
+          workingHours
+          opinion
+          subjectId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+        ... on EmploymentRecommendation {
+          id
+          lectureId
+          studentId
+          stName
+          dateOfRecommendation
+          recruitmentField
+          companyName
+          location
+          phoneNum
+          dateOfInterview
+          employmentStatus
+          reasonForNonEmployment
+          certificateOfEmploymentStatus
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+        ... on EmploymentStatus {
+          id
+          lectureId
+          studentId
+          stName
+          employmentType
+          companyName
+          businessNum
+          responsibilities
+          location
+          phoneNum
+          businessSize
+          imploymentInsurance
+          proofOfImployment
+          relatedFields
+          completionType
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+        ... on PreInspection {
+          id
+          lectureId
+          studentId
+          stName
+          dateOfPreInspection
+          preScreenerType
+          preInspectionDetails
+          actionTaken
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+      }
+      error
+      message
+      ok
+      totalCount
+    }
+  }
+`

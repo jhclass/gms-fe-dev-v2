@@ -5,7 +5,7 @@ import EmploymentMemo from '@/components/form/EmploymentMemo'
 import CreateEmploymentMemo from '@/components/form/CreateEmploymentMemo'
 import WishForm from '@/components/form/WishForm'
 import Recommendation from '@/components/table/Recommendation'
-import Employment from '@/components/table/Employment'
+import EmploymentForm from '@/components/form/EmploymentForm'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -91,7 +91,7 @@ export default function EmploymentTabs() {
               <AreaTitle>
                 <h4>취업현황</h4>
               </AreaTitle>
-              <Employment />
+              <EmploymentForm />
             </DetailDiv>
           </DetailBox>
         </Tab>

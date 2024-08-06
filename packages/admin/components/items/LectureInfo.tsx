@@ -123,6 +123,14 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
     return formatted
   }
 
+  const addSixMonths = dateString => {
+    const timestamp = parseInt(dateString, 10)
+    const date = new Date(timestamp)
+    date.setMonth(date.getMonth() + 6)
+
+    return formatDate(date.getTime())
+  }
+
   const formatTime = dateString => {
     const date = new Date(dateString)
     const hours = date.getHours().toString().padStart(2, '0')
@@ -201,7 +209,7 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
             ) : (
               <div>
                 <FilterLabel>관리 종료일</FilterLabel>
-                <LineBox>{formatDate(lectureData.lecturePeriodEnd)}</LineBox>
+                <LineBox>{addSixMonths(lectureData.lecturePeriodEnd)}</LineBox>
               </div>
             )}
           </AreaSmallBox>

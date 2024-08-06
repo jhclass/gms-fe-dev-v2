@@ -1141,6 +1141,7 @@ export const SEARCH_PAYMENT_MUTATION = gql`
     }
   }
 `
+
 export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
   mutation Mutation(
     $page: Int
@@ -1998,6 +1999,92 @@ export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+// 학적부
+export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
+  mutation Mutation(
+    $editStudentPaymentId: Int!
+    $subjectId: Int!
+    $mAddressDetail: String
+    $mAddresses: String
+    $mZipCode: String
+  ) {
+    editStudentPayment(
+      id: $editStudentPaymentId
+      subjectId: $subjectId
+      mAddressDetail: $mAddressDetail
+      mAddresses: $mAddresses
+      mZipCode: $mZipCode
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const CREATE_EDU_INFOMATION_MUTATION = gql`
+  mutation CreateEduInfomation(
+    $subjectId: Int!
+    $studentPaymentId: Int!
+    $eduType: String!
+    $eduName: String!
+    $graduationStatus: String!
+    $major: String
+  ) {
+    createEduInfomation(
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+      eduType: $eduType
+      eduName: $eduName
+      graduationStatus: $graduationStatus
+      major: $major
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_CAREER_MUTATION = gql`
+  mutation CreateCareer(
+    $careerDetails: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+  ) {
+    createCareer(
+      careerDetails: $careerDetails
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const CREATE_CERTIFICATE_MUTATION = gql`
+  mutation CreateCertificate(
+    $cAdate: String!
+    $certificateName: String!
+    $certificateIssuer: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+    $certificateLevel: String
+  ) {
+    createCertificate(
+      CAdate: $cAdate
+      certificateName: $certificateName
+      CertificateIssuer: $certificateIssuer
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+      certificateLevel: $certificateLevel
+    ) {
+      ok
+      message
+      error
     }
   }
 `

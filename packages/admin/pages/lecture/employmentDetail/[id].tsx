@@ -6,7 +6,10 @@ import { useRouter } from 'next/router'
 import { Button } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_LECTURES_MUTATION,
+  SEARCH_PAYMENT_MUTATION,
+} from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AcquisitionList from '@/components/table/AcquisitionList'
 import EducationalHistory from '@/components/table/EducationalHistory'
@@ -135,33 +138,33 @@ const BtnBox = styled.div`
 
 export default function StudentsWrite() {
   const router = useRouter()
-  const lectureId = typeof router.query.id === 'string' ? router.query.id : null
+  const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
+  const [searchPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
   const [lectureData, setLectureData] = useState(null)
+  const [paymentData, setPaymentData] = useState(null)
   const [students, setStudents] = useState(null)
 
   useEffect(() => {
-    // if (lectureId !== null) {
-    //   searchLectures({
-    //     variables: {
-    //       searchLecturesId: 21,
-    //     },
-    //     onCompleted: result => {
-    //       if (result.searchLectures.ok) {
-    //         const { data } = result.searchLectures
-    //         setLectureData(data[0])
-    //       }
-    //     },
-    //   })
-    // }
-    searchLectures({
+    searchPayment({
       variables: {
-        searchLecturesId: 21,
+        searchStudentPaymentId: parseInt(paymentId),
       },
-      onCompleted: result => {
-        if (result.searchLectures.ok) {
-          const { data } = result.searchLectures
-          setLectureData(data[0])
+      onCompleted: resData => {
+        if (resData.searchStudentPayment.ok) {
+          const { data } = resData.searchStudentPayment || {}
+          setPaymentData(data[0])
+          searchLectures({
+            variables: {
+              searchLecturesId: data[0].subject.lectures.id,
+            },
+            onCompleted: result => {
+              if (result.searchLectures.ok) {
+                const { data } = result.searchLectures
+                setLectureData(data[0])
+              }
+            },
+          })
         }
       },
     })
@@ -187,97 +190,108 @@ export default function StudentsWrite() {
       return formatted
     }
   }
-
+  console.log('1', paymentId)
   return (
-    <>
-      <MainWrap>
-        <ConArea>
-          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
-          <DetailBox>
-            <TopInfo>
-              <Noti></Noti>
-              <UpdateTime>
-                <span>최근 업데이트 일시 :</span>
-                {formatDate(lectureData?.updatedAt, true)}
-              </UpdateTime>
-            </TopInfo>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>기본 정보</h4>
+    lectureData && (
+      <>
+        <MainWrap>
+          <ConArea>
+            <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
+            <DetailBox>
+              <TopInfo>
+                <Noti></Noti>
+                <UpdateTime>
+                  <span>최근 업데이트 일시 :</span>
+                  {formatDate(lectureData?.updatedAt, true)}
+                </UpdateTime>
+              </TopInfo>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>기본 정보</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    color="primary"
+                    className="text-white"
+                    onClick={() => {
+                      {
+                        router.push(`/lecture/detail/${lectureData?.id}`)
+                      }
+                    }}
+                  >
+                    수정
+                  </Button>
+                </AreaTitle>
+                <LectureInfo
+                  lectureData={lectureData}
+                  students={students}
+                  attendance={false}
+                />
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>학생정보</h4>
+                </AreaTitle>
+                <EmploymentInfoForm paymentData={paymentData} />
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>학력사항</h4>
+                </AreaTitle>
+                <EducationalHistory
+                  paymentId={parseInt(paymentId)}
+                  subjectId={paymentData.subjectId}
+                />
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>경력사항</h4>
+                </AreaTitle>
+                <CareerHistory
+                  paymentId={parseInt(paymentId)}
+                  subjectId={paymentData.subjectId}
+                />
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>자격취득현황</h4>
+                </AreaTitle>
+                <AcquisitionList
+                  paymentId={parseInt(paymentId)}
+                  subjectId={paymentData.subjectId}
+                />
+              </DetailDiv>
+            </DetailBox>
+            <EmploymentTabs />
+            <DetailBox>
+              <BtnBox>
                 <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
+                  size="md"
+                  radius="md"
+                  variant="bordered"
                   color="primary"
-                  className="text-white"
+                  className="lg:w-[50%] w-full"
                   onClick={() => {
-                    {
-                      router.push(`/lecture/detail/${lectureData?.id}`)
-                    }
+                    router.back()
                   }}
                 >
-                  수정
+                  이전으로
                 </Button>
-              </AreaTitle>
-              <LectureInfo
-                lectureData={lectureData}
-                students={students}
-                attendance={false}
-              />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>학생정보</h4>
-              </AreaTitle>
-              <EmploymentInfoForm />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>학력사항</h4>
-              </AreaTitle>
-              <EducationalHistory />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>경력사항</h4>
-              </AreaTitle>
-              <CareerHistory />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>자격취득현황</h4>
-              </AreaTitle>
-              <AcquisitionList />
-            </DetailDiv>
-          </DetailBox>
-          <EmploymentTabs />
-          <DetailBox>
-            <BtnBox>
-              <Button
-                size="md"
-                radius="md"
-                variant="bordered"
-                color="primary"
-                className="lg:w-[50%] w-full"
-                onClick={() => {
-                  router.back()
-                }}
-              >
-                이전으로
-              </Button>
-            </BtnBox>
-          </DetailBox>
-        </ConArea>
-      </MainWrap>
-    </>
+              </BtnBox>
+            </DetailBox>
+          </ConArea>
+        </MainWrap>
+      </>
+    )
   )
 }
 StudentsWrite.getLayout = page => <Layout>{page}</Layout>

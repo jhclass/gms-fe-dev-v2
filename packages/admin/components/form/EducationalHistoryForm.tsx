@@ -1,3 +1,6 @@
+import { CREATE_EDU_INFOMATION_MUTATION } from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
+import { useMutation } from '@apollo/client'
 import {
   Button,
   Input,
@@ -6,6 +9,7 @@ import {
   SelectItem,
 } from '@nextui-org/react'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
 
 const TableArea = styled.div`
@@ -38,6 +42,16 @@ const ClickBox = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+
+  span {
+    color: ${({ theme }) => theme.colors.red};
+  }
+`
+
+const ClickForm = styled.form`
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
 `
 const Ttext = styled.div`
   display: table-cell;
@@ -96,9 +110,44 @@ const BtnBox = styled.div`
   gap: 0.5rem;
 `
 
-export default function EducationalHistoryForm() {
+export default function EducationalHistoryForm({ paymentId, subjectId }) {
+  const { userLogs } = useUserLogsMutation()
+  const [createEduInfo] = useMutation(CREATE_EDU_INFOMATION_MUTATION)
   const [educationValue, setEducationValue] = useState('학력선택')
   const [graduationValue, setGraduationValue] = useState('졸업여부')
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm()
+
+  const onSubmit = data => {
+    createEduInfo({
+      variables: {
+        subjectId: subjectId,
+        studentPaymentId: paymentId,
+        eduType: data.eduType === '' ? null : data.eduType,
+        eduName: data.eduName === '' ? null : data.eduName,
+        graduationStatus:
+          data.graduationStatus === '' ? null : data.graduationStatus,
+        major: data.major === '' ? null : data.major,
+      },
+      onCompleted: result => {
+        userLogs(
+          `paymentId: ${paymentId} 학력 등록`,
+          `ok: ${result.createEduInfomation.ok}`,
+        )
+        if (result.createEduInfomation.ok) {
+          alert('학력이 추가되었습니다.')
+          reset()
+          setEducationValue('학력선택')
+          setGraduationValue('졸업여부')
+        }
+      },
+    })
+  }
 
   const handleEducationChange = e => {
     setEducationValue(e.target.value)
@@ -114,8 +163,12 @@ export default function EducationalHistoryForm() {
           <Theader>
             <TheaderBox>
               <ClickBox>
-                <Tselect>학력</Tselect>
-                <Ttext>학교명</Ttext>
+                <Tselect>
+                  학력 <span>*</span>
+                </Tselect>
+                <Ttext>
+                  학교명 <span>*</span>
+                </Ttext>
                 <Ttext>전공</Ttext>
                 <Tselect>졸업여부</Tselect>
                 <Tbtn></Tbtn>
@@ -124,38 +177,60 @@ export default function EducationalHistoryForm() {
           </Theader>
           <TableItem>
             <TableRow>
-              <ClickBox>
+              <ClickForm onSubmit={handleSubmit(onSubmit)}>
                 <Tselect>
-                  <Select
-                    labelPlacement="outside"
-                    label={<p className="hidden">학력</p>}
-                    variant="bordered"
-                    size="sm"
-                    selectedKeys={[educationValue]}
-                    onChange={e => handleEducationChange(e)}
-                    classNames={{
-                      label: 'w-[4rem] pr-0',
+                  <Controller
+                    control={control}
+                    name="eduType"
+                    rules={{
+                      required: {
+                        value: true,
+                        message: '학력을 선택해주세요',
+                      },
                     }}
-                  >
-                    <SelectItem value={'학력선택'} key={'학력선택'}>
-                      학력선택
-                    </SelectItem>
-                    <SelectItem value={'초등학교'} key={'초등학교'}>
-                      초등학교
-                    </SelectItem>
-                    <SelectItem value={'중학교'} key={'중학교'}>
-                      중학교
-                    </SelectItem>
-                    <SelectItem value={'고등학교'} key={'고등학교'}>
-                      고등학교
-                    </SelectItem>
-                    <SelectItem value={'대학,대학원'} key={'대학,대학원'}>
-                      대학,대학원
-                    </SelectItem>
-                    <SelectItem value={'기타학력'} key={'기타학력'}>
-                      기타학력
-                    </SelectItem>
-                  </Select>
+                    render={({ field, fieldState }) => (
+                      <Select
+                        labelPlacement="outside"
+                        label={<p className="hidden">학력</p>}
+                        variant="bordered"
+                        size="sm"
+                        selectedKeys={[educationValue]}
+                        onChange={value => {
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleEducationChange(value)
+                          }
+                        }}
+                        classNames={{
+                          label: 'w-[4rem] pr-0',
+                        }}
+                      >
+                        <SelectItem value={'학력선택'} key={'학력선택'}>
+                          학력선택
+                        </SelectItem>
+                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                          초등학교
+                        </SelectItem>
+                        <SelectItem value={'중학교'} key={'중학교'}>
+                          중학교
+                        </SelectItem>
+                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                          고등학교
+                        </SelectItem>
+                        <SelectItem value={'대학,대학원'} key={'대학,대학원'}>
+                          대학,대학원
+                        </SelectItem>
+                        <SelectItem value={'기타학력'} key={'기타학력'}>
+                          기타학력
+                        </SelectItem>
+                      </Select>
+                    )}
+                  />
+                  {errors.eduType && (
+                    <p className="px-2 pt-2 text-xs text-red">
+                      {String(errors.eduType.message)}
+                    </p>
+                  )}
                 </Tselect>
                 <Ttext>
                   <Input
@@ -166,7 +241,18 @@ export default function EducationalHistoryForm() {
                     type="text"
                     placeholder=" "
                     className="w-full"
+                    {...register('eduName', {
+                      required: {
+                        value: true,
+                        message: '학교명을 작성해주세요',
+                      },
+                    })}
                   />
+                  {errors.eduName && (
+                    <p className="px-2 pt-2 text-xs text-red">
+                      {String(errors.eduName.message)}
+                    </p>
+                  )}
                 </Ttext>
                 <Ttext>
                   <Input
@@ -177,51 +263,59 @@ export default function EducationalHistoryForm() {
                     type="text"
                     placeholder=" "
                     className="w-full"
+                    {...register('major')}
                   />
                 </Ttext>
                 <Tselect>
-                  <Select
-                    label={<p className="hidden">졸업여부</p>}
-                    labelPlacement="outside"
-                    variant="bordered"
-                    size="sm"
-                    selectedKeys={[graduationValue]}
-                    onChange={e => handleGraduationChange(e)}
-                    classNames={{
-                      label: 'w-[4rem] pr-0',
-                    }}
-                  >
-                    <SelectItem value={'졸업여부'} key={'졸업여부'}>
-                      졸업여부
-                    </SelectItem>
-                    <SelectItem value={'학력 선택'} key={'학력 선택'}>
-                      졸업
-                    </SelectItem>
-                    <SelectItem value={'초등학교'} key={'초등학교'}>
-                      휴학
-                    </SelectItem>
-                    <SelectItem value={'중학교'} key={'중학교'}>
-                      재학
-                    </SelectItem>
-                    <SelectItem value={'고등학교'} key={'고등학교'}>
-                      중퇴
-                    </SelectItem>
-                  </Select>
+                  <Controller
+                    control={control}
+                    name="graduationStatus"
+                    defaultValue={'졸업여부'}
+                    render={({ field }) => (
+                      <Select
+                        label={<p className="hidden">졸업여부</p>}
+                        labelPlacement="outside"
+                        variant="bordered"
+                        size="sm"
+                        selectedKeys={[graduationValue]}
+                        onChange={e => handleGraduationChange(e)}
+                        classNames={{
+                          label: 'w-[4rem] pr-0',
+                        }}
+                      >
+                        <SelectItem value={'졸업여부'} key={'졸업여부'}>
+                          졸업여부
+                        </SelectItem>
+                        <SelectItem value={'학력 선택'} key={'학력 선택'}>
+                          졸업
+                        </SelectItem>
+                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                          휴학
+                        </SelectItem>
+                        <SelectItem value={'중학교'} key={'중학교'}>
+                          재학
+                        </SelectItem>
+                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                          중퇴
+                        </SelectItem>
+                      </Select>
+                    )}
+                  />
                 </Tselect>
                 <Tbtn>
                   <BtnBox>
                     <Button
+                      type="submit"
                       size="sm"
                       variant="solid"
                       color="primary"
                       className="w-full text-white bg-secondary"
-                      // onClick={() => setIsOpen(!isOpen)}
                     >
                       추가
                     </Button>
                   </BtnBox>
                 </Tbtn>
-              </ClickBox>
+              </ClickForm>
             </TableRow>
           </TableItem>
         </TableWrap>

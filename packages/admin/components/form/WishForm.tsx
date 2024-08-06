@@ -382,25 +382,15 @@ export default function WishForm() {
               />
             </FlexBox>
             <BtnBox>
-              {loginMGrade < grade.general || loginMPart?.includes('교무팀') ? (
-                <Button
-                  type="submit"
-                  size="md"
-                  radius="md"
-                  variant="solid"
-                  color="primary"
-                  className="w-full text-white"
-                >
-                  수정
-                </Button>
-              ) : null}
               <Button
-                variant="bordered"
+                type="submit"
+                size="md"
+                radius="md"
+                variant="solid"
                 color="primary"
-                className="w-full text-primary"
-                onClick={() => router.back()}
+                className="w-full text-white lg:w-[50%]"
               >
-                이전으로
+                수정
               </Button>
             </BtnBox>
           </DetailDiv>

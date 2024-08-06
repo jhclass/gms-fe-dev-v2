@@ -16,7 +16,7 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRouter } from 'next/router'
 
@@ -233,37 +233,109 @@ export default function EmploymentForm() {
           <DetailDiv>
             <FlexBox>
               <AreaBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder="근무지역"
-                  variant={'bordered'}
-                  radius="md"
-                  type="text"
-                  // defaultValue={managerData.mUsername}
-                  label={<FilterLabel>근무지역</FilterLabel>}
-                  className="w-full"
-                  onChange={e => {
-                    register('mUsername').onChange(e)
-                  }}
-                  {...register('mUsername', {
-                    required: {
-                      value: true,
-                      message: '이름을 입력해주세요.',
-                    },
-                  })}
+                <Controller
+                  control={control}
+                  name="progress"
+                  defaultValue={'취업'}
+                  render={({ field, fieldState }) => (
+                    <RadioGroup
+                      label={
+                        <FilterLabel>
+                          구분 <span>*</span>
+                        </FilterLabel>
+                      }
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={'취업'}
+                      onValueChange={value => {
+                        field.onChange(parseInt(value))
+                      }}
+                    >
+                      <Radio key={'취업'} value={'취업'}>
+                        취업
+                      </Radio>
+                      <Radio key={'창업'} value={'창업'}>
+                        창업
+                      </Radio>
+                    </RadioGroup>
+                  )}
                 />
+              </AreaBox>
+              <AreaBox>
+                <DatePickerBox>
+                  <Controller
+                    control={control}
+                    name="stVisit"
+                    defaultValue={''}
+                    render={({ field }) => (
+                      <DatePicker
+                        renderCustomHeader={({
+                          date,
+                          changeYear,
+                          changeMonth,
+                          decreaseMonth,
+                          increaseMonth,
+                        }) => (
+                          <DatePickerHeader
+                            rangeYears={years}
+                            clickDate={date}
+                            changeYear={changeYear}
+                            changeMonth={changeMonth}
+                            decreaseMonth={decreaseMonth}
+                            increaseMonth={increaseMonth}
+                          />
+                        )}
+                        locale="ko"
+                        showYearDropdown
+                        selected={
+                          employmentDate === null
+                            ? null
+                            : new Date(employmentDate)
+                        }
+                        placeholderText="날짜를 선택해주세요."
+                        isClearable
+                        onChange={date => {
+                          field.onChange(date)
+                          setEmploymentDate(date)
+                        }}
+                        onChangeRaw={e => e.preventDefault()}
+                        onFocus={e => e.target.blur()}
+                        showTimeSelect
+                        dateFormat="yyyy/MM/dd HH:mm"
+                        customInput={
+                          <Input
+                            label={
+                              <FilterLabel>
+                                취업일자 <span>*</span>
+                              </FilterLabel>
+                            }
+                            labelPlacement="outside"
+                            type="text"
+                            variant="bordered"
+                            id="date"
+                            classNames={{
+                              input: 'caret-transparent',
+                            }}
+                            isReadOnly={true}
+                            startContent={<i className="xi-calendar" />}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                </DatePickerBox>
               </AreaBox>
               <AreaBox>
                 <Input
                   labelPlacement="outside"
-                  placeholder="희망분야"
+                  placeholder="회사명"
                   variant={'bordered'}
                   radius="md"
                   type="text"
                   // defaultValue={managerData.mPhoneNum}
                   label={
                     <FilterLabel>
-                      희망분야<span>*</span>
+                      회사명<span>*</span>
                     </FilterLabel>
                   }
                   className="w-full"
@@ -273,9 +345,30 @@ export default function EmploymentForm() {
                   {...register('mPhoneNum', {
                     required: {
                       value: true,
-                      message: '희망분야를 입력해주세요.',
+                      message: '회사명을 입력해주세요.',
                     },
                   })}
+                />
+                {errors.mPhoneNum && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.mPhoneNum.message)}
+                  </p>
+                )}
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
+                  placeholder="사업자번호"
+                  variant={'bordered'}
+                  radius="md"
+                  type="text"
+                  // defaultValue={managerData.mPhoneNum}
+                  label="사업자번호"
+                  className="w-full"
+                  onChange={e => {
+                    register('mPhoneNum').onChange(e)
+                  }}
+                  {...register('mPhoneNum')}
                 />
                 {errors.mPhoneNum && (
                   <p className="px-2 pt-2 text-xs text-red">
@@ -288,11 +381,11 @@ export default function EmploymentForm() {
               <AreaBox>
                 <Input
                   labelPlacement="outside"
-                  placeholder="희망보수"
+                  placeholder="담당업무"
                   variant="bordered"
                   radius="md"
                   type="text"
-                  label="희망보수"
+                  label="담당업무"
                   // defaultValue={managerData.mPhoneNumFriend}
                   className="w-full"
                   maxLength={12}
@@ -305,48 +398,158 @@ export default function EmploymentForm() {
               <AreaBox>
                 <Input
                   labelPlacement="outside"
-                  placeholder=" "
+                  placeholder="소재지"
                   variant="bordered"
                   radius="md"
                   type="text"
-                  // defaultValue={managerData.email}
-                  label="근무형태"
+                  label="소재지"
+                  // defaultValue={managerData.mPhoneNumFriend}
                   className="w-full"
+                  maxLength={12}
                   onChange={e => {
-                    register('email').onChange(e)
+                    register('mPhoneNumFriend').onChange(e)
                   }}
-                  {...register('email')}
+                  {...register('mPhoneNumFriend')}
                 />
               </AreaBox>
               <AreaBox>
                 <Input
                   labelPlacement="outside"
-                  placeholder=" "
+                  placeholder="사업장규모"
                   variant="bordered"
                   radius="md"
                   type="text"
-                  // defaultValue={managerData.email}
-                  label="근무시간"
+                  label="소재지"
+                  // defaultValue={managerData.mPhoneNumFriend}
                   className="w-full"
+                  maxLength={12}
                   onChange={e => {
-                    register('email').onChange(e)
+                    register('mPhoneNumFriend').onChange(e)
                   }}
-                  {...register('email')}
+                  {...register('mPhoneNumFriend')}
                 />
               </AreaBox>
             </FlexBox>
             <FlexBox>
-              <Textarea
-                label={<FilterLabel>교육수료 후 취업에 대한 의견</FilterLabel>}
-                labelPlacement="outside"
-                className="max-w-full"
-                variant="bordered"
-                minRows={5}
-                onChange={e => {
-                  register('detail').onChange(e)
-                }}
-                {...register('detail')}
-              />
+              <AreaBox>
+                <Controller
+                  control={control}
+                  name="progress"
+                  defaultValue={'Y'}
+                  render={({ field, fieldState }) => (
+                    <RadioGroup
+                      label={
+                        <FilterLabel>
+                          고용보험 <span>*</span>
+                        </FilterLabel>
+                      }
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={'Y'}
+                      onValueChange={value => {
+                        field.onChange(parseInt(value))
+                      }}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  )}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Controller
+                  control={control}
+                  name="progress"
+                  defaultValue={'Y'}
+                  render={({ field, fieldState }) => (
+                    <RadioGroup
+                      label={
+                        <FilterLabel>
+                          재직증명 <span>*</span>
+                        </FilterLabel>
+                      }
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={'Y'}
+                      onValueChange={value => {
+                        field.onChange(parseInt(value))
+                      }}
+                    >
+                      <Radio key={'Y'} value={'Y'}>
+                        Y
+                      </Radio>
+                      <Radio key={'N'} value={'N'}>
+                        N
+                      </Radio>
+                    </RadioGroup>
+                  )}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Controller
+                  control={control}
+                  name="progress"
+                  defaultValue={'동일'}
+                  render={({ field, fieldState }) => (
+                    <RadioGroup
+                      label={
+                        <FilterLabel>
+                          관련분야 <span>*</span>
+                        </FilterLabel>
+                      }
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={'동일'}
+                      onValueChange={value => {
+                        field.onChange(parseInt(value))
+                      }}
+                    >
+                      <Radio key={'동일'} value={'동일'}>
+                        동일
+                      </Radio>
+                      <Radio key={'관련'} value={'관련'}>
+                        관련
+                      </Radio>
+                      <Radio key={'다른'} value={'다른'}>
+                        다른
+                      </Radio>
+                    </RadioGroup>
+                  )}
+                />
+              </AreaBox>
+              <AreaBox>
+                <Controller
+                  control={control}
+                  name="progress"
+                  defaultValue={'조기취업'}
+                  render={({ field, fieldState }) => (
+                    <RadioGroup
+                      label={
+                        <FilterLabel>
+                          취업형태 <span>*</span>
+                        </FilterLabel>
+                      }
+                      orientation="horizontal"
+                      className="gap-1"
+                      defaultValue={'조기취업'}
+                      onValueChange={value => {
+                        field.onChange(parseInt(value))
+                      }}
+                    >
+                      <Radio key={'조기취업'} value={'조기취업'}>
+                        조기취업
+                      </Radio>
+                      <Radio key={'수료취업'} value={'수료취업'}>
+                        수료취업
+                      </Radio>
+                    </RadioGroup>
+                  )}
+                />
+              </AreaBox>
             </FlexBox>
             <BtnBox>
               <Button
@@ -355,17 +558,9 @@ export default function EmploymentForm() {
                 radius="md"
                 variant="solid"
                 color="primary"
-                className="w-full text-white"
+                className="w-full text-white lg:w-[50%]"
               >
                 저장
-              </Button>
-              <Button
-                variant="bordered"
-                color="primary"
-                className="w-full text-primary"
-                onClick={() => router.back()}
-              >
-                이전으로
               </Button>
             </BtnBox>
           </DetailDiv>
