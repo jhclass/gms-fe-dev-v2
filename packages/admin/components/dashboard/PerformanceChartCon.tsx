@@ -41,7 +41,7 @@ const Content = styled.div`
   }
 `
 const ChartWrap = styled.div`
-  min-width: 700px;
+  /* min-width: 700px; */
 `
 
 type searchManageUserQuery = {

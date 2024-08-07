@@ -32,7 +32,7 @@ const Title = styled.h2`
 const TableWrap = styled.div`
   width: 100%;
   display: table;
-  min-width: 700px;
+  /* min-width: 700px; */
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 0.5rem;
 `
