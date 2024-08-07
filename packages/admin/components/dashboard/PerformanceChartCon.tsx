@@ -8,23 +8,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
-const ConArea = styled.div`
-  width: 100%;
-`
-const DetailBox = styled.div`
-  margin-top: 2rem;
-  background: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-`
-const DetailDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  @media (max-width: 768px) {
-    gap: 1rem;
-  }
-`
+
 const Content = styled.div`
   flex: 1;
   width: 100%;
@@ -44,41 +28,21 @@ const ChartWrap = styled.div`
   min-width: 700px;
 `
 
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
-}
-
 export default function PerformanceChartCon({
-  managerIds,
+  managerUsernames,
   totalAmount,
   totalCount,
   totalRefundAmount,
+  chartHeight,
 }) {
-  const router = useRouter()
+  console.log('차트 생성 컨포넌트 시작')
+  console.log('props managerUsernames : ', managerUsernames)
+  console.log('props totalAmount : ', totalAmount)
+  console.log('props totalCount : ', totalCount)
+  console.log('props totalRefundAmount : ', totalRefundAmount)
+  console.log('props chartHeight : ', chartHeight)
+
   const theme = useTheme()
-  const {
-    data: managerData,
-    error,
-    refetch,
-  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
-    variables: {
-      mPart: '영업팀',
-      resign: 'N',
-    },
-  })
-  const managerList = managerData?.searchManageUser.data
-
-  useEffect(() => {
-    refetch({
-      mPart: '영업팀',
-      resign: 'N',
-    })
-  }, [router])
-
-  const managerUsernames = managerIds.map(
-    id => managerList.find(user => user.id === id)?.mUsername,
-  )
-
   const countValue = Math.max(...totalCount)
   const maxCountValue = countValue <= 10 ? 10 : countValue
   const amountValue = Math.max(...totalAmount)
@@ -104,7 +68,7 @@ export default function PerformanceChartCon({
     ],
     options: {
       chart: {
-        height: 350,
+        height: chartHeight,
         width: '100%',
         toolbar: {
           show: false,
@@ -187,30 +151,22 @@ export default function PerformanceChartCon({
     },
   }
 
-  if (error) {
-    console.log(error)
-  }
+  console.log('chartData', chartData)
 
   return (
     chartData && (
-      <ConArea>
-        <DetailBox>
-          <DetailDiv>
-            <Content>
-              <ScrollShadow orientation="horizontal" className="scrollbar">
-                <ChartWrap>
-                  <ApexChart
-                    options={chartData.options}
-                    series={chartData.series}
-                    type="bar"
-                    height="350"
-                  />
-                </ChartWrap>
-              </ScrollShadow>
-            </Content>
-          </DetailDiv>
-        </DetailBox>
-      </ConArea>
+      <Content>
+        <ScrollShadow orientation="horizontal" className="scrollbar">
+          <ChartWrap>
+            <ApexChart
+              options={chartData.options}
+              series={chartData.series}
+              type="bar"
+              height={chartHeight}
+            />
+          </ChartWrap>
+        </ScrollShadow>
+      </Content>
     )
   )
 }

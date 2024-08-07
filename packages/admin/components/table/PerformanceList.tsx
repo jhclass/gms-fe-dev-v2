@@ -41,6 +41,7 @@ export default function PerformanceList({ ids, dateRange, filterSearch }) {
   const [totalRefundAmount, setTotalRefundAmount] = useState([])
   const [totalRefundCount, setTotalRefundCount] = useState([])
   const [idList, setIdList] = useState([])
+  const [succMutation, setSuccMutation] = useState(false)
 
   useEffect(() => {
     salesStatistics({
@@ -75,56 +76,68 @@ export default function PerformanceList({ ids, dateRange, filterSearch }) {
           setTotalRefundAmount(totalRefundAmount)
           setTotalRefundCount(totalRefundCount)
           setIdList(managerId)
+          setSuccMutation(true)
+          console.log('기본 props mutation 완료')
         }
       },
     })
   }, [ids, dateRange])
 
   return (
-    <>
-      <div style={{ marginBottom: '3rem' }}>
-        <PerformanceChart
-          managerIds={idList}
-          totalAmount={totalAmount}
-          totalCount={totalCount}
-          totalRefundAmount={totalRefundAmount}
-        />
-      </div>
-      {allData?.map((item, index) => (
-        <ListBox key={index}>
-          <TotalList>
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <PerformanceTotal
-                ranking={index}
-                managerId={item.receiverId}
-                totalActualAmount={item.totalActualAmount}
-                totalAmount={item.totalAmount}
-                totalPaymentCount={item.totalPaymentCount}
-                totalRefundAmount={item.totalRefundAmount}
-                totalRefundCount={item.totalRefundCount}
-              />
-            </Suspense>
-          </TotalList>
-          <PerformanceBox
-            managerData={item}
-            dateRange={dateRange}
-            filterSearch={filterSearch}
-            totalPaymentCount={item.totalPaymentCount - item.totalRefundCount}
-          />
-          <PerformanceRefundBox
-            managerData={item}
-            dateRange={dateRange}
-            filterSearch={filterSearch}
-            totalRefundCount={item.totalRefundCount}
-          />
-        </ListBox>
-      ))}
-    </>
+    succMutation && (
+      <>
+        <div style={{ marginBottom: '3rem' }}>
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PerformanceChart
+              managerIds={idList}
+              totalAmount={totalAmount}
+              totalCount={totalCount}
+              totalRefundAmount={totalRefundAmount}
+            />
+          </Suspense>
+        </div>
+        {allData?.map((item, index) => (
+          <ListBox key={index}>
+            <TotalList>
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <PerformanceTotal
+                  ranking={index}
+                  managerId={item.receiverId}
+                  totalActualAmount={item.totalActualAmount}
+                  totalAmount={item.totalAmount}
+                  totalPaymentCount={item.totalPaymentCount}
+                  totalRefundAmount={item.totalRefundAmount}
+                  totalRefundCount={item.totalRefundCount}
+                />
+              </Suspense>
+            </TotalList>
+            <PerformanceBox
+              managerData={item}
+              dateRange={dateRange}
+              filterSearch={filterSearch}
+              totalPaymentCount={item.totalPaymentCount - item.totalRefundCount}
+            />
+            <PerformanceRefundBox
+              managerData={item}
+              dateRange={dateRange}
+              filterSearch={filterSearch}
+              totalRefundCount={item.totalRefundCount}
+            />
+          </ListBox>
+        ))}
+      </>
+    )
   )
 }
