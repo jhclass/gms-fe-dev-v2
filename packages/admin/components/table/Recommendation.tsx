@@ -1,10 +1,10 @@
 import RecommendationForm from '@/components/form/RecommendationForm'
 import RecommendationList from '@/components/form/RecommendationList'
 
-export default function Recommendation() {
+export default function Recommendation({ paymentId, subjectId }) {
   return (
     <>
-      <RecommendationForm />
+      <RecommendationForm paymentId={paymentId} subjectId={subjectId} />
       <RecommendationList />
     </>
   )

@@ -1,15 +1,10 @@
-import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button, Input, Textarea, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
-import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import { CREATE_HOPE_FOR_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -110,117 +105,38 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function WishForm() {
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const loginMGrade = useMme('mGrade')
-  const loginMPart = useMme('mPart') || []
+export default function WishForm({ paymentId, subjectId }) {
   const router = useRouter()
-  const [adviceType, setAdviceType] = useState([])
   const { userLogs } = useUserLogsMutation()
-  // const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
-  //   SEARCH_MANAGEUSER_QUERY,
-  //   {
-  //     variables: {
-  //       searchManageUserId: parseInt(managerId),
-  //     },
-  //   },
-  // )
-  // const [
-  //   createTamp,
-  //   { loading: createLoading, error: createError, data: CreateData },
-  // ] = useLazyQuery(CREATE_STAMP_QUERY, {
-  //   onCompleted: result => {
-  //     if (result.createStamp.ok) {
-  //       userLogs(`${managerData.mUsername} 직원 stemp 생성`)
-  //       refetch()
-  //     }
-  //   },
-  // })
+  const [createHope] = useMutation(CREATE_HOPE_FOR_EMPLOYMENT_MUTATION)
+  const { register, handleSubmit, reset, control, formState } = useForm()
+  const { errors } = formState
 
-  // const managerData = data?.searchManageUser.data[0]
-  const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
-
-  const { register, control, handleSubmit, setValue, formState } = useForm()
-  const { errors, dirtyFields, isDirty } = formState
-
-  const gradeStr = data => {
-    if (data == null) {
-      return 'A'
-    } else {
-      const idF = data?.charAt(0).toUpperCase()
-      return idF
-    }
-  }
-
-  // useEffect(() => {
-  //   if (
-  //     managerData?.mJoiningDate === null ||
-  //     managerData?.mJoiningDate === undefined
-  //   ) {
-  //     setJoiningDate(null)
-  //   } else {
-  //     const date = parseInt(managerData?.mJoiningDate)
-  //     setJoiningDate(date)
-  //   }
-  // }, [managerData])
-
-  const onSubmit = async data => {
-    if (isDirty) {
-      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
-      let part
-      if (dirtyFields.mPart) {
-        const parts = String(data.mPart)
-          .split(',')
-          .map(part => part.trim())
-        part = parts
-      } else {
-        // part = managerData.mPart
-      }
-      if (isModify) {
-        try {
-          const result = await editManager({
-            variables: {
-              // editManageUserId: managerData.id,
-              mUsername: data.mUsername.trim(),
-              mPhoneNum: data.mPhoneNum.trim(),
-              mPart: data.mPart === null ? null : part,
-              mPhoneNumFriend:
-                data.mPhoneNumFriend === null
-                  ? null
-                  : data.mPhoneNumFriend.trim(),
-              mJoiningDate:
-                data.mJoiningDate === null
-                  ? null
-                  : typeof data.mJoiningDate === 'string'
-                  ? new Date(parseInt(data.mJoiningDate))
-                  : new Date(data.mJoiningDate),
-              mAddresses:
-                data.mAddresses === null ? null : data.mAddresses.trim(),
-              email: data.email === null ? null : data.email.trim(),
-              resign: data.resign === true ? 'Y' : 'N',
-            },
-          })
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            // `${managerData.mUsername} 강사 정보 수정`,
-            `ok: ${result.data.editManageUser.ok} / ${dirtyFieldsArray.join(
-              ', ',
-            )}`,
-          )
-
-          if (!result.data.editManageUser.ok) {
-            throw new Error('강사 정보 수정 실패')
-          }
-
-          alert('수정되었습니다.')
-          window.location.href = '/hr/teacher'
-        } catch (error) {
-          console.error('강사 정보 수정 중 에러 발생:', error)
-          alert('강사 정보 수정 처리 중 오류가 발생했습니다.')
+  const onSubmit = data => {
+    console.log(data)
+    console.log(subjectId, paymentId)
+    createHope({
+      variables: {
+        studentPaymentId: paymentId,
+        subjectId: subjectId,
+        workingArea: data.workingArea,
+        fieldOfHope: data.fieldOfHope,
+        hopefulReward: parseInt(data.hopefulReward),
+        workType: data.workType,
+        workingHours: parseInt(data.workingHours),
+        opinion: data.opinion,
+      },
+      onCompleted: result => {
+        userLogs(
+          `수강생 ID:${paymentId} 취업 희망 현황 등록`,
+          `ok: ${result.createHopeForEmployment.ok}`,
+        )
+        if (result.createHopeForEmployment.ok) {
+          alert(`취업 희망 현황이 등록되었습니다.`)
+          reset()
         }
-      }
-    }
+      },
+    })
   }
 
   const formatDate = data => {
@@ -234,17 +150,6 @@ export default function WishForm() {
       `${date.getMinutes().toString().padStart(2, '0')}:` +
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
-  }
-
-  const clickCreate = () => {
-    // createTamp({ variables: { manageUserId: managerData.id } })
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'teacherType' },
-    })
   }
 
   return (
@@ -273,18 +178,27 @@ export default function WishForm() {
                   radius="md"
                   type="text"
                   // defaultValue={managerData.mUsername}
-                  label={<FilterLabel>근무지역</FilterLabel>}
+                  label={
+                    <FilterLabel>
+                      근무지역 <span>*</span>
+                    </FilterLabel>
+                  }
                   className="w-full"
                   onChange={e => {
-                    register('mUsername').onChange(e)
+                    register('workingArea').onChange(e)
                   }}
-                  {...register('mUsername', {
+                  {...register('workingArea', {
                     required: {
                       value: true,
-                      message: '이름을 입력해주세요.',
+                      message: '근무지역을 입력해주세요.',
                     },
                   })}
                 />
+                {errors.workingArea && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.workingArea.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Input
@@ -301,18 +215,18 @@ export default function WishForm() {
                   }
                   className="w-full"
                   onChange={e => {
-                    register('mPhoneNum').onChange(e)
+                    register('fieldOfHope').onChange(e)
                   }}
-                  {...register('mPhoneNum', {
+                  {...register('fieldOfHope', {
                     required: {
                       value: true,
                       message: '희망분야를 입력해주세요.',
                     },
                   })}
                 />
-                {errors.mPhoneNum && (
+                {errors.fieldOfHope && (
                   <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.mPhoneNum.message)}
+                    {String(errors.fieldOfHope.message)}
                   </p>
                 )}
               </AreaBox>
@@ -325,15 +239,32 @@ export default function WishForm() {
                   variant="bordered"
                   radius="md"
                   type="text"
-                  label="희망보수"
+                  label={
+                    <FilterLabel>
+                      희망보수 <span>*</span>
+                    </FilterLabel>
+                  }
                   // defaultValue={managerData.mPhoneNumFriend}
                   className="w-full"
-                  maxLength={12}
                   onChange={e => {
-                    register('mPhoneNumFriend').onChange(e)
+                    register('hopefulReward').onChange(e)
                   }}
-                  {...register('mPhoneNumFriend')}
+                  {...register('hopefulReward', {
+                    required: {
+                      value: true,
+                      message: '희망보수를 입력해주세요.',
+                    },
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: '숫자만 사용가능합니다.',
+                    },
+                  })}
                 />
+                {errors.hopefulReward && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.hopefulReward.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Input
@@ -343,13 +274,27 @@ export default function WishForm() {
                   radius="md"
                   type="text"
                   // defaultValue={managerData.email}
-                  label="근무형태"
+                  label={
+                    <FilterLabel>
+                      근무형태 <span>*</span>
+                    </FilterLabel>
+                  }
                   className="w-full"
                   onChange={e => {
-                    register('email').onChange(e)
+                    register('workType').onChange(e)
                   }}
-                  {...register('email')}
+                  {...register('workType', {
+                    required: {
+                      value: true,
+                      message: '근무형태를 입력해주세요.',
+                    },
+                  })}
                 />
+                {errors.workType && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.workType.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Input
@@ -359,27 +304,61 @@ export default function WishForm() {
                   radius="md"
                   type="text"
                   // defaultValue={managerData.email}
-                  label="근무시간"
+                  label={
+                    <FilterLabel>
+                      근무시간 <span>*</span>
+                    </FilterLabel>
+                  }
                   className="w-full"
                   onChange={e => {
-                    register('email').onChange(e)
+                    register('workingHours').onChange(e)
                   }}
-                  {...register('email')}
+                  {...register('workingHours', {
+                    required: {
+                      value: true,
+                      message: '근무시간을 입력해주세요.',
+                    },
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: '숫자만 사용가능합니다.',
+                    },
+                  })}
                 />
+                {errors.workingHours && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.workingHours.message)}
+                  </p>
+                )}
               </AreaBox>
             </FlexBox>
             <FlexBox>
-              <Textarea
-                label={<FilterLabel>교육수료 후 취업에 대한 의견</FilterLabel>}
-                labelPlacement="outside"
-                className="max-w-full"
-                variant="bordered"
-                minRows={5}
-                onChange={e => {
-                  register('detail').onChange(e)
-                }}
-                {...register('detail')}
-              />
+              <AreaBox>
+                <Textarea
+                  label={
+                    <FilterLabel>
+                      교육수료 후 취업에 대한 의견 <span>*</span>
+                    </FilterLabel>
+                  }
+                  labelPlacement="outside"
+                  className="max-w-full"
+                  variant="bordered"
+                  minRows={5}
+                  onChange={e => {
+                    register('opinion').onChange(e)
+                  }}
+                  {...register('opinion', {
+                    required: {
+                      value: true,
+                      message: '교육수료 후 취업에 대한 의견을 입력해주세요.',
+                    },
+                  })}
+                />
+                {errors.opinion && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.opinion.message)}
+                  </p>
+                )}
+              </AreaBox>
             </FlexBox>
             <BtnBox>
               <Button
@@ -390,7 +369,7 @@ export default function WishForm() {
                 color="primary"
                 className="w-full text-white lg:w-[50%]"
               >
-                수정
+                저장
               </Button>
             </BtnBox>
           </DetailDiv>

@@ -2,6 +2,7 @@ import { Button } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import ListLimit from '@/components/common/ListLimit'
 import ColorInfo from './ColorInfo'
+import { useEffect, useState } from 'react'
 
 const TTopic = styled.div<{ $colorInfo: boolean; $resetList: boolean }>`
   display: flex;
@@ -60,35 +61,34 @@ export default function TableTop({
   colorInfo = null,
 }) {
   return (
-    <TTopic
-      $colorInfo={colorInfo ? true : false}
-      $resetList={resetList ? true : false}
-    >
-      {resetList ? (
-        <RightBox>
-          <Ttotal>
-            총 <span>{totalCount === null ? 0 : totalCount}</span>
-            건이 검색되었습니다.
-          </Ttotal>
-          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
-            전체보기
-          </Button>
-        </RightBox>
-      ) : (
-        <RightBox>
-          <Ttotal>
-            총 <span>{totalCount === null ? 0 : totalCount}</span>건
-          </Ttotal>
-        </RightBox>
-      )}
-
-      <LeftBox>
-        {colorInfo && <ColorInfo ColorData={colorInfo} />}
-        <ListLimit
-          currentLimit={currentLimit}
-          setCurrentLimit={setCurrentLimit}
-        />
-      </LeftBox>
-    </TTopic>
+    <>
+      <TTopic
+        $colorInfo={colorInfo ? true : false}
+        $resetList={resetList ? true : false}
+      >
+        {resetList ? (
+          <RightBox>
+            <Ttotal>
+              총 <span>{totalCount === null ? 0 : totalCount}</span>
+              건이 검색되었습니다.
+            </Ttotal>
+            <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+              전체보기
+            </Button>
+          </RightBox>
+        ) : (
+          <RightBox>
+            <Ttotal>
+              총 <span>{totalCount === null ? 0 : totalCount}</span>건
+            </Ttotal>
+          </RightBox>
+        )}
+        <LeftBox>{colorInfo && <ColorInfo ColorData={colorInfo} />}</LeftBox>
+      </TTopic>
+      <ListLimit
+        currentLimit={currentLimit}
+        setCurrentLimit={setCurrentLimit}
+      />
+    </>
   )
 }

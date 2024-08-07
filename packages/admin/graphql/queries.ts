@@ -842,35 +842,23 @@ export const SEARCH_MESSAGE_QUERY = gql`
 `
 // 학적부
 export const SEARCH_SM_QUERY = gql`
-  query SearchSM(
+  query Query(
     $modelType: String!
-    $lectureId: Int
     $studentPaymentId: Int
-    $subjectId: Int
     $limit: Int
     $page: Int
   ) {
     searchSM(
       modelType: $modelType
-      lectureId: $lectureId
       studentPaymentId: $studentPaymentId
-      subjectId: $subjectId
       limit: $limit
       page: $page
     ) {
+      totalCount
+      ok
+      message
+      error
       data {
-        ... on Career {
-          id
-          lectureId
-          studentId
-          stName
-          careerDetails
-          subjectId
-          studentPaymentId
-          createdAt
-          updatedAt
-          branchId
-        }
         ... on EduInfomation {
           id
           lectureId
@@ -884,40 +872,33 @@ export const SEARCH_SM_QUERY = gql`
           studentPaymentId
           createdAt
           updatedAt
-          branchId
           lastModifiedByUserId
           lastModifiedByName
+        }
+        ... on Career {
+          id
+          lectureId
+          studentId
+          stName
+          careerDetails
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
         }
         ... on Certificate {
           id
           lectureId
           studentId
           stName
+          CAdate
           certificateName
           certificateLevel
-          subjectId
-          studentPaymentId
-          createdAt
-          updatedAt
-          branchId
-          lastModifiedByUserId
-          lastModifiedByName
           CertificateIssuer
-          CAdate
-        }
-        ... on StudentConsultation {
-          id
-          lectureId
-          studentId
-          stName
-          typeOfConsultation
-          dateOfConsultation
-          detailsOfConsultation
           subjectId
           studentPaymentId
           createdAt
           updatedAt
-          branchId
           lastModifiedByUserId
           lastModifiedByName
         }
@@ -935,7 +916,6 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           createdAt
           updatedAt
-          branchId
           lastModifiedByUserId
           lastModifiedByName
         }
@@ -957,7 +937,6 @@ export const SEARCH_SM_QUERY = gql`
           studentPaymentId
           createdAt
           updatedAt
-          branchId
           lastModifiedByUserId
           lastModifiedByName
         }
@@ -981,7 +960,6 @@ export const SEARCH_SM_QUERY = gql`
           studentPaymentId
           createdAt
           updatedAt
-          branchId
           lastModifiedByUserId
           lastModifiedByName
         }
@@ -998,15 +976,25 @@ export const SEARCH_SM_QUERY = gql`
           studentPaymentId
           createdAt
           updatedAt
-          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+        }
+        ... on StudentConsultation {
+          id
+          lectureId
+          studentId
+          stName
+          typeOfConsultation
+          dateOfConsultation
+          detailsOfConsultation
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
           lastModifiedByUserId
           lastModifiedByName
         }
       }
-      error
-      message
-      ok
-      totalCount
     }
   }
 `

@@ -33,7 +33,7 @@ const AreaTitle = styled.div`
   }
 `
 
-export default function EmploymentTabs() {
+export default function EmploymentTabs({ paymentId, subjectId }) {
   const [selected, setSelected] = useState('consultation')
 
   return (
@@ -57,7 +57,10 @@ export default function EmploymentTabs() {
               <AreaTitle>
                 <h4>상담작성</h4>
               </AreaTitle>
-              <CreateEmploymentMemo />
+              <CreateEmploymentMemo
+                paymentId={paymentId}
+                subjectId={subjectId}
+              />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -75,7 +78,7 @@ export default function EmploymentTabs() {
               <AreaTitle>
                 <h4>취업희망현황</h4>
               </AreaTitle>
-              <WishForm />
+              <WishForm paymentId={paymentId} subjectId={subjectId} />
             </DetailDiv>
           </DetailBox>
           <DetailBox>
@@ -83,7 +86,7 @@ export default function EmploymentTabs() {
               <AreaTitle>
                 <h4>취업 추천 현황</h4>
               </AreaTitle>
-              <Recommendation />
+              <Recommendation paymentId={paymentId} subjectId={subjectId} />
             </DetailDiv>
           </DetailBox>
           <DetailBox>

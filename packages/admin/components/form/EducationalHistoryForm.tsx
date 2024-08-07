@@ -278,7 +278,13 @@ export default function EducationalHistoryForm({ paymentId, subjectId }) {
                         variant="bordered"
                         size="sm"
                         selectedKeys={[graduationValue]}
-                        onChange={e => handleGraduationChange(e)}
+                        onChange={value => {
+                          console.log(field)
+                          if (value.target.value !== '') {
+                            field.onChange(value)
+                            handleGraduationChange(value)
+                          }
+                        }}
                         classNames={{
                           label: 'w-[4rem] pr-0',
                         }}
@@ -286,16 +292,16 @@ export default function EducationalHistoryForm({ paymentId, subjectId }) {
                         <SelectItem value={'졸업여부'} key={'졸업여부'}>
                           졸업여부
                         </SelectItem>
-                        <SelectItem value={'학력 선택'} key={'학력 선택'}>
+                        <SelectItem value={'졸업'} key={'졸업'}>
                           졸업
                         </SelectItem>
-                        <SelectItem value={'초등학교'} key={'초등학교'}>
+                        <SelectItem value={'휴학'} key={'휴학'}>
                           휴학
                         </SelectItem>
-                        <SelectItem value={'중학교'} key={'중학교'}>
+                        <SelectItem value={'재학'} key={'재학'}>
                           재학
                         </SelectItem>
-                        <SelectItem value={'고등학교'} key={'고등학교'}>
+                        <SelectItem value={'중퇴'} key={'중퇴'}>
                           중퇴
                         </SelectItem>
                       </Select>

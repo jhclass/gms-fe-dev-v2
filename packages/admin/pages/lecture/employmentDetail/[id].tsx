@@ -284,7 +284,10 @@ export default function StudentsWrite() {
                 />
               </DetailDiv>
             </DetailBox>
-            <EmploymentTabs />
+            <EmploymentTabs
+              paymentId={parseInt(paymentId)}
+              subjectId={paymentData.subjectId}
+            />
             <DetailBox>
               <BtnBox>
                 <Button

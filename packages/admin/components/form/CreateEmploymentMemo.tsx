@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { Button, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import {
+  CREATE_STUDENT_CONSULTATION_MUTATION,
   CREATE_STUDENT_MEMO_MUTATION,
   SEARCH_STUDENT_MEMO_MUTATION,
 } from '@/graphql/mutations'
@@ -55,7 +56,7 @@ const MemoBtn = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   padding-right: 6rem;
 
   @media (max-width: 768px) {
@@ -115,65 +116,42 @@ const FilterLabel = styled.p`
   }
 `
 
-export default function CreateEmploymentMemo(props) {
-  const studentId = props.studentId
+export default function CreateEmploymentMemo({ paymentId, subjectId }) {
   const { userLogs } = useUserLogsMutation()
-  const [createMemo] = useMutation(CREATE_STUDENT_MEMO_MUTATION)
-  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MEMO_MUTATION)
+  const [createConsultation] = useMutation(CREATE_STUDENT_CONSULTATION_MUTATION)
+
   const { register, handleSubmit, reset, control, formState } = useForm()
-  const { isDirty, isSubmitSuccessful } = formState
+  const { errors } = formState
   const [memoType, setMemoType] = useState('기초상담')
   const [memoDate, setMemoDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
-  const onSubmit = async data => {
-    if (isDirty) {
-      try {
-        const { content } = data
-
-        const {
-          data: {
-            createStudentMemo: { ok },
-          },
-        } = await createMemo({
-          variables: {
-            content: content.trim(),
-            studentId: studentId,
-          },
-        })
-
-        userLogs(`수강생 ID:${studentId} 메모 등록`, `ok: ${ok}`)
-
-        if (!ok) {
-          throw new Error('메모 등록 실패')
+  const onSubmit = data => {
+    console.log(data)
+    console.log(subjectId, paymentId)
+    createConsultation({
+      variables: {
+        subjectId: subjectId,
+        studentPaymentId: paymentId,
+        typeOfConsultation: data.typeOfConsultation,
+        dateOfConsultation: data.dateOfConsultation,
+        detailsOfConsultation: data.detailsOfConsultation,
+      },
+      onCompleted: result => {
+        console.log(result)
+        userLogs(
+          `수강생 ID:${paymentId} ${data.typeOfConsultation} 등록`,
+          `ok: ${result.createStudentConsultation.ok}`,
+        )
+        if (result.createStudentConsultation.ok) {
+          alert(`${data.typeOfConsultation} 등록되었습니다.`)
+          reset()
+          setMemoType('기초상담')
+          setMemoDate(null)
         }
-
-        props.setMemoList([])
-
-        const {
-          data: { searchStudent },
-        } = await searchStudentMutation({
-          variables: {
-            searchStudentId: parseInt(studentId),
-          },
-        })
-
-        if (!searchStudent.ok) {
-          throw new Error('학생 조회 실패')
-        }
-
-        const { studentMemo } = searchStudent.student[0]
-        props.setMemoList(studentMemo)
-      } catch (error) {
-        console.error('에러 발생:', error)
-      }
-    }
+      },
+    })
   }
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({ content: '' })
-    }
-  }, [formState])
 
   const handleTypeChange = value => {
     setMemoType(value)
@@ -186,7 +164,14 @@ export default function CreateEmploymentMemo(props) {
             <RadioBox>
               <Controller
                 control={control}
-                name="cashOrCard"
+                name="typeOfConsultation"
+                rules={{
+                  required: {
+                    value: true,
+                    message: '상담 구분을 선택해주세요.',
+                  },
+                }}
+                defaultValue={memoType}
                 render={({ field }) => (
                   <RadioGroup
                     label={
@@ -215,13 +200,18 @@ export default function CreateEmploymentMemo(props) {
                 )}
               />
             </RadioBox>
+            {errors.typeOfConsultation && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.typeOfConsultation.message)}
+              </p>
+            )}
           </AreaBox>
           <AreaBox>
             <DatePickerBox>
               <Controller
                 control={control}
                 rules={{ required: '상담 일자를 선택해주세요.' }}
-                name="paymentDate"
+                name="dateOfConsultation"
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -278,29 +268,41 @@ export default function CreateEmploymentMemo(props) {
                 )}
               />
             </DatePickerBox>
-            {/* {errors.paymentDate && (
+            {errors.dateOfConsultation && (
               <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.paymentDate.message)}
+                {String(errors.dateOfConsultation.message)}
               </p>
-            )} */}
+            )}
           </AreaBox>
         </FlexBox>
         <MemoBox>
-          <Textarea
-            label={
-              <FilterLabel>
-                상담 내용<span>*</span>
-              </FilterLabel>
-            }
-            labelPlacement="outside"
-            className="max-w-full"
-            variant="bordered"
-            minRows={5}
-            onChange={e => {
-              register('content').onChange(e)
-            }}
-            {...register('content')}
-          />
+          <AreaBox>
+            <Textarea
+              label={
+                <FilterLabel>
+                  상담 내용<span>*</span>
+                </FilterLabel>
+              }
+              labelPlacement="outside"
+              className="max-w-full"
+              variant="bordered"
+              minRows={5}
+              onChange={e => {
+                register('detailsOfConsultation').onChange(e)
+              }}
+              {...register('detailsOfConsultation', {
+                required: {
+                  value: true,
+                  message: '상담 내용을 입력해주세요.',
+                },
+              })}
+            />
+            {errors.dateOfConsultation && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.dateOfConsultation.message)}
+              </p>
+            )}
+          </AreaBox>
           <MemoBtn>
             <Button type="submit" color="primary" className="w-full text-white">
               등록

@@ -8,6 +8,7 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 const TableArea = styled.div`
   padding-bottom: 1.5rem;
@@ -146,13 +147,49 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function RecommendationForm() {
+export default function RecommendationForm({ paymentId, subjectId }) {
   const [recommendationDate, setRecommendationDate] = useState(null)
   const [interviewDate, setInterviewDate] = useState(null)
   const [isEmployment, setIsEmployment] = useState(false)
   const [isCertificate, setIsCertificate] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm()
+
+  const onSubmit = data => {
+    console.log(data)
+    console.log(subjectId, paymentId)
+    //  createEduInfo({
+    //    variables: {
+    //      subjectId: subjectId,
+    //      studentPaymentId: paymentId,
+    //      eduType: data.eduType === '' ? null : data.eduType,
+    //      eduName: data.eduName === '' ? null : data.eduName,
+    //      graduationStatus:
+    //        data.graduationStatus === '' ? null : data.graduationStatus,
+    //      major: data.major === '' ? null : data.major,
+    //    },
+    //    onCompleted: result => {
+    //      userLogs(
+    //        `paymentId: ${paymentId} 학력 등록`,
+    //        `ok: ${result.createEduInfomation.ok}`,
+    //      )
+    //      if (result.createEduInfomation.ok) {
+    //        alert('학력이 추가되었습니다.')
+    //        reset()
+    //        setEducationValue('학력선택')
+    //        setGraduationValue('졸업여부')
+    //      }
+    //    },
+    //  })
+  }
+
   const formatDate = data => {
     const date = new Date(data)
     const formatted =

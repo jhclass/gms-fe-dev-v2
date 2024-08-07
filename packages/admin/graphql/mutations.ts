@@ -2088,3 +2088,51 @@ export const CREATE_CERTIFICATE_MUTATION = gql`
     }
   }
 `
+export const CREATE_STUDENT_CONSULTATION_MUTATION = gql`
+  mutation CreateStudentConsultation(
+    $typeOfConsultation: String!
+    $dateOfConsultation: String!
+    $detailsOfConsultation: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+  ) {
+    createStudentConsultation(
+      typeOfConsultation: $typeOfConsultation
+      dateOfConsultation: $dateOfConsultation
+      detailsOfConsultation: $detailsOfConsultation
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
+  mutation CreateHopeForEmployment(
+    $workingArea: String!
+    $fieldOfHope: String!
+    $hopefulReward: Int!
+    $workType: String!
+    $workingHours: Int!
+    $opinion: String!
+    $studentPaymentId: Int!
+    $subjectId: Int!
+  ) {
+    createHopeForEmployment(
+      workingArea: $workingArea
+      fieldOfHope: $fieldOfHope
+      hopefulReward: $hopefulReward
+      workType: $workType
+      workingHours: $workingHours
+      opinion: $opinion
+      studentPaymentId: $studentPaymentId
+      subjectId: $subjectId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`

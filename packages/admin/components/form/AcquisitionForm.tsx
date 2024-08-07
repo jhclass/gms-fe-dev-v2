@@ -157,34 +157,31 @@ export default function AcquisitionForm({ paymentId, subjectId }) {
   } = useForm()
 
   const onSubmit = data => {
-    console.log(data)
-    console.log(subjectId, paymentId)
-    // createCertificate({
-    //   variables: {
-    //     subjectId: subjectId,
-    //     studentPaymentId: paymentId,
-    //     eduType: data.eduType === '' ? null : data.eduType,
-    //     cAdate: data.cAdate === '' ? null : data.cAdate,
-    //     certificateName:
-    //       data.certificateName === '' ? null : data.certificateName,
-    //     certificateIssuer:
-    //       data.certificateIssuer === '' ? null : data.certificateIssuer,
-    //     certificateLevel:
-    //       data.certificateLevel === '' ? null : data.certificateLevel,
-    //   },
-    //   onCompleted: result => {
-    // console.log(result)
-    //   userLogs(
-    //     `paymentId: ${paymentId} 자격 취득 현황 등록`,
-    //     `ok: ${result.createEduInfomation.ok}`,
-    //   )
-    //   if (result.createEduInfomation.ok) {
-    //     alert('자격 취득 현황이 추가되었습니다.')
-    //     reset()
-    //     setAcquisitionDate(null)
-    //   }
-    // },
-    // })
+    createCertificate({
+      variables: {
+        subjectId: subjectId,
+        studentPaymentId: paymentId,
+        eduType: data.eduType === '' ? null : data.eduType,
+        cAdate: data.cAdate === '' ? null : data.cAdate,
+        certificateName:
+          data.certificateName === '' ? null : data.certificateName,
+        certificateIssuer:
+          data.certificateIssuer === '' ? null : data.certificateIssuer,
+        certificateLevel:
+          data.certificateLevel === '' ? null : data.certificateLevel,
+      },
+      onCompleted: result => {
+        userLogs(
+          `paymentId: ${paymentId} 자격 취득 현황 등록`,
+          `ok: ${result.createCertificate.ok}`,
+        )
+        if (result.createCertificate.ok) {
+          alert('자격 취득 현황이 추가되었습니다.')
+          reset()
+          setAcquisitionDate(null)
+        }
+      },
+    })
   }
 
   const formatDate = data => {
