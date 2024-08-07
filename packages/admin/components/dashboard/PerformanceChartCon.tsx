@@ -5,7 +5,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { ScrollShadow } from '@nextui-org/react'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const ConArea = styled.div`
@@ -56,6 +56,7 @@ export default function PerformanceChartCon({
 }) {
   const router = useRouter()
   const theme = useTheme()
+  const [chartKey, setChartKey] = useState(0)
   const {
     data: managerData,
     error,
@@ -74,6 +75,10 @@ export default function PerformanceChartCon({
       resign: 'N',
     })
   }, [router])
+
+  useEffect(() => {
+    setChartKey(prevKey => prevKey + 1) // Force re-render the chart
+  }, [managerData, totalAmount, totalRefundAmount])
 
   const managerUsernames = managerIds.map(
     id => managerList.find(user => user.id === id)?.mUsername,
@@ -200,6 +205,7 @@ export default function PerformanceChartCon({
               <ScrollShadow orientation="horizontal" className="scrollbar">
                 <ChartWrap>
                   <ApexChart
+                    key={chartKey}
                     options={chartData.options}
                     series={chartData.series}
                     type="bar"
