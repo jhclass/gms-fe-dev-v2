@@ -145,29 +145,42 @@ export default function StudentsWrite() {
   const [paymentData, setPaymentData] = useState(null)
   const [students, setStudents] = useState(null)
 
-  useEffect(() => {
-    searchPayment({
-      variables: {
-        searchStudentPaymentId: parseInt(paymentId),
-      },
-      onCompleted: resData => {
-        if (resData.searchStudentPayment.ok) {
-          const { data } = resData.searchStudentPayment || {}
+  const fetchData = async () => {
+    try {
+      const resData = await searchPayment({
+        variables: {
+          searchStudentPaymentId: parseInt(paymentId),
+        },
+      })
+
+      if (resData.data.searchStudentPayment.ok) {
+        const data = resData.data.searchStudentPayment.data
+        if (data.length > 0) {
           setPaymentData(data[0])
-          searchLectures({
+          console.log(data)
+
+          const result = await searchLectures({
             variables: {
               searchLecturesId: data[0].subject.lectures.id,
             },
-            onCompleted: result => {
-              if (result.searchLectures.ok) {
-                const { data } = result.searchLectures
-                setLectureData(data[0])
-              }
-            },
           })
+
+          if (result.data.searchLectures.ok) {
+            const lectureData = result.data.searchLectures.data
+            if (lectureData.length > 0) {
+              setLectureData(lectureData[0])
+            }
+          }
         }
-      },
-    })
+      }
+    } catch (error) {
+      console.error('Error fetching data: ', error)
+    }
+  }
+
+  useEffect(() => {
+    if (!paymentId) return
+    fetchData()
   }, [router])
 
   const formatDate = (data, isTime) => {
@@ -190,10 +203,10 @@ export default function StudentsWrite() {
       return formatted
     }
   }
-  console.log('1', paymentId)
+
   return (
-    lectureData && (
-      <>
+    <>
+      {paymentData && lectureData && (
         <MainWrap>
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
@@ -290,8 +303,8 @@ export default function StudentsWrite() {
             </DetailBox>
           </ConArea>
         </MainWrap>
-      </>
-    )
+      )}
+    </>
   )
 }
 StudentsWrite.getLayout = page => <Layout>{page}</Layout>

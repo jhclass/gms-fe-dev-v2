@@ -41,7 +41,7 @@ const Content = styled.div`
   }
 `
 const ChartWrap = styled.div`
-  /* min-width: 700px; */
+  min-width: 700px;
 `
 
 type searchManageUserQuery = {
@@ -162,11 +162,11 @@ export default function PerformanceChartCon({
               return (value / 10000).toFixed(0).toLocaleString()
             },
           },
-          max: maxAmountValue,
+          // max: maxAmountValue,
         },
         {
           show: false,
-          max: maxAmountValue,
+          // max: maxAmountValue,
         },
         {
           labels: {
@@ -175,7 +175,7 @@ export default function PerformanceChartCon({
             },
           },
           show: false,
-          max: maxAmountValue,
+          // max: maxAmountValue,
         },
       ],
       colors: [
