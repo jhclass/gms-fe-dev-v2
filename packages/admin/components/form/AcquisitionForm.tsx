@@ -8,6 +8,11 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useState } from 'react'
+import useUserLogsMutation from '@/utils/userLogs'
+import { useMutation } from '@apollo/client'
+
+import { CREATE_CERTIFICATE_MUTATION } from '@/graphql/mutations'
+import { Controller, useForm } from 'react-hook-form'
 
 const TableArea = styled.div`
   padding-bottom: 1.5rem;
@@ -39,6 +44,16 @@ const ClickBox = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+
+  span {
+    color: ${({ theme }) => theme.colors.red};
+  }
+`
+
+const ClickForm = styled.form`
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
 `
 const Ttext = styled.div`
   display: table-cell;
@@ -124,10 +139,54 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function AcquisitionForm() {
+export default function AcquisitionForm({ paymentId, subjectId }) {
+  const { userLogs } = useUserLogsMutation()
+  const [createCertificate] = useMutation(CREATE_CERTIFICATE_MUTATION)
   const [acquisitionDate, setAcquisitionDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const [isOpen, setIsOpen] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    clearErrors,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm()
+
+  const onSubmit = data => {
+    console.log(data)
+    console.log(subjectId, paymentId)
+    // createCertificate({
+    //   variables: {
+    //     subjectId: subjectId,
+    //     studentPaymentId: paymentId,
+    //     eduType: data.eduType === '' ? null : data.eduType,
+    //     cAdate: data.cAdate === '' ? null : data.cAdate,
+    //     certificateName:
+    //       data.certificateName === '' ? null : data.certificateName,
+    //     certificateIssuer:
+    //       data.certificateIssuer === '' ? null : data.certificateIssuer,
+    //     certificateLevel:
+    //       data.certificateLevel === '' ? null : data.certificateLevel,
+    //   },
+    //   onCompleted: result => {
+    // console.log(result)
+    //   userLogs(
+    //     `paymentId: ${paymentId} 자격 취득 현황 등록`,
+    //     `ok: ${result.createEduInfomation.ok}`,
+    //   )
+    //   if (result.createEduInfomation.ok) {
+    //     alert('자격 취득 현황이 추가되었습니다.')
+    //     reset()
+    //     setAcquisitionDate(null)
+    //   }
+    // },
+    // })
+  }
+
   const formatDate = data => {
     const date = new Date(data)
     const formatted =
@@ -155,28 +214,37 @@ export default function AcquisitionForm() {
             </Theader>
             <TableItem>
               <TableRow>
-                <ClickBox>
+                <ClickForm onSubmit={handleSubmit(onSubmit)}>
                   <Tdate>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      id="date"
-                      classNames={{
-                        input: 'caret-transparent',
-                      }}
-                      isReadOnly={true}
-                      startContent={<i className="xi-calendar" />}
-                      defaultValue={
-                        acquisitionDate === null
-                          ? null
-                          : String(acquisitionDate)
-                      }
-                      value={formatDate(acquisitionDate) || ''}
-                      onClick={() => setIsOpen(!isOpen)}
+                    <Controller
+                      name="cAdate"
+                      control={control}
+                      rules={{ required: '취득일자를 선택해주세요' }}
+                      render={({ field }) => (
+                        <>
+                          <Input
+                            labelPlacement="outside"
+                            variant="bordered"
+                            radius="sm"
+                            size="sm"
+                            type="text"
+                            placeholder=" "
+                            id="date"
+                            classNames={{
+                              input: 'caret-transparent',
+                            }}
+                            isReadOnly={true}
+                            startContent={<i className="xi-calendar" />}
+                            value={field.value ? formatDate(field.value) : ''}
+                            onClick={() => setIsOpen(!isOpen)}
+                          />
+                          {errors.cAdate && (
+                            <p className="px-2 pt-2 text-xs text-red">
+                              {String(errors.cAdate.message)}
+                            </p>
+                          )}
+                        </>
+                      )}
                     />
                   </Tdate>
                   <Ttext>
@@ -188,6 +256,29 @@ export default function AcquisitionForm() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      {...register('certificateName', {
+                        required: {
+                          value: true,
+                          message: '자격증명을 작성해주세요',
+                        },
+                      })}
+                    />
+                    {errors.certificateName && (
+                      <p className="px-2 pt-2 text-xs text-red">
+                        {String(errors.certificateName.message)}
+                      </p>
+                    )}
+                  </Ttext>
+                  <Ttext>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      className="w-full"
+                      {...register('certificateLevel')}
                     />
                   </Ttext>
                   <Ttext>
@@ -199,22 +290,23 @@ export default function AcquisitionForm() {
                       type="text"
                       placeholder=" "
                       className="w-full"
+                      {...register('certificateIssuer', {
+                        required: {
+                          value: true,
+                          message: '발행처을 작성해주세요',
+                        },
+                      })}
                     />
-                  </Ttext>
-                  <Ttext>
-                    <Input
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      size="sm"
-                      type="text"
-                      placeholder=" "
-                      className="w-full"
-                    />
+                    {errors.certificateIssuer && (
+                      <p className="px-2 pt-2 text-xs text-red">
+                        {String(errors.certificateIssuer.message)}
+                      </p>
+                    )}
                   </Ttext>
                   <Tbtn>
                     <BtnBox>
                       <Button
+                        type="submit"
                         size="sm"
                         variant="solid"
                         color="primary"
@@ -225,7 +317,7 @@ export default function AcquisitionForm() {
                       </Button>
                     </BtnBox>
                   </Tbtn>
-                </ClickBox>
+                </ClickForm>
               </TableRow>
             </TableItem>
           </TableWrap>
@@ -253,10 +345,10 @@ export default function AcquisitionForm() {
             )}
             locale="ko"
             showYearDropdown
-            selected={
-              acquisitionDate === null ? null : new Date(acquisitionDate)
-            }
+            selected={acquisitionDate || null}
             onChange={date => {
+              setValue('cAdate', date)
+              clearErrors('cAdate')
               setAcquisitionDate(date)
               setIsOpen(false)
             }}

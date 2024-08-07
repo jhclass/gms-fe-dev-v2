@@ -3,7 +3,10 @@ import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button, Select, SelectItem } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
+import {
+  EDIT_STUDENT_INFOMATION_MUTATION,
+  SEARCH_STUDENT_MUTATION,
+} from '@/graphql/mutations'
 import StudentInfo from '@/components/items/StudentInfo'
 import Address from '@/components/common/Address'
 import { useForm } from 'react-hook-form'
@@ -50,43 +53,49 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-export default function EmploymentInfoForm() {
-  const router = useRouter()
-  const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
-  const [studentData, setStudentData] = useState(null)
+export default function EmploymentInfoForm({ paymentData }) {
+  const [editStudent] = useMutation(EDIT_STUDENT_INFOMATION_MUTATION)
   const [selectValue, setSelectValue] = useState('유형선택')
   const { register, setValue, control, handleSubmit, formState } = useForm({})
+
+  const calculateAge = birthday => {
+    const today = new Date()
+    const timestamp = parseInt(birthday, 10)
+    const birthDate = new Date(timestamp)
+
+    let age = today.getFullYear() - birthDate.getFullYear()
+
+    const monthDifference = today.getMonth() - birthDate.getMonth()
+    const dayDifference = today.getDate() - birthDate.getDate()
+
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+      age--
+    }
+
+    return age
+  }
   const handleSelectChange = e => {
     setSelectValue(e.target.value)
   }
 
-  useEffect(() => {
-    searchStudentMutation({
-      variables: {
-        searchStudentId: 267,
-      },
-      onCompleted: data => {
-        if (data.searchStudent.ok) {
-          setStudentData(data.searchStudent?.student[0])
-        }
-      },
-    })
-  }, [router])
-
   return (
     <>
-      <StudentInfo studentData={studentData} detailAll={false} record={true} />
+      <StudentInfo
+        studentData={paymentData.student}
+        detailAll={false}
+        record={true}
+      />
       <FlexConBox>
         <AreaBox>
           <div>
             <FilterLabel>나이</FilterLabel>
-            <LineBox>30세</LineBox>
+            <LineBox>{calculateAge(paymentData.student.birthday)}세</LineBox>
           </div>
         </AreaBox>
         <AreaBox>
           <div>
             <FilterLabel>선발평가 점수</FilterLabel>
-            <LineBox>89점</LineBox>
+            <LineBox>{paymentData.seScore}점</LineBox>
           </div>
         </AreaBox>
         <AreaBox className="h-[66px]">

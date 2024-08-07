@@ -241,7 +241,10 @@ export default function StudentsWrite() {
                         student.subDiv === '국가기간',
                     )
                     .map((item, index) => (
-                      <Link href="#" key={index}>
+                      <Link
+                        href={`/lecture/employmentDetail/${item.id}`}
+                        key={index}
+                      >
                         <Chip color="primary">{item.student.name}</Chip>
                       </Link>
                     ))}

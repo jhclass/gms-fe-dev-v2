@@ -1,3 +1,6 @@
+import { SEARCH_SM_QUERY } from '@/graphql/queries'
+import { ResultSearchSm } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
 import {
   Button,
   Input,
@@ -121,8 +124,20 @@ const MoreBtn = styled.div`
   align-items: center;
   justify-content: center;
 `
+type searchSMQuery = {
+  searchSM: ResultSearchSm
+}
 
-export default function EducationalHistoryList() {
+export default function EducationalHistoryList({ paymentId }) {
+  // const { error, data, refetch } = useSuspenseQuery<searchSMQuery>(
+  //   SEARCH_SM_QUERY,
+  //   {
+  //     variables: {
+  //       modelType: 'EduInfomation',
+  //       studentPaymentId: paymentId,
+  //     },
+  //   },
+  // )
   const [educationValue, setEducationValue] = useState('학력선택')
   const [graduationValue, setGraduationValue] = useState('졸업여부')
 
@@ -133,6 +148,8 @@ export default function EducationalHistoryList() {
     setGraduationValue(e.target.value)
   }
 
+  // console.log(data)
+
   return (
     <>
       <TableArea>
@@ -142,7 +159,7 @@ export default function EducationalHistoryList() {
               <TheaderBox>
                 <ClickBox>
                   <Tselect>학력</Tselect>
-                  <Ttext>학교명1</Ttext>
+                  <Ttext>학교명</Ttext>
                   <Ttext>전공</Ttext>
                   <Tselect>졸업여부</Tselect>
                   <Tbtn></Tbtn>
