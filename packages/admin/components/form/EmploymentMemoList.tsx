@@ -1,10 +1,10 @@
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
-import { ResultSearchSm } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import CareerHistoryItem from '@/components/items/CareerHistoryItem'
+import { SEARCH_SM_QUERY } from '@/graphql/queries'
+import { ResultSearchSm } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import EmploymentMemoItem from '@/components/items/EmploymentMemoItem'
 
 const MoreBtn = styled.div`
   display: flex;
@@ -16,12 +16,13 @@ type searchSMQuery = {
   searchSM: ResultSearchSm
 }
 
-export default function CareerHistoryList({
+export default function EmploymentMemoList({
   isCreate,
   setIsCreate,
   paymentId,
   mId,
 }) {
+  console.log(paymentId)
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)
@@ -30,7 +31,7 @@ export default function CareerHistoryList({
     SEARCH_SM_QUERY,
     {
       variables: {
-        modelType: 'Career',
+        modelType: 'StudentConsultation',
         studentPaymentId: paymentId,
         limit: limit,
         page: 1,
@@ -98,7 +99,7 @@ export default function CareerHistoryList({
     <>
       {searchData &&
         searchData.map((item, index) => (
-          <CareerHistoryItem
+          <EmploymentMemoItem
             key={index}
             item={item}
             refetch={refetch}

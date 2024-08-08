@@ -105,7 +105,7 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function WishForm({ paymentId, subjectId }) {
+export default function WishForm({ item, paymentId, subjectId, mId }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [createHope] = useMutation(CREATE_HOPE_FOR_EMPLOYMENT_MUTATION)
@@ -113,8 +113,6 @@ export default function WishForm({ paymentId, subjectId }) {
   const { errors } = formState
 
   const onSubmit = data => {
-    console.log(data)
-    console.log(subjectId, paymentId)
     createHope({
       variables: {
         studentPaymentId: paymentId,

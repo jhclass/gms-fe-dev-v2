@@ -1,96 +1,70 @@
 import { CREATE_CAREER_MUTATION } from '@/graphql/mutations'
+import { SEARCH_SM_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
-import { Button, Input, ScrollShadow } from '@nextui-org/react'
+import { Button, Textarea } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
 
-const TableArea = styled.div`
-  padding-bottom: 1.5rem;
-`
-
-const TableWrap = styled.div`
-  width: 100%;
-  display: table;
-  min-width: 1200px;
-`
-const Theader = styled.div`
-  width: 100%;
-  min-width: fit-content;
-  display: table-row;
-  flex-wrap: nowrap;
-  row-gap: 1rem;
-  color: #111;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
-  text-align: center;
-`
-
-const TheaderBox = styled.div`
+const DetailForm = styled.form`
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `
 
-const ClickBox = styled.div`
-  display: flex;
+const FlexBox = styled.div`
   width: 100%;
-  align-items: center;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex: 1 3;
 
-  span {
-    color: ${({ theme }) => theme.colors.red};
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
   }
 `
 
-const ClickForm = styled.form`
-  display: flex;
+const AreaBox = styled.div`
+  flex: 1;
   width: 100%;
-  align-items: flex-start;
-`
-const Ttext = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 84%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.84}px;
-`
-
-const Tbtn = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 16%;
-  padding: 0.5rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.16}px;
-`
-const TableItem = styled.div`
   position: relative;
-  width: 100%;
-  min-width: fit-content;
-  color: ${({ theme }) => theme.colors.gray};
-  font-size: 0.875rem;
-  border-radius: 0.5rem;
-  background: #fff;
-  overflow: hidden;
 `
 
-const TableRow = styled.div`
-  display: flex;
+const FilterLabel = styled.label`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: ${({ theme }) => theme.colors.black};
+  padding-bottom: 0.1rem;
+  display: block;
+
+  span {
+    color: red;
+  }
 `
+
 const BtnBox = styled.div`
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  align-items: center;
+  padding-top: 1.75rem;
+  width: 5rem;
+
+  @media (max-width: 768px) {
+    padding-top: 0;
+    width: 100%;
+  }
 `
 
-export default function CareerHistoryForm({ paymentId, subjectId }) {
+export default function CareerHistoryForm({
+  setIsCreate,
+  paymentId,
+  subjectId,
+}) {
   const { userLogs } = useUserLogsMutation()
   const [createCareer] = useMutation(CREATE_CAREER_MUTATION)
   const {
+    control,
     register,
     handleSubmit,
     reset,
@@ -104,12 +78,15 @@ export default function CareerHistoryForm({ paymentId, subjectId }) {
         subjectId: subjectId,
         studentPaymentId: paymentId,
       },
+      refetchQueries: [SEARCH_SM_QUERY],
       onCompleted: result => {
+        console.log(result)
         userLogs(
           `paymentId: ${paymentId} 경력 등록`,
           `ok: ${result.createCareer.ok}`,
         )
         if (result.createCareer.ok) {
+          setIsCreate(true)
           alert('경력이 추가되었습니다.')
           reset()
         }
@@ -118,62 +95,49 @@ export default function CareerHistoryForm({ paymentId, subjectId }) {
   }
 
   return (
-    <TableArea>
-      <ScrollShadow orientation="horizontal" className="scrollbar">
-        <TableWrap>
-          <Theader>
-            <TheaderBox>
-              <ClickBox>
-                <Ttext>
-                  경력 내용 <span>*</span>
-                </Ttext>
-                <Tbtn></Tbtn>
-              </ClickBox>
-            </TheaderBox>
-          </Theader>
-          <TableItem>
-            <TableRow>
-              <ClickForm onSubmit={handleSubmit(onSubmit)}>
-                <Ttext>
-                  <Input
-                    labelPlacement="outside"
-                    variant="bordered"
-                    radius="sm"
-                    size="sm"
-                    type="text"
-                    placeholder=" "
-                    className="w-full"
-                    {...register('careerDetails', {
-                      required: {
-                        value: true,
-                        message: '경력내용을 작성해주세요',
-                      },
-                    })}
-                  />
-                  {errors.careerDetails && (
-                    <p className="px-2 pt-2 text-xs text-red">
-                      {String(errors.careerDetails.message)}
-                    </p>
-                  )}
-                </Ttext>
-                <Tbtn>
-                  <BtnBox>
-                    <Button
-                      type="submit"
-                      size="sm"
-                      variant="solid"
-                      color="primary"
-                      className="w-full text-white bg-secondary"
-                    >
-                      추가
-                    </Button>
-                  </BtnBox>
-                </Tbtn>
-              </ClickForm>
-            </TableRow>
-          </TableItem>
-        </TableWrap>
-      </ScrollShadow>
-    </TableArea>
+    <>
+      <DetailForm onSubmit={handleSubmit(onSubmit)}>
+        <FlexBox>
+          <AreaBox>
+            <Textarea
+              label={
+                <FilterLabel>
+                  경력 내용<span>*</span>
+                </FilterLabel>
+              }
+              labelPlacement="outside"
+              className="max-w-full"
+              variant="bordered"
+              minRows={5}
+              onChange={e => {
+                register('careerDetails').onChange(e)
+              }}
+              {...register('careerDetails', {
+                required: {
+                  value: true,
+                  message: '경력내용을 작성해주세요',
+                },
+              })}
+            />
+            {errors.careerDetails && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.careerDetails.message)}
+              </p>
+            )}
+          </AreaBox>
+          <BtnBox>
+            <Button
+              type="submit"
+              size="md"
+              radius="md"
+              color="primary"
+              className="lg:w-[50%] w-full"
+            >
+              추가
+            </Button>
+          </BtnBox>
+        </FlexBox>
+      </DetailForm>
+    </>
   )
 }

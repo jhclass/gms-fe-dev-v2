@@ -257,6 +257,9 @@ export default function AttendanceFilter({
                           variant="bordered"
                           className="w-full"
                           id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
                           {...register('attendanceDate')}

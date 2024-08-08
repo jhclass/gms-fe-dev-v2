@@ -2048,6 +2048,36 @@ export const CREATE_EDU_INFOMATION_MUTATION = gql`
     }
   }
 `
+export const DEIT_EDU_INFOMATION_MUTATION = gql`
+  mutation Mutation(
+    $editEduInfomationId: Int!
+    $eduType: String
+    $eduName: String
+    $major: String
+    $graduationStatus: String
+  ) {
+    editEduInfomation(
+      id: $editEduInfomationId
+      eduType: $eduType
+      eduName: $eduName
+      major: $major
+      graduationStatus: $graduationStatus
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const DELETE_EDU_INFOMATION_MUTATION = gql`
+  mutation DeleteEduInfomation($deleteEduInfomationId: Int!) {
+    deleteEduInfomation(id: $deleteEduInfomationId) {
+      error
+      message
+      ok
+    }
+  }
+`
 export const CREATE_CAREER_MUTATION = gql`
   mutation CreateCareer(
     $careerDetails: String!
@@ -2059,6 +2089,24 @@ export const CREATE_CAREER_MUTATION = gql`
       subjectId: $subjectId
       studentPaymentId: $studentPaymentId
     ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const EDIT_CAREER_MUTATION = gql`
+  mutation EditCareer($editCareerId: Int!, $careerDetails: String!) {
+    editCareer(id: $editCareerId, careerDetails: $careerDetails) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_CAREER_MUTATION = gql`
+  mutation DeleteCareer($deleteCareerId: Int) {
+    deleteCareer(id: $deleteCareerId) {
       ok
       message
       error
@@ -2088,6 +2136,34 @@ export const CREATE_CERTIFICATE_MUTATION = gql`
     }
   }
 `
+export const EDIT_CERTIFICATE_MUTATION = gql`
+  mutation EditCertificate(
+    $certificateIssuer: String
+    $certificateLevel: String
+    $certificateName: String
+    $cAdate: String
+  ) {
+    editCertificate(
+      CertificateIssuer: $certificateIssuer
+      certificateLevel: $certificateLevel
+      certificateName: $certificateName
+      CAdate: $cAdate
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const DELETE_CERTIFICATE_MUTATION = gql`
+  mutation DeleteCertificate($deleteCertificateId: Int!) {
+    deleteCertificate(id: $deleteCertificateId) {
+      error
+      message
+      ok
+    }
+  }
+`
 export const CREATE_STUDENT_CONSULTATION_MUTATION = gql`
   mutation CreateStudentConsultation(
     $typeOfConsultation: String!
@@ -2103,6 +2179,34 @@ export const CREATE_STUDENT_CONSULTATION_MUTATION = gql`
       subjectId: $subjectId
       studentPaymentId: $studentPaymentId
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_STUDENT_CONSULTATION_MUTATION = gql`
+  mutation EditStudentConsultation(
+    $editStudentConsultationId: Int!
+    $typeOfConsultation: String
+    $dateOfConsultation: String
+    $detailsOfConsultation: String
+  ) {
+    editStudentConsultation(
+      id: $editStudentConsultationId
+      typeOfConsultation: $typeOfConsultation
+      dateOfConsultation: $dateOfConsultation
+      detailsOfConsultation: $detailsOfConsultation
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_STUDENT_CONSULTATION_MUTATION = gql`
+  mutation DeleteStudentConsultation($deleteStudentConsultationId: Int!) {
+    deleteStudentConsultation(id: $deleteStudentConsultationId) {
       error
       message
       ok

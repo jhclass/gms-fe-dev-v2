@@ -228,9 +228,6 @@ export default function RecommendationList() {
                         type="text"
                         placeholder=" "
                         id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
                         isReadOnly={true}
                         startContent={<i className="xi-calendar" />}
                         defaultValue={
@@ -295,9 +292,6 @@ export default function RecommendationList() {
                         type="text"
                         placeholder=" "
                         id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
                         isReadOnly={true}
                         startContent={<i className="xi-calendar" />}
                         defaultValue={
@@ -384,9 +378,6 @@ export default function RecommendationList() {
                         type="text"
                         placeholder=" "
                         id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
                         isReadOnly={true}
                         startContent={<i className="xi-calendar" />}
                         defaultValue={
@@ -451,9 +442,6 @@ export default function RecommendationList() {
                         type="text"
                         placeholder=" "
                         id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
                         isReadOnly={true}
                         startContent={<i className="xi-calendar" />}
                         defaultValue={

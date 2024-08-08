@@ -885,6 +885,8 @@ export const SEARCH_SM_QUERY = gql`
           studentPaymentId
           createdAt
           updatedAt
+          lastModifiedByUserId
+          lastModifiedByName
         }
         ... on Certificate {
           id

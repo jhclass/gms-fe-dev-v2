@@ -11,9 +11,6 @@ import {
   SEARCH_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
-import AcquisitionList from '@/components/table/AcquisitionList'
-import EducationalHistory from '@/components/table/EducationalHistory'
-import CareerHistory from '@/components/table/CareerHistory'
 import EmploymentTabs from '@/components/items/EmploymentTabs'
 import EmploymentInfoForm from '@/components/form/EmploymentInfoForm'
 
@@ -136,7 +133,7 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-export default function StudentsWrite() {
+export default function EmploymentDetail() {
   const router = useRouter()
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
@@ -251,39 +248,6 @@ export default function StudentsWrite() {
                 <EmploymentInfoForm paymentData={paymentData} />
               </DetailDiv>
             </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>학력사항</h4>
-                </AreaTitle>
-                <EducationalHistory
-                  paymentId={parseInt(paymentId)}
-                  subjectId={paymentData.subjectId}
-                />
-              </DetailDiv>
-            </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>경력사항</h4>
-                </AreaTitle>
-                <CareerHistory
-                  paymentId={parseInt(paymentId)}
-                  subjectId={paymentData.subjectId}
-                />
-              </DetailDiv>
-            </DetailBox>
-            <DetailBox>
-              <DetailDiv>
-                <AreaTitle>
-                  <h4>자격취득현황</h4>
-                </AreaTitle>
-                <AcquisitionList
-                  paymentId={parseInt(paymentId)}
-                  subjectId={paymentData.subjectId}
-                />
-              </DetailDiv>
-            </DetailBox>
             <EmploymentTabs
               paymentId={parseInt(paymentId)}
               subjectId={paymentData.subjectId}
@@ -310,4 +274,4 @@ export default function StudentsWrite() {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+EmploymentDetail.getLayout = page => <Layout>{page}</Layout>
