@@ -30,12 +30,16 @@ const FlexBox = styled.div`
   width: 100%;
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   flex: 1 3;
 
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  &.textBox {
+    align-items: center;
   }
 `
 
@@ -370,7 +374,7 @@ export default function EmploymentMemoItem({ item, refetch, setPage, mId }) {
             )}
           </AreaBox>
         </FlexBox>
-        <FlexBox>
+        <FlexBox className="textBox">
           <AreaBox>
             <Textarea
               label={

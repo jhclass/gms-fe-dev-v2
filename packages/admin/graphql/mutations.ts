@@ -2142,12 +2142,14 @@ export const EDIT_CERTIFICATE_MUTATION = gql`
     $certificateLevel: String
     $certificateName: String
     $cAdate: String
+    $editCertificateId: Int!
   ) {
     editCertificate(
       CertificateIssuer: $certificateIssuer
       certificateLevel: $certificateLevel
       certificateName: $certificateName
       CAdate: $cAdate
+      id: $editCertificateId
     ) {
       ok
       message
@@ -2234,6 +2236,106 @@ export const CREATE_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
       studentPaymentId: $studentPaymentId
       subjectId: $subjectId
     ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
+  mutation EditHopeForEmployment(
+    $editHopeForEmploymentId: Int!
+    $fieldOfHope: String!
+    $hopefulReward: Int!
+    $workType: String!
+    $workingHours: Int!
+    $opinion: String!
+    $workingArea: String
+  ) {
+    editHopeForEmployment(
+      id: $editHopeForEmploymentId
+      fieldOfHope: $fieldOfHope
+      hopefulReward: $hopefulReward
+      workType: $workType
+      workingHours: $workingHours
+      opinion: $opinion
+      workingArea: $workingArea
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
+  mutation CreateEmploymentRecommendation(
+    $dateOfRecommendation: String!
+    $recruitmentField: String!
+    $companyName: String!
+    $location: String!
+    $phoneNum: String!
+    $dateOfInterview: String!
+    $employmentStatus: String!
+    $reasonForNonEmployment: String!
+    $certificateOfEmploymentStatus: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+  ) {
+    createEmploymentRecommendation(
+      dateOfRecommendation: $dateOfRecommendation
+      recruitmentField: $recruitmentField
+      companyName: $companyName
+      location: $location
+      phoneNum: $phoneNum
+      dateOfInterview: $dateOfInterview
+      employmentStatus: $employmentStatus
+      reasonForNonEmployment: $reasonForNonEmployment
+      certificateOfEmploymentStatus: $certificateOfEmploymentStatus
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
+  mutation EditEmploymentRecommendation(
+    $editEmploymentRecommendationId: Int!
+    $dateOfRecommendation: String
+    $recruitmentField: String
+    $companyName: String
+    $location: String
+    $phoneNum: String
+    $dateOfInterview: String
+    $employmentStatus: String
+    $reasonForNonEmployment: String
+    $certificateOfEmploymentStatus: String
+  ) {
+    editEmploymentRecommendation(
+      id: $editEmploymentRecommendationId
+      dateOfRecommendation: $dateOfRecommendation
+      recruitmentField: $recruitmentField
+      companyName: $companyName
+      location: $location
+      phoneNum: $phoneNum
+      dateOfInterview: $dateOfInterview
+      employmentStatus: $employmentStatus
+      reasonForNonEmployment: $reasonForNonEmployment
+      certificateOfEmploymentStatus: $certificateOfEmploymentStatus
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
+  mutation DeleteEmploymentRecommendation(
+    $deleteEmploymentRecommendationId: Int
+  ) {
+    deleteEmploymentRecommendation(id: $deleteEmploymentRecommendationId) {
       error
       message
       ok

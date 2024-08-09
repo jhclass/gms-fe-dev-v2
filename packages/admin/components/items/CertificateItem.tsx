@@ -30,7 +30,7 @@ const FlexBox = styled.div`
   width: 100%;
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   flex: 1 3;
 
   @media (max-width: 768px) {
@@ -116,7 +116,7 @@ export default function CertificateItem({ item, refetch, setPage, mId }) {
     formState: { isDirty, dirtyFields, errors },
   } = useForm({
     defaultValues: {
-      CAdate: null,
+      cAdate: null,
       certificateName: '',
       certificateIssuer: '',
       certificateLevel: '',
@@ -125,9 +125,9 @@ export default function CertificateItem({ item, refetch, setPage, mId }) {
 
   useEffect(() => {
     reset({
-      CAdate: item.CAdate || null,
+      cAdate: item.CAdate || null,
       certificateName: item.certificateName || '',
-      certificateIssuer: item.certificateIssuer || '',
+      certificateIssuer: item.CertificateIssuer || '',
       certificateLevel: item.certificateLevel || '',
     })
 
@@ -146,7 +146,7 @@ export default function CertificateItem({ item, refetch, setPage, mId }) {
         try {
           const result = await editCertificate({
             variables: {
-              editEduInfomationId: item.id,
+              editCertificateId: item.id,
               certificateIssuer:
                 data.certificateIssuer === null ? null : data.certificateIssuer,
               certificateLevel:
@@ -164,12 +164,12 @@ export default function CertificateItem({ item, refetch, setPage, mId }) {
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${item.stName} 자격 취득 현황 id:${item.id} 수정`,
-            `ok: ${result.data.editEduInfomation.ok} / ${dirtyFieldsArray.join(
+            `ok: ${result.data.editCertificate.ok} / ${dirtyFieldsArray.join(
               ', ',
             )}`,
           )
 
-          if (!result.data.editEduInfomation.ok) {
+          if (!result.data.editCertificate.ok) {
             throw new Error('자격 취득 현황 수정 실패')
           }
           setPage(1)
@@ -231,7 +231,7 @@ export default function CertificateItem({ item, refetch, setPage, mId }) {
             <DatePickerBox>
               <Controller
                 control={control}
-                name="CAdate"
+                name="cAdate"
                 rules={{
                   required: {
                     value: true,
@@ -295,9 +295,9 @@ export default function CertificateItem({ item, refetch, setPage, mId }) {
                 )}
               />
             </DatePickerBox>
-            {errors.CAdate && (
+            {errors.cAdate && (
               <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.CAdate.message)}
+                {String(errors.cAdate.message)}
               </p>
             )}
           </AreaBox>

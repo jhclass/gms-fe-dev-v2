@@ -12,6 +12,7 @@ const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
   @media (max-width: 768px) {
     gap: 1rem;
   }
@@ -25,11 +26,22 @@ const AreaTitle = styled.div`
     font-size: 1.2rem;
     font-weight: 600;
   }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 const Noti = styled.p`
   font-size: 0.75rem;
+
   span {
     color: red;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    text-align: right;
   }
 `
 const LodingDiv = styled.div`

@@ -3,9 +3,12 @@ import { useRouter } from 'next/router'
 import { Button, Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
-import { CREATE_HOPE_FOR_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_HOPE_FOR_EMPLOYMENT_MUTATION,
+  EDIT_HOPE_FOR_EMPLOYMENT_MUTATION,
+} from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
+import { useEffect } from 'react'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -106,39 +109,90 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function WishForm({ paymentId, subjectId }) {
+export default function WishFormList({ item, refetch }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const [createHope] = useMutation(CREATE_HOPE_FOR_EMPLOYMENT_MUTATION)
-  const { register, handleSubmit, reset, control, formState } = useForm()
-  const { errors } = formState
+  const [editHope] = useMutation(EDIT_HOPE_FOR_EMPLOYMENT_MUTATION)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      workingArea: '',
+      fieldOfHope: '',
+      hopefulReward: '',
+      workType: '',
+      workingHours: '',
+      opinion: '',
+    },
+  })
 
-  const onSubmit = data => {
-    createHope({
-      variables: {
-        studentPaymentId: paymentId,
-        subjectId: subjectId,
-        workingArea: data.workingArea === '' ? null : data.workingArea,
-        fieldOfHope: data.fieldOfHope === '' ? null : data.fieldOfHope,
-        hopefulReward:
-          data.hopefulReward === '' ? null : parseInt(data.hopefulReward),
-        workType: data.workType === '' ? null : data.workType,
-        workingHours:
-          data.workingHours === '' ? null : parseInt(data.workingHours),
-        opinion: data.opinion === '' ? null : data.opinion,
-      },
-      refetchQueries: [SEARCH_SM_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `수강생 ID:${paymentId} 취업 희망 현황 등록`,
-          `ok: ${result.createHopeForEmployment.ok}`,
-        )
-        if (result.createHopeForEmployment.ok) {
-          alert(`취업 희망 현황이 등록되었습니다.`)
-          reset()
+  useEffect(() => {
+    if (item) {
+      reset({
+        workingArea: item.workingArea || '',
+        fieldOfHope: item.fieldOfHope || '',
+        hopefulReward: item.hopefulReward || '',
+        workType: item.workType || '',
+        workingHours: item.workingHours || '',
+        opinion: item.opinion || '',
+      })
+    }
+  }, [item])
+
+  const onSubmit = async data => {
+    console.log(data)
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          const result = await editHope({
+            variables: {
+              editHopeForEmploymentId: item.id,
+              workingArea: data.workingArea === '' ? null : data.workingArea,
+              fieldOfHope: data.fieldOfHope === '' ? null : data.fieldOfHope,
+              hopefulReward:
+                data.hopefulReward === '' ? null : parseInt(data.hopefulReward),
+              workType: data.workType === '' ? null : data.workType,
+              workingHours:
+                data.workingHours === '' ? null : parseInt(data.workingHours),
+              opinion: data.opinion === '' ? null : data.opinion,
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${item.stName} 취업 희망 현황 수정`,
+            `ok: ${
+              result.data.editHopeForEmployment.ok
+            } / ${dirtyFieldsArray.join(', ')}`,
+          )
+
+          if (!result.data.editHopeForEmployment.ok) {
+            throw new Error('취업 희망 현황 수정 실패')
+          }
+          refetch()
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('취업 희망 현황 수정 중 에러 발생:', error)
+          alert('취업 희망 현황 수정 처리 중 오류가 발생했습니다.')
         }
-      },
-    })
+      }
+    }
+  }
+
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
   }
 
   return (
@@ -148,6 +202,13 @@ export default function WishForm({ paymentId, subjectId }) {
           <Noti>
             <span>*</span> 는 필수입력입니다.
           </Noti>
+          <UpdateTime>
+            <UpdateCon>
+              <span>최근 업데이트 : </span>
+              {item.lastModifiedByName}(${item.lastModifiedByUserId})
+            </UpdateCon>
+            <UpdateCon>{formatDate(item.updatedAt)}</UpdateCon>
+          </UpdateTime>
         </TopInfo>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailDiv>
@@ -346,7 +407,7 @@ export default function WishForm({ paymentId, subjectId }) {
                 color="primary"
                 className="w-full text-white lg:w-[50%]"
               >
-                저장
+                수정
               </Button>
             </BtnBox>
           </DetailDiv>

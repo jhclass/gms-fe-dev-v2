@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
-import EmploymentMemoList from '@/components/form/EmploymentMemoList'
-import EmploymentMemoForm from '@/components/form/EmploymentMemoForm'
+import RecoEmploymentForm from '@/components/form/RecoEmploymentForm'
+import RecoEmploymentList from '@/components/form/RecoEmploymentList'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -54,19 +54,19 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function CareerHistory({ paymentId, subjectId, mId }) {
+export default function RecoEmployment({ paymentId, subjectId, mId }) {
   const [isCreate, setIsCreate] = useState(false)
   return (
     <>
       <DetailBox>
         <DetailDiv>
           <AreaTitle>
-            <h4>상담작성</h4>
+            <h4>취업 추천 작성</h4>
             <Noti>
               <span>*</span> 는 필수입력입니다.
             </Noti>
           </AreaTitle>
-          <EmploymentMemoForm
+          <RecoEmploymentForm
             setIsCreate={setIsCreate}
             paymentId={paymentId}
             subjectId={subjectId}
@@ -76,7 +76,7 @@ export default function CareerHistory({ paymentId, subjectId, mId }) {
       <DetailBox>
         <DetailDiv>
           <AreaTitle>
-            <h4>상담리스트</h4>
+            <h4>취업 추천 리스트</h4>
             <Noti>
               <span>*</span> 는 필수입력입니다.
             </Noti>
@@ -88,7 +88,7 @@ export default function CareerHistory({ paymentId, subjectId, mId }) {
               </LodingDiv>
             }
           >
-            <EmploymentMemoList
+            <RecoEmploymentList
               isCreate={isCreate}
               setIsCreate={setIsCreate}
               paymentId={paymentId}

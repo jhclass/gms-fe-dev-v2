@@ -23,7 +23,7 @@ const FlexBox = styled.div`
   width: 100%;
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   flex: 1 3;
 
   @media (max-width: 768px) {

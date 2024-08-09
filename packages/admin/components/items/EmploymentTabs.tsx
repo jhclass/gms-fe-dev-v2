@@ -2,13 +2,13 @@ import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import { Suspense, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
-import Recommendation from '@/components/table/Recommendation'
 import EmploymentForm from '@/components/form/EmploymentForm'
 import EducationalHistory from '@/components/layout/EducationalHistory'
 import CareerHistory from '@/components/layout/CareerHistory'
 import Certificate from '@/components/layout/Certificate'
 import EmploymentMemo from '@/components/layout/EmploymentMemo'
 import WishEmployment from '@/components/layout/WishEmployment'
+import RecoEmployment from '@/components/layout/RecoEmployment'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -102,24 +102,17 @@ export default function EmploymentTabs({ paymentId, subjectId }) {
                   </LodingDiv>
                 }
               >
-                <WishEmployment
-                  paymentId={paymentId}
-                  subjectId={subjectId}
-                  mId={mId}
-                />
+                <WishEmployment paymentId={paymentId} subjectId={subjectId} />
               </Suspense>
             </DetailDiv>
           </DetailBox>
         </Tab>
         <Tab key="recoEmployment" title="취업추천현황">
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>취업 추천 현황</h4>
-              </AreaTitle>
-              <Recommendation paymentId={paymentId} subjectId={subjectId} />
-            </DetailDiv>
-          </DetailBox>
+          <RecoEmployment
+            paymentId={paymentId}
+            subjectId={subjectId}
+            mId={mId}
+          />
         </Tab>
         <Tab key="employmentState" title="취업현황">
           <DetailBox>

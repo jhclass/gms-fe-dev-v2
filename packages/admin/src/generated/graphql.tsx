@@ -564,6 +564,7 @@ export type Mutation = {
   deleteManageUser?: Maybe<CommonResponse>;
   deleteMessage: MutationResponse;
   deleteMessageStorage?: Maybe<CommonResponse>;
+  deletePermissionGranted: CommonResponse;
   deletePhoto: DeletePhotoResult;
   deletePreInspection?: Maybe<CommonResponse>;
   deleteRegularEvaluationSet?: Maybe<CommonResponse>;
@@ -1093,6 +1094,11 @@ export type MutationDeleteMessageStorageArgs = {
 };
 
 
+export type MutationDeletePermissionGrantedArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type MutationDeletePhotoArgs = {
   id: Scalars['Int']['input'];
 };
@@ -1208,6 +1214,7 @@ export type MutationEditCertificateArgs = {
   CertificateIssuer?: InputMaybe<Scalars['String']['input']>;
   certificateLevel?: InputMaybe<Scalars['String']['input']>;
   certificateName?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1912,6 +1919,7 @@ export type Query = {
   me?: Maybe<User>;
   searchAttendance?: Maybe<SearchAttendanceResult>;
   searchManageUser?: Maybe<SearchManageUserResult>;
+  searchPermissionGranted: ResultSearchPermissionGranted;
   searchPhotos?: Maybe<Array<Maybe<Photo>>>;
   searchSM?: Maybe<ResultSearchSm>;
   searchSms: ResultSearchSms;
@@ -1999,6 +2007,14 @@ export type QuerySearchManageUserArgs = {
   mUsername?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   resign?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySearchPermissionGrantedArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  manageUserId?: InputMaybe<Scalars['Int']['input']>;
+  permissionName?: InputMaybe<Scalars['String']['input']>;
+  topic?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2235,6 +2251,15 @@ export type ResultCalcLectures = {
 export type ResultMessageStorage = {
   __typename?: 'ResultMessageStorage';
   data?: Maybe<Array<Maybe<MessageStorage>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ResultSearchPermissionGranted = {
+  __typename?: 'ResultSearchPermissionGranted';
+  data?: Maybe<Array<Maybe<PermissionsGranted>>>;
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
