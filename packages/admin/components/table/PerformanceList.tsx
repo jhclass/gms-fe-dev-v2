@@ -77,7 +77,7 @@ export default function PerformanceList({ ids, dateRange, filterSearch }) {
           setTotalRefundCount(totalRefundCount)
           setIdList(managerId)
           setSuccMutation(true)
-          console.log('기본 props mutation 완료')
+          // console.log('기본 props mutation 완료')
         }
       },
     })

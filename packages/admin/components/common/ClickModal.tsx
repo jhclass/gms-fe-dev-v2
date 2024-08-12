@@ -51,7 +51,11 @@ export default function ClickList({
                 </CheckboxGroup>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  className="text-accent"
+                  variant="light"
+                  onPress={onClose}
+                >
                   Close
                 </Button>
                 <Button color="primary" onPress={clickSubmit}>

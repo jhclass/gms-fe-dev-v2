@@ -41,7 +41,7 @@ export default function StatisticsList({ performanceFilter, filterSearch }) {
   if (error) {
     console.log(error)
   }
-  console.log('통계페이지 시작')
+  // console.log('통계페이지 시작')
   return (
     ids &&
     dateRange && (

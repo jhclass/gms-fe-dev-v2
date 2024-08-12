@@ -131,7 +131,7 @@ export default function SMSAddrModal({
               <ModalFooter>
                 <Button
                   size="sm"
-                  color="danger"
+                  className="text-accent"
                   variant="light"
                   onPress={onClose}
                 >

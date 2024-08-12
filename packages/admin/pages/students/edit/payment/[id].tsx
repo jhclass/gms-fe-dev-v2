@@ -911,6 +911,7 @@ export default function StudentsWritePayment() {
                                   showTimeSelect
                                   timeFormat="HH:mm"
                                   timeIntervals={1}
+                                  maxDate={new Date()}
                                   onChange={date => {
                                     field.onChange(date)
                                     setCardPaymentDate(date)
@@ -1091,6 +1092,7 @@ export default function StudentsWritePayment() {
                                   showTimeSelect
                                   timeFormat="HH:mm"
                                   timeIntervals={1}
+                                  maxDate={new Date()}
                                   onChange={date => {
                                     field.onChange(date)
                                     setCashPaymentDate(date)
