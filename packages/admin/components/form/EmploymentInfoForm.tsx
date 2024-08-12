@@ -3,13 +3,11 @@ import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button, Select, SelectItem } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import {
-  EDIT_STUDENT_INFOMATION_MUTATION,
-  SEARCH_STUDENT_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_STUDENT_INFOMATION_MUTATION } from '@/graphql/mutations'
 import StudentInfo from '@/components/items/StudentInfo'
 import Address from '@/components/common/Address'
 import { useForm } from 'react-hook-form'
+import useUserLogsMutation from '@/utils/userLogs'
 
 const FlexConBox = styled.div`
   display: flex;
@@ -54,10 +52,90 @@ const BtnBox = styled.div`
 `
 
 export default function EmploymentInfoForm({ paymentData }) {
+  const { userLogs } = useUserLogsMutation()
   const [editStudent] = useMutation(EDIT_STUDENT_INFOMATION_MUTATION)
   const [selectValue, setSelectValue] = useState('유형선택')
-  const { register, setValue, control, handleSubmit, formState } = useForm({})
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      supportType: '',
+      mAddresses: '',
+      mAddressDetail: '',
+      mZipCode: '',
+    },
+  })
 
+  useEffect(() => {
+    if (paymentData) {
+      reset({
+        supportType: paymentData.supportType || '유형선택',
+        mAddresses: paymentData.mAddresses || '',
+        mAddressDetail: paymentData.mAddressDetail || '',
+        mZipCode: paymentData.mZipCode || '',
+      })
+
+      if (paymentData.supportType) {
+        setSelectValue(paymentData.supportType)
+      }
+    }
+  }, [paymentData])
+
+  const onSubmit = data => {
+    console.log(data)
+    // if (isDirty) {
+    //   const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+    //   if (isModify) {
+    //     try {
+    //       const result = await editStudent({
+    //         variables: {
+    //           editStudentPaymentId: null,
+    //           subjectId: null,
+    //           mAddressDetail: null,
+    //           mAddresses: null,
+    //           mZipCode: null,
+    //         },
+    //       })
+    //       const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+    //       userLogs(
+    //         `${item.stName} 취업 현황 수정`,
+    //         `ok: ${
+    //           result.data.editHopeForEmployment.ok
+    //         } / ${dirtyFieldsArray.join(', ')}`,
+    //       )
+
+    //       if (!result.data.editHopeForEmployment.ok) {
+    //         throw new Error('취업 현황 수정 실패')
+    //       }
+    //       refetch()
+    //       alert('수정되었습니다.')
+    //     } catch (error) {
+    //       console.error('취업 현황 수정 중 에러 발생:', error)
+    //       alert('취업 현황 수정 처리 중 오류가 발생했습니다.')
+    //     }
+    //   }
+    // }
+  }
+
+  console.log(paymentData)
+
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
+  }
   const calculateAge = birthday => {
     const today = new Date()
     const timestamp = parseInt(birthday, 10)
@@ -79,7 +157,7 @@ export default function EmploymentInfoForm({ paymentData }) {
   }
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <StudentInfo
         studentData={paymentData.student}
         detailAll={false}
@@ -144,6 +222,6 @@ export default function EmploymentInfoForm({ paymentData }) {
           저장
         </Button>
       </BtnBox>
-    </>
+    </form>
   )
 }
