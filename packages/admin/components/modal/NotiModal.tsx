@@ -199,7 +199,7 @@ export default function NotiModal({ isOpen, onClose }) {
               <ModalFooter>
                 {/* <Button
                   size="sm"
-                  color="danger"
+                className="text-accent"
                   variant="light"
                   onPress={closePopup}
                 >

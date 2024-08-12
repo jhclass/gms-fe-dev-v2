@@ -93,8 +93,8 @@ export default function AdviceTypeModal({
               <ModalFooter>
                 <Button
                   size="sm"
-                  color="danger"
                   variant="light"
+                  className="text-accent"
                   onPress={onClose}
                 >
                   Close

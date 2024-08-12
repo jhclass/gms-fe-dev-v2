@@ -241,7 +241,7 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
                 <ModalFooter>
                   <Button
                     size="sm"
-                    color="danger"
+                    className="text-accent"
                     variant="light"
                     onPress={closePopup}
                   >

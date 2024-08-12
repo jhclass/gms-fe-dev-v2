@@ -10,7 +10,7 @@ import {
 } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -38,19 +38,14 @@ const FilterForm = styled.form`
   flex-direction: column;
 
   @media (max-width: 768px) {
-    gap: 1rem;
+    padding: 0 0 1.5rem 0;
   }
 `
 const BoxTop = styled.div`
   display: flex;
   flex: 1;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: flex-end;
-
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
 `
 const ItemBox = styled.div`
   display: flex;
@@ -112,6 +107,7 @@ export default function AttendanceFilter({
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
   const [selectedDates, setSelectedDates] = useState([])
+  const [isMobile, setIsMobile] = useState(false)
   const {
     register,
     handleSubmit,
@@ -155,6 +151,19 @@ export default function AttendanceFilter({
       return selectedDates
     }
   }
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize() // 초기 로드 시 실행
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const onSubmit = data => {
     if (isDirty) {
@@ -242,10 +251,11 @@ export default function AttendanceFilter({
                       customInput={
                         <Input
                           label="단위 기간"
-                          labelPlacement="outside"
+                          labelPlacement={isMobile ? 'outside' : 'outside-left'}
                           type="text"
                           size={'sm'}
                           variant="bordered"
+                          className="w-full"
                           id="date"
                           classNames={{
                             input: 'caret-transparent',

@@ -871,6 +871,7 @@ export default function StudentsWritePayment() {
                                 }
                                 placeholderText="날짜를 선택해주세요."
                                 isClearable
+                                maxDate={new Date()}
                                 onChange={date => {
                                   field.onChange(date)
                                   setCardPaymentDate(date)
@@ -1054,6 +1055,7 @@ export default function StudentsWritePayment() {
                                 dateFormat="yyyy/MM/dd HH:mm"
                                 onChangeRaw={e => e.preventDefault()}
                                 onFocus={e => e.target.blur()}
+                                maxDate={new Date()}
                                 customInput={
                                   <Input
                                     ref={field.ref}

@@ -237,7 +237,7 @@ export default function DropOutInput({
                 <ModalFooter>
                   <Button
                     size="sm"
-                    color="danger"
+                    className="text-accent"
                     variant="light"
                     onPress={closePopup}
                   >
