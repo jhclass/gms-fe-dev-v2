@@ -1,5 +1,13 @@
-import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
 import { styled } from 'styled-components'
+import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
+import useUserLogsMutation from '@/utils/userLogs'
+import {
+  EDIT_EMPLOYMENT_MUTATION,
+  EDIT_HOPE_FOR_EMPLOYMENT_MUTATION,
+} from '@/graphql/mutations'
+import { Controller, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -7,13 +15,6 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import useUserLogsMutation from '@/utils/userLogs'
-import { useRouter } from 'next/router'
-import { useMutation } from '@apollo/client'
-import { CREATE_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -134,60 +135,156 @@ const DatePickerBox = styled.div`
   }
 `
 
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
-
-export default function EmploymentForm({ paymentId, subjectId }) {
+export default function EmploymentEditForm({ item, refetch }) {
   const { userLogs } = useUserLogsMutation()
+  const [editEmployment] = useMutation(EDIT_EMPLOYMENT_MUTATION)
   const [employmentDate, setEmploymentDate] = useState(null)
-  const [createEmployment] = useMutation(CREATE_EMPLOYMENT_MUTATION)
+  const [employmentType, setEmploymentType] = useState('취업')
+  const [imploymentInsurance, setImploymentInsurance] = useState('Y')
+  const [proofOfImployment, setProofOfImployment] = useState('Y')
+  const [relatedFields, setRelatedFields] = useState('동일')
+  const [completionType, setCompletionType] = useState('수료취업')
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const { register, handleSubmit, reset, control, formState } = useForm()
-  const { errors } = formState
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      employmentType: '',
+      dateOfEmployment: null,
+      companyName: '',
+      businessNum: '',
+      responsibilities: '',
+      location: '',
+      phoneNum: '',
+      businessSize: '',
+      imploymentInsurance: '',
+      proofOfImployment: '',
+      relatedFields: '',
+      completionType: '',
+    },
+  })
+
+  useEffect(() => {
+    if (item) {
+      reset({
+        employmentType: item.employmentType || '취업',
+        dateOfEmployment: item.dateOfEmployment || '',
+        companyName: item.companyName || '',
+        businessNum: item.businessNum || '',
+        responsibilities: item.responsibilities || '',
+        location: item.location || '',
+        phoneNum: item.phoneNum || '',
+        businessSize: item.businessSize || '',
+        imploymentInsurance: item.imploymentInsurance || 'Y',
+        proofOfImployment: item.proofOfImployment || 'Y',
+        relatedFields: item.relatedFields || '동일',
+        completionType: item.completionType || '수료취업',
+      })
+
+      if (
+        item.dateOfEmployment === null ||
+        item.dateOfEmployment === undefined
+      ) {
+        setEmploymentDate(null)
+      } else {
+        const timestamp = parseInt(item.dateOfEmployment)
+        setEmploymentDate(timestamp)
+      }
+
+      if (item.employmentType) {
+        setEmploymentType(item.employmentType)
+      }
+
+      if (item.imploymentInsurance) {
+        setImploymentInsurance(item.imploymentInsurance)
+      }
+
+      if (item.proofOfImployment) {
+        setProofOfImployment(item.proofOfImployment)
+      }
+
+      if (item.relatedFields) {
+        setRelatedFields(item.relatedFields)
+      }
+
+      if (item.completionType) {
+        setCompletionType(item.completionType)
+      }
+    }
+  }, [item])
+
+  const onSubmit = async data => {
+    console.log(data)
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          const result = await editEmployment({
+            variables: {
+              editEmploymentStatusId: item.id,
+              employmentType:
+                data.employmentType === '' ? '취업' : data.employmentType,
+              dateOfEmployment:
+                data.dateOfEmployment === null
+                  ? null
+                  : typeof data.dateOfEmployment === 'string'
+                  ? new Date(parseInt(data.dateOfEmployment))
+                  : new Date(data.dateOfEmployment),
+              companyName: data.companyName === '' ? null : data.companyName,
+              businessNum: data.businessNum === '' ? null : data.businessNum,
+              responsibilities:
+                data.responsibilities === '' ? null : data.responsibilities,
+              location: data.location === '' ? null : data.location,
+              phoneNum: data.phoneNum === '' ? null : data.phoneNum,
+              businessSize: data.businessSize === '' ? null : data.businessSize,
+              imploymentInsurance:
+                data.imploymentInsurance === ''
+                  ? 'Y'
+                  : data.imploymentInsurance,
+              proofOfImployment:
+                data.proofOfImployment === '' ? 'Y' : data.proofOfImployment,
+              relatedFields:
+                data.relatedFields === '' ? '동일' : data.relatedFields,
+              completionType:
+                data.completionType === '' ? '수료취업' : data.completionType,
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${item.stName} 취업 현황 수정`,
+            `ok: ${
+              result.data.editHopeForEmployment.ok
+            } / ${dirtyFieldsArray.join(', ')}`,
+          )
+
+          if (!result.data.editHopeForEmployment.ok) {
+            throw new Error('취업 현황 수정 실패')
+          }
+          refetch()
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('취업 현황 수정 중 에러 발생:', error)
+          alert('취업 현황 수정 처리 중 오류가 발생했습니다.')
+        }
+      }
+    }
+  }
 
   const formatDate = data => {
-    const date = new Date(data)
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
     const formatted =
       `${date.getFullYear()}-` +
       `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')}`
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
-  }
-
-  const onSubmit = data => {
-    console.log(data)
-    createEmployment({
-      variables: {
-        studentPaymentId: paymentId,
-        subjectId: subjectId,
-        employmentType: null,
-        dateOfEmployment: null,
-        companyName: null,
-        businessNum: null,
-        responsibilities: null,
-        location: null,
-        phoneNum: null,
-        businessSize: null,
-        imploymentInsurance: null,
-        proofOfImployment: null,
-        relatedFields: null,
-        completionType: null,
-      },
-      refetchQueries: [SEARCH_SM_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `수강생 ID:${paymentId} 취업 현황 등록`,
-          `ok: ${result.createEmploymentStatus.ok}`,
-        )
-        if (result.createEmploymentStatus.ok) {
-          alert(`취업 현황이 등록되었습니다.`)
-          reset()
-        }
-      },
-    })
   }
 
   return (
@@ -200,9 +297,9 @@ export default function EmploymentForm({ paymentId, subjectId }) {
           <UpdateTime>
             <UpdateCon>
               <span>최근 업데이트 : </span>
-              {/* {managerData.lastModifiedBy} */}
+              {item.lastModifiedByName}(${item.lastModifiedByUserId})
             </UpdateCon>
-            <UpdateCon>{/* {formatDate(managerData?.updatedAt) */}</UpdateCon>
+            <UpdateCon>{formatDate(item.updatedAt)}</UpdateCon>
           </UpdateTime>
         </TopInfo>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -215,7 +312,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   rules={{
                     required: { value: true, message: '구분을 선택해 주세요.' },
                   }}
-                  defaultValue={'취업'}
+                  defaultValue={employmentType}
                   render={({ field, fieldState }) => (
                     <RadioGroup
                       label={
@@ -226,8 +323,10 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       orientation="horizontal"
                       className="gap-1"
                       defaultValue={'취업'}
+                      value={employmentType}
                       onValueChange={value => {
-                        field.onChange(parseInt(value))
+                        field.onChange(value)
+                        setEmploymentType(value)
                       }}
                     >
                       <Radio key={'취업'} value={'취업'}>
@@ -289,8 +388,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                         }}
                         onChangeRaw={e => e.preventDefault()}
                         onFocus={e => e.target.blur()}
-                        showTimeSelect
-                        dateFormat="yyyy/MM/dd HH:mm"
+                        dateFormat="yyyy/MM/dd"
                         customInput={
                           <Input
                             label={
@@ -403,6 +501,36 @@ export default function EmploymentForm({ paymentId, subjectId }) {
               <AreaBox>
                 <Input
                   labelPlacement="outside"
+                  placeholder="전화번호"
+                  variant="bordered"
+                  radius="md"
+                  type="text"
+                  label="전화번호"
+                  className="w-full"
+                  maxLength={12}
+                  onChange={e => {
+                    register('phoneNum').onChange(e)
+                  }}
+                  {...register('phoneNum', {
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: '숫자만 입력 가능합니다.',
+                    },
+                    maxLength: {
+                      value: 12,
+                      message: '최대 12자리까지 입력 가능합니다.',
+                    },
+                  })}
+                />
+                {errors.phoneNum && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.phoneNum.message)}
+                  </p>
+                )}
+              </AreaBox>
+              <AreaBox>
+                <Input
+                  labelPlacement="outside"
                   placeholder="소재지"
                   variant="bordered"
                   radius="md"
@@ -462,7 +590,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       message: '고용보험 여부를 선택해 주세요.',
                     },
                   }}
-                  defaultValue={'Y'}
+                  defaultValue={imploymentInsurance}
                   render={({ field, fieldState }) => (
                     <RadioGroup
                       label={
@@ -472,9 +600,10 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
-                      defaultValue={'Y'}
+                      value={imploymentInsurance}
                       onValueChange={value => {
-                        field.onChange(parseInt(value))
+                        field.onChange(value)
+                        setImploymentInsurance(value)
                       }}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -502,7 +631,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       message: '재직증명 여부를 선택해 주세요.',
                     },
                   }}
-                  defaultValue={'Y'}
+                  defaultValue={proofOfImployment}
                   render={({ field, fieldState }) => (
                     <RadioGroup
                       label={
@@ -512,9 +641,10 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
-                      defaultValue={'Y'}
+                      value={proofOfImployment}
                       onValueChange={value => {
-                        field.onChange(parseInt(value))
+                        field.onChange(value)
+                        setProofOfImployment(value)
                       }}
                     >
                       <Radio key={'Y'} value={'Y'}>
@@ -542,7 +672,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       message: '관련 분야를 선택해 주세요.',
                     },
                   }}
-                  defaultValue={'동일'}
+                  defaultValue={relatedFields}
                   render={({ field, fieldState }) => (
                     <RadioGroup
                       label={
@@ -552,9 +682,10 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
-                      defaultValue={'동일'}
+                      value={relatedFields}
                       onValueChange={value => {
-                        field.onChange(parseInt(value))
+                        field.onChange(value)
+                        setRelatedFields(value)
                       }}
                     >
                       <Radio key={'동일'} value={'동일'}>
@@ -585,7 +716,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       message: '취업 형태를 선택해 주세요.',
                     },
                   }}
-                  defaultValue={'조기취업'}
+                  defaultValue={completionType}
                   render={({ field, fieldState }) => (
                     <RadioGroup
                       label={
@@ -595,9 +726,10 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
-                      defaultValue={'조기취업'}
+                      value={completionType}
                       onValueChange={value => {
-                        field.onChange(parseInt(value))
+                        field.onChange(value)
+                        setCompletionType(value)
                       }}
                     >
                       <Radio key={'조기취업'} value={'조기취업'}>
@@ -625,7 +757,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                 color="primary"
                 className="w-full text-white lg:w-[50%]"
               >
-                저장
+                수정
               </Button>
             </BtnBox>
           </DetailDiv>

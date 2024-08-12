@@ -2381,3 +2381,40 @@ export const CREATE_EMPLOYMENT_MUTATION = gql`
     }
   }
 `
+export const EDIT_EMPLOYMENT_MUTATION = gql`
+  mutation EditEmploymentStatus(
+    $editEmploymentStatusId: Int!
+    $employmentType: String!
+    $dateOfEmployment: String!
+    $companyName: String!
+    $businessNum: String!
+    $responsibilities: String!
+    $location: String!
+    $phoneNum: String!
+    $businessSize: String!
+    $imploymentInsurance: String!
+    $proofOfImployment: String!
+    $relatedFields: String!
+    $completionType: String!
+  ) {
+    editEmploymentStatus(
+      id: $editEmploymentStatusId
+      employmentType: $employmentType
+      dateOfEmployment: $dateOfEmployment
+      companyName: $companyName
+      businessNum: $businessNum
+      responsibilities: $responsibilities
+      location: $location
+      phoneNum: $phoneNum
+      businessSize: $businessSize
+      imploymentInsurance: $imploymentInsurance
+      proofOfImployment: $proofOfImployment
+      relatedFields: $relatedFields
+      completionType: $completionType
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`

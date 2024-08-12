@@ -2,6 +2,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_SM_QUERY } from '@/graphql/queries'
 import { ResultSearchSm } from '@/src/generated/graphql'
 import EmploymentForm from '@/components/form/EmploymentForm'
+import EmploymentEditForm from '@/components/form/EmploymentEditForm'
 
 type searchSMQuery = {
   searchSM: ResultSearchSm
@@ -18,14 +19,15 @@ export default function Employment({ paymentId, subjectId }) {
     },
   )
 
+  console.log(data)
+
   return (
     <>
       {data?.searchSM.data.length > 0 ? (
-        // <WishFormList
-        //   item={data?.searchSM.data.length > 0 ? data?.searchSM.data[0] : null}
-        //   refetch={refetch}
-        // />
-        <></>
+        <EmploymentEditForm
+          item={data?.searchSM.data.length > 0 ? data?.searchSM.data[0] : null}
+          refetch={refetch}
+        />
       ) : (
         <EmploymentForm paymentId={paymentId} subjectId={subjectId} />
       )}

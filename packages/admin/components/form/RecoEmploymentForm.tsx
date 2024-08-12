@@ -125,7 +125,6 @@ export default function RecoEmploymentForm({
   } = useForm()
 
   const onSubmit = data => {
-    console.log(data)
     createEmploymentRecommentation({
       variables: {
         subjectId: subjectId,
@@ -410,7 +409,9 @@ export default function RecoEmploymentForm({
                       field.onChange(date)
                       setInterviewDate(date)
                     }}
-                    dateFormat="yyyy/MM/dd"
+                    showTimeSelect
+                    timeIntervals={10}
+                    dateFormat="yyyy/MM/dd HH:mm"
                     onChangeRaw={e => e.preventDefault()}
                     onFocus={e => e.target.blur()}
                     customInput={
