@@ -9,6 +9,7 @@ import Certificate from '@/components/layout/Certificate'
 import EmploymentMemo from '@/components/layout/EmploymentMemo'
 import WishEmployment from '@/components/layout/WishEmployment'
 import RecoEmployment from '@/components/layout/RecoEmployment'
+import Employment from '../layout/Employment'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -120,7 +121,31 @@ export default function EmploymentTabs({ paymentId, subjectId }) {
               <AreaTitle>
                 <h4>취업현황</h4>
               </AreaTitle>
-              <EmploymentForm />
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <WishEmployment paymentId={paymentId} subjectId={subjectId} />
+              </Suspense>
+            </DetailDiv>
+          </DetailBox>
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>취업현황</h4>
+              </AreaTitle>
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <Employment paymentId={paymentId} subjectId={subjectId} />
+              </Suspense>
             </DetailDiv>
           </DetailBox>
         </Tab>

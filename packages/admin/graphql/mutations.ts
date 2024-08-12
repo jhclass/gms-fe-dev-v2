@@ -2342,3 +2342,40 @@ export const DELETE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
     }
   }
 `
+export const CREATE_EMPLOYMENT_MUTATION = gql`
+  mutation CreateEmploymentStatus(
+    $employmentType: String!
+    $companyName: String!
+    $businessNum: String!
+    $responsibilities: String!
+    $location: String!
+    $phoneNum: String!
+    $businessSize: String!
+    $imploymentInsurance: String!
+    $proofOfImployment: String!
+    $relatedFields: String!
+    $completionType: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+  ) {
+    createEmploymentStatus(
+      employmentType: $employmentType
+      companyName: $companyName
+      businessNum: $businessNum
+      responsibilities: $responsibilities
+      location: $location
+      phoneNum: $phoneNum
+      businessSize: $businessSize
+      imploymentInsurance: $imploymentInsurance
+      proofOfImployment: $proofOfImployment
+      relatedFields: $relatedFields
+      completionType: $completionType
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`

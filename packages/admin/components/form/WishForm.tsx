@@ -107,7 +107,6 @@ const BtnBox = styled.div`
 `
 
 export default function WishForm({ paymentId, subjectId }) {
-  const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [createHope] = useMutation(CREATE_HOPE_FOR_EMPLOYMENT_MUTATION)
   const { register, handleSubmit, reset, control, formState } = useForm()

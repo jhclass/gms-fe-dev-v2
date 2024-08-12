@@ -13,7 +13,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import { CREATE_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -159,34 +158,31 @@ export default function EmploymentForm({ paymentId, subjectId }) {
 
   const onSubmit = data => {
     console.log(data)
-    createEmployment({
-      variables: {
-        studentPaymentId: paymentId,
-        subjectId: subjectId,
-        employmentType: null,
-        companyName: null,
-        businessNum: null,
-        responsibilities: null,
-        location: null,
-        phoneNum: null,
-        businessSize: null,
-        imploymentInsurance: null,
-        proofOfImployment: null,
-        relatedFields: null,
-        completionType: null,
-      },
-      refetchQueries: [SEARCH_SM_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `수강생 ID:${paymentId} 취업 현황 등록`,
-          `ok: ${result.createEmploymentStatus.ok}`,
-        )
-        if (result.createEmploymentStatus.ok) {
-          alert(`취업 현황이 등록되었습니다.`)
-          reset()
-        }
-      },
-    })
+    // createHope({
+    //   variables: {
+    //     studentPaymentId: paymentId,
+    //     subjectId: subjectId,
+    //     workingArea: data.workingArea === '' ? null : data.workingArea,
+    //     fieldOfHope: data.fieldOfHope === '' ? null : data.fieldOfHope,
+    //     hopefulReward:
+    //       data.hopefulReward === '' ? null : parseInt(data.hopefulReward),
+    //     workType: data.workType === '' ? null : data.workType,
+    //     workingHours:
+    //       data.workingHours === '' ? null : parseInt(data.workingHours),
+    //     opinion: data.opinion === '' ? null : data.opinion,
+    //   },
+    //   refetchQueries: [SEARCH_SM_QUERY],
+    //   onCompleted: result => {
+    //     userLogs(
+    //       `수강생 ID:${paymentId} 취업 희망 현황 등록`,
+    //       `ok: ${result.createHopeForEmployment.ok}`,
+    //     )
+    //     if (result.createHopeForEmployment.ok) {
+    //       alert(`취업 희망 현황이 등록되었습니다.`)
+    //       reset()
+    //     }
+    //   },
+    // })
   }
 
   return (
@@ -210,10 +206,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
               <AreaBox>
                 <Controller
                   control={control}
-                  name="employmentType"
-                  rules={{
-                    required: { value: true, message: '구분을 선택해 주세요.' },
-                  }}
+                  name="progress"
                   defaultValue={'취업'}
                   render={({ field, fieldState }) => (
                     <RadioGroup
@@ -238,9 +231,9 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     </RadioGroup>
                   )}
                 />
-                {errors.employmentType && (
+                {errors.workingArea && (
                   <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.employmentType.message)}
+                    {String(errors.workingArea.message)}
                   </p>
                 )}
               </AreaBox>
@@ -249,12 +242,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   <Controller
                     control={control}
                     name="stVisit"
-                    rules={{
-                      required: {
-                        value: true,
-                        message: '취득일자를 선택해주세요.',
-                      },
-                    }}
+                    defaultValue={''}
                     render={({ field }) => (
                       <DatePicker
                         renderCustomHeader={({

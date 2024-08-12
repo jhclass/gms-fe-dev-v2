@@ -3,10 +3,7 @@ import { useRouter } from 'next/router'
 import { Button, Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
-import {
-  CREATE_HOPE_FOR_EMPLOYMENT_MUTATION,
-  EDIT_HOPE_FOR_EMPLOYMENT_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_HOPE_FOR_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 
@@ -109,7 +106,7 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-export default function WishFormList({ item, refetch }) {
+export default function WishEditForm({ item, refetch }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [editHope] = useMutation(EDIT_HOPE_FOR_EMPLOYMENT_MUTATION)
