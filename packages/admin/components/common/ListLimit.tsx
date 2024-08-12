@@ -16,7 +16,7 @@ const FilterForm = styled.form`
   }
 `
 const LimitBox = styled.div`
-  width: 12.5rem;
+  width: 13rem;
   position: relative;
   display: flex;
   flex: 1;
