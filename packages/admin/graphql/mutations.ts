@@ -2357,6 +2357,7 @@ export const CREATE_EMPLOYMENT_MUTATION = gql`
     $completionType: String!
     $subjectId: Int!
     $studentPaymentId: Int!
+    $dateOfEmployment: String!
   ) {
     createEmploymentStatus(
       employmentType: $employmentType
@@ -2372,6 +2373,7 @@ export const CREATE_EMPLOYMENT_MUTATION = gql`
       completionType: $completionType
       subjectId: $subjectId
       studentPaymentId: $studentPaymentId
+      dateOfEmployment: $dateOfEmployment
     ) {
       ok
       message

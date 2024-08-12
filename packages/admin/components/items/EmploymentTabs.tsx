@@ -2,14 +2,13 @@ import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import { Suspense, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
-import EmploymentForm from '@/components/form/EmploymentForm'
 import EducationalHistory from '@/components/layout/EducationalHistory'
 import CareerHistory from '@/components/layout/CareerHistory'
 import Certificate from '@/components/layout/Certificate'
 import EmploymentMemo from '@/components/layout/EmploymentMemo'
 import WishEmployment from '@/components/layout/WishEmployment'
 import RecoEmployment from '@/components/layout/RecoEmployment'
-import Employment from '../layout/Employment'
+import Employment from '@/components/layout/Employment'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -116,22 +115,6 @@ export default function EmploymentTabs({ paymentId, subjectId }) {
           />
         </Tab>
         <Tab key="employmentState" title="취업현황">
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>취업현황</h4>
-              </AreaTitle>
-              <Suspense
-                fallback={
-                  <LodingDiv>
-                    <i className="xi-spinner-2" />
-                  </LodingDiv>
-                }
-              >
-                <WishEmployment paymentId={paymentId} subjectId={subjectId} />
-              </Suspense>
-            </DetailDiv>
-          </DetailBox>
           <DetailBox>
             <DetailDiv>
               <AreaTitle>

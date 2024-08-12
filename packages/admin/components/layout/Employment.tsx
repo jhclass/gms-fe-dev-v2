@@ -12,7 +12,7 @@ export default function Employment({ paymentId, subjectId }) {
     SEARCH_SM_QUERY,
     {
       variables: {
-        modelType: 'HopeForEmployment',
+        modelType: 'EmploymentStatus',
         studentPaymentId: paymentId,
       },
     },

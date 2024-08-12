@@ -13,6 +13,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import { CREATE_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
+import { SEARCH_SM_QUERY } from '@/graphql/queries'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -158,31 +159,35 @@ export default function EmploymentForm({ paymentId, subjectId }) {
 
   const onSubmit = data => {
     console.log(data)
-    // createHope({
-    //   variables: {
-    //     studentPaymentId: paymentId,
-    //     subjectId: subjectId,
-    //     workingArea: data.workingArea === '' ? null : data.workingArea,
-    //     fieldOfHope: data.fieldOfHope === '' ? null : data.fieldOfHope,
-    //     hopefulReward:
-    //       data.hopefulReward === '' ? null : parseInt(data.hopefulReward),
-    //     workType: data.workType === '' ? null : data.workType,
-    //     workingHours:
-    //       data.workingHours === '' ? null : parseInt(data.workingHours),
-    //     opinion: data.opinion === '' ? null : data.opinion,
-    //   },
-    //   refetchQueries: [SEARCH_SM_QUERY],
-    //   onCompleted: result => {
-    //     userLogs(
-    //       `수강생 ID:${paymentId} 취업 희망 현황 등록`,
-    //       `ok: ${result.createHopeForEmployment.ok}`,
-    //     )
-    //     if (result.createHopeForEmployment.ok) {
-    //       alert(`취업 희망 현황이 등록되었습니다.`)
-    //       reset()
-    //     }
-    //   },
-    // })
+    createEmployment({
+      variables: {
+        studentPaymentId: paymentId,
+        subjectId: subjectId,
+        employmentType: null,
+        dateOfEmployment: null,
+        companyName: null,
+        businessNum: null,
+        responsibilities: null,
+        location: null,
+        phoneNum: null,
+        businessSize: null,
+        imploymentInsurance: null,
+        proofOfImployment: null,
+        relatedFields: null,
+        completionType: null,
+      },
+      refetchQueries: [SEARCH_SM_QUERY],
+      onCompleted: result => {
+        userLogs(
+          `수강생 ID:${paymentId} 취업 현황 등록`,
+          `ok: ${result.createEmploymentStatus.ok}`,
+        )
+        if (result.createEmploymentStatus.ok) {
+          alert(`취업 현황이 등록되었습니다.`)
+          reset()
+        }
+      },
+    })
   }
 
   return (
@@ -206,7 +211,10 @@ export default function EmploymentForm({ paymentId, subjectId }) {
               <AreaBox>
                 <Controller
                   control={control}
-                  name="progress"
+                  name="employmentType"
+                  rules={{
+                    required: { value: true, message: '구분을 선택해 주세요.' },
+                  }}
                   defaultValue={'취업'}
                   render={({ field, fieldState }) => (
                     <RadioGroup
@@ -231,9 +239,9 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     </RadioGroup>
                   )}
                 />
-                {errors.workingArea && (
+                {errors.employmentType && (
                   <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.workingArea.message)}
+                    {String(errors.employmentType.message)}
                   </p>
                 )}
               </AreaBox>
@@ -241,8 +249,13 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                 <DatePickerBox>
                   <Controller
                     control={control}
-                    name="stVisit"
-                    defaultValue={''}
+                    name="dateOfEmployment"
+                    rules={{
+                      required: {
+                        value: true,
+                        message: '취득일자를 선택해주세요.',
+                      },
+                    }}
                     render={({ field }) => (
                       <DatePicker
                         renderCustomHeader={({
@@ -300,6 +313,11 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     )}
                   />
                 </DatePickerBox>
+                {errors.dateOfEmployment && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.dateOfEmployment.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Input
@@ -308,7 +326,6 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   variant={'bordered'}
                   radius="md"
                   type="text"
-                  // defaultValue={managerData.mPhoneNum}
                   label={
                     <FilterLabel>
                       회사명<span>*</span>
@@ -316,18 +333,18 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   }
                   className="w-full"
                   onChange={e => {
-                    register('mPhoneNum').onChange(e)
+                    register('companyName').onChange(e)
                   }}
-                  {...register('mPhoneNum', {
+                  {...register('companyName', {
                     required: {
                       value: true,
                       message: '회사명을 입력해주세요.',
                     },
                   })}
                 />
-                {errors.mPhoneNum && (
+                {errors.companyName && (
                   <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.mPhoneNum.message)}
+                    {String(errors.companyName.message)}
                   </p>
                 )}
               </AreaBox>
@@ -338,17 +355,21 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   variant={'bordered'}
                   radius="md"
                   type="text"
-                  // defaultValue={managerData.mPhoneNum}
                   label="사업자번호"
                   className="w-full"
                   onChange={e => {
-                    register('mPhoneNum').onChange(e)
+                    register('businessNum').onChange(e)
                   }}
-                  {...register('mPhoneNum')}
+                  {...register('businessNum', {
+                    required: {
+                      value: true,
+                      message: '사업자 번호를 입력해주세요.',
+                    },
+                  })}
                 />
-                {errors.mPhoneNum && (
+                {errors.businessNum && (
                   <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.mPhoneNum.message)}
+                    {String(errors.businessNum.message)}
                   </p>
                 )}
               </AreaBox>
@@ -362,14 +383,22 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   radius="md"
                   type="text"
                   label="담당업무"
-                  // defaultValue={managerData.mPhoneNumFriend}
                   className="w-full"
-                  maxLength={12}
                   onChange={e => {
-                    register('mPhoneNumFriend').onChange(e)
+                    register('responsibilities').onChange(e)
                   }}
-                  {...register('mPhoneNumFriend')}
+                  {...register('responsibilities', {
+                    required: {
+                      value: true,
+                      message: '담당업무를 입력해주세요.',
+                    },
+                  })}
                 />
+                {errors.businessNum && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.businessNum.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Input
@@ -379,38 +408,60 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                   radius="md"
                   type="text"
                   label="소재지"
-                  // defaultValue={managerData.mPhoneNumFriend}
                   className="w-full"
-                  maxLength={12}
                   onChange={e => {
-                    register('mPhoneNumFriend').onChange(e)
+                    register('location').onChange(e)
                   }}
-                  {...register('mPhoneNumFriend')}
+                  {...register('location', {
+                    required: {
+                      value: true,
+                      message: '소재지를 입력해주세요.',
+                    },
+                  })}
                 />
+                {errors.location && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.location.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Input
                   labelPlacement="outside"
-                  placeholder="사업장규모"
+                  placeholder="사업장 규모"
                   variant="bordered"
                   radius="md"
                   type="text"
-                  label="소재지"
-                  // defaultValue={managerData.mPhoneNumFriend}
+                  label="사업장 규모"
                   className="w-full"
-                  maxLength={12}
                   onChange={e => {
-                    register('mPhoneNumFriend').onChange(e)
+                    register('businessSize').onChange(e)
                   }}
-                  {...register('mPhoneNumFriend')}
+                  {...register('businessSize', {
+                    required: {
+                      value: true,
+                      message: '사업장 규모를 입력해주세요.',
+                    },
+                  })}
                 />
+                {errors.businessSize && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.businessSize.message)}
+                  </p>
+                )}
               </AreaBox>
             </FlexBox>
             <FlexBox>
               <AreaBox>
                 <Controller
                   control={control}
-                  name="progress"
+                  name="imploymentInsurance"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: '고용보험 여부를 선택해 주세요.',
+                    },
+                  }}
                   defaultValue={'Y'}
                   render={({ field, fieldState }) => (
                     <RadioGroup
@@ -435,11 +486,22 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     </RadioGroup>
                   )}
                 />
+                {errors.imploymentInsurance && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.imploymentInsurance.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Controller
                   control={control}
-                  name="progress"
+                  name="proofOfImployment"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: '재직증명 여부를 선택해 주세요.',
+                    },
+                  }}
                   defaultValue={'Y'}
                   render={({ field, fieldState }) => (
                     <RadioGroup
@@ -464,11 +526,22 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     </RadioGroup>
                   )}
                 />
+                {errors.proofOfImployment && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.proofOfImployment.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Controller
                   control={control}
-                  name="progress"
+                  name="relatedFields"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: '관련 분야를 선택해 주세요.',
+                    },
+                  }}
                   defaultValue={'동일'}
                   render={({ field, fieldState }) => (
                     <RadioGroup
@@ -496,11 +569,22 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     </RadioGroup>
                   )}
                 />
+                {errors.relatedFields && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.relatedFields.message)}
+                  </p>
+                )}
               </AreaBox>
               <AreaBox>
                 <Controller
                   control={control}
-                  name="progress"
+                  name="completionType"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: '취업 형태를 선택해 주세요.',
+                    },
+                  }}
                   defaultValue={'조기취업'}
                   render={({ field, fieldState }) => (
                     <RadioGroup
@@ -525,6 +609,11 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                     </RadioGroup>
                   )}
                 />
+                {errors.completionType && (
+                  <p className="px-2 pt-2 text-xs text-red">
+                    {String(errors.completionType.message)}
+                  </p>
+                )}
               </AreaBox>
             </FlexBox>
             <BtnBox>
