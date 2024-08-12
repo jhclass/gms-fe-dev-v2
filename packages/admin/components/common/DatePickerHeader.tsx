@@ -64,7 +64,6 @@ export default function DatePickerHeader({
         }}
         style={{
           borderBottom: `1px solid ${theme.colors.gray}`,
-          width: '6rem',
         }}
       >
         {rangeYears?.map(option => (
@@ -92,7 +91,6 @@ export default function DatePickerHeader({
         }}
         style={{
           borderBottom: `1px solid ${theme.colors.gray}`,
-          width: '6rem',
         }}
       >
         {months?.map(option => (
