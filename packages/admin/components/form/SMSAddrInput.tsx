@@ -68,7 +68,7 @@ export default function handleCheck({ groupSelected, setGroupSelected }) {
         color="primary"
         className="w-full lg:w-auto"
       >
-        추가
+        추가 &#43;
       </Button>
     </ItemBox>
   )
