@@ -552,7 +552,6 @@ export default function TeacherWrite() {
                                 ? null
                                 : new Date(joiningDate)
                             }
-                            openToDate={new Date('2000/04/11')}
                             placeholderText="날짜를 선택해주세요."
                             isClearable
                             onChange={date => {
