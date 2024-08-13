@@ -11,6 +11,14 @@ const MoreBtn = styled.div`
   align-items: center;
   justify-content: center;
 `
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray};
+`
 
 type searchSMQuery = {
   searchSM: ResultSearchSm
@@ -96,29 +104,37 @@ export default function EducationalHistoryList({
 
   return (
     <>
-      {searchData &&
-        searchData.map((item, index) => (
-          <EducationalHistoryItem
-            key={index}
-            item={item}
-            refetch={refetch}
-            setPage={setPage}
-            mId={mId}
-          />
-        ))}
-      {page < Math.ceil(data?.searchSM.totalCount / limit) && (
-        <MoreBtn>
-          <Button
-            size="md"
-            onClick={loadMore}
-            className="w-full bg-white border-secondary text-secondary"
-          >
-            더보기{' '}
-            <span className="text-secondary text-[1rem]">
-              <i className="xi-plus-circle" />
-            </span>
-          </Button>
-        </MoreBtn>
+      {data?.searchSM.totalCount > 0 ? (
+        <>
+          {searchData &&
+            searchData.map((item, index) => (
+              <EducationalHistoryItem
+                key={index}
+                item={item}
+                refetch={refetch}
+                setPage={setPage}
+                mId={mId}
+              />
+            ))}
+          {page < Math.ceil(data?.searchSM.totalCount / limit) && (
+            <MoreBtn>
+              <Button
+                size="md"
+                onClick={loadMore}
+                className="w-full bg-white border-secondary text-secondary"
+              >
+                더보기{' '}
+                <span className="text-secondary text-[1rem]">
+                  <i className="xi-plus-circle" />
+                </span>
+              </Button>
+            </MoreBtn>
+          )}
+        </>
+      ) : (
+        <>
+          <Nolist>등록된 학력 사항이 없습니다.</Nolist>
+        </>
       )}
     </>
   )

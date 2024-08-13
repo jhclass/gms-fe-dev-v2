@@ -16,6 +16,16 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
+const DetailDiv = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  border: 2px solid hsl(240 6% 90%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+`
+
 const FlexBox = styled.div`
   width: 100%;
   display: flex;
@@ -46,56 +56,49 @@ const FilterLabel = styled.label`
   color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
-
-  span {
-    color: red;
-  }
 `
 
 export default function EmploymentMemoItem({ item }) {
-  const [dropOutType, setDropOutType] = useState('수강포기')
+  const [dropOutType, setDropOutType] = useState('중도포기')
   const [studentName, setStudentName] = useState('')
-  const [dropOutDate, setDropOutDate] = useState(null)
-  console.log(item)
+  const [dropOutDate, setDropOutDate] = useState('-')
+  const [dropOutReason, setDropOutReason] = useState('')
+
   useEffect(() => {
-    if (item.courseComplete) {
+    if (item.courseComplete === '중도포기') {
       setDropOutType(item.courseComplete)
     }
     if (item.student.name) {
       setStudentName(item.student.name)
     }
-    if (
-      item.dateOfDroppingOut === null ||
-      item.dateOfDroppingOut === undefined
-    ) {
-      setDropOutDate(null)
-    } else {
+    if (item.reasonFordroppingOut) {
+      setDropOutReason(item.reasonFordroppingOut)
+    }
+    if (item.dateOfDroppingOut) {
       const timestamp = parseInt(item.dateOfDroppingOut)
-      setDropOutDate(timestamp)
+      setDropOutDate(formatDate(timestamp))
     }
   }, [item])
+
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
     const formatted =
       `${date.getFullYear()}-` +
       `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
+      `${date.getDate().toString().padStart(2, '0')} `
     return formatted
   }
   return (
-    <>
+    <DetailDiv>
       <FlexBox>
         <AreaBox>
           <Input
             isReadOnly={true}
             labelPlacement="outside"
-            variant="bordered"
+            variant="flat"
             value={studentName}
-            label="수강생명"
+            label={<FilterLabel>수강생명</FilterLabel>}
             type="text"
             placeholder=" "
             className="w-full"
@@ -103,14 +106,14 @@ export default function EmploymentMemoItem({ item }) {
         </AreaBox>
         <AreaBox>
           <RadioGroup
-            label="중도탈락 구분"
+            label={<FilterLabel>중도탈락 구분</FilterLabel>}
             orientation="horizontal"
             className="gap-[0.65rem]"
             value={dropOutType}
             isReadOnly={true}
           >
-            <Radio key={'수강포기'} value={'수강포기'}>
-              수강포기
+            <Radio key={'중도포기'} value={'중도포기'}>
+              중도포기
             </Radio>
             <Radio key={'미수료'} value={'미수료'}>
               미수료
@@ -121,9 +124,9 @@ export default function EmploymentMemoItem({ item }) {
           <Input
             isReadOnly={true}
             labelPlacement="outside"
-            variant="bordered"
+            variant="flat"
             value={dropOutDate}
-            label="중도탈락일자"
+            label={<FilterLabel>중도탈락일자</FilterLabel>}
             type="text"
             placeholder=" "
             className="w-full"
@@ -134,14 +137,15 @@ export default function EmploymentMemoItem({ item }) {
         <AreaBox>
           <Textarea
             isReadOnly={true}
-            label="중도탈락 사유"
+            label={<FilterLabel>중도탈락 사유</FilterLabel>}
             labelPlacement="outside"
             className="max-w-full"
-            variant="bordered"
+            variant="flat"
+            value={dropOutReason}
             minRows={3}
           />
         </AreaBox>
       </FlexBox>
-    </>
+    </DetailDiv>
   )
 }

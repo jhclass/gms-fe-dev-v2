@@ -2426,3 +2426,26 @@ export const EDIT_EMPLOYMENT_MUTATION = gql`
     }
   }
 `
+export const CREATE_PRE_INSPECTION_MUTATION = gql`
+  mutation Mutation(
+    $subjectId: Int!
+    $studentPaymentId: Int!
+    $actionTaken: String
+    $preInspectionDetails: String
+    $preScreenerType: String
+    $dateOfPreInspection: String
+  ) {
+    createPreInspection(
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+      actionTaken: $actionTaken
+      preInspectionDetails: $preInspectionDetails
+      preScreenerType: $preScreenerType
+      dateOfPreInspection: $dateOfPreInspection
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`

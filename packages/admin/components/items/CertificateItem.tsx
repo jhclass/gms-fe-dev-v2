@@ -101,7 +101,7 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function CertificateItem({ item, refetch, setPage, mId }) {
+export default function CertificateItem({ item, setPage, refetch, mId }) {
   const { userLogs } = useUserLogsMutation()
   const [editCertificate] = useMutation(EDIT_CERTIFICATE_MUTATION)
   const [deleteCertificate] = useMutation(DELETE_CERTIFICATE_MUTATION)

@@ -12,6 +12,9 @@ import Employment from '@/components/layout/Employment'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
 import DropOutList from '../form/DropOutList'
+import CertificateNameList from '../form/CertificateNameList'
+import EmploymentNameList from '../form/EmploymentNameList'
+import DropOutMemo from '../layout/DropOutMemo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -48,7 +51,7 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function AttendanceTabs({ lectureId, students }) {
+export default function AttendanceTabs({ lectureId, students, subjectId }) {
   const completion = useRecoilValue(completionStatus)
   const { useMme } = useMmeQuery()
   const mId = useMme('mUserId')
@@ -56,8 +59,6 @@ export default function AttendanceTabs({ lectureId, students }) {
   const dropOutStudents = students?.filter(
     student => student.courseComplete === completion.dropout,
   )
-
-  console.log(dropOutStudents)
 
   return (
     <>
@@ -75,11 +76,58 @@ export default function AttendanceTabs({ lectureId, students }) {
         onSelectionChange={e => setSelected(String(e))}
       >
         <Tab key="eduInfo" title="중도탈락현황">
-          <DropOutList students={dropOutStudents} />
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>중도 탈락 현황</h4>
+              </AreaTitle>
+              <DropOutList students={dropOutStudents} />
+            </DetailDiv>
+          </DetailBox>
         </Tab>
-        <Tab key="career" title="중도탈락 사전점검"></Tab>
-        <Tab key="certificate" title="자격취득현황"></Tab>
-        <Tab key="employmentState" title="취업현황"></Tab>
+        <Tab key="career" title="중도탈락 사전점검">
+          <DropOutMemo
+            lectureId={lectureId}
+            subjectId={subjectId}
+            students={students}
+          />
+        </Tab>
+        <Tab key="certificate" title="자격취득현황">
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>자격 취득 현황</h4>
+              </AreaTitle>
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CertificateNameList lectureId={lectureId} />
+              </Suspense>
+            </DetailDiv>
+          </DetailBox>
+        </Tab>
+        <Tab key="employmentState" title="취업현황">
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>취업 현황</h4>
+              </AreaTitle>
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <EmploymentNameList lectureId={lectureId} />
+              </Suspense>
+            </DetailDiv>
+          </DetailBox>
+        </Tab>
         <Tab key="wishEmployment" title="정기평가 내용설정"></Tab>
       </Tabs>
     </>

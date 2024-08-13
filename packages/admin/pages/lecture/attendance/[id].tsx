@@ -9,7 +9,6 @@ import Layout from '@/pages/students/layout'
 import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
-import AropoutList from '@/components/table/AropoutList'
 import AropoutStateList from '@/components/table/AropoutStateList'
 import EvaluationList from '@/components/table/EvaluationList'
 import Attendance from '@/components/table/Attendance'
@@ -19,7 +18,6 @@ import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
 import AbsentFilterList from '@/components/table/AbsentFilterList'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
-import AcquisitionNameList from '@/components/table/AcquisitionNameList'
 import EmploymentNameList from '@/components/table/EmploymentNameList'
 import AttendanceTabs from '@/components/items/AttendanceTabs'
 
@@ -183,7 +181,7 @@ export default function StudentsWrite() {
       alert('등록된 시간표가 없습니다.')
     }
   }
-  console.log('students', students)
+  console.log('lectureData', lectureData)
   return (
     <>
       <MainWrap>
@@ -316,39 +314,11 @@ export default function StudentsWrite() {
               </DetailDiv>
             </DetailBox>
           )}
-          <AttendanceTabs lectureId={lectureData?.id} students={students} />
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>중도탈락현황</h4>
-              </AreaTitle>
-              <AropoutList />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>중도탈락 사전점검</h4>
-              </AreaTitle>
-              <AropoutStateList />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>자격취득현황</h4>
-              </AreaTitle>
-              <AcquisitionNameList />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>취업현황</h4>
-              </AreaTitle>
-              <EmploymentNameList />
-            </DetailDiv>
-          </DetailBox>
+          <AttendanceTabs
+            lectureId={lectureData?.id}
+            subjectId={lectureData?.subjectId}
+            students={students}
+          />
           <DetailBox>
             <DetailDiv>
               <AreaTitle>

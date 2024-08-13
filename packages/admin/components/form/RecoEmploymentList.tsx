@@ -12,6 +12,15 @@ const MoreBtn = styled.div`
   justify-content: center;
 `
 
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray};
+`
+
 type searchSMQuery = {
   searchSM: ResultSearchSm
 }
@@ -96,29 +105,37 @@ export default function CertificateList({
 
   return (
     <>
-      {searchData &&
-        searchData.map((item, index) => (
-          <RecoEmploymentItem
-            key={index}
-            item={item}
-            refetch={refetch}
-            setPage={setPage}
-            mId={mId}
-          />
-        ))}
-      {page < Math.ceil(data?.searchSM.totalCount / limit) && (
-        <MoreBtn>
-          <Button
-            size="md"
-            onClick={loadMore}
-            className="w-full bg-white border-secondary text-secondary"
-          >
-            더보기{' '}
-            <span className="text-secondary text-[1rem]">
-              <i className="xi-plus-circle" />
-            </span>
-          </Button>
-        </MoreBtn>
+      {data?.searchSM.totalCount > 0 ? (
+        <>
+          {searchData &&
+            searchData.map((item, index) => (
+              <RecoEmploymentItem
+                key={index}
+                item={item}
+                refetch={refetch}
+                setPage={setPage}
+                mId={mId}
+              />
+            ))}
+          {page < Math.ceil(data?.searchSM.totalCount / limit) && (
+            <MoreBtn>
+              <Button
+                size="md"
+                onClick={loadMore}
+                className="w-full bg-white border-secondary text-secondary"
+              >
+                더보기{' '}
+                <span className="text-secondary text-[1rem]">
+                  <i className="xi-plus-circle" />
+                </span>
+              </Button>
+            </MoreBtn>
+          )}
+        </>
+      ) : (
+        <>
+          <Nolist>등록된 취업 추천 현황이 없습니다.</Nolist>
+        </>
       )}
     </>
   )

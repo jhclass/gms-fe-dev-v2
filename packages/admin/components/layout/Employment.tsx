@@ -19,8 +19,6 @@ export default function Employment({ paymentId, subjectId }) {
     },
   )
 
-  console.log(data)
-
   return (
     <>
       {data?.searchSM.data.length > 0 ? (

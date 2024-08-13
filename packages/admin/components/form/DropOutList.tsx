@@ -1,31 +1,30 @@
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
-import { ResultSearchSm } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
-import EducationalHistoryItem from '@/components/items/EducationalHistoryItem'
 import { styled } from 'styled-components'
-import { Button } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import DropOutItem from '../items/DropOutItem'
+import DropOutItem from '@/components/items/DropOutItem'
 
-const DetailDiv = styled.div`
-  width: 100%;
+const Nolist = styled.div`
   display: flex;
-  gap: 0.5rem;
-  flex-direction: column;
-  border: 2px solid hsl(240 6% 90%);
-  padding: 1rem;
-  border-radius: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 export default function DropOutList({ students }) {
   return (
     <>
-      <DetailDiv>
-        {students &&
-          students.map((item, index) => (
-            <DropOutItem key={index} item={item} />
-          ))}
-      </DetailDiv>
+      {students?.length > 0 ? (
+        <>
+          {students &&
+            students.map((item, index) => (
+              <DropOutItem key={index} item={item} />
+            ))}
+        </>
+      ) : (
+        <>
+          <Nolist>등록된 중도 탈락 현황이 없습니다.</Nolist>
+        </>
+      )}
     </>
   )
 }
