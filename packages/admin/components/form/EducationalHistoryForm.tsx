@@ -220,7 +220,6 @@ export default function EducationalHistoryForm({
                   className="w-full"
                   selectedKeys={[graduationValue]}
                   onChange={value => {
-                    console.log(field)
                     if (value.target.value !== '') {
                       field.onChange(value)
                       handleGraduationChange(value)

@@ -21,6 +21,7 @@ import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
 import AcquisitionNameList from '@/components/table/AcquisitionNameList'
 import EmploymentNameList from '@/components/table/EmploymentNameList'
+import AttendanceTabs from '@/components/items/AttendanceTabs'
 
 const ConArea = styled.div`
   width: 100%;
@@ -182,7 +183,7 @@ export default function StudentsWrite() {
       alert('등록된 시간표가 없습니다.')
     }
   }
-
+  console.log('students', students)
   return (
     <>
       <MainWrap>
@@ -315,6 +316,7 @@ export default function StudentsWrite() {
               </DetailDiv>
             </DetailBox>
           )}
+          <AttendanceTabs lectureId={lectureData?.id} students={students} />
           <DetailBox>
             <DetailDiv>
               <AreaTitle>

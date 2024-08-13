@@ -154,7 +154,6 @@ export default function EmploymentDetail() {
         const data = resData.data.searchStudentPayment.data
         if (data.length > 0) {
           setPaymentData(data[0])
-          console.log(data)
 
           const result = await searchLectures({
             variables: {
@@ -245,7 +244,10 @@ export default function EmploymentDetail() {
                 <AreaTitle>
                   <h4>학생정보</h4>
                 </AreaTitle>
-                <EmploymentInfoForm paymentData={paymentData} />
+                <EmploymentInfoForm
+                  paymentData={paymentData}
+                  fetchData={fetchData}
+                />
               </DetailDiv>
             </DetailBox>
             <EmploymentTabs

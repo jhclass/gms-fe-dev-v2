@@ -125,7 +125,7 @@ export default function TypesTabs() {
             )}
           </Tab>
           {mGrade < 1 ? (
-            <Tab key="employmentType" title="취업유형">
+            <Tab key="supportType" title="훈련생유형">
               {mGrade < grade.general || mPart.includes('취업지원팀') ? (
                 <Suspense
                   fallback={
@@ -134,7 +134,7 @@ export default function TypesTabs() {
                     </LodingDiv>
                   }
                 >
-                  <CreateAdviceType isActive={true} category={'취업유형'} />
+                  <CreateAdviceType isActive={true} category={'훈련생유형'} />
                 </Suspense>
               ) : (
                 <Card radius="sm">

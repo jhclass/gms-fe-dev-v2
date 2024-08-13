@@ -22,7 +22,6 @@ export default function EmploymentMemoList({
   paymentId,
   mId,
 }) {
-  console.log(paymentId)
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)

@@ -1137,6 +1137,10 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         tuitionFee
         unCollectedAmount
         updatedAt
+        supportType
+        mZipCode
+        mAddresses
+        mAddressDetail
       }
     }
   }
@@ -1749,6 +1753,8 @@ export const SEARCH_LECTURES_MUTATION = gql`
             }
             situationReport
             lectureAssignment
+            dateOfDroppingOut
+            reasonFordroppingOut
             isWeekend
             id
             subDiv
@@ -2005,12 +2011,13 @@ export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
 
 // 학적부
 export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
-  mutation Mutation(
+  mutation EditStudentPayment(
     $editStudentPaymentId: Int!
     $subjectId: Int!
     $mAddressDetail: String
     $mAddresses: String
     $mZipCode: String
+    $supportType: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
@@ -2018,10 +2025,11 @@ export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
       mAddressDetail: $mAddressDetail
       mAddresses: $mAddresses
       mZipCode: $mZipCode
+      supportType: $supportType
     ) {
-      ok
-      message
       error
+      message
+      ok
     }
   }
 `
