@@ -21,28 +21,24 @@ import { getYear, subMonths } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
-const FilterBox = styled.div`
-  position: absolute;
-  top: 45px;
-  right: 0.25rem;
+const FilterBox = styled(motion.div)`
   z-index: 5;
+  position: relative;
   display: flex;
   justify-content: flex-end;
-
-  @media (max-width: 768px) {
+  @media (max-width: 790px) {
     width: 100%;
-    top: unset;
-    right: unset;
-    position: relative;
   }
 `
 const FilterForm = styled.form`
   display: flex;
   width: 100%;
+  gap: 1rem;
+  padding: 0;
   flex-direction: column;
 
-  @media (max-width: 768px) {
-    margin-bottom: 0.5rem;
+  @media (max-width: 790px) {
+    padding: 0 0 1.5rem 0;
   }
 `
 const BoxTop = styled.div`
@@ -50,10 +46,6 @@ const BoxTop = styled.div`
   flex: 1;
   gap: 0.5rem;
   align-items: flex-end;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 `
 const ItemBox = styled.div`
   display: flex;
@@ -94,6 +86,7 @@ export default function SmsSendFilter({
 }) {
   const smsPage = useResetRecoilState(smsPageState)
   const [receiver, setReceiver] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
   const {
     register,
     handleSubmit,
@@ -106,6 +99,19 @@ export default function SmsSendFilter({
       receiver: '',
     },
   })
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 790)
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize() // 초기 로드 시 실행
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   useEffect(() => {
     if (Object.keys(smsFilter).length === 0 || smsFilter?.phoneNum === null) {
@@ -138,7 +144,7 @@ export default function SmsSendFilter({
           <BoxTop>
             <ItemBox>
               <Input
-                labelPlacement="outside"
+                labelPlacement={isMobile ? 'outside' : 'outside-left'}
                 placeholder="'-'없이 작성해주세요"
                 type="text"
                 variant="bordered"
