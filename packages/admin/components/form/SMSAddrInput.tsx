@@ -6,6 +6,11 @@ const ItemBox = styled.form`
   display: flex;
   gap: 1rem;
   align-items: flex-end;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    flex-direction: column;
+  }
 `
 
 export default function handleCheck({ groupSelected, setGroupSelected }) {
@@ -59,13 +64,11 @@ export default function handleCheck({ groupSelected, setGroupSelected }) {
       />
       <Button
         type="submit"
-        size="sm"
-        radius="sm"
-        variant="solid"
+        variant="bordered"
         color="primary"
-        className="text-white mb-[4px]"
+        className="w-full lg:w-auto"
       >
-        추가
+        추가 &#43;
       </Button>
     </ItemBox>
   )
