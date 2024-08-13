@@ -12,7 +12,7 @@ const FilterForm = styled.form`
   align-items: flex-end;
 
   @media (max-width: 768px) {
-    padding: 0 0 1.5rem 0;
+    padding: 0 0.75rem 1rem;
   }
 `
 const LimitBox = styled.div`

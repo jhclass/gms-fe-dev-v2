@@ -192,8 +192,8 @@ export default function RequestMessage({
                 <ModalFooter>
                   <Button
                     size="sm"
-                    className="text-accent"
-                    variant="light"
+                    variant="bordered"
+                    className="text-accent border-accent"
                     onPress={closePopup}
                   >
                     Close

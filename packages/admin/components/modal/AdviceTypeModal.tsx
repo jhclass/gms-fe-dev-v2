@@ -93,8 +93,8 @@ export default function AdviceTypeModal({
               <ModalFooter>
                 <Button
                   size="sm"
-                  variant="light"
-                  className="text-accent"
+                  variant="bordered"
+                  className="text-accent border-accent"
                   onPress={onClose}
                 >
                   Close

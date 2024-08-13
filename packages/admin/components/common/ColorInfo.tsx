@@ -24,6 +24,10 @@ const ColorCip = styled.p`
   @media (max-width: 768px) {
     padding-left: 0;
     padding-right: 0.5rem;
+
+    &:last-child {
+      padding-right: 0;
+    }
   }
 `
 

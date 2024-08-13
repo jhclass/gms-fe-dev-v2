@@ -38,7 +38,7 @@ const FilterForm = styled.form`
   flex-direction: column;
 
   @media (max-width: 790px) {
-    padding: 0 0 1.5rem 0;
+    padding: 0.5rem 0.75rem 2rem;
   }
 `
 const BoxTop = styled.div`
