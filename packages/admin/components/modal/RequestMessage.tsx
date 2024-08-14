@@ -89,7 +89,7 @@ export default function RequestMessage({
 
   const onSubmit = data => {
     closePopup()
-    toast(<ReqToast />, {
+    toast(<ReqToast messageData={data} />, {
       position: 'bottom-right',
       autoClose: 20000,
       hideProgressBar: false,

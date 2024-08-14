@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import Footer from '@/components/layout/Footer'
 import SubCategory from '../layout/SubCategory'
+import { toast } from 'react-toastify'
+import ReqToast from '../common/ReqToast'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   position: relative;
@@ -103,6 +105,18 @@ export default function MainWrap({ children }) {
         if (message.type === 'NEW_STUDENTSTATE') {
           setMessages(prevMessages => [...prevMessages, message.data])
           console.log('NEW_STUDENTSTATE message received:', message.data)
+          toast(<ReqToast messageData={message.data} />, {
+            position: 'bottom-right',
+            autoClose: 20000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            style: {
+              // width: '100%',
+            },
+          })
           sessionStorage.setItem('newTodayState', formattedDate)
           sessionStorage.setItem('newStudentState', 'true')
         }
