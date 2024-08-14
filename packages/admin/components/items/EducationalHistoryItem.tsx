@@ -1,16 +1,22 @@
-import { CREATE_EDU_INFOMATION_MUTATION } from '@/graphql/mutations'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
+import {
+  DEIT_EDU_INFOMATION_MUTATION,
+  DELETE_EDU_INFOMATION_MUTATION,
+} from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
 
 const DetailForm = styled.form`
+  width: 100%;
   display: flex;
+  gap: 0.5rem;
   flex-direction: column;
-  gap: 1rem;
+  border: 2px solid hsl(240 6% 90%);
+  padding: 1rem;
+  border-radius: 0.5rem;
 `
 
 const FlexBox = styled.div`
@@ -47,66 +53,152 @@ const FilterLabel = styled.label`
 
 const BtnBox = styled.div`
   display: flex;
-  align-items: center;
-  padding-top: 1.75rem;
-  width: 5rem;
+  gap: 0.5rem;
+  flex-direction: column;
+
+  button {
+    width: 5rem;
+  }
 
   @media (max-width: 768px) {
-    padding-top: 0;
     width: 100%;
+    flex-direction: row;
+
+    button {
+      width: 50%;
+    }
   }
 `
+const UpdateTime = styled.p`
+  font-size: 0.75rem;
+  padding-left: 0.5rem;
+  color: ${({ theme }) => theme.colors.gray};
+`
 
-export default function EducationalHistoryForm({
-  setIsCreate,
-  paymentId,
-  subjectId,
+export default function EducationalHistoryItem({
+  item,
+  refetch,
+  setPage,
+  mId,
 }) {
   const { userLogs } = useUserLogsMutation()
-  const [createEduInfo] = useMutation(CREATE_EDU_INFOMATION_MUTATION)
+  const [editEduInfo] = useMutation(DEIT_EDU_INFOMATION_MUTATION)
+  const [deleteEduInfo] = useMutation(DELETE_EDU_INFOMATION_MUTATION)
   const [educationValue, setEducationValue] = useState('학력선택')
   const [graduationValue, setGraduationValue] = useState('졸업여부')
+
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: { errors },
-  } = useForm()
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      eduType: '',
+      eduName: '',
+      major: '',
+      graduationStatus: '',
+    },
+  })
 
-  const onSubmit = data => {
-    createEduInfo({
-      variables: {
-        subjectId: subjectId,
-        studentPaymentId: paymentId,
-        eduType: data.eduType === '' ? null : data.eduType,
-        eduName: data.eduName === '' ? null : data.eduName,
-        graduationStatus:
-          data.graduationStatus === '' ? null : data.graduationStatus,
-        major: data.major === '' ? null : data.major,
-      },
-      refetchQueries: [SEARCH_SM_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `paymentId: ${paymentId} 학력 등록`,
-          `ok: ${result.createEduInfomation.ok}`,
-        )
-        if (result.createEduInfomation.ok) {
-          setIsCreate(true)
-          alert('학력이 추가되었습니다.')
-          reset()
-          setEducationValue('학력선택')
-          setGraduationValue('졸업여부')
-        }
-      },
+  useEffect(() => {
+    reset({
+      eduType: item.eduType || '학력선택',
+      eduName: item.eduName || '',
+      major: item.major || '',
+      graduationStatus: item.graduationStatus || '졸업여부',
     })
+
+    if (item.eduType) {
+      setEducationValue(item.eduType)
+    }
+    if (item.graduationStatus) {
+      setGraduationValue(item.graduationStatus)
+    }
+  }, [item])
+
+  const onSubmit = async data => {
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          const result = await editEduInfo({
+            variables: {
+              editEduInfomationId: item.id,
+              eduType: data.eduType === '' ? '학력선택' : data.eduType,
+              eduName: data.eduName === '' ? null : data.eduName,
+              graduationStatus:
+                data.graduationStatus === '' ? null : data.graduationStatus,
+              major: data.major === '' ? null : data.major,
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${item.stName} 학력 사항 id:${item.id} 수정`,
+            `ok: ${result.data.editEduInfomation.ok} / ${dirtyFieldsArray.join(
+              ', ',
+            )}`,
+          )
+
+          if (!result.data.editEduInfomation.ok) {
+            throw new Error('학력 사항 수정 실패')
+          }
+          setPage(1)
+          refetch()
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('학력 사항 수정 중 에러 발생:', error)
+          alert('학력 사항 수정 처리 중 오류가 발생했습니다.')
+        }
+      }
+    }
   }
 
+  const deleteItem = async id => {
+    const isDelete = confirm('삭제하시겠습니까?\n삭제 후 되돌리수 없습니다.')
+    if (isDelete) {
+      try {
+        const result = await deleteEduInfo({
+          variables: {
+            deleteEduInfomationId: id,
+          },
+        })
+        userLogs(
+          `${item.stName} 학력 사항 id:${id} 삭제`,
+          `ok: ${result.data.deleteEduInfomation.ok}`,
+        )
+
+        if (!result.data.deleteEduInfomation.ok) {
+          throw new Error('학력 사항 삭제 실패')
+        }
+        setPage(1)
+        refetch()
+        alert('삭제되었습니다.')
+      } catch (error) {
+        console.error('학력 사항 삭제 중 에러 발생:', error)
+        alert('학력 사항 삭제 처리 중 오류가 발생했습니다.')
+      }
+    }
+  }
   const handleEducationChange = e => {
     setEducationValue(e.target.value)
   }
   const handleGraduationChange = e => {
     setGraduationValue(e.target.value)
+  }
+
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
   }
 
   return (
@@ -127,7 +219,6 @@ export default function EducationalHistoryForm({
                 <Select
                   labelPlacement="outside"
                   placeholder=" "
-                  defaultValue={[educationValue]}
                   className="w-full"
                   label={
                     <FilterLabel>
@@ -182,6 +273,7 @@ export default function EducationalHistoryForm({
               type="text"
               placeholder=" "
               className="w-full"
+              defaultValue={item.eduName}
               {...register('eduName', {
                 required: {
                   value: true,
@@ -199,6 +291,7 @@ export default function EducationalHistoryForm({
             <Input
               labelPlacement="outside"
               variant="bordered"
+              defaultValue={item.major}
               label="전공"
               type="text"
               placeholder=" "
@@ -210,7 +303,6 @@ export default function EducationalHistoryForm({
             <Controller
               control={control}
               name="graduationStatus"
-              defaultValue={'졸업여부'}
               render={({ field }) => (
                 <Select
                   label="졸업여부"
@@ -245,18 +337,32 @@ export default function EducationalHistoryForm({
               )}
             />
           </AreaBox>
-          <BtnBox>
-            <Button
-              type="submit"
-              size="md"
-              radius="md"
-              color="primary"
-              className="lg:w-[50%] w-full"
-            >
-              추가
-            </Button>
-          </BtnBox>
+          {mId == item.lastModifiedByUserId && (
+            <BtnBox>
+              <Button
+                type="submit"
+                size="md"
+                radius="md"
+                color="primary"
+                className="lg:w-[50%] w-full"
+              >
+                수정
+              </Button>
+              <Button
+                variant="bordered"
+                color="primary"
+                className="w-full text-primary"
+                onClick={() => deleteItem(item.id)}
+              >
+                삭제
+              </Button>
+            </BtnBox>
+          )}
         </FlexBox>
+        <UpdateTime>
+          마지막 업데이트 : {item.lastModifiedByName}(
+          {item.lastModifiedByUserId}) - {formatDate(item.updatedAt)}
+        </UpdateTime>
       </DetailForm>
     </>
   )

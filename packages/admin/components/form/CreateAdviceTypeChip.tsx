@@ -38,7 +38,6 @@ export default function CreateAdviceTypeChip({
   const [editAdvice] = useMutation(EDIT_ADVICE_TYPE_MUTATION)
   const [changeOrderAt] = useMutation(CHANGE_ORDER_AT_MUTATION)
   const createNumberArray = n => Array.from({ length: n }, (_, i) => i + 1)
-
   const [isFetching, setIsFetching] = useState(false)
   const [adviceList, setAdviceList] = useState([])
   const {

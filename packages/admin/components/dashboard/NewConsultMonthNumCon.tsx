@@ -124,6 +124,7 @@ export default function NewConsultNumCon() {
         <span>이달의 신규 상담</span>
         <ToolTipBox>
           <Tooltip
+            closeDelay={0}
             content={
               <DashTooltip className="px-1 py-2">
                 <DashTooltipTitle className="font-bold text-small">

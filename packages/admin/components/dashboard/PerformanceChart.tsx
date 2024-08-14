@@ -1,23 +1,11 @@
 import { styled } from 'styled-components'
-import { Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import PerformanceChartCon from '@/components/dashboard/PerformanceChartCon'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: white;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
 const ConArea = styled.div`
   width: 100%;
 `
@@ -46,6 +34,7 @@ export default function PerformanceChart({
   totalCount,
   totalRefundAmount,
 }) {
+  const router = useRouter()
   const {
     data: managerData,
     error,
@@ -56,11 +45,19 @@ export default function PerformanceChart({
       resign: 'N',
     },
   })
+
   const managerList = managerData?.searchManageUser.data
 
   const managerUsernames = managerIds.map(
     id => managerList.find(user => user.id === id)?.mUsername,
   )
+
+  useEffect(() => {
+    refetch({
+      mPart: '영업팀',
+      resign: 'N',
+    })
+  }, [router])
 
   if (error) {
     console.log(error)

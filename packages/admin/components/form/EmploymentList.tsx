@@ -248,9 +248,6 @@ export default function EmploymentList() {
                         type="text"
                         placeholder=" "
                         id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
                         isReadOnly={true}
                         startContent={<i className="xi-calendar" />}
                         defaultValue={
@@ -463,9 +460,6 @@ export default function EmploymentList() {
                         type="text"
                         placeholder=" "
                         id="date"
-                        classNames={{
-                          input: 'caret-transparent',
-                        }}
                         isReadOnly={true}
                         startContent={<i className="xi-calendar" />}
                         defaultValue={

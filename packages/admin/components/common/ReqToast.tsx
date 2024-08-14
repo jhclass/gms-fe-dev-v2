@@ -22,19 +22,13 @@ const ReqText = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function ReqToast() {
+export default function ReqToast({ messageData }) {
+  // console.log('messageData', messageData)
+
   return (
     <>
-      <FromID>
-        아무개아무개아무개아무개아무개아무개아무개아무개아무개아무개아무개아무개아무개아무개
-      </FromID>
-      <ReqText>
-        여기여기여기에 요청요여기에 요청요여기에 요청요청요청 이런거 요청합니다.
-        여기여기여기에 요청요여기에 요청요여기에 요청요청요청 이런거 요청합니다.
-        여기여기여기에 요청요여기에 요청요여기에 요청요청요청 이런거 요청합니다.
-        여기여기여기에 요청요여기에 요청요여기에 요청요청요청 이런거 요청합니다.
-        여기여기여기에 요청요여기에 요청요여기에 요청요청요청 이런거 요청합니다.
-      </ReqText>
+      <FromID>{messageData?.alarmTitle}</FromID>
+      <ReqText>{messageData?.alarmContent}</ReqText>
     </>
   )
 }

@@ -171,6 +171,7 @@ export default function AdviceTypeCon() {
             </p>
             <ToolTipBox>
               <Tooltip
+                closeDelay={0}
                 content={
                   <DashTooltip className="px-1 py-2">
                     <DashTooltipTitle className="font-bold text-small">
