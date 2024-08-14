@@ -1137,6 +1137,10 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         tuitionFee
         unCollectedAmount
         updatedAt
+        supportType
+        mZipCode
+        mAddresses
+        mAddressDetail
       }
     }
   }
@@ -1749,6 +1753,8 @@ export const SEARCH_LECTURES_MUTATION = gql`
             }
             situationReport
             lectureAssignment
+            dateOfDroppingOut
+            reasonFordroppingOut
             isWeekend
             id
             subDiv
@@ -2005,12 +2011,13 @@ export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
 
 // 학적부
 export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
-  mutation Mutation(
+  mutation EditStudentPayment(
     $editStudentPaymentId: Int!
     $subjectId: Int!
     $mAddressDetail: String
     $mAddresses: String
     $mZipCode: String
+    $supportType: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
@@ -2018,10 +2025,11 @@ export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
       mAddressDetail: $mAddressDetail
       mAddresses: $mAddresses
       mZipCode: $mZipCode
+      supportType: $supportType
     ) {
-      ok
-      message
       error
+      message
+      ok
     }
   }
 `
@@ -2048,6 +2056,36 @@ export const CREATE_EDU_INFOMATION_MUTATION = gql`
     }
   }
 `
+export const DEIT_EDU_INFOMATION_MUTATION = gql`
+  mutation Mutation(
+    $editEduInfomationId: Int!
+    $eduType: String
+    $eduName: String
+    $major: String
+    $graduationStatus: String
+  ) {
+    editEduInfomation(
+      id: $editEduInfomationId
+      eduType: $eduType
+      eduName: $eduName
+      major: $major
+      graduationStatus: $graduationStatus
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const DELETE_EDU_INFOMATION_MUTATION = gql`
+  mutation DeleteEduInfomation($deleteEduInfomationId: Int!) {
+    deleteEduInfomation(id: $deleteEduInfomationId) {
+      error
+      message
+      ok
+    }
+  }
+`
 export const CREATE_CAREER_MUTATION = gql`
   mutation CreateCareer(
     $careerDetails: String!
@@ -2059,6 +2097,24 @@ export const CREATE_CAREER_MUTATION = gql`
       subjectId: $subjectId
       studentPaymentId: $studentPaymentId
     ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const EDIT_CAREER_MUTATION = gql`
+  mutation EditCareer($editCareerId: Int!, $careerDetails: String!) {
+    editCareer(id: $editCareerId, careerDetails: $careerDetails) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_CAREER_MUTATION = gql`
+  mutation DeleteCareer($deleteCareerId: Int) {
+    deleteCareer(id: $deleteCareerId) {
       ok
       message
       error
@@ -2081,6 +2137,311 @@ export const CREATE_CERTIFICATE_MUTATION = gql`
       subjectId: $subjectId
       studentPaymentId: $studentPaymentId
       certificateLevel: $certificateLevel
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const EDIT_CERTIFICATE_MUTATION = gql`
+  mutation EditCertificate(
+    $certificateIssuer: String
+    $certificateLevel: String
+    $certificateName: String
+    $cAdate: String
+    $editCertificateId: Int!
+  ) {
+    editCertificate(
+      CertificateIssuer: $certificateIssuer
+      certificateLevel: $certificateLevel
+      certificateName: $certificateName
+      CAdate: $cAdate
+      id: $editCertificateId
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const DELETE_CERTIFICATE_MUTATION = gql`
+  mutation DeleteCertificate($deleteCertificateId: Int!) {
+    deleteCertificate(id: $deleteCertificateId) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_STUDENT_CONSULTATION_MUTATION = gql`
+  mutation CreateStudentConsultation(
+    $typeOfConsultation: String!
+    $dateOfConsultation: String!
+    $detailsOfConsultation: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+  ) {
+    createStudentConsultation(
+      typeOfConsultation: $typeOfConsultation
+      dateOfConsultation: $dateOfConsultation
+      detailsOfConsultation: $detailsOfConsultation
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_STUDENT_CONSULTATION_MUTATION = gql`
+  mutation EditStudentConsultation(
+    $editStudentConsultationId: Int!
+    $typeOfConsultation: String
+    $dateOfConsultation: String
+    $detailsOfConsultation: String
+  ) {
+    editStudentConsultation(
+      id: $editStudentConsultationId
+      typeOfConsultation: $typeOfConsultation
+      dateOfConsultation: $dateOfConsultation
+      detailsOfConsultation: $detailsOfConsultation
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_STUDENT_CONSULTATION_MUTATION = gql`
+  mutation DeleteStudentConsultation($deleteStudentConsultationId: Int!) {
+    deleteStudentConsultation(id: $deleteStudentConsultationId) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
+  mutation CreateHopeForEmployment(
+    $workingArea: String!
+    $fieldOfHope: String!
+    $hopefulReward: Int!
+    $workType: String!
+    $workingHours: Int!
+    $opinion: String!
+    $studentPaymentId: Int!
+    $subjectId: Int!
+  ) {
+    createHopeForEmployment(
+      workingArea: $workingArea
+      fieldOfHope: $fieldOfHope
+      hopefulReward: $hopefulReward
+      workType: $workType
+      workingHours: $workingHours
+      opinion: $opinion
+      studentPaymentId: $studentPaymentId
+      subjectId: $subjectId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
+  mutation EditHopeForEmployment(
+    $editHopeForEmploymentId: Int!
+    $fieldOfHope: String!
+    $hopefulReward: Int!
+    $workType: String!
+    $workingHours: Int!
+    $opinion: String!
+    $workingArea: String
+  ) {
+    editHopeForEmployment(
+      id: $editHopeForEmploymentId
+      fieldOfHope: $fieldOfHope
+      hopefulReward: $hopefulReward
+      workType: $workType
+      workingHours: $workingHours
+      opinion: $opinion
+      workingArea: $workingArea
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
+  mutation CreateEmploymentRecommendation(
+    $dateOfRecommendation: String!
+    $recruitmentField: String!
+    $companyName: String!
+    $location: String!
+    $phoneNum: String!
+    $dateOfInterview: String!
+    $employmentStatus: String!
+    $reasonForNonEmployment: String!
+    $certificateOfEmploymentStatus: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+  ) {
+    createEmploymentRecommendation(
+      dateOfRecommendation: $dateOfRecommendation
+      recruitmentField: $recruitmentField
+      companyName: $companyName
+      location: $location
+      phoneNum: $phoneNum
+      dateOfInterview: $dateOfInterview
+      employmentStatus: $employmentStatus
+      reasonForNonEmployment: $reasonForNonEmployment
+      certificateOfEmploymentStatus: $certificateOfEmploymentStatus
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
+  mutation EditEmploymentRecommendation(
+    $editEmploymentRecommendationId: Int!
+    $dateOfRecommendation: String
+    $recruitmentField: String
+    $companyName: String
+    $location: String
+    $phoneNum: String
+    $dateOfInterview: String
+    $employmentStatus: String
+    $reasonForNonEmployment: String
+    $certificateOfEmploymentStatus: String
+  ) {
+    editEmploymentRecommendation(
+      id: $editEmploymentRecommendationId
+      dateOfRecommendation: $dateOfRecommendation
+      recruitmentField: $recruitmentField
+      companyName: $companyName
+      location: $location
+      phoneNum: $phoneNum
+      dateOfInterview: $dateOfInterview
+      employmentStatus: $employmentStatus
+      reasonForNonEmployment: $reasonForNonEmployment
+      certificateOfEmploymentStatus: $certificateOfEmploymentStatus
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
+  mutation DeleteEmploymentRecommendation(
+    $deleteEmploymentRecommendationId: Int
+  ) {
+    deleteEmploymentRecommendation(id: $deleteEmploymentRecommendationId) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_EMPLOYMENT_MUTATION = gql`
+  mutation CreateEmploymentStatus(
+    $employmentType: String!
+    $companyName: String!
+    $businessNum: String!
+    $responsibilities: String!
+    $location: String!
+    $phoneNum: String!
+    $businessSize: String!
+    $imploymentInsurance: String!
+    $proofOfImployment: String!
+    $relatedFields: String!
+    $completionType: String!
+    $subjectId: Int!
+    $studentPaymentId: Int!
+    $dateOfEmployment: String!
+  ) {
+    createEmploymentStatus(
+      employmentType: $employmentType
+      companyName: $companyName
+      businessNum: $businessNum
+      responsibilities: $responsibilities
+      location: $location
+      phoneNum: $phoneNum
+      businessSize: $businessSize
+      imploymentInsurance: $imploymentInsurance
+      proofOfImployment: $proofOfImployment
+      relatedFields: $relatedFields
+      completionType: $completionType
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+      dateOfEmployment: $dateOfEmployment
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const EDIT_EMPLOYMENT_MUTATION = gql`
+  mutation EditEmploymentStatus(
+    $editEmploymentStatusId: Int!
+    $employmentType: String!
+    $dateOfEmployment: String!
+    $companyName: String!
+    $businessNum: String!
+    $responsibilities: String!
+    $location: String!
+    $phoneNum: String!
+    $businessSize: String!
+    $imploymentInsurance: String!
+    $proofOfImployment: String!
+    $relatedFields: String!
+    $completionType: String!
+  ) {
+    editEmploymentStatus(
+      id: $editEmploymentStatusId
+      employmentType: $employmentType
+      dateOfEmployment: $dateOfEmployment
+      companyName: $companyName
+      businessNum: $businessNum
+      responsibilities: $responsibilities
+      location: $location
+      phoneNum: $phoneNum
+      businessSize: $businessSize
+      imploymentInsurance: $imploymentInsurance
+      proofOfImployment: $proofOfImployment
+      relatedFields: $relatedFields
+      completionType: $completionType
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_PRE_INSPECTION_MUTATION = gql`
+  mutation Mutation(
+    $subjectId: Int!
+    $studentPaymentId: Int!
+    $actionTaken: String
+    $preInspectionDetails: String
+    $preScreenerType: String
+    $dateOfPreInspection: String
+  ) {
+    createPreInspection(
+      subjectId: $subjectId
+      studentPaymentId: $studentPaymentId
+      actionTaken: $actionTaken
+      preInspectionDetails: $preInspectionDetails
+      preScreenerType: $preScreenerType
+      dateOfPreInspection: $dateOfPreInspection
     ) {
       ok
       message

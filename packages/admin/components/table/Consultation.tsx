@@ -18,6 +18,8 @@ import {
   StudentStateResponse,
 } from '@/src/generated/graphql'
 import TableTop from '@/components/common/TableTop'
+import ListLimit from '../common/ListLimit'
+import ColorInfo from '../common/ColorInfo'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -188,6 +190,19 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
+
+const LeftBox = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    align-items: flex-end;
+    flex-direction: column;
+  }
+`
+
 type seeStudentState = {
   seeStudentState: StudentStateResponse
 }
@@ -271,6 +286,11 @@ export default function ConsolutationTable() {
           { background: theme.colors.accent, text: '미처리' },
         ]}
       />
+
+      {/* <ListLimit
+        currentLimit={currentLimit}
+        setCurrentLimit={setCurrentLimit}
+      /> */}
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>

@@ -1,5 +1,13 @@
-import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
 import { styled } from 'styled-components'
+import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
+import useUserLogsMutation from '@/utils/userLogs'
+import {
+  EDIT_EMPLOYMENT_MUTATION,
+  EDIT_HOPE_FOR_EMPLOYMENT_MUTATION,
+} from '@/graphql/mutations'
+import { Controller, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -7,12 +15,6 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import useUserLogsMutation from '@/utils/userLogs'
-import { useMutation } from '@apollo/client'
-import { CREATE_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -33,6 +35,47 @@ const TopInfo = styled.div`
 const Noti = styled.p`
   span {
     color: red;
+  }
+`
+const UpdateTime = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-end;
+  }
+`
+const UpdateCon = styled.p`
+  position: relative;
+  &:first-child {
+    padding-right: 0.4rem;
+    &:after {
+      content: '';
+      width: 0.3rem;
+      height: 1px;
+      background: ${({ theme }) => theme.colors.black};
+      position: absolute;
+      top: 50%;
+      margin-top: -0.5px;
+      right: -0.2rem;
+    }
+  }
+  > span {
+    color: #555;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-end;
+    &:first-child {
+      padding-right: 0;
+      &:after {
+        display: none;
+      }
+    }
   }
 `
 const DetailDiv = styled.div`
@@ -92,15 +135,9 @@ const DatePickerBox = styled.div`
   }
 `
 
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
-
-export default function EmploymentForm({ paymentId, subjectId }) {
+export default function EmploymentEditForm({ item, refetch }) {
   const { userLogs } = useUserLogsMutation()
-  const [createEmployment] = useMutation(CREATE_EMPLOYMENT_MUTATION)
+  const [editEmployment] = useMutation(EDIT_EMPLOYMENT_MUTATION)
   const [employmentDate, setEmploymentDate] = useState(null)
   const [employmentType, setEmploymentType] = useState('취업')
   const [imploymentInsurance, setImploymentInsurance] = useState('Y')
@@ -108,80 +145,146 @@ export default function EmploymentForm({ paymentId, subjectId }) {
   const [relatedFields, setRelatedFields] = useState('동일')
   const [completionType, setCompletionType] = useState('수료취업')
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const { register, handleSubmit, reset, control, formState } = useForm()
-  const { errors } = formState
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      employmentType: '',
+      dateOfEmployment: null,
+      companyName: '',
+      businessNum: '',
+      responsibilities: '',
+      location: '',
+      phoneNum: '',
+      businessSize: '',
+      imploymentInsurance: '',
+      proofOfImployment: '',
+      relatedFields: '',
+      completionType: '',
+    },
+  })
+
+  useEffect(() => {
+    if (item) {
+      reset({
+        employmentType: item.employmentType || '취업',
+        dateOfEmployment: item.dateOfEmployment || '',
+        companyName: item.companyName || '',
+        businessNum: item.businessNum || '',
+        responsibilities: item.responsibilities || '',
+        location: item.location || '',
+        phoneNum: item.phoneNum || '',
+        businessSize: item.businessSize || '',
+        imploymentInsurance: item.imploymentInsurance || 'Y',
+        proofOfImployment: item.proofOfImployment || 'Y',
+        relatedFields: item.relatedFields || '동일',
+        completionType: item.completionType || '수료취업',
+      })
+
+      if (
+        item.dateOfEmployment === null ||
+        item.dateOfEmployment === undefined
+      ) {
+        setEmploymentDate(null)
+      } else {
+        const timestamp = parseInt(item.dateOfEmployment)
+        setEmploymentDate(timestamp)
+      }
+
+      if (item.employmentType) {
+        setEmploymentType(item.employmentType)
+      }
+
+      if (item.imploymentInsurance) {
+        setImploymentInsurance(item.imploymentInsurance)
+      }
+
+      if (item.proofOfImployment) {
+        setProofOfImployment(item.proofOfImployment)
+      }
+
+      if (item.relatedFields) {
+        setRelatedFields(item.relatedFields)
+      }
+
+      if (item.completionType) {
+        setCompletionType(item.completionType)
+      }
+    }
+  }, [item])
+
+  const onSubmit = async data => {
+    console.log(data)
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          const result = await editEmployment({
+            variables: {
+              editEmploymentStatusId: item.id,
+              employmentType:
+                data.employmentType === '' ? '취업' : data.employmentType,
+              dateOfEmployment:
+                data.dateOfEmployment === null
+                  ? null
+                  : typeof data.dateOfEmployment === 'string'
+                  ? new Date(parseInt(data.dateOfEmployment))
+                  : new Date(data.dateOfEmployment),
+              companyName: data.companyName === '' ? null : data.companyName,
+              businessNum: data.businessNum === '' ? null : data.businessNum,
+              responsibilities:
+                data.responsibilities === '' ? null : data.responsibilities,
+              location: data.location === '' ? null : data.location,
+              phoneNum: data.phoneNum === '' ? null : data.phoneNum,
+              businessSize: data.businessSize === '' ? null : data.businessSize,
+              imploymentInsurance:
+                data.imploymentInsurance === ''
+                  ? 'Y'
+                  : data.imploymentInsurance,
+              proofOfImployment:
+                data.proofOfImployment === '' ? 'Y' : data.proofOfImployment,
+              relatedFields:
+                data.relatedFields === '' ? '동일' : data.relatedFields,
+              completionType:
+                data.completionType === '' ? '수료취업' : data.completionType,
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${item.stName} 취업 현황 수정`,
+            `ok: ${
+              result.data.editHopeForEmployment.ok
+            } / ${dirtyFieldsArray.join(', ')}`,
+          )
+
+          if (!result.data.editHopeForEmployment.ok) {
+            throw new Error('취업 현황 수정 실패')
+          }
+          refetch()
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('취업 현황 수정 중 에러 발생:', error)
+          alert('취업 현황 수정 처리 중 오류가 발생했습니다.')
+        }
+      }
+    }
+  }
 
   const formatDate = data => {
-    const date = new Date(data)
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
     const formatted =
       `${date.getFullYear()}-` +
       `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')}`
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
-  }
-
-  const onSubmit = data => {
-    const test = {
-      studentPaymentId: paymentId,
-      subjectId: subjectId,
-      employmentType: data.companyName === '' ? '취업' : data.companyName,
-      dateOfEmployment:
-        data.dateOfEmployment === undefined
-          ? null
-          : new Date(data.dateOfEmployment),
-      companyName: data.companyName === '' ? null : data.companyName,
-      businessNum: data.businessNum === '' ? null : data.businessNum,
-      responsibilities:
-        data.responsibilities === '' ? null : data.responsibilities,
-      location: data.location === '' ? null : data.location,
-      phoneNum: data.phoneNum === '' ? null : data.phoneNum,
-      businessSize: data.businessSize === '' ? null : data.businessSize,
-      imploymentInsurance:
-        data.imploymentInsurance === '' ? 'Y' : data.imploymentInsurance,
-      proofOfImployment:
-        data.proofOfImployment === '' ? 'Y' : data.proofOfImployment,
-      relatedFields: data.relatedFields === '' ? '동일' : data.relatedFields,
-      completionType:
-        data.completionType === '' ? '수료취업' : data.completionType,
-    }
-    console.log(test)
-    createEmployment({
-      variables: {
-        studentPaymentId: paymentId,
-        subjectId: subjectId,
-        employmentType: data.companyName === '' ? '취업' : data.companyName,
-        dateOfEmployment:
-          data.dateOfEmployment === undefined
-            ? null
-            : new Date(data.dateOfEmployment),
-        companyName: data.companyName === '' ? null : data.companyName,
-        businessNum: data.businessNum === '' ? null : data.businessNum,
-        responsibilities:
-          data.responsibilities === '' ? null : data.responsibilities,
-        location: data.location === '' ? null : data.location,
-        phoneNum: data.phoneNum === '' ? null : data.phoneNum,
-        businessSize: data.businessSize === '' ? null : data.businessSize,
-        imploymentInsurance:
-          data.imploymentInsurance === '' ? 'Y' : data.imploymentInsurance,
-        proofOfImployment:
-          data.proofOfImployment === '' ? 'Y' : data.proofOfImployment,
-        relatedFields: data.relatedFields === '' ? '동일' : data.relatedFields,
-        completionType:
-          data.completionType === '' ? '수료취업' : data.completionType,
-      },
-      refetchQueries: [SEARCH_SM_QUERY],
-      onCompleted: result => {
-        console.log(result)
-        userLogs(
-          `수강생 ID:${paymentId} 취업 현황 등록`,
-          `ok: ${result.createEmploymentStatus.ok}`,
-        )
-        if (result.createEmploymentStatus.ok) {
-          alert(`취업 현황이 등록되었습니다.`)
-          reset()
-        }
-      },
-    })
   }
 
   return (
@@ -191,6 +294,13 @@ export default function EmploymentForm({ paymentId, subjectId }) {
           <Noti>
             <span>*</span> 는 필수입력입니다.
           </Noti>
+          <UpdateTime>
+            <UpdateCon>
+              <span>최근 업데이트 : </span>
+              {item.lastModifiedByName}(${item.lastModifiedByUserId})
+            </UpdateCon>
+            <UpdateCon>{formatDate(item.updatedAt)}</UpdateCon>
+          </UpdateTime>
         </TopInfo>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailDiv>
@@ -647,7 +757,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                 color="primary"
                 className="w-full text-white lg:w-[50%]"
               >
-                저장
+                수정
               </Button>
             </BtnBox>
           </DetailDiv>

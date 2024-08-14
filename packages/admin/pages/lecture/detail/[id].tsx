@@ -127,12 +127,6 @@ const TimeBox = styled.div`
   }
 `
 
-const SText = styled.p`
-  font-size: 0.875rem;
-  height: 40px;
-  line-height: 40px;
-`
-
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {

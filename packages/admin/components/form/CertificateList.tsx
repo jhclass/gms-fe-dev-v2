@@ -1,7 +1,7 @@
 import { SEARCH_SM_QUERY } from '@/graphql/queries'
 import { ResultSearchSm } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
-import EducationalHistoryItem from '@/components/items/EducationalHistoryItem'
+import CertificateItem from '@/components/items/CertificateItem'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -24,7 +24,7 @@ type searchSMQuery = {
   searchSM: ResultSearchSm
 }
 
-export default function EducationalHistoryList({
+export default function CertificateList({
   isCreate,
   setIsCreate,
   paymentId,
@@ -38,7 +38,7 @@ export default function EducationalHistoryList({
     SEARCH_SM_QUERY,
     {
       variables: {
-        modelType: 'EduInfomation',
+        modelType: 'Certificate',
         studentPaymentId: paymentId,
         limit: limit,
         page: 1,
@@ -108,7 +108,7 @@ export default function EducationalHistoryList({
         <>
           {searchData &&
             searchData.map((item, index) => (
-              <EducationalHistoryItem
+              <CertificateItem
                 key={index}
                 item={item}
                 refetch={refetch}
@@ -133,7 +133,7 @@ export default function EducationalHistoryList({
         </>
       ) : (
         <>
-          <Nolist>등록된 학력 사항이 없습니다.</Nolist>
+          <Nolist>등록된 자격 취득 현황이 없습니다.</Nolist>
         </>
       )}
     </>

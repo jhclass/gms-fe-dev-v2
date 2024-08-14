@@ -9,6 +9,12 @@ import EmploymentMemo from '@/components/layout/EmploymentMemo'
 import WishEmployment from '@/components/layout/WishEmployment'
 import RecoEmployment from '@/components/layout/RecoEmployment'
 import Employment from '@/components/layout/Employment'
+import { useRecoilValue } from 'recoil'
+import { completionStatus } from '@/lib/recoilAtoms'
+import DropOutList from '../form/DropOutList'
+import CertificateNameList from '../form/CertificateNameList'
+import EmploymentNameList from '../form/EmploymentNameList'
+import DropOutMemo from '../layout/DropOutMemo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -45,10 +51,14 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function EmploymentTabs({ paymentId, subjectId }) {
+export default function AttendanceTabs({ lectureId, students, subjectId }) {
+  const completion = useRecoilValue(completionStatus)
   const { useMme } = useMmeQuery()
   const mId = useMme('mUserId')
   const [selected, setSelected] = useState('eduInfo')
+  const dropOutStudents = students?.filter(
+    student => student.courseComplete === completion.dropout,
+  )
 
   return (
     <>
@@ -65,35 +75,28 @@ export default function EmploymentTabs({ paymentId, subjectId }) {
         selectedKey={selected}
         onSelectionChange={e => setSelected(String(e))}
       >
-        <Tab key="eduInfo" title="학력사항">
-          <EducationalHistory
-            paymentId={paymentId}
-            subjectId={subjectId}
-            mId={mId}
-          />
-        </Tab>
-        <Tab key="career" title="경력사항">
-          <CareerHistory
-            paymentId={paymentId}
-            subjectId={subjectId}
-            mId={mId}
-          />
-        </Tab>
-        <Tab key="certificate" title="자격취득현황">
-          <Certificate paymentId={paymentId} subjectId={subjectId} mId={mId} />
-        </Tab>
-        <Tab key="consultation" title="상담현황">
-          <EmploymentMemo
-            paymentId={paymentId}
-            subjectId={subjectId}
-            mId={mId}
-          />
-        </Tab>
-        <Tab key="wishEmployment" title="취업희망현황">
+        <Tab key="eduInfo" title="중도탈락현황">
           <DetailBox>
             <DetailDiv>
               <AreaTitle>
-                <h4>취업 희망 현황</h4>
+                <h4>중도 탈락 현황</h4>
+              </AreaTitle>
+              <DropOutList students={dropOutStudents} />
+            </DetailDiv>
+          </DetailBox>
+        </Tab>
+        <Tab key="career" title="중도탈락 사전점검">
+          <DropOutMemo
+            lectureId={lectureId}
+            subjectId={subjectId}
+            students={students}
+          />
+        </Tab>
+        <Tab key="certificate" title="자격취득현황">
+          <DetailBox>
+            <DetailDiv>
+              <AreaTitle>
+                <h4>자격 취득 현황</h4>
               </AreaTitle>
               <Suspense
                 fallback={
@@ -102,23 +105,16 @@ export default function EmploymentTabs({ paymentId, subjectId }) {
                   </LodingDiv>
                 }
               >
-                <WishEmployment paymentId={paymentId} subjectId={subjectId} />
+                <CertificateNameList lectureId={lectureId} />
               </Suspense>
             </DetailDiv>
           </DetailBox>
-        </Tab>
-        <Tab key="recoEmployment" title="취업추천현황">
-          <RecoEmployment
-            paymentId={paymentId}
-            subjectId={subjectId}
-            mId={mId}
-          />
         </Tab>
         <Tab key="employmentState" title="취업현황">
           <DetailBox>
             <DetailDiv>
               <AreaTitle>
-                <h4>취업현황</h4>
+                <h4>취업 현황</h4>
               </AreaTitle>
               <Suspense
                 fallback={
@@ -127,11 +123,12 @@ export default function EmploymentTabs({ paymentId, subjectId }) {
                   </LodingDiv>
                 }
               >
-                <Employment paymentId={paymentId} subjectId={subjectId} />
+                <EmploymentNameList lectureId={lectureId} />
               </Suspense>
             </DetailDiv>
           </DetailBox>
         </Tab>
+        <Tab key="wishEmployment" title="정기평가 내용설정"></Tab>
       </Tabs>
     </>
   )

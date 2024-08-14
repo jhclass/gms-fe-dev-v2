@@ -10,7 +10,6 @@ import {
   ScrollShadow,
 } from '@nextui-org/react'
 import AdviceTypeModalChip from './AdviceTypeModalChip'
-import { Suspense, useEffect, useState } from 'react'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'

@@ -1,16 +1,17 @@
 import { SEARCH_SM_QUERY } from '@/graphql/queries'
 import { ResultSearchSm } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
-import EducationalHistoryItem from '@/components/items/EducationalHistoryItem'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
+import CertificateNameItem from '../items/CertificateNameItem'
 
 const MoreBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `
+
 const Nolist = styled.div`
   display: flex;
   width: 100%;
@@ -24,12 +25,7 @@ type searchSMQuery = {
   searchSM: ResultSearchSm
 }
 
-export default function EducationalHistoryList({
-  isCreate,
-  setIsCreate,
-  paymentId,
-  mId,
-}) {
+export default function CertificateNameList({ lectureId }) {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)
@@ -38,8 +34,8 @@ export default function EducationalHistoryList({
     SEARCH_SM_QUERY,
     {
       variables: {
-        modelType: 'EduInfomation',
-        studentPaymentId: paymentId,
+        modelType: 'Certificate',
+        lectureId: lectureId,
         limit: limit,
         page: 1,
       },
@@ -91,30 +87,13 @@ export default function EducationalHistoryList({
     }
   }, [data])
 
-  useEffect(() => {
-    if (isCreate) {
-      setPage(1)
-      setIsCreate(false)
-    }
-  }, [isCreate])
-
-  if (error) {
-    console.log(error)
-  }
-
   return (
     <>
       {data?.searchSM.totalCount > 0 ? (
         <>
           {searchData &&
             searchData.map((item, index) => (
-              <EducationalHistoryItem
-                key={index}
-                item={item}
-                refetch={refetch}
-                setPage={setPage}
-                mId={mId}
-              />
+              <CertificateNameItem key={index} item={item} />
             ))}
           {page < Math.ceil(data?.searchSM.totalCount / limit) && (
             <MoreBtn>
@@ -133,7 +112,7 @@ export default function EducationalHistoryList({
         </>
       ) : (
         <>
-          <Nolist>등록된 학력 사항이 없습니다.</Nolist>
+          <Nolist>등록된 자격 취득 현황이 없습니다.</Nolist>
         </>
       )}
     </>
