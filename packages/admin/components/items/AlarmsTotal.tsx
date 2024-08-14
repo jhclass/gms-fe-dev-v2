@@ -4,6 +4,8 @@ import { SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
 import { ResultSeeAlarms } from '@/src/generated/graphql'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
+import { alarmsTotalState } from '@/lib/recoilAtoms'
 
 const NotiNum = styled.span`
   display: flex;
@@ -34,19 +36,8 @@ type seeAlarmsQuery = {
   seeAlarms: ResultSeeAlarms
 }
 
-export default function AlarmsTotal({}) {
-  const router = useRouter()
-  const { error, data, refetch } = useSuspenseQuery<seeAlarmsQuery>(
-    SEE_ALARMS_TOTAL_QUERY,
-  )
+export default function AlarmsTotal() {
+  const [alarmsTotal, setAlarmsTotal] = useRecoilState(alarmsTotalState)
 
-  useEffect(() => {
-    refetch()
-  }, [router.pathname])
-
-  return (
-    <NotiNum>
-      {data.seeAlarms.totalCount > 100 ? '100+' : data.seeAlarms.totalCount}
-    </NotiNum>
-  )
+  return <NotiNum>{alarmsTotal > 100 ? '100+' : alarmsTotal}</NotiNum>
 }

@@ -7,7 +7,6 @@ export const isScreenState = atom<boolean>({
 })
 
 // GNB
-
 export const navSubCateState = atom({
   key: 'navSubCate',
   default: false,
@@ -44,6 +43,11 @@ export const categoryMenuState = atom<{}>({
 
 export const activeCategoryState = atom<number>({
   key: 'activeCategoryState',
+  default: 0,
+})
+
+export const alarmsTotalState = atom<number>({
+  key: 'alarmsTotal',
   default: 0,
 })
 
