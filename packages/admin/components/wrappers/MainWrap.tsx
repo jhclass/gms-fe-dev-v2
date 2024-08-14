@@ -132,6 +132,7 @@ export default function MainWrap({ children }) {
     }
   }, [])
   //socketTest
+
   return (
     <>
       <Wrap $navOpen={navOpen}>
