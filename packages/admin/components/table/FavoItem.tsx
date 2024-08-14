@@ -270,7 +270,9 @@ export default function FavoriteItem(props) {
               </TcreatedAt>
 
               <TreceiptDiv>
-                <EllipsisBox>{student.receiptDiv}</EllipsisBox>
+                <EllipsisBox>
+                  {student.receiptDiv ? student.receiptDiv : '-'}
+                </EllipsisBox>
               </TreceiptDiv>
               <Tname>
                 {student.progress === 110 ? (
@@ -285,7 +287,9 @@ export default function FavoriteItem(props) {
                 <EllipsisBox>{student.phoneNum1}</EllipsisBox>
               </Tphone>
               <TsubDiv>
-                <EllipsisBox>{student.subDiv}</EllipsisBox>
+                <EllipsisBox>
+                  {student.subDiv ? student.subDiv : '-'}
+                </EllipsisBox>
               </TsubDiv>
               <TadviceType>
                 <EllipsisBox>{studentAdvice}</EllipsisBox>

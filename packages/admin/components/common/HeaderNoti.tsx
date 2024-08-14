@@ -1,12 +1,11 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
 import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import AlarmsModal from '@/components/modal/AlarmsModal'
 import { Button } from '@nextui-org/react'
-import { ResultSeeAlarms } from '@/src/generated/graphql'
 import AlarmsTotal from '../items/AlarmsTotal'
 
 const NotiBtn = styled.button`
@@ -149,15 +148,7 @@ export default function HeaderNoti({}) {
       <NotiBox ref={notiBoxRef}>
         <NotiBtn onClick={() => setIsListOpen(!isListOpen)}>
           <i className="xi-bell-o" />
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <AlarmsTotal />
-          </Suspense>
+          <AlarmsTotal />
         </NotiBtn>
         {isListOpen && (
           <NotiListBox>

@@ -1,6 +1,10 @@
 import Header from '@/components/layout/Header'
 import Nav from '@/components/layout/Nav'
-import { isScreenState, navOpenState } from '@/lib/recoilAtoms'
+import {
+  alarmsTotalState,
+  isScreenState,
+  navOpenState,
+} from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
@@ -8,7 +12,11 @@ import { useEffect, useState } from 'react'
 import Footer from '@/components/layout/Footer'
 import SubCategory from '../layout/SubCategory'
 import { toast } from 'react-toastify'
-import ReqToast from '../common/ReqToast'
+import ReqToast from '@/components/common/ReqToast'
+import { useQuery } from '@apollo/client'
+import { SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
+import { useRouter } from 'next/router'
+import useMmeQuery from '@/utils/mMe'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   position: relative;
@@ -53,13 +61,21 @@ const ConBox = styled.div`
 `
 
 export default function MainWrap({ children }) {
+  const { useMme } = useMmeQuery()
+  const mId = useMme('id')
+  const router = useRouter()
+  const { error, data, refetch } = useQuery(SEE_ALARMS_TOTAL_QUERY)
   const [isScreen, setIsScreen] = useRecoilState(isScreenState)
+  const [isMobile, setIsMobile] = useRecoilState(isScreenState)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
+  const [alarmsTotal, setAlarmsTotal] = useRecoilState(alarmsTotalState)
 
   useEffect(() => {
     const handleResize = () => {
       const isSmall = window.innerWidth <= 1024
       setIsScreen(isSmall)
+      const isMo = window.innerWidth <= 480
+      setIsMobile(isMo)
     }
     handleResize()
     window.addEventListener('resize', handleResize)
@@ -67,6 +83,12 @@ export default function MainWrap({ children }) {
       window.removeEventListener('resize', handleResize)
     }
   }, [setIsScreen])
+
+  useEffect(() => {
+    if (data) {
+      setAlarmsTotal(data.seeAlarms.totalCount)
+    }
+  }, [data])
 
   useEffect(() => {
     if (isScreen) {
@@ -105,18 +127,24 @@ export default function MainWrap({ children }) {
         if (message.type === 'NEW_STUDENTSTATE') {
           setMessages(prevMessages => [...prevMessages, message.data])
           console.log('NEW_STUDENTSTATE message received:', message.data)
-          toast(<ReqToast messageData={message.data} />, {
-            position: 'bottom-right',
-            autoClose: 20000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            style: {
-              // width: '100%',
-            },
-          })
+
+          if (message.data.filterTargetIds.includes(mId)) {
+            toast(<ReqToast messageData={message.data} />, {
+              position: 'bottom-right',
+              autoClose: isMobile ? 3000 : 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClick: () => {
+                router.push('/consult')
+              },
+            })
+
+            refetch()
+          }
+
           sessionStorage.setItem('newTodayState', formattedDate)
           sessionStorage.setItem('newStudentState', 'true')
         }
