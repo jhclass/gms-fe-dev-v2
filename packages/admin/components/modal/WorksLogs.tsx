@@ -1074,8 +1074,8 @@ export default function WorksLogsModal({
                   <ModalFooter className="workLogFooter">
                     <Button
                       size="sm"
-                      color="danger"
-                      variant="light"
+                      variant="bordered"
+                      className="text-accent border-accent"
                       onPress={sbjClose}
                     >
                       Close

@@ -210,8 +210,8 @@ export default function TypeIndex({
                 <ModalFooter>
                   <Button
                     size="sm"
-                    color="danger"
-                    variant="light"
+                    variant="bordered"
+                    className="text-accent border-accent"
                     onPress={closeBtn}
                   >
                     Close

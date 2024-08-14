@@ -221,8 +221,8 @@ export default function TypeIndex({ isOpen, onClose, category }) {
                 <ModalFooter>
                   <Button
                     size="sm"
-                    color="danger"
-                    variant="light"
+                    variant="bordered"
+                    className="text-accent border-accent"
                     onPress={closeBtn}
                   >
                     Close

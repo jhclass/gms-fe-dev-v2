@@ -386,8 +386,8 @@ export default function SubjectModal({
               <ModalFooter>
                 <Button
                   size="sm"
-                  color="danger"
-                  variant="light"
+                  variant="bordered"
+                  className="text-accent border-accent"
                   onPress={sbjClose}
                 >
                   Close
