@@ -131,7 +131,7 @@ export default function MainWrap({ children }) {
           if (message.data.filterTargetIds.includes(mId)) {
             toast(<ReqToast messageData={message.data} />, {
               position: 'bottom-right',
-              autoClose: isMobile ? 3000 : 10000,
+              autoClose: isMobile ? 5000 : 10000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,

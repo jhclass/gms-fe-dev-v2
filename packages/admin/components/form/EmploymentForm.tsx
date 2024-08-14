@@ -121,30 +121,6 @@ export default function EmploymentForm({ paymentId, subjectId }) {
   }
 
   const onSubmit = data => {
-    const test = {
-      studentPaymentId: paymentId,
-      subjectId: subjectId,
-      employmentType: data.companyName === '' ? '취업' : data.companyName,
-      dateOfEmployment:
-        data.dateOfEmployment === undefined
-          ? null
-          : new Date(data.dateOfEmployment),
-      companyName: data.companyName === '' ? null : data.companyName,
-      businessNum: data.businessNum === '' ? null : data.businessNum,
-      responsibilities:
-        data.responsibilities === '' ? null : data.responsibilities,
-      location: data.location === '' ? null : data.location,
-      phoneNum: data.phoneNum === '' ? null : data.phoneNum,
-      businessSize: data.businessSize === '' ? null : data.businessSize,
-      imploymentInsurance:
-        data.imploymentInsurance === '' ? 'Y' : data.imploymentInsurance,
-      proofOfImployment:
-        data.proofOfImployment === '' ? 'Y' : data.proofOfImployment,
-      relatedFields: data.relatedFields === '' ? '동일' : data.relatedFields,
-      completionType:
-        data.completionType === '' ? '수료취업' : data.completionType,
-    }
-    console.log(test)
     createEmployment({
       variables: {
         studentPaymentId: paymentId,
@@ -171,7 +147,6 @@ export default function EmploymentForm({ paymentId, subjectId }) {
       },
       refetchQueries: [SEARCH_SM_QUERY],
       onCompleted: result => {
-        console.log(result)
         userLogs(
           `수강생 ID:${paymentId} 취업 현황 등록`,
           `ok: ${result.createEmploymentStatus.ok}`,

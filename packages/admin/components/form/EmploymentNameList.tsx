@@ -4,7 +4,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import CertificateNameItem from '../items/CertificateNameItem'
+import EmploymentNameItem from '@/components/items/EmploymentNameItem'
 
 const MoreBtn = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ type searchSMQuery = {
   searchSM: ResultSearchSm
 }
 
-export default function CertificateNameList({ lectureId }) {
+export default function EmploymentNameList({ lectureId }) {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)
@@ -93,7 +93,7 @@ export default function CertificateNameList({ lectureId }) {
         <>
           {searchData &&
             searchData.map((item, index) => (
-              <CertificateNameItem key={index} item={item} />
+              <EmploymentNameItem key={index} item={item} />
             ))}
           {page < Math.ceil(data?.searchSM.totalCount / limit) && (
             <MoreBtn>

@@ -948,6 +948,7 @@ export const SEARCH_SM_QUERY = gql`
           studentId
           stName
           employmentType
+          dateOfEmployment
           companyName
           businessNum
           responsibilities

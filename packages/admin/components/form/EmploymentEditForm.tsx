@@ -218,7 +218,6 @@ export default function EmploymentEditForm({ item, refetch }) {
   }, [item])
 
   const onSubmit = async data => {
-    console.log(data)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
@@ -253,15 +252,16 @@ export default function EmploymentEditForm({ item, refetch }) {
                 data.completionType === '' ? '수료취업' : data.completionType,
             },
           })
+
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${item.stName} 취업 현황 수정`,
             `ok: ${
-              result.data.editHopeForEmployment.ok
+              result.data.editEmploymentStatus.ok
             } / ${dirtyFieldsArray.join(', ')}`,
           )
 
-          if (!result.data.editHopeForEmployment.ok) {
+          if (!result.data.editEmploymentStatus.ok) {
             throw new Error('취업 현황 수정 실패')
           }
           refetch()
@@ -322,7 +322,6 @@ export default function EmploymentEditForm({ item, refetch }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
-                      defaultValue={'취업'}
                       value={employmentType}
                       onValueChange={value => {
                         field.onChange(value)
