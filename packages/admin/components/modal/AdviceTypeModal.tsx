@@ -76,8 +76,8 @@ export default function AdviceTypeModal({
               <ModalHeader className="flex flex-col gap-1">
                 상담 분야 선택
               </ModalHeader>
-              <ModalBody>
-                <ScrollShadow className="scrollbar min-h-[10rem]">
+              <ModalBody className="min-h-[10rem] max-h-[70vh] lg:max-h-[50vh]">
+                <ScrollShadow className="overflow-x-hidden scrollbar">
                   <CheckboxGroup
                     orientation="horizontal"
                     className="gap-1 radioBox pb-[1rem]"
