@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import { CREATE_REGULAR_EVALUATION_SET_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
+import { SEE_REGULAREVALUATION_SET_QUERY } from '@/graphql/queries'
 
 const DetailForm = styled.form`
   display: flex;
@@ -72,7 +73,7 @@ export default function ReaularEvaluationForm({ setIsCreate, subjectId }) {
           data.evaluationDetails === '' ? null : data.evaluationDetails,
         points: data.points === '' ? 0 : parseInt(data.points),
       },
-      // refetchQueries: [SEE_REGULAR_EVALUATION_SET_MUTATION],
+      refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
       onCompleted: result => {
         userLogs(
           `${data.statusType} 정기평가 내용 설정`,
