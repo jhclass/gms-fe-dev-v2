@@ -9,7 +9,6 @@ import Layout from '@/pages/students/layout'
 import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
-import AropoutStateList from '@/components/table/AropoutStateList'
 import EvaluationList from '@/components/table/EvaluationList'
 import Attendance from '@/components/table/Attendance'
 import AttendanceFilter from '@/components/filter/AttendanceFilter'
@@ -18,7 +17,6 @@ import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
 import AbsentFilterList from '@/components/table/AbsentFilterList'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
-import EmploymentNameList from '@/components/table/EmploymentNameList'
 import AttendanceTabs from '@/components/items/AttendanceTabs'
 
 const ConArea = styled.div`
@@ -181,7 +179,7 @@ export default function StudentsWrite() {
       alert('등록된 시간표가 없습니다.')
     }
   }
-  console.log('lectureData', lectureData)
+
   return (
     <>
       <MainWrap>
@@ -319,14 +317,6 @@ export default function StudentsWrite() {
             subjectId={lectureData?.subjectId}
             students={students}
           />
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>정기평가 내용설정</h4>
-              </AreaTitle>
-              <EvaluationList />
-            </DetailDiv>
-          </DetailBox>
           <DetailBox>
             <BtnBox>
               <Button

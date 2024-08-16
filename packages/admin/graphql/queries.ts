@@ -1001,3 +1001,31 @@ export const SEARCH_SM_QUERY = gql`
     }
   }
 `
+export const SEE_REGULAREVALUATION_SET_QUERY = gql`
+  query Query($lectureId: Int, $subjectId: Int, $page: Int, $limit: Int) {
+    seeRegularEvaluationSet(
+      lectureId: $lectureId
+      subjectId: $subjectId
+      page: $page
+      limit: $limit
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        id
+        lectureId
+        statusType
+        evaluationDetails
+        points
+        subjectId
+        createdAt
+        updatedAt
+        branchId
+        lastModifiedByUserId
+        lastModifiedByName
+      }
+    }
+  }
+`

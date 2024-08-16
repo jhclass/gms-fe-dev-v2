@@ -102,7 +102,6 @@ const DatePickerBox = styled.div`
 `
 
 export default function CertificateNameItem({ item }) {
-  console.log(item)
   const [studentName, setStudentName] = useState('')
   const [certificateDate, setCertificateDate] = useState('-')
   const [certificateName, setCertificateName] = useState('')

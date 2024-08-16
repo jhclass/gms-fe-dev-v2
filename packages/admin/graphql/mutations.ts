@@ -2449,3 +2449,80 @@ export const CREATE_PRE_INSPECTION_MUTATION = gql`
     }
   }
 `
+export const EDIT_PRE_INSPECTION_MUTATION = gql`
+  mutation Mutation(
+    $editPreInspectionId: Int!
+    $dateOfPreInspection: String
+    $preScreenerType: String
+    $preInspectionDetails: String
+    $actionTaken: String
+  ) {
+    editPreInspection(
+      id: $editPreInspectionId
+      dateOfPreInspection: $dateOfPreInspection
+      preScreenerType: $preScreenerType
+      preInspectionDetails: $preInspectionDetails
+      actionTaken: $actionTaken
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const DELETE_PRE_INSPECTION_MUTATION = gql`
+  mutation DeletePreInspection($deletePreInspectionId: Int!) {
+    deletePreInspection(id: $deletePreInspectionId) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const CREATE_REGULAR_EVALUATION_SET_MUTATION = gql`
+  mutation CreateRegularEvaluationSet(
+    $statusType: String!
+    $evaluationDetails: String!
+    $points: Int!
+    $subjectId: Int!
+  ) {
+    createRegularEvaluationSet(
+      statusType: $statusType
+      evaluationDetails: $evaluationDetails
+      points: $points
+      subjectId: $subjectId
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const EDIT_REGULAR_EVALUATION_SET_MUTATION = gql`
+  mutation EditRegularEvaluationSet(
+    $editRegularEvaluationSetId: Int!
+    $statusType: String!
+    $evaluationDetails: String!
+    $points: Int!
+  ) {
+    editRegularEvaluationSet(
+      id: $editRegularEvaluationSetId
+      statusType: $statusType
+      evaluationDetails: $evaluationDetails
+      points: $points
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`
+export const DELETE_REGULAR_EVALUATION_SET_MUTATION = gql`
+  mutation DeleteRegularEvaluationSet($deleteRegularEvaluationSetId: Int!) {
+    deleteRegularEvaluationSet(id: $deleteRegularEvaluationSetId) {
+      error
+      message
+      ok
+    }
+  }
+`

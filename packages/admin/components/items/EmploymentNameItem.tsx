@@ -136,7 +136,7 @@ export default function EmploymentNameItem({ item }) {
       setPhoneNum(item.phoneNum)
     }
     if (item.location) {
-      setLocation(item.setLocation)
+      setLocation(item.location)
     }
     if (item.businessSize) {
       setBusinessSize(item.businessSize)

@@ -80,7 +80,6 @@ export default function CareerHistoryForm({
       },
       refetchQueries: [SEARCH_SM_QUERY],
       onCompleted: result => {
-        console.log(result)
         userLogs(
           `paymentId: ${paymentId} 경력 등록`,
           `ok: ${result.createCareer.ok}`,
