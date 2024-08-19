@@ -58,17 +58,17 @@ export default function Address({
   const [detailAddress, setDetailAddress] = useState('')
 
   useEffect(() => {
-    if (defaultPostcode !== '') {
+    if (defaultPostcode !== '' || defaultPostcode !== null) {
       setPostcode(defaultPostcode)
     } else {
       setPostcode('')
     }
-    if (defaultAddress !== '') {
+    if (defaultAddress !== '' || defaultAddress !== null) {
       setRoadAddress(defaultAddress)
     } else {
       setRoadAddress('')
     }
-    if (defaultDetails !== '') {
+    if (defaultDetails !== '' || defaultDetails !== null) {
       setDetailAddress(defaultDetails)
     } else {
       setDetailAddress('')
@@ -139,7 +139,7 @@ export default function Address({
               variant="flat"
               radius="md"
               className="w-full"
-              value={postcode}
+              value={postcode || ''}
               readOnly
             />
             <Button
@@ -164,7 +164,7 @@ export default function Address({
               variant="flat"
               radius="md"
               // defaultValue={defaultAddress}
-              value={roadAddress}
+              value={roadAddress || ''}
               className="w-full"
               readOnly
             />
@@ -175,7 +175,7 @@ export default function Address({
             <Input
               type="text"
               // defaultValue={defaultAddress}
-              value={detailAddress}
+              value={detailAddress || ''}
               // onChange={e => setValue(e.target.value)}
               id="sample4_detailAddress"
               placeholder="상세주소"

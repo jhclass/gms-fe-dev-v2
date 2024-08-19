@@ -140,7 +140,6 @@ export default function WishEditForm({ item, refetch }) {
   }, [item])
 
   const onSubmit = async data => {
-    console.log(data)
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {

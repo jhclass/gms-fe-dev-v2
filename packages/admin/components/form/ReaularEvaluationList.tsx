@@ -1,17 +1,17 @@
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
-import { ResultSearchSm } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import EmploymentNameItem from '@/components/items/EmploymentNameItem'
+import { SEE_REGULAREVALUATION_SET_QUERY } from '@/graphql/queries'
+import { ResultSeeRegularEvaluationSet } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import DropOutMemoItem from '@/components/items/DropOutMemoItem'
+import ReaularEvaluationItem from '../items/ReaularEvaluationItem'
 
 const MoreBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `
-
 const Nolist = styled.div`
   display: flex;
   width: 100%;
@@ -21,26 +21,33 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-type searchSMQuery = {
-  searchSM: ResultSearchSm
+type seeRegularEvaluationSetQuery = {
+  seeRegularEvaluationSet: ResultSeeRegularEvaluationSet
 }
 
-export default function EmploymentNameList({ lectureId }) {
+export default function ReaularEvaluationList({
+  isCreate,
+  setIsCreate,
+  lectureId,
+  subjectId,
+  mId,
+}) {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)
   const [searchData, setSearchData] = useState([])
-  const { error, data, fetchMore, refetch } = useSuspenseQuery<searchSMQuery>(
-    SEARCH_SM_QUERY,
-    {
-      variables: {
-        modelType: 'EmploymentStatus',
-        lectureId: lectureId,
-        limit: limit,
-        page: 1,
+  const { error, data, fetchMore, refetch } =
+    useSuspenseQuery<seeRegularEvaluationSetQuery>(
+      SEE_REGULAREVALUATION_SET_QUERY,
+      {
+        variables: {
+          lectureId: lectureId,
+          subjectId: subjectId,
+          limit: limit,
+          page: 1,
+        },
       },
-    },
-  )
+    )
 
   const fetchMoreData = async nextPage => {
     await fetchMore({
@@ -48,17 +55,17 @@ export default function EmploymentNameList({ lectureId }) {
       updateQuery: (prevResult, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prevResult
         const newData = [
-          ...prevResult.searchSM.data,
-          ...fetchMoreResult.searchSM.data,
+          ...prevResult.seeRegularEvaluationSet.data,
+          ...fetchMoreResult.seeRegularEvaluationSet.data,
         ]
         setSearchData(newData)
 
         return {
           ...prevResult,
           searchSM: {
-            ...prevResult.searchSM,
+            ...prevResult.seeRegularEvaluationSet,
             data: newData,
-            totalCount: fetchMoreResult.searchSM.totalCount,
+            totalCount: fetchMoreResult.seeRegularEvaluationSet.totalCount,
           },
         }
       },
@@ -76,26 +83,44 @@ export default function EmploymentNameList({ lectureId }) {
   }, [isFetching])
 
   const loadMore = () => {
-    if (page < Math.ceil(data?.searchSM.totalCount / limit)) {
+    if (page < Math.ceil(data?.seeRegularEvaluationSet.totalCount / limit)) {
       setIsFetching(true)
     }
   }
 
   useEffect(() => {
-    if (data && data?.searchSM) {
-      setSearchData(data?.searchSM.data)
+    if (data && data?.seeRegularEvaluationSet) {
+      setSearchData(data?.seeRegularEvaluationSet.data)
     }
   }, [data])
 
+  useEffect(() => {
+    if (isCreate) {
+      setPage(1)
+      setIsCreate(false)
+    }
+  }, [isCreate])
+
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
-      {data?.searchSM.totalCount > 0 ? (
+      {data?.seeRegularEvaluationSet.totalCount > 0 ? (
         <>
           {searchData &&
             searchData.map((item, index) => (
-              <EmploymentNameItem key={index} item={item} />
+              <ReaularEvaluationItem
+                key={index}
+                item={item}
+                refetch={refetch}
+                setPage={setPage}
+                mId={mId}
+              />
             ))}
-          {page < Math.ceil(data?.searchSM.totalCount / limit) && (
+          {page <
+            Math.ceil(data?.seeRegularEvaluationSet.totalCount / limit) && (
             <MoreBtn>
               <Button
                 size="md"
@@ -112,7 +137,7 @@ export default function EmploymentNameList({ lectureId }) {
         </>
       ) : (
         <>
-          <Nolist>등록된 취업 현황이 없습니다.</Nolist>
+          <Nolist>등록된 정기평가 설정내용이 없습니다.</Nolist>
         </>
       )}
     </>

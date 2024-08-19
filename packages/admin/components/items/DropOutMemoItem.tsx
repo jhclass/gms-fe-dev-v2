@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
-import 'react-datepicker/dist/react-datepicker.css'
+import {
+  DELETE_PRE_INSPECTION_MUTATION,
+  DELETE_STUDENT_CONSULTATION_MUTATION,
+  EDIT_PRE_INSPECTION_MUTATION,
+  EDIT_STUDENT_CONSULTATION_MUTATION,
+} from '@/graphql/mutations'
+import useUserLogsMutation from '@/utils/userLogs'
+import { useMutation } from '@apollo/client'
 import {
   Button,
   Input,
   Radio,
   RadioGroup,
   Select,
-  SelectItem,
   Textarea,
 } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
-import {
-  CREATE_PRE_INSPECTION_MUTATION,
-  CREATE_STUDENT_CONSULTATION_MUTATION,
-} from '@/graphql/mutations'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import useUserLogsMutation from '@/utils/userLogs'
+import { styled } from 'styled-components'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
 const DetailForm = styled.form`
+  width: 100%;
   display: flex;
+  gap: 0.5rem;
   flex-direction: column;
-  gap: 1rem;
+  border: 2px solid hsl(240 6% 90%);
+  padding: 1rem;
+  border-radius: 0.5rem;
 `
 
 const FlexBox = styled.div`
@@ -42,6 +45,10 @@ const FlexBox = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  &.textBox {
+    align-items: center;
   }
 `
 
@@ -66,15 +73,28 @@ const FilterLabel = styled.label`
 
 const BtnBox = styled.div`
   display: flex;
-  align-items: center;
-  padding-top: 1.75rem;
-  width: 5rem;
+  gap: 0.5rem;
+  flex-direction: column;
+
+  button {
+    width: 5rem;
+  }
 
   @media (max-width: 768px) {
-    padding-top: 0;
     width: 100%;
+    flex-direction: row;
+
+    button {
+      width: 50%;
+    }
   }
 `
+const UpdateTime = styled.p`
+  font-size: 0.75rem;
+  padding-left: 0.5rem;
+  color: ${({ theme }) => theme.colors.gray};
+`
+
 const DatePickerBox = styled.div`
   width: 100%;
   .react-datepicker-wrapper {
@@ -94,68 +114,149 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
+
 const RadioBox = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
 `
 
-export default function EmploymentMemoForm({
-  setIsCreate,
-  subjectId,
-  students,
-}) {
+export default function DropOutMemoItem({ item, refetch, setPage, mId }) {
   const { userLogs } = useUserLogsMutation()
-  const [createPreInspection] = useMutation(CREATE_PRE_INSPECTION_MUTATION)
-  const { register, handleSubmit, reset, control, formState } = useForm()
-  const { errors } = formState
+  const [editPreInspection] = useMutation(EDIT_PRE_INSPECTION_MUTATION)
+  const [deletePreInspection] = useMutation(DELETE_PRE_INSPECTION_MUTATION)
   const [studentName, setStudentName] = useState('수강생명')
-  const [memoType, setMemoType] = useState('훈련교사')
+  const [memoType, setMemoType] = useState('기초상담')
   const [memoDate, setMemoDate] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const studentsList = [
-    {
-      id: '수강생명',
-      student: { name: '수강생명' },
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      preScreenerType: '',
+      dateOfPreInspection: null,
+      preInspectionDetails: '',
+      actionTaken: '',
     },
-    ...students.filter(student => student.courseComplete),
-  ]
+  })
 
-  const onSubmit = data => {
-    createPreInspection({
-      variables: {
-        subjectId: subjectId,
-        studentPaymentId: parseInt(data.studentPaymentId),
-        actionTaken: data.actionTaken === '' ? null : data.actionTaken,
-        preInspectionDetails:
-          data.preInspectionDetails === '' ? null : data.preInspectionDetails,
-        preScreenerType: data.preScreenerType,
-        dateOfPreInspection:
-          data.dateOfPreInspection === undefined
-            ? null
-            : new Date(data.dateOfPreInspection),
-      },
-      refetchQueries: [SEARCH_SM_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `paymentId:  ${data.studentPaymentId} 중도탈락 사전 점검 등록`,
-          `ok: ${result.createPreInspection.ok}`,
-        )
-        if (result.createPreInspection.ok) {
-          setIsCreate(true)
-          alert(`중도탈락 사전점검이 등록되었습니다.`)
-          reset()
-          setStudentName('수강생명')
-          setMemoType('훈련교사')
-          setMemoDate(null)
-        }
-      },
+  useEffect(() => {
+    reset({
+      preScreenerType: item.preScreenerType || '기초상담',
+      dateOfPreInspection: item.dateOfPreInspection || null,
+      preInspectionDetails: item.preInspectionDetails || '',
+      actionTaken: item.actionTaken || '',
     })
+
+    if (item.stName) {
+      setStudentName(item.stName)
+    }
+
+    if (item.preScreenerType) {
+      setMemoType(item.preScreenerType)
+    }
+
+    if (
+      item.dateOfPreInspection === null ||
+      item.dateOfPreInspection === undefined
+    ) {
+      setMemoDate(null)
+    } else {
+      const timestamp = parseInt(item.dateOfPreInspection)
+      setMemoDate(timestamp)
+    }
+  }, [item])
+
+  const onSubmit = async data => {
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          const result = await editPreInspection({
+            variables: {
+              editPreInspectionId: item.id,
+              preScreenerType:
+                data.preScreenerType === '' ? '기초상담' : data.preScreenerType,
+              dateOfPreInspection:
+                data.dateOfPreInspection === null
+                  ? null
+                  : typeof data.dateOfPreInspection === 'string'
+                  ? new Date(parseInt(data.dateOfPreInspection))
+                  : new Date(data.dateOfPreInspection),
+              preInspectionDetails:
+                data.preInspectionDetails === ''
+                  ? null
+                  : data.preInspectionDetails,
+              actionTaken: data.actionTaken === '' ? null : data.actionTaken,
+            },
+          })
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${item.stName} ${data.preScreenerType} 상담 id:${item.id} 수정`,
+            `ok: ${result.data.editPreInspection.ok} / ${dirtyFieldsArray.join(
+              ', ',
+            )}`,
+          )
+
+          if (!result.data.editPreInspection.ok) {
+            throw new Error('상담 수정 실패')
+          }
+          setPage(1)
+          refetch()
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('상담 수정 중 에러 발생:', error)
+          alert('상담 수정 처리 중 오류가 발생했습니다.')
+        }
+      }
+    }
   }
 
-  const handleStudentChange = e => {
-    setStudentName(e.target.value)
+  const deleteItem = async id => {
+    const isDelete = confirm('삭제하시겠습니까?\n삭제 후 되돌리수 없습니다.')
+    if (isDelete) {
+      try {
+        const result = await deletePreInspection({
+          variables: {
+            deletePreInspectionId: id,
+          },
+        })
+        userLogs(
+          `${item.stName} 상담 id:${id} 삭제`,
+          `ok: ${result.data.deletePreInspection.ok}`,
+        )
+
+        if (!result.data.deletePreInspection.ok) {
+          throw new Error('상담 삭제 실패')
+        }
+        setPage(1)
+        refetch()
+        alert('삭제되었습니다.')
+      } catch (error) {
+        console.error('상담 삭제 중 에러 발생:', error)
+        alert('상담 삭제 처리 중 오류가 발생했습니다.')
+      }
+    }
   }
+
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} ` +
+      `${date.getHours().toString().padStart(2, '0')}:` +
+      `${date.getMinutes().toString().padStart(2, '0')}:` +
+      `${date.getSeconds().toString().padStart(2, '0')}`
+    return formatted
+  }
+
   const handleTypeChange = value => {
     setMemoType(value)
   }
@@ -165,48 +266,16 @@ export default function EmploymentMemoForm({
       <DetailForm onSubmit={handleSubmit(onSubmit)}>
         <FlexBox>
           <AreaBox>
-            <Controller
-              control={control}
-              name="studentPaymentId"
-              rules={{
-                required: {
-                  value: true,
-                  message: '학력을 선택해주세요',
-                },
-              }}
-              render={({ field, fieldState }) => (
-                <Select
-                  labelPlacement="outside"
-                  placeholder=" "
-                  defaultValue={[studentName]}
-                  className="w-full"
-                  label={
-                    <FilterLabel>
-                      수강생명 <span>*</span>
-                    </FilterLabel>
-                  }
-                  variant="bordered"
-                  selectedKeys={[studentName]}
-                  onChange={value => {
-                    if (value.target.value !== '') {
-                      field.onChange(value)
-                      handleStudentChange(value)
-                    }
-                  }}
-                >
-                  {studentsList.map(student => (
-                    <SelectItem key={student.id} value={student.id}>
-                      {student.student.name}
-                    </SelectItem>
-                  ))}
-                </Select>
-              )}
+            <Input
+              labelPlacement="outside"
+              readOnly={true}
+              variant="flat"
+              label={<FilterLabel>수강생명</FilterLabel>}
+              type="text"
+              placeholder=" "
+              className="w-full"
+              value={studentName}
             />
-            {errors.studentPaymentId && (
-              <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.studentPaymentId.message)}
-              </p>
-            )}
           </AreaBox>
           <AreaBox>
             <RadioBox>
@@ -328,7 +397,7 @@ export default function EmploymentMemoForm({
             )}
           </AreaBox>
         </FlexBox>
-        <FlexBox>
+        <FlexBox className="textBox">
           <AreaBox>
             <Textarea
               label={
@@ -383,18 +452,32 @@ export default function EmploymentMemoForm({
               </p>
             )}
           </AreaBox>
-          <BtnBox>
-            <Button
-              type="submit"
-              size="md"
-              radius="md"
-              color="primary"
-              className="lg:w-[50%] w-full"
-            >
-              추가
-            </Button>
-          </BtnBox>
+          {mId == item.lastModifiedByUserId && (
+            <BtnBox>
+              <Button
+                type="submit"
+                size="md"
+                radius="md"
+                color="primary"
+                className="lg:w-[50%] w-full"
+              >
+                수정
+              </Button>
+              <Button
+                variant="bordered"
+                color="primary"
+                className="w-full text-primary"
+                onClick={() => deleteItem(item.id)}
+              >
+                삭제
+              </Button>
+            </BtnBox>
+          )}
         </FlexBox>
+        <UpdateTime>
+          마지막 업데이트 : {item.lastModifiedByName}(
+          {item.lastModifiedByUserId}) - {formatDate(item.updatedAt)}
+        </UpdateTime>
       </DetailForm>
     </>
   )

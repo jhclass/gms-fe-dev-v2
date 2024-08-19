@@ -1,5 +1,6 @@
 import { styled } from 'styled-components'
-import { Radio, RadioGroup } from '@nextui-org/react'
+import { Button, Radio, RadioGroup } from '@nextui-org/react'
+import { useRouter } from 'next/router'
 
 const FlexBox = styled.div`
   display: flex;
@@ -43,7 +44,13 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function StudentData({ studentData, detailAll, record }) {
+export default function StudentData({
+  studentData,
+  detailAll,
+  record,
+  paymentId = null,
+}) {
+  const router = useRouter()
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -169,6 +176,22 @@ export default function StudentData({ studentData, detailAll, record }) {
               <LineBox>{formatDate(studentData?.createdAt, false)}</LineBox>
             </div>
           </AreaBox>
+        </FlexBox>
+      )}
+      {paymentId && (
+        <FlexBox>
+          <Button
+            size="md"
+            radius="md"
+            variant="bordered"
+            className="w-full"
+            color="primary"
+            onClick={() =>
+              router.push(`/lecture/employmentDetail/${paymentId}`)
+            }
+          >
+            학적부로
+          </Button>
         </FlexBox>
       )}
     </>

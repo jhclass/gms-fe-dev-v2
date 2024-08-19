@@ -1,17 +1,16 @@
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
-import { ResultSearchSm } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import EmploymentNameItem from '@/components/items/EmploymentNameItem'
+import { SEARCH_SM_QUERY } from '@/graphql/queries'
+import { ResultSearchSm } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import DropOutMemoItem from '@/components/items/DropOutMemoItem'
 
 const MoreBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `
-
 const Nolist = styled.div`
   display: flex;
   width: 100%;
@@ -25,7 +24,12 @@ type searchSMQuery = {
   searchSM: ResultSearchSm
 }
 
-export default function EmploymentNameList({ lectureId }) {
+export default function DropOutMemoList({
+  isCreate,
+  setIsCreate,
+  lectureId,
+  mId,
+}) {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)
@@ -34,7 +38,7 @@ export default function EmploymentNameList({ lectureId }) {
     SEARCH_SM_QUERY,
     {
       variables: {
-        modelType: 'EmploymentStatus',
+        modelType: 'PreInspection',
         lectureId: lectureId,
         limit: limit,
         page: 1,
@@ -87,13 +91,30 @@ export default function EmploymentNameList({ lectureId }) {
     }
   }, [data])
 
+  useEffect(() => {
+    if (isCreate) {
+      setPage(1)
+      setIsCreate(false)
+    }
+  }, [isCreate])
+
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <>
       {data?.searchSM.totalCount > 0 ? (
         <>
           {searchData &&
             searchData.map((item, index) => (
-              <EmploymentNameItem key={index} item={item} />
+              <DropOutMemoItem
+                key={index}
+                item={item}
+                refetch={refetch}
+                setPage={setPage}
+                mId={mId}
+              />
             ))}
           {page < Math.ceil(data?.searchSM.totalCount / limit) && (
             <MoreBtn>
@@ -112,7 +133,7 @@ export default function EmploymentNameList({ lectureId }) {
         </>
       ) : (
         <>
-          <Nolist>등록된 취업 현황이 없습니다.</Nolist>
+          <Nolist>등록된 상담이 없습니다.</Nolist>
         </>
       )}
     </>

@@ -446,6 +446,7 @@ export default function StudentsWrite() {
                   studentData={studentData}
                   detailAll={false}
                   record={false}
+                  paymentId={paymentId}
                 />
               </DetailDiv>
             </DetailBox>

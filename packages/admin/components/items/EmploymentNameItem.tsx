@@ -19,11 +19,14 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 const DetailDiv = styled.div`
   width: 100%;
   display: flex;
-  gap: 0.5rem;
   flex-direction: column;
   border: 2px solid hsl(240 6% 90%);
   padding: 1rem;
   border-radius: 0.5rem;
+  gap: 1.5rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `
 
 const FlexBox = styled.div`
@@ -101,8 +104,7 @@ const DatePickerBox = styled.div`
   }
 `
 
-export default function CertificateNameItem({ item }) {
-  console.log(item)
+export default function EmploymentNameItem({ item }) {
   const [studentName, setStudentName] = useState('')
   const [companyName, setCompanyName] = useState('-')
   const [businessNum, setBusinessNum] = useState('')
@@ -134,7 +136,7 @@ export default function CertificateNameItem({ item }) {
       setPhoneNum(item.phoneNum)
     }
     if (item.location) {
-      setLocation(item.setLocation)
+      setLocation(item.location)
     }
     if (item.businessSize) {
       setBusinessSize(item.businessSize)
@@ -194,11 +196,11 @@ export default function CertificateNameItem({ item }) {
               value={employmentType}
               isReadOnly={true}
             >
-              <Radio key={'중도포기'} value={'중도포기'}>
-                중도포기
+              <Radio key={'취업'} value={'취업'}>
+                취업
               </Radio>
-              <Radio key={'미수료'} value={'미수료'}>
-                미수료
+              <Radio key={'창업'} value={'창업'}>
+                창업
               </Radio>
             </RadioGroup>
           </AreaBox>

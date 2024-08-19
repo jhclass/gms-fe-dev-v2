@@ -5,6 +5,8 @@ import EmploymentMemoForm from '@/components/form/EmploymentMemoForm'
 import DropOutMemoForm from '../form/DropOutMemoForm'
 import DropOutMemoList from '../form/DropOutMemoList'
 import useMmeQuery from '@/utils/mMe'
+import ReaularEvaluationForm from '../form/ReaularEvaluationForm'
+import ReaularEvaluationList from '../form/ReaularEvaluationList'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -57,7 +59,7 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function DropOutMemo({ lectureId, subjectId, students }) {
+export default function RegularEvaluation({ lectureId, subjectId }) {
   const [isCreate, setIsCreate] = useState(false)
   const { useMme } = useMmeQuery()
   const mId = useMme('mUserId')
@@ -66,22 +68,21 @@ export default function DropOutMemo({ lectureId, subjectId, students }) {
       <DetailBox>
         <DetailDiv>
           <AreaTitle>
-            <h4>중도탈락 사전점검</h4>
+            <h4>정기평가 내용설정</h4>
             <Noti>
               <span>*</span> 는 필수입력입니다.
             </Noti>
           </AreaTitle>
-          <DropOutMemoForm
+          <ReaularEvaluationForm
             setIsCreate={setIsCreate}
             subjectId={subjectId}
-            students={students}
           />
         </DetailDiv>
       </DetailBox>
       <DetailBox>
         <DetailDiv>
           <AreaTitle>
-            <h4>중도탈락 사전점검 리스트</h4>
+            <h4>정기평가 내용설정 리스트</h4>
             <Noti>
               <span>*</span> 는 필수입력입니다.
             </Noti>
@@ -93,10 +94,11 @@ export default function DropOutMemo({ lectureId, subjectId, students }) {
               </LodingDiv>
             }
           >
-            <DropOutMemoList
+            <ReaularEvaluationList
               isCreate={isCreate}
               setIsCreate={setIsCreate}
               lectureId={lectureId}
+              subjectId={subjectId}
               mId={mId}
             />
           </Suspense>

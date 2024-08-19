@@ -15,6 +15,7 @@ import DropOutList from '../form/DropOutList'
 import CertificateNameList from '../form/CertificateNameList'
 import EmploymentNameList from '../form/EmploymentNameList'
 import DropOutMemo from '../layout/DropOutMemo'
+import RegularEvaluation from '../layout/RegularEvaluation'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -75,7 +76,7 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
         selectedKey={selected}
         onSelectionChange={e => setSelected(String(e))}
       >
-        <Tab key="eduInfo" title="중도탈락현황">
+        <Tab key="dropoutList" title="중도탈락현황">
           <DetailBox>
             <DetailDiv>
               <AreaTitle>
@@ -85,7 +86,7 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
             </DetailDiv>
           </DetailBox>
         </Tab>
-        <Tab key="career" title="중도탈락 사전점검">
+        <Tab key="dropoutMemo" title="중도탈락 사전점검">
           <DropOutMemo
             lectureId={lectureId}
             subjectId={subjectId}
@@ -128,7 +129,9 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
             </DetailDiv>
           </DetailBox>
         </Tab>
-        <Tab key="wishEmployment" title="정기평가 내용설정"></Tab>
+        <Tab key="wishEmployment" title="정기평가 내용설정">
+          <RegularEvaluation lectureId={lectureId} subjectId={subjectId} />
+        </Tab>
       </Tabs>
     </>
   )
