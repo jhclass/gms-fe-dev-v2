@@ -44,11 +44,18 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
+const BtnBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+`
+
 export default function StudentData({
   studentData,
   detailAll,
   record,
   paymentId = null,
+  activeBtn = false,
 }) {
   const router = useRouter()
   const formatDate = (data, isTime) => {
@@ -178,21 +185,25 @@ export default function StudentData({
           </AreaBox>
         </FlexBox>
       )}
-      {paymentId && (
-        <FlexBox>
-          <Button
-            size="md"
-            radius="md"
-            variant="bordered"
-            className="w-full"
-            color="primary"
-            onClick={() =>
-              router.push(`/lecture/employmentDetail/${paymentId}`)
-            }
-          >
-            학적부로
-          </Button>
-        </FlexBox>
+      {activeBtn && (
+        <>
+          {paymentId && (
+            <BtnBox>
+              <Button
+                size="md"
+                radius="md"
+                variant="bordered"
+                className="lg:w-[50%] w-full"
+                color="primary"
+                onClick={() =>
+                  router.push(`/lecture/employmentDetail/${paymentId}`)
+                }
+              >
+                학적부로
+              </Button>
+            </BtnBox>
+          )}
+        </>
       )}
     </>
   )

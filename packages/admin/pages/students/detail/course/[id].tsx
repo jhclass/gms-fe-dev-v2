@@ -447,6 +447,10 @@ export default function StudentsWrite() {
                   detailAll={false}
                   record={false}
                   paymentId={paymentId}
+                  activeBtn={
+                    studentPaymentData?.lectureAssignment ===
+                    assignment.assignment
+                  }
                 />
               </DetailDiv>
             </DetailBox>
