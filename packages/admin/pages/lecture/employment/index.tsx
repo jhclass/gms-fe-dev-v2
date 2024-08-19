@@ -4,8 +4,8 @@ import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
 import Layout from '@/pages/lecture/layout'
 import { Suspense, useState } from 'react'
-import EmploymentStateList from '@/components/table/EmploymentStateList'
 import EmploymentStateFilter from '@/components/filter/EmploymentStateFilter'
+import EmploymentList from '@/components/table/EmploymentList'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -72,7 +72,7 @@ export default function Employment() {
                 </LodingDiv>
               }
             >
-              <EmploymentStateList />
+              <EmploymentList />
             </Suspense>
           )}
         </ConBox>
