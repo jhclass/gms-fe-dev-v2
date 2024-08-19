@@ -212,6 +212,7 @@ export default function PaymentFilterTable({ studentFilter }) {
             {searchResult?.totalCount > 0 &&
               searchResult?.data?.map((item, index) => (
                 <Suspense
+                  key={index}
                   fallback={
                     <LodingDiv>
                       <i className="xi-spinner-2" />

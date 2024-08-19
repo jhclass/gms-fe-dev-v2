@@ -202,9 +202,11 @@ export default function PaymentDetailFilterTable({ studentFilter }) {
       ...studentFilter,
       paymentDate: studentFilter.paymentDate || [lastSixMonths, today],
     }
+    // console.log(studentFilter.paymentDate)
+    // console.log(studentFilter)
     searchPaymentFilterMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
         sortOf: 'paymentDate',

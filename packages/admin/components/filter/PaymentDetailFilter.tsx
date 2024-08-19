@@ -193,10 +193,7 @@ export default function PaymentFilter({
       if (paymentDate) {
         const filter = {
           stName: data.stName === '' ? null : data.stName,
-          paymentDate:
-            data.paymentDate === undefined
-              ? paymentDateRange
-              : data.paymentDate,
+          paymentDate: data.paymentDate === undefined ? null : data.paymentDate,
           approvalNum: data.approvalNum === '' ? null : data.approvalNum,
         }
         setStudentFilter(filter)
