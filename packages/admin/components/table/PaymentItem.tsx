@@ -143,7 +143,7 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function StudentsItem(props) {
+export default function PaymentItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const payment = props.tableData
@@ -167,7 +167,8 @@ export default function StudentsItem(props) {
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
                 <EllipsisBox>
-                  {payment?.updatedAt ? getDate(payment?.updatedAt) : '-'}
+                  {/* updatedAt */}
+                  {payment?.createdAt ? getDate(payment?.createdAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>
               <Tname>

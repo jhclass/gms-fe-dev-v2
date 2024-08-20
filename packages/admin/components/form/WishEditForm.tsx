@@ -6,6 +6,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_HOPE_FOR_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
+import FormTopInfo from '../common/FormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -194,18 +195,7 @@ export default function WishEditForm({ item, refetch }) {
   return (
     <>
       <DetailBox>
-        <TopInfo>
-          <Noti>
-            <span>*</span> 는 필수입력입니다.
-          </Noti>
-          <UpdateTime>
-            <UpdateCon>
-              <span>최근 업데이트 : </span>
-              {item.lastModifiedByName}(${item.lastModifiedByUserId})
-            </UpdateCon>
-            <UpdateCon>{formatDate(item.updatedAt)}</UpdateCon>
-          </UpdateTime>
-        </TopInfo>
+        <FormTopInfo item={item} noti={true} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailDiv>
             <FlexBox>

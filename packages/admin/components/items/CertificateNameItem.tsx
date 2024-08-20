@@ -15,6 +15,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import ListInfo from '../common/ListInfo'
 
 const DetailDiv = styled.div`
   width: 100%;
@@ -202,10 +203,7 @@ export default function CertificateNameItem({ item }) {
             />
           </AreaBox>
         </FlexBox>
-        <UpdateTime>
-          마지막 업데이트 : {item.lastModifiedByName}(
-          {item.lastModifiedByUserId}) - {formatDate(item.updatedAt)}
-        </UpdateTime>
+        <ListInfo item={item} />
       </DetailDiv>
     </>
   )

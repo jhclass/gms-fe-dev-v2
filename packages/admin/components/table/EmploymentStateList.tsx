@@ -68,7 +68,7 @@ const Tdate = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 
-export default function EmploymentStateList() {
+export default function EmploymentStateList({ student }) {
   return (
     <>
       <TableArea>
@@ -85,7 +85,7 @@ export default function EmploymentStateList() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            <EmploymentStateItem />
+            <EmploymentStateItem student={student} />
           </TableWrap>
         </ScrollShadow>
       </TableArea>

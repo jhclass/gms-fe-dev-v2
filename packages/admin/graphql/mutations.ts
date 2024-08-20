@@ -1179,6 +1179,7 @@ export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
           subjectName
         }
         updatedAt
+        createdAt
         unCollectedAmount
         tuitionFee
       }

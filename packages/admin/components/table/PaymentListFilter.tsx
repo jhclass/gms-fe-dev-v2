@@ -198,7 +198,7 @@ export default function PaymentFilterTable({ studentFilter }) {
             <Theader>
               <TheaderBox>
                 <Tnum>No</Tnum>
-                <TcreatedAt>최근 업데이트</TcreatedAt>
+                <TcreatedAt>수강신청일</TcreatedAt>
                 <Tname>수강생명</Tname>
                 <Tmanager>영업 담당자</Tmanager>
                 <Tsubject>수강과정</Tsubject>

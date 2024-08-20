@@ -136,7 +136,7 @@ export default function StudentsItem(props) {
       <ClickBox>
         <TrequestAt $width={props.width}>
           <EllipsisBox>
-            {studentPayment?.updatedAt
+            {studentPayment?.reqRefundDate
               ? getDate(studentPayment?.reqRefundDate)
               : '-'}
           </EllipsisBox>

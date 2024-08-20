@@ -431,7 +431,7 @@ export const paymentFilterState = atom<boolean>({
 export const paymentSearchState = atom({
   key: 'paymentSearch',
   default: {} as {
-    period: []
+    createdPeriod: []
     studentName: string
   },
 })

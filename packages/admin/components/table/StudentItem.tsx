@@ -157,7 +157,7 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-const isDisplayFlag = (date: string, step: boolean): string => {
+const isDisplayFlag = (date: string, payment: number): string => {
   const theme = useTheme()
   const currentDate = new Date()
   const differenceInDays = Math.floor(
@@ -165,7 +165,7 @@ const isDisplayFlag = (date: string, step: boolean): string => {
   )
   if (differenceInDays >= 0 && differenceInDays < 3) {
     return theme.colors.primary
-  } else if (differenceInDays >= 3 && !step) {
+  } else if (differenceInDays >= 3 && payment === 0) {
     return theme.colors.accent
   } else {
     return 'transparent'
@@ -177,7 +177,10 @@ export default function StudentsItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
-  const flagString = isDisplayFlag(student.createdAt, student.lectureAssignment)
+  const flagString = isDisplayFlag(
+    student.createdAt,
+    student.studentPayment.length,
+  )
   // const progressNum = displayPprogress(
   //   student.lectureAssignment,
   //   student.courseComplete,

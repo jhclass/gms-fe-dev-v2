@@ -14,6 +14,7 @@ import {
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
 import StudentPayment from '@/components/form/StudentPayment'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -222,15 +223,7 @@ export default function StudentsWriteCourse() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-              <UpdateTime>
-                <span>최근 업데이트 일시 :</span>
-                {formatDate(studentData?.updatedAt, true)}
-              </UpdateTime>
-            </TopInfo>
+            <FormTopInfo item={studentData} noti={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>기본정보</h4>

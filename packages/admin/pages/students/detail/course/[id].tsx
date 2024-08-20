@@ -25,6 +25,7 @@ import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import StudentInfo from '@/components/items/StudentInfo'
 import DropOutInput from '@/components/modal/DropOutInput'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -429,15 +430,7 @@ export default function StudentsWrite() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <TopInfo>
-                <Noti>
-                  <span>*</span> 는 필수입력입니다.
-                </Noti>
-                <UpdateTime>
-                  <span>최근 업데이트 일시 :</span>
-                  {formatDate(studentData?.updatedAt, true)}
-                </UpdateTime>
-              </TopInfo>
+              <FormTopInfo item={studentData} noti={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본정보</h4>
@@ -720,7 +713,7 @@ export default function StudentsWrite() {
                 </DetailBox>
               </>
             )}
-            {studentPaymentDetailData?.length > 0 && (
+            {studentPaymentDetailData?.length > 0 ? (
               <>
                 <DetailBox>
                   <DetailDiv>
@@ -764,23 +757,25 @@ export default function StudentsWrite() {
                   </DetailDiv>
                 </DetailBox>
               </>
-            )}
+            ) : null}
             <DetailBox>
               <BtnBox>
-                {studentPaymentDetailData?.length === 0 &&
-                  (mGrade < grade.general || mPart.includes('회계팀')) && (
-                    <Button
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      className="w-full mx-auto text-white bg-accent lg:w-[50%]"
-                      onClick={() =>
-                        router.push(`/students/write/payment/${paymentId}`)
-                      }
-                    >
-                      수강 결제
-                    </Button>
-                  )}
+                {!studentPaymentDetailData ||
+                studentPaymentDetailData?.length === 0
+                  ? (mGrade < grade.general || mPart.includes('회계팀')) && (
+                      <Button
+                        size="md"
+                        radius="md"
+                        variant="solid"
+                        className="w-full mx-auto text-white bg-accent lg:w-[50%]"
+                        onClick={() =>
+                          router.push(`/students/write/payment/${paymentId}`)
+                        }
+                      >
+                        수강 결제
+                      </Button>
+                    )
+                  : null}
                 <Button
                   size="md"
                   radius="md"
