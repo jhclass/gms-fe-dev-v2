@@ -181,6 +181,8 @@ export default function CertificateItem({ item, setPage, refetch, mId }) {
           alert('자격 취득 현황 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

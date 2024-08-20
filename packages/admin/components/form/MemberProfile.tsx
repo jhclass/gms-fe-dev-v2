@@ -180,6 +180,8 @@ export default function Profile() {
           }
         },
       })
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

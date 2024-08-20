@@ -118,7 +118,7 @@ export default function TypeIndex({
   }
 
   const onSubmit = async data => {
-    if (!isDirty) return
+    if (!isDirty) return alert('변경된 내용이업습니다.')
 
     try {
       const typeID = data.adviceType.map(advice => advice.id)

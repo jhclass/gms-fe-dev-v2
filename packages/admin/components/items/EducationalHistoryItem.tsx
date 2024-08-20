@@ -153,6 +153,8 @@ export default function EducationalHistoryItem({
           alert('학력 사항 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

@@ -190,6 +190,8 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
           alert('학생 정보 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 
