@@ -33,6 +33,7 @@ import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -386,15 +387,7 @@ export default function LectureWrite() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-              <UpdateTime>
-                <span>최근 업데이트 일시 :</span>
-                {formatDate(subjectState?.updatedAt, true)}
-              </UpdateTime>
-            </TopInfo>
+            <FormTopInfo item={subjectState} noti={true} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox style={{ minWidth: '20%' }}>

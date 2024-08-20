@@ -210,7 +210,8 @@ export default function ConsultMemo(props) {
                     {gradeStr(props.item.manageUser?.mUserId)}
                   </MemoGrade>
                   <MemoName>{props.item.manageUser?.mUsername}</MemoName>
-                  <MemoTime>{formatDate(props.item.updatedAt)}</MemoTime>
+                  {/* updatedAt */}
+                  <MemoTime>{formatDate(props.item.createdAt)}</MemoTime>
                 </MemoInfo>
               }
               ref={field.ref}

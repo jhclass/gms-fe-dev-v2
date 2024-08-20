@@ -36,6 +36,7 @@ import SubjectRoundItem from '@/components/items/SubjectRoundItem'
 import Layout from '@/pages/subjects/layout'
 import TeacherSelect from '@/components/common/TeacherSelect'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -527,15 +528,7 @@ export default function SubjectDetail() {
               }
             />
             <DetailBox>
-              <TopInfo>
-                <Noti>
-                  <span>*</span> 는 필수입력입니다.
-                </Noti>
-                <UpdateTime>
-                  <span>최근 업데이트 일시 :</span>
-                  {formatDate(subjectState?.updatedAt, true)}
-                </UpdateTime>
-              </TopInfo>
+              <FormTopInfo item={subjectState} noti={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>

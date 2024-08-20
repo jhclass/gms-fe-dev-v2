@@ -13,6 +13,7 @@ import {
 import LectureInfo from '@/components/items/LectureInfo'
 import EmploymentTabs from '@/components/items/EmploymentTabs'
 import EmploymentInfoForm from '@/components/form/EmploymentInfoForm'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -207,13 +208,7 @@ export default function EmploymentDetail() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <TopInfo>
-                <Noti></Noti>
-                <UpdateTime>
-                  <span>최근 업데이트 일시 :</span>
-                  {formatDate(lectureData?.updatedAt, true)}
-                </UpdateTime>
-              </TopInfo>
+              <FormTopInfo item={lectureData} noti={false} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>

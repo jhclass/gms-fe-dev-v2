@@ -374,6 +374,7 @@ export const SEE_STUDENT_QUERY = gql`
         updatedAt
         studentPayment {
           id
+          lectureAssignment
         }
       }
     }
@@ -430,6 +431,7 @@ export const SEE_PAYMENT_QUERY = gql`
         unCollectedAmount
         tuitionFee
         updatedAt
+        createdAt
         subject {
           id
           subjectName

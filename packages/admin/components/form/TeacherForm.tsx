@@ -25,6 +25,7 @@ import { gradeState } from '@/lib/recoilAtoms'
 import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import Address from '../common/Address'
+import FormTopInfo from '../common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -436,18 +437,7 @@ export default function StudentsWrite({ managerId }) {
             }
           />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-              <UpdateTime>
-                <UpdateCon>
-                  <span>최근 업데이트 : </span>
-                  {managerData.lastModifiedBy}
-                </UpdateCon>
-                <UpdateCon>{formatDate(managerData?.updatedAt)}</UpdateCon>
-              </UpdateTime>
-            </TopInfo>
+            <FormTopInfo item={managerData} noti={true} />
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>
                 <AvatarBox>

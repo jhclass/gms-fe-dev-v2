@@ -8,6 +8,7 @@ import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
+import ListInfo from '../common/ListInfo'
 
 const DetailForm = styled.form`
   width: 100%;
@@ -359,10 +360,7 @@ export default function EducationalHistoryItem({
             </BtnBox>
           )}
         </FlexBox>
-        <UpdateTime>
-          마지막 업데이트 : {item.lastModifiedByName}(
-          {item.lastModifiedByUserId}) - {formatDate(item.updatedAt)}
-        </UpdateTime>
+        <ListInfo item={item} />
       </DetailForm>
     </>
   )

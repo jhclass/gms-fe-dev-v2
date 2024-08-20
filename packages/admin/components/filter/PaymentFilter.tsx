@@ -137,7 +137,7 @@ export default function PaymentFilter({
   } = useForm({
     defaultValues: {
       studentName: '',
-      period: undefined,
+      createdPeriod: undefined,
     },
   })
 
@@ -152,11 +152,14 @@ export default function PaymentFilter({
     }
     if (
       Object.keys(studentFilter).length === 0 ||
-      studentFilter?.period === null
+      studentFilter?.createdPeriod === null
     ) {
       setPaymentDateRange([null, null])
     } else {
-      setPaymentDateRange([studentFilter?.period[0], studentFilter?.period[1]])
+      setPaymentDateRange([
+        studentFilter?.createdPeriod[0],
+        studentFilter?.createdPeriod[1],
+      ])
     }
   }, [router, studentFilter])
 
@@ -175,13 +178,14 @@ export default function PaymentFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.period,
+        data.createdPeriod,
         '최근 업데이트일의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
-          period: data.period === undefined ? null : data.period,
+          createdPeriod:
+            data.createdPeriod === undefined ? null : data.createdPeriod,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -193,7 +197,7 @@ export default function PaymentFilter({
     setPaymentDateRange([start, end])
     const setStart = new Date(start.setHours(0, 0, 0, 0))
     const setEnd = new Date(end.setHours(23, 59, 59, 999))
-    setValue('period', [setStart, setEnd], { shouldDirty: true })
+    setValue('createdPeriod', [setStart, setEnd], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -246,7 +250,7 @@ export default function PaymentFilter({
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="period"
+                  name="createdPeriod"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -290,7 +294,7 @@ export default function PaymentFilter({
                       onFocus={e => e.target.blur()}
                       customInput={
                         <Input
-                          label="최근 업데이트일"
+                          label="수강신청일"
                           labelPlacement="outside"
                           type="text"
                           variant="bordered"
@@ -300,7 +304,7 @@ export default function PaymentFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('period')}
+                          {...register('createdPeriod')}
                         />
                       }
                     />

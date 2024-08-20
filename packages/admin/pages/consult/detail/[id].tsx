@@ -47,6 +47,7 @@ import ConsolutRepeated from '@/components/items/ConsolutRepeated'
 import Layout from '@/pages/consult/layout'
 import ManagerSelect from '@/components/common/ManagerSelect'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -497,15 +498,7 @@ export default function ConsultDetail() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <TopInfo>
-                <Noti>
-                  <span>*</span> 는 필수입력입니다.
-                </Noti>
-                <UpdateTime>
-                  <span>최근 업데이트 일시 :</span>
-                  {formatDate(studentState?.updatedAt)}
-                </UpdateTime>
-              </TopInfo>
+              <FormTopInfo item={studentState} noti={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>

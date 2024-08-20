@@ -13,6 +13,7 @@ import { ManageUser } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import { useRef, useState } from 'react'
 import Address from '@/components/common/Address'
+import FormTopInfo from '../common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -243,15 +244,7 @@ export default function Profile() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <TopInfo>
-                <Noti>
-                  <span>*</span> 는 필수입력입니다.
-                </Noti>
-                <UpdateTime>
-                  <span>최근 업데이트 :</span>
-                  {formatDate(mMeData?.updatedAt)}
-                </UpdateTime>
-              </TopInfo>
+              <FormTopInfo item={mMeData} noti={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <AvatarBox>
                   {mMeData?.mAvatar ? (

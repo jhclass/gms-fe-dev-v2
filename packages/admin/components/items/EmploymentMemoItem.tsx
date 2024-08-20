@@ -13,6 +13,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
+import ListInfo from '../common/ListInfo'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -424,10 +425,7 @@ export default function EmploymentMemoItem({ item, refetch, setPage, mId }) {
             </BtnBox>
           )}
         </FlexBox>
-        <UpdateTime>
-          마지막 업데이트 : {item.lastModifiedByName}(
-          {item.lastModifiedByUserId}) - {formatDate(item.updatedAt)}
-        </UpdateTime>
+        <ListInfo item={item} />
       </DetailForm>
     </>
   )

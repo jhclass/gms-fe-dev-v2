@@ -9,6 +9,7 @@ import Address from '@/components/common/Address'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import AdviceSelect from '../common/AdviceSelect'
+import FormTopInfo from '../common/FormTopInfo'
 
 const TopInfo = styled.div`
   display: flex;
@@ -233,17 +234,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
 
   return (
     <>
-      <TopInfo>
-        <Noti>
-          <span>*</span> 는 필수입력입니다.
-        </Noti>
-        <UpdateTime>
-          <UpdateCon>
-            <span>최근 업데이트 : </span>
-          </UpdateCon>
-          <UpdateCon>{formatDate(paymentData.updatedAt)}</UpdateCon>
-        </UpdateTime>
-      </TopInfo>
+      <FormTopInfo item={paymentData} noti={true} />
       <StudentInfo
         studentData={paymentData.student}
         detailAll={false}

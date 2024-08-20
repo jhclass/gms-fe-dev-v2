@@ -15,6 +15,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import ListInfo from '../common/ListInfo'
 
 const DetailForm = styled.form`
   width: 100%;
@@ -384,10 +385,7 @@ export default function CertificateItem({ item, setPage, refetch, mId }) {
             </BtnBox>
           )}
         </FlexBox>
-        <UpdateTime>
-          마지막 업데이트 : {item.lastModifiedByName}(
-          {item.lastModifiedByUserId}) - {formatDate(item.updatedAt)}
-        </UpdateTime>
+        <ListInfo item={item} />
       </DetailForm>
     </>
   )

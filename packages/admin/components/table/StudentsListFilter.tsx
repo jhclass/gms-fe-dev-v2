@@ -240,7 +240,7 @@ export default function StudentsFilterTable({ studentFilter }) {
             <span style={{ background: theme.colors.primary }}></span> : 신규
           </ColorCip>
           <ColorCip>
-            <span style={{ background: theme.colors.accent }}></span> : 미배정
+            <span style={{ background: theme.colors.accent }}></span> : 미수강
           </ColorCip>
         </ColorHelp>
       </TTopic>

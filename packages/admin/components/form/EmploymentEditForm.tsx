@@ -15,68 +15,12 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import FormTopInfo from '../common/FormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
   border-radius: 0.5rem;
   /* padding: 1.5rem; */
-`
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
-const UpdateTime = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0;
-    align-items: flex-end;
-  }
-`
-const UpdateCon = styled.p`
-  position: relative;
-  &:first-child {
-    padding-right: 0.4rem;
-    &:after {
-      content: '';
-      width: 0.3rem;
-      height: 1px;
-      background: ${({ theme }) => theme.colors.black};
-      position: absolute;
-      top: 50%;
-      margin-top: -0.5px;
-      right: -0.2rem;
-    }
-  }
-  > span {
-    color: #555;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0;
-    align-items: flex-end;
-    &:first-child {
-      padding-right: 0;
-      &:after {
-        display: none;
-      }
-    }
-  }
 `
 const DetailDiv = styled.div`
   display: flex;
@@ -274,34 +218,10 @@ export default function EmploymentEditForm({ item, refetch }) {
     }
   }
 
-  const formatDate = data => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
-    return formatted
-  }
-
   return (
     <>
       <DetailBox>
-        <TopInfo>
-          <Noti>
-            <span>*</span> 는 필수입력입니다.
-          </Noti>
-          <UpdateTime>
-            <UpdateCon>
-              <span>최근 업데이트 : </span>
-              {item.lastModifiedByName}(${item.lastModifiedByUserId})
-            </UpdateCon>
-            <UpdateCon>{formatDate(item.updatedAt)}</UpdateCon>
-          </UpdateTime>
-        </TopInfo>
+        <FormTopInfo item={item} noti={true} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailDiv>
             <FlexBox>

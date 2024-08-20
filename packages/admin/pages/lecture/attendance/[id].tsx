@@ -18,6 +18,7 @@ import AbsentFilterList from '@/components/table/AbsentFilterList'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
 import AttendanceTabs from '@/components/items/AttendanceTabs'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -186,15 +187,7 @@ export default function StudentsWrite() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-              <UpdateTime>
-                <span>최근 업데이트 일시 :</span>
-                {formatDate(lectureData?.updatedAt, true)}
-              </UpdateTime>
-            </TopInfo>
+            <FormTopInfo item={lectureData} noti={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>기본 정보</h4>
