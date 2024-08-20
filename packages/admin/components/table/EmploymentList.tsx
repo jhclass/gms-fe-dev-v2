@@ -4,8 +4,14 @@ import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import { SeeLecturesResult } from '@/src/generated/graphql'
-import { SEE_LECTURES_QUERY } from '@/graphql/queries'
+import {
+  SeeLecturesResult,
+  StudentPaymentResult,
+} from '@/src/generated/graphql'
+import {
+  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
+  SEE_LECTURES_QUERY,
+} from '@/graphql/queries'
 import EmploymentItem from './EmploymentItem'
 
 const TableArea = styled.div`
@@ -169,8 +175,8 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
-type seeLectures = {
-  seeLectures: SeeLecturesResult
+type seeStudentPaymentQuery = {
+  seeStudentPayment: StudentPaymentResult
 }
 
 export default function EmploymentList() {
@@ -178,14 +184,14 @@ export default function EmploymentList() {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
 
-  const { error, data, refetch } = useSuspenseQuery<seeLectures>(
-    SEE_LECTURES_QUERY,
+  const { error, data, refetch } = useSuspenseQuery<seeStudentPaymentQuery>(
+    SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
     {
       variables: { page: currentPage, limit: currentLimit },
     },
   )
-  const lectureData = data?.seeLectures?.data
-  const totalCount = data?.seeLectures?.totalCount
+  const studentData = data?.seeStudentPayment?.StudentPayment
+  const totalCount = data?.seeStudentPayment?.totalCount
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -203,16 +209,16 @@ export default function EmploymentList() {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>23</span>건
+          총 <span>{totalCount}</span>건
         </Ttotal>
-        <ColorHelp>
+        {/* <ColorHelp>
           <ColorCip>
             <span style={{ background: theme.colors.primary }}></span> : 신규
           </ColorCip>
           <ColorCip>
             <span style={{ background: theme.colors.accent }}></span> : 미처리
           </ColorCip>
-        </ColorHelp>
+        </ColorHelp> */}
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -237,16 +243,18 @@ export default function EmploymentList() {
               </TheaderBox>
             </Theader>
             {totalCount > 0 &&
-              lectureData?.map((item, index) => (
-                <EmploymentItem
-                  forName="student"
-                  key={index}
-                  tableData={item}
-                  itemIndex={index}
-                  currentPage={currentPage}
-                  limit={currentLimit}
-                />
-              ))}
+              studentData
+                ?.filter(student => student.lectureAssignment === '배정')
+                .map((item, index) => (
+                  <EmploymentItem
+                    forName="student"
+                    key={index}
+                    tableData={item}
+                    itemIndex={index}
+                    currentPage={currentPage}
+                    limit={currentLimit}
+                  />
+                ))}
             {totalCount === 0 && <Nolist>등록된 취업현황이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>

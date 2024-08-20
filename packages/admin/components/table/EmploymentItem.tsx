@@ -34,13 +34,6 @@ const TableRow = styled.div`
   width: 100%;
   grid-template-columns: 0.5rem 2% auto; */
 `
-
-const Tflag = styled.div`
-  display: table-cell;
-  width: 0.5rem;
-  height: 100%;
-  min-width: 7px;
-`
 const ClickBox = styled.div`
   width: 100%;
   display: table-cell;
@@ -52,6 +45,10 @@ const ClickBox = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
+  }
+
+  .subDiv {
+    background: ${({ theme }) => theme.colors.offWhite};
   }
 `
 const Tnum = styled.div`
@@ -163,59 +160,26 @@ export default function EmploymentItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
-  const progressStatus = useRecoilValue(progressStatusState)
-  // const studentAdvice = student?.adviceTypes.map(item => item.type) || []
   const [isOpen, setIsOpen] = useState(false)
 
-  const formatDate = (data, isTime) => {
+  const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    if (isTime) {
-      if (date.getHours() === 0 && date.getMinutes() === 0) {
-        const formatted =
-          `${date.getFullYear()}-` +
-          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-          `${date.getDate().toString().padStart(2, '0')} ` +
-          `미정`
-        return formatted
-      } else {
-        const formatted =
-          `${date.getFullYear()}-` +
-          `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-          `${date.getDate().toString().padStart(2, '0')} ` +
-          `${date.getHours().toString().padStart(2, '0')}:` +
-          `${date.getMinutes().toString().padStart(2, '0')}`
-        return formatted
-      }
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
-    }
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
   }
 
-  const rejectCheck = (clickCheck: number): void => {
-    if (props.checkItem !== undefined) {
-      const isItemSelected: boolean = props.checkItem?.includes(clickCheck)
-      const newSelectedItems = isItemSelected
-        ? props.checkItem?.filter(item => item !== clickCheck)
-        : [...props?.checkItem, clickCheck]
-      props.setCheckItem(newSelectedItems)
-    }
+  const formatUsernames = data => {
+    return data.map(item => item.mUsername).join(', ')
   }
 
   return (
     <>
       <TableItem>
         <TableRow>
-          <Tflag
-            style={{
-              background: 'transparent',
-            }}
-          ></Tflag>
-
           <ClickBox onClick={() => setIsOpen(!isOpen)}>
             <div>
               <Tnum>
@@ -224,14 +188,16 @@ export default function EmploymentItem(props) {
                 </EllipsisBox>
               </Tnum>
               <TlecturName>
-                {/* <EllipsisBox>{lecture.temporaryName}</EllipsisBox> */}
+                <EllipsisBox>
+                  {student?.subject?.lectures?.temporaryName}
+                </EllipsisBox>
               </TlecturName>
               <Tperiod>
-                {/* <EllipsisBox> */}
-                {/* {formatDate(lecture.lecturePeriodStart) +
+                <EllipsisBox>
+                  {formatDate(student?.subject?.lectures?.lecturePeriodStart) +
                     ' - ' +
-                    formatDate(lecture.lecturePeriodEnd)}
-                </EllipsisBox> */}
+                    formatDate(student?.subject?.lectures?.lecturePeriodEnd)}
+                </EllipsisBox>
               </Tperiod>
               <Ttimes>
                 <EllipsisBox>
@@ -239,13 +205,19 @@ export default function EmploymentItem(props) {
                 </EllipsisBox>
               </Ttimes>
               <Tteacher>
-                {/* <EllipsisBox>{formatUsernames(lecture.teachers)}</EllipsisBox> */}
+                <EllipsisBox>
+                  {formatUsernames(student?.subject?.lectures?.teachers)}
+                </EllipsisBox>
               </Tteacher>
               <Tname>
-                {/* <EllipsisBox>{formatUsernames(lecture.teachers)}</EllipsisBox> */}
+                <EllipsisBox>{student?.student?.name}</EllipsisBox>
               </Tname>
               <Tcheck>
-                {/* <EllipsisBox>{formatUsernames(lecture.teachers)}</EllipsisBox> */}
+                <EllipsisBox>
+                  {student?.EmploymentStatus.length > 0
+                    ? student?.EmploymentStatus[0].employmentType
+                    : '미취업'}
+                </EllipsisBox>
               </Tcheck>
               <Tbtn>
                 <BtnBox>
@@ -278,9 +250,9 @@ export default function EmploymentItem(props) {
                 </BtnBox>
               </Tbtn>
             </div>
-            <div>
+            <div className="subDiv">
               <Tdiv $isOpen={isOpen}>
-                <EmploymentStateList />
+                <EmploymentStateList student={student} />
               </Tdiv>
             </div>
           </ClickBox>

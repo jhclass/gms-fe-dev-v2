@@ -1029,3 +1029,60 @@ export const SEE_REGULAREVALUATION_SET_QUERY = gql`
     }
   }
 `
+// 학적부
+export const SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY = gql`
+  query SeeStudentPayment($page: Int, $limit: Int) {
+    seeStudentPayment(page: $page, limit: $limit) {
+      totalCount
+      ok
+      message
+      error
+      StudentPayment {
+        EmploymentStatus {
+          id
+          lectureId
+          employmentType
+          dateOfEmployment
+          companyName
+          location
+          businessSize
+          branchId
+          phoneNum
+        }
+        StudentConsultation {
+          id
+          createdAt
+          updatedAt
+          typeOfConsultation
+        }
+        supportType
+        employment
+        lectureAssignment
+        subDiv
+        situationReport
+        subjectId
+        subject {
+          id
+          round
+          lectures {
+            temporaryName
+            teachers {
+              id
+              mUsername
+            }
+            sessionNum
+            lecturePeriodStart
+            lecturePeriodEnd
+          }
+        }
+        studentId
+        student {
+          id
+          name
+          phoneNum1
+          birthday
+        }
+      }
+    }
+  }
+`

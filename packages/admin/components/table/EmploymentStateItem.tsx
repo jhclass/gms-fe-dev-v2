@@ -58,25 +58,50 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-export default function EmploymentStateItem({}) {
+export default function EmploymentStateItem({ student }) {
+  const formatDate = data => {
+    const timestamp = parseInt(data, 10)
+    const date = new Date(timestamp)
+    const formatted =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')} `
+    return formatted
+  }
   return (
     <>
       <TableRow>
         <ClickBox>
           <Tphone>
-            <EllipsisBox>-</EllipsisBox>
+            <EllipsisBox>{student.student.phoneNum1}</EllipsisBox>
           </Tphone>
           <Tnum>
-            <EllipsisBox>-</EllipsisBox>
+            <EllipsisBox>{student.subject.lectures.sessionNum}</EllipsisBox>
           </Tnum>
           <Tdate>
-            <EllipsisBox>-</EllipsisBox>
+            <EllipsisBox>
+              {student.EmploymentStatus.length > 0
+                ? formatDate(student.EmploymentStatus[0].dateOfEmployment)
+                : '-'}
+            </EllipsisBox>
           </Tdate>
           <Tname>
-            <EllipsisBox>-</EllipsisBox>
+            <EllipsisBox>
+              {student.EmploymentStatus.length > 0
+                ? student.EmploymentStatus[0].companyName
+                : '-'}
+            </EllipsisBox>
           </Tname>
           <Tdate>
-            <EllipsisBox>-</EllipsisBox>
+            <EllipsisBox>
+              {student.StudentConsultation.length > 0
+                ? formatDate(
+                    student.StudentConsultation[
+                      student.StudentConsultation.length - 1
+                    ].createdAt,
+                  )
+                : '-'}
+            </EllipsisBox>
           </Tdate>
         </ClickBox>
       </TableRow>
