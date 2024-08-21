@@ -161,43 +161,6 @@ export const DEV_EDIT_MANAGE_USER_MUTATION = gql`
   }
 `
 
-export const UPDATE_FAVORITE_MUTATION2 = gql`
-  mutation Mutation($updateFavoriteId: Int!) {
-    updateFavorite(id: $updateFavoriteId) {
-      ok
-      message
-      error
-      favoriteStudentState {
-        id
-        mUserId
-        mUsername
-        mPassword
-        mGrade
-        mRank
-        mPhoneNum
-        mPhoneNumCompany
-        mPhoneNumInside
-        mPhoneNumFriend
-        mPart
-        mAvatar
-        mJoiningDate
-        mAddresses
-        createdAt
-        updatedAt
-        favoriteStudentState
-        StudentStates {
-          id
-          stName
-          phoneNum1
-        }
-        ConsultationMemo {
-          id
-          content
-        }
-      }
-    }
-  }
-`
 export const UPDATE_FAVORITE_MUTATION = gql`
   mutation Mutation($updateFavoriteId: Int!) {
     updateFavorite(id: $updateFavoriteId) {
@@ -340,7 +303,6 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
           createdAt
           lastModifiedTime
           id
-          updatedAt
           studentState {
             id
           }
@@ -362,7 +324,6 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         stName
         subDiv
         stVisit
-        updatedAt
         subject
       }
     }
@@ -602,7 +563,6 @@ export const SEARCH_SUBJECT_MUTATION = gql`
       message
       ok
       result {
-        updatedAt
         totalTime
         teacherName
         subjectName
@@ -689,7 +649,6 @@ export const SEARCH_STUDENT_MUTATION = gql`
         phoneNum1
         phoneNum2
         smsAgreement
-        updatedAt
         writer
         studentPayment {
           lastModifiedTime
@@ -733,11 +692,11 @@ export const SEARCH_STUDENT_MUTATION = gql`
             reqRefundDate
             reqRefundManager
             stName
-            updatedAt
+            lastModifiedTime
           }
           processingManagerId
           createdAt
-          updatedAt
+          lastModifiedTime
           seScore
           situationReport
           unCollectedAmount
@@ -761,7 +720,7 @@ export const SEARCH_STUDENT_MUTATION = gql`
             mUsername
           }
           manageUserId
-          updatedAt
+          lastModifiedTime
           studentId
         }
       }
@@ -799,7 +758,7 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
         phoneNum1
         smsAgreement
         writer
-        updatedAt
+        lastModifiedTime
         studentPayment {
           id
         }
@@ -823,7 +782,6 @@ export const SEARCH_STUDENT_MEMO_MUTATION = gql`
           manageUserId
           lastModifiedTime
           createdAt
-          updatedAt
           id
           content
         }
@@ -847,92 +805,10 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
         smsAgreement
         writer
         createdAt
-        updatedAt
       }
     }
   }
 `
-export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
-  mutation Mutation($searchStudentId: Int) {
-    searchStudent(id: $searchStudentId) {
-      error
-      message
-      ok
-      student {
-        birthday
-        createdAt
-        id
-        name
-        phoneNum1
-        phoneNum2
-        smsAgreement
-        updatedAt
-        writer
-        studentPayment {
-          actualAmount
-          amountReceived
-          campus
-          cardAmount
-          cashAmount
-          classCode
-          courseComplete
-          discountAmount
-          dueDate
-          employment
-          id
-          lectureAssignment
-          paymentDate
-          paymentDetail {
-            ApprovalNum
-            amountPayment
-            bankName
-            cardCompany
-            cardNum
-            cashOrCard
-            createdAt
-            cashReceipts
-            depositAmount
-            depositDate
-            depositorName
-            id
-            installment
-            paymentDate
-            receiver {
-              mUserId
-              mUsername
-            }
-            receiverId
-            refundApproval
-            refundApprovalDate
-            refundManager
-            reqRefund
-            reqRefundDate
-            reqRefundManager
-            stName
-            updatedAt
-          }
-          processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-          }
-          seScore
-          situationReport
-          unCollectedAmount
-          tuitionFee
-          subDiv
-          subjectId
-          subject {
-            subDiv
-            subjectCode
-            subjectName
-          }
-        }
-      }
-    }
-  }
-`
-
 export const UPDATE_STUDENT_BASIC_MUTATION = gql`
   mutation EditStudent(
     $editStudentId: Int!
@@ -1132,7 +1008,6 @@ export const SEARCH_PAYMENT_MUTATION = gql`
           stName
           studentId
           lastModifiedTime
-          updatedAt
         }
         processingManager {
           mUserId
@@ -1151,7 +1026,6 @@ export const SEARCH_PAYMENT_MUTATION = gql`
           name
           phoneNum1
           writer
-          updatedAt
         }
         subDiv
         subject {
@@ -1168,7 +1042,6 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         subjectId
         tuitionFee
         unCollectedAmount
-        updatedAt
         supportType
         mZipCode
         mAddresses
@@ -1210,7 +1083,7 @@ export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
           subjectCode
           subjectName
         }
-        updatedAt
+        lastModifiedTime
         createdAt
         unCollectedAmount
         tuitionFee
@@ -1362,10 +1235,8 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
             id
             name
             phoneNum1
-            updatedAt
           }
           subDiv
-          updatedAt
           unCollectedAmount
           tuitionFee
           subjectId
@@ -1380,7 +1251,6 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
           }
         }
         studentPaymentId
-        updatedAt
       }
     }
   }
@@ -1445,7 +1315,6 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         stName
         studentId
         studentPaymentId
-        updatedAt
         studentPayment {
           lastModifiedTime
           amountReceived
@@ -1799,7 +1668,6 @@ export const SEARCH_LECTURES_MUTATION = gql`
               createdAt
               id
               isCanceled
-              updatedAt
               studentPaymentId
               studentId
               lecturesId
@@ -1829,7 +1697,6 @@ export const SEARCH_LECTURES_MUTATION = gql`
           roomNum
           id
         }
-        updatedAt
         lastModifiedTime
         timetableAttached
         temporaryName
@@ -1868,7 +1735,6 @@ export const SEARCH_LECTURES_MUTATION = gql`
           paymentTwo
           tardySt
           workLogsDate
-          updatedAt
           trainingTimeTotal
           trainingTimeOneday
           trainingInfoTwo

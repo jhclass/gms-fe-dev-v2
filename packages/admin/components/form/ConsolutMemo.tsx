@@ -74,19 +74,6 @@ const MemoEditTime = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-type memoData = {
-  id: number
-  content: string
-  createdAt: string
-  updatedAt: string
-  manageUser: {
-    id: number
-    mUserId: string
-    mUsername: string
-  }
-  manageUserId: number
-}
-
 export default function ConsultMemo(props) {
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
@@ -227,7 +214,6 @@ export default function ConsultMemo(props) {
                       {gradeStr(props.item.manageUser?.mUserId)}
                     </MemoGrade>
                     <MemoName>{props.item.manageUser?.mUsername}</MemoName>
-                    {/* updatedAt */}
                     <MemoTime>{formatDate(props.item.createdAt)}</MemoTime>
                   </MemoInfo>
                 }

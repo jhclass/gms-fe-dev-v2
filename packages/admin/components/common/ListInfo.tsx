@@ -53,7 +53,6 @@ export default function ListInfo({ item }) {
         {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
           <span>-</span>
         ) : null}
-        {/* updatedAt */}
         <UpdateCon>{formatDate(item?.lastModifiedTime)}</UpdateCon>
       </UpdateTime>
     )

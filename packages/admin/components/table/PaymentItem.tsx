@@ -167,7 +167,6 @@ export default function PaymentItem(props) {
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <TcreatedAt>
                 <EllipsisBox>
-                  {/* updatedAt */}
                   {payment?.createdAt ? getDate(payment?.createdAt) : '-'}
                 </EllipsisBox>
               </TcreatedAt>

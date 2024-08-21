@@ -734,7 +734,6 @@ export default function WorksLogsModal({
                       workLogData?.lastModifiedByUserId ? (
                         <span>-</span>
                       ) : null}
-                      {/* updatedAt */}
                       <UpdateCon>
                         {workLogData?.lastModifiedTime
                           ? formatDate(workLogData?.lastModifiedTime, true)
