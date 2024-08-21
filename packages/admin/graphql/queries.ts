@@ -814,7 +814,7 @@ export const SEE_MESSAGE_STORAGE_QUERY = gql`
   }
 `
 
-export const SEARCH_MESSAGE_QUERY = gql`
+export const SEARCH_SMS_QUERY = gql`
   query Query($page: Int, $limit: Int, $branchId: Int, $receiver: String) {
     searchSms(
       page: $page

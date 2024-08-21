@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_MESSAGE_QUERY } from '@/graphql/queries'
+import { SEARCH_SMS_QUERY } from '@/graphql/queries'
 import { ResultSearchSms } from '@/src/generated/graphql'
 
 const TTopic = styled.div`
@@ -149,7 +149,7 @@ export default function SMSList() {
   const [openTooltipIndex, setOpenTooltipIndex] = useState(null)
 
   const { error, data, refetch } = useSuspenseQuery<SearchMessageQuery>(
-    SEARCH_MESSAGE_QUERY,
+    SEARCH_SMS_QUERY,
     {
       variables: {
         branchId: 1,
