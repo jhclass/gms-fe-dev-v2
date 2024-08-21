@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_MESSAGE_QUERY } from '@/graphql/queries'
+import { SEARCH_SMS_QUERY } from '@/graphql/queries'
 import { ResultSearchSms } from '@/src/generated/graphql'
 
 const TTopic = styled.div`
@@ -139,7 +139,7 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-type SearchMessageQuery = {
+type SearchSMSQuery = {
   searchSms: ResultSearchSms
 }
 
@@ -148,8 +148,8 @@ export default function SMSList() {
   const [currentLimit, setCurrentLimit] = useState(12)
   const [openTooltipIndex, setOpenTooltipIndex] = useState(null)
 
-  const { error, data, refetch } = useSuspenseQuery<SearchMessageQuery>(
-    SEARCH_MESSAGE_QUERY,
+  const { error, data, refetch } = useSuspenseQuery<SearchSMSQuery>(
+    SEARCH_SMS_QUERY,
     {
       variables: {
         branchId: 1,
