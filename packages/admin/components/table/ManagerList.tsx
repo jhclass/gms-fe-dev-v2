@@ -217,7 +217,7 @@ export default function ConsolutationTable({ mGrade, mPart }) {
       <>
         <TTopic>
           <Ttotal>
-            총 <span>{managerData.length}</span>건
+            총 <span>{totalCount}</span>건
           </Ttotal>
         </TTopic>
         <TableArea>
