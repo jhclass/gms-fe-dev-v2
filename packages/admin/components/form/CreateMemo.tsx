@@ -91,6 +91,8 @@ export default function CreateMemo(props) {
       } catch (error) {
         console.error('에러 발생:', error)
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

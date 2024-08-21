@@ -88,7 +88,11 @@ export default function WorksTime({
         ...prevState,
         [key]: [...prevState[key]],
       }
-      if (e.target.value !== '') {
+      const value =
+        e.target.value !== '' && !isNaN(e.target.value)
+          ? parseInt(e.target.value)
+          : ''
+      if (value !== '') {
         newTrainingTimes[key][index] = parseInt(e.target.value)
         clearErrors(key)
       } else {

@@ -72,8 +72,11 @@ export default function FormTopInfo({ noti, item }) {
         {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
           <span>-</span>
         ) : null}
-        {/* updatedAt */}
-        <UpdateCon>{formatDate(item?.createdAt)}</UpdateCon>
+        <UpdateCon>
+          {item?.lastModifiedTime
+            ? formatDate(item?.lastModifiedTime)
+            : formatDate(item?.createdAt)}
+        </UpdateCon>
       </UpdateTime>
     </TopInfo>
   )

@@ -357,6 +357,7 @@ export default function StudentsWrite({ managerId }) {
                   : data.mAddressDetail.trim(),
               email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
+              lastModifiedTime: new Date(),
             },
           })
 
@@ -379,6 +380,8 @@ export default function StudentsWrite({ managerId }) {
           alert('강사 정보 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

@@ -71,19 +71,19 @@ export const MME_QUERY = gql`
       mUserId
       mUsername
       resign
-      updatedAt
       email
       id
       createdAt
       lastModifiedBy
+      lastModifiedTime
       favoriteStudentState
       ConsultationMemo {
         id
         content
-        updatedAt
         createdAt
         manageUserId
         studentStateId
+        lastModifiedTime
       }
     }
   }
@@ -216,9 +216,7 @@ export const SEE_MANAGEUSER_QUERY = gql`
           content
           manageUserId
           studentStateId
-          updatedAt
         }
-        updatedAt
         resign
         mUsername
         mUserId
@@ -301,7 +299,7 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
         mZipCode
         mRank
         resign
-        updatedAt
+        lastModifiedTime
         lastModifiedBy
       }
     }
@@ -336,7 +334,6 @@ export const SEE_SUBJECT_QUERY = gql`
         subDiv
         subjectName
         createdAt
-        updatedAt
         fee
         startDate
         endDate
@@ -371,7 +368,6 @@ export const SEE_STUDENT_QUERY = gql`
         writer
         smsAgreement
         id
-        updatedAt
         studentPayment {
           id
           lectureAssignment
@@ -430,7 +426,6 @@ export const SEE_PAYMENT_QUERY = gql`
         discountAmount
         unCollectedAmount
         tuitionFee
-        updatedAt
         createdAt
         subject {
           id
@@ -501,7 +496,6 @@ export const SEE_REFUND_QUERY = gql`
           mUsername
         }
         studentPaymentId
-        updatedAt
         studentPayment {
           processingManagerId
           amountReceived
@@ -564,7 +558,6 @@ export const SEE_LECTURES_QUERY = gql`
         lecturePeriodStart
         lectureTime
         roomNum
-        updatedAt
         timetableAttached
         temporaryName
         subjectId
@@ -756,7 +749,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         trainingInfoTwo
         trainingTimeOneday
         trainingTimeTotal
-        updatedAt
+        lastModifiedTime
         workLogsDate
         checkList
         checkContext
@@ -769,10 +762,18 @@ export const SEARCH_WORKLOGS_QUERY = gql`
   }
 `
 export const SIGN_WORKLOGS_QUERY = gql`
-  query SignWorkLogs($signWorkLogsId: Int!, $gradeType: String!) {
-    signWorkLogs(id: $signWorkLogsId, gradeType: $gradeType) {
-      error
+  query Query(
+    $signWorkLogsId: Int!
+    $gradeType: String!
+    $lastModifiedTime: String
+  ) {
+    signWorkLogs(
+      id: $signWorkLogsId
+      gradeType: $gradeType
+      lastModifiedTime: $lastModifiedTime
+    ) {
       message
+      error
       ok
       stampUrl
     }
@@ -873,9 +874,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on Career {
           id
@@ -886,9 +887,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on Certificate {
           id
@@ -902,9 +903,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on HopeForEmployment {
           id
@@ -919,9 +920,9 @@ export const SEARCH_SM_QUERY = gql`
           opinion
           subjectId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on EmploymentRecommendation {
           id
@@ -940,9 +941,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on EmploymentStatus {
           id
@@ -964,9 +965,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on PreInspection {
           id
@@ -980,9 +981,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on StudentConsultation {
           id
@@ -995,9 +996,9 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
       }
     }
@@ -1023,10 +1024,10 @@ export const SEE_REGULAREVALUATION_SET_QUERY = gql`
         points
         subjectId
         createdAt
-        updatedAt
         branchId
         lastModifiedByUserId
         lastModifiedByName
+        lastModifiedTime
       }
     }
   }
@@ -1054,7 +1055,6 @@ export const SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY = gql`
         StudentConsultation {
           id
           createdAt
-          updatedAt
           typeOfConsultation
         }
         supportType

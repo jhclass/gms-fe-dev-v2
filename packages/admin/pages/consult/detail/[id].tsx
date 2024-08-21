@@ -409,6 +409,7 @@ export default function ConsultDetail() {
                 : new Date(data.expEnrollDate),
             pic: data.pic,
             receiptDiv: data.receiptDiv,
+            lastModifiedTime: new Date(),
           },
           onCompleted: result => {
             const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -425,6 +426,8 @@ export default function ConsultDetail() {
           },
         })
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

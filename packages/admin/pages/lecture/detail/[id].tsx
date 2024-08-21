@@ -467,6 +467,7 @@ export default function LectureWrite() {
                 : lectureData.sessionNum,
               timetableAttached:
                 dirtyFields.timetableAttached && data.timetableAttached,
+              lastModifiedTime: new Date(),
             },
             // refetchQueries: [
             //   {
@@ -494,6 +495,8 @@ export default function LectureWrite() {
           alert('강의 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

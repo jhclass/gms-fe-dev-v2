@@ -412,6 +412,7 @@ export default function StudentPaymentForm({
                   ? new Date(parseInt(data.dueDate))
                   : new Date(data.dueDate),
               isWeekend: data.isWeekend === undefined ? 'N' : data.isWeekend,
+              lastModifiedTime: new Date(),
             },
             onCompleted: result => {
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -450,6 +451,8 @@ export default function StudentPaymentForm({
           }
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

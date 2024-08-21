@@ -132,6 +132,7 @@ export default function EducationalHistoryItem({
               graduationStatus:
                 data.graduationStatus === '' ? null : data.graduationStatus,
               major: data.major === '' ? null : data.major,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -153,6 +154,8 @@ export default function EducationalHistoryItem({
           alert('학력 사항 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 
@@ -187,19 +190,6 @@ export default function EducationalHistoryItem({
   }
   const handleGraduationChange = e => {
     setGraduationValue(e.target.value)
-  }
-
-  const formatDate = data => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
-    return formatted
   }
 
   return (

@@ -209,13 +209,23 @@ export default function Attendance({ lectureData, students }) {
       return `${year}-${month}-${day}`
     }
 
+    const timeStampDate = data => {
+      const timestamp = parseInt(data, 10)
+      const date = new Date(timestamp)
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
+
     let currentDate = new Date(data)
 
-    if (today < lectureData.lecturePeriodStart) {
+    if (today < timeStampDate(lectureData.lecturePeriodStart)) {
       return 0
     }
 
-    if (today > lectureData.lecturePeriodEnd) {
+    if (today > timeStampDate(lectureData.lecturePeriodEnd)) {
       return chunks.length - 1
     }
 
@@ -859,14 +869,16 @@ export default function Attendance({ lectureData, students }) {
             }}
           />
         </PagerWrap>
-        <WorksLogs
-          isOpen={isOpen}
-          onClose={onClose}
-          teachers={teachers}
-          lectureId={lectureData.id}
-          workLogeDate={selectWrokLogDate}
-          key={selectWrokLogDate}
-        />
+        {isOpen && (
+          <WorksLogs
+            isOpen={isOpen}
+            onClose={onClose}
+            teachers={teachers}
+            lectureId={lectureData.id}
+            workLogeDate={selectWrokLogDate}
+            key={selectWrokLogDate}
+          />
+        )}
       </>
     )
   )

@@ -134,8 +134,6 @@ export default function CreateAdviceType({ isActive, category }) {
   }
 
   const onSubmit = async data => {
-    if (!isDirty) return
-
     try {
       const result = await createAdvice({
         variables: {
@@ -202,6 +200,10 @@ export default function CreateAdviceType({ isActive, category }) {
                       register('type').onChange(e)
                     }}
                     {...register('type', {
+                      required: {
+                        value: true,
+                        message: '내용을 작성해주세요',
+                      },
                       minLength: {
                         value: 2,
                         message: '2글자 이상 작성해주세요',
@@ -209,7 +211,7 @@ export default function CreateAdviceType({ isActive, category }) {
                     })}
                   />
                   {errors.type && (
-                    <p className="w-full ml-[4.5rem] text-xs text-red">
+                    <p className="w-full ml-[6rem] text-xs text-red">
                       {String(errors.type.message)}
                     </p>
                   )}

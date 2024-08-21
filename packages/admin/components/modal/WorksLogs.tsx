@@ -26,6 +26,7 @@ import {
 import useMmeQuery from '@/utils/mMe'
 import { useReactToPrint } from 'react-to-print'
 import useUserLogsMutation from '@/utils/userLogs'
+import FormTopInfo from '../common/FormTopInfo'
 
 const Title = styled.h2`
   position: relative;
@@ -224,6 +225,37 @@ const CheckLabel = styled.p`
   }
 `
 
+const TopInfo = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
+`
+const UpdateTime = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    gap: 0;
+    align-items: flex-end;
+  }
+`
+const UpdateCon = styled.p`
+  > span {
+    color: #555;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-end;
+  }
+`
+
 export default function WorksLogsModal({
   isOpen,
   onClose,
@@ -258,32 +290,34 @@ export default function WorksLogsModal({
     handleSubmit,
     setError,
     clearErrors,
+    reset,
+    watch,
     setValue,
     control,
     formState: { isDirty, dirtyFields, errors },
   } = useForm({
     defaultValues: {
-      trainingInfoOne: workLogData?.trainingInfoOne,
-      trainingInfoTwo: workLogData?.trainingInfoTwo,
-      trainingInfoThree: workLogData?.trainingInfoThree,
-      trainingInfoFour: workLogData?.trainingInfoFour,
-      trainingInfoFive: workLogData?.trainingInfoFive,
-      trainingInfoSix: workLogData?.trainingInfoSix,
-      trainingInfoSeven: workLogData?.trainingInfoSeven,
-      trainingInfoEight: workLogData?.trainingInfoEight,
-      trainingTimeOneday: workLogData?.trainingTimeOneday,
-      trainingTimeTotal: workLogData?.trainingTimeTotal,
-      instruction: workLogData?.instruction,
-      absentSt: workLogData?.absentSt,
-      tardySt: workLogData?.tardySt,
-      leaveEarlySt: workLogData?.leaveEarlySt,
-      outingSt: workLogData?.outingSt,
-      etc: workLogData?.etc,
-      attendanceCount: workLogData?.attendanceCount,
-      check1: workLogData?.checkList[0],
-      check2: workLogData?.checkList[1],
-      check1con: workLogData?.checkContext[0],
-      check2con: workLogData?.checkContext[1],
+      trainingInfoOne: '',
+      trainingInfoTwo: '',
+      trainingInfoThree: '',
+      trainingInfoFour: '',
+      trainingInfoFive: '',
+      trainingInfoSix: '',
+      trainingInfoSeven: '',
+      trainingInfoEight: '',
+      trainingTimeOneday: '',
+      trainingTimeTotal: '',
+      instruction: '',
+      absentSt: '',
+      tardySt: '',
+      leaveEarlySt: '',
+      outingSt: '',
+      etc: '',
+      attendanceCount: '',
+      check1: '',
+      check2: '',
+      check1con: '',
+      check2con: '',
     },
   })
 
@@ -350,13 +384,38 @@ export default function WorksLogsModal({
   }
 
   useEffect(() => {
-    if (lectureId && workLogeDate) {
+    if (isOpen && lectureId && workLogeDate) {
       fetchWorkLog(workLogeDate, lectureId)
       fetchAttendance(workLogeDate, lectureId)
+    } else {
+      reset() // 팝업이 열릴 때 reset 호출
     }
-  }, [workLogeDate, lectureId])
+  }, [workLogeDate, lectureId, isOpen])
 
   useEffect(() => {
+    reset({
+      trainingInfoOne: workLogData?.trainingInfoOne || '',
+      trainingInfoTwo: workLogData?.trainingInfoTwo || '',
+      trainingInfoThree: workLogData?.trainingInfoThree || '',
+      trainingInfoFour: workLogData?.trainingInfoFour || '',
+      trainingInfoFive: workLogData?.trainingInfoFive || '',
+      trainingInfoSix: workLogData?.trainingInfoSix || '',
+      trainingInfoSeven: workLogData?.trainingInfoSeven || '',
+      trainingInfoEight: workLogData?.trainingInfoEight || '',
+      trainingTimeOneday: workLogData?.trainingTimeOneday || '',
+      trainingTimeTotal: workLogData?.trainingTimeTotal || '',
+      instruction: workLogData?.instruction || '',
+      absentSt: workLogData?.absentSt || '',
+      tardySt: workLogData?.tardySt || '',
+      leaveEarlySt: workLogData?.leaveEarlySt || '',
+      outingSt: workLogData?.outingSt || '',
+      etc: workLogData?.etc || '',
+      attendanceCount: workLogData?.attendanceCount || '',
+      check1: workLogData?.checkList[0] || '',
+      check2: workLogData?.checkList[1] || '',
+      check1con: workLogData?.checkContext[0] || '',
+      check2con: workLogData?.checkContext[1] || '',
+    })
     if (workLogData && attendanceData) {
       if (workLogData.attendanceCount.length > 0) {
         setAttendanceTotals(workLogData.attendanceCount)
@@ -433,12 +492,12 @@ export default function WorksLogsModal({
             : workLogData.outingSt,
         etc: workLogData.etc === null ? [] : workLogData.etc,
       })
-      setIsChecked1(
-        workLogData.checkList.legnth === 0 ? 'N' : workLogData.checkList[0],
-      )
-      setIsChecked2(
-        workLogData.checkList.legnth === 0 ? 'N' : workLogData.checkList[1],
-      )
+      if (workLogData.checkList.legnth > 0) {
+        setIsChecked1(workLogData.checkList[0])
+      }
+      if (workLogData.checkList.legnth > 0) {
+        setIsChecked2(workLogData.checkList[1])
+      }
     }
   }, [workLogData, attendanceData])
 
@@ -446,15 +505,27 @@ export default function WorksLogsModal({
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const formatDate = data => {
+  const formatDate = (data, time) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} `
-    return formatted
+    if (time) {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}:` +
+        `${date.getSeconds().toString().padStart(2, '0')}`
+      return formatted
+    } else {
+      const formatted =
+        `${date.getFullYear()}-` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+        `${date.getDate().toString().padStart(2, '0')} `
+      return formatted
+    }
   }
+
   const getWorksLogsDate = data => {
     const week = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -466,7 +537,11 @@ export default function WorksLogsModal({
   const clickSign = async type => {
     try {
       const { data } = await signWorkLog({
-        variables: { signWorkLogsId: workLogData.id, gradeType: type },
+        variables: {
+          signWorkLogsId: workLogData.id,
+          gradeType: type,
+          lastModifiedTime: new Date(),
+        },
       })
       if (data.signWorkLogs.ok) {
         const stampUrl = data.signWorkLogs.stampUrl
@@ -555,6 +630,7 @@ export default function WorksLogsModal({
               data.check1con || data.check2con
                 ? [data.check1con, data.check2con]
                 : workLogData.checkList,
+            lastModifiedTime: new Date(),
           },
           onCompleted: result => {
             if (workLogData?.paymentOne) {
@@ -586,6 +662,8 @@ export default function WorksLogsModal({
           },
         })
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 
@@ -616,12 +694,17 @@ export default function WorksLogsModal({
       }
     `,
   })
+  const formValues = watch()
+  const handleClose = () => {
+    reset() // 폼을 초기화
+    onClose() // 원래 onClose 함수 호출
+  }
 
   return (
     <>
-      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
         <ModalContent>
-          {sbjClose => (
+          {onClose => (
             <>
               <div ref={componentRef}>
                 <ModalHeader className="flex flex-col gap-1">
@@ -631,6 +714,33 @@ export default function WorksLogsModal({
                       <span>*</span>서명 후 저장, 수정 가능합니다.
                     </SubText>
                   </Title>
+                  <TopInfo>
+                    <UpdateTime>
+                      <UpdateCon>
+                        <span>최근 업데이트 : </span>
+                        {workLogData?.lastModifiedByName ||
+                        workLogData?.lastModifiedByUserId ? (
+                          <>
+                            {workLogData?.lastModifiedByName &&
+                              workLogData?.lastModifiedByName}
+                            (
+                            {workLogData?.lastModifiedByUserId &&
+                              workLogData?.lastModifiedByUserId}
+                            )
+                          </>
+                        ) : null}
+                      </UpdateCon>
+                      {workLogData?.lastModifiedByName ||
+                      workLogData?.lastModifiedByUserId ? (
+                        <span>-</span>
+                      ) : null}
+                      <UpdateCon>
+                        {workLogData?.lastModifiedTime
+                          ? formatDate(workLogData?.lastModifiedTime, true)
+                          : formatDate(workLogData?.createdAt, true)}
+                      </UpdateCon>
+                    </UpdateTime>
+                  </TopInfo>
                 </ModalHeader>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <ModalBody>
@@ -648,10 +758,12 @@ export default function WorksLogsModal({
                                   <LineBox>
                                     {formatDate(
                                       workLogData?.lectures.lecturePeriodStart,
+                                      false,
                                     ) +
                                       ' ~ ' +
                                       formatDate(
                                         workLogData?.lectures.lecturePeriodEnd,
+                                        false,
                                       )}
                                   </LineBox>
                                 </div>
@@ -737,7 +849,7 @@ export default function WorksLogsModal({
                                         size="sm"
                                         color="primary"
                                         className="bg-accent"
-                                        onClick={() => clickSign('팀장')}
+                                        onClick={() => clickSign('교무팀')}
                                       >
                                         서명
                                       </Button>
@@ -791,9 +903,6 @@ export default function WorksLogsModal({
                                   isDisabled={true}
                                   isReadOnly={true}
                                   labelPlacement="outside"
-                                  defaultValue={
-                                    workLogData?.lectures.temporaryName
-                                  }
                                   minRows={1}
                                   variant="underlined"
                                   size="md"
@@ -913,7 +1022,6 @@ export default function WorksLogsModal({
                               <Controller
                                 control={control}
                                 name="check1"
-                                defaultValue={false}
                                 render={({ field }) => (
                                   <RadioGroup
                                     label={
@@ -933,8 +1041,12 @@ export default function WorksLogsModal({
                                       base: 'pl-[1rem]',
                                     }}
                                   >
-                                    <Radio value="Y">예</Radio>
-                                    <Radio value="N">아니오</Radio>
+                                    <Radio key={'Y'} value={'Y'}>
+                                      예
+                                    </Radio>
+                                    <Radio key={'N'} value={'N'}>
+                                      아니오
+                                    </Radio>
                                   </RadioGroup>
                                 )}
                               />
@@ -945,7 +1057,6 @@ export default function WorksLogsModal({
                                   </AreaTitle>
                                   <Textarea
                                     label=""
-                                    defaultValue={workLogData?.checkContext[0]}
                                     placeholder="ex) 홍길동 학생이 지각 후 조퇴를 하였는데 수업참여시간이 절반이 되지 않아 결석으로 처리함."
                                     className="w-full"
                                     variant="bordered"
@@ -981,7 +1092,6 @@ export default function WorksLogsModal({
                               <Controller
                                 control={control}
                                 name="check2"
-                                defaultValue={false}
                                 render={({ field }) => (
                                   <RadioGroup
                                     label={
@@ -1000,8 +1110,12 @@ export default function WorksLogsModal({
                                       base: 'pl-[1rem]',
                                     }}
                                   >
-                                    <Radio value="Y">예</Radio>
-                                    <Radio value="N">아니오</Radio>
+                                    <Radio key={'Y'} value={'Y'}>
+                                      예
+                                    </Radio>
+                                    <Radio key={'N'} value={'N'}>
+                                      아니오
+                                    </Radio>
                                   </RadioGroup>
                                 )}
                               />
@@ -1012,7 +1126,6 @@ export default function WorksLogsModal({
                                   </AreaTitle>
                                   <Textarea
                                     label=""
-                                    defaultValue={workLogData?.checkContext[1]}
                                     placeholder="ex) 홍길동 학생이 조퇴로 수업을 듣지못한 부분은 수업자료를 공유해주고, 동영상 강의로 대체함"
                                     className="w-full"
                                     variant="bordered"
@@ -1076,7 +1189,7 @@ export default function WorksLogsModal({
                       size="sm"
                       variant="bordered"
                       className="text-accent border-accent"
-                      onPress={sbjClose}
+                      onPress={onClose}
                     >
                       Close
                     </Button>

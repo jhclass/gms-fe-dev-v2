@@ -774,14 +774,16 @@ export default function Attendance({
             }}
           />
         </PagerWrap>
-        <WorksLogs
-          isOpen={isOpen}
-          onClose={onClose}
-          teachers={teachers}
-          lectureId={lectureData.id}
-          workLogeDate={selectWrokLogDate}
-          key={selectWrokLogDate}
-        />
+        {isOpen && (
+          <WorksLogs
+            isOpen={isOpen}
+            onClose={onClose}
+            teachers={teachers}
+            lectureId={lectureData.id}
+            workLogeDate={selectWrokLogDate}
+            key={selectWrokLogDate}
+          />
+        )}
       </>
     )
   )

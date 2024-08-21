@@ -22,7 +22,12 @@ const DetailForm = styled.form`
     gap: 0.3rem;
   }
 `
-
+const TextBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+`
 const MemoListBtn = styled.p`
   display: flex;
   gap: 0.5rem;
@@ -62,19 +67,11 @@ const MemoName = styled.span`
   font-weight: 600;
 `
 const MemoTime = styled.span``
-
-type memoData = {
-  id: number
-  content: string
-  createdAt: string
-  updatedAt: string
-  manageUser: {
-    id: number
-    mUserId: string
-    mUsername: string
-  }
-  manageUserId: number
-}
+const MemoEditTime = styled.span`
+  font-size: 0.75rem;
+  padding-left: 0.75rem;
+  color: ${({ theme }) => theme.colors.gray};
+`
 
 export default function ConsultMemo(props) {
   const { useMme } = useMmeQuery()
@@ -121,6 +118,7 @@ export default function ConsultMemo(props) {
         variables: {
           editStudentMemoId: parseInt(data.id),
           content: data.content.trim(),
+          lastModifiedTime: new Date(),
         },
         onCompleted: result => {
           userLogs(
@@ -142,6 +140,8 @@ export default function ConsultMemo(props) {
           }
         },
       })
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 
@@ -170,46 +170,52 @@ export default function ConsultMemo(props) {
 
   return (
     <DetailForm onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        labelPlacement="outside"
-        placeholder=" "
-        variant="bordered"
-        radius="md"
-        type="text"
-        label="아이디"
-        defaultValue={props.item?.id}
-        value={props.item?.id}
-        className="hidden w-full"
-        {...register('id')}
-      />
-      <Controller
-        name="content"
-        control={control}
-        defaultValue={props.item.content}
-        render={({ field }) => (
-          <>
-            <Textarea
-              label={
-                <MemoInfo>
-                  <MemoGrade>
-                    {gradeStr(props.item.manageUser?.mUserId)}
-                  </MemoGrade>
-                  <MemoName>{props.item.manageUser?.mUsername}</MemoName>
-                  {/* updatedAt */}
-                  <MemoTime>{formatDate(props.item.createdAt)}</MemoTime>
-                </MemoInfo>
-              }
-              ref={field.ref}
-              isReadOnly={mId == props.item.manageUser?.id ? false : true}
-              variant="faded"
-              className="max-w-full"
-              value={field.value}
-              onChange={e => field.onChange(e.target.value)}
-              {...register('content')}
-            />
-          </>
+      <TextBox>
+        <Input
+          labelPlacement="outside"
+          placeholder=" "
+          variant="bordered"
+          radius="md"
+          type="text"
+          label="아이디"
+          defaultValue={props.item?.id}
+          value={props.item?.id}
+          className="hidden w-full"
+          {...register('id')}
+        />
+        <Controller
+          name="content"
+          control={control}
+          defaultValue={props.item.content}
+          render={({ field }) => (
+            <>
+              <Textarea
+                label={
+                  <MemoInfo>
+                    <MemoGrade>
+                      {gradeStr(props.item.manageUser?.mUserId)}
+                    </MemoGrade>
+                    <MemoName>{props.item.manageUser?.mUsername}</MemoName>
+                    <MemoTime>{formatDate(props.item.createdAt)}</MemoTime>
+                  </MemoInfo>
+                }
+                ref={field.ref}
+                isReadOnly={mId == props.item.manageUser?.id ? false : true}
+                variant="faded"
+                className="max-w-full"
+                value={field.value}
+                onChange={e => field.onChange(e.target.value)}
+                {...register('content')}
+              />
+            </>
+          )}
+        />
+        {props.item.lastModifiedTime && (
+          <MemoEditTime>
+            {formatDate(props.item.lastModifiedTime)} 편집됨
+          </MemoEditTime>
         )}
-      />
+      </TextBox>
       {mId == props.item.manageUser?.id && (
         <MemoListBtn>
           <Button type="submit" color="primary" className="w-full text-white">

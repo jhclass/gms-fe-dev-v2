@@ -165,7 +165,6 @@ export default function CreateSmsSender({ isActive, category }) {
   }
 
   const onSubmit = async data => {
-    if (!isDirty) return
     const isConfirm = confirm(
       '이용증명원이 등록된 번호입니까?\n자세한 내용은 상단 "자세히보기" 버튼을 클릭해주세요.',
     )
@@ -256,6 +255,10 @@ export default function CreateSmsSender({ isActive, category }) {
                       register('type').onChange(e)
                     }}
                     {...register('type', {
+                      required: {
+                        value: true,
+                        message: '내용을 작성해주세요',
+                      },
                       maxLength: {
                         value: 11,
                         message: '최대 11자리까지 입력 가능합니다.',
@@ -267,7 +270,7 @@ export default function CreateSmsSender({ isActive, category }) {
                     })}
                   />
                   {errors.type && (
-                    <p className="w-full ml-[4.5rem] text-xs text-red">
+                    <p className="w-full ml-[6.5rem] text-xs text-red">
                       {String(errors.type.message)}
                     </p>
                   )}

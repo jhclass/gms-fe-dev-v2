@@ -76,7 +76,7 @@ export const CREATE_MANAGE_USER_MUTATION = gql`
 
 export const EDIT_MANAGE_USER_MUTATION = gql`
   mutation Mutation(
-    $editManageUserId: Int
+    $editManageUserId: Int!
     $mUsername: String
     $mPassword: String
     $mRank: String
@@ -92,6 +92,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
     $mJoiningDate: String
     $email: String
     $resign: String
+    $lastModifiedTime: String!
   ) {
     editManageUser(
       id: $editManageUserId
@@ -110,6 +111,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
       mJoiningDate: $mJoiningDate
       email: $email
       resign: $resign
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -159,43 +161,6 @@ export const DEV_EDIT_MANAGE_USER_MUTATION = gql`
   }
 `
 
-export const UPDATE_FAVORITE_MUTATION2 = gql`
-  mutation Mutation($updateFavoriteId: Int!) {
-    updateFavorite(id: $updateFavoriteId) {
-      ok
-      message
-      error
-      favoriteStudentState {
-        id
-        mUserId
-        mUsername
-        mPassword
-        mGrade
-        mRank
-        mPhoneNum
-        mPhoneNumCompany
-        mPhoneNumInside
-        mPhoneNumFriend
-        mPart
-        mAvatar
-        mJoiningDate
-        mAddresses
-        createdAt
-        updatedAt
-        favoriteStudentState
-        StudentStates {
-          id
-          stName
-          phoneNum1
-        }
-        ConsultationMemo {
-          id
-          content
-        }
-      }
-    }
-  }
-`
 export const UPDATE_FAVORITE_MUTATION = gql`
   mutation Mutation($updateFavoriteId: Int!) {
     updateFavorite(id: $updateFavoriteId) {
@@ -323,6 +288,7 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         }
         agreement
         campus
+        lastModifiedTime
         category
         classMethod
         consultationMemo {
@@ -335,8 +301,8 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
           }
           content
           createdAt
+          lastModifiedTime
           id
-          updatedAt
           studentState {
             id
           }
@@ -358,7 +324,6 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
         stName
         subDiv
         stVisit
-        updatedAt
         subject
       }
     }
@@ -386,6 +351,7 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
     $pic: String
     $receiptDiv: String
     $adviceTypes: [Int]
+    $lastModifiedTime: String
   ) {
     updateStudentState(
       id: $updateStudentStateId
@@ -408,6 +374,7 @@ export const UPDATE_STUDENT_STATE_MUTATION = gql`
       pic: $pic
       receiptDiv: $receiptDiv
       adviceTypes: $adviceTypes
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -460,8 +427,13 @@ export const UPDATE_CONSULTATION_MEMO_MUTATION = gql`
   mutation UpdateConsultationMemo(
     $updateConsultationMemoId: Int!
     $content: String!
+    $lastModifiedTime: String
   ) {
-    updateConsultationMemo(id: $updateConsultationMemoId, content: $content) {
+    updateConsultationMemo(
+      id: $updateConsultationMemoId
+      content: $content
+      lastModifiedTime: $lastModifiedTime
+    ) {
       ok
       error
       message
@@ -542,6 +514,7 @@ export const UPDATE_SUBJECT_MUTATION = gql`
     $mGrade: Int
     $subjectCode: String
     $round: Int
+    $lastModifiedTime: String
   ) {
     updateSubject(
       id: $updateSubjectId
@@ -559,6 +532,7 @@ export const UPDATE_SUBJECT_MUTATION = gql`
       mGrade: $mGrade
       subjectCode: $subjectCode
       round: $round
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -589,11 +563,11 @@ export const SEARCH_SUBJECT_MUTATION = gql`
       message
       ok
       result {
-        updatedAt
         totalTime
         teacherName
         subjectName
         subjectCode
+        lastModifiedTime
         subDiv
         startDate
         round
@@ -667,6 +641,7 @@ export const SEARCH_STUDENT_MUTATION = gql`
       message
       ok
       student {
+        lastModifiedTime
         birthday
         createdAt
         id
@@ -674,9 +649,9 @@ export const SEARCH_STUDENT_MUTATION = gql`
         phoneNum1
         phoneNum2
         smsAgreement
-        updatedAt
         writer
         studentPayment {
+          lastModifiedTime
           actualAmount
           amountReceived
           campus
@@ -717,11 +692,11 @@ export const SEARCH_STUDENT_MUTATION = gql`
             reqRefundDate
             reqRefundManager
             stName
-            updatedAt
+            lastModifiedTime
           }
           processingManagerId
           createdAt
-          updatedAt
+          lastModifiedTime
           seScore
           situationReport
           unCollectedAmount
@@ -737,13 +712,15 @@ export const SEARCH_STUDENT_MUTATION = gql`
         studentMemo {
           content
           createdAt
+          lastModifiedTime
           id
           manageUser {
+            id
             mUserId
             mUsername
           }
           manageUserId
-          updatedAt
+          lastModifiedTime
           studentId
         }
       }
@@ -781,7 +758,7 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
         phoneNum1
         smsAgreement
         writer
-        updatedAt
+        lastModifiedTime
         studentPayment {
           id
         }
@@ -803,8 +780,8 @@ export const SEARCH_STUDENT_MEMO_MUTATION = gql`
             mUsername
           }
           manageUserId
+          lastModifiedTime
           createdAt
-          updatedAt
           id
           content
         }
@@ -819,6 +796,7 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
       message
       ok
       student {
+        lastModifiedTime
         birthday
         id
         name
@@ -827,92 +805,10 @@ export const SEARCH_STUDENT_BASIC_MUTATION = gql`
         smsAgreement
         writer
         createdAt
-        updatedAt
       }
     }
   }
 `
-export const SEARCH_STUDENT_PAYMENT_MUTATION = gql`
-  mutation Mutation($searchStudentId: Int) {
-    searchStudent(id: $searchStudentId) {
-      error
-      message
-      ok
-      student {
-        birthday
-        createdAt
-        id
-        name
-        phoneNum1
-        phoneNum2
-        smsAgreement
-        updatedAt
-        writer
-        studentPayment {
-          actualAmount
-          amountReceived
-          campus
-          cardAmount
-          cashAmount
-          classCode
-          courseComplete
-          discountAmount
-          dueDate
-          employment
-          id
-          lectureAssignment
-          paymentDate
-          paymentDetail {
-            ApprovalNum
-            amountPayment
-            bankName
-            cardCompany
-            cardNum
-            cashOrCard
-            createdAt
-            cashReceipts
-            depositAmount
-            depositDate
-            depositorName
-            id
-            installment
-            paymentDate
-            receiver {
-              mUserId
-              mUsername
-            }
-            receiverId
-            refundApproval
-            refundApprovalDate
-            refundManager
-            reqRefund
-            reqRefundDate
-            reqRefundManager
-            stName
-            updatedAt
-          }
-          processingManagerId
-          processingManager {
-            mUserId
-            mUsername
-          }
-          seScore
-          situationReport
-          unCollectedAmount
-          tuitionFee
-          subDiv
-          subjectId
-          subject {
-            subDiv
-            subjectCode
-            subjectName
-          }
-        }
-      }
-    }
-  }
-`
-
 export const UPDATE_STUDENT_BASIC_MUTATION = gql`
   mutation EditStudent(
     $editStudentId: Int!
@@ -921,6 +817,7 @@ export const UPDATE_STUDENT_BASIC_MUTATION = gql`
     $phoneNum2: String
     $smsAgreement: String
     $birthday: String
+    $lastModifiedTime: String!
   ) {
     editStudent(
       id: $editStudentId
@@ -929,6 +826,7 @@ export const UPDATE_STUDENT_BASIC_MUTATION = gql`
       phoneNum2: $phoneNum2
       smsAgreement: $smsAgreement
       birthday: $birthday
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -942,12 +840,14 @@ export const UPDATE_STUDENT_COURSE_MUTATION = gql`
     $subjectId: Int!
     $processingManagerId: Int
     $lectureAssignment: String
+    $lastModifiedTime: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
       subjectId: $subjectId
       processingManagerId: $processingManagerId
       lectureAssignment: $lectureAssignment
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -1022,6 +922,7 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
     $subDiv: String
     $dueDate: String
     $isWeekend: String
+    $lastModifiedTime: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
@@ -1040,6 +941,7 @@ export const UPDATE_STUDENT_PAYMENT_MUTATION = gql`
       subDiv: $subDiv
       dueDate: $dueDate
       isWeekend: $isWeekend
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -1072,6 +974,9 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         isWeekend
         lectureAssignment
         paymentDate
+        lastModifiedByName
+        lastModifiedByUserId
+        lastModifiedTime
         paymentDetail {
           ApprovalNum
           accountingManager
@@ -1102,7 +1007,7 @@ export const SEARCH_PAYMENT_MUTATION = gql`
           reqRefundManager
           stName
           studentId
-          updatedAt
+          lastModifiedTime
         }
         processingManager {
           mUserId
@@ -1114,16 +1019,17 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         situationReport
         studentId
         student {
+          lastModifiedTime
           birthday
           createdAt
           id
           name
           phoneNum1
           writer
-          updatedAt
         }
         subDiv
         subject {
+          lastModifiedTime
           fee
           id
           subDiv
@@ -1136,7 +1042,6 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         subjectId
         tuitionFee
         unCollectedAmount
-        updatedAt
         supportType
         mZipCode
         mAddresses
@@ -1178,7 +1083,7 @@ export const SEARCH_PAYMENT_FILTER_MUTATION = gql`
           subjectCode
           subjectName
         }
-        updatedAt
+        lastModifiedTime
         createdAt
         unCollectedAmount
         tuitionFee
@@ -1243,6 +1148,7 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
     $depositorName: String
     $depositAmount: Int
     $cashReceipts: [String]
+    $lastModifiedTime: String!
   ) {
     editPaymentDetail(
       id: $editPaymentDetailId
@@ -1259,6 +1165,7 @@ export const UPDATE_PAYMENT_DETAIL_MUTATION = gql`
       depositorName: $depositorName
       depositAmount: $depositAmount
       cashReceipts: $cashReceipts
+      lastModifiedTime: $lastModifiedTime
     ) {
       ok
       message
@@ -1274,6 +1181,7 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
       message
       error
       PaymentDetail {
+        lastModifiedTime
         ApprovalNum
         amountPayment
         bankName
@@ -1303,6 +1211,7 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
         studentPayment {
           id
           actualAmount
+          lastModifiedTime
           amountReceived
           campus
           cardAmount
@@ -1320,19 +1229,19 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
           situationReport
           studentId
           student {
+            lastModifiedTime
             birthday
             createdAt
             id
             name
             phoneNum1
-            updatedAt
           }
           subDiv
-          updatedAt
           unCollectedAmount
           tuitionFee
           subjectId
           subject {
+            lastModifiedTime
             subjectCode
             subjectName
             id
@@ -1342,7 +1251,6 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
           }
         }
         studentPaymentId
-        updatedAt
       }
     }
   }
@@ -1377,6 +1285,7 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
       message
       error
       PaymentDetail {
+        lastModifiedTime
         ApprovalNum
         accountingManager
         amountPayment
@@ -1406,8 +1315,8 @@ export const SEARCH_PAYMENT_DETAIL_FILTER_MUTATION = gql`
         stName
         studentId
         studentPaymentId
-        updatedAt
         studentPayment {
+          lastModifiedTime
           amountReceived
           processingManagerId
           id
@@ -1430,12 +1339,14 @@ export const UPDATE_STUDENT_RECEIVED_MUTATION = gql`
     $subjectId: Int!
     $processingManagerId: Int
     $amountReceived: Int
+    $lastModifiedTime: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
       subjectId: $subjectId
       processingManagerId: $processingManagerId
       amountReceived: $amountReceived
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -1455,8 +1366,16 @@ export const CREATE_STUDENT_MEMO_MUTATION = gql`
   }
 `
 export const UPDATE_STUDENT_MEMO_MUTATION = gql`
-  mutation EditStudentMemo($editStudentMemoId: Int!, $content: String!) {
-    editStudentMemo(id: $editStudentMemoId, content: $content) {
+  mutation EditStudentMemo(
+    $editStudentMemoId: Int!
+    $content: String!
+    $lastModifiedTime: String!
+  ) {
+    editStudentMemo(
+      id: $editStudentMemoId
+      content: $content
+      lastModifiedTime: $lastModifiedTime
+    ) {
       error
       message
       ok
@@ -1516,12 +1435,14 @@ export const CLASS_CANCEL_MUTATION = gql`
     $courseComplete: String!
     $dateOfDroppingOut: String
     $reasonFordroppingOut: String
+    $lastModifiedTime: String
   ) {
     classCancellation(
       id: $classCancellationId
       courseComplete: $courseComplete
       dateOfDroppingOut: $dateOfDroppingOut
       reasonFordroppingOut: $reasonFordroppingOut
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -1747,11 +1668,12 @@ export const SEARCH_LECTURES_MUTATION = gql`
               createdAt
               id
               isCanceled
-              updatedAt
               studentPaymentId
               studentId
               lecturesId
+              lastModifiedTime
             }
+            lastModifiedTime
             situationReport
             lectureAssignment
             dateOfDroppingOut
@@ -1771,10 +1693,11 @@ export const SEARCH_LECTURES_MUTATION = gql`
           subjectCode
           subDiv
           round
+          lastModifiedTime
           roomNum
           id
         }
-        updatedAt
+        lastModifiedTime
         timetableAttached
         temporaryName
         teachers {
@@ -1792,11 +1715,13 @@ export const SEARCH_LECTURES_MUTATION = gql`
         id
         eduStatusReport
         createdAt
+        lastModifiedTime
         subjectId
         confirmedNum
         campus
         ApprovedNum
         WorkLogs {
+          lastModifiedTime
           id
           absentSt
           attendanceCount
@@ -1810,7 +1735,6 @@ export const SEARCH_LECTURES_MUTATION = gql`
           paymentTwo
           tardySt
           workLogsDate
-          updatedAt
           trainingTimeTotal
           trainingTimeOneday
           trainingInfoTwo
@@ -1848,6 +1772,7 @@ export const EDIT_LECTURES_MUTATION = gql`
     $confirmedNum: Int
     $sessionNum: Int
     $timetableAttached: Upload
+    $lastModifiedTime: String!
   ) {
     editLectures(
       id: $editLecturesId
@@ -1866,6 +1791,7 @@ export const EDIT_LECTURES_MUTATION = gql`
       confirmedNum: $confirmedNum
       sessionNum: $sessionNum
       timetableAttached: $timetableAttached
+      lastModifiedTime: $lastModifiedTime
     ) {
       ok
       message
@@ -1940,6 +1866,7 @@ export const EDIT_WORKLOGS_MUTATION = gql`
     $attendanceCount: [Int]
     $checkList: [String]
     $checkContext: [String]
+    $lastModifiedTime: String!
   ) {
     editWorkLogs(
       id: $editWorkLogsId
@@ -1962,6 +1889,7 @@ export const EDIT_WORKLOGS_MUTATION = gql`
       attendanceCount: $attendanceCount
       checkList: $checkList
       checkContext: $checkContext
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -2019,6 +1947,7 @@ export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
     $mAddresses: String
     $mZipCode: String
     $supportType: String
+    $lastModifiedTime: String
   ) {
     editStudentPayment(
       id: $editStudentPaymentId
@@ -2027,6 +1956,7 @@ export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
       mAddresses: $mAddresses
       mZipCode: $mZipCode
       supportType: $supportType
+      lastModifiedTime: $lastModifiedTime
     ) {
       error
       message
@@ -2064,6 +1994,7 @@ export const DEIT_EDU_INFOMATION_MUTATION = gql`
     $eduName: String
     $major: String
     $graduationStatus: String
+    $lastModifiedTime: String!
   ) {
     editEduInfomation(
       id: $editEduInfomationId
@@ -2071,6 +2002,7 @@ export const DEIT_EDU_INFOMATION_MUTATION = gql`
       eduName: $eduName
       major: $major
       graduationStatus: $graduationStatus
+      lastModifiedTime: $lastModifiedTime
     ) {
       ok
       message
@@ -2105,8 +2037,16 @@ export const CREATE_CAREER_MUTATION = gql`
   }
 `
 export const EDIT_CAREER_MUTATION = gql`
-  mutation EditCareer($editCareerId: Int!, $careerDetails: String!) {
-    editCareer(id: $editCareerId, careerDetails: $careerDetails) {
+  mutation EditCareer(
+    $editCareerId: Int!
+    $careerDetails: String!
+    $lastModifiedTime: String
+  ) {
+    editCareer(
+      id: $editCareerId
+      careerDetails: $careerDetails
+      lastModifiedTime: $lastModifiedTime
+    ) {
       error
       message
       ok
@@ -2147,22 +2087,24 @@ export const CREATE_CERTIFICATE_MUTATION = gql`
 `
 export const EDIT_CERTIFICATE_MUTATION = gql`
   mutation EditCertificate(
-    $certificateIssuer: String
-    $certificateLevel: String
-    $certificateName: String
-    $cAdate: String
     $editCertificateId: Int!
+    $lastModifiedTime: String!
+    $cAdate: String
+    $certificateName: String
+    $certificateLevel: String
+    $certificateIssuer: String
   ) {
     editCertificate(
-      CertificateIssuer: $certificateIssuer
-      certificateLevel: $certificateLevel
-      certificateName: $certificateName
-      CAdate: $cAdate
       id: $editCertificateId
+      lastModifiedTime: $lastModifiedTime
+      CAdate: $cAdate
+      certificateName: $certificateName
+      certificateLevel: $certificateLevel
+      CertificateIssuer: $certificateIssuer
     ) {
-      ok
-      message
       error
+      message
+      ok
     }
   }
 `
@@ -2199,12 +2141,14 @@ export const CREATE_STUDENT_CONSULTATION_MUTATION = gql`
 export const EDIT_STUDENT_CONSULTATION_MUTATION = gql`
   mutation EditStudentConsultation(
     $editStudentConsultationId: Int!
+    $lastModifiedTime: String!
     $typeOfConsultation: String
     $dateOfConsultation: String
     $detailsOfConsultation: String
   ) {
     editStudentConsultation(
       id: $editStudentConsultationId
+      lastModifiedTime: $lastModifiedTime
       typeOfConsultation: $typeOfConsultation
       dateOfConsultation: $dateOfConsultation
       detailsOfConsultation: $detailsOfConsultation
@@ -2259,6 +2203,7 @@ export const EDIT_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
     $workType: String!
     $workingHours: Int!
     $opinion: String!
+    $lastModifiedTime: String!
     $workingArea: String
   ) {
     editHopeForEmployment(
@@ -2268,6 +2213,7 @@ export const EDIT_HOPE_FOR_EMPLOYMENT_MUTATION = gql`
       workType: $workType
       workingHours: $workingHours
       opinion: $opinion
+      lastModifiedTime: $lastModifiedTime
       workingArea: $workingArea
     ) {
       error
@@ -2312,6 +2258,7 @@ export const CREATE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
 export const EDIT_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
   mutation EditEmploymentRecommendation(
     $editEmploymentRecommendationId: Int!
+    $lastModifiedTime: String!
     $dateOfRecommendation: String
     $recruitmentField: String
     $companyName: String
@@ -2324,6 +2271,7 @@ export const EDIT_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
   ) {
     editEmploymentRecommendation(
       id: $editEmploymentRecommendationId
+      lastModifiedTime: $lastModifiedTime
       dateOfRecommendation: $dateOfRecommendation
       recruitmentField: $recruitmentField
       companyName: $companyName
@@ -2405,6 +2353,7 @@ export const EDIT_EMPLOYMENT_MUTATION = gql`
     $proofOfImployment: String!
     $relatedFields: String!
     $completionType: String!
+    $lastModifiedTime: String!
   ) {
     editEmploymentStatus(
       id: $editEmploymentStatusId
@@ -2420,10 +2369,11 @@ export const EDIT_EMPLOYMENT_MUTATION = gql`
       proofOfImployment: $proofOfImployment
       relatedFields: $relatedFields
       completionType: $completionType
+      lastModifiedTime: $lastModifiedTime
     ) {
+      ok
       error
       message
-      ok
     }
   }
 `
@@ -2457,6 +2407,7 @@ export const EDIT_PRE_INSPECTION_MUTATION = gql`
     $preScreenerType: String
     $preInspectionDetails: String
     $actionTaken: String
+    $lastModifiedTime: String!
   ) {
     editPreInspection(
       id: $editPreInspectionId
@@ -2464,6 +2415,7 @@ export const EDIT_PRE_INSPECTION_MUTATION = gql`
       preScreenerType: $preScreenerType
       preInspectionDetails: $preInspectionDetails
       actionTaken: $actionTaken
+      lastModifiedTime: $lastModifiedTime
     ) {
       ok
       message
@@ -2505,16 +2457,18 @@ export const EDIT_REGULAR_EVALUATION_SET_MUTATION = gql`
     $statusType: String!
     $evaluationDetails: String!
     $points: Int!
+    $lastModifiedTime: String!
   ) {
     editRegularEvaluationSet(
       id: $editRegularEvaluationSetId
       statusType: $statusType
       evaluationDetails: $evaluationDetails
       points: $points
+      lastModifiedTime: $lastModifiedTime
     ) {
-      error
-      message
       ok
+      message
+      error
     }
   }
 `

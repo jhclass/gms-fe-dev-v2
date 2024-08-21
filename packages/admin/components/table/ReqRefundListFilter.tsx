@@ -257,12 +257,12 @@ export default function ReqRefundFilterTable({ studentFilter }) {
   }
   const today = new Date()
   const lastSixMonths = subMonths(new Date(), 6)
+  const adjustedStudentFilter = {
+    ...studentFilter,
+    reqRefundDate: studentFilter.reqRefundDate || [lastSixMonths, today],
+  }
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      reqRefundDate: studentFilter.reqRefundDate || [lastSixMonths, today],
-    }
     searchPaymentDetailFilterMutation({
       variables: {
         ...adjustedStudentFilter,
@@ -314,8 +314,10 @@ export default function ReqRefundFilterTable({ studentFilter }) {
                 if (result.editStudentPayment.ok) {
                   searchPaymentDetailFilterMutation({
                     variables: {
+                      ...adjustedStudentFilter,
                       reqRefund: true,
                       refundApproval: false,
+                      sortOf: 'reqRefundDate',
                       page: currentPage,
                       limit: currentLimit,
                     },
@@ -323,7 +325,7 @@ export default function ReqRefundFilterTable({ studentFilter }) {
                       if (resData.searchPaymentDetail.ok) {
                         const { PaymentDetail, totalCount } =
                           resData.searchPaymentDetail || {}
-                        setResult({ PaymentDetail, totalCount })
+                        setSearchResult({ PaymentDetail, totalCount })
                       }
                     },
                   })
@@ -354,8 +356,10 @@ export default function ReqRefundFilterTable({ studentFilter }) {
           if (result.reqRefund.ok) {
             searchPaymentDetailFilterMutation({
               variables: {
+                ...adjustedStudentFilter,
                 reqRefund: true,
                 refundApproval: false,
+                sortOf: 'reqRefundDate',
                 page: currentPage,
                 limit: currentLimit,
               },
@@ -363,12 +367,12 @@ export default function ReqRefundFilterTable({ studentFilter }) {
                 if (resData.searchPaymentDetail.ok) {
                   const { PaymentDetail, totalCount } =
                     resData.searchPaymentDetail || {}
-                  setResult({ PaymentDetail, totalCount })
+                  setSearchResult({ PaymentDetail, totalCount })
                   handleScrollTop()
                 }
               },
             })
-            alert('결제 취소요청 되었습니다.')
+            alert('환불 거부 되었습니다.')
           }
         },
       })

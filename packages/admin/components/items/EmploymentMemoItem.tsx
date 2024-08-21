@@ -183,6 +183,7 @@ export default function EmploymentMemoItem({ item, refetch, setPage, mId }) {
                 data.detailsOfConsultation === ''
                   ? null
                   : data.detailsOfConsultation,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -204,6 +205,8 @@ export default function EmploymentMemoItem({ item, refetch, setPage, mId }) {
           alert('상담 수정 처리 중 오류가 발생했습니다.')
         }
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
 

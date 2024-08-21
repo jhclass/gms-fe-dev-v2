@@ -316,6 +316,8 @@ export default function StudentsWriteCourse({
           dirtyFieldsArray.join(', '),
         )
       }
+    } else {
+      alert('변경된 내용이 없습니다.')
     }
   }
   const feeFormet = fee => {
