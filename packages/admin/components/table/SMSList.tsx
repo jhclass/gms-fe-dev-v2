@@ -139,7 +139,7 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-type SearchMessageQuery = {
+type SearchSMSQuery = {
   searchSms: ResultSearchSms
 }
 
@@ -148,7 +148,7 @@ export default function SMSList() {
   const [currentLimit, setCurrentLimit] = useState(12)
   const [openTooltipIndex, setOpenTooltipIndex] = useState(null)
 
-  const { error, data, refetch } = useSuspenseQuery<SearchMessageQuery>(
+  const { error, data, refetch } = useSuspenseQuery<SearchSMSQuery>(
     SEARCH_SMS_QUERY,
     {
       variables: {
