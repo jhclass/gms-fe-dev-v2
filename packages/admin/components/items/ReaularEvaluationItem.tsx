@@ -118,7 +118,6 @@ export default function ReaularEvaluationItem({ item, refetch, setPage, mId }) {
   const {
     register,
     handleSubmit,
-    control,
     reset,
     formState: { isDirty, dirtyFields, errors },
   } = useForm({
@@ -149,6 +148,7 @@ export default function ReaularEvaluationItem({ item, refetch, setPage, mId }) {
               evaluationDetails:
                 data.evaluationDetails === '' ? null : data.evaluationDetails,
               points: data.points === '' ? 0 : parseInt(data.points),
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

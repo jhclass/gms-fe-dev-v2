@@ -126,7 +126,6 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
   const [editStudent] = useMutation(EDIT_STUDENT_INFOMATION_MUTATION)
   const [selectValue, setSelectValue] = useState('유형선택')
   const {
-    register,
     handleSubmit,
     reset,
     setValue,
@@ -170,6 +169,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
                 data.mAddressDetail === '' ? null : data.mAddressDetail,
               mAddresses: data.mAddresses === '' ? null : data.mAddresses,
               mZipCode: data.mZipCode === '' ? null : data.mZipCode,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

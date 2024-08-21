@@ -18,6 +18,7 @@ import {
   EDIT_MANAGE_USER_MUTATION,
 } from '@/graphql/mutations'
 import { useEffect } from 'react'
+import { MME_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -131,7 +132,9 @@ export default function LectureDates({ isOpen, onClose, managerData }) {
         variables: {
           editManageUserId: managerData.id,
           mPassword: data.mPassword.trim(),
+          lastModifiedTime: new Date(),
         },
+        refetchQueries: [MME_QUERY, SEARCH_MANAGEUSER_QUERY],
       })
 
       userLogs(

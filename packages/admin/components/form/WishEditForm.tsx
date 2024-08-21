@@ -156,6 +156,7 @@ export default function WishEditForm({ item, refetch }) {
               workingHours:
                 data.workingHours === '' ? null : parseInt(data.workingHours),
               opinion: data.opinion === '' ? null : data.opinion,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

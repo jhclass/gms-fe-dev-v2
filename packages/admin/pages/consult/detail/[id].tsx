@@ -409,6 +409,7 @@ export default function ConsultDetail() {
                 : new Date(data.expEnrollDate),
             pic: data.pic,
             receiptDiv: data.receiptDiv,
+            lastModifiedTime: new Date(),
           },
           onCompleted: result => {
             const dirtyFieldsArray = [...Object.keys(dirtyFields)]

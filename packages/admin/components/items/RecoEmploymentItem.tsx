@@ -218,6 +218,7 @@ export default function RecoEmploymentItem({ item, refetch, setPage, mId }) {
                 data.certificateOfEmploymentStatus === ''
                   ? null
                   : data.certificateOfEmploymentStatus,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

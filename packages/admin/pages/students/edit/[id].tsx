@@ -183,6 +183,7 @@ export default function StudentsEditInfo() {
                 : typeof data.birthday === 'string'
                 ? new Date(parseInt(data.birthday))
                 : new Date(data.birthday),
+            lastModifiedTime: new Date(),
           },
           onCompleted: result => {
             const dirtyFieldsArray = [...Object.keys(dirtyFields)]

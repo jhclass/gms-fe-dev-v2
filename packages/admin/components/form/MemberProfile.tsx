@@ -148,6 +148,7 @@ export default function Profile() {
     if (isDirty) {
       editManager({
         variables: {
+          editManageUserId: mMeData.id,
           mUsername: data.mUsername === '' ? null : data.mUsername,
           mPhoneNum: data.mPhoneNum === '' ? null : data.mPhoneNum,
           mPhoneNumCompany:
@@ -156,13 +157,13 @@ export default function Profile() {
             data.mPhoneNumInside === '' ? null : data.mPhoneNumInside,
           mPhoneNumFriend:
             data.mPhoneNumFriend === '' ? null : data.mPhoneNumFriend,
-
-          mZipCode: data.mZipCode === '' ? null : data.mZipCode.trim(),
+          mZipCode: data.mZipCode === '' ? null : data.mZipCode,
           mAddresses: data.mAddresses === '' ? null : data.mAddresses,
           mAddressDetail:
-            data.mAddressDetail === '' ? null : data.mAddressDetail.trim(),
+            data.mAddressDetail === '' ? null : data.mAddressDetail,
           email: data.email === '' ? null : data.email,
           mAvatar: data.mAvatar,
+          lastModifiedTime: new Date(),
         },
         refetchQueries: [
           {

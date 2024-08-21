@@ -106,6 +106,7 @@ export default function CareerHistoryItem({ item, refetch, setPage, mId }) {
               editCareerId: item.id,
               careerDetails:
                 data.careerDetails === '' ? null : data.careerDetails,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

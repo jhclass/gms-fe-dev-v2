@@ -194,6 +194,7 @@ export default function EmploymentEditForm({ item, refetch }) {
                 data.relatedFields === '' ? '동일' : data.relatedFields,
               completionType:
                 data.completionType === '' ? '수료취업' : data.completionType,
+              lastModifiedTime: new Date(),
             },
           })
 

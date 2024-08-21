@@ -298,6 +298,7 @@ export default function StudentsWrite() {
             lectureAssignment: state,
             subjectId: studentPaymentData.subjectId,
             processingManagerId: studentPaymentData.processingManagerId,
+            lastModifiedTime: new Date(),
           },
         })
 
@@ -312,6 +313,7 @@ export default function StudentsWrite() {
               variables: {
                 classCancellationId: parseInt(studentPaymentData.id),
                 courseComplete: '미참여',
+                lastModifiedTime: new Date(),
               },
               onCompleted: async () => {
                 const success2 = await searchAndUpdateStudentPayment()
@@ -374,6 +376,7 @@ export default function StudentsWrite() {
             courseComplete: state,
             dateOfDroppingOut: date,
             reasonFordroppingOut: reason,
+            lastModifiedTime: new Date(),
           },
         })
       } else {
@@ -381,6 +384,7 @@ export default function StudentsWrite() {
           variables: {
             classCancellationId: parseInt(studentPaymentData.id),
             courseComplete: state,
+            lastModifiedTime: new Date(),
           },
         })
       }
@@ -450,6 +454,7 @@ export default function StudentsWrite() {
             {studentPaymentData !== undefined && (
               <>
                 <DetailBox>
+                  <FormTopInfo item={studentPaymentData} noti={true} />
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>

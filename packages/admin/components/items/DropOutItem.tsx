@@ -13,6 +13,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
+import ListInfo from '../common/ListInfo'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -89,6 +90,7 @@ export default function EmploymentMemoItem({ item }) {
       `${date.getDate().toString().padStart(2, '0')} `
     return formatted
   }
+
   return (
     <DetailDiv>
       <FlexBox>
@@ -146,6 +148,7 @@ export default function EmploymentMemoItem({ item }) {
           />
         </AreaBox>
       </FlexBox>
+      <ListInfo item={item} />
     </DetailDiv>
   )
 }

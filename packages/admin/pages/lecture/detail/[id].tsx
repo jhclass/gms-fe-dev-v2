@@ -467,6 +467,7 @@ export default function LectureWrite() {
                 : lectureData.sessionNum,
               timetableAttached:
                 dirtyFields.timetableAttached && data.timetableAttached,
+              lastModifiedTime: new Date(),
             },
             // refetchQueries: [
             //   {

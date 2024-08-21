@@ -132,6 +132,7 @@ export default function EducationalHistoryItem({
               graduationStatus:
                 data.graduationStatus === '' ? null : data.graduationStatus,
               major: data.major === '' ? null : data.major,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -189,19 +190,6 @@ export default function EducationalHistoryItem({
   }
   const handleGraduationChange = e => {
     setGraduationValue(e.target.value)
-  }
-
-  const formatDate = data => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')} ` +
-      `${date.getHours().toString().padStart(2, '0')}:` +
-      `${date.getMinutes().toString().padStart(2, '0')}:` +
-      `${date.getSeconds().toString().padStart(2, '0')}`
-    return formatted
   }
 
   return (

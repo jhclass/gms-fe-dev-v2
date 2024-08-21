@@ -349,6 +349,7 @@ export default function SubjectDetail() {
                   : typeof data.expiresDateEnd === 'string'
                   ? new Date(parseInt(data.expiresDateEnd))
                   : new Date(data.expiresDateEnd),
+              lastModifiedTime: new Date(),
             },
           })
 

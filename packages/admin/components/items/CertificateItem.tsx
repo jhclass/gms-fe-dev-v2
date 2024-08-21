@@ -160,6 +160,7 @@ export default function CertificateItem({ item, setPage, refetch, mId }) {
                   : typeof data.cAdate === 'string'
                   ? new Date(parseInt(data.cAdate))
                   : new Date(data.cAdate),
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

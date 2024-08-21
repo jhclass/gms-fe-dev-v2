@@ -183,6 +183,7 @@ export default function EmploymentMemoItem({ item, refetch, setPage, mId }) {
                 data.detailsOfConsultation === ''
                   ? null
                   : data.detailsOfConsultation,
+              lastModifiedTime: new Date(),
             },
           })
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]

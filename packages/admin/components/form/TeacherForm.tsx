@@ -357,6 +357,7 @@ export default function StudentsWrite({ managerId }) {
                   : data.mAddressDetail.trim(),
               email: data.email === null ? null : data.email.trim(),
               resign: data.resign === true ? 'Y' : 'N',
+              lastModifiedTime: new Date(),
             },
           })
 

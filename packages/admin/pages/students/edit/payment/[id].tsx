@@ -352,6 +352,7 @@ export default function StudentsWritePayment() {
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
               receiverId: parseInt(data.receiverId),
+              lastModifiedTime: new Date(),
             },
             onCompleted: result => {
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -409,6 +410,7 @@ export default function StudentsWritePayment() {
                   ? new Date(parseInt(data.paymentDate))
                   : new Date(data.paymentDate),
               receiverId: parseInt(data.receiverId),
+              lastModifiedTime: new Date(),
             },
             onCompleted: result => {
               const dirtyFieldsArray = [...Object.keys(dirtyFields)]
@@ -510,6 +512,7 @@ export default function StudentsWritePayment() {
             </DetailDiv>
           </DetailBox>
           <DetailBox>
+            <FormTopInfo item={studentPaymentData} noti={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>수강 정보</h4>
@@ -523,6 +526,7 @@ export default function StudentsWritePayment() {
           {paymentDetailData !== null && (
             <form onSubmit={handleSubmit(onPaymentDetailSubmit)}>
               <DetailBox>
+                <FormTopInfo item={paymentDetailData} noti={true} />
                 <DetailDiv>
                   <AreaTitle>
                     <h4>결제 정보</h4>

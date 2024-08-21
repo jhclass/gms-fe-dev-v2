@@ -76,6 +76,7 @@ export const MME_QUERY = gql`
       id
       createdAt
       lastModifiedBy
+      lastModifiedTime
       favoriteStudentState
       ConsultationMemo {
         id
@@ -302,6 +303,7 @@ export const SEARCH_MANAGEUSER_QUERY = gql`
         mRank
         resign
         updatedAt
+        lastModifiedTime
         lastModifiedBy
       }
     }
@@ -757,6 +759,7 @@ export const SEARCH_WORKLOGS_QUERY = gql`
         trainingTimeOneday
         trainingTimeTotal
         updatedAt
+        lastModifiedTime
         workLogsDate
         checkList
         checkContext
@@ -769,10 +772,18 @@ export const SEARCH_WORKLOGS_QUERY = gql`
   }
 `
 export const SIGN_WORKLOGS_QUERY = gql`
-  query SignWorkLogs($signWorkLogsId: Int!, $gradeType: String!) {
-    signWorkLogs(id: $signWorkLogsId, gradeType: $gradeType) {
-      error
+  query Query(
+    $signWorkLogsId: Int!
+    $gradeType: String!
+    $lastModifiedTime: String
+  ) {
+    signWorkLogs(
+      id: $signWorkLogsId
+      gradeType: $gradeType
+      lastModifiedTime: $lastModifiedTime
+    ) {
       message
+      error
       ok
       stampUrl
     }
@@ -876,6 +887,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on Career {
           id
@@ -889,6 +901,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on Certificate {
           id
@@ -905,6 +918,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on HopeForEmployment {
           id
@@ -922,6 +936,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on EmploymentRecommendation {
           id
@@ -943,6 +958,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on EmploymentStatus {
           id
@@ -967,6 +983,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on PreInspection {
           id
@@ -983,6 +1000,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
         ... on StudentConsultation {
           id
@@ -998,6 +1016,7 @@ export const SEARCH_SM_QUERY = gql`
           updatedAt
           lastModifiedByUserId
           lastModifiedByName
+          lastModifiedTime
         }
       }
     }
@@ -1027,6 +1046,7 @@ export const SEE_REGULAREVALUATION_SET_QUERY = gql`
         branchId
         lastModifiedByUserId
         lastModifiedByName
+        lastModifiedTime
       }
     }
   }

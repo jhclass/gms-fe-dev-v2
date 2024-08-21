@@ -131,6 +131,7 @@ export default function ConsultMemo(props) {
         variables: {
           editStudentMemoId: parseInt(data.id),
           content: data.content.trim(),
+          lastModifiedTime: new Date(),
         },
         onCompleted: result => {
           userLogs(
@@ -223,9 +224,11 @@ export default function ConsultMemo(props) {
             </>
           )}
         />
-        <MemoEditTime className="text-[0.75rem] text-[#71717a] pl-[0.75rem]">
-          {formatDate(props.item.createdAt)} 편집됨
-        </MemoEditTime>
+        {props.item.lastModifiedTime && (
+          <MemoEditTime>
+            {formatDate(props.item.lastModifiedTime)} 편집됨
+          </MemoEditTime>
+        )}
       </TextBox>
       {mId == props.item.manageUser?.id && (
         <MemoListBtn>
