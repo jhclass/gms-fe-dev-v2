@@ -50,7 +50,7 @@ const Ttotal = styled.p`
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
-  display: table-row;
+  display: table;
   flex-wrap: nowrap;
   color: #111;
   font-size: 0.875rem;

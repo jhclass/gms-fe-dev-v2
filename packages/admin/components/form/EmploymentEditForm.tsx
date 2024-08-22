@@ -5,6 +5,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import {
   EDIT_EMPLOYMENT_MUTATION,
   EDIT_HOPE_FOR_EMPLOYMENT_MUTATION,
+  EDIT_STUDENT_EMPLOYMENT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
@@ -82,6 +83,7 @@ const DatePickerBox = styled.div`
 export default function EmploymentEditForm({ item, refetch }) {
   const { userLogs } = useUserLogsMutation()
   const [editEmployment] = useMutation(EDIT_EMPLOYMENT_MUTATION)
+  const [editStudentEmployment] = useMutation(EDIT_STUDENT_EMPLOYMENT_MUTATION)
   const [employmentDate, setEmploymentDate] = useState(null)
   const [employmentType, setEmploymentType] = useState('취업')
   const [imploymentInsurance, setImploymentInsurance] = useState('Y')
@@ -209,6 +211,20 @@ export default function EmploymentEditForm({ item, refetch }) {
           if (!result.data.editEmploymentStatus.ok) {
             throw new Error('취업 현황 수정 실패')
           }
+
+          const result2 = await editStudentEmployment({
+            variables: {
+              editStudentPaymentId: item.studentPaymentId,
+              subjectId: item.subjectId,
+              employment:
+                data.employmentType === '' ? '취업' : data.employmentType,
+            },
+          })
+
+          if (!result2.data.editStudentPayment.ok) {
+            throw new Error('취업 현황 수정 후 payment 업데이트 실패')
+          }
+
           refetch()
           alert('수정되었습니다.')
         } catch (error) {

@@ -316,7 +316,7 @@ export default function SubjectTable() {
                 <Tteacher>강사명</Tteacher>
               </TheaderBox>
             </Theader>
-            {subjectData !== null &&
+            {subjectTotal > 0 &&
               subjectData?.map((item, index) => (
                 <TableItem
                   key={index}
@@ -368,7 +368,7 @@ export default function SubjectTable() {
                   </TableRow>
                 </TableItem>
               ))}
-            {subjectData === null && <Nolist>등록된 과정이 없습니다.</Nolist>}
+            {subjectTotal === 0 && <Nolist>등록된 과정이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
         {subjectTotal > 0 && (

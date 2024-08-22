@@ -5,15 +5,13 @@ import {
   CheckboxGroup,
   Input,
   Pagination,
+  ScrollShadow,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import SMSAddrItem1 from '@/components/items/SMSAddrItem1'
 import { useMutation } from '@apollo/client'
-import {
-  SEARCH_STUDENTSTATE_MUTATION,
-  SEARCH_STUDENT_FILTER_MUTATION,
-} from '@/graphql/mutations'
+import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 
 const SearchArea = styled.div`
   display: flex;
@@ -27,10 +25,15 @@ const ItemBox = styled.form`
   display: flex;
   gap: 0.5rem;
 `
+const TableWrap = styled.div`
+  width: 100%;
+  display: table;
+  min-width: 520px;
+`
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
-  display: table-row;
+  display: table;
   flex-wrap: nowrap;
   color: #111;
   font-size: 0.875rem;
@@ -194,35 +197,40 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
           </Button>
         </ItemBox>
       </SearchArea>
-      <CheckboxGroup
-        value={groupSelected || []}
-        onChange={handleCheck}
-        classNames={{
-          wrapper: 'gap-0',
-        }}
-      >
-        <Theader>
-          <TableRow>
-            <Tcheck></Tcheck>
-            <Tname>이름</Tname>
-            <Tpart>생일</Tpart>
-            <Tphone>휴대폰</Tphone>
-          </TableRow>
-        </Theader>
-        {studentTotal > 0 && (
-          <>
-            {studentData?.map((student, index) => (
-              <TableItem key={index}>
-                <TableRow>
-                  <Checkbox key={student.id} value={student}></Checkbox>
-                  <SMSAddrItem1 student={student} />
-                </TableRow>
-              </TableItem>
-            ))}
-          </>
-        )}
-        {studentTotal === 0 && <Nolist>검색 결과가 없습니다.</Nolist>}
-      </CheckboxGroup>
+      <ScrollShadow orientation="horizontal" className="scrollbar">
+        <TableWrap>
+          <CheckboxGroup
+            value={groupSelected || []}
+            onChange={handleCheck}
+            classNames={{
+              wrapper: 'gap-0',
+            }}
+          >
+            <Theader>
+              <TableRow>
+                <Tcheck></Tcheck>
+                <Tname>이름</Tname>
+                <Tpart>생일</Tpart>
+                <Tphone>휴대폰</Tphone>
+              </TableRow>
+            </Theader>
+            {studentTotal > 0 && (
+              <>
+                {studentData?.map((student, index) => (
+                  <TableItem key={index}>
+                    <TableRow>
+                      <Checkbox key={student.id} value={student}></Checkbox>
+                      <SMSAddrItem1 student={student} />
+                    </TableRow>
+                  </TableItem>
+                ))}
+              </>
+            )}
+            {studentTotal === 0 && <Nolist>검색 결과가 없습니다.</Nolist>}
+          </CheckboxGroup>
+        </TableWrap>
+      </ScrollShadow>
+
       {studentTotal > 0 && (
         <PagerWrap>
           <Pagination

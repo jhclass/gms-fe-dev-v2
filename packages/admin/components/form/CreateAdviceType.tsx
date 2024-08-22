@@ -165,6 +165,9 @@ export default function CreateAdviceType({ isActive, category }) {
         `ok: ${result.data.createAdviceType.ok}`,
       )
       if (!result.data.createAdviceType.ok) {
+        // if (result.data.createAdviceType.message === '중복되는 분야 입니다.') {
+        //   alert(`'${data.type}'은 중복되는 분야입니다.`)
+        // }
         throw new Error(`${category} 등록 실패`)
       }
       alert(`${category} 분야가 등록되었습니다.`)

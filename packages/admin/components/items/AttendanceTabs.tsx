@@ -2,20 +2,14 @@ import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import { Suspense, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
-import EducationalHistory from '@/components/layout/EducationalHistory'
-import CareerHistory from '@/components/layout/CareerHistory'
-import Certificate from '@/components/layout/Certificate'
-import EmploymentMemo from '@/components/layout/EmploymentMemo'
-import WishEmployment from '@/components/layout/WishEmployment'
-import RecoEmployment from '@/components/layout/RecoEmployment'
-import Employment from '@/components/layout/Employment'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
-import DropOutList from '../form/DropOutList'
-import CertificateNameList from '../form/CertificateNameList'
-import EmploymentNameList from '../form/EmploymentNameList'
-import DropOutMemo from '../layout/DropOutMemo'
-import RegularEvaluation from '../layout/RegularEvaluation'
+import DropOutList from '@/components/form/DropOutList'
+import CertificateNameList from '@/components/form/CertificateNameList'
+import EmploymentNameList from '@/components/form/EmploymentNameList'
+import DropOutMemo from '@/components/layout/DropOutMemo'
+import RegularEvaluation from '@/components/layout/RegularEvaluation'
+import Portfolio from '@/components/layout/Portfolio'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -54,8 +48,6 @@ const LodingDiv = styled.div`
 
 export default function AttendanceTabs({ lectureId, students, subjectId }) {
   const completion = useRecoilValue(completionStatus)
-  const { useMme } = useMmeQuery()
-  const mId = useMme('mUserId')
   const [selected, setSelected] = useState('eduInfo')
   const dropOutStudents = students?.filter(
     student => student.courseComplete === completion.dropout,
@@ -131,6 +123,9 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
         </Tab>
         <Tab key="wishEmployment" title="정기평가 내용설정">
           <RegularEvaluation lectureId={lectureId} subjectId={subjectId} />
+        </Tab>
+        <Tab key="portfolio" title="포트폴리오">
+          <Portfolio students={students} />
         </Tab>
       </Tabs>
     </>

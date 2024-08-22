@@ -417,7 +417,7 @@ export default function Header() {
             </WebBtn>
           </Tooltip>
           <HeaderNoti />
-          {mGrade === 1 && (
+          {mGrade === 0 && (
             <ReqBtn onClick={onOpen}>
               <img
                 src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_help3.webp"

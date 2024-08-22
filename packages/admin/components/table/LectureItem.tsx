@@ -2,11 +2,14 @@ import { styled } from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { gradeState, progressStatusState } from '@/lib/recoilAtoms'
-import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
+import {
+  CALA_LECTURES_MUTATION,
+  UPDATE_FAVORITE_MUTATION,
+} from '@/graphql/mutations'
 import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import Link from 'next/link'
 import { Button, Checkbox } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LectureReportList from './LectureReportList'
 import { useRouter } from 'next/router'
 import useMmeQuery from '@/utils/mMe'
@@ -30,7 +33,7 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table-row;
+  display: flex;
   width: 100%;
   min-width: fit-content;
   text-align: center;
@@ -40,12 +43,6 @@ const TableRow = styled.div`
   grid-template-columns: 0.5rem 2% auto; */
 `
 
-const Tflag = styled.div`
-  display: table-cell;
-  width: 0.5rem;
-  height: 100%;
-  min-width: 7px;
-`
 const ClickBox = styled.div`
   width: 100%;
   display: table-cell;
@@ -182,7 +179,25 @@ export default function ConsolutItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const lecture = props.tableData
+  const [calcData, setCalcData] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
+  const [calcLecture] = useMutation(CALA_LECTURES_MUTATION)
+
+  useEffect(() => {
+    if (lecture.id) {
+      calcLecture({
+        variables: {
+          calcLecturesId: lecture.id,
+        },
+        onCompleted: result => {
+          // console.log(result)
+          // if (result.calcLectures.ok) {
+          //   setCalcData('')
+          // }
+        },
+      })
+    }
+  }, [lecture])
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
@@ -225,12 +240,6 @@ export default function ConsolutItem(props) {
     <>
       <TableItem>
         <TableRow>
-          <Tflag
-            style={{
-              background: 'transparent',
-            }}
-          ></Tflag>
-
           <ClickBox onClick={() => setIsOpen(!isOpen)}>
             <div>
               <Tnum>
