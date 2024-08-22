@@ -187,7 +187,7 @@ export default function StudentData({
       )}
       {activeBtn && (
         <>
-          {paymentId && (
+          {/* {paymentId && (
             <BtnBox>
               <Button
                 size="md"
@@ -202,7 +202,7 @@ export default function StudentData({
                 학적부로
               </Button>
             </BtnBox>
-          )}
+          )} */}
         </>
       )}
     </>
