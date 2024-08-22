@@ -6,6 +6,7 @@ import ReaularEvaluationList from '../form/ReaularEvaluationList'
 import { Chip } from '@nextui-org/react'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
+import PortfolioForm from '../form/PortfolioForm'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -85,9 +86,6 @@ export default function Portfolio({ students }) {
         <DetailDiv>
           <AreaTitle>
             <h4>포트폴리오</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
           </AreaTitle>
           <FlexChipBox>
             <button>
@@ -124,20 +122,14 @@ export default function Portfolio({ students }) {
                   </button>
                 ))}
           </FlexChipBox>
-          {/* <ReaularEvaluationForm
-            setIsCreate={setIsCreate}
-            subjectId={subjectId}
-          /> */}
         </DetailDiv>
       </DetailBox>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>정기평가 내용설정 리스트</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <PortfolioForm
+            setIsCreate={setIsCreate}
+            // subjectId={subjectId}
+          />
           <Suspense
             fallback={
               <LodingDiv>

@@ -1661,6 +1661,9 @@ export const SEARCH_LECTURES_MUTATION = gql`
               name
               phoneNum1
             }
+            StudentPortfolio {
+              id
+            }
             attendance {
               attendanceDate
               attendanceDateTime

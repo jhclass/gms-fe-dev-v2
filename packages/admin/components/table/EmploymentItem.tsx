@@ -25,7 +25,7 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table-row;
+  display: table;
   width: 100%;
   min-width: fit-content;
   text-align: center;
@@ -250,7 +250,7 @@ export default function EmploymentItem(props) {
                 </BtnBox>
               </Tbtn>
             </div>
-            <div className="subDiv">
+            <div>
               <Tdiv $isOpen={isOpen}>
                 <EmploymentStateList student={student} />
               </Tdiv>
