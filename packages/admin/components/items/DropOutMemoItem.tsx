@@ -191,7 +191,7 @@ export default function DropOutMemoItem({ item, refetch, setPage, mId }) {
               lastModifiedTime: new Date(),
             },
           })
-          console.log(result)
+
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
             `${item.stName} ${data.preScreenerType} 상담 id:${item.id} 수정`,

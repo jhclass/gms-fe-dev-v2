@@ -44,7 +44,6 @@ const MenuBox = styled.div`
   height: 100%;
 `
 const MenuItem = styled.div<{ $isActive: boolean }>`
-  position: relative;
   flex-shrink: 0;
   width: fit-content;
   height: 100%;
@@ -52,21 +51,22 @@ const MenuItem = styled.div<{ $isActive: boolean }>`
     props.$isActive ? props.theme.colors.primary : props.theme.colors.gray};
 
   a {
+    position: relative;
     display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
-  }
 
-  &:after {
-    content: '';
-    display: ${props => (props.$isActive ? 'block' : 'none')};
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0.1rem;
-    background: ${({ theme }) => theme.colors.primary};
+    &:after {
+      content: '';
+      display: ${props => (props.$isActive ? 'block' : 'none')};
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0.1rem;
+      background: ${({ theme }) => theme.colors.primary};
+    }
   }
 
   &:first-child {

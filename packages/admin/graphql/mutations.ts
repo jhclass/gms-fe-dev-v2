@@ -1938,6 +1938,30 @@ export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
   }
 `
 
+// 강의
+export const CALA_LECTURES_MUTATION = gql`
+  mutation Mutation($calcLecturesId: Int!) {
+    calcLectures(id: $calcLecturesId) {
+      ok
+      message
+      error
+      approvedPersonnel
+      confirmedPersonnel
+      courseDropout
+      incomplete
+      earlyEmployment
+      notEarlyEmployed
+      trainingPersonnel
+      graduates
+      employedUponCompletion
+      notEmployedUponCompletion
+      dropoutRate
+      graduationRate
+      expectedEmploymentProof
+    }
+  }
+`
+
 // 학적부
 export const EDIT_STUDENT_INFOMATION_MUTATION = gql`
   mutation EditStudentPayment(
@@ -2370,6 +2394,23 @@ export const EDIT_EMPLOYMENT_MUTATION = gql`
       relatedFields: $relatedFields
       completionType: $completionType
       lastModifiedTime: $lastModifiedTime
+    ) {
+      ok
+      error
+      message
+    }
+  }
+`
+export const EDIT_STUDENT_EMPLOYMENT_MUTATION = gql`
+  mutation EditStudentPayment(
+    $editStudentPaymentId: Int!
+    $subjectId: Int!
+    $employment: String
+  ) {
+    editStudentPayment(
+      id: $editStudentPaymentId
+      subjectId: $subjectId
+      employment: $employment
     ) {
       ok
       error

@@ -5,6 +5,7 @@ import {
   CheckboxGroup,
   Input,
   Pagination,
+  ScrollShadow,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,10 +25,15 @@ const ItemBox = styled.form`
   display: flex;
   gap: 0.5rem;
 `
+const TableWrap = styled.div`
+  width: 100%;
+  display: table;
+  min-width: 520px;
+`
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
-  display: table-row;
+  display: table;
   flex-wrap: nowrap;
   color: #111;
   font-size: 0.875rem;
@@ -202,36 +208,40 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
           </Button>
         </ItemBox>
       </SearchArea>
-      <CheckboxGroup
-        value={groupSelected || []}
-        onChange={handleCheck}
-        classNames={{
-          wrapper: 'gap-0',
-        }}
-      >
-        <Theader>
-          <TableRow>
-            <Tcheck></Tcheck>
-            <Tname>이름</Tname>
-            <Tpart>부서명</Tpart>
-            <Trank>직위/직책</Trank>
-            <Tphone>휴대폰</Tphone>
-          </TableRow>
-        </Theader>
-        {managerTotal > 0 && (
-          <>
-            {managerData?.map((manager, index) => (
-              <TableItem key={index}>
-                <TableRow>
-                  <Checkbox key={manager.id} value={manager}></Checkbox>
-                  <SMSAddrItem2 manager={manager} />
-                </TableRow>
-              </TableItem>
-            ))}
-          </>
-        )}
-        {managerTotal === 0 && <Nolist>검색 결과가 없습니다.</Nolist>}
-      </CheckboxGroup>
+      <ScrollShadow orientation="horizontal" className="scrollbar">
+        <TableWrap>
+          <CheckboxGroup
+            value={groupSelected || []}
+            onChange={handleCheck}
+            classNames={{
+              wrapper: 'gap-0',
+            }}
+          >
+            <Theader>
+              <TableRow>
+                <Tcheck></Tcheck>
+                <Tname>이름</Tname>
+                <Tpart>부서명</Tpart>
+                <Trank>직위/직책</Trank>
+                <Tphone>휴대폰</Tphone>
+              </TableRow>
+            </Theader>
+            {managerTotal > 0 && (
+              <>
+                {managerData?.map((manager, index) => (
+                  <TableItem key={index}>
+                    <TableRow>
+                      <Checkbox key={manager.id} value={manager}></Checkbox>
+                      <SMSAddrItem2 manager={manager} />
+                    </TableRow>
+                  </TableItem>
+                ))}
+              </>
+            )}
+            {managerTotal === 0 && <Nolist>검색 결과가 없습니다.</Nolist>}
+          </CheckboxGroup>
+        </TableWrap>
+      </ScrollShadow>
       {managerTotal > 0 && (
         <PagerWrap>
           <Pagination

@@ -12,7 +12,7 @@ const TableWrap = styled.div`
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
-  display: table-row;
+  display: table;
   flex-wrap: nowrap;
   row-gap: 1rem;
   color: #111;

@@ -11,7 +11,10 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
-import { CREATE_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_EMPLOYMENT_MUTATION,
+  EDIT_STUDENT_EMPLOYMENT_MUTATION,
+} from '@/graphql/mutations'
 import { SEARCH_SM_QUERY } from '@/graphql/queries'
 
 const DetailBox = styled.div`
@@ -92,15 +95,10 @@ const DatePickerBox = styled.div`
   }
 `
 
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
-
 export default function EmploymentForm({ paymentId, subjectId }) {
   const { userLogs } = useUserLogsMutation()
   const [createEmployment] = useMutation(CREATE_EMPLOYMENT_MUTATION)
+  const [editStudentEmployment] = useMutation(EDIT_STUDENT_EMPLOYMENT_MUTATION)
   const [employmentDate, setEmploymentDate] = useState(null)
   const [employmentType, setEmploymentType] = useState('취업')
   const [imploymentInsurance, setImploymentInsurance] = useState('Y')
@@ -110,15 +108,6 @@ export default function EmploymentForm({ paymentId, subjectId }) {
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const { register, handleSubmit, reset, control, formState } = useForm()
   const { errors } = formState
-
-  const formatDate = data => {
-    const date = new Date(data)
-    const formatted =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')}`
-    return formatted
-  }
 
   const onSubmit = data => {
     createEmployment({
@@ -152,8 +141,20 @@ export default function EmploymentForm({ paymentId, subjectId }) {
           `ok: ${result.createEmploymentStatus.ok}`,
         )
         if (result.createEmploymentStatus.ok) {
-          alert(`취업 현황이 등록되었습니다.`)
-          reset()
+          editStudentEmployment({
+            variables: {
+              editStudentPaymentId: paymentId,
+              subjectId: subjectId,
+              employmentType:
+                data.companyName === '' ? '취업' : data.companyName,
+            },
+            onCompleted: result2 => {
+              if (result2.editStudentPayment.ok) {
+                alert(`취업 현황이 등록되었습니다.`)
+                reset()
+              }
+            },
+          })
         }
       },
     })

@@ -51,7 +51,7 @@ const TableWrap = styled.div`
 const Theader = styled.div`
   width: 100%;
   min-width: fit-content;
-  display: table-row;
+  display: table;
   flex-wrap: nowrap;
   row-gap: 1rem;
   color: #111;
@@ -64,13 +64,6 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
-const Tflag = styled.div`
-  display: table-cell;
-  width: 0.5rem;
-  height: 100%;
-  min-width: 7px;
-`
-
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -214,27 +207,14 @@ export default function LectureList() {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>23</span>건
+          총 <span>{totalCount}</span>건
         </Ttotal>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: theme.colors.primary }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: theme.colors.accent }}></span> : 미처리
-          </ColorCip>
-        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <Tflag
-                  style={{
-                    background: 'transparent',
-                  }}
-                ></Tflag>
                 <ClickBox>
                   <Tnum>No</Tnum>
                   <Troom>강의실</Troom>

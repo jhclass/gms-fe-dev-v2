@@ -8,6 +8,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  ScrollShadow,
   Tab,
   Tabs,
 } from '@nextui-org/react'
@@ -23,6 +24,10 @@ const ChipBox = styled.div`
   margin-top: 0.5rem;
   flex-wrap: wrap;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    max-height: 20vh;
+  }
 `
 
 export default function SMSAddrModal({
@@ -104,29 +109,31 @@ export default function SMSAddrModal({
                     />
                   </Tab>
                 </Tabs>
-                <ChipBox>
-                  {groupSelected?.map((item, index) => (
-                    <Chip
-                      key={index}
-                      variant="bordered"
-                      onClose={index => deleteType(index)}
-                      className={'hover:border-primary'}
-                    >
-                      {item.mUsername
-                        ? item.mUsername
-                        : item.name
-                        ? item.name
-                        : null}
-                      <span>
-                        {item.mPhoneNum
-                          ? `[${item.mPhoneNum}]`
-                          : item.phoneNum1
-                          ? `[${item.phoneNum1}]`
-                          : item.phoneNumber}
-                      </span>
-                    </Chip>
-                  ))}
-                </ChipBox>
+                <ScrollShadow orientation="vertical" className="scrollbar">
+                  <ChipBox>
+                    {groupSelected?.map((item, index) => (
+                      <Chip
+                        key={index}
+                        variant="bordered"
+                        onClose={index => deleteType(index)}
+                        className={'hover:border-primary'}
+                      >
+                        {item.mUsername
+                          ? item.mUsername
+                          : item.name
+                          ? item.name
+                          : null}
+                        <span>
+                          {item.mPhoneNum
+                            ? `[${item.mPhoneNum}]`
+                            : item.phoneNum1
+                            ? `[${item.phoneNum1}]`
+                            : item.phoneNumber}
+                        </span>
+                      </Chip>
+                    ))}
+                  </ChipBox>
+                </ScrollShadow>
               </ModalBody>
               <ModalFooter>
                 <Button

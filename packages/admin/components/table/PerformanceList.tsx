@@ -31,6 +31,14 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray};
+`
 
 export default function PerformanceList({ ids, dateRange, filterSearch }) {
   const [salesStatistics] = useMutation(SALES_STATISTICS_MUTATION)
@@ -87,20 +95,26 @@ export default function PerformanceList({ ids, dateRange, filterSearch }) {
     succMutation && (
       <>
         <div style={{ marginBottom: '3rem' }}>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PerformanceChart
-              managerIds={idList}
-              totalAmount={totalAmount}
-              totalCount={totalCount}
-              totalRefundAmount={totalRefundAmount}
-            />
-          </Suspense>
+          {allData.length > 0 ? (
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <PerformanceChart
+                managerIds={idList}
+                totalAmount={totalAmount}
+                totalCount={totalCount}
+                totalRefundAmount={totalRefundAmount}
+              />
+            </Suspense>
+          ) : (
+            <ListBox>
+              <Nolist>영업성과가 없으므로 표시되지 않습니다.</Nolist>
+            </ListBox>
+          )}
         </div>
         {allData?.map((item, index) => (
           <ListBox key={index}>
