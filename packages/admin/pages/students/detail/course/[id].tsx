@@ -470,7 +470,7 @@ export default function StudentsWrite() {
                                     )
                                   }
                                 >
-                                  학적부로
+                                  학적부
                                 </Button>
                               </BtnBox>
                             )}
