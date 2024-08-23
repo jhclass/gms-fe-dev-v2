@@ -50,13 +50,7 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-export default function StudentData({
-  studentData,
-  detailAll,
-  record,
-  paymentId = null,
-  activeBtn = false,
-}) {
+export default function StudentData({ studentData, detailAll, record }) {
   const router = useRouter()
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
@@ -184,26 +178,6 @@ export default function StudentData({
             </div>
           </AreaBox>
         </FlexBox>
-      )}
-      {activeBtn && (
-        <>
-          {/* {paymentId && (
-            <BtnBox>
-              <Button
-                size="md"
-                radius="md"
-                variant="bordered"
-                className="lg:w-[50%] w-full"
-                color="primary"
-                onClick={() =>
-                  router.push(`/lecture/employmentDetail/${paymentId}`)
-                }
-              >
-                학적부로
-              </Button>
-            </BtnBox>
-          )} */}
-        </>
       )}
     </>
   )

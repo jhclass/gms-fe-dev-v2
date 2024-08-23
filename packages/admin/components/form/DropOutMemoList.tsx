@@ -5,6 +5,7 @@ import { SEARCH_SM_QUERY } from '@/graphql/queries'
 import { ResultSearchSm } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import DropOutMemoItem from '@/components/items/DropOutMemoItem'
+import { useRouter } from 'next/router'
 
 const MoreBtn = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ export default function DropOutMemoList({
   lectureId,
   mId,
 }) {
+  const router = useRouter()
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [isFetching, setIsFetching] = useState(false)

@@ -443,11 +443,6 @@ export default function StudentsWrite() {
                   studentData={studentData}
                   detailAll={false}
                   record={false}
-                  paymentId={paymentId}
-                  activeBtn={
-                    studentPaymentData?.lectureAssignment ===
-                    assignment.assignment
-                  }
                 />
               </DetailDiv>
             </DetailBox>
@@ -458,30 +453,55 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>
-                      {(mGrade < grade.general || mPart.includes('교무팀')) && (
-                        <Button
-                          isDisabled={
-                            studentPaymentData?.lectureAssignment ===
-                            assignment.withdrawal
-                              ? true
-                              : false
-                          }
-                          size="sm"
-                          radius="sm"
-                          variant="solid"
-                          color="primary"
-                          className="text-white"
-                          onClick={() => {
-                            {
-                              router.push(
-                                `/students/edit/course/${studentPaymentData?.id}`,
-                              )
+                      <div className="flex gap-[0.5rem]">
+                        {mGrade === 0 && (
+                          <>
+                            {studentPaymentData?.lectureAssignment ==
+                              assignment.assignment && (
+                              <BtnBox>
+                                <Button
+                                  size="sm"
+                                  radius="sm"
+                                  variant="bordered"
+                                  color="primary"
+                                  onClick={() =>
+                                    router.push(
+                                      `/lecture/employmentDetail/${paymentId}`,
+                                    )
+                                  }
+                                >
+                                  학적부로
+                                </Button>
+                              </BtnBox>
+                            )}
+                          </>
+                        )}
+                        {(mGrade < grade.general ||
+                          mPart.includes('교무팀')) && (
+                          <Button
+                            isDisabled={
+                              studentPaymentData?.lectureAssignment ===
+                              assignment.withdrawal
+                                ? true
+                                : false
                             }
-                          }}
-                        >
-                          수정
-                        </Button>
-                      )}
+                            size="sm"
+                            radius="sm"
+                            variant="solid"
+                            color="primary"
+                            className="text-white"
+                            onClick={() => {
+                              {
+                                router.push(
+                                  `/students/edit/course/${studentPaymentData?.id}`,
+                                )
+                              }
+                            }}
+                          >
+                            수정
+                          </Button>
+                        )}
+                      </div>
                     </AreaTitle>
                     <PaymentInfo
                       studentSubjectData={studentSubjectData}

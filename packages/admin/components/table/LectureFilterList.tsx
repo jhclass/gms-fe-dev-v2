@@ -1,5 +1,5 @@
-import { useSuspenseQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
@@ -7,6 +7,7 @@ import { consultPageState } from '@/lib/recoilAtoms'
 import LectureItem from '@/components/table/LectureItem'
 import { SeeLecturesResult } from '@/src/generated/graphql'
 import { SEE_LECTURES_QUERY } from '@/graphql/queries'
+import { SEARCH_LECTURES_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -23,6 +24,16 @@ const Ttotal = styled.p`
   span {
     font-weight: 400;
     color: ${({ theme }) => theme.colors.primary};
+  }
+`
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
   }
 `
 const ColorHelp = styled.div`
@@ -176,38 +187,52 @@ type seeLectures = {
   seeLectures: SeeLecturesResult
 }
 
-export default function LectureList() {
-  const theme = useTheme()
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+export default function LectureFilterList({ lectureFilter }) {
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-
-  const { error, data, refetch } = useSuspenseQuery<seeLectures>(
-    SEE_LECTURES_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
+  const [searchLecturesFilterMutation] = useMutation(
+    SEARCH_LECTURES_FILTER_MUTATION,
   )
-  const lectureData = data?.seeLectures?.data
-  const totalCount = data?.seeLectures?.totalCount
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const [searchResult, setSearchResult] = useState(null)
+  const today = new Date()
+  // const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    refetch()
-  }, [])
+    searchLecturesFilterMutation({
+      variables: {
+        ...lectureFilter,
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        console.log(resData)
+        if (resData.searchLectures.ok) {
+          const { data, totalCount } = resData.searchLectures || {}
+          setSearchResult({ data, totalCount })
+        }
+      },
+    })
+  }, [lectureFilter, currentPage])
 
-  if (error) {
-    console.log(error)
+  const resetList = () => {
+    window.location.href = '/lecture'
   }
 
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
+        <TopBox>
+          <Ttotal>
+            총{' '}
+            <span>
+              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
+            </span>
+            건이 검색되었습니다.
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
         <ColorHelp>
           <Noti>
             <span>*</span>목록을 클릭 시 추가 내용이 노출됩니다.
@@ -236,10 +261,10 @@ export default function LectureList() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              lectureData?.map((item, index) => (
+            {searchResult?.totalCount > 0 &&
+              searchResult?.data?.map((item, index) => (
                 <LectureItem
-                  forName="student"
+                  forName="lecture"
                   key={index}
                   tableData={item}
                   itemIndex={index}
@@ -247,17 +272,19 @@ export default function LectureList() {
                   limit={currentLimit}
                 />
               ))}
-            {totalCount === 0 && <Nolist>등록된 강의가 없습니다.</Nolist>}
+            {searchResult?.totalCount === 0 && (
+              <Nolist>등록된 강의가 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        {searchResult?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
+              total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

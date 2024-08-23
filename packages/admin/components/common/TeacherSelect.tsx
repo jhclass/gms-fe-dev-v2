@@ -16,6 +16,7 @@ export default function TeacherSelect({
   label,
   handleChange,
   optionDefualt,
+  isId = false,
 }) {
   const router = useRouter()
   const {
@@ -64,7 +65,10 @@ export default function TeacherSelect({
         }}
       >
         {managerList.map(item => (
-          <SelectItem key={item.mUsername} value={item.mUsername}>
+          <SelectItem
+            key={isId ? item.id : item.mUsername}
+            value={isId ? item.id : item.mUsername}
+          >
             {item.mUsername}
           </SelectItem>
         ))}

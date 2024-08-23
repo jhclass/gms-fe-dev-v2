@@ -47,17 +47,40 @@ const FilterLabel = styled.label`
 `
 
 const FilesBox = styled.div`
+  margin-top: 0.5rem;
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+`
+const FilesBtn = styled.button`
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: 5rem;
+  height: 5rem;
+  background-color: ${({ theme }) => theme.colors.lightPrimary};
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-size: 3rem;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
   /* @media (max-width: 768px) {
-    flex-direction: column;
+    width: 100%;
   } */
+`
+const FilesItemBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  align-items: center;
 `
 
 const FilesItem = styled.div`
   position: relative;
-  border-radius: 100%;
+  border-radius: 0.5rem;
   overflow: hidden;
   width: 5rem;
   height: 5rem;
@@ -69,7 +92,10 @@ const FilesItem = styled.div`
   text-align: center;
   color: #fff;
   font-weight: 700;
-  line-height: 5rem;
+`
+const FilesDelBtn = styled.button`
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 const BtnBox = styled.div`
@@ -104,6 +130,7 @@ export default function PortfolioForm({ setIsCreate }) {
   } = useForm()
   const { errors } = formState
   const onSubmit = data => {
+    console.log('validFiles', validFiles)
     console.log(data)
     // createRegularEvaluationSet({
     //   variables: {
@@ -162,7 +189,19 @@ export default function PortfolioForm({ setIsCreate }) {
       }
     }
   }
+  const handleRemoveFile = (index: number) => {
+    setValidFiles(prevValidFiles => {
+      const updatedFiles = [...prevValidFiles]
+      updatedFiles.splice(index, 1)
+      return updatedFiles
+    })
 
+    setAvatartImg(prevAvatartImg => {
+      const updatedAvatartImg = [...prevAvatartImg]
+      updatedAvatartImg.splice(index, 1)
+      return updatedAvatartImg
+    })
+  }
   const handleButtonClick = () => {
     fileInputRef.current.click()
   }
@@ -171,31 +210,38 @@ export default function PortfolioForm({ setIsCreate }) {
     <>
       <DetailForm onSubmit={handleSubmit(onSubmit)}>
         <FlexBox>
-          <FilesBox>
-            {avatarImg?.map((img, index) => (
-              <FilesItem
-                key={index}
-                style={{
-                  backgroundImage: `url('${img}')`,
-                }}
+          <div>
+            <FilterLabel>
+              포토폴리오<span>*</span>
+            </FilterLabel>
+            <FilesBox>
+              {avatarImg?.map((img, index) => (
+                <FilesItemBox key={index}>
+                  <FilesItem
+                    style={{
+                      backgroundImage: `url('${img}')`,
+                    }}
+                  />
+                  <FilesDelBtn
+                    type="button"
+                    onClick={() => handleRemoveFile(index)}
+                  >
+                    <i className="xi-close-circle" />
+                  </FilesDelBtn>
+                </FilesItemBox>
+              ))}
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+                multiple
               />
-            ))}
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-              multiple
-            />
-            <Button
-              size="sm"
-              color={'primary'}
-              onClick={handleButtonClick}
-              className="bg-secondary"
-            >
-              프로필 변경
-            </Button>
-          </FilesBox>
+              <FilesBtn type="button" onClick={handleButtonClick}>
+                <i className="xi-plus" />
+              </FilesBtn>
+            </FilesBox>
+          </div>
           {errors.portfolio && (
             <p className="px-2 pt-2 text-xs text-red">
               {String(errors.portfolio.message)}
@@ -203,6 +249,33 @@ export default function PortfolioForm({ setIsCreate }) {
           )}
         </FlexBox>
         <FlexBox>
+          <AreaBox>
+            <Textarea
+              label={
+                <FilterLabel>
+                  한줄 평가<span>*</span>
+                </FilterLabel>
+              }
+              labelPlacement="outside"
+              className="max-w-full"
+              variant="bordered"
+              minRows={5}
+              onChange={e => {
+                register('evaluationDetails').onChange(e)
+              }}
+              {...register('evaluationDetails', {
+                required: {
+                  value: true,
+                  message: '한줄 평가를 입력해주세요.',
+                },
+              })}
+            />
+            {errors.evaluationDetails && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.evaluationDetails.message)}
+              </p>
+            )}
+          </AreaBox>
           <BtnBox>
             <Button
               type="submit"

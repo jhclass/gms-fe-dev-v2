@@ -11,6 +11,7 @@ import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import TeacherSelect from '../common/TeacherSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -131,24 +132,14 @@ const FilterVariants = {
 
 export default function ConsultFilter({
   isActive,
-  // onFilterSearch,
-  // studentFilter,
-  // setStudentFilter,
+  onFilterSearch,
+  lectureFilter,
+  setLectureFilter,
 }) {
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const consultPage = useResetRecoilState(consultPageState)
-  const subStatus = useRecoilValue(subStatusState)
-  const [receipt, setReceipt] = useState('-')
-  const [sub, setSub] = useState('-')
-  const [manager, setManager] = useState('-')
-  const [adviceType, setAdviceType] = useState('-')
-  const [creatDateRange, setCreatDateRange] = useState([null, null])
-  const [startCreatDate, endCreatDate] = creatDateRange
-  const [visitDateRange, setVisitDateRange] = useState([null, null])
-  const [startVisitDate, endVisitDate] = visitDateRange
-  const [phone, setPhone] = useState('')
-  const [name, setName] = useState('')
-  const [progressSelected, setProgressSelected] = useState([])
+  const [teacher, setTeacher] = useState('-')
+  const [searchPeriodStart, setSearchPeriodStart] = useState(null)
+  const [searchPeriodEnd, setSearchPeriodEnd] = useState(null)
 
   const {
     register,
@@ -159,15 +150,10 @@ export default function ConsultFilter({
     formState: { isDirty, errors },
   } = useForm({
     defaultValues: {
-      receiptDiv: '-',
-      subDiv: '-',
-      pic: '-',
-      createdAt: undefined,
-      stVisit: undefined,
-      stName: '',
-      progress: undefined,
-      phoneNum1: '',
-      adviceType: '-',
+      teacherId: '-',
+      temporaryName: '',
+      periodStart: undefined,
+      periodEnd: undefined,
     },
   })
 
@@ -251,73 +237,28 @@ export default function ConsultFilter({
   //   }
   // }, [router, studentFilter])
 
-  const handleReceiptChange = e => {
-    setReceipt(e.target.value)
-  }
-
-  const handleSubChange = e => {
-    setSub(e.target.value)
-  }
-  const handleManagerChange = e => {
-    setManager(e.target.value)
-  }
-  const handleAdviceChange = e => {
-    setAdviceType(e.target.value)
-  }
-  const handleProgressChange = (value: string[]) => {
-    const numericKeys = value.map(key => parseInt(key, 10))
-    setValue('progress', numericKeys)
-    setProgressSelected(value)
+  const handleTeacherChange = e => {
+    setTeacher(e.target.value)
   }
 
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
-      const validateDateRange = (dateRange, message) => {
-        if (dateRange !== undefined) {
-          if (dateRange[1] !== null) {
-            return true
-          } else {
-            alert(message)
-            return false
-          }
-        } else {
-          return true
-        }
+    console.log(data)
+    if (isDirty) {
+      const filter = {
+        teacherId: data.teacherId === '-' ? null : parseInt(data.teacherId),
+        periodStart: data.periodStart === undefined ? null : data.periodStart,
+        periodEnd: data.periodEnd === undefined ? null : data.periodEnd,
+        temporaryName: data.temporaryName === '' ? null : data.temporaryName,
       }
-      const creatDate = validateDateRange(
-        data.createdAt,
-        '등록일시의 마지막날을 선택해주세요.',
-      )
-      const visitDate = validateDateRange(
-        data.stVisit,
-        '방문예정일의 마지막날을 선택해주세요.',
-      )
-      if (creatDate && visitDate) {
-        const filter = {
-          receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
-          subDiv: data.subDiv === '-' ? null : data.subDiv,
-          pic: data.pic === '-' ? null : data.pic,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
-          stVisit: data.stVisit === undefined ? null : data.stVisit,
-          stName: data.stName === '' ? null : data.stName,
-          progress: data.progress,
-          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
-          adviceType: data.adviceType === '-' ? null : data.adviceType,
-        }
-        // setStudentFilter(filter)
-        // onFilterSearch(true)
-        consultPage()
-      }
+      setLectureFilter(filter)
+      onFilterSearch(true)
     }
   }
 
   const handleReset = () => {
-    setReceipt('-')
-    setSub('-')
-    setManager('-')
-    setAdviceType('-')
-    setCreatDateRange([null, null])
-    setVisitDateRange([null, null])
+    setTeacher('-')
+    setSearchPeriodStart(null)
+    setSearchPeriodEnd(null)
     reset()
   }
 
@@ -331,112 +272,54 @@ export default function ConsultFilter({
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>
-              <Controller
-                control={control}
-                name="subDiv"
-                defaultValue={'-'}
-                render={({ field }) => (
-                  <Suspense
-                    fallback={
-                      <LodingDiv>
-                        <i className="xi-spinner-2" />
-                      </LodingDiv>
-                    }
-                  >
-                    <SubDivSelect
-                      selectedKey={sub}
-                      field={field}
-                      defaultValue={'-'}
-                      label={<FilterLabel>수강구분</FilterLabel>}
-                      handleChange={handleSubChange}
-                      isHyphen={true}
-                    />
-                  </Suspense>
-                )}
-              />
-            </ItemBox>
-            <ItemBox>
               <Input
                 labelPlacement="outside"
                 placeholder=" "
                 type="text"
                 variant="bordered"
-                label="수강생명"
-                value={name}
-                onValueChange={setName}
+                label="강의명"
                 onChange={e => {
-                  register('stName').onChange(e)
+                  register('temporaryName').onChange(e)
                 }}
-                {...register('stName', {
-                  pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
-                  },
-                })}
+                {...register('temporaryName')}
               />
-              {errors.stName && (
+              {errors.temporaryName && (
                 <p className="px-2 pt-2 text-xs text-red">
-                  {String(errors.stName.message)}
+                  {String(errors.temporaryName.message)}
                 </p>
               )}
             </ItemBox>
             <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="강사명"
-                value={name}
-                onValueChange={setName}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                {...register('stName', {
-                  pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
-                  },
-                })}
+              <Controller
+                control={control}
+                name="teacherId"
+                render={({ field, fieldState }) => (
+                  <TeacherSelect
+                    selectedKey={teacher}
+                    field={field}
+                    label={'강사명'}
+                    handleChange={handleTeacherChange}
+                    optionDefualt={{
+                      mUsername: '-',
+                      id: '-',
+                    }}
+                    isId={true}
+                  />
+                )}
               />
-              {errors.stName && (
+              {errors.teacherId && (
                 <p className="px-2 pt-2 text-xs text-red">
-                  {String(errors.stName.message)}
+                  {String(errors.teacherId.message)}
                 </p>
               )}
             </ItemBox>
           </BoxTop>
           <BoxMiddle>
             <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="과목명"
-                value={name}
-                onValueChange={setName}
-                onChange={e => {
-                  register('stName').onChange(e)
-                }}
-                {...register('stName', {
-                  pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
-                  },
-                })}
-              />
-              {errors.stName && (
-                <p className="px-2 pt-2 text-xs text-red">
-                  {String(errors.stName.message)}
-                </p>
-              )}
-            </ItemBox>
-            <ItemBox>
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="createdAt"
+                  name="periodStart"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -455,33 +338,26 @@ export default function ConsultFilter({
                           increaseMonth={increaseMonth}
                         />
                       )}
-                      selectsRange={true}
                       locale="ko"
                       showYearDropdown
-                      startDate={startCreatDate}
-                      endDate={endCreatDate}
-                      onChange={e => {
-                        setCreatDateRange(e)
-                        let date
-                        if (e[1] !== null) {
-                          date = [
-                            new Date(e[0]?.setHours(0, 0, 0, 0)),
-                            new Date(e[1]?.setHours(23, 59, 59, 999)),
-                          ]
-                        } else {
-                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                        }
-
+                      selected={
+                        searchPeriodStart === null
+                          ? null
+                          : new Date(searchPeriodStart)
+                      }
+                      placeholderText="검색기간 시작일을 선택해주세요."
+                      isClearable
+                      onChange={date => {
                         field.onChange(date)
+                        setSearchPeriodStart(date)
                       }}
-                      onChangeRaw={e => e.preventDefault()}
-                      disabledKeyboardNavigation
-                      onFocus={e => e.target.blur()}
-                      placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
-                          label="훈련시작일"
+                          ref={field.ref}
+                          label={<FilterLabel>검색기간 시작일</FilterLabel>}
                           labelPlacement="outside"
                           type="text"
                           variant="bordered"
@@ -491,7 +367,6 @@ export default function ConsultFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('createdAt')}
                         />
                       }
                     />
@@ -503,7 +378,7 @@ export default function ConsultFilter({
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="createdAt"
+                  name="periodEnd"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -522,33 +397,26 @@ export default function ConsultFilter({
                           increaseMonth={increaseMonth}
                         />
                       )}
-                      selectsRange={true}
                       locale="ko"
                       showYearDropdown
-                      startDate={startCreatDate}
-                      endDate={endCreatDate}
-                      onChange={e => {
-                        setCreatDateRange(e)
-                        let date
-                        if (e[1] !== null) {
-                          date = [
-                            new Date(e[0]?.setHours(0, 0, 0, 0)),
-                            new Date(e[1]?.setHours(23, 59, 59, 999)),
-                          ]
-                        } else {
-                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                        }
-
+                      selected={
+                        searchPeriodEnd === null
+                          ? null
+                          : new Date(searchPeriodEnd)
+                      }
+                      placeholderText="검색기간 마지막일을 선택해주세요."
+                      isClearable
+                      onChange={date => {
                         field.onChange(date)
+                        setSearchPeriodEnd(date)
                       }}
-                      onChangeRaw={e => e.preventDefault()}
-                      disabledKeyboardNavigation
-                      onFocus={e => e.target.blur()}
-                      placeholderText="기간을 선택해주세요."
                       dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
                       customInput={
                         <Input
-                          label="훈련종료일"
+                          ref={field.ref}
+                          label={<FilterLabel>검색기간 마지막일</FilterLabel>}
                           labelPlacement="outside"
                           type="text"
                           variant="bordered"
@@ -558,7 +426,6 @@ export default function ConsultFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('createdAt')}
                         />
                       }
                     />

@@ -847,12 +847,14 @@ export const SEARCH_SMS_QUERY = gql`
 export const SEARCH_SM_QUERY = gql`
   query Query(
     $modelType: String!
+    $lectureId: Int
     $studentPaymentId: Int
     $limit: Int
     $page: Int
   ) {
     searchSM(
       modelType: $modelType
+      lectureId: $lectureId
       studentPaymentId: $studentPaymentId
       limit: $limit
       page: $page

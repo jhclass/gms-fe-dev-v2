@@ -61,6 +61,7 @@ export default function DropOutMemo({ lectureId, subjectId, students }) {
   const [isCreate, setIsCreate] = useState(false)
   const { useMme } = useMmeQuery()
   const mId = useMme('mUserId')
+
   return (
     <>
       <DetailBox>
