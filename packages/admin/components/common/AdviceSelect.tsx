@@ -16,7 +16,7 @@ export default function managerSelect({
   label,
   handleChange,
   placeholder = ' ',
-  optionDefualt = null,
+  optionDefault = null,
   filter = null,
   category,
 }) {
@@ -33,8 +33,8 @@ export default function managerSelect({
     },
   })
 
-  const adviceList = optionDefualt
-    ? [optionDefualt, ...adviceData?.seeAdviceType.adviceType]
+  const adviceList = optionDefault
+    ? [optionDefault, ...adviceData?.seeAdviceType.adviceType]
     : adviceData?.seeAdviceType.adviceType
 
   if (adviceError) {

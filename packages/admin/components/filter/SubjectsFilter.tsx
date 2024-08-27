@@ -200,7 +200,7 @@ export default function SubjectsFilter({
                       defaultValue={'-'}
                       label={<FilterLabel>수강구분</FilterLabel>}
                       handleChange={handleSubChange}
-                      optionDefualt={{ type: '-' }}
+                      optionDefault={{ type: '-' }}
                       isHyphen={true}
                     />
                   </Suspense>

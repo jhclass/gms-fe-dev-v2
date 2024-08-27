@@ -15,7 +15,7 @@ export default function TeacherMultiSelect({
   field,
   label,
   handleChange,
-  optionDefualt = null,
+  optionDefault = null,
 }) {
   const router = useRouter()
   const {
@@ -29,7 +29,7 @@ export default function TeacherMultiSelect({
     },
   })
   const managerList = [
-    optionDefualt,
+    optionDefault,
     ...searchManagerData?.searchManageUser.data,
   ]
 

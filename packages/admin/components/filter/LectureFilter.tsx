@@ -295,7 +295,7 @@ export default function ConsultFilter({
                     field={field}
                     label={'강사명'}
                     handleChange={handleTeacherChange}
-                    optionDefualt={{
+                    optionDefault={{
                       mUsername: '-',
                       id: '-',
                     }}

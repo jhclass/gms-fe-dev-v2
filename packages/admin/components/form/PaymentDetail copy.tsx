@@ -857,7 +857,7 @@ export default function StudentsWriteCourse({
                           label={'수강 담당자'}
                           defaultValue={studentPaymentData?.processingManagerId}
                           handleChange={handleSubManagerChange}
-                          optionDefualt={{
+                          optionDefault={{
                             mUserId: '담당자 지정필요',
                             mUsername: '담당자 지정필요',
                           }}

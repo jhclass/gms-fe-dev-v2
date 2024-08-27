@@ -31,7 +31,7 @@ export default function AdviceMultiSelect({
   label,
   handleChange,
   placeholder = ' ',
-  optionDefualt = null,
+  optionDefault = null,
   filter = null,
   category,
 }) {

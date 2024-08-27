@@ -571,7 +571,7 @@ export default function ConsultWirte() {
                         label={<FilterLabel>수강구분</FilterLabel>}
                         handleChange={handleSubChange}
                         isHyphen={false}
-                        optionDefualt={{ type: '-' }}
+                        optionDefault={{ type: '-' }}
                       />
                     </Suspense>
                   )}
@@ -606,7 +606,7 @@ export default function ConsultWirte() {
                         field={field}
                         label={'담당자'}
                         handleChange={handleManagerChange}
-                        optionDefualt={{
+                        optionDefault={{
                           mUsername: '담당자 지정필요',
                           mUserId: '담당자 지정필요',
                         }}

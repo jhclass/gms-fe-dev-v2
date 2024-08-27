@@ -155,7 +155,7 @@ export default function RequestMessage({
                                   field={field}
                                   label={'To.'}
                                   handleChange={handleManagerChange}
-                                  optionDefualt={{
+                                  optionDefault={{
                                     id: '받는 사람',
                                     mUsername: '받는 사람',
                                   }}

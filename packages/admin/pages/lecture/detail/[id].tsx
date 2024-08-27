@@ -558,7 +558,7 @@ export default function LectureWrite() {
                             }
                             handleChange={handleSubChange}
                             isHyphen={false}
-                            optionDefualt={{ type: '-' }}
+                            optionDefault={{ type: '-' }}
                           />
                         </Suspense>
                       )}
@@ -678,7 +678,7 @@ export default function LectureWrite() {
                                 </FilterLabel>
                               }
                               handleChange={setTeacher}
-                              optionDefualt={{
+                              optionDefault={{
                                 mUsername: '강사명 없음',
                                 id: '강사명 없음',
                               }}

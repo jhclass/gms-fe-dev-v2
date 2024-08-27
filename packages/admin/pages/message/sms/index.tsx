@@ -493,7 +493,7 @@ export default function message() {
                       <AdviceSelect
                         selectedKey={sender}
                         field={field}
-                        optionDefualt={{
+                        optionDefault={{
                           type: '-',
                         }}
                         label={<FilterLabel>보내는사람</FilterLabel>}

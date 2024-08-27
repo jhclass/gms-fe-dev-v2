@@ -418,7 +418,7 @@ export default function ConsultFilter({
                       defaultValue={'-'}
                       label={<FilterLabel>수강구분</FilterLabel>}
                       handleChange={handleSubChange}
-                      optionDefualt={{ type: '-' }}
+                      optionDefault={{ type: '-' }}
                       isHyphen={true}
                     />
                   </Suspense>
@@ -443,7 +443,7 @@ export default function ConsultFilter({
                       field={field}
                       label={'담당자'}
                       handleChange={handleManagerChange}
-                      optionDefualt={{
+                      optionDefault={{
                         mUsername: '-',
                         mUserId: '-',
                       }}
@@ -478,7 +478,7 @@ export default function ConsultFilter({
                       field={field}
                       label={'상담분야'}
                       handleChange={handleAdviceChange}
-                      optionDefualt={{
+                      optionDefault={{
                         type: '-',
                       }}
                       category={'상담분야'}

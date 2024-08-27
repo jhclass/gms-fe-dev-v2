@@ -15,7 +15,7 @@ export default function TeacherSelect({
   field,
   label,
   handleChange,
-  optionDefualt,
+  optionDefault,
   isId = false,
 }) {
   const router = useRouter()
@@ -31,7 +31,7 @@ export default function TeacherSelect({
     },
   })
   const managerList = [
-    optionDefualt,
+    optionDefault,
     ...searchManagerData?.searchManageUser.data,
   ]
 
