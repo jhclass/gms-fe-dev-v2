@@ -195,13 +195,17 @@ export default function CreateSmsSender({ isActive, category }) {
             },
           ],
         })
-
         userLogs(
           `${data.type} ${category} 등록`,
           `ok: ${result.data.createAdviceType.ok}`,
         )
 
         if (!result.data.createAdviceType.ok) {
+          if (
+            result.data.createAdviceType.message === '중복되는 분야 입니다.'
+          ) {
+            alert(`'${data.type}'은 중복되는 ${category}입니다.`)
+          }
           throw new Error(`${category} 등록 실패`)
         }
         alert(`${category}가 등록되었습니다.`)
