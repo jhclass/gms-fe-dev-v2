@@ -160,7 +160,7 @@ export default function EmploymentItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)

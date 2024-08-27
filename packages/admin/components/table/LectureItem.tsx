@@ -180,7 +180,7 @@ export default function ConsolutItem(props) {
   const conIndex = props.itemIndex
   const lecture = props.tableData
   const [calcData, setCalcData] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
   const [calcLecture] = useMutation(CALA_LECTURES_MUTATION)
 
   useEffect(() => {

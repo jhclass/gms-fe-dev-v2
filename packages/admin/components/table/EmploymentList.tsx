@@ -183,7 +183,6 @@ export default function EmploymentList() {
   const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
-
   const { error, data, refetch } = useSuspenseQuery<seeStudentPaymentQuery>(
     SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
     {

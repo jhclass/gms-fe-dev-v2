@@ -242,7 +242,6 @@ export default function ConsultFilter({
   }
 
   const onSubmit = data => {
-    console.log(data)
     if (isDirty) {
       const filter = {
         teacherId: data.teacherId === '-' ? null : parseInt(data.teacherId),

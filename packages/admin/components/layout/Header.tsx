@@ -322,6 +322,32 @@ export default function Header() {
     }
   }, [headerUserMenu])
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1024) {
+        if (navOpen) {
+          document.body.classList.add('no-scroll')
+        }
+      } else {
+        document.body.classList.remove('no-scroll')
+      }
+    }
+
+    if (navOpen && window.innerWidth <= 1024) {
+      document.body.classList.add('no-scroll')
+    } else {
+      document.body.classList.remove('no-scroll')
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    // 컴포넌트가 언마운트되거나 메뉴가 닫힐 때 클래스 제거
+    return () => {
+      document.body.classList.remove('no-scroll')
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [navOpen])
+
   const toggleNav = () => {
     setNavOpen(!navOpen)
   }

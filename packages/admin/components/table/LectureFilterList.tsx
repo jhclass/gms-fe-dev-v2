@@ -205,7 +205,6 @@ export default function LectureFilterList({ lectureFilter }) {
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        console.log(resData)
         if (resData.searchLectures.ok) {
           const { data, totalCount } = resData.searchLectures || {}
           setSearchResult({ data, totalCount })

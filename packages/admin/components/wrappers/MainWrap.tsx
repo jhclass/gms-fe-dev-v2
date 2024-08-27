@@ -155,6 +155,7 @@ export default function MainWrap({ children }) {
           sessionStorage.setItem('newToday', formattedDate)
           sessionStorage.setItem('newStudent', 'true')
         }
+        refetch()
       } catch (error) {
         console.error('Error parsing message:', error)
       }

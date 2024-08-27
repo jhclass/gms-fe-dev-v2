@@ -8,9 +8,10 @@ const UpdateTime = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 0;
     align-items: flex-end;
+    flex-wrap: wrap;
   }
 `
 const UpdateCon = styled.p`
@@ -51,7 +52,7 @@ export default function ListInfo({ item }) {
           ) : null}
         </UpdateCon>
         {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-          <span>-</span>
+          <span className="px-[0.2rem]">-</span>
         ) : null}
         <UpdateCon>{formatDate(item?.lastModifiedTime)}</UpdateCon>
       </UpdateTime>

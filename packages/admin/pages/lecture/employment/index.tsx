@@ -1,7 +1,6 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import { motion } from 'framer-motion'
 import Layout from '@/pages/lecture/layout'
 import { Suspense, useState } from 'react'
 import EmploymentStateFilter from '@/components/filter/EmploymentStateFilter'
