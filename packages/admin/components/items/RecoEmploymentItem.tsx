@@ -15,7 +15,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ListInfo from '../common/ListInfo'
+import ListInfo from '@/components/common/ListInfo'
 
 const DetailForm = styled.form`
   width: 100%;
@@ -80,11 +80,6 @@ const BtnBox = styled.div`
       width: 50%;
     }
   }
-`
-const UpdateTime = styled.p`
-  font-size: 0.75rem;
-  padding-left: 0.5rem;
-  color: ${({ theme }) => theme.colors.gray};
 `
 const DatePickerBox = styled.div`
   width: 100%;

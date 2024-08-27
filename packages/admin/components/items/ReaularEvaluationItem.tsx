@@ -74,37 +74,6 @@ const BtnBox = styled.div`
     }
   }
 `
-const UpdateTime = styled.p`
-  font-size: 0.75rem;
-  padding-left: 0.5rem;
-  color: ${({ theme }) => theme.colors.gray};
-`
-
-const DatePickerBox = styled.div`
-  width: 100%;
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
-`
-
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-`
 
 export default function ReaularEvaluationItem({ item, refetch, setPage, mId }) {
   const { userLogs } = useUserLogsMutation()

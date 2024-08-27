@@ -18,11 +18,9 @@ const Noti = styled.p`
 `
 const UpdateTime = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 0.3rem;
 
   @media (max-width: 768px) {
-    /* flex-direction: column; */
-    gap: 0;
     align-items: flex-end;
   }
 `
@@ -70,7 +68,7 @@ export default function FormTopInfo({ noti, item }) {
           ) : null}
         </UpdateCon>
         {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-          <span className="px-[0.2rem]">-</span>
+          <span>-</span>
         ) : null}
         <UpdateCon>
           {item?.lastModifiedTime

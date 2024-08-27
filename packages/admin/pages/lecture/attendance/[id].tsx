@@ -53,11 +53,7 @@ const Noti = styled.p`
     color: red;
   }
 `
-const UpdateTime = styled.p`
-  span {
-    color: #555;
-  }
-`
+
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;

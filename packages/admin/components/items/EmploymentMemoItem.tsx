@@ -81,11 +81,6 @@ const BtnBox = styled.div`
     }
   }
 `
-const UpdateTime = styled.p`
-  font-size: 0.75rem;
-  padding-left: 0.5rem;
-  color: ${({ theme }) => theme.colors.gray};
-`
 
 const DatePickerBox = styled.div`
   width: 100%;

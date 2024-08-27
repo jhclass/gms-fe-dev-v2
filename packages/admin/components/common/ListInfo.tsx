@@ -2,14 +2,12 @@ import { styled } from 'styled-components'
 
 const UpdateTime = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 0.3rem;
   font-size: 0.75rem;
   padding-left: 0.5rem;
   color: ${({ theme }) => theme.colors.gray};
 
   @media (max-width: 768px) {
-    /* flex-direction: column; */
-    gap: 0;
     align-items: flex-end;
     flex-wrap: wrap;
   }

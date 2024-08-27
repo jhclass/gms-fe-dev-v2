@@ -65,41 +65,6 @@ const DetailForm = styled.form`
     gap: 1rem;
   }
 `
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
-const UpdateTime = styled.p`
-  span {
-    color: #555;
-  }
-`
-
-const SemiTitle = styled.p`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: ${({ theme }) => theme.colors.accent};
-  padding-bottom: 0.375rem;
-  display: block;
-`
-const ColFlexBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-direction: column;
-`
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
