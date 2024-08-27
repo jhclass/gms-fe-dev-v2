@@ -11,38 +11,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import AdviceSelect from '../common/AdviceSelect'
 import FormTopInfo from '../common/FormTopInfo'
 
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
-const UpdateTime = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0;
-    align-items: flex-end;
-  }
-`
-const UpdateCon = styled.p`
-  position: relative;
-
-  > span {
-    color: #555;
-  }
-`
 const FormBox = styled.form`
   display: flex;
   flex-direction: column;

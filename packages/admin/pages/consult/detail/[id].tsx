@@ -79,27 +79,6 @@ const SemiTitle = styled.p`
   padding-bottom: 0.375rem;
   display: block;
 `
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
-const UpdateTime = styled.p`
-  span {
-    color: #555;
-  }
-`
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;

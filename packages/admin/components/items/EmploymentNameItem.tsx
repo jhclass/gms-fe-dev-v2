@@ -1,21 +1,7 @@
-import {
-  DELETE_CERTIFICATE_MUTATION,
-  EDIT_CERTIFICATE_MUTATION,
-} from '@/graphql/mutations'
-import useUserLogsMutation from '@/utils/userLogs'
-import { useMutation } from '@apollo/client'
-import { Button, Input, Radio, RadioGroup } from '@nextui-org/react'
+import { Input, Radio, RadioGroup } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-import { getYear } from 'date-fns'
-registerLocale('ko', ko)
-const _ = require('lodash')
-import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ListInfo from '../common/ListInfo'
+import ListInfo from '@/components/common/ListInfo'
 
 const DetailDiv = styled.div`
   width: 100%;
@@ -78,30 +64,6 @@ const BtnBox = styled.div`
     button {
       width: 50%;
     }
-  }
-`
-const UpdateTime = styled.p`
-  font-size: 0.75rem;
-  padding-left: 0.5rem;
-  color: ${({ theme }) => theme.colors.gray};
-`
-const DatePickerBox = styled.div`
-  width: 100%;
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
   }
 `
 

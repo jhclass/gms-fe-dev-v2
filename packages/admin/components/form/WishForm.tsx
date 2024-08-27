@@ -28,47 +28,7 @@ const Noti = styled.p`
     color: red;
   }
 `
-const UpdateTime = styled.div`
-  display: flex;
-  gap: 0.5rem;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0;
-    align-items: flex-end;
-  }
-`
-const UpdateCon = styled.p`
-  position: relative;
-  &:first-child {
-    padding-right: 0.4rem;
-    &:after {
-      content: '';
-      width: 0.3rem;
-      height: 1px;
-      background: ${({ theme }) => theme.colors.black};
-      position: absolute;
-      top: 50%;
-      margin-top: -0.5px;
-      right: -0.2rem;
-    }
-  }
-  > span {
-    color: #555;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0;
-    align-items: flex-end;
-    &:first-child {
-      padding-right: 0;
-      &:after {
-        display: none;
-      }
-    }
-  }
-`
 const DetailDiv = styled.div`
   display: flex;
   flex-direction: column;
