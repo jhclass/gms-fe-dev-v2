@@ -74,6 +74,7 @@ export const MME_QUERY = gql`
       email
       id
       createdAt
+      branchId
       lastModifiedBy
       lastModifiedTime
       favoriteStudentState

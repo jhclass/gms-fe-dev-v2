@@ -342,6 +342,12 @@ export default function Header() {
   const LogUserOut = () => {
     userLogs(`로그아웃`)
     localStorage.removeItem('token')
+    sessionStorage.removeItem('newStudent')
+    sessionStorage.removeItem('newStudentState')
+    sessionStorage.removeItem('newConsult')
+    sessionStorage.removeItem('todayStudentTotal')
+    sessionStorage.removeItem('newAccounting')
+    sessionStorage.removeItem('today')
     router.push('/login')
   }
 
