@@ -29,7 +29,7 @@ const ColorHelp = styled.div`
   display: flex;
 `
 
-const ColorCip = styled.p`
+const Noti = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
@@ -37,10 +37,8 @@ const ColorCip = styled.p`
   font-size: 0.7rem;
 
   span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
+    padding-right: 0.2rem;
+    color: ${({ theme }) => theme.colors.red};
   }
 `
 const TableWrap = styled.div`
@@ -67,6 +65,7 @@ const TheaderBox = styled.div`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -209,6 +208,11 @@ export default function LectureList() {
         <Ttotal>
           총 <span>{totalCount}</span>건
         </Ttotal>
+        <ColorHelp>
+          <Noti>
+            <span>*</span>목록을 클릭 시 추가 내용이 노출됩니다.
+          </Noti>
+        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
@@ -222,7 +226,11 @@ export default function LectureList() {
                   <TlecturName>강의이름</TlecturName>
                   <Tperiod>강의기간</Tperiod>
                   <Ttimes>강의시간</Ttimes>
-                  <Tdates>강의일수</Tdates>
+                  <Tdates>
+                    강의
+                    <br />
+                    일수
+                  </Tdates>
                   <Tteacher>강사명</Tteacher>
                   <Tbtn></Tbtn>
                 </ClickBox>

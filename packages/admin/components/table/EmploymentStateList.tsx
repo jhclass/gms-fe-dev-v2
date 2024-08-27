@@ -19,7 +19,6 @@ const Theader = styled.div`
   color: #111;
   font-size: 0.875rem;
   font-weight: 700;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   text-align: center;
 `
 

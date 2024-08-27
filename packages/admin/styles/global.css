@@ -4,6 +4,9 @@
 @tailwind variants;
 
 @layer components {
+  .no-scroll {
+    overflow: hidden !important;
+  }
   .menuList {
     display: none;
     @apply absolute left-0 py-3 bg-white top-[40px] w-[260px];

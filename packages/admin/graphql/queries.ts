@@ -74,6 +74,7 @@ export const MME_QUERY = gql`
       email
       id
       createdAt
+      branchId
       lastModifiedBy
       lastModifiedTime
       favoriteStudentState
@@ -847,12 +848,14 @@ export const SEARCH_SMS_QUERY = gql`
 export const SEARCH_SM_QUERY = gql`
   query Query(
     $modelType: String!
+    $lectureId: Int
     $studentPaymentId: Int
     $limit: Int
     $page: Int
   ) {
     searchSM(
       modelType: $modelType
+      lectureId: $lectureId
       studentPaymentId: $studentPaymentId
       limit: $limit
       page: $page

@@ -5,6 +5,7 @@ import Layout from '@/pages/lecture/layout'
 import { Suspense, useState } from 'react'
 import LectureList from '@/components/table/LectureList'
 import LectureFilter from '@/components/filter/LectureFilter'
+import LectureFilterList from '@/components/table/LectureFilterList'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -27,7 +28,7 @@ const LodingDiv = styled.div`
 export default function Lecture() {
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
+  const [lectureFilter, setLectureFilter] = useState()
 
   return (
     <>
@@ -48,9 +49,9 @@ export default function Lecture() {
         >
           <LectureFilter
             isActive={filterActive}
-            // studentFilter={studentFilter}
-            // onFilterSearch={setFilterSearch}
-            // setStudentFilter={setStudentFilter}
+            lectureFilter={lectureFilter}
+            onFilterSearch={setFilterSearch}
+            setLectureFilter={setLectureFilter}
           />
         </Suspense>
         <ConBox>
@@ -62,7 +63,7 @@ export default function Lecture() {
                 </LodingDiv>
               }
             >
-              {/* <ConsultationFilter studentFilter={studentFilter} /> */}
+              <LectureFilterList lectureFilter={lectureFilter} />
             </Suspense>
           ) : (
             <Suspense

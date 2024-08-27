@@ -25,7 +25,7 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table-row;
+  display: table;
   width: 100%;
   min-width: fit-content;
   text-align: center;
@@ -160,7 +160,7 @@ export default function EmploymentItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const student = props.tableData
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
@@ -250,7 +250,7 @@ export default function EmploymentItem(props) {
                 </BtnBox>
               </Tbtn>
             </div>
-            <div className="subDiv">
+            <div>
               <Tdiv $isOpen={isOpen}>
                 <EmploymentStateList student={student} />
               </Tdiv>

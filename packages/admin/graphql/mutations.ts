@@ -1661,6 +1661,9 @@ export const SEARCH_LECTURES_MUTATION = gql`
               name
               phoneNum1
             }
+            StudentPortfolio {
+              id
+            }
             attendance {
               attendanceDate
               attendanceDateTime
@@ -1751,6 +1754,52 @@ export const SEARCH_LECTURES_MUTATION = gql`
       ok
       message
       error
+    }
+  }
+`
+export const SEARCH_LECTURES_FILTER_MUTATION = gql`
+  mutation Mutation(
+    $periodStart: String
+    $periodEnd: String
+    $temporaryName: String
+    $teacherId: Int
+    $page: Int
+    $limit: Int
+  ) {
+    searchLectures(
+      periodStart: $periodStart
+      periodEnd: $periodEnd
+      temporaryName: $temporaryName
+      teacherId: $teacherId
+      page: $page
+      limit: $limit
+    ) {
+      ok
+      message
+      error
+      totalCount
+      data {
+        id
+        createdAt
+        campus
+        temporaryName
+        subDiv
+        teachers {
+          id
+          mUserId
+          mUsername
+        }
+        roomNum
+        subjectId
+        lecturePeriodStart
+        lecturePeriodEnd
+        lectureDetails
+        lectureTime
+        eduStatusReport
+        ApprovedNum
+        confirmedNum
+        sessionNum
+      }
     }
   }
 `

@@ -1,18 +1,13 @@
-import { useSuspenseQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import {
-  SeeLecturesResult,
-  StudentPaymentResult,
-} from '@/src/generated/graphql'
-import {
-  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-  SEE_LECTURES_QUERY,
-} from '@/graphql/queries'
-import EmploymentItem from './EmploymentItem'
+import LectureItem from '@/components/table/LectureItem'
+import { SeeLecturesResult } from '@/src/generated/graphql'
+import { SEE_LECTURES_QUERY } from '@/graphql/queries'
+import { SEARCH_LECTURES_FILTER_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -31,11 +26,21 @@ const Ttotal = styled.p`
     color: ${({ theme }) => theme.colors.primary};
   }
 `
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
 const ColorHelp = styled.div`
   display: flex;
 `
 
-const ColorCip = styled.p`
+const Noti = styled.p`
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
@@ -43,10 +48,8 @@ const ColorCip = styled.p`
   font-size: 0.7rem;
 
   span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
+    padding-right: 0.2rem;
+    color: ${({ theme }) => theme.colors.red};
   }
 `
 const TableWrap = styled.div`
@@ -70,16 +73,10 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
-const Tflag = styled.div`
-  display: table-cell;
-  width: 0.5rem;
-  height: 100%;
-  min-width: 7px;
-`
-
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -91,15 +88,35 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.06}px;
 `
+const Troom = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 8%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.08}px;
+`
+const TsubDiv = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 8%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.08}px;
+`
 const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 32%;
+  width: 22%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.32}px;
+  min-width: ${1200 * 0.22}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -122,6 +139,17 @@ const Ttimes = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 
+const Tdates = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 7%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.07}px;
+`
+
 const Tteacher = styled.div`
   display: table-cell;
   justify-content: center;
@@ -132,35 +160,15 @@ const Tteacher = styled.div`
   color: inherit;
   min-width: ${1200 * 0.1}px;
 `
-const Tname = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 10%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.1}px;
-`
-const Tcheck = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 8%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.08}px;
-`
 const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 13%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.13}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -175,96 +183,107 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
-type seeStudentPaymentQuery = {
-  seeStudentPayment: StudentPaymentResult
+type seeLectures = {
+  seeLectures: SeeLecturesResult
 }
 
-export default function EmploymentList() {
-  const theme = useTheme()
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+export default function LectureFilterList({ lectureFilter }) {
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const { error, data, refetch } = useSuspenseQuery<seeStudentPaymentQuery>(
-    SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
+  const [searchLecturesFilterMutation] = useMutation(
+    SEARCH_LECTURES_FILTER_MUTATION,
   )
-  const studentData = data?.seeStudentPayment?.StudentPayment
-  const totalCount = data?.seeStudentPayment?.totalCount
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const [searchResult, setSearchResult] = useState(null)
+  const today = new Date()
+  // const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    refetch()
-  }, [])
+    searchLecturesFilterMutation({
+      variables: {
+        ...lectureFilter,
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        if (resData.searchLectures.ok) {
+          const { data, totalCount } = resData.searchLectures || {}
+          setSearchResult({ data, totalCount })
+        }
+      },
+    })
+  }, [lectureFilter, currentPage])
 
-  if (error) {
-    console.log(error)
+  const resetList = () => {
+    window.location.href = '/lecture'
   }
 
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{totalCount}</span>건
-        </Ttotal>
-        {/* <ColorHelp>
-          <ColorCip>
-            <span style={{ background: theme.colors.primary }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: theme.colors.accent }}></span> : 미처리
-          </ColorCip>
-        </ColorHelp> */}
+        <TopBox>
+          <Ttotal>
+            총{' '}
+            <span>
+              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
+            </span>
+            건이 검색되었습니다.
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
+        <ColorHelp>
+          <Noti>
+            <span>*</span>목록을 클릭 시 추가 내용이 노출됩니다.
+          </Noti>
+        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <Tflag
-                  style={{
-                    background: 'transparent',
-                  }}
-                ></Tflag>
                 <ClickBox>
                   <Tnum>No</Tnum>
+                  <Troom>강의실</Troom>
+                  <TsubDiv>수강구분</TsubDiv>
                   <TlecturName>강의이름</TlecturName>
                   <Tperiod>강의기간</Tperiod>
-                  <Ttimes>사후관리종료일</Ttimes>
+                  <Ttimes>강의시간</Ttimes>
+                  <Tdates>
+                    강의
+                    <br />
+                    일수
+                  </Tdates>
                   <Tteacher>강사명</Tteacher>
-                  <Tname>학생명</Tname>
-                  <Tcheck>취업여부</Tcheck>
                   <Tbtn></Tbtn>
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              studentData
-                ?.filter(student => student.lectureAssignment === '배정')
-                .map((item, index) => (
-                  <EmploymentItem
-                    forName="student"
-                    key={index}
-                    tableData={item}
-                    itemIndex={index}
-                    currentPage={currentPage}
-                    limit={currentLimit}
-                  />
-                ))}
-            {totalCount === 0 && <Nolist>등록된 취업현황이 없습니다.</Nolist>}
+            {searchResult?.totalCount > 0 &&
+              searchResult?.data?.map((item, index) => (
+                <LectureItem
+                  forName="lecture"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                />
+              ))}
+            {searchResult?.totalCount === 0 && (
+              <Nolist>등록된 강의가 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        {searchResult?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
+              total={Math.ceil(searchResult?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

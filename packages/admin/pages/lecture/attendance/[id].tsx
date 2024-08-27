@@ -34,7 +34,7 @@ const FlexBox = styled.div`
   display: flex;
   justify-content: end;
   margin-top: 0.5rem;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0;
 `
 const TopInfo = styled.div`
   display: flex;
@@ -101,6 +101,15 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+`
+
+const Nolist = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray};
 `
 
 export default function StudentsWrite() {
@@ -202,54 +211,71 @@ export default function StudentsWrite() {
                 교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지 않습니다.
               </Noti>
               <FlexChipBox>
-                {sortStudents &&
-                  sortStudents
-                    .filter(
-                      student =>
-                        student.courseComplete !== completion.dropout &&
-                        student.subDiv === '국가기간',
-                    )
-                    .map((item, index) => (
-                      <Link
-                        href={`/lecture/employmentDetail/${item.id}`}
-                        key={index}
-                      >
-                        <Chip color="primary">{item.student.name}</Chip>
-                      </Link>
-                    ))}
+                {sortStudents?.length > 0 ? (
+                  <>
+                    {sortStudents
+                      .filter(
+                        student =>
+                          student.courseComplete !== completion.dropout &&
+                          student.subDiv === '국가기간',
+                      )
+                      .map((item, index) => (
+                        <Link
+                          href={`/lecture/employmentDetail/${item.id}`}
+                          key={index}
+                        >
+                          <Chip color="primary">{item.student.name}</Chip>
+                        </Link>
+                      ))}
+                  </>
+                ) : (
+                  <Nolist>교육훈련대상 수강생이 없습니다.</Nolist>
+                )}
               </FlexChipBox>
             </DetailDiv>
           </DetailBox>
-          <FlexBox>
-            <Link
-              href={lectureData?.timetableAttached || '#'}
-              onClick={handleClick}
-            >
-              <Chip variant="bordered" color="primary">
-                &#128205; 훈련시간표 다운로드
-              </Chip>
-            </Link>
-          </FlexBox>
-          <DetailBox style={{ marginTop: '0.5rem' }}>
+
+          {lectureData?.timetableAttached && (
+            <FlexBox>
+              <Link
+                href={lectureData?.timetableAttached || '#'}
+                onClick={handleClick}
+              >
+                <Chip variant="bordered" color="primary">
+                  &#128205; 훈련시간표 다운로드
+                </Chip>
+              </Link>
+            </FlexBox>
+          )}
+
+          <DetailBox>
             <DetailDiv>
               <AreaTitleFilter>
                 <h4>출석부</h4>
-                <AttendanceFilter
-                  isActive={filterAttandanceActive}
-                  lectureData={lectureData}
-                  filterAttandanceSearch={filterAttandanceSearch}
-                  setFilterAttandanceData={setFilterAttandanceData}
-                  setFilterAttandanceSearch={setFilterAttandanceSearch}
-                />
+                {students?.length > 0 && (
+                  <AttendanceFilter
+                    isActive={filterAttandanceActive}
+                    lectureData={lectureData}
+                    filterAttandanceSearch={filterAttandanceSearch}
+                    setFilterAttandanceData={setFilterAttandanceData}
+                    setFilterAttandanceSearch={setFilterAttandanceSearch}
+                  />
+                )}
               </AreaTitleFilter>
-              {filterAttandanceSearch ? (
-                <AttendanceFilterList
-                  lectureData={lectureData}
-                  students={students}
-                  filterAttandanceData={filterAttandanceData}
-                />
+              {students?.length > 0 ? (
+                <>
+                  {filterAttandanceSearch ? (
+                    <AttendanceFilterList
+                      lectureData={lectureData}
+                      students={students}
+                      filterAttandanceData={filterAttandanceData}
+                    />
+                  ) : (
+                    <Attendance lectureData={lectureData} students={students} />
+                  )}
+                </>
               ) : (
-                <Attendance lectureData={lectureData} students={students} />
+                <Nolist>수강생이 없습니다.</Nolist>
               )}
             </DetailDiv>
           </DetailBox>
@@ -258,28 +284,38 @@ export default function StudentsWrite() {
               <DetailDiv>
                 <AreaTitleFilter>
                   <h4>출결현황</h4>
-                  <AttendanceCountFilter
-                    isActive={filterAttandanceActive}
-                    lectureData={lectureData}
-                    filterAttandanceCountSearch={filterAttandanceCountSearch}
-                    setFilterAttandanceCountData={setFilterAttandanceCountData}
-                    setFilterAttandanceCountSearch={
-                      setFilterAttandanceCountSearch
-                    }
-                  />
+                  {students?.length > 0 && (
+                    <AttendanceCountFilter
+                      isActive={filterAttandanceActive}
+                      lectureData={lectureData}
+                      filterAttandanceCountSearch={filterAttandanceCountSearch}
+                      setFilterAttandanceCountData={
+                        setFilterAttandanceCountData
+                      }
+                      setFilterAttandanceCountSearch={
+                        setFilterAttandanceCountSearch
+                      }
+                    />
+                  )}
                 </AreaTitleFilter>
-                {filterAttandanceCountSearch ? (
-                  <AbsentFilterList
-                    lectureId={lectureData?.id}
-                    filterAttandanceCountData={filterAttandanceCountData}
-                    sortStudents={sortStudents}
-                  />
+                {students?.length > 0 ? (
+                  <>
+                    {filterAttandanceCountSearch ? (
+                      <AbsentFilterList
+                        lectureId={lectureData?.id}
+                        filterAttandanceCountData={filterAttandanceCountData}
+                        sortStudents={sortStudents}
+                      />
+                    ) : (
+                      <AbsentList
+                        lectureId={lectureData?.id}
+                        lectureDates={lectureData?.lectureDetails}
+                        sortStudents={sortStudents}
+                      />
+                    )}
+                  </>
                 ) : (
-                  <AbsentList
-                    lectureId={lectureData?.id}
-                    lectureDates={lectureData?.lectureDetails}
-                    sortStudents={sortStudents}
-                  />
+                  <Nolist>출결사항이 없습니다.</Nolist>
                 )}
               </DetailDiv>
             </DetailBox>

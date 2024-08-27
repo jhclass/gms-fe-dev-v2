@@ -21,7 +21,7 @@ const UpdateTime = styled.div`
   gap: 0.5rem;
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 0;
     align-items: flex-end;
   }
@@ -70,7 +70,7 @@ export default function FormTopInfo({ noti, item }) {
           ) : null}
         </UpdateCon>
         {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-          <span>-</span>
+          <span className="px-[0.2rem]">-</span>
         ) : null}
         <UpdateCon>
           {item?.lastModifiedTime

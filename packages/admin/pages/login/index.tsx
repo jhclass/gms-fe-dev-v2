@@ -8,7 +8,7 @@ import { useMutation } from '@apollo/client'
 import { LogUserIn } from '@/lib/apolloClient'
 import { Button, Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useUserLogsMutation from '@/utils/userLogs'
 
 type LoginForm = {
@@ -166,6 +166,15 @@ export default function Login() {
 
   const idValue = useWatch({ control, name: 'id' })
   const passValue = useWatch({ control, name: 'password' })
+
+  useEffect(() => {
+    sessionStorage.removeItem('newStudent')
+    sessionStorage.removeItem('newStudentState')
+    sessionStorage.removeItem('newConsult')
+    sessionStorage.removeItem('todayStudentTotal')
+    sessionStorage.removeItem('newAccounting')
+    sessionStorage.removeItem('today')
+  }, [])
 
   return (
     <>
