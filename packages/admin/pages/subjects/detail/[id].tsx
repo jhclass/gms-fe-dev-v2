@@ -664,7 +664,7 @@ export default function SubjectDetail() {
                             }
                             handleChange={handleSubChange}
                             isHyphen={false}
-                            optionDefualt={{ type: '-' }}
+                            optionDefault={{ type: '-' }}
                           />
                         </Suspense>
                       )}
@@ -887,7 +887,7 @@ export default function SubjectDetail() {
                               field={field}
                               label={'강사명'}
                               handleChange={handleTeacherChange}
-                              optionDefualt={{
+                              optionDefault={{
                                 mUsername: '강사명 없음',
                                 mUserId: '강사명 없음',
                               }}

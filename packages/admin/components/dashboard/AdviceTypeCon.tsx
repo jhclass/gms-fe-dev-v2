@@ -64,7 +64,7 @@ const Content = styled.div`
   min-height: 190px;
 
   .apexcharts-legend {
-    max-width: 87px;
+    width: 87px;
     overflow-y: hidden;
     overflow-x: overlay;
     white-space: nowrap;
@@ -166,7 +166,7 @@ export default function AdviceTypeCon() {
         <>
           <Title>
             <p>
-              상담분야 TOP{adviceTypeData?.topFiveName.length}{' '}
+              상담분야 TOP{adviceTypeData?.topFiveName?.length}{' '}
               <span>&#40;최근 3개월&#41;</span>
             </p>
             <ToolTipBox>
@@ -175,11 +175,11 @@ export default function AdviceTypeCon() {
                 content={
                   <DashTooltip className="px-1 py-2">
                     <DashTooltipTitle className="font-bold text-small">
-                      상담분야 TOP{adviceTypeData?.topFiveName.length}
+                      상담분야 TOP{adviceTypeData?.topFiveName?.length}
                     </DashTooltipTitle>
                     <DashTooltipCon className="text-tiny">
-                      상담 분야 중 상위 {adviceTypeData?.topFiveName.length}분야
-                      (중복 선택 포함)
+                      상담 분야 중 상위 {adviceTypeData?.topFiveName?.length}
+                      분야 (중복 선택 포함)
                     </DashTooltipCon>
                   </DashTooltip>
                 }

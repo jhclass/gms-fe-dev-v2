@@ -797,7 +797,7 @@ export default function ConsultDetail() {
                             }
                             handleChange={handleSubChange}
                             isHyphen={false}
-                            optionDefualt={{ type: '-' }}
+                            optionDefault={{ type: '-' }}
                           />
                         </Suspense>
                       )}
@@ -835,7 +835,7 @@ export default function ConsultDetail() {
                           label={'담당자'}
                           defaultValue={studentState ? studentState.pic : null}
                           handleChange={handleManagerChange}
-                          optionDefualt={{
+                          optionDefault={{
                             mUsername: '담당자 지정필요',
                             mUserId: '담당자 지정필요',
                           }}

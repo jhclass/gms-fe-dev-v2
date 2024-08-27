@@ -349,7 +349,7 @@ export default function ConsultFilter({
                       field={field}
                       label={'보낸사람'}
                       handleChange={handleManagerChange}
-                      optionDefualt={{
+                      optionDefault={{
                         mUsername: '-',
                         mUserId: '-',
                       }}

@@ -811,7 +811,7 @@ export default function StudentPaymentForm({
                           label={<FilterLabel>수강구분</FilterLabel>}
                           handleChange={handleSubChange}
                           isHyphen={false}
-                          optionDefualt={{ type: '-' }}
+                          optionDefault={{ type: '-' }}
                         />
                       </Suspense>
                     )}
@@ -1210,7 +1210,7 @@ export default function StudentPaymentForm({
                           }
                           defaultValue={studentPaymentData?.processingManagerId}
                           handleChange={handleSubManagerChange}
-                          optionDefualt={{
+                          optionDefault={{
                             id: '담당자 지정필요',
                             mUsername: '담당자 지정필요',
                           }}

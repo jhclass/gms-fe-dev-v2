@@ -18,7 +18,7 @@ export default function ManagerSelect({
   field,
   label,
   handleChange,
-  optionDefualt = null,
+  optionDefault = null,
   isHyphen,
 }) {
   const router = useRouter()
@@ -33,8 +33,8 @@ export default function ManagerSelect({
     },
   )
 
-  const subDivList = optionDefualt
-    ? [optionDefualt, ...data?.seeAdviceType.adviceType]
+  const subDivList = optionDefault
+    ? [optionDefault, ...data?.seeAdviceType.adviceType]
     : data?.seeAdviceType.adviceType
 
   useEffect(() => {

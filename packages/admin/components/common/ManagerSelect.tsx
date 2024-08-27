@@ -15,7 +15,7 @@ export default function managerSelect({
   field,
   label,
   handleChange,
-  optionDefualt,
+  optionDefault,
   filter,
 }) {
   const router = useRouter()
@@ -33,7 +33,7 @@ export default function managerSelect({
     },
   })
   const managerList = [
-    optionDefualt,
+    optionDefault,
     ...searchManagerData?.searchManageUser.data,
   ]
 

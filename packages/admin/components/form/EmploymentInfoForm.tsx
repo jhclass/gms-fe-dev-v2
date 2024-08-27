@@ -245,7 +245,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
                   <AdviceSelect
                     selectedKey={selectValue}
                     field={field}
-                    optionDefualt={{
+                    optionDefault={{
                       type: '-',
                     }}
                     label={
