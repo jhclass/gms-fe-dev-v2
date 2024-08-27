@@ -51,6 +51,7 @@ export default function AdviceMultiSelect({
       limit: 100,
     },
   })
+
   const adviceList = adviceData?.seeAdviceType.adviceType
 
   if (adviceError) {

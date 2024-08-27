@@ -269,7 +269,7 @@ export default function StudentsWriteCourse() {
   const [disCountType, setDisCountType] = useState('%')
   const [paymentDate, setPaymentDate] = useState(null)
   const [dueDate, setDueDate] = useState(null)
-  const [sub, setSub] = useState('없음')
+  const [sub, setSub] = useState('-')
   const [weekendClass, setWeekendClass] = useState([])
   const [isDiscount, setIsDiscount] = useState(false)
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
@@ -732,6 +732,7 @@ export default function StudentsWriteCourse() {
                             label={<FilterLabel>수강구분</FilterLabel>}
                             handleChange={handleSubChange}
                             isHyphen={false}
+                            optionDefualt={{ type: '-' }}
                           />
                         </Suspense>
                       )}

@@ -245,7 +245,7 @@ export default function StudentPaymentForm({
   const [disCountType, setDisCountType] = useState('%')
   const [paymentDateSelect, setPaymentDateSelect] = useState(null)
   const [dueDateSelect, setDueDateSelect] = useState(null)
-  const [sub, setSub] = useState('없음')
+  const [sub, setSub] = useState('-')
   const [subjectManager, setSubjectManager] = useState('담당자 지정필요')
   const [weekendClass, setWeekendClass] = useState([])
   const [isDiscount, setIsDiscount] = useState(false)
@@ -811,6 +811,7 @@ export default function StudentPaymentForm({
                           label={<FilterLabel>수강구분</FilterLabel>}
                           handleChange={handleSubChange}
                           isHyphen={false}
+                          optionDefualt={{ type: '-' }}
                         />
                       </Suspense>
                     )}

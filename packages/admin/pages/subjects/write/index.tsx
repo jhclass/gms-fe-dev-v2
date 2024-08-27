@@ -170,7 +170,7 @@ export default function SubjectWrite() {
   const [expEndDate, setExpEndDate] = useState(null)
   const [sjStartDate, setSjStartDate] = useState(null)
   const [sjEndDate, setSjEndDate] = useState(null)
-  const [sub, setSub] = useState('없음')
+  const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState('강사명 없음')
   const [isSelected, setIsSelected] = useState(false)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -406,6 +406,7 @@ export default function SubjectWrite() {
                           }
                           handleChange={handleSubChange}
                           isHyphen={false}
+                          optionDefualt={{ type: '-' }}
                         />
                       </Suspense>
                     )}

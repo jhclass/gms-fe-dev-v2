@@ -188,8 +188,8 @@ export default function ConsultWirte() {
   const [adviceTypeSelectedName, setAdviceTypeSelectedName] = useState([])
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
-  const [receipt, setReceipt] = useState('없음')
-  const [sub, setSub] = useState('없음')
+  const [receipt, setReceipt] = useState('-')
+  const [sub, setSub] = useState('-')
   const [manager, setManager] = useState('담당자 지정필요')
   const years = _.range(2000, getYear(new Date()) + 5, 1)
 
@@ -540,11 +540,17 @@ export default function ConsultWirte() {
                         }
                       }}
                     >
-                      {Object.entries(receiptStatus).map(([key, item]) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))}
+                      {Object.entries(receiptStatus).map(([key, item]) =>
+                        key === '0' ? (
+                          <SelectItem value={'-'} key={'-'}>
+                            -
+                          </SelectItem>
+                        ) : (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ),
+                      )}
                     </Select>
                   )}
                 />
@@ -565,6 +571,7 @@ export default function ConsultWirte() {
                         label={<FilterLabel>수강구분</FilterLabel>}
                         handleChange={handleSubChange}
                         isHyphen={false}
+                        optionDefualt={{ type: '-' }}
                       />
                     </Suspense>
                   )}

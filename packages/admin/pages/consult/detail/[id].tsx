@@ -217,8 +217,8 @@ export default function ConsultDetail() {
   const [adviceTypeSelectedName, setAdviceTypeSelectedName] = useState([])
   const [stVisitDate, setStVisitDate] = useState(null)
   const [expEnrollDate, setExpEnrollDate] = useState(null)
-  const [receipt, setReceipt] = useState('없음')
-  const [sub, setSub] = useState('없음')
+  const [receipt, setReceipt] = useState('-')
+  const [sub, setSub] = useState('-')
   const [manager, setManager] = useState('담당자 지정필요')
   const [consultation, setConsultation] = useState([])
   const [memoList, setMemoList] = useState([])
@@ -316,12 +316,12 @@ export default function ConsultDetail() {
       studentState?.receiptDiv === '' ||
       studentState?.receiptDiv === undefined
     ) {
-      setReceipt('없음')
+      setReceipt('-')
     } else {
       setReceipt(studentState?.receiptDiv)
     }
     if (studentState?.subDiv === null || studentState?.subDiv === undefined) {
-      setSub('없음')
+      setSub('-')
     } else {
       setSub(studentState?.subDiv)
     }
@@ -759,11 +759,17 @@ export default function ConsultDetail() {
                             }
                           }}
                         >
-                          {Object.entries(receiptStatus).map(([key, item]) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
+                          {Object.entries(receiptStatus).map(([key, item]) =>
+                            key === '0' ? (
+                              <SelectItem value={'-'} key={'-'}>
+                                -
+                              </SelectItem>
+                            ) : (
+                              <SelectItem key={item} value={item}>
+                                {item}
+                              </SelectItem>
+                            ),
+                          )}
                         </Select>
                       )}
                     />
@@ -791,6 +797,7 @@ export default function ConsultDetail() {
                             }
                             handleChange={handleSubChange}
                             isHyphen={false}
+                            optionDefualt={{ type: '-' }}
                           />
                         </Suspense>
                       )}

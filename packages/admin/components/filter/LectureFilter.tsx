@@ -1,16 +1,13 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { consultPageState, subStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input } from '@nextui-org/react'
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import SubDivSelect from '@/components/common/SubDivSelect'
 import TeacherSelect from '../common/TeacherSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')

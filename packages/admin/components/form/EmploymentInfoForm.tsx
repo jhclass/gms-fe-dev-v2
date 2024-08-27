@@ -92,7 +92,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [editStudent] = useMutation(EDIT_STUDENT_INFOMATION_MUTATION)
-  const [selectValue, setSelectValue] = useState('유형선택')
+  const [selectValue, setSelectValue] = useState('-')
   const {
     handleSubmit,
     reset,
@@ -111,7 +111,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
   useEffect(() => {
     if (paymentData) {
       reset({
-        supportType: paymentData.supportType || '유형선택',
+        supportType: paymentData.supportType || '-',
         mAddresses: paymentData.mAddresses || '',
         mAddressDetail: paymentData.mAddressDetail || '',
         mZipCode: paymentData.mZipCode || '',
@@ -246,7 +246,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
                     selectedKey={selectValue}
                     field={field}
                     optionDefualt={{
-                      type: '유형선택',
+                      type: '-',
                     }}
                     label={
                       <FilterLabel>
