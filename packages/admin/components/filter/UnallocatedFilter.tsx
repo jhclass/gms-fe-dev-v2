@@ -266,6 +266,7 @@ export default function StudentsFilter({
                       label={<FilterLabel>수강구분</FilterLabel>}
                       handleChange={handleSubChange}
                       isHyphen={true}
+                      optionDefualt={{ type: '-' }}
                     />
                   </Suspense>
                 )}

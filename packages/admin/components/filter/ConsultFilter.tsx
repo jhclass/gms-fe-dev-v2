@@ -386,7 +386,7 @@ export default function ConsultFilter({
                   >
                     {Object.entries(receiptStatus).map(([key, item]) =>
                       key === '0' ? (
-                        <SelectItem value="-" key={'-'}>
+                        <SelectItem value={'-'} key={'-'}>
                           -
                         </SelectItem>
                       ) : (
@@ -418,6 +418,7 @@ export default function ConsultFilter({
                       defaultValue={'-'}
                       label={<FilterLabel>수강구분</FilterLabel>}
                       handleChange={handleSubChange}
+                      optionDefualt={{ type: '-' }}
                       isHyphen={true}
                     />
                   </Suspense>

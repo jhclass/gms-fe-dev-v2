@@ -222,7 +222,7 @@ export default function SubjectDetail() {
   const [expEndDate, setExpEndDate] = useState(null)
   const [sjStartDate, setSjStartDate] = useState(null)
   const [sjEndDate, setSjEndDate] = useState(null)
-  const [sub, setSub] = useState('없음')
+  const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState('강사명 없음')
   const [isSelected, setIsSelected] = useState(Boolean)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -261,7 +261,7 @@ export default function SubjectDetail() {
   useEffect(() => {
     if (subjectState !== null) {
       setIsSelected(subjectState.exposure)
-      setSub(subjectState.subDiv ?? '없음')
+      setSub(subjectState.subDiv ?? '-')
       setTeacher(subjectState.teacherName ?? '강사명 없음')
       setExpStartDate(
         subjectState.expiresDateStart != null
@@ -664,6 +664,7 @@ export default function SubjectDetail() {
                             }
                             handleChange={handleSubChange}
                             isHyphen={false}
+                            optionDefualt={{ type: '-' }}
                           />
                         </Suspense>
                       )}

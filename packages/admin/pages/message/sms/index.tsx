@@ -172,7 +172,7 @@ export default function message() {
   const [reservationDate, setReservationDate] = useState(null)
   const [saveType, setSaveType] = useState('개인')
   const [sendType, setSendType] = useState('즉시전송')
-  const [sender, setSender] = useState('선택해주세요')
+  const [sender, setSender] = useState('-')
   const [messageCon, setMessageCon] = useState('')
   const [savedMessage, setSavedMessage] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -494,7 +494,7 @@ export default function message() {
                         selectedKey={sender}
                         field={field}
                         optionDefualt={{
-                          type: '선택해주세요',
+                          type: '-',
                         }}
                         label={<FilterLabel>보내는사람</FilterLabel>}
                         handleChange={handleSubChange}

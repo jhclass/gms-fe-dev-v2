@@ -188,7 +188,7 @@ export default function LectureWrite() {
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const subStatus = useRecoilValue(subStatusState)
-  const [sub, setSub] = useState('없음')
+  const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState([])
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
@@ -429,6 +429,7 @@ export default function LectureWrite() {
                           }
                           handleChange={handleSubChange}
                           isHyphen={false}
+                          optionDefualt={{ type: '-' }}
                         />
                       </Suspense>
                     )}

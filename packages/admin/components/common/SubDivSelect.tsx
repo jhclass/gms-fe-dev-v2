@@ -1,7 +1,4 @@
-import {
-  SEARCH_MANAGEUSER_QUERY,
-  SEE_ADVICE_TYPE_QUERY,
-} from '@/graphql/queries'
+import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 import {
   ResultAdviceType,
   SearchManageUserResult,
@@ -21,6 +18,7 @@ export default function ManagerSelect({
   field,
   label,
   handleChange,
+  optionDefualt = null,
   isHyphen,
 }) {
   const router = useRouter()
@@ -34,7 +32,10 @@ export default function ManagerSelect({
       },
     },
   )
-  const subDivList = data?.seeAdviceType.adviceType || []
+
+  const subDivList = optionDefualt
+    ? [optionDefualt, ...data?.seeAdviceType.adviceType]
+    : data?.seeAdviceType.adviceType
 
   useEffect(() => {
     refetch({
