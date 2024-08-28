@@ -221,7 +221,7 @@ export default function EmploymentItem(props) {
               </Tcheck>
               <Tbtn>
                 <BtnBox>
-                  {/* {(mGrade < grade.general || mPart.includes('교무팀')) && (
+                  {/* {(mGrade <= grade.subMaster || mPart.includes('교무팀')) && (
                     <Button
                       size="sm"
                       variant="solid"

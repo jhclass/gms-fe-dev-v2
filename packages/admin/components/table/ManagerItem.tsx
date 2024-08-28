@@ -1,12 +1,7 @@
 import { styled, useTheme } from 'styled-components'
-import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
-import { gradeState, progressStatusState } from '@/lib/recoilAtoms'
-import { UPDATE_FAVORITE_MUTATION } from '@/graphql/mutations'
-import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
+import { gradeState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
-import { Checkbox } from '@nextui-org/react'
-import useMmeQuery from '@/utils/mMe'
 
 const TableItem = styled.div<{ $resign: string }>`
   position: relative;
@@ -265,7 +260,7 @@ export default function ManagerItem(props) {
         <TableRow>
           <Link
             href={
-              props.mGrade < grade.general || props.mPart.includes('인사팀')
+              props.mGrade <= grade.subMaster || props.mPart.includes('인사팀')
                 ? `/hr/detail/${managerData.id}`
                 : '#'
             }

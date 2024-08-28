@@ -737,7 +737,8 @@ export default function StudentsWriteCourse() {
                         </Suspense>
                       )}
                     />
-                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                    {(mGrade <= grade.subMaster ||
+                      mPart.includes('영업팀')) && (
                       <AddLink>
                         <Link
                           size="sm"

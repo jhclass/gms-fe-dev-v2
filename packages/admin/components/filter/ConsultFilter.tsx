@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 import {
   consultPageState,
-  gradeState,
   progressStatusState,
   receiptStatusState,
   subStatusState,
@@ -157,7 +156,6 @@ export default function ConsultFilter({
   studentFilter,
   setStudentFilter,
 }) {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
@@ -447,12 +445,7 @@ export default function ConsultFilter({
                         mUsername: '-',
                         mUserId: '-',
                       }}
-                      // filter={manager =>
-                      //   manager?.mGrade === grade.master ||
-                      //   manager?.mPart.includes('영업팀')
-                      // }
                       filter={{
-                        // mGrade: grade.master,
                         mPart: '영업팀',
                       }}
                     />

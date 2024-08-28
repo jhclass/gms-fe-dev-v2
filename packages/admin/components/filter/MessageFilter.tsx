@@ -353,10 +353,6 @@ export default function ConsultFilter({
                         mUsername: '-',
                         mUserId: '-',
                       }}
-                      // filter={manager =>
-                      //   manager?.mGrade === grade.master ||
-                      //   manager?.mPart.includes('영업팀')
-                      // }
                       filter={{}}
                     />
                   </Suspense>

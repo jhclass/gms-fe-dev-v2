@@ -27,6 +27,8 @@ import useMmeQuery from '@/utils/mMe'
 import { useReactToPrint } from 'react-to-print'
 import useUserLogsMutation from '@/utils/userLogs'
 import FormTopInfo from '../common/FormTopInfo'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const Title = styled.h2`
   position: relative;
@@ -262,6 +264,7 @@ export default function WorksLogsModal({
   workLogeDate,
   teachers,
 }) {
+  const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const mGrade = useMme('mGrade')
@@ -807,7 +810,8 @@ export default function WorksLogsModal({
                                       )
                                     )}
                                   </StempBox>
-                                  {mGrade < 1 || teachers.includes(mId) ? (
+                                  {mGrade === grade.dev ||
+                                  teachers.includes(mId) ? (
                                     <BtnBox>
                                       <Button
                                         isDisabled={sign}
@@ -841,7 +845,8 @@ export default function WorksLogsModal({
                                       )
                                     )}
                                   </StempBox>
-                                  {mGrade < 1 || mPart.includes('교무팀') ? (
+                                  {mGrade === grade.dev ||
+                                  mPart.includes('교무팀') ? (
                                     <BtnBox>
                                       <Button
                                         isDisabled={sign}
@@ -877,7 +882,7 @@ export default function WorksLogsModal({
                                       )
                                     )}
                                   </StempBox>
-                                  {mGrade <= 1 ? (
+                                  {mGrade <= grade.subMaster ? (
                                     <BtnBox>
                                       <Button
                                         isDisabled={sign}

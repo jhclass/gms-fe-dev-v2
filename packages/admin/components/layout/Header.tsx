@@ -1,9 +1,9 @@
-import { navOpenState, navSubCateState } from '@/lib/recoilAtoms'
+import { gradeState, navOpenState, navSubCateState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import styled, { useTheme } from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
@@ -293,6 +293,7 @@ const LodingDiv = styled.div`
 
 export default function Header() {
   const theme = useTheme()
+  const grade = useRecoilValue(gradeState)
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
@@ -449,7 +450,7 @@ export default function Header() {
             </WebBtn>
           </Tooltip>
           <HeaderNoti />
-          {mGrade === 0 && (
+          {mGrade === grade.dev && (
             <ReqBtn onClick={onOpen}>
               <img
                 src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_help3.webp"

@@ -223,10 +223,11 @@ export default function ConsolutItem(props) {
           <Link
             href={
               managerData.resign === 'Y'
-                ? props.mGrade < grade.general || props.mPart.includes('인사팀')
+                ? props.mGrade <= grade.subMaster ||
+                  props.mPart.includes('인사팀')
                   ? `/hr/teacherDetail/${managerData.id}`
                   : '#'
-                : props.mGrade < grade.general ||
+                : props.mGrade <= grade.subMaster ||
                   props.mPart.includes('인사팀') ||
                   props.mPart.includes('교무팀')
                 ? `/hr/teacherDetail/${managerData.id}`

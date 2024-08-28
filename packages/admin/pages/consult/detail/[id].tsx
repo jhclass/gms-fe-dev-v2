@@ -707,7 +707,7 @@ export default function ConsultDetail() {
                       {String(errors.adviceTypes.message)}
                     </p>
                   )}
-                  {mGrade < grade.general && (
+                  {mGrade <= grade.subMaster && (
                     <AddLink>
                       <Link
                         size="sm"
@@ -802,7 +802,8 @@ export default function ConsultDetail() {
                         </Suspense>
                       )}
                     />
-                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                    {(mGrade <= grade.subMaster ||
+                      mPart.includes('영업팀')) && (
                       <AddLink>
                         <Link
                           size="sm"
@@ -840,7 +841,6 @@ export default function ConsultDetail() {
                             mUserId: '담당자 지정필요',
                           }}
                           filter={{
-                            // mGrade: grade.master,
                             mPart: '영업팀',
                           }}
                         />
@@ -1048,7 +1048,7 @@ export default function ConsultDetail() {
                   >
                     이전으로
                   </Button>
-                  {mGrade < grade.general && (
+                  {mGrade <= grade.subMaster && (
                     <Button
                       className="w-full text-white bg-accent"
                       onClick={() => onDelete(studentState.id)}

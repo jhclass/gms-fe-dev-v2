@@ -70,11 +70,13 @@ export default function Teacher() {
             isActive={filterActive}
             isFilter={true}
             isWrite={
-              mGrade < grade.general || mPart.includes('교무팀') ? true : false
+              mGrade <= grade.subMaster || mPart.includes('교무팀')
+                ? true
+                : false
             }
             rightArea={true}
             addRender={
-              (mGrade < grade.general || mPart.includes('교무팀')) && (
+              (mGrade <= grade.subMaster || mPart.includes('교무팀')) && (
                 <>
                   {
                     <Button

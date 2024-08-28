@@ -56,7 +56,7 @@ export default function TypesTabs() {
           onSelectionChange={e => setSelected(String(e))}
         >
           <Tab key="adviceType" title="상담분야">
-            {mGrade < grade.general ? (
+            {mGrade <= grade.subMaster ? (
               <Suspense
                 fallback={
                   <LodingDiv>
@@ -79,7 +79,7 @@ export default function TypesTabs() {
             )}
           </Tab>
           <Tab key="subDiv" title="수강구분">
-            {mGrade < grade.general || mPart.includes('영업팀') ? (
+            {mGrade <= grade.subMaster || mPart.includes('영업팀') ? (
               <Suspense
                 fallback={
                   <LodingDiv>
@@ -102,7 +102,7 @@ export default function TypesTabs() {
             )}
           </Tab>
           <Tab key="teacherType" title="강의분야">
-            {mGrade < grade.general || mPart.includes('교무팀') ? (
+            {mGrade <= grade.subMaster || mPart.includes('교무팀') ? (
               <Suspense
                 fallback={
                   <LodingDiv>
@@ -124,9 +124,9 @@ export default function TypesTabs() {
               </Card>
             )}
           </Tab>
-          {mGrade < 1 ? (
+          {mGrade === grade.dev ? (
             <Tab key="supportType" title="훈련생유형">
-              {mGrade < grade.general || mPart.includes('취업지원팀') ? (
+              {mGrade <= grade.subMaster || mPart.includes('취업지원팀') ? (
                 <Suspense
                   fallback={
                     <LodingDiv>
@@ -150,7 +150,7 @@ export default function TypesTabs() {
             </Tab>
           ) : null}
           <Tab key="mPartType" title="부서명">
-            {mGrade < grade.general || mPart.includes('인사팀') ? (
+            {mGrade <= grade.subMaster || mPart.includes('인사팀') ? (
               <Suspense
                 fallback={
                   <LodingDiv>

@@ -674,7 +674,8 @@ export default function SubjectDetail() {
                         {String(errors.subDiv.message)}
                       </p>
                     )}
-                    {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                    {(mGrade <= grade.subMaster ||
+                      mPart.includes('영업팀')) && (
                       <AddLink>
                         <Link
                           size="sm"
@@ -690,7 +691,7 @@ export default function SubjectDetail() {
                 </FlexBox>
                 <FlexBox>
                   <AreaBox>
-                    {mGrade < grade.general ? (
+                    {mGrade <= grade.subMaster ? (
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -768,7 +769,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                   <AreaBox>
-                    {mGrade < grade.general ? (
+                    {mGrade <= grade.subMaster ? (
                       <DatePickerBox>
                         <Controller
                           control={control}
@@ -1042,7 +1043,7 @@ export default function SubjectDetail() {
                     )}
                   </AreaBox>
                 </FlexBox>
-                <BtnBox $isMaster={mGrade < grade.general}>
+                <BtnBox $isMaster={mGrade <= grade.subMaster}>
                   <Button
                     type="submit"
                     color="primary"
@@ -1065,7 +1066,7 @@ export default function SubjectDetail() {
                   >
                     복사하기
                   </Button>
-                  {mGrade < grade.general && (
+                  {mGrade <= grade.subMaster && (
                     <Button
                       className="w-full text-white bg-accent"
                       onClick={() => onDelete(subjectState.id)}

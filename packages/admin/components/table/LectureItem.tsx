@@ -1,14 +1,9 @@
 import { styled } from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
-import { gradeState, progressStatusState } from '@/lib/recoilAtoms'
-import {
-  CALA_LECTURES_MUTATION,
-  UPDATE_FAVORITE_MUTATION,
-} from '@/graphql/mutations'
-import { SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
-import Link from 'next/link'
-import { Button, Checkbox } from '@nextui-org/react'
+import { gradeState } from '@/lib/recoilAtoms'
+import { CALA_LECTURES_MUTATION } from '@/graphql/mutations'
+import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import LectureReportList from './LectureReportList'
 import { useRouter } from 'next/router'
@@ -276,7 +271,7 @@ export default function ConsolutItem(props) {
               </Tteacher>
               <Tbtn>
                 <BtnBox>
-                  {(mGrade < grade.general || mPart.includes('교무팀')) && (
+                  {(mGrade <= grade.subMaster || mPart.includes('교무팀')) && (
                     <Button
                       size="sm"
                       variant="solid"

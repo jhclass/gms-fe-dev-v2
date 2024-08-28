@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState } from 'recoil'
 import {
   activeCategoryState,
   consultFilterActiveState,
@@ -8,8 +8,6 @@ import {
   consultLimitState,
   consultPageState,
   consultSearchState,
-  gradeState,
-  navOpenState,
   parformanceFilterActiveState,
   parformanceFilterState,
   parformanceSearchState,
@@ -43,13 +41,11 @@ import {
   subjectPageState,
   subjectSearchState,
 } from '@/lib/recoilAtoms'
-import CategoryItem from './CategoryItem'
+import CategoryItem from '@/components/layout/CategoryItem'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
-import useMmeQuery from '@/utils/mMe'
-import Link from 'next/link'
 
 const CateWrap = styled(motion.ul)``
 

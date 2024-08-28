@@ -83,7 +83,7 @@ export default function Subjects() {
             isWrite={true}
             rightArea={true}
             addRender={
-              (mGrade < grade.general || mPart.includes('영업팀')) && (
+              (mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
                 <>
                   {
                     <Button

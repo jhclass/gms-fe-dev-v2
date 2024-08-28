@@ -194,9 +194,6 @@ export default function ConsolutationTable({ mGrade, mPart }) {
     },
   )
 
-  // const managerData = data?.seeManageUser.filter(
-  //   manager => manager.mGrade < 20,
-  // )
   const managerData = data?.seeManageUser?.data
   const totalCount = data?.seeManageUser?.totalCount
 

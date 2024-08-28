@@ -2,10 +2,8 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { motion } from 'framer-motion'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import {
-  gradeState,
   recruitmentFilterActiveState,
   recruitmentFilterState,
 } from '@/lib/recoilAtoms'
@@ -18,25 +16,8 @@ const ConBox = styled.div`
   z-index: 0;
   position: relative;
 `
-const ActiveIcon = styled(motion.i)`
-  color: #fff;
-`
-
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
 
 export default function Statistics() {
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
   const [filterActive, setFilterActive] = useRecoilState(
     recruitmentFilterActiveState,
   )

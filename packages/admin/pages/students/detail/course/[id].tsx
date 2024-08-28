@@ -428,7 +428,7 @@ export default function StudentsWrite() {
                     <AreaTitle>
                       <h4>수강 정보</h4>
                       <div className="flex gap-[0.5rem]">
-                        {mGrade === 0 && (
+                        {mGrade === grade.dev && (
                           <>
                             {studentPaymentData?.lectureAssignment ==
                               assignment.assignment && (
@@ -450,7 +450,7 @@ export default function StudentsWrite() {
                             )}
                           </>
                         )}
-                        {(mGrade < grade.general ||
+                        {(mGrade <= grade.subMaster ||
                           mPart.includes('교무팀')) && (
                           <Button
                             isDisabled={
@@ -481,7 +481,8 @@ export default function StudentsWrite() {
                       studentSubjectData={studentSubjectData}
                       studentPaymentData={studentPaymentData}
                     />
-                    {(mGrade < grade.general || mPart.includes('교무팀')) && (
+                    {(mGrade <= grade.subMaster ||
+                      mPart.includes('교무팀')) && (
                       <>
                         <div>
                           <FilterLabel>배정 여부</FilterLabel>
@@ -718,7 +719,8 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>결제 정보</h4>
-                      {(mGrade < grade.general || mPart.includes('회계팀')) && (
+                      {(mGrade <= grade.subMaster ||
+                        mPart.includes('회계팀')) && (
                         <Button
                           isDisabled={
                             studentPaymentData?.unCollectedAmount === 0 ||
@@ -761,7 +763,7 @@ export default function StudentsWrite() {
               <BtnBox>
                 {!studentPaymentDetailData ||
                 studentPaymentDetailData?.length === 0
-                  ? (mGrade < grade.general || mPart.includes('회계팀')) && (
+                  ? (mGrade <= grade.subMaster || mPart.includes('회계팀')) && (
                       <Button
                         size="md"
                         radius="md"
