@@ -2571,3 +2571,64 @@ export const DELETE_REGULAR_EVALUATION_SET_MUTATION = gql`
     }
   }
 `
+export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
+  mutation Mutation(
+    $page: Int
+    $limit: Int
+    $subDiv: String
+    $employment: String
+    $lectureAssignment: String
+  ) {
+    searchStudentPayment(
+      page: $page
+      limit: $limit
+      subDiv: $subDiv
+      employment: $employment
+      lectureAssignment: $lectureAssignment
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        EmploymentStatus {
+          dateOfEmployment
+          companyName
+        }
+        StudentConsultation {
+          dateOfConsultation
+          typeOfConsultation
+        }
+        EmploymentRecommendation {
+          companyName
+          dateOfInterview
+          dateOfRecommendation
+        }
+        supportType
+        student {
+          name
+          birthday
+          phoneNum1
+        }
+        employment
+        subject {
+          id
+          lectures {
+            id
+            temporaryName
+            teachers {
+              mUsername
+              id
+            }
+            sessionNum
+            subDiv
+            lecturePeriodStart
+            lecturePeriodEnd
+          }
+        }
+        courseComplete
+        lectureAssignment
+      }
+    }
+  }
+`

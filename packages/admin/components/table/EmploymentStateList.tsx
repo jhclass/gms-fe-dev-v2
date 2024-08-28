@@ -43,10 +43,10 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 6%;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.06}px;
 `
 const Tname = styled.div`
   display: table-cell;
@@ -76,11 +76,13 @@ export default function EmploymentStateList({ student }) {
             <Theader>
               <TheaderBox>
                 <ClickBox>
-                  <Tphone>학생 전화번호</Tphone>
-                  <Tnum>회차</Tnum>
+                  <Tphone>훈련생전화번호</Tphone>
+                  <Tnum>훈련생나이</Tnum>
+                  <Tphone>훈련생유형</Tphone>
+                  <Tdate>최근상담구분</Tdate>
+                  <Tdate>최근상담일</Tdate>
                   <Tdate>취업일</Tdate>
                   <Tname>회사명</Tname>
-                  <Tdate>최근상담일</Tdate>
                 </ClickBox>
               </TheaderBox>
             </Theader>

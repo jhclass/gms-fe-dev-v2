@@ -175,6 +175,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
+
   const calculateAge = birthday => {
     const today = new Date()
     const timestamp = parseInt(birthday, 10)
@@ -191,6 +192,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
 
     return age
   }
+
   const handleSelectChange = e => {
     setSelectValue(e.target.value)
   }

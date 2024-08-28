@@ -65,11 +65,11 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 32%;
+  width: 26%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.32}px;
+  min-width: ${1200 * 0.26}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -176,6 +176,14 @@ export default function EmploymentItem(props) {
     return data.map(item => item.mUsername).join(', ')
   }
 
+  const addSixMonths = dateString => {
+    const timestamp = parseInt(dateString, 10)
+    const date = new Date(timestamp)
+    date.setMonth(date.getMonth() + 6)
+
+    return formatDate(date.getTime())
+  }
+
   return (
     <>
       <TableItem>
@@ -192,6 +200,9 @@ export default function EmploymentItem(props) {
                   {student?.subject?.lectures?.temporaryName}
                 </EllipsisBox>
               </TlecturName>
+              <Tnum>
+                <EllipsisBox>{student.subject.lectures.sessionNum}</EllipsisBox>
+              </Tnum>
               <Tperiod>
                 <EllipsisBox>
                   {formatDate(student?.subject?.lectures?.lecturePeriodStart) +
@@ -201,7 +212,7 @@ export default function EmploymentItem(props) {
               </Tperiod>
               <Ttimes>
                 <EllipsisBox>
-                  {/* {extractTimeRange(lecture.lectureTime)} */}
+                  {addSixMonths(student?.subject?.lectures?.lecturePeriodEnd)}
                 </EllipsisBox>
               </Ttimes>
               <Tteacher>
