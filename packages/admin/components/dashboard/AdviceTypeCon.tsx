@@ -65,10 +65,10 @@ const Content = styled.div`
 
   .apexcharts-legend {
     width: 87px;
+    padding: 0;
     overflow-y: hidden;
     overflow-x: overlay;
     white-space: nowrap;
-    padding: 0;
 
     &::-webkit-scrollbar {
       width: 0.5rem;
