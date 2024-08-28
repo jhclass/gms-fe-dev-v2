@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import ConsultationTable from '@/components/table/Consultation'
 import ConsultationFilter from '@/components/table/ConsultationFilter'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import ConsultFilter from '@/components/filter/ConsultFilter'
 import { styled } from 'styled-components'
@@ -17,7 +17,6 @@ import Layout from '@/pages/consult/layout'
 import { motion } from 'framer-motion'
 import useMmeQuery from '@/utils/mMe'
 import { Button } from '@nextui-org/react'
-import CreateAdviceType from '@/components/form/CreateAdviceType'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -80,7 +79,7 @@ export default function Consult() {
           isWrite={true}
           rightArea={true}
           addRender={
-            mGrade < grade.general && (
+            mGrade <= grade.subMaster && (
               <>
                 {
                   <Button

@@ -492,7 +492,7 @@ export default function ConsultWirte() {
                     {String(errors.adviceTypes.message)}
                   </p>
                 )}
-                {mGrade < grade.general && (
+                {mGrade <= grade.subMaster && (
                   <AddLink>
                     <Link
                       size="sm"
@@ -576,7 +576,7 @@ export default function ConsultWirte() {
                     </Suspense>
                   )}
                 />
-                {(mGrade < grade.general || mPart.includes('영업팀')) && (
+                {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
                   <AddLink>
                     <Link
                       size="sm"
@@ -611,7 +611,6 @@ export default function ConsultWirte() {
                           mUserId: '담당자 지정필요',
                         }}
                         filter={{
-                          // mGrade: grade.master,
                           mPart: '영업팀',
                         }}
                       />

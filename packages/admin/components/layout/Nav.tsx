@@ -1,14 +1,9 @@
-import {
-  gradeState,
-  navOpenState,
-  navScrollPositionState,
-} from '@/lib/recoilAtoms'
+import { navOpenState, navScrollPositionState } from '@/lib/recoilAtoms'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import Category from '@/components/layout/Category'
-import useMmeQuery from '@/utils/mMe'
 import { ScrollShadow } from '@nextui-org/react'
 import { useEffect, useRef } from 'react'
 
@@ -117,9 +112,6 @@ const DimBtn = styled.button`
 `
 
 export default function Header() {
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [navScrollPosition, setNavScrollPosition] = useRecoilState(
     navScrollPositionState,

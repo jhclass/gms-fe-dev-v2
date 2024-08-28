@@ -1,17 +1,8 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import {
-  consultPageState,
-  gradeState,
-  progressStatusState,
-  receiptStatusState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'

@@ -1,4 +1,4 @@
-import SquareCard from '@/components//SquareCard'
+import SquareCard from '@/components/SquareCard'
 import ListLayout from '@/components/layout/ListLayout'
 import MainTitle from '@/components/MainTitle'
 

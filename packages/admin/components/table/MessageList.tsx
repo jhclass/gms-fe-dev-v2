@@ -12,8 +12,8 @@ import {
 } from '@/graphql/queries'
 import FavoItem from '@/components/table/FavoItem'
 import router from 'next/router'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { consultPageState, gradeState } from '@/lib/recoilAtoms'
 import {
   ManageUser,
   SearchManageUserResult,
@@ -121,14 +121,15 @@ const Nolist = styled.div`
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
-export default function ConsolutationTable() {
+export default function MessageList() {
+  const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
-      variables: { mGrade: 20 },
+      variables: { mGrade: grade.teacher },
     },
   )
   const managerData = data?.searchManageUser.data

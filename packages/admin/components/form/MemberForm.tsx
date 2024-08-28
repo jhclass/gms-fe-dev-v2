@@ -20,11 +20,11 @@ import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import Address from '@/components/common/Address'
-import AdviceMultiSelect from '@/components//common/AdviceMultiSelect'
+import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import FormTopInfo from '../common/FormTopInfo'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -682,7 +682,7 @@ export default function ManagerWrite({ managerId }) {
                         </Suspense>
                       )}
                     />
-                    {(loginMGrade < grade.general ||
+                    {(loginMGrade <= grade.subMaster ||
                       loginMPart?.includes('인사팀')) && (
                       <AddLink>
                         <Link

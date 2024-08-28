@@ -45,7 +45,7 @@ export default function Manager() {
           isActive={filterActive}
           isFilter={true}
           isWrite={
-            mGrade < grade.general || mPart.includes('인사팀') ? true : false
+            mGrade <= grade.subMaster || mPart.includes('인사팀') ? true : false
           }
           rightArea={true}
         />

@@ -79,7 +79,7 @@ export default function ConsultReject() {
         <Breadcrumb
           isFilter={false}
           isWrite={false}
-          rightArea={mGrade < grade.general ? true : false}
+          rightArea={mGrade <= grade.subMaster ? true : false}
           addRender={
             <DeleteDiv>
               {checkItem?.length !== 0 && (

@@ -101,9 +101,10 @@ export const gradeState = atom({
   default: {
     dev: 0,
     master: 1,
-    general: 10,
-    teacher: 20,
-    guest: 99,
+    subMaster: 2,
+    general: 9,
+    teacher: 99,
+    guest: 999,
   },
 })
 

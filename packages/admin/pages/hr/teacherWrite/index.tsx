@@ -18,6 +18,8 @@ import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
 import Address from '@/components/common/Address'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const ConArea = styled.div`
   width: 100%;
@@ -140,6 +142,7 @@ const BtnBox = styled.div`
 `
 
 export default function TeacherWrite() {
+  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)
@@ -201,7 +204,7 @@ export default function TeacherWrite() {
         mUserId: data.mUserId.trim(),
         mUsername: data.mUsername.trim(),
         mPassword: data.mPassword.trim(),
-        mGrade: 20,
+        mGrade: grade.teacher,
         mRank: '강사',
         mPart: data.mPart === '' ? null : data.mPart,
         mPhoneNum: data.mPhoneNum.trim(),

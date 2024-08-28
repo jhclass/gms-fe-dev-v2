@@ -195,7 +195,7 @@ export default function ManagerWrite() {
         mUserId: data.mUserId.trim(),
         mUsername: data.mUsername.trim(),
         mPassword: data.mPassword.trim(),
-        mGrade: 10,
+        mGrade: grade.general,
         mRank: data.mRank === '' ? null : data.mRank,
         mPart: data.mPart === '' ? null : data.mPart,
         mPhoneNum: data.mPhoneNum.trim(),
@@ -583,7 +583,7 @@ export default function ManagerWrite() {
                         </Suspense>
                       )}
                     />
-                    {(loginMGrade < grade.general ||
+                    {(loginMGrade <= grade.subMaster ||
                       loginMPart?.includes('인사팀')) && (
                       <AddLink>
                         <Link
