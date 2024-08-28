@@ -13,7 +13,7 @@ import {
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useState } from 'react'
-import ReplyMessage from './ReplyMessage'
+import ReplyMessage from '@/components/modal/ReplyMessage'
 
 const DetailDiv = styled.div`
   display: flex;

@@ -1,7 +1,6 @@
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Button, Card, CardBody, CardFooter } from '@nextui-org/react'
-import PortfolioItem from '../items/PortfolioItem'
+import PortfolioItem from '@/components/items/PortfolioItem'
 
 const PortfoiloBox = styled.div`
   display: grid;

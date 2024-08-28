@@ -4,15 +4,9 @@ import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import {
-  SeeLecturesResult,
-  StudentPaymentResult,
-} from '@/src/generated/graphql'
-import {
-  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-  SEE_LECTURES_QUERY,
-} from '@/graphql/queries'
-import EmploymentItem from './EmploymentItem'
+import { StudentPaymentResult } from '@/src/generated/graphql'
+import { SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY } from '@/graphql/queries'
+import EmploymentItem from '@/components/table/EmploymentItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

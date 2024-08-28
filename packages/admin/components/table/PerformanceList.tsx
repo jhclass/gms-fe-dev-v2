@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client'
 import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import PerformanceBox from './PerformanceBox'
+import PerformanceBox from '@/components/table/PerformanceBox'
 import { SALES_STATISTICS_MUTATION } from '@/graphql/mutations'
 import PerformanceTotal from '@/components/table/PerformanceTotal'
 import PerformanceChart from '@/components/dashboard/PerformanceChart'
-import PerformanceRefundBox from './PerformanceRefundBox'
+import PerformanceRefundBox from '@/components/table/PerformanceRefundBox'
 
 const ListBox = styled.div`
   margin-top: 2rem;

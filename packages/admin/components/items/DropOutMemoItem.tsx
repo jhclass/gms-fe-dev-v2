@@ -1,19 +1,10 @@
 import {
   DELETE_PRE_INSPECTION_MUTATION,
-  DELETE_STUDENT_CONSULTATION_MUTATION,
   EDIT_PRE_INSPECTION_MUTATION,
-  EDIT_STUDENT_CONSULTATION_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
-import {
-  Button,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  Textarea,
-} from '@nextui-org/react'
+import { Button, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
@@ -22,7 +13,7 @@ import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
-import ListInfo from '../common/ListInfo'
+import ListInfo from '@/components/common/ListInfo'
 registerLocale('ko', ko)
 const _ = require('lodash')
 

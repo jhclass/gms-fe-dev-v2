@@ -5,8 +5,8 @@ import { useRecoilState } from 'recoil'
 import { smsFilterState, smsSearchState } from '@/lib/recoilAtoms'
 import SMSCard from '@/components/items/SMSCard'
 import SMSList from '@/components/table/SMSList'
-import SMSFilterList from '../table/SMSFilterList'
-import SmsSendFilter from '../filter/SmsSendFilter'
+import SMSFilterList from '@/components/table/SMSFilterList'
+import SmsSendFilter from '@/components/filter/SmsSendFilter'
 import { useRouter } from 'next/router'
 
 const LodingDiv = styled.div`

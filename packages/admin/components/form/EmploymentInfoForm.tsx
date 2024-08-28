@@ -8,8 +8,8 @@ import StudentInfo from '@/components/items/StudentInfo'
 import Address from '@/components/common/Address'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import AdviceSelect from '../common/AdviceSelect'
-import FormTopInfo from '../common/FormTopInfo'
+import AdviceSelect from '@/components/common/AdviceSelect'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const FormBox = styled.form`
   display: flex;

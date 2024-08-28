@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import {
   Button,
   CheckboxGroup,
@@ -9,23 +8,11 @@ import {
   ModalHeader,
   ScrollShadow,
 } from '@nextui-org/react'
-import AdviceTypeModalChip from './AdviceTypeModalChip'
+import AdviceTypeModalChip from '@/components/modal/AdviceTypeModalChip'
 import { ResultAdviceType } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEE_ADVICE_TYPE_QUERY } from '@/graphql/queries'
 
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: white;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }

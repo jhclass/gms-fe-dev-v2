@@ -8,7 +8,7 @@ import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
-import ListInfo from '../common/ListInfo'
+import ListInfo from '@/components/common/ListInfo'
 
 const DetailForm = styled.form`
   width: 100%;

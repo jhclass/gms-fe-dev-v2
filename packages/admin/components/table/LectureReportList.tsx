@@ -1,9 +1,6 @@
 import { ScrollShadow } from '@nextui-org/react'
-import { useState } from 'react'
 import { styled } from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
-import LectureReportItem from './LectureReportItem'
+import LectureReportItem from '@/components/table/LectureReportItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

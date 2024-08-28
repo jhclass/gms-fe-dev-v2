@@ -1,25 +1,10 @@
 import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
-import { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import ConsultItem from '@/components/table/ConsultItem'
-import {
-  MME_FAVO_QUERY,
-  SEE_FAVORITESTATE_QUERY,
-  SEE_MANAGEUSER_QUERY,
-  SEE_STUDENT_STATE_QUERY,
-} from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
-import router from 'next/router'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
-import {
-  ManageUser,
-  SeeManageUserResult,
-  StudentState,
-  StudentStateResponse,
-} from '@/src/generated/graphql'
-import ManagerItem from './ManagerItem'
+import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SeeManageUserResult } from '@/src/generated/graphql'
+import ManagerItem from '@/components/table/ManagerItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

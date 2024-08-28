@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import { SearchManageUserResult } from '@/src/generated/graphql'
-import ManagerItem from './ManagerItem'
+import ManagerItem from '@/components/table/ManagerItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

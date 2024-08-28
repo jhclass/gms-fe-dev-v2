@@ -5,7 +5,7 @@ import { gradeState } from '@/lib/recoilAtoms'
 import { CALA_LECTURES_MUTATION } from '@/graphql/mutations'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import LectureReportList from './LectureReportList'
+import LectureReportList from '@/components/table/LectureReportList'
 import { useRouter } from 'next/router'
 import useMmeQuery from '@/utils/mMe'
 

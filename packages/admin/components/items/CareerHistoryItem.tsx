@@ -1,16 +1,14 @@
 import {
-  DEIT_EDU_INFOMATION_MUTATION,
   DELETE_CAREER_MUTATION,
-  DELETE_EDU_INFOMATION_MUTATION,
   EDIT_CAREER_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
-import { Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Button, Textarea } from '@nextui-org/react'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
-import ListInfo from '../common/ListInfo'
+import ListInfo from '@/components/common/ListInfo'
 
 const DetailForm = styled.form`
   width: 100%;

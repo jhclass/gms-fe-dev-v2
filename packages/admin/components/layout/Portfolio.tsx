@@ -1,12 +1,10 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
-import ReaularEvaluationForm from '../form/ReaularEvaluationForm'
-import ReaularEvaluationList from '../form/ReaularEvaluationList'
 import { Chip } from '@nextui-org/react'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
-import PortfolioForm from '../form/PortfolioForm'
+import PortfolioForm from '@/components/form/PortfolioForm'
 
 const DetailBox = styled.div`
   background: #fff;

@@ -4,7 +4,7 @@ import { useSuspenseQuery } from '@apollo/client'
 import { styled } from 'styled-components'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import CertificateNameItem from '../items/CertificateNameItem'
+import CertificateNameItem from '@/components/items/CertificateNameItem'
 
 const MoreBtn = styled.div`
   display: flex;

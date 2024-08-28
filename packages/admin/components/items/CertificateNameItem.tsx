@@ -1,7 +1,7 @@
 import { Input } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import ListInfo from '../common/ListInfo'
+import ListInfo from '@/components/common/ListInfo'
 
 const DetailDiv = styled.div`
   width: 100%;

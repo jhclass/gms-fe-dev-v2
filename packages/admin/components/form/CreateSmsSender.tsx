@@ -9,7 +9,7 @@ import {
   SEE_ADVICE_TYPE_QUERY,
 } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import CreateAdviceTypeChip from './CreateAdviceTypeChip'
+import CreateAdviceTypeChip from '@/components/form/CreateAdviceTypeChip'
 import { Suspense, useState } from 'react'
 import TypeIndex from '@/components/modal/TypeIndex'
 import NotiModal from '@/components/modal/NotiModal'

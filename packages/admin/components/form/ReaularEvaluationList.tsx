@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react'
 import { SEE_REGULAREVALUATION_SET_QUERY } from '@/graphql/queries'
 import { ResultSeeRegularEvaluationSet } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
-import DropOutMemoItem from '@/components/items/DropOutMemoItem'
-import ReaularEvaluationItem from '../items/ReaularEvaluationItem'
+import ReaularEvaluationItem from '@/components/items/ReaularEvaluationItem'
 
 const MoreBtn = styled.div`
   display: flex;

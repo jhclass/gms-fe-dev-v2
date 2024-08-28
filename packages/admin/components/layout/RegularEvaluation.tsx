@@ -1,12 +1,8 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
-import EmploymentMemoList from '@/components/form/EmploymentMemoList'
-import EmploymentMemoForm from '@/components/form/EmploymentMemoForm'
-import DropOutMemoForm from '../form/DropOutMemoForm'
-import DropOutMemoList from '../form/DropOutMemoList'
 import useMmeQuery from '@/utils/mMe'
-import ReaularEvaluationForm from '../form/ReaularEvaluationForm'
-import ReaularEvaluationList from '../form/ReaularEvaluationList'
+import ReaularEvaluationForm from '@/components/form/ReaularEvaluationForm'
+import ReaularEvaluationList from '@/components/form/ReaularEvaluationList'
 
 const DetailBox = styled.div`
   background: #fff;
