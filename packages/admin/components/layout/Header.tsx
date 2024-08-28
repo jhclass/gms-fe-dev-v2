@@ -369,6 +369,7 @@ export default function Header() {
   const LogUserOut = () => {
     userLogs(`로그아웃`)
     localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
     sessionStorage.removeItem('newStudent')
     sessionStorage.removeItem('newStudentState')
     sessionStorage.removeItem('newConsult')
