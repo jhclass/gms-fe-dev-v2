@@ -497,6 +497,7 @@ export type LoginResult = {
 
 export type ManageUser = {
   __typename?: 'ManageUser';
+  Branch?: Maybe<Array<Maybe<Branch>>>;
   ConsultationMemo?: Maybe<Array<Maybe<ConsultationMemo>>>;
   Lectures?: Maybe<Array<Maybe<Lectures>>>;
   PaymentDetail?: Maybe<Array<Maybe<PaymentDetail>>>;
@@ -505,6 +506,7 @@ export type ManageUser = {
   StudentMemo?: Maybe<Array<Maybe<StudentMemo>>>;
   StudentPayment?: Maybe<Array<Maybe<StudentPayment>>>;
   StudentStates?: Maybe<Array<Maybe<StudentState>>>;
+  branchId?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   favoriteStudentState?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
@@ -583,6 +585,7 @@ export type Mutation = {
   createIpRecord: CommonResponse;
   createLectures?: Maybe<CommonResponse>;
   createManagerAccount?: Maybe<CreateManagerAccountResult>;
+  createMasterManagerAccount: CommonResponse;
   createMessageStorage?: Maybe<CommonResponse>;
   createPaymentDetail?: Maybe<CommonResponse>;
   createPermissionGranted: CommonResponse;
@@ -677,6 +680,7 @@ export type Mutation = {
   mLogin?: Maybe<MLoginResult>;
   readAlarms: CommonResponse;
   readMessage: MutationResponse;
+  refreshToken: ResultRefreshToken;
   refundApproval?: Maybe<CommonResponse>;
   reqRefund?: Maybe<CommonResponse>;
   salesStatistics?: Maybe<SalesStatisticsResult>;
@@ -910,6 +914,15 @@ export type MutationCreateManagerAccountArgs = {
   mUserId: Scalars['String']['input'];
   mUsername: Scalars['String']['input'];
   mZipCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateMasterManagerAccountArgs = {
+  branchId: Scalars['Int']['input'];
+  mGrade: Scalars['Int']['input'];
+  mPassword: Scalars['String']['input'];
+  mUserId: Scalars['String']['input'];
+  mUsername: Scalars['String']['input'];
 };
 
 
@@ -1694,6 +1707,11 @@ export type MutationReadMessageArgs = {
 };
 
 
+export type MutationRefreshTokenArgs = {
+  refreshToken: Scalars['String']['input'];
+};
+
+
 export type MutationRefundApprovalArgs = {
   id: Scalars['Int']['input'];
   refundApproval: Scalars['Boolean']['input'];
@@ -1725,6 +1743,8 @@ export type MutationSalesStatisticsListArgs = {
 
 export type MutationSearchLecturesArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
   periodEnd?: InputMaybe<Scalars['String']['input']>;
   periodStart?: InputMaybe<Scalars['String']['input']>;
   subjectId?: InputMaybe<Scalars['Int']['input']>;
@@ -1763,7 +1783,9 @@ export type MutationSearchStudentArgs = {
 
 export type MutationSearchStudentPaymentArgs = {
   createdPeriod?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  employment?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  lectureAssignment?: InputMaybe<Scalars['String']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -2382,6 +2404,13 @@ export type ResultMessageStorage = {
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
   totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ResultRefreshToken = {
+  __typename?: 'ResultRefreshToken';
+  error?: Maybe<Scalars['String']['output']>;
+  newAccessToken?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
 };
 
 export type ResultSearchApikey = {
