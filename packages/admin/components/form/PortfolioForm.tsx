@@ -1,12 +1,12 @@
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Button, Input, Textarea } from '@nextui-org/react'
+import { Button, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { CREATE_REGULAR_EVALUATION_SET_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { SEE_REGULAREVALUATION_SET_QUERY } from '@/graphql/queries'
 import { useRef, useState } from 'react'
+import PortfolioList from '@/components/layout/PortfolioList'
 
 const DetailForm = styled.form`
   display: flex;
@@ -67,6 +67,9 @@ const FilesBtn = styled.button`
   text-align: center;
   color: #fff;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* @media (max-width: 768px) {
     width: 100%;
   } */
@@ -288,6 +291,7 @@ export default function PortfolioForm({ setIsCreate }) {
             </Button>
           </BtnBox>
         </FlexBox>
+        <PortfolioList />
       </DetailForm>
     </>
   )
