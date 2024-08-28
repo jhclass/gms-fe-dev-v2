@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components'
 import { lightTheme } from '@/styles/theme'
 import { navOpenState } from '@/lib/recoilAtoms'
+import ErrorBoundary from '@/components/common/ErrorBoundary'
 // import { __DEV__ } from '@apollo/client/utilities/globals'
 // import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -53,16 +54,19 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <RecoilRoot>
         <ThemeProvider theme={lightTheme}>
           <NextUIProvider>
-            <Head>
-              <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-              />
-              <title>HMS</title>
-            </Head>
-            <GlobalStyle />
-            <ToastContainer limit={toastLimit} />
-            {getLayout(<Component {...pageProps} />)}
+            <ErrorBoundary>
+              <Head>
+                <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+                />
+                <title>HMS</title>
+              </Head>
+              <GlobalStyle />
+
+              <ToastContainer limit={toastLimit} />
+              {getLayout(<Component {...pageProps} />)}
+            </ErrorBoundary>
           </NextUIProvider>
         </ThemeProvider>
       </RecoilRoot>
