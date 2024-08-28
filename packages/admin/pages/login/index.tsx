@@ -145,13 +145,13 @@ export default function Login() {
       },
       onCompleted: data => {
         const {
-          mLogin: { ok, token, error },
+          mLogin: { ok, token, refreshToken, error },
         } = data
 
         userLogs(`로그인`, `ok: ${ok}`)
 
         if (ok) {
-          LogUserIn(token)
+          LogUserIn(token, refreshToken)
           router.push('/')
         } else {
           setLoginError(error)
