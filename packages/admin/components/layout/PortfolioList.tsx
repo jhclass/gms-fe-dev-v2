@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
 import PortfolioItem from '@/components/items/PortfolioItem'
 
-const PortfoiloBox = styled.div`
+const PortfolioBox = styled.div`
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1rem;
@@ -23,10 +23,10 @@ const PortfoiloBox = styled.div`
 
 export default function PortfolioList() {
   return (
-    <PortfoiloBox>
+    <PortfolioBox>
       {[...Array(10)].map((_, index) => (
         <PortfolioItem key={index} />
       ))}
-    </PortfoiloBox>
+    </PortfolioBox>
   )
 }

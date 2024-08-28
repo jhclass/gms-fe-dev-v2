@@ -7,9 +7,9 @@ import {
   CardFooter,
   useDisclosure,
 } from '@nextui-org/react'
-import PortfoiloModal from '@/components/modal/PortfoiloModal'
+import PortfolioModal from '@/components/modal/PortfolioModal'
 
-const PortfoiloFigure = styled.figure`
+const PortfolioFigure = styled.figure`
   width: 100%;
   height: 140px;
 
@@ -20,7 +20,7 @@ const PortfoiloFigure = styled.figure`
   }
 `
 
-const PortfoiloBtn = styled.div`
+const PortfolioBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,17 +35,17 @@ export default function PortfolioItem() {
       <Card shadow="sm">
         <CardBody className="p-0">
           <Button type="button" className="w-full h-full p-0" onClick={onOpen}>
-            <PortfoiloFigure>
+            <PortfolioFigure>
               <img
                 alt={'포트폴리오1'}
                 className="w-full object-cover h-[140px]"
                 src={'https://via.placeholder.com/200x400.png'}
               />
-            </PortfoiloFigure>
+            </PortfolioFigure>
           </Button>
         </CardBody>
         <CardFooter className="p-0">
-          <PortfoiloBtn>
+          <PortfolioBtn>
             <Button
               type="button"
               size="sm"
@@ -63,10 +63,10 @@ export default function PortfolioItem() {
             >
               <i className="xi-trash" />
             </Button>
-          </PortfoiloBtn>
+          </PortfolioBtn>
         </CardFooter>
       </Card>
-      <PortfoiloModal isOpen={isOpen} onClose={onClose} />
+      <PortfolioModal isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

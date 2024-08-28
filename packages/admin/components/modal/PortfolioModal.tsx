@@ -17,7 +17,7 @@ const PortfoiloFigure = styled.figure`
     object-fit: cover;
   }
 `
-export default function PortfoiloModal({ isOpen, onClose }) {
+export default function PortfolioModal({ isOpen, onClose }) {
   return (
     <>
       <Modal size={'3xl'} isOpen={isOpen} onClose={onClose}>
