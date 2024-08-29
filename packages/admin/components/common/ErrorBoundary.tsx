@@ -70,7 +70,7 @@ export default class ErrorBoundary extends Component<
       // 에러 발생 시 보여줄 커스텀 UI
       return (
         <HomeArea>
-          <Title>&#x1F631;</Title>
+          {/* <Title>&#x1F631;</Title>
           <TextCon>앗! 뭔가 문제가 생겼어요...</TextCon>
           <SemiText>
             서버와의 연결이 끊겼거나,
@@ -78,7 +78,7 @@ export default class ErrorBoundary extends Component<
             문제를 해결하고 있으니,
             <br />
             새로고침해주세요.
-          </SemiText>
+          </SemiText> */}
         </HomeArea>
       )
     }
