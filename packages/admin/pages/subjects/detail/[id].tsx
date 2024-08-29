@@ -892,6 +892,7 @@ export default function SubjectDetail() {
                                 mUsername: '강사명 없음',
                                 mUserId: '강사명 없음',
                               }}
+                              isId={false}
                             />
                           )}
                         />
