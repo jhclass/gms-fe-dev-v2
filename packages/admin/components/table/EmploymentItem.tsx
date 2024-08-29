@@ -183,7 +183,13 @@ export default function EmploymentItem(props) {
 
     return formatDate(date.getTime())
   }
-
+  console.log(student)
+  const handleClick = id => {
+    router.push({
+      pathname: `/lecture/employmentDetail/${id}`,
+      query: { typeTab: 'employmentState' },
+    })
+  }
   return (
     <>
       <TableItem>
@@ -224,11 +230,7 @@ export default function EmploymentItem(props) {
                 <EllipsisBox>{student?.student?.name}</EllipsisBox>
               </Tname>
               <Tcheck>
-                <EllipsisBox>
-                  {student?.EmploymentStatus.length > 0
-                    ? student?.EmploymentStatus[0].employmentType
-                    : '미취업'}
-                </EllipsisBox>
+                <EllipsisBox>{student?.employment}</EllipsisBox>
               </Tcheck>
               <Tbtn>
                 <BtnBox>
@@ -251,9 +253,8 @@ export default function EmploymentItem(props) {
                     variant="bordered"
                     color="primary"
                     className="w-full"
-                    onClick={e => {
-                      e.preventDefault()
-                      // router.push(`/lecture/attendance/${lecture.id}`)
+                    onClick={() => {
+                      handleClick(student.id)
                     }}
                   >
                     수정

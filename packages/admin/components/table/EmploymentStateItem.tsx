@@ -94,10 +94,9 @@ export default function EmploymentStateItem({ student }) {
           </Tphone>
           <Tnum>{calculateAge(student.student.birthday)}</Tnum>
           <Tphone>
-            <EllipsisBox>{student.supportType}</EllipsisBox>
-          </Tphone>
-          <Tphone>
-            <EllipsisBox>{student.supportType}</EllipsisBox>
+            <EllipsisBox>
+              {student.supportType ? student.supportType : '-'}
+            </EllipsisBox>
           </Tphone>
           <Tdate>
             <EllipsisBox>

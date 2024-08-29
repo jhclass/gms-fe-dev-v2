@@ -10,7 +10,6 @@ const HomeArea = styled.div`
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.mainBG};
 `
-
 const Title = styled.div`
   text-align: center;
   font-size: 8rem;

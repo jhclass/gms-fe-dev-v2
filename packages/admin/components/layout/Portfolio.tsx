@@ -62,8 +62,10 @@ const FlexChipBox = styled.div`
   flex-wrap: wrap;
 `
 
-export default function Portfolio({ students }) {
+export default function Portfolio({ students, subjectId }) {
   const [isCreate, setIsCreate] = useState(false)
+  const [paymentId, setPaymentId] = useState(null)
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
   const completion = useRecoilValue(completionStatus)
   const { useMme } = useMmeQuery()
   const mId = useMme('mUserId')
@@ -76,7 +78,11 @@ export default function Portfolio({ students }) {
   const sortStudents = students.sort((a, b) => {
     return naturalCompare(a.student.name, b.student.name)
   })
-  // console.log(students)
+
+  const clickPortFolio = id => {
+    setPaymentId(id)
+    setIsCreateOpen(true)
+  }
 
   return (
     <>
@@ -105,7 +111,7 @@ export default function Portfolio({ students }) {
                   student => student.courseComplete !== completion.dropout,
                 )
                 .map((item, index) => (
-                  <button key={index}>
+                  <button key={index} onClick={() => clickPortFolio(item.id)}>
                     <Chip
                       endContent={
                         <p className="text-[1rem] text-gray">
@@ -122,29 +128,32 @@ export default function Portfolio({ students }) {
           </FlexChipBox>
         </DetailDiv>
       </DetailBox>
-      <DetailBox>
-        <DetailDiv>
-          <PortfolioForm
-            setIsCreate={setIsCreate}
-            // subjectId={subjectId}
-          />
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            {/* <ReaularEvaluationList
+      {isCreateOpen && (
+        <DetailBox>
+          <DetailDiv>
+            <PortfolioForm
+              setIsCreate={setIsCreate}
+              subjectId={subjectId}
+              paymentId={paymentId}
+            />
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              {/* <ReaularEvaluationList
               isCreate={isCreate}
               setIsCreate={setIsCreate}
               lectureId={lectureId}
               subjectId={subjectId}
               mId={mId}
             /> */}
-          </Suspense>
-        </DetailDiv>
-      </DetailBox>
+            </Suspense>
+          </DetailDiv>
+        </DetailBox>
+      )}
     </>
   )
 }
