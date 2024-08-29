@@ -65,6 +65,7 @@ const errorLink = onError(
           message === 'UNAUTHENTICATED' ||
           message.includes('Cannot return null for non-nullable field')
         ) {
+          window.location.reload()
           console.log('토큰이 만료되었습니다.')
           const refreshToken = localStorage.getItem('refreshToken')
 
@@ -89,6 +90,7 @@ const errorLink = onError(
                   // 수정된 요청을 다시 서버로 전송합니다.
                   forward(operation).subscribe({
                     next: response => {
+                      window.location.reload()
                       console.log('재시도 요청이 성공했습니다:', response)
                     },
                     error: err => {
