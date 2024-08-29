@@ -125,7 +125,7 @@ export default function ConsultMemo(props) {
         }
 
         props.setMemoList([])
-
+        alert('메모가 삭제되었습니다.')
         await fetchAndUpdateStudentState(item.studentStateId)
       } catch (error) {
         console.error('에러 발생:', error)
@@ -153,7 +153,7 @@ export default function ConsultMemo(props) {
         }
 
         props.setMemoList([])
-
+        alert('메모가 수정되었습니다.')
         await fetchAndUpdateStudentState(props.studentId)
       } catch (error) {
         console.error('에러 발생:', error)

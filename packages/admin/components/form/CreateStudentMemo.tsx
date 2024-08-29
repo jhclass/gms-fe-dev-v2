@@ -92,6 +92,7 @@ export default function CreateMemo(props) {
 
         const { studentMemo } = searchStudent.student[0]
         props.setMemoList(studentMemo)
+        alert('메모가 등록되었습니다.')
       } catch (error) {
         console.error('에러 발생:', error)
       }
