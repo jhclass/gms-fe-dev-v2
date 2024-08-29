@@ -13,7 +13,7 @@ import { ManageUser } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import { useRef, useState } from 'react'
 import Address from '@/components/common/Address'
-import FormTopInfo from '../common/FormTopInfo'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;

@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import EducationalHistory from '@/components/layout/EducationalHistory'
 import CareerHistory from '@/components/layout/CareerHistory'
@@ -9,6 +9,7 @@ import EmploymentMemo from '@/components/layout/EmploymentMemo'
 import WishEmployment from '@/components/layout/WishEmployment'
 import RecoEmployment from '@/components/layout/RecoEmployment'
 import Employment from '@/components/layout/Employment'
+import { useRouter } from 'next/router'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -46,9 +47,17 @@ const LodingDiv = styled.div`
 `
 
 export default function EmploymentTabs({ paymentId, subjectId }) {
+  const router = useRouter()
+  const { typeTab } = router.query
   const { useMme } = useMmeQuery()
   const mId = useMme('mUserId')
   const [selected, setSelected] = useState('eduInfo')
+
+  useEffect(() => {
+    if (typeTab) {
+      setSelected(String(typeTab))
+    }
+  }, [typeTab])
 
   return (
     <>

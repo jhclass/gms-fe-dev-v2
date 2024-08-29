@@ -8,8 +8,8 @@ import StudentInfo from '@/components/items/StudentInfo'
 import Address from '@/components/common/Address'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import AdviceSelect from '../common/AdviceSelect'
-import FormTopInfo from '../common/FormTopInfo'
+import AdviceSelect from '@/components/common/AdviceSelect'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const FormBox = styled.form`
   display: flex;
@@ -175,6 +175,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
+
   const calculateAge = birthday => {
     const today = new Date()
     const timestamp = parseInt(birthday, 10)
@@ -191,6 +192,7 @@ export default function EmploymentInfoForm({ paymentData, fetchData }) {
 
     return age
   }
+
   const handleSelectChange = e => {
     setSelectValue(e.target.value)
   }

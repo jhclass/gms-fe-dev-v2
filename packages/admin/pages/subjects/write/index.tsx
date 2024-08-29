@@ -576,6 +576,7 @@ export default function SubjectWrite() {
                           mUsername: '강사명 없음',
                           mUserId: '강사명 없음',
                         }}
+                        isId={false}
                       />
                     )}
                   />

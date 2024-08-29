@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import SalesItem from '@/components/table/SalesItem'
-import SalesTotalItem from './SalesTotalItem'
+import SalesTotalItem from '@/components/table/SalesTotalItem'
 import { GET_HOURLY_SALES_MUTATION } from '@/graphql/mutations'
 
 interface HourData {

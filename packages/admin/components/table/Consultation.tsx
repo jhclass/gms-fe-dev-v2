@@ -18,8 +18,6 @@ import {
   StudentStateResponse,
 } from '@/src/generated/graphql'
 import TableTop from '@/components/common/TableTop'
-import ListLimit from '../common/ListLimit'
-import ColorInfo from '../common/ColorInfo'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

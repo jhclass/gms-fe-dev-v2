@@ -1,18 +1,13 @@
-import { useSuspenseQuery } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import {
-  SeeLecturesResult,
-  StudentPaymentResult,
-} from '@/src/generated/graphql'
-import {
-  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-  SEE_LECTURES_QUERY,
-} from '@/graphql/queries'
-import EmploymentItem from './EmploymentItem'
+import { StudentPaymentResult } from '@/src/generated/graphql'
+import { SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY } from '@/graphql/queries'
+import EmploymentItem from '@/components/table/EmploymentItem'
+import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -29,24 +24,6 @@ const Ttotal = styled.p`
   span {
     font-weight: 400;
     color: ${({ theme }) => theme.colors.primary};
-  }
-`
-const ColorHelp = styled.div`
-  display: flex;
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.gray};
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
   }
 `
 const TableWrap = styled.div`
@@ -70,13 +47,6 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
-const Tflag = styled.div`
-  display: table-cell;
-  width: 0.5rem;
-  height: 100%;
-  min-width: 7px;
-`
-
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -95,11 +65,11 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 32%;
+  width: 26%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.32}px;
+  min-width: ${1200 * 0.26}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -183,32 +153,49 @@ export default function EmploymentList() {
   const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
-  const { error, data, refetch } = useSuspenseQuery<seeStudentPaymentQuery>(
-    SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-    {
-      variables: { page: currentPage, limit: currentLimit },
-    },
+  const [searchEmploymentStudentPayment] = useMutation(
+    SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,
   )
-  const studentData = data?.seeStudentPayment?.StudentPayment
-  const totalCount = data?.seeStudentPayment?.totalCount
+  const [resultData, setResultData] = useState(null)
+  // const { error, data, refetch } = useSuspenseQuery<seeStudentPaymentQuery>(
+  //   SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
+  //   {
+  //     variables: { page: currentPage, limit: currentLimit },
+  //   },
+  // )
+  // const studentData = data?.seeStudentPayment?.StudentPayment
+  // const totalCount = data?.seeStudentPayment?.totalCount
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
-    refetch()
-  }, [])
+    searchEmploymentStudentPayment({
+      variables: {
+        lectureAssignment: '배정',
+        page: currentPage,
+        perPage: currentLimit,
+      },
+      onCompleted: resData => {
+        console.log(resData)
+        if (resData.searchStudentPayment.ok) {
+          const { data, totalCount } = resData.searchStudentPayment || {}
+          setResultData({ data, totalCount })
+        }
+      },
+    })
+  }, [currentPage])
 
-  if (error) {
-    console.log(error)
-  }
+  // if (error) {
+  //   console.log(error)
+  // }
 
   return (
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{totalCount}</span>건
+          총 <span>{resultData?.totalCount}</span>건
         </Ttotal>
         {/* <ColorHelp>
           <ColorCip>
@@ -224,16 +211,12 @@ export default function EmploymentList() {
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <Tflag
-                  style={{
-                    background: 'transparent',
-                  }}
-                ></Tflag>
                 <ClickBox>
                   <Tnum>No</Tnum>
                   <TlecturName>강의이름</TlecturName>
+                  <Tnum>회차</Tnum>
                   <Tperiod>강의기간</Tperiod>
-                  <Ttimes>사후관리종료일</Ttimes>
+                  <Ttimes>관리 종료일</Ttimes>
                   <Tteacher>강사명</Tteacher>
                   <Tname>학생명</Tname>
                   <Tcheck>취업여부</Tcheck>
@@ -241,30 +224,30 @@ export default function EmploymentList() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {totalCount > 0 &&
-              studentData
-                ?.filter(student => student.lectureAssignment === '배정')
-                .map((item, index) => (
-                  <EmploymentItem
-                    forName="student"
-                    key={index}
-                    tableData={item}
-                    itemIndex={index}
-                    currentPage={currentPage}
-                    limit={currentLimit}
-                  />
-                ))}
-            {totalCount === 0 && <Nolist>등록된 취업현황이 없습니다.</Nolist>}
+            {resultData?.totalCount > 0 &&
+              resultData?.data.map((item, index) => (
+                <EmploymentItem
+                  forName="student"
+                  key={index}
+                  tableData={item}
+                  itemIndex={index}
+                  currentPage={currentPage}
+                  limit={currentLimit}
+                />
+              ))}
+            {resultData?.totalCount === 0 && (
+              <Nolist>등록된 취업현황이 없습니다.</Nolist>
+            )}
           </TableWrap>
         </ScrollShadow>
-        {totalCount > 0 && (
+        {resultData?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(totalCount / currentLimit)}
+              total={Math.ceil(resultData?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

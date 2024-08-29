@@ -29,10 +29,10 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
+  width: 6%;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.06}px;
 `
 const Tname = styled.div`
   display: table-cell;
@@ -68,6 +68,23 @@ export default function EmploymentStateItem({ student }) {
       `${date.getDate().toString().padStart(2, '0')} `
     return formatted
   }
+
+  const calculateAge = birthday => {
+    const today = new Date()
+    const timestamp = parseInt(birthday, 10)
+    const birthDate = new Date(timestamp)
+
+    let age = today.getFullYear() - birthDate.getFullYear()
+
+    const monthDifference = today.getMonth() - birthDate.getMonth()
+    const dayDifference = today.getDate() - birthDate.getDate()
+
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+      age--
+    }
+
+    return age
+  }
   return (
     <>
       <TableRow>
@@ -75,9 +92,32 @@ export default function EmploymentStateItem({ student }) {
           <Tphone>
             <EllipsisBox>{student.student.phoneNum1}</EllipsisBox>
           </Tphone>
-          <Tnum>
-            <EllipsisBox>{student.subject.lectures.sessionNum}</EllipsisBox>
-          </Tnum>
+          <Tnum>{calculateAge(student.student.birthday)}</Tnum>
+          <Tphone>
+            <EllipsisBox>
+              {student.supportType ? student.supportType : '-'}
+            </EllipsisBox>
+          </Tphone>
+          <Tdate>
+            <EllipsisBox>
+              {student.StudentConsultation.length > 0
+                ? student.StudentConsultation[
+                    student.StudentConsultation.length - 1
+                  ].typeOfConsultation
+                : '-'}
+            </EllipsisBox>
+          </Tdate>
+          <Tdate>
+            <EllipsisBox>
+              {student.StudentConsultation.length > 0
+                ? formatDate(
+                    student.StudentConsultation[
+                      student.StudentConsultation.length - 1
+                    ].dateOfConsultation,
+                  )
+                : '-'}
+            </EllipsisBox>
+          </Tdate>
           <Tdate>
             <EllipsisBox>
               {student.EmploymentStatus.length > 0
@@ -92,17 +132,6 @@ export default function EmploymentStateItem({ student }) {
                 : '-'}
             </EllipsisBox>
           </Tname>
-          <Tdate>
-            <EllipsisBox>
-              {student.StudentConsultation.length > 0
-                ? formatDate(
-                    student.StudentConsultation[
-                      student.StudentConsultation.length - 1
-                    ].createdAt,
-                  )
-                : '-'}
-            </EllipsisBox>
-          </Tdate>
         </ClickBox>
       </TableRow>
     </>

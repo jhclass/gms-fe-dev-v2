@@ -1,12 +1,15 @@
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Button, Input, Textarea } from '@nextui-org/react'
+import { Button, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { CREATE_REGULAR_EVALUATION_SET_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_PORTFOLIO_MUTATION,
+  CREATE_REGULAR_EVALUATION_SET_MUTATION,
+} from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { SEE_REGULAREVALUATION_SET_QUERY } from '@/graphql/queries'
 import { useRef, useState } from 'react'
+import PortfolioList from '@/components/layout/PortfolioList'
 
 const DetailForm = styled.form`
   display: flex;
@@ -67,6 +70,9 @@ const FilesBtn = styled.button`
   text-align: center;
   color: #fff;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* @media (max-width: 768px) {
     width: 100%;
   } */
@@ -110,11 +116,16 @@ const BtnBox = styled.div`
   }
 `
 
-export default function PortfolioForm({ setIsCreate }) {
+export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
   const { userLogs } = useUserLogsMutation()
-  const [createRegularEvaluationSet] = useMutation(
-    CREATE_REGULAR_EVALUATION_SET_MUTATION,
-  )
+  const [createPortfolio] = useMutation(CREATE_PORTFOLIO_MUTATION, {
+    context: {
+      headers: {
+        'x-apollo-operation-name': 'filePath',
+        // 'apollo-require-preflight': 'true',
+      },
+    },
+  })
   const [avatarImg, setAvatartImg] = useState([])
   const [validFiles, setValidFiles] = useState([])
   const fileInputRef = useRef(null)
@@ -129,30 +140,31 @@ export default function PortfolioForm({ setIsCreate }) {
     formState,
   } = useForm()
   const { errors } = formState
+  console.log(paymentId, subjectId)
   const onSubmit = data => {
     console.log('validFiles', validFiles)
     console.log(data)
-    // createRegularEvaluationSet({
-    //   variables: {
-    //     subjectId: subjectId,
-    //     statusType: data.statusType === '' ? null : data.statusType,
-    //     evaluationDetails:
-    //       data.evaluationDetails === '' ? null : data.evaluationDetails,
-    //     points: data.points === '' ? 0 : parseInt(data.points),
-    //   },
-    //   refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
-    //   onCompleted: result => {
-    //     userLogs(
-    //       `${data.statusType} 정기평가 내용 설정`,
-    //       `ok: ${result.createRegularEvaluationSet.ok}`,
-    //     )
-    //     if (result.createRegularEvaluationSet.ok) {
-    //       setIsCreate(true)
-    //       alert(`정기평가 내용이 설정되었습니다.`)
-    //       reset()
-    //     }
-    //   },
-    // })
+    createPortfolio({
+      variables: {
+        subjectId: subjectId,
+        studentPaymentId: paymentId,
+        filePath: validFiles,
+        details: data.details,
+      },
+      // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
+      onCompleted: result => {
+        console.log(result)
+        userLogs(
+          `${paymentId} 포트폴리오 추가`,
+          `ok: ${result.createStudentPortfolio.ok}`,
+        )
+        if (result.createStudentPortfolio.ok) {
+          setIsCreate(true)
+          alert(`${paymentId} 포트폴리오 추가되었습니다.`)
+          reset()
+        }
+      },
+    })
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -288,6 +300,7 @@ export default function PortfolioForm({ setIsCreate }) {
             </Button>
           </BtnBox>
         </FlexBox>
+        <PortfolioList />
       </DetailForm>
     </>
   )

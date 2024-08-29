@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Layout from './layout'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { styled } from 'styled-components'
+import Layout from '@/pages/testCate/layout'
 
 const Container = styled.div`
   display: flex;

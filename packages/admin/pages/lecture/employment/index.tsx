@@ -64,15 +64,16 @@ export default function Employment() {
               {/* <ConsultationFilter studentFilter={studentFilter} /> */}
             </Suspense>
           ) : (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <EmploymentList />
-            </Suspense>
+            // <Suspense
+            //   fallback={
+            //     <LodingDiv>
+            //       <i className="xi-spinner-2" />
+            //     </LodingDiv>
+            //   }
+            // >
+            //   <EmploymentList />
+            // </Suspense>
+            <EmploymentList />
           )}
         </ConBox>
       </MainWrap>

@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
@@ -10,6 +10,7 @@ import EmploymentNameList from '@/components/form/EmploymentNameList'
 import DropOutMemo from '@/components/layout/DropOutMemo'
 import RegularEvaluation from '@/components/layout/RegularEvaluation'
 import Portfolio from '@/components/layout/Portfolio'
+import { useRouter } from 'next/router'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -47,11 +48,19 @@ const LodingDiv = styled.div`
 `
 
 export default function AttendanceTabs({ lectureId, students, subjectId }) {
+  const router = useRouter()
+  const { typeTab } = router.query
   const completion = useRecoilValue(completionStatus)
   const [selected, setSelected] = useState('eduInfo')
   const dropOutStudents = students?.filter(
     student => student.courseComplete === completion.dropout,
   )
+
+  useEffect(() => {
+    if (typeTab) {
+      setSelected(String(typeTab))
+    }
+  }, [typeTab])
 
   return (
     <>
@@ -125,7 +134,7 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
           <RegularEvaluation lectureId={lectureId} subjectId={subjectId} />
         </Tab>
         <Tab key="portfolio" title="포트폴리오">
-          <Portfolio students={students} />
+          <Portfolio students={students} subjectId={subjectId} />
         </Tab>
       </Tabs>
     </>

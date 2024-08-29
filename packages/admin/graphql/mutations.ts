@@ -2572,3 +2572,86 @@ export const DELETE_REGULAR_EVALUATION_SET_MUTATION = gql`
     }
   }
 `
+export const CREATE_PORTFOLIO_MUTATION = gql`
+  mutation CreateStudentPortfolio(
+    $filePath: [Upload]!
+    $studentPaymentId: Int!
+    $subjectId: Int!
+    $details: String
+    $isBest: String
+  ) {
+    createStudentPortfolio(
+      filePath: $filePath
+      studentPaymentId: $studentPaymentId
+      subjectId: $subjectId
+      details: $details
+      isBest: $isBest
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
+  mutation Mutation(
+    $page: Int
+    $limit: Int
+    $subDiv: String
+    $employment: String
+    $lectureAssignment: String
+  ) {
+    searchStudentPayment(
+      page: $page
+      limit: $limit
+      subDiv: $subDiv
+      employment: $employment
+      lectureAssignment: $lectureAssignment
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        id
+        EmploymentStatus {
+          dateOfEmployment
+          companyName
+        }
+        StudentConsultation {
+          dateOfConsultation
+          typeOfConsultation
+        }
+        EmploymentRecommendation {
+          companyName
+          dateOfInterview
+          dateOfRecommendation
+        }
+        supportType
+        student {
+          name
+          birthday
+          phoneNum1
+        }
+        employment
+        subject {
+          id
+          lectures {
+            id
+            temporaryName
+            teachers {
+              mUsername
+              id
+            }
+            sessionNum
+            subDiv
+            lecturePeriodStart
+            lecturePeriodEnd
+          }
+        }
+        courseComplete
+        lectureAssignment
+      }
+    }
+  }
+`

@@ -6,7 +6,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_HOPE_FOR_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
-import FormTopInfo from '../common/FormTopInfo'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;

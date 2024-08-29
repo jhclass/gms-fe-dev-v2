@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import PerformanceItem from './PerformanceItem'
+import PerformanceItem from '@/components/table/PerformanceItem'
 import { SALES_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div``

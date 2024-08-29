@@ -92,6 +92,7 @@ export const employmentStatus = atom({
   default: {
     employed: '취업',
     unemployed: '미취업',
+    startup: '창업',
   },
 })
 

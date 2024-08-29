@@ -26,7 +26,6 @@ import {
 import useMmeQuery from '@/utils/mMe'
 import { useReactToPrint } from 'react-to-print'
 import useUserLogsMutation from '@/utils/userLogs'
-import FormTopInfo from '../common/FormTopInfo'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 

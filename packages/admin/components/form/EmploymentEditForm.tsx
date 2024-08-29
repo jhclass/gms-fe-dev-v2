@@ -16,7 +16,9 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import FormTopInfo from '../common/FormTopInfo'
+import FormTopInfo from '@/components/common/FormTopInfo'
+import { employmentStatus } from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -81,6 +83,7 @@ const DatePickerBox = styled.div`
 `
 
 export default function EmploymentEditForm({ item, refetch }) {
+  const employment = useRecoilValue(employmentStatus)
   const { userLogs } = useUserLogsMutation()
   const [editEmployment] = useMutation(EDIT_EMPLOYMENT_MUTATION)
   const [editStudentEmployment] = useMutation(EDIT_STUDENT_EMPLOYMENT_MUTATION)

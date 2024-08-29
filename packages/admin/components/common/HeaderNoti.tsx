@@ -6,7 +6,7 @@ import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import AlarmsModal from '@/components/modal/AlarmsModal'
 import { Button } from '@nextui-org/react'
-import AlarmsTotal from '../items/AlarmsTotal'
+import AlarmsTotal from '@/components/items/AlarmsTotal'
 
 const NotiBtn = styled.button`
   display: flex;

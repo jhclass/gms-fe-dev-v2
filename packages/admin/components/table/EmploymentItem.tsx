@@ -65,11 +65,11 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 32%;
+  width: 26%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.32}px;
+  min-width: ${1200 * 0.26}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -176,6 +176,20 @@ export default function EmploymentItem(props) {
     return data.map(item => item.mUsername).join(', ')
   }
 
+  const addSixMonths = dateString => {
+    const timestamp = parseInt(dateString, 10)
+    const date = new Date(timestamp)
+    date.setMonth(date.getMonth() + 6)
+
+    return formatDate(date.getTime())
+  }
+  console.log(student)
+  const handleClick = id => {
+    router.push({
+      pathname: `/lecture/employmentDetail/${id}`,
+      query: { typeTab: 'employmentState' },
+    })
+  }
   return (
     <>
       <TableItem>
@@ -192,6 +206,9 @@ export default function EmploymentItem(props) {
                   {student?.subject?.lectures?.temporaryName}
                 </EllipsisBox>
               </TlecturName>
+              <Tnum>
+                <EllipsisBox>{student.subject.lectures.sessionNum}</EllipsisBox>
+              </Tnum>
               <Tperiod>
                 <EllipsisBox>
                   {formatDate(student?.subject?.lectures?.lecturePeriodStart) +
@@ -201,7 +218,7 @@ export default function EmploymentItem(props) {
               </Tperiod>
               <Ttimes>
                 <EllipsisBox>
-                  {/* {extractTimeRange(lecture.lectureTime)} */}
+                  {addSixMonths(student?.subject?.lectures?.lecturePeriodEnd)}
                 </EllipsisBox>
               </Ttimes>
               <Tteacher>
@@ -213,11 +230,7 @@ export default function EmploymentItem(props) {
                 <EllipsisBox>{student?.student?.name}</EllipsisBox>
               </Tname>
               <Tcheck>
-                <EllipsisBox>
-                  {student?.EmploymentStatus.length > 0
-                    ? student?.EmploymentStatus[0].employmentType
-                    : '미취업'}
-                </EllipsisBox>
+                <EllipsisBox>{student?.employment}</EllipsisBox>
               </Tcheck>
               <Tbtn>
                 <BtnBox>
@@ -240,9 +253,8 @@ export default function EmploymentItem(props) {
                     variant="bordered"
                     color="primary"
                     className="w-full"
-                    onClick={e => {
-                      e.preventDefault()
-                      // router.push(`/lecture/attendance/${lecture.id}`)
+                    onClick={() => {
+                      handleClick(student.id)
                     }}
                   >
                     수정

@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
-import EmploymentMemoList from '@/components/form/EmploymentMemoList'
-import EmploymentMemoForm from '@/components/form/EmploymentMemoForm'
-import DropOutMemoForm from '../form/DropOutMemoForm'
-import DropOutMemoList from '../form/DropOutMemoList'
+import DropOutMemoForm from '@/components/form/DropOutMemoForm'
+import DropOutMemoList from '@/components/form/DropOutMemoList'
 import useMmeQuery from '@/utils/mMe'
 
 const DetailBox = styled.div`
