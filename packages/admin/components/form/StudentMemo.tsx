@@ -103,6 +103,7 @@ export default function ConsultMemo(props) {
               onCompleted: data => {
                 if (data.searchStudent.ok) {
                   props.setMemoList(data.searchStudent.student[0].studentMemo)
+                  alert('메모가 삭제되었습니다.')
                 }
               },
             })
@@ -134,6 +135,7 @@ export default function ConsultMemo(props) {
               onCompleted: data => {
                 if (data.searchStudent.ok) {
                   props.setMemoList(data.searchStudent.student[0].studentMemo)
+                  alert('메모가 수정되었습니다.')
                 }
               },
             })

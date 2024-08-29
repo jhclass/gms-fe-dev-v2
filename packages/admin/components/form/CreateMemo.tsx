@@ -88,6 +88,7 @@ export default function CreateMemo(props) {
           throw new Error('메모 등록 실패')
         }
         props.setMemoList(consultationMemo)
+        alert('메모가 등록되었습니다.')
       } catch (error) {
         console.error('에러 발생:', error)
       }
