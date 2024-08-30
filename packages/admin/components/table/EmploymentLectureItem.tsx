@@ -155,11 +155,11 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-export default function EmploymentItem(props) {
+export default function EmploymentLectureItem(props) {
   const router = useRouter()
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
-  const student = props.tableData
+  const lecture = props.tableData
   const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
 
   const formatDate = data => {
@@ -189,86 +189,74 @@ export default function EmploymentItem(props) {
       query: { typeTab: 'employmentState' },
     })
   }
+
   return (
     <>
-      <TableItem>
-        <TableRow>
-          <ClickBox onClick={() => setIsOpen(!isOpen)}>
-            <div>
-              <Tnum>
-                <EllipsisBox>
-                  {(props.currentPage - 1) * conLimit + (conIndex + 1)}
-                </EllipsisBox>
-              </Tnum>
-              <TlecturName>
-                <EllipsisBox>
-                  {student?.subject?.lectures?.temporaryName}
-                </EllipsisBox>
-              </TlecturName>
-              <Tnum>
-                <EllipsisBox>{student.subject.lectures.sessionNum}</EllipsisBox>
-              </Tnum>
-              <Tperiod>
-                <EllipsisBox>
-                  {formatDate(student?.subject?.lectures?.lecturePeriodStart) +
-                    ' - ' +
-                    formatDate(student?.subject?.lectures?.lecturePeriodEnd)}
-                </EllipsisBox>
-              </Tperiod>
-              <Ttimes>
-                <EllipsisBox>
-                  {addSixMonths(student?.subject?.lectures?.lecturePeriodEnd)}
-                </EllipsisBox>
-              </Ttimes>
-              <Tteacher>
-                <EllipsisBox>
-                  {formatUsernames(student?.subject?.lectures?.teachers)}
-                </EllipsisBox>
-              </Tteacher>
-              <Tname>
-                <EllipsisBox>{student?.student?.name}</EllipsisBox>
-              </Tname>
-              <Tcheck>
-                <EllipsisBox>{student?.employment}</EllipsisBox>
-              </Tcheck>
-              <Tbtn>
-                <BtnBox>
-                  {/* {(mGrade <= grade.subMaster || mPart.includes('교무팀')) && (
-                    <Button
-                      size="sm"
-                      variant="solid"
-                      color="primary"
-                      className="w-full text-white"
-                      onClick={e => {
-                        e.preventDefault()
-                        router.push(`/lecture/detail/${lecture.id}`)
-                      }}
-                    >
-                      강의 수정
-                    </Button>
-                  )} */}
-                  <Button
-                    size="sm"
-                    variant="bordered"
-                    color="primary"
-                    className="w-full"
-                    onClick={() => {
-                      handleClick(student.id)
-                    }}
-                  >
-                    수정
-                  </Button>
-                </BtnBox>
-              </Tbtn>
-            </div>
-            <div>
-              <Tdiv $isOpen={isOpen}>
-                <EmploymentStateList student={student} />
-              </Tdiv>
-            </div>
-          </ClickBox>
-        </TableRow>
-      </TableItem>
+      {lecture?.subject?.StudentPayment?.length > 0 &&
+        lecture?.subject?.StudentPayment.map((item, index) => (
+          <TableItem key={index}>
+            <TableRow>
+              <ClickBox onClick={() => setIsOpen(!isOpen)}>
+                <div>
+                  <Tnum>
+                    <EllipsisBox>
+                      {(props.currentPage - 1) * conLimit + (conIndex + 1)}
+                    </EllipsisBox>
+                  </Tnum>
+                  <TlecturName>
+                    <EllipsisBox>{lecture?.temporaryName}</EllipsisBox>
+                  </TlecturName>
+                  <Tnum>
+                    <EllipsisBox>{lecture?.sessionNum}</EllipsisBox>
+                  </Tnum>
+                  <Tperiod>
+                    <EllipsisBox>
+                      {formatDate(lecture?.lecturePeriodStart) +
+                        ' - ' +
+                        formatDate(lecture?.lecturePeriodEnd)}
+                    </EllipsisBox>
+                  </Tperiod>
+                  <Ttimes>
+                    <EllipsisBox>
+                      {addSixMonths(lecture?.lecturePeriodEnd)}
+                    </EllipsisBox>
+                  </Ttimes>
+                  <Tteacher>
+                    <EllipsisBox>
+                      {formatUsernames(lecture?.teachers)}
+                    </EllipsisBox>
+                  </Tteacher>
+                  <Tname>
+                    <EllipsisBox>{item?.student?.name}</EllipsisBox>
+                  </Tname>
+                  <Tcheck>
+                    <EllipsisBox>{item?.employment}</EllipsisBox>
+                  </Tcheck>
+                  <Tbtn>
+                    <BtnBox>
+                      <Button
+                        size="sm"
+                        variant="bordered"
+                        color="primary"
+                        className="w-full"
+                        onClick={() => {
+                          handleClick(item.id)
+                        }}
+                      >
+                        수정
+                      </Button>
+                    </BtnBox>
+                  </Tbtn>
+                </div>
+                <div>
+                  <Tdiv $isOpen={isOpen}>
+                    {/* <EmploymentStateList student={item} /> */}
+                  </Tdiv>
+                </div>
+              </ClickBox>
+            </TableRow>
+          </TableItem>
+        ))}
     </>
   )
 }

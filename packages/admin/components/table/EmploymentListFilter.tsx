@@ -1,5 +1,5 @@
 import { useMutation, useSuspenseQuery } from '@apollo/client'
-import { Pagination, ScrollShadow } from '@nextui-org/react'
+import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
@@ -24,6 +24,16 @@ const Ttotal = styled.p`
   span {
     font-weight: 400;
     color: ${({ theme }) => theme.colors.primary};
+  }
+`
+const TopBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
   }
 `
 const TableWrap = styled.div`
@@ -149,7 +159,7 @@ type seeStudentPaymentQuery = {
   seeStudentPayment: StudentPaymentResult
 }
 
-export default function EmploymentList() {
+export default function EmploymentListFilter({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
   const [searchEmploymentStudentPayment] = useMutation(
@@ -160,25 +170,37 @@ export default function EmploymentList() {
   useEffect(() => {
     searchEmploymentStudentPayment({
       variables: {
+        ...studentFilter,
         lectureAssignment: '배정',
         page: currentPage,
         perPage: currentLimit,
       },
       onCompleted: resData => {
+        console.log(resData)
         if (resData.searchStudentPayment.ok) {
           const { data, totalCount } = resData.searchStudentPayment || {}
           setResultData({ data, totalCount })
         }
       },
     })
-  }, [currentPage])
+  }, [currentPage, studentFilter])
+
+  const resetList = () => {
+    window.location.href = '/lecture/employment'
+  }
 
   return (
     <>
       <TTopic>
-        <Ttotal>
-          총 <span>{resultData?.totalCount}</span>건
-        </Ttotal>
+        <TopBox>
+          <Ttotal>
+            총 <span>{resultData === null ? 0 : resultData?.totalCount}</span>
+            건이 검색되었습니다.
+          </Ttotal>
+          <Button size="sm" radius="sm" color="primary" onClick={resetList}>
+            전체보기
+          </Button>
+        </TopBox>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">

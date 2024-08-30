@@ -226,8 +226,6 @@ export default function Attendance({
         return item && item.courseComplete !== completion.dropout
       })
     }
-
-    // console.log(action, state)
   }
 
   const handleSelectChange = (value, itemIndex, dayIndex) => {

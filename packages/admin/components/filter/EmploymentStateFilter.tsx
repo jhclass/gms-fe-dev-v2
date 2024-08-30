@@ -1,20 +1,10 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useResetRecoilState } from 'recoil'
-import { studentPageState } from '@/lib/recoilAtoms'
-import { useForm } from 'react-hook-form'
-import { Button, Input, Tab, Tabs } from '@nextui-org/react'
+import { Tab, Tabs } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-import { getYear, subMonths } from 'date-fns'
-import DatePickerHeader from '@/components/common/DatePickerHeader'
+import EmploymentStudentFilterForm from '@/components/form/EmploymentStudentFilterForm'
+import EmploymentLectureFilterForm from '@/components/form/EmploymentLectureFilterForm'
 import { useRouter } from 'next/router'
-import EmploymentStudentFilterForm from '../form/EmploymentStudentFilterForm'
-import EmploymentLectureFilterForm from '../form/EmploymentLectureFilterForm'
-registerLocale('ko', ko)
-const _ = require('lodash')
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -55,6 +45,7 @@ export default function StudentsFilter({
   onFilterSearch,
   setStudentFilter,
   studentFilter,
+  setFilterType,
 }) {
   const router = useRouter()
   const { typeTab } = router.query
@@ -65,6 +56,11 @@ export default function StudentsFilter({
       setSelected(String(typeTab))
     }
   }, [typeTab])
+
+  const clickTab = e => {
+    setFilterType(e)
+    setSelected(e)
+  }
 
   return (
     <>
@@ -84,20 +80,18 @@ export default function StudentsFilter({
               panel: 'flex flex-col gap-[2rem]',
             }}
             selectedKey={selected}
-            onSelectionChange={e => setSelected(String(e))}
+            onSelectionChange={e => clickTab(String(e))}
           >
             <Tab key="studentPaymentFilter" title="학생정보로 검색">
               <EmploymentStudentFilterForm
                 onFilterSearch={onFilterSearch}
                 setStudentFilter={setStudentFilter}
-                studentFilter={studentFilter}
               />
             </Tab>
             <Tab key="lectureFilter" title="강의정보로 검색">
               <EmploymentLectureFilterForm
                 onFilterSearch={onFilterSearch}
                 setStudentFilter={setStudentFilter}
-                studentFilter={studentFilter}
               />
             </Tab>
           </Tabs>

@@ -76,6 +76,7 @@ export default function EmploymentStateList({ student }) {
             <Theader>
               <TheaderBox>
                 <ClickBox>
+                  <Tphone>수강구분</Tphone>
                   <Tphone>훈련생전화번호</Tphone>
                   <Tnum>훈련생나이</Tnum>
                   <Tphone>훈련생유형</Tphone>

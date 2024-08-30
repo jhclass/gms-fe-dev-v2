@@ -85,10 +85,12 @@ export default function EmploymentStateItem({ student }) {
 
     return age
   }
+
   return (
     <>
       <TableRow>
         <ClickBox>
+          <Tphone>{student.subDiv}</Tphone>
           <Tphone>
             <EllipsisBox>{student.student.phoneNum1}</EllipsisBox>
           </Tphone>

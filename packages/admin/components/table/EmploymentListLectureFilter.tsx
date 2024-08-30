@@ -7,7 +7,11 @@ import { consultPageState } from '@/lib/recoilAtoms'
 import { StudentPaymentResult } from '@/src/generated/graphql'
 import { SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY } from '@/graphql/queries'
 import EmploymentItem from '@/components/table/EmploymentItem'
-import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
+import {
+  SEARCH_EMPLOYMENT_LECTURE_MUTATION,
+  SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,
+} from '@/graphql/mutations'
+import EmploymentLectureItem from './EmploymentLectureItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -145,29 +149,28 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
-type seeStudentPaymentQuery = {
-  seeStudentPayment: StudentPaymentResult
-}
 
-export default function EmploymentList() {
+export default function EmploymentListFilter({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
-  const [searchEmploymentStudentPayment] = useMutation(
-    SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,
+  const [searchEmploymentLecture] = useMutation(
+    SEARCH_EMPLOYMENT_LECTURE_MUTATION,
   )
-  const [resultData, setResultData] = useState(null)
+  const [resultTotal, setResultTotal] = useState(0)
+  const [resultLecture, setResultLecture] = useState(null)
 
   useEffect(() => {
-    searchEmploymentStudentPayment({
+    searchEmploymentLecture({
       variables: {
-        lectureAssignment: '배정',
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        if (resData.searchStudentPayment.ok) {
-          const { data, totalCount } = resData.searchStudentPayment || {}
-          setResultData({ data, totalCount })
+        if (resData.searchLectures.ok) {
+          const { data, totalCount } = resData.searchLectures || {}
+          setResultTotal(totalCount)
+          setResultLecture(data)
         }
       },
     })
@@ -177,7 +180,7 @@ export default function EmploymentList() {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{resultData?.totalCount}</span>건
+          총 <span>{resultTotal}</span>건
         </Ttotal>
       </TTopic>
       <TableArea>
@@ -198,9 +201,9 @@ export default function EmploymentList() {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {resultData?.totalCount > 0 &&
-              resultData?.data.map((item, index) => (
-                <EmploymentItem
+            {resultTotal > 0 &&
+              resultLecture?.map((item, index) => (
+                <EmploymentLectureItem
                   forName="student"
                   key={index}
                   tableData={item}
@@ -209,19 +212,17 @@ export default function EmploymentList() {
                   limit={currentLimit}
                 />
               ))}
-            {resultData?.totalCount === 0 && (
-              <Nolist>등록된 취업현황이 없습니다.</Nolist>
-            )}
+            {resultTotal === 0 && <Nolist>등록된 취업현황이 없습니다.</Nolist>}
           </TableWrap>
         </ScrollShadow>
-        {resultData?.totalCount > 0 && (
+        {resultTotal > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(resultData?.totalCount / currentLimit)}
+              total={Math.ceil(resultTotal / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

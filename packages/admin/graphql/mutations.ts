@@ -2573,19 +2573,17 @@ export const DELETE_REGULAR_EVALUATION_SET_MUTATION = gql`
   }
 `
 export const CREATE_PORTFOLIO_MUTATION = gql`
-  mutation CreateStudentPortfolio(
+  mutation Mutation(
     $filePath: [Upload]!
     $studentPaymentId: Int!
     $subjectId: Int!
     $details: String
-    $isBest: String
   ) {
     createStudentPortfolio(
       filePath: $filePath
       studentPaymentId: $studentPaymentId
       subjectId: $subjectId
       details: $details
-      isBest: $isBest
     ) {
       ok
       message
@@ -2597,6 +2595,7 @@ export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
   mutation Mutation(
     $page: Int
     $limit: Int
+    $studentName: String
     $subDiv: String
     $employment: String
     $lectureAssignment: String
@@ -2604,6 +2603,7 @@ export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
     searchStudentPayment(
       page: $page
       limit: $limit
+      studentName: $studentName
       subDiv: $subDiv
       employment: $employment
       lectureAssignment: $lectureAssignment
@@ -2651,6 +2651,75 @@ export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
         }
         courseComplete
         lectureAssignment
+        subDiv
+      }
+    }
+  }
+`
+export const SEARCH_EMPLOYMENT_LECTURE_MUTATION = gql`
+  mutation SearchLectures(
+    $periodStart: String
+    $periodEnd: String
+    $temporaryName: String
+    $page: Int
+    $limit: Int
+    $teacherId: Int
+    $subjectId: Int
+  ) {
+    searchLectures(
+      periodStart: $periodStart
+      periodEnd: $periodEnd
+      temporaryName: $temporaryName
+      page: $page
+      limit: $limit
+      teacherId: $teacherId
+      subjectId: $subjectId
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        teachers {
+          mUsername
+          id
+        }
+        temporaryName
+        sessionNum
+        subDiv
+        lecturePeriodStart
+        lecturePeriodEnd
+        id
+        subject {
+          id
+          StudentPayment {
+            supportType
+            subDiv
+            EmploymentRecommendation {
+              companyName
+              dateOfInterview
+              dateOfRecommendation
+            }
+            StudentConsultation {
+              typeOfConsultation
+              dateOfConsultation
+            }
+            EmploymentStatus {
+              companyName
+              dateOfEmployment
+            }
+            courseComplete
+            employment
+            id
+            lectureAssignment
+            student {
+              id
+              phoneNum1
+              name
+              birthday
+            }
+          }
+        }
       }
     }
   }
