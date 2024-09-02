@@ -140,8 +140,6 @@ export default function NonassignedItem(props) {
     return formatted
   }
 
-  console.log(student)
-
   return (
     <>
       <TableItem>
