@@ -1091,3 +1091,76 @@ export const SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY = gql`
     }
   }
 `
+export const SEARCH_ACADEMY_RECORD_QUERY = gql`
+  query Query(
+    $page: Int
+    $limit: Int
+    $teacherName: String
+    $subDiv: String
+    $lectureName: String
+    $phoneNum: String
+    $studentName: String
+    $searchAcademyRecordId: Int
+  ) {
+    searchAcademyRecord(
+      page: $page
+      limit: $limit
+      teacherName: $teacherName
+      subDiv: $subDiv
+      lectureName: $lectureName
+      phoneNum: $phoneNum
+      studentName: $studentName
+      id: $searchAcademyRecordId
+    ) {
+      totalCount
+      ok
+      message
+      error
+      result {
+        supportType
+        subDiv
+        subject {
+          id
+          lectures {
+            id
+            temporaryName
+            teachers {
+              id
+              mUsername
+            }
+            lecturePeriodEnd
+            lecturePeriodStart
+            subDiv
+            sessionNum
+          }
+        }
+        student {
+          name
+          birthday
+          id
+          phoneNum1
+        }
+        lectureAssignment
+        employment
+        id
+        courseComplete
+        StudentPortfolio {
+          id
+        }
+        StudentConsultation {
+          dateOfConsultation
+          typeOfConsultation
+        }
+        EmploymentStatus {
+          companyName
+          dateOfEmployment
+        }
+        EmploymentRecommendation {
+          companyName
+          dateOfInterview
+          dateOfRecommendation
+        }
+      }
+    }
+  }
+`

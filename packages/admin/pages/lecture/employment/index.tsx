@@ -7,6 +7,8 @@ import EmploymentStateFilter from '@/components/filter/EmploymentStateFilter'
 import EmploymentList from '@/components/table/EmploymentList'
 import EmploymentListFilter from '@/components/table/EmploymentListFilter'
 import EmploymentListLectureFilter from '@/components/table/EmploymentListLectureFilter'
+import EmploymentListFilter2 from '@/components/table/EmploymentListFilter2'
+import EmploymentStateFilter2 from '@/components/filter/EmploymentStateFilter2'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -50,7 +52,14 @@ export default function Employment() {
             </LodingDiv>
           }
         >
-          <EmploymentStateFilter
+          {/* <EmploymentStateFilter
+            isActive={filterActive}
+            studentFilter={studentFilter}
+            onFilterSearch={setFilterSearch}
+            setStudentFilter={setStudentFilter}
+            setFilterType={setFilterType}
+          /> */}
+          <EmploymentStateFilter2
             isActive={filterActive}
             studentFilter={studentFilter}
             onFilterSearch={setFilterSearch}
@@ -62,7 +71,8 @@ export default function Employment() {
           {filterSearch ? (
             <>
               {filterType === 'studentPaymentFilter' ? (
-                <EmploymentListFilter studentFilter={studentFilter} />
+                // <EmploymentListFilter studentFilter={studentFilter} />
+                <EmploymentListFilter2 studentFilter={studentFilter} />
               ) : (
                 <EmploymentListLectureFilter studentFilter={studentFilter} />
               )}

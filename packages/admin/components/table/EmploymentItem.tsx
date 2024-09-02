@@ -206,7 +206,9 @@ export default function EmploymentItem(props) {
                 </EllipsisBox>
               </TlecturName>
               <Tnum>
-                <EllipsisBox>{student.subject.lectures.sessionNum}</EllipsisBox>
+                <EllipsisBox>
+                  {student?.subject?.lectures?.sessionNum}
+                </EllipsisBox>
               </Tnum>
               <Tperiod>
                 <EllipsisBox>

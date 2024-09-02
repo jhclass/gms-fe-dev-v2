@@ -90,11 +90,11 @@ export default function EmploymentStateItem({ student }) {
     <>
       <TableRow>
         <ClickBox>
-          <Tphone>{student.subDiv}</Tphone>
+          <Tphone>{student?.subDiv}</Tphone>
           <Tphone>
-            <EllipsisBox>{student.student.phoneNum1}</EllipsisBox>
+            <EllipsisBox>{student?.student?.phoneNum1}</EllipsisBox>
           </Tphone>
-          <Tnum>{calculateAge(student.student.birthday)}</Tnum>
+          <Tnum>{calculateAge(student?.student?.birthday)}</Tnum>
           <Tphone>
             <EllipsisBox>
               {student.supportType ? student.supportType : '-'}
@@ -102,19 +102,19 @@ export default function EmploymentStateItem({ student }) {
           </Tphone>
           <Tdate>
             <EllipsisBox>
-              {student.StudentConsultation.length > 0
-                ? student.StudentConsultation[
-                    student.StudentConsultation.length - 1
+              {student?.StudentConsultation?.length > 0
+                ? student?.StudentConsultation[
+                    student?.StudentConsultation?.length - 1
                   ].typeOfConsultation
                 : '-'}
             </EllipsisBox>
           </Tdate>
           <Tdate>
             <EllipsisBox>
-              {student.StudentConsultation.length > 0
+              {student?.StudentConsultation?.length > 0
                 ? formatDate(
-                    student.StudentConsultation[
-                      student.StudentConsultation.length - 1
+                    student?.StudentConsultation[
+                      student?.StudentConsultation?.length - 1
                     ].dateOfConsultation,
                   )
                 : '-'}
@@ -122,15 +122,15 @@ export default function EmploymentStateItem({ student }) {
           </Tdate>
           <Tdate>
             <EllipsisBox>
-              {student.EmploymentStatus.length > 0
-                ? formatDate(student.EmploymentStatus[0].dateOfEmployment)
+              {student?.EmploymentStatus?.length > 0
+                ? formatDate(student?.EmploymentStatus[0]?.dateOfEmployment)
                 : '-'}
             </EllipsisBox>
           </Tdate>
           <Tname>
             <EllipsisBox>
-              {student.EmploymentStatus.length > 0
-                ? student.EmploymentStatus[0].companyName
+              {student?.EmploymentStatus?.length > 0
+                ? student?.EmploymentStatus[0]?.companyName
                 : '-'}
             </EllipsisBox>
           </Tname>
