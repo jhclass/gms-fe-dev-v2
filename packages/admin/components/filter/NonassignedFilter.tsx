@@ -121,19 +121,15 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function StudentsFilter({
+export default function NonassignedFilter({
   isActive,
-  // onFilterSearch,
-  // setStudentFilter,
-  // studentFilter,
+  onFilterSearch,
+  setStudentFilter,
+  studentFilter,
 }) {
   const router = useRouter()
-  const studentPage = useResetRecoilState(studentPageState)
-  const [birthdayRange, setBirthdayRange] = useState([null, null])
-  const [startBirthday, endBirthday] = birthdayRange
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
-  const subStatus = useRecoilValue(subStatusState)
   const [sub, setSub] = useState('-')
   const [name, setName] = useState('')
   const years = _.range(1970, getYear(new Date()) + 1, 1)
@@ -149,51 +145,12 @@ export default function StudentsFilter({
     defaultValues: {
       studentName: '',
       subDiv: '',
-      birthday: undefined,
-      createdAt: undefined,
+      createdPeriod: undefined,
     },
   })
 
-  // useEffect(() => {
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.studentName === null
-  //   ) {
-  //     setName('')
-  //   } else {
-  //     setName(studentFilter?.studentName)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.subDiv === null
-  //   ) {
-  //     setSub('-')
-  //   } else {
-  //     setSub(studentFilter?.subDiv)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.birthday === null
-  //   ) {
-  //     setBirthdayRange([null, null])
-  //   } else {
-  //     setBirthdayRange([studentFilter?.birthday[0], studentFilter?.birthday[1]])
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.createdAt === null
-  //   ) {
-  //     setCreatDateRange([null, null])
-  //   } else {
-  //     setCreatDateRange([
-  //       studentFilter?.createdAt[0],
-  //       studentFilter?.createdAt[1],
-  //     ])
-  //   }
-  // }, [router, studentFilter])
-
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
+    if (isDirty) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
           if (dateRange[1] !== null) {
@@ -206,24 +163,19 @@ export default function StudentsFilter({
           return true
         }
       }
-      const birthdayDate = validateDateRange(
-        data.birthday,
-        '생년월일의 마지막날을 선택해주세요.',
-      )
       const createDate = validateDateRange(
-        data.createdAt,
-        '방문예정일의 마지막날을 선택해주세요.',
+        data.createdPeriod,
+        '수강신청일의 마지막날을 선택해주세요.',
       )
-      if (birthdayDate && createDate) {
+      if (createDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
-          phoneNum: data.phoneNum === '' ? null : data.phoneNum,
-          birthday: data.birthday === undefined ? null : data.birthday,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
+          subDiv: data.subDiv === '' ? null : data.subDiv,
+          createdPeriod:
+            data.createdPeriod === undefined ? null : data.createdPeriod,
         }
-        // setStudentFilter(filter)
-        // onFilterSearch(true)
-        studentPage()
+        setStudentFilter(filter)
+        onFilterSearch(true)
       }
     }
   }
@@ -233,7 +185,6 @@ export default function StudentsFilter({
   }
   const handleReset = () => {
     setCreatDateRange([null, null])
-    setBirthdayRange([null, null])
     reset()
   }
 
@@ -295,36 +246,11 @@ export default function StudentsFilter({
                 </p>
               )}
             </ItemBox>
-          </BoxTop>
-          <BoxMiddle>
-            <ItemBox>
-              <Input
-                labelPlacement="outside"
-                placeholder=" "
-                type="text"
-                variant="bordered"
-                label="과정명"
-                value={name}
-                onValueChange={setName}
-                id="studentName"
-                {...register('studentName', {
-                  pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
-                  },
-                })}
-              />
-              {errors.studentName && (
-                <p className="px-2 pt-2 text-xs text-red">
-                  {String(errors.studentName.message)}
-                </p>
-              )}
-            </ItemBox>
             <ItemBox>
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="createdAt"
+                  name="createdPeriod"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -367,7 +293,7 @@ export default function StudentsFilter({
                       dateFormat="yyyy/MM/dd"
                       customInput={
                         <Input
-                          label="등록일자"
+                          label="수강신청일"
                           labelPlacement="outside"
                           type="text"
                           variant="bordered"
@@ -377,7 +303,7 @@ export default function StudentsFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('createdAt')}
+                          {...register('createdPeriod')}
                         />
                       }
                     />
@@ -385,7 +311,7 @@ export default function StudentsFilter({
                 />
               </DatePickerBox>
             </ItemBox>
-          </BoxMiddle>
+          </BoxTop>
           <BtnBox>
             <Button
               type="submit"

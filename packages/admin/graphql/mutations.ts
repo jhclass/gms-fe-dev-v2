@@ -767,6 +767,57 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
     }
   }
 `
+export const SEARCH_STUDENT_NONASSIGNED_MUTATION = gql`
+  mutation SearchStudentPayment(
+    $page: Int
+    $limit: Int
+    $studentName: String
+    $period: [String]
+    $createdPeriod: [String]
+    $subDiv: String
+    $employment: String
+    $lectureAssignment: String
+  ) {
+    searchStudentPayment(
+      page: $page
+      limit: $limit
+      studentName: $studentName
+      period: $period
+      createdPeriod: $createdPeriod
+      subDiv: $subDiv
+      employment: $employment
+      lectureAssignment: $lectureAssignment
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        subject {
+          id
+          teacherName
+          subjectName
+          subjectCode
+          round
+        }
+        subDiv
+        student {
+          id
+          name
+        }
+        lectureAssignment
+        processingManager {
+          mUsername
+          mUserId
+          id
+        }
+        amountReceived
+        createdAt
+        id
+      }
+    }
+  }
+`
 export const SEARCH_STUDENT_MEMO_MUTATION = gql`
   mutation SearchStudent($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
@@ -2578,12 +2629,16 @@ export const CREATE_PORTFOLIO_MUTATION = gql`
     $studentPaymentId: Int!
     $subjectId: Int!
     $details: String
+    $isBest: String
+    $url: String
   ) {
     createStudentPortfolio(
       filePath: $filePath
       studentPaymentId: $studentPaymentId
       subjectId: $subjectId
       details: $details
+      isBest: $isBest
+      url: $url
     ) {
       ok
       message

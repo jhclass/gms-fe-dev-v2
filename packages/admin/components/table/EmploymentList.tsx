@@ -150,7 +150,7 @@ type seeStudentPaymentQuery = {
 }
 
 export default function EmploymentList() {
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchEmploymentStudentPayment] = useMutation(
     SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,

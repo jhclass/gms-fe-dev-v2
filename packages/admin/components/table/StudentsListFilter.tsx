@@ -187,7 +187,7 @@ const Nolist = styled.div`
 
 export default function StudentsFilterTable({ studentFilter }) {
   const theme = useTheme()
-  const [currentPage, setCurrentPage] = useRecoilState(studentPageState)
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchStudentFilterMutation] = useMutation(
     SEARCH_STUDENT_FILTER_MUTATION,
