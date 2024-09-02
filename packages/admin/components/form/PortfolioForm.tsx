@@ -189,32 +189,32 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
     if (validFiles.length === 0 && urlList.length === 0) {
       setError('manual', {
         type: 'manual',
-        message: '포토폴리오 이미지 또는 포트폴리오 URL을 등록해 주세요.',
+        message: '포트폴리오 이미지 또는 포트폴리오 URL을 등록해 주세요.',
       })
     }
-    // createPortfolio({
-    //   variables: {
-    //     subjectId: subjectId,
-    //     studentPaymentId: paymentId,
-    //     isBest: data.isBest ? 'Y' : 'N',
-    //     filePath: validFiles,
-    //     url: urlList,
-    //     details: data.details,
-    //   },
-    //   // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
-    //   onCompleted: result => {
-    //     console.log(result)
-    //     userLogs(
-    //       `${paymentId} 포트폴리오 추가`,
-    //       `ok: ${result.createStudentPortfolio.ok}`,
-    //     )
-    //     if (result.createStudentPortfolio.ok) {
-    //       setIsCreate(true)
-    //       alert(`${paymentId} 포트폴리오 추가되었습니다.`)
-    //       reset()
-    //     }
-    //   },
-    // })
+    createPortfolio({
+      variables: {
+        subjectId: subjectId,
+        studentPaymentId: paymentId,
+        isBest: data.isBest ? 'Y' : 'N',
+        filePath: validFiles,
+        // url: urlList,
+        details: data.details,
+      },
+      // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
+      onCompleted: result => {
+        console.log(result)
+        userLogs(
+          `${paymentId} 포트폴리오 추가`,
+          `ok: ${result.createStudentPortfolio.ok}`,
+        )
+        if (result.createStudentPortfolio.ok) {
+          setIsCreate(true)
+          alert(`${paymentId} 포트폴리오 추가되었습니다.`)
+          reset()
+        }
+      },
+    })
   }
 
   const handleCheckboxChange = value => {
@@ -348,7 +348,7 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
         </FlexBox>
         <FlexBox>
           <div>
-            <FilterLabel>포토폴리오 이미지</FilterLabel>
+            <FilterLabel>포트폴리오 이미지</FilterLabel>
             <FilesBox>
               {avatarImg?.map((img, index) => (
                 <FilesItemBox key={index}>
@@ -385,7 +385,7 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
         </FlexBox>
         <FlexBox>
           <AreaBox>
-            <FilterLabel>포토폴리오 URL</FilterLabel>
+            <FilterLabel>포트폴리오 URL</FilterLabel>
             <UrlBox>
               {urlList?.map((item, index) => (
                 <URLItemBox key={index}>
