@@ -1,11 +1,8 @@
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled, useTheme } from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
+import { styled } from 'styled-components'
 import { StudentPaymentResult } from '@/src/generated/graphql'
-import { SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY } from '@/graphql/queries'
 import EmploymentItem from '@/components/table/EmploymentItem'
 import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
 
