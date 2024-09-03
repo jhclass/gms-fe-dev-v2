@@ -181,11 +181,10 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
     formState,
   } = useForm()
   const { errors } = formState
-  console.log(paymentId, subjectId)
   const onSubmit = data => {
-    console.log('validFiles', validFiles)
-    console.log('urlList', urlList)
-    console.log(data)
+    // console.log('validFiles', validFiles)
+    // console.log('urlList', urlList)
+    // console.log(data)
     if (validFiles.length === 0) {
       setError('portfolio', {
         type: 'manual',
