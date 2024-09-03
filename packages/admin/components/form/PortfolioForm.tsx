@@ -186,10 +186,11 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
     console.log('validFiles', validFiles)
     console.log('urlList', urlList)
     console.log(data)
-    if (validFiles.length === 0 && urlList.length === 0) {
-      setError('manual', {
+    if (validFiles.length === 0) {
+      setError('portfolio', {
         type: 'manual',
-        message: '포트폴리오 이미지 또는 포트폴리오 URL을 등록해 주세요.',
+        message:
+          '포트폴리오는 적어도 1개 이상, 스크린샷으로 등록하여야 합니다.',
       })
     }
     createPortfolio({
@@ -198,12 +199,11 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
         studentPaymentId: paymentId,
         isBest: data.isBest ? 'Y' : 'N',
         filePath: validFiles,
-        // url: urlList,
+        url: urlList,
         details: data.details,
       },
       // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
       onCompleted: result => {
-        console.log(result)
         userLogs(
           `${paymentId} 포트폴리오 추가`,
           `ok: ${result.createStudentPortfolio.ok}`,
@@ -348,7 +348,9 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
         </FlexBox>
         <FlexBox>
           <div>
-            <FilterLabel>포트폴리오 이미지</FilterLabel>
+            <FilterLabel>
+              포트폴리오 <span>*</span>
+            </FilterLabel>
             <FilesBox>
               {avatarImg?.map((img, index) => (
                 <FilesItemBox key={index}>

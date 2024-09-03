@@ -1091,6 +1091,60 @@ export const SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY = gql`
     }
   }
 `
+export const SEARCH_STUDENT_RECORD_QUERY = gql`
+  query SearchAcademyRecord($searchAcademyRecordId: Int) {
+    searchAcademyRecord(id: $searchAcademyRecordId) {
+      ok
+      message
+      error
+      result {
+        seScore
+        lastModifiedTime
+        lastModifiedByUserId
+        lastModifiedByName
+        supportType
+        subDiv
+        student {
+          id
+          birthday
+          name
+          phoneNum1
+        }
+        mZipCode
+        mAddresses
+        mAddressDetail
+        id
+        employment
+        courseComplete
+        subjectId
+        subject {
+          id
+          subjectCode
+          lectures {
+            id
+            lastModifiedTime
+            lecturePeriodStart
+            lecturePeriodEnd
+            lectureTime
+            sessionNum
+            roomNum
+            subDiv
+            temporaryName
+            subject {
+              subjectCode
+            }
+            teachers {
+              id
+              mUsername
+            }
+            ApprovedNum
+            confirmedNum
+          }
+        }
+      }
+    }
+  }
+`
 export const SEARCH_ACADEMY_RECORD_QUERY = gql`
   query Query(
     $page: Int

@@ -1,11 +1,14 @@
-import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
 import { StudentPaymentResult } from '@/src/generated/graphql'
-import { SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_ACADEMY_RECORD_QUERY,
+  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
+} from '@/graphql/queries'
 import EmploymentItem from '@/components/table/EmploymentItem'
 import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
 
@@ -155,31 +158,25 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
-type seeStudentPaymentQuery = {
-  seeStudentPayment: StudentPaymentResult
-}
 
 export default function EmploymentListFilter({ studentFilter }) {
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
-  const [searchEmploymentStudentPayment] = useMutation(
-    SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,
-  )
+  const [searchAcademyRecord] = useLazyQuery(SEARCH_ACADEMY_RECORD_QUERY)
   const [resultData, setResultData] = useState(null)
 
   useEffect(() => {
-    searchEmploymentStudentPayment({
+    searchAcademyRecord({
       variables: {
         ...studentFilter,
-        lectureAssignment: '배정',
         page: currentPage,
         perPage: currentLimit,
       },
       onCompleted: resData => {
         console.log(resData)
-        if (resData.searchStudentPayment.ok) {
-          const { data, totalCount } = resData.searchStudentPayment || {}
-          setResultData({ data, totalCount })
+        if (resData.searchAcademyRecord.ok) {
+          const { result, totalCount } = resData.searchAcademyRecord || {}
+          setResultData({ result, totalCount })
         }
       },
     })
@@ -221,7 +218,7 @@ export default function EmploymentListFilter({ studentFilter }) {
               </TheaderBox>
             </Theader>
             {resultData?.totalCount > 0 &&
-              resultData?.data.map((item, index) => (
+              resultData?.result.map((item, index) => (
                 <EmploymentItem
                   forName="student"
                   key={index}
