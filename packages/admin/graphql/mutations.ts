@@ -767,6 +767,57 @@ export const SEARCH_STUDENT_FILTER_MUTATION = gql`
     }
   }
 `
+export const SEARCH_STUDENT_NONASSIGNED_MUTATION = gql`
+  mutation SearchStudentPayment(
+    $page: Int
+    $limit: Int
+    $studentName: String
+    $period: [String]
+    $createdPeriod: [String]
+    $subDiv: String
+    $employment: String
+    $lectureAssignment: String
+  ) {
+    searchStudentPayment(
+      page: $page
+      limit: $limit
+      studentName: $studentName
+      period: $period
+      createdPeriod: $createdPeriod
+      subDiv: $subDiv
+      employment: $employment
+      lectureAssignment: $lectureAssignment
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        subject {
+          id
+          teacherName
+          subjectName
+          subjectCode
+          round
+        }
+        subDiv
+        student {
+          id
+          name
+        }
+        lectureAssignment
+        processingManager {
+          mUsername
+          mUserId
+          id
+        }
+        amountReceived
+        createdAt
+        id
+      }
+    }
+  }
+`
 export const SEARCH_STUDENT_MEMO_MUTATION = gql`
   mutation SearchStudent($searchStudentId: Int) {
     searchStudent(id: $searchStudentId) {
@@ -2573,12 +2624,13 @@ export const DELETE_REGULAR_EVALUATION_SET_MUTATION = gql`
   }
 `
 export const CREATE_PORTFOLIO_MUTATION = gql`
-  mutation CreateStudentPortfolio(
+  mutation Mutation(
     $filePath: [Upload]!
     $studentPaymentId: Int!
     $subjectId: Int!
     $details: String
     $isBest: String
+    $url: [String]
   ) {
     createStudentPortfolio(
       filePath: $filePath
@@ -2586,72 +2638,11 @@ export const CREATE_PORTFOLIO_MUTATION = gql`
       subjectId: $subjectId
       details: $details
       isBest: $isBest
+      url: $url
     ) {
       ok
       message
       error
-    }
-  }
-`
-export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
-  mutation Mutation(
-    $page: Int
-    $limit: Int
-    $subDiv: String
-    $employment: String
-    $lectureAssignment: String
-  ) {
-    searchStudentPayment(
-      page: $page
-      limit: $limit
-      subDiv: $subDiv
-      employment: $employment
-      lectureAssignment: $lectureAssignment
-    ) {
-      totalCount
-      ok
-      message
-      error
-      data {
-        id
-        EmploymentStatus {
-          dateOfEmployment
-          companyName
-        }
-        StudentConsultation {
-          dateOfConsultation
-          typeOfConsultation
-        }
-        EmploymentRecommendation {
-          companyName
-          dateOfInterview
-          dateOfRecommendation
-        }
-        supportType
-        student {
-          name
-          birthday
-          phoneNum1
-        }
-        employment
-        subject {
-          id
-          lectures {
-            id
-            temporaryName
-            teachers {
-              mUsername
-              id
-            }
-            sessionNum
-            subDiv
-            lecturePeriodStart
-            lecturePeriodEnd
-          }
-        }
-        courseComplete
-        lectureAssignment
-      }
     }
   }
 `

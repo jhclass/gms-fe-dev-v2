@@ -146,7 +146,7 @@ const category: Category[] = [
         isWrite: '/students/write',
       },
       {
-        href: '/unallocated',
+        href: '/nonassigned',
         name: '미배정 목록',
         exposure: true,
         isBreadcrumb: true,

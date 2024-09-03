@@ -1,12 +1,16 @@
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
-import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
-import StudentItem from '@/components/table/StudentItem'
 import { useRecoilState } from 'recoil'
-import { subMonths } from 'date-fns'
-import { studentPageState } from '@/lib/recoilAtoms'
+import { consultPageState } from '@/lib/recoilAtoms'
+import { StudentPaymentResult } from '@/src/generated/graphql'
+import {
+  SEARCH_ACADEMY_RECORD_QUERY,
+  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
+} from '@/graphql/queries'
+import EmploymentItem from '@/components/table/EmploymentItem'
+import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -15,22 +19,6 @@ const TTopic = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.3rem;
-    align-items: flex-start;
-  }
-`
-const TopBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-between;
-  }
 `
 const Ttotal = styled.p`
   font-weight: 300;
@@ -41,31 +29,14 @@ const Ttotal = styled.p`
     color: ${({ theme }) => theme.colors.primary};
   }
 `
-const ColorHelp = styled.div`
+const TopBox = styled.div`
   display: flex;
+  gap: 0.5rem;
+  align-items: center;
 
   @media (max-width: 768px) {
     width: 100%;
-  }
-`
-
-const ColorCip = styled.p`
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.gray};
-  font-size: 0.7rem;
-
-  span {
-    display: inline-block;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 2px;
-  }
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-    padding-right: 0.5rem;
+    justify-content: space-between;
   }
 `
 const TableWrap = styled.div`
@@ -88,9 +59,53 @@ const Theader = styled.div`
 
 const TheaderBox = styled.div`
   display: flex;
-  padding-left: 0.5rem;
+`
+const ClickBox = styled.div`
+  display: flex;
+  width: 100%;
 `
 const Tnum = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 6%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.06}px;
+`
+const TlecturName = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 26%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.26}px;
+`
+const Tperiod = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 16%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.16}px;
+`
+const Ttimes = styled.div`
+  position: relative;
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 1rem;
+  font-size: inherit;
+  min-width: ${1200 * 0.1}px;
+`
+
+const Tteacher = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -100,17 +115,17 @@ const Tnum = styled.div`
   color: inherit;
   min-width: ${1200 * 0.1}px;
 `
-const TsubjectTotal = styled.div`
+const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 10%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.1}px;
 `
-const Tsms = styled.div`
+const Tcheck = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -120,56 +135,15 @@ const Tsms = styled.div`
   color: inherit;
   min-width: ${1200 * 0.08}px;
 `
-const Tbirthday = styled.div`
+const Tbtn = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 15%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.15}px;
-`
-const Tname = styled.div`
-  position: relative;
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  padding: 1rem;
-  font-size: inherit;
-  min-width: ${1200 * 0.14}px;
-  font-weight: 600;
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 16%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.16}px;
-`
-const TcreatedAt = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 16%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.16}px;
-`
-const Tmanager = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.14}px;
+  min-width: ${1200 * 0.08}px;
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -185,39 +159,31 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-export default function StudentsFilterTable({ studentFilter }) {
-  const theme = useTheme()
-  const [currentPage, setCurrentPage] = useState(1)
+export default function EmploymentListFilter({ studentFilter }) {
+  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
   const [currentLimit] = useState(10)
-  const [searchStudentFilterMutation] = useMutation(
-    SEARCH_STUDENT_FILTER_MUTATION,
-  )
-  const [searchResult, setSearchResult] = useState(null)
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
+  const [searchAcademyRecord] = useLazyQuery(SEARCH_ACADEMY_RECORD_QUERY)
+  const [resultData, setResultData] = useState(null)
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      createdAt: studentFilter.createdAt || [lastSixMonths, today],
-    }
-    searchStudentFilterMutation({
+    searchAcademyRecord({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        if (resData.searchStudent.ok) {
-          const { student, totalCount } = resData.searchStudent || {}
-          setSearchResult({ student, totalCount })
+        console.log(resData)
+        if (resData.searchAcademyRecord.ok) {
+          const { result, totalCount } = resData.searchAcademyRecord || {}
+          setResultData({ result, totalCount })
         }
       },
     })
-  }, [studentFilter, currentPage])
+  }, [currentPage, studentFilter])
 
   const resetList = () => {
-    window.location.href = '/students'
+    window.location.href = '/lecture/employment'
   }
 
   return (
@@ -225,43 +191,35 @@ export default function StudentsFilterTable({ studentFilter }) {
       <TTopic>
         <TopBox>
           <Ttotal>
-            총{' '}
-            <span>
-              {searchResult?.totalCount === null ? 0 : searchResult?.totalCount}
-            </span>
+            총 <span>{resultData === null ? 0 : resultData?.totalCount}</span>
             건이 검색되었습니다.
           </Ttotal>
           <Button size="sm" radius="sm" color="primary" onClick={resetList}>
             전체보기
           </Button>
         </TopBox>
-        <ColorHelp>
-          <ColorCip>
-            <span style={{ background: theme.colors.primary }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: theme.colors.accent }}></span> : 미수강
-          </ColorCip>
-        </ColorHelp>
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">
           <TableWrap>
             <Theader>
               <TheaderBox>
-                <Tnum>No</Tnum>
-                <Tbirthday>생년월일</Tbirthday>
-                <Tname>이름</Tname>
-                <TsubjectTotal>수강 수</TsubjectTotal>
-                <Tphone>연락처</Tphone>
-                <Tsms>SMS여부</Tsms>
-                <Tmanager>담당자</Tmanager>
-                <TcreatedAt>등록일시</TcreatedAt>
+                <ClickBox>
+                  <Tnum>No</Tnum>
+                  <TlecturName>강의이름</TlecturName>
+                  <Tnum>회차</Tnum>
+                  <Tperiod>강의기간</Tperiod>
+                  <Ttimes>관리 종료일</Ttimes>
+                  <Tteacher>강사명</Tteacher>
+                  <Tname>학생명</Tname>
+                  <Tcheck>취업여부</Tcheck>
+                  <Tbtn></Tbtn>
+                </ClickBox>
               </TheaderBox>
             </Theader>
-            {searchResult?.totalCount > 0 &&
-              searchResult?.student.map((item, index) => (
-                <StudentItem
+            {resultData?.totalCount > 0 &&
+              resultData?.result.map((item, index) => (
+                <EmploymentItem
                   forName="student"
                   key={index}
                   tableData={item}
@@ -270,19 +228,19 @@ export default function StudentsFilterTable({ studentFilter }) {
                   limit={currentLimit}
                 />
               ))}
-            {searchResult?.totalCount === 0 && (
-              <Nolist>검색결과가 없습니다.</Nolist>
+            {resultData?.totalCount === 0 && (
+              <Nolist>등록된 취업현황이 없습니다.</Nolist>
             )}
           </TableWrap>
         </ScrollShadow>
-        {searchResult?.totalCount > 0 && (
+        {resultData?.totalCount > 0 && (
           <PagerWrap>
             <Pagination
               variant="light"
               showControls
               initialPage={currentPage}
               page={currentPage}
-              total={Math.ceil(searchResult?.totalCount / currentLimit)}
+              total={Math.ceil(resultData?.totalCount / currentLimit)}
               onChange={newPage => {
                 setCurrentPage(newPage)
               }}

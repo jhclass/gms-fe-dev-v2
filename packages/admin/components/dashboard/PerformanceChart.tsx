@@ -1,10 +1,5 @@
 import { styled } from 'styled-components'
-import { useEffect } from 'react'
 import PerformanceChartCon from '@/components/dashboard/PerformanceChartCon'
-import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { useRouter } from 'next/router'
-import { SearchManageUserResult } from '@/src/generated/graphql'
 
 const ConArea = styled.div`
   width: 100%;
@@ -24,58 +19,24 @@ const DetailDiv = styled.div`
   }
 `
 
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
-}
-
 export default function PerformanceChart({
-  managerIds,
+  managerUsernames,
   totalAmount,
   totalCount,
   totalRefundAmount,
+  chartHeight,
 }) {
-  const router = useRouter()
-  const {
-    data: managerData,
-    error,
-    refetch,
-  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
-    variables: {
-      mPart: '영업팀',
-      resign: 'N',
-    },
-  })
-
-  const managerList = managerData?.searchManageUser.data
-
-  const managerUsernames = managerIds.map(
-    id => managerList.find(user => user.id === id)?.mUsername,
-  )
-
-  useEffect(() => {
-    refetch({
-      mPart: '영업팀',
-      resign: 'N',
-    })
-  }, [router])
-
-  if (error) {
-    console.log(error)
-  }
-
   return (
     <ConArea>
       <DetailBox>
         <DetailDiv>
-          {managerUsernames.length > 0 && (
-            <PerformanceChartCon
-              managerUsernames={managerUsernames}
-              totalAmount={totalAmount}
-              totalCount={totalCount}
-              totalRefundAmount={totalRefundAmount}
-              chartHeight={350}
-            />
-          )}
+          <PerformanceChartCon
+            managerUsernames={managerUsernames}
+            totalAmount={totalAmount}
+            totalCount={totalCount}
+            totalRefundAmount={totalRefundAmount}
+            chartHeight={chartHeight}
+          />
         </DetailDiv>
       </DetailBox>
     </ConArea>

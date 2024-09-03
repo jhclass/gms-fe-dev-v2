@@ -1091,3 +1091,130 @@ export const SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY = gql`
     }
   }
 `
+export const SEARCH_STUDENT_RECORD_QUERY = gql`
+  query SearchAcademyRecord($searchAcademyRecordId: Int) {
+    searchAcademyRecord(id: $searchAcademyRecordId) {
+      ok
+      message
+      error
+      result {
+        seScore
+        lastModifiedTime
+        lastModifiedByUserId
+        lastModifiedByName
+        supportType
+        subDiv
+        student {
+          id
+          birthday
+          name
+          phoneNum1
+        }
+        mZipCode
+        mAddresses
+        mAddressDetail
+        id
+        employment
+        courseComplete
+        subjectId
+        subject {
+          id
+          subjectCode
+          lectures {
+            id
+            lastModifiedTime
+            lecturePeriodStart
+            lecturePeriodEnd
+            lectureTime
+            sessionNum
+            roomNum
+            subDiv
+            temporaryName
+            subject {
+              subjectCode
+            }
+            teachers {
+              id
+              mUsername
+            }
+            ApprovedNum
+            confirmedNum
+          }
+        }
+      }
+    }
+  }
+`
+export const SEARCH_ACADEMY_RECORD_QUERY = gql`
+  query Query(
+    $page: Int
+    $limit: Int
+    $teacherName: String
+    $subDiv: String
+    $lectureName: String
+    $phoneNum: String
+    $studentName: String
+    $searchAcademyRecordId: Int
+  ) {
+    searchAcademyRecord(
+      page: $page
+      limit: $limit
+      teacherName: $teacherName
+      subDiv: $subDiv
+      lectureName: $lectureName
+      phoneNum: $phoneNum
+      studentName: $studentName
+      id: $searchAcademyRecordId
+    ) {
+      totalCount
+      ok
+      message
+      error
+      result {
+        supportType
+        subDiv
+        subject {
+          id
+          lectures {
+            id
+            temporaryName
+            teachers {
+              id
+              mUsername
+            }
+            lecturePeriodEnd
+            lecturePeriodStart
+            subDiv
+            sessionNum
+          }
+        }
+        student {
+          name
+          birthday
+          id
+          phoneNum1
+        }
+        lectureAssignment
+        employment
+        id
+        courseComplete
+        StudentPortfolio {
+          id
+        }
+        StudentConsultation {
+          dateOfConsultation
+          typeOfConsultation
+        }
+        EmploymentStatus {
+          companyName
+          dateOfEmployment
+        }
+        EmploymentRecommendation {
+          companyName
+          dateOfInterview
+          dateOfRecommendation
+        }
+      }
+    }
+  }
+`

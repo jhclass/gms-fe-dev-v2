@@ -150,25 +150,12 @@ type seeStudentPaymentQuery = {
 }
 
 export default function EmploymentList() {
-  const theme = useTheme()
-  const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
+  const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchEmploymentStudentPayment] = useMutation(
     SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,
   )
   const [resultData, setResultData] = useState(null)
-  // const { error, data, refetch } = useSuspenseQuery<seeStudentPaymentQuery>(
-  //   SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-  //   {
-  //     variables: { page: currentPage, limit: currentLimit },
-  //   },
-  // )
-  // const studentData = data?.seeStudentPayment?.StudentPayment
-  // const totalCount = data?.seeStudentPayment?.totalCount
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   useEffect(() => {
     searchEmploymentStudentPayment({
@@ -178,7 +165,6 @@ export default function EmploymentList() {
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        console.log(resData)
         if (resData.searchStudentPayment.ok) {
           const { data, totalCount } = resData.searchStudentPayment || {}
           setResultData({ data, totalCount })
@@ -187,24 +173,12 @@ export default function EmploymentList() {
     })
   }, [currentPage])
 
-  // if (error) {
-  //   console.log(error)
-  // }
-
   return (
     <>
       <TTopic>
         <Ttotal>
           총 <span>{resultData?.totalCount}</span>건
         </Ttotal>
-        {/* <ColorHelp>
-          <ColorCip>
-            <span style={{ background: theme.colors.primary }}></span> : 신규
-          </ColorCip>
-          <ColorCip>
-            <span style={{ background: theme.colors.accent }}></span> : 미처리
-          </ColorCip>
-        </ColorHelp> */}
       </TTopic>
       <TableArea>
         <ScrollShadow orientation="horizontal" className="scrollbar">

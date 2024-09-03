@@ -49,6 +49,7 @@ export default function StatisticsList({ performanceFilter, filterSearch }) {
         ids={ids}
         dateRange={dateRange}
         filterSearch={filterSearch}
+        managerList={managerList}
       />
     )
   )

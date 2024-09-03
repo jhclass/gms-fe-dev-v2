@@ -4,16 +4,13 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import {
-  SEARCH_LECTURES_MUTATION,
-  SEARCH_PAYMENT_MUTATION,
-} from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import EmploymentTabs from '@/components/items/EmploymentTabs'
 import EmploymentInfoForm from '@/components/form/EmploymentInfoForm'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import { SEARCH_STUDENT_RECORD_QUERY } from '@/graphql/queries'
 
 const ConArea = styled.div`
   width: 100%;
@@ -72,39 +69,23 @@ const BtnBox = styled.div`
 export default function EmploymentDetail() {
   const router = useRouter()
   const paymentId = typeof router.query.id === 'string' ? router.query.id : null
-  const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
-  const [searchPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
-  const [lectureData, setLectureData] = useState(null)
+  const [searchRecord] = useLazyQuery(SEARCH_STUDENT_RECORD_QUERY)
+  const [subjectData, setSubjectData] = useState(null)
   const [paymentData, setPaymentData] = useState(null)
-  const [students, setStudents] = useState(null)
 
   const fetchData = async () => {
     try {
-      const resData = await searchPayment({
+      await searchRecord({
         variables: {
-          searchStudentPaymentId: parseInt(paymentId),
+          searchAcademyRecordId: parseInt(paymentId),
+        },
+        onCompleted: resData => {
+          if (resData.searchAcademyRecord.ok) {
+            setPaymentData(resData.searchAcademyRecord.result[0])
+            setSubjectData(resData.searchAcademyRecord.result[0].subject)
+          }
         },
       })
-
-      if (resData.data.searchStudentPayment.ok) {
-        const data = resData.data.searchStudentPayment.data
-        if (data.length > 0) {
-          setPaymentData(data[0])
-
-          const result = await searchLectures({
-            variables: {
-              searchLecturesId: data[0].subject.lectures.id,
-            },
-          })
-
-          if (result.data.searchLectures.ok) {
-            const lectureData = result.data.searchLectures.data
-            if (lectureData.length > 0) {
-              setLectureData(lectureData[0])
-            }
-          }
-        }
-      }
     } catch (error) {
       console.error('Error fetching data: ', error)
     }
@@ -117,12 +98,12 @@ export default function EmploymentDetail() {
 
   return (
     <>
-      {paymentData && lectureData && (
+      {paymentData && subjectData && (
         <MainWrap>
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={lectureData} noti={false} />
+              <FormTopInfo item={subjectData?.lectures} noti={false} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>
@@ -134,7 +115,9 @@ export default function EmploymentDetail() {
                     className="text-white"
                     onClick={() => {
                       {
-                        router.push(`/lecture/detail/${lectureData?.id}`)
+                        router.push(
+                          `/lecture/detail/${subjectData?.lectures?.id}`,
+                        )
                       }
                     }}
                   >
@@ -142,9 +125,9 @@ export default function EmploymentDetail() {
                   </Button>
                 </AreaTitle>
                 <LectureInfo
-                  lectureData={lectureData}
-                  students={students}
+                  lectureData={subjectData?.lectures}
                   attendance={false}
+                  students={null}
                 />
               </DetailDiv>
             </DetailBox>

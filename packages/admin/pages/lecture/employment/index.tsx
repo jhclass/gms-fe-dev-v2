@@ -4,6 +4,7 @@ import { styled } from 'styled-components'
 import Layout from '@/pages/lecture/layout'
 import { Suspense, useState } from 'react'
 import EmploymentStateFilter from '@/components/filter/EmploymentStateFilter'
+import EmploymentListFilter from '@/components/table/EmploymentListFilter'
 import EmploymentList from '@/components/table/EmploymentList'
 
 const ConBox = styled.div`
@@ -24,9 +25,9 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 export default function Employment() {
-  const [filterActive, setFilterActive] = useState()
-  const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
+  const [filterActive, setFilterActive] = useState(false)
+  const [filterSearch, setFilterSearch] = useState(false)
+  const [studentFilter, setStudentFilter] = useState(null)
 
   return (
     <>
@@ -47,32 +48,14 @@ export default function Employment() {
         >
           <EmploymentStateFilter
             isActive={filterActive}
-            studentFilter={studentFilter}
             onFilterSearch={setFilterSearch}
             setStudentFilter={setStudentFilter}
           />
         </Suspense>
         <ConBox>
           {filterSearch ? (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              {/* <ConsultationFilter studentFilter={studentFilter} /> */}
-            </Suspense>
+            <EmploymentListFilter studentFilter={studentFilter} />
           ) : (
-            // <Suspense
-            //   fallback={
-            //     <LodingDiv>
-            //       <i className="xi-spinner-2" />
-            //     </LodingDiv>
-            //   }
-            // >
-            //   <EmploymentList />
-            // </Suspense>
             <EmploymentList />
           )}
         </ConBox>

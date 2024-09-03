@@ -40,7 +40,12 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-export default function PerformanceList({ ids, dateRange, filterSearch }) {
+export default function PerformanceList({
+  ids,
+  dateRange,
+  filterSearch,
+  managerList,
+}) {
   const [salesStatistics] = useMutation(SALES_STATISTICS_MUTATION)
   const [allData, setAllData] = useState([])
   const [totalActualAmount, setTotalActualAmount] = useState([])
@@ -49,6 +54,7 @@ export default function PerformanceList({ ids, dateRange, filterSearch }) {
   const [totalRefundAmount, setTotalRefundAmount] = useState([])
   const [totalRefundCount, setTotalRefundCount] = useState([])
   const [idList, setIdList] = useState([])
+  const [managerUsernames, setManagerUsernames] = useState([])
   const [succMutation, setSuccMutation] = useState(false)
 
   useEffect(() => {
@@ -91,25 +97,27 @@ export default function PerformanceList({ ids, dateRange, filterSearch }) {
     })
   }, [ids, dateRange])
 
+  useEffect(() => {
+    if (idList.length > 0) {
+      const userNames = idList.map(
+        id => managerList.find(user => user.id === id)?.mUsername,
+      )
+      setManagerUsernames(userNames)
+    }
+  }, [idList])
+
   return (
     succMutation && (
       <>
         <div style={{ marginBottom: '3rem' }}>
-          {allData.length > 0 ? (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <PerformanceChart
-                managerIds={idList}
-                totalAmount={totalAmount}
-                totalCount={totalCount}
-                totalRefundAmount={totalRefundAmount}
-              />
-            </Suspense>
+          {allData.length > 0 && managerUsernames.length > 0 ? (
+            <PerformanceChart
+              managerUsernames={managerUsernames}
+              totalAmount={totalAmount}
+              totalCount={totalCount}
+              totalRefundAmount={totalRefundAmount}
+              chartHeight={350}
+            />
           ) : (
             <ListBox>
               <Nolist>영업성과가 없으므로 표시되지 않습니다.</Nolist>

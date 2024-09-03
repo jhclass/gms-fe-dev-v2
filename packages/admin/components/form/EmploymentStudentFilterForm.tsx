@@ -73,10 +73,7 @@ const LodingDiv = styled.div`
 export default function EmploymentStudentFilterForm({
   onFilterSearch,
   setStudentFilter,
-  studentFilter,
 }) {
-  const router = useRouter()
-  const studentPage = useResetRecoilState(studentPageState)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [sub, setSub] = useState('-')
@@ -96,77 +93,15 @@ export default function EmploymentStudentFilterForm({
     },
   })
 
-  // useEffect(() => {
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.studentName === null
-  //   ) {
-  //     setName('')
-  //   } else {
-  //     setName(studentFilter?.studentName)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.phoneNum === null
-  //   ) {
-  //     setPhone('')
-  //   } else {
-  //     setPhone(studentFilter?.phoneNum)
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.birthday === null
-  //   ) {
-  //     setBirthdayRange([null, null])
-  //   } else {
-  //     setBirthdayRange([studentFilter?.birthday[0], studentFilter?.birthday[1]])
-  //   }
-  //   if (
-  //     Object.keys(studentFilter).length === 0 ||
-  //     studentFilter?.createdAt === null
-  //   ) {
-  //     setCreatDateRange([null, null])
-  //   } else {
-  //     setCreatDateRange([
-  //       studentFilter?.createdAt[0],
-  //       studentFilter?.createdAt[1],
-  //     ])
-  //   }
-  // }, [router, studentFilter])
-
   const onSubmit = data => {
-    if (isDirty || data.progress !== undefined) {
-      const validateDateRange = (dateRange, message) => {
-        if (dateRange !== undefined) {
-          if (dateRange[1] !== null) {
-            return true
-          } else {
-            alert(message)
-            return false
-          }
-        } else {
-          return true
-        }
+    if (isDirty) {
+      const filter = {
+        studentName: data.studentName === '' ? null : data.studentName,
+        phoneNum: data.phoneNum === '' ? null : data.phoneNum,
+        subDiv: data.subDiv === '-' ? null : data.subDiv,
       }
-      const birthdayDate = validateDateRange(
-        data.birthday,
-        '생년월일의 마지막날을 선택해주세요.',
-      )
-      const createDate = validateDateRange(
-        data.createdAt,
-        '방문예정일의 마지막날을 선택해주세요.',
-      )
-      if (birthdayDate && createDate) {
-        const filter = {
-          studentName: data.studentName === '' ? null : data.studentName,
-          phoneNum: data.phoneNum === '' ? null : data.phoneNum,
-          birthday: data.birthday === undefined ? null : data.birthday,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
-        }
-        setStudentFilter(filter)
-        onFilterSearch(true)
-        studentPage()
-      }
+      setStudentFilter(filter)
+      onFilterSearch(true)
     }
   }
 
@@ -233,8 +168,6 @@ export default function EmploymentStudentFilterForm({
             </p>
           )}
         </ItemBox>
-      </BoxTop>
-      <BoxMiddle>
         <ItemBox>
           <Controller
             control={control}
@@ -261,8 +194,7 @@ export default function EmploymentStudentFilterForm({
             )}
           />
         </ItemBox>
-        <ItemBox></ItemBox>
-      </BoxMiddle>
+      </BoxTop>
       <BtnBox>
         <Button type="submit" color="primary" className="w-[50%] text-white">
           검색

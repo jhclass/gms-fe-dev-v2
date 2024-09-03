@@ -221,16 +221,6 @@ export default function ConsolutItem(props) {
     return data.map(item => item.mUsername).join(', ')
   }
 
-  const rejectCheck = (clickCheck: number): void => {
-    if (props.checkItem !== undefined) {
-      const isItemSelected: boolean = props.checkItem?.includes(clickCheck)
-      const newSelectedItems = isItemSelected
-        ? props.checkItem?.filter(item => item !== clickCheck)
-        : [...props?.checkItem, clickCheck]
-      props.setCheckItem(newSelectedItems)
-    }
-  }
-
   return (
     <>
       <TableItem>

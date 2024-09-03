@@ -1,19 +1,12 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import Layout from '@/pages/students/unallocated/layout'
-import StudentsTable from '@/components/table/StudentsList'
 import StudentsFilterTable from '@/components/table/StudentsListFilter'
 import { styled } from 'styled-components'
-import StudentsFilter from '@/components/filter/StudentsFilter'
-import { useRecoilState } from 'recoil'
-import {
-  studentFilterActiveState,
-  studentFilterState,
-  studentSearchState,
-} from '@/lib/recoilAtoms'
 import { Suspense, useState } from 'react'
-import UnallocatedList from '@/components/table/UnallocatedList'
-import UnallocatedFilter from '@/components/filter/UnallocatedFilter'
+import Layout from '@/pages/students/nonassigned/layout'
+import NonassignedFilter from '@/components/filter/NonassignedFilter'
+import NonassignedList from '@/components/table/NonassignedList'
+import NonassignedListFilter from '@/components/table/NonassignedListFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -32,10 +25,10 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-export default function Students() {
-  const [filterActive, setFilterActive] = useState()
-  const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
+export default function Nonassigned() {
+  const [filterActive, setFilterActive] = useState(false)
+  const [filterSearch, setFilterSearch] = useState(false)
+  const [studentFilter, setStudentFilter] = useState(null)
 
   return (
     <>
@@ -47,11 +40,11 @@ export default function Students() {
           isWrite={false}
           rightArea={true}
         />
-        <UnallocatedFilter
+        <NonassignedFilter
           isActive={filterActive}
-          // onFilterSearch={setFilterSearch}
-          // setStudentFilter={setStudentFilter}
-          // studentFilter={studentFilter}
+          onFilterSearch={setFilterSearch}
+          setStudentFilter={setStudentFilter}
+          studentFilter={studentFilter}
         />
         <ConBox>
           <Suspense
@@ -62,9 +55,9 @@ export default function Students() {
             }
           >
             {filterSearch ? (
-              <StudentsFilterTable studentFilter={studentFilter} />
+              <NonassignedListFilter studentFilter={studentFilter} />
             ) : (
-              <UnallocatedList />
+              <NonassignedList />
             )}
           </Suspense>
         </ConBox>
@@ -72,4 +65,4 @@ export default function Students() {
     </>
   )
 }
-Students.getLayout = page => <Layout>{page}</Layout>
+Nonassigned.getLayout = page => <Layout>{page}</Layout>

@@ -612,6 +612,7 @@ export type Mutation = {
   deleteEduInfomation: CommonResponse;
   deleteEmploymentRecommendation: CommonResponse;
   deleteEmploymentStatus: CommonResponse;
+  deleteFileNameSp: CommonResponse;
   deleteHopeForEmployment: CommonResponse;
   deleteLectures?: Maybe<CommonResponse>;
   deleteManageUser?: Maybe<CommonResponse>;
@@ -683,6 +684,7 @@ export type Mutation = {
   refreshToken: ResultRefreshToken;
   refundApproval?: Maybe<CommonResponse>;
   reqRefund?: Maybe<CommonResponse>;
+  s3DeleteResolver: CommonResponse;
   salesStatistics?: Maybe<SalesStatisticsResult>;
   salesStatisticsList?: Maybe<SalesStatisticsListResult>;
   searchLectures?: Maybe<SearchLecturesResult>;
@@ -1042,6 +1044,7 @@ export type MutationCreateStudentPortfolioArgs = {
   isBest?: InputMaybe<Scalars['String']['input']>;
   studentPaymentId: Scalars['Int']['input'];
   subjectId: Scalars['Int']['input'];
+  url?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -1153,6 +1156,13 @@ export type MutationDeleteEmploymentRecommendationArgs = {
 
 
 export type MutationDeleteEmploymentStatusArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteFileNameSpArgs = {
+  fileUrl: Scalars['String']['input'];
+  folderName: Scalars['String']['input'];
   id: Scalars['Int']['input'];
 };
 
@@ -1553,10 +1563,11 @@ export type MutationEditStudentPaymentArgs = {
 
 export type MutationEditStudentPortfolioArgs = {
   details?: InputMaybe<Scalars['String']['input']>;
-  filePath: Array<InputMaybe<Scalars['Upload']['input']>>;
+  filePath?: InputMaybe<Array<InputMaybe<Scalars['Upload']['input']>>>;
   id: Scalars['Int']['input'];
   isBest?: InputMaybe<Scalars['String']['input']>;
   lastModifiedTime: Scalars['String']['input'];
+  url?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -1724,6 +1735,12 @@ export type MutationReqRefundArgs = {
   id: Scalars['Int']['input'];
   reqRefund: Scalars['Boolean']['input'];
   reqRefundDate: Scalars['String']['input'];
+};
+
+
+export type MutationS3DeleteResolverArgs = {
+  fileUrl: Scalars['String']['input'];
+  folderName: Scalars['String']['input'];
 };
 
 
@@ -2045,6 +2062,7 @@ export type Query = {
   isMme?: Maybe<IsMeResult>;
   mMe?: Maybe<ManageUser>;
   me?: Maybe<User>;
+  searchAcademyRecord: ResultAcademyRecord;
   searchApiKey: ResultSearchApikey;
   searchAttendance?: Maybe<SearchAttendanceResult>;
   searchManageUser?: Maybe<SearchManageUserResult>;
@@ -2113,6 +2131,18 @@ export type QueryDashboardTodayArgs = {
 
 export type QueryIsMmeArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QuerySearchAcademyRecordArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  lectureName?: InputMaybe<Scalars['String']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  phoneNum?: InputMaybe<Scalars['String']['input']>;
+  studentName?: InputMaybe<Scalars['String']['input']>;
+  subDiv?: InputMaybe<Scalars['String']['input']>;
+  teacherName?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2368,6 +2398,15 @@ export type Reply = {
   userId?: Maybe<Scalars['Int']['output']>;
 };
 
+export type ResultAcademyRecord = {
+  __typename?: 'ResultAcademyRecord';
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  result?: Maybe<Array<Maybe<StudentPayment>>>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type ResultAdviceType = {
   __typename?: 'ResultAdviceType';
   adviceType?: Maybe<Array<Maybe<AdviceType>>>;
@@ -2516,7 +2555,7 @@ export type SearchAttendanceResult = {
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
-export type SearchDataUnion = Career | Certificate | EduInfomation | EmploymentRecommendation | EmploymentStatus | HopeForEmployment | PreInspection | StudentConsultation;
+export type SearchDataUnion = Career | Certificate | EduInfomation | EmploymentRecommendation | EmploymentStatus | HopeForEmployment | PreInspection | StudentConsultation | StudentPortfolio;
 
 export type SearchLecturesResult = {
   __typename?: 'SearchLecturesResult';
@@ -2817,17 +2856,19 @@ export type StudentPortfolio = {
   branchId?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['String']['output'];
   details?: Maybe<Scalars['String']['output']>;
-  filePath: Array<Maybe<Scalars['Upload']['output']>>;
+  filePath: Array<Maybe<Scalars['String']['output']>>;
   id: Scalars['Int']['output'];
   isBest?: Maybe<Scalars['String']['output']>;
   lastModifiedByName: Scalars['String']['output'];
   lastModifiedByUserId: Scalars['String']['output'];
   lastModifiedTime?: Maybe<Scalars['String']['output']>;
   lectureId: Scalars['Int']['output'];
+  stName: Scalars['String']['output'];
   studentId: Scalars['Int']['output'];
   studentPaymentId: Scalars['Int']['output'];
   subjectId: Scalars['Int']['output'];
   updatedAt: Scalars['String']['output'];
+  url?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type StudentState = {
@@ -3045,6 +3086,7 @@ export type MLoginResult = {
   __typename?: 'mLoginResult';
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+  refreshToken?: Maybe<Scalars['String']['output']>;
   token?: Maybe<Scalars['String']['output']>;
 };
 

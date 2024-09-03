@@ -65,6 +65,7 @@ const FlexChipBox = styled.div`
 export default function Portfolio({ students, subjectId }) {
   const [isCreate, setIsCreate] = useState(false)
   const [paymentId, setPaymentId] = useState(null)
+  const [studentName, setStudentName] = useState(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const completion = useRecoilValue(completionStatus)
   const { useMme } = useMmeQuery()
@@ -79,8 +80,9 @@ export default function Portfolio({ students, subjectId }) {
     return naturalCompare(a.student.name, b.student.name)
   })
 
-  const clickPortFolio = id => {
+  const clickPortFolio = (id, name) => {
     setPaymentId(id)
+    setStudentName(name)
     setIsCreateOpen(true)
   }
 
@@ -111,7 +113,10 @@ export default function Portfolio({ students, subjectId }) {
                   student => student.courseComplete !== completion.dropout,
                 )
                 .map((item, index) => (
-                  <button key={index} onClick={() => clickPortFolio(item.id)}>
+                  <button
+                    key={index}
+                    onClick={() => clickPortFolio(item.id, item.student.name)}
+                  >
                     <Chip
                       endContent={
                         <p className="text-[1rem] text-gray">
@@ -135,6 +140,7 @@ export default function Portfolio({ students, subjectId }) {
               setIsCreate={setIsCreate}
               subjectId={subjectId}
               paymentId={paymentId}
+              studentName={studentName}
             />
             <Suspense
               fallback={
