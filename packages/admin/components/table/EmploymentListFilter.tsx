@@ -1,16 +1,11 @@
-import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { styled, useTheme } from 'styled-components'
+import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
 import { consultPageState } from '@/lib/recoilAtoms'
-import { StudentPaymentResult } from '@/src/generated/graphql'
-import {
-  SEARCH_ACADEMY_RECORD_QUERY,
-  SEE_EMPLOYMENT_STUDENTPAYMENT_QUERY,
-} from '@/graphql/queries'
+import { SEARCH_ACADEMY_RECORD_QUERY } from '@/graphql/queries'
 import EmploymentItem from '@/components/table/EmploymentItem'
-import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
