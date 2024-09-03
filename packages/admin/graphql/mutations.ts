@@ -2630,7 +2630,7 @@ export const CREATE_PORTFOLIO_MUTATION = gql`
     $subjectId: Int!
     $details: String
     $isBest: String
-    $url: String
+    $url: [String]
   ) {
     createStudentPortfolio(
       filePath: $filePath

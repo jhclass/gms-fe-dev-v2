@@ -153,7 +153,12 @@ const BtnBox = styled.div`
   }
 `
 
-export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
+export default function PortfolioForm({
+  setIsCreate,
+  subjectId,
+  paymentId,
+  studentName,
+}) {
   const { userLogs } = useUserLogsMutation()
   const [createPortfolio] = useMutation(CREATE_PORTFOLIO_MUTATION, {
     context: {
@@ -181,10 +186,8 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
     formState,
   } = useForm()
   const { errors } = formState
+
   const onSubmit = data => {
-    // console.log('validFiles', validFiles)
-    // console.log('urlList', urlList)
-    // console.log(data)
     if (validFiles.length === 0) {
       setError('portfolio', {
         type: 'manual',
@@ -204,12 +207,12 @@ export default function PortfolioForm({ setIsCreate, subjectId, paymentId }) {
       // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
       onCompleted: result => {
         userLogs(
-          `${paymentId} 포트폴리오 추가`,
+          `${studentName} 포트폴리오 추가`,
           `ok: ${result.createStudentPortfolio.ok}`,
         )
         if (result.createStudentPortfolio.ok) {
           setIsCreate(true)
-          alert(`${paymentId} 포트폴리오 추가되었습니다.`)
+          alert(`${studentName} 포트폴리오 추가되었습니다.`)
           reset()
         }
       },
