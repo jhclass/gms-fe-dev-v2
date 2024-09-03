@@ -568,6 +568,17 @@ export const SEE_LECTURES_QUERY = gql`
           subjectCode
           subDiv
           round
+          StudentPayment {
+            id
+            lectureAssignment
+            employment
+            courseComplete
+            EmploymentStatus {
+              proofOfImployment
+              completionType
+              employmentType
+            }
+          }
         }
         subDiv
         sessionNum

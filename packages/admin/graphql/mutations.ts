@@ -1716,6 +1716,11 @@ export const SEARCH_LECTURES_MUTATION = gql`
             StudentPortfolio {
               id
             }
+            EmploymentStatus {
+              proofOfImployment
+              completionType
+              employmentType
+            }
             attendance {
               attendanceDate
               attendanceDateTime
@@ -1843,6 +1848,19 @@ export const SEARCH_LECTURES_FILTER_MUTATION = gql`
         }
         roomNum
         subjectId
+        subject {
+          StudentPayment {
+            id
+            lectureAssignment
+            employment
+            courseComplete
+            EmploymentStatus {
+              proofOfImployment
+              completionType
+              employmentType
+            }
+          }
+        }
         lecturePeriodStart
         lecturePeriodEnd
         lectureDetails
@@ -2035,30 +2053,6 @@ export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
       error
       message
       ok
-    }
-  }
-`
-
-// 강의
-export const CALA_LECTURES_MUTATION = gql`
-  mutation Mutation($calcLecturesId: Int!) {
-    calcLectures(id: $calcLecturesId) {
-      ok
-      message
-      error
-      approvedPersonnel
-      confirmedPersonnel
-      courseDropout
-      incomplete
-      earlyEmployment
-      notEarlyEmployed
-      trainingPersonnel
-      graduates
-      employedUponCompletion
-      notEmployedUponCompletion
-      dropoutRate
-      graduationRate
-      expectedEmploymentProof
     }
   }
 `

@@ -1,8 +1,6 @@
 import { styled } from 'styled-components'
-import { useMutation } from '@apollo/client'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import { CALA_LECTURES_MUTATION } from '@/graphql/mutations'
 import { Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import LectureReportList from '@/components/table/LectureReportList'
@@ -174,23 +172,12 @@ export default function ConsolutItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const lecture = props.tableData
-  const [calcData, setCalcData] = useState(null)
+  const [students, setStudents] = useState(null)
   const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
-  const [calcLecture] = useMutation(CALA_LECTURES_MUTATION)
 
   useEffect(() => {
-    if (lecture.id) {
-      calcLecture({
-        variables: {
-          calcLecturesId: lecture.id,
-        },
-        onCompleted: result => {
-          // console.log(result)
-          // if (result.calcLectures.ok) {
-          //   setCalcData('')
-          // }
-        },
-      })
+    if (lecture) {
+      setStudents(lecture.subject.StudentPayment)
     }
   }, [lecture])
 
@@ -292,7 +279,7 @@ export default function ConsolutItem(props) {
             </div>
             <div>
               <Tdiv $isOpen={isOpen}>
-                <LectureReportList lecture={lecture} />
+                <LectureReportList lecture={lecture} students={students} />
               </Tdiv>
             </div>
           </ClickBox>
