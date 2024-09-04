@@ -21,10 +21,10 @@ const PortfolioBox = styled.div`
   }
 `
 
-export default function PortfolioList() {
+export default function PortfolioList({ portfolioFiles }) {
   return (
     <PortfolioBox>
-      {[...Array(10)].map((_, index) => (
+      {portfolioFiles.map((_, index) => (
         <PortfolioItem key={index} />
       ))}
     </PortfolioBox>

@@ -7,7 +7,6 @@ import { gradeState } from '@/lib/recoilAtoms'
 import { useRouter } from 'next/router'
 import CreateAdviceType from '@/components/form/CreateAdviceType'
 import CreateSmsSender from '@/components/form/CreateSmsSender'
-import PermisstionCate from '../form/PermisstionCate'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -33,7 +32,7 @@ export default function TypesTabs() {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart') || []
-  const [selected, setSelected] = useState('category')
+  const [selected, setSelected] = useState('adviceType')
 
   useEffect(() => {
     if (typeTab) {
@@ -56,7 +55,124 @@ export default function TypesTabs() {
           selectedKey={selected}
           onSelectionChange={e => setSelected(String(e))}
         >
-          <Tab key="category" title="카테고리">
+          <Tab key="adviceType" title="상담분야">
+            {mGrade <= grade.subMaster ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'상담분야'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    상담분야 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b>에게 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
+          <Tab key="subDiv" title="수강구분">
+            {mGrade <= grade.subMaster || mPart.includes('영업팀') ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'수강구분'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    수강구분 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b> 또는 영업팀에 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
+          <Tab key="teacherType" title="강의분야">
+            {mGrade <= grade.subMaster || mPart.includes('교무팀') ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'강의분야'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    강의분야 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b> 또는 교무팀에 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
+          {mGrade === grade.dev ? (
+            <Tab key="supportType" title="훈련생유형">
+              {mGrade <= grade.subMaster || mPart.includes('취업지원팀') ? (
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <CreateAdviceType isActive={true} category={'훈련생유형'} />
+                </Suspense>
+              ) : (
+                <Card radius="sm">
+                  <CardBody>
+                    <NotiText>
+                      취업유형 설정 권한이 없습니다.
+                      <br />
+                      <b>Master</b> 또는 취업지원팀에 요청하세요.
+                    </NotiText>
+                  </CardBody>
+                </Card>
+              )}
+            </Tab>
+          ) : null}
+          <Tab key="mPartType" title="부서명">
+            {mGrade <= grade.subMaster || mPart.includes('인사팀') ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'부서'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    부서 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b> 또는 인사팀에 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
+          <Tab key="smsSender" title="발신인증번호">
             <Suspense
               fallback={
                 <LodingDiv>
@@ -64,7 +180,7 @@ export default function TypesTabs() {
                 </LodingDiv>
               }
             >
-              <PermisstionCate isActive={true} category={'상담분야'} />
+              <CreateSmsSender isActive={true} category={'발신인증번호'} />
             </Suspense>
           </Tab>
         </Tabs>

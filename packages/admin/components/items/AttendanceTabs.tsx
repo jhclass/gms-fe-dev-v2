@@ -1,7 +1,6 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import { Suspense, useEffect, useState } from 'react'
-import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
 import DropOutList from '@/components/form/DropOutList'
@@ -9,8 +8,8 @@ import CertificateNameList from '@/components/form/CertificateNameList'
 import EmploymentNameList from '@/components/form/EmploymentNameList'
 import DropOutMemo from '@/components/layout/DropOutMemo'
 import RegularEvaluation from '@/components/layout/RegularEvaluation'
-import Portfolio from '@/components/layout/Portfolio'
 import { useRouter } from 'next/router'
+import PortfolioTab from '@/components/layout/PortfolioTab'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -134,7 +133,7 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
           <RegularEvaluation lectureId={lectureId} subjectId={subjectId} />
         </Tab>
         <Tab key="portfolio" title="포트폴리오">
-          <Portfolio students={students} subjectId={subjectId} />
+          <PortfolioTab students={students} subjectId={subjectId} />
         </Tab>
       </Tabs>
     </>

@@ -1,12 +1,23 @@
 import { styled } from 'styled-components'
-import 'react-datepicker/dist/react-datepicker.css'
-import { Button, Checkbox, Input, Textarea } from '@nextui-org/react'
+import {
+  Button,
+  Checkbox,
+  Input,
+  Link,
+  Radio,
+  RadioGroup,
+  Textarea,
+} from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { CREATE_PORTFOLIO_MUTATION } from '@/graphql/mutations'
-import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useRef, useState } from 'react'
-import Link from 'next/link'
+import {
+  EDIT_EMPLOYMENT_MUTATION,
+  EDIT_PORTFOLIO_MUTATION,
+  EDIT_STUDENT_EMPLOYMENT_MUTATION,
+} from '@/graphql/mutations'
+import { Controller, useForm } from 'react-hook-form'
+import { useEffect, useRef, useState } from 'react'
+import PortfolioList from '../layout/PortfolioList'
 
 const DetailForm = styled.form`
   display: flex;
@@ -149,69 +160,109 @@ const BtnBox = styled.div`
   }
 `
 
-export default function PortfolioForm({
-  setIsCreate,
-  subjectId,
-  paymentId,
-  studentName,
-}) {
+export default function PortfolioEditForm({ item, refetch, studentName }) {
   const { userLogs } = useUserLogsMutation()
-  const [createPortfolio] = useMutation(CREATE_PORTFOLIO_MUTATION, {
-    context: {
-      headers: {
-        'x-apollo-operation-name': 'filePath',
-        // 'apollo-require-preflight': 'true',
-      },
-    },
-  })
+  const [editPortfolio] = useMutation(EDIT_PORTFOLIO_MUTATION)
+  const [editStudentEmployment] = useMutation(EDIT_STUDENT_EMPLOYMENT_MUTATION)
   const [avatarImg, setAvatartImg] = useState([])
   const [validFiles, setValidFiles] = useState([])
+  const [portfolioFiles, setPortfolioFiles] = useState([])
   const [urlList, setUrlList] = useState([])
+  const [portfolioUrls, setPortfolioUrls] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [best, setBest] = useState(false)
   const fileInputRef = useRef(null)
   const {
     register,
     handleSubmit,
+    reset,
     setError,
     clearErrors,
-    reset,
-    setValue,
     control,
-    formState,
-  } = useForm()
-  const { errors } = formState
+    formState: { isDirty, dirtyFields, errors },
+  } = useForm({
+    defaultValues: {
+      isBest: '',
+      filePath: null,
+      url: null,
+      details: '',
+    },
+  })
 
-  const onSubmit = data => {
-    if (validFiles.length === 0) {
-      setError('portfolio', {
-        type: 'manual',
-        message:
-          '포트폴리오는 적어도 1개 이상, 스크린샷으로 등록하여야 합니다.',
+  useEffect(() => {
+    if (item) {
+      reset({
+        isBest: item.isBest || 'N',
+        filePath: item.filePath || [],
+        url: item.url || [],
+        details: item.details || '',
       })
+
+      if (item.isBest) {
+        setBest(item.isBest === 'Y' ? true : false)
+      }
+
+      if (item.filePath) {
+        setPortfolioFiles(item.filePath)
+      }
+
+      if (item.url) {
+        setPortfolioUrls(item.url)
+      }
     }
-    createPortfolio({
-      variables: {
-        subjectId: subjectId,
-        studentPaymentId: paymentId,
-        isBest: data.isBest ? 'Y' : 'N',
-        filePath: validFiles,
-        url: urlList,
-        details: data.details,
-      },
-      // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
-      onCompleted: result => {
-        userLogs(
-          `${studentName} 포트폴리오 추가`,
-          `ok: ${result.createStudentPortfolio.ok}`,
-        )
-        if (result.createStudentPortfolio.ok) {
-          setIsCreate(true)
-          alert(`${studentName} 포트폴리오 추가되었습니다.`)
-          reset()
+  }, [item])
+
+  const onSubmit = async data => {
+    if (isDirty) {
+      const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
+      if (isModify) {
+        try {
+          const result = await editPortfolio({
+            variables: {
+              editStudentPortfolioId: item.id,
+              url: null,
+              details: null,
+              filePath: null,
+              isBest: data.isBest ? 'Y' : 'N',
+              lastModifiedTime: new Date(),
+            },
+          })
+
+          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+          userLogs(
+            `${item.stName} 취업 현황 수정`,
+            `ok: ${
+              result.data.editEmploymentStatus.ok
+            } / ${dirtyFieldsArray.join(', ')}`,
+          )
+
+          if (!result.data.editEmploymentStatus.ok) {
+            throw new Error('취업 현황 수정 실패')
+          }
+
+          const result2 = await editStudentEmployment({
+            variables: {
+              editStudentPaymentId: item.studentPaymentId,
+              subjectId: item.subjectId,
+              employment:
+                data.employmentType === '' ? '취업' : data.employmentType,
+            },
+          })
+
+          if (!result2.data.editStudentPayment.ok) {
+            throw new Error('취업 현황 수정 후 payment 업데이트 실패')
+          }
+
+          refetch()
+          alert('수정되었습니다.')
+        } catch (error) {
+          console.error('취업 현황 수정 중 에러 발생:', error)
+          alert('취업 현황 수정 처리 중 오류가 발생했습니다.')
         }
-      },
-    })
+      }
+    } else {
+      alert('변경된 내용이 없습니다.')
+    }
   }
 
   const handleCheckboxChange = value => {
@@ -459,10 +510,11 @@ export default function PortfolioForm({
               color="primary"
               className="lg:w-[50%] w-full"
             >
-              저장
+              수정
             </Button>
           </BtnBox>
         </FlexBox>
+        <PortfolioList portfolioFiles={portfolioFiles} />
       </DetailForm>
     </>
   )

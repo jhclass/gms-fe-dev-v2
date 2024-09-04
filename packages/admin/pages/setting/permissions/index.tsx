@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 import Layout from '@/pages/setting/permissions/layout'
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import TypesTabs from '@/components/items/TypesTabs'
+import PermissionTabs from '@/components/items/PermissionTabs'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -34,7 +34,7 @@ export default function SettingPermissions() {
           rightArea={false}
         />
         <ConBox>
-          <TypesTabs />
+          <PermissionTabs />
         </ConBox>
       </MainWrap>
     </>

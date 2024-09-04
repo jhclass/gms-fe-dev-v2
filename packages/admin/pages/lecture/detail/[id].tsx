@@ -665,26 +665,20 @@ export default function LectureWrite() {
                         },
                       }}
                       render={({ field }) => (
-                        <Controller
-                          control={control}
-                          name="teachersId"
-                          render={({ field, fieldState }) => (
-                            <TeacherMultiSelectID
-                              selectedKey={teacher}
-                              field={field}
-                              label={
-                                <FilterLabel>
-                                  강사명<span>*</span>{' '}
-                                  <span className="multi">(중복가능)</span>
-                                </FilterLabel>
-                              }
-                              handleChange={setTeacher}
-                              optionDefault={{
-                                mUsername: '강사명 없음',
-                                id: '강사명 없음',
-                              }}
-                            />
-                          )}
+                        <TeacherMultiSelectID
+                          selectedKey={teacher}
+                          field={field}
+                          label={
+                            <FilterLabel>
+                              강사명<span>*</span>{' '}
+                              <span className="multi">(중복가능)</span>
+                            </FilterLabel>
+                          }
+                          handleChange={setTeacher}
+                          optionDefault={{
+                            mUsername: '강사명 없음',
+                            id: '강사명 없음',
+                          }}
                         />
                       )}
                     />

@@ -89,6 +89,46 @@ export const MME_QUERY = gql`
     }
   }
 `
+export const SEARCH_PERMISSIONS_GRANTED_QUERY = gql`
+  query SearchPermissionGranted(
+    $manageUserId: Int
+    $topic: String
+    $permissionName: String
+    $searchPermissionGrantedId: Int
+  ) {
+    searchPermissionGranted(
+      manageUserId: $manageUserId
+      topic: $topic
+      permissionName: $permissionName
+      id: $searchPermissionGrantedId
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        topic
+        smsPermitted
+        readOnly
+        permissionName
+        lastModifiedTime
+        id
+        createdAt
+        branchId
+        allPermitted
+        ManageUser {
+          mGrade
+          mUserId
+          mUsername
+          resign
+          mRank
+          mPart
+          id
+        }
+      }
+    }
+  }
+`
 export const SEE_ALARMS_TOTAL_QUERY = gql`
   query SeeAlarms {
     seeAlarms {
@@ -1011,6 +1051,24 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          lastModifiedByUserId
+          lastModifiedByName
+          lastModifiedTime
+        }
+        ... on StudentPortfolio {
+          id
+          lectureId
+          studentId
+          stName
+          isBest
+          filePath
+          details
+          url
+          createdAt
+          updatedAt
+          studentPaymentId
+          subjectId
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime

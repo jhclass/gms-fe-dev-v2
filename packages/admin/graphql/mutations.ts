@@ -2642,6 +2642,29 @@ export const CREATE_PORTFOLIO_MUTATION = gql`
     }
   }
 `
+export const EDIT_PORTFOLIO_MUTATION = gql`
+  mutation Mutation(
+    $editStudentPortfolioId: Int!
+    $lastModifiedTime: String!
+    $url: [String]
+    $details: String
+    $filePath: [Upload]
+    $isBest: String
+  ) {
+    editStudentPortfolio(
+      id: $editStudentPortfolioId
+      lastModifiedTime: $lastModifiedTime
+      url: $url
+      details: $details
+      filePath: $filePath
+      isBest: $isBest
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
 export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
   mutation Mutation(
     $page: Int
