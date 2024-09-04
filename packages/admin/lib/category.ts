@@ -454,6 +454,14 @@ const category: Category[] = [
         isFilter: true,
         isWrite: '',
       },
+      {
+        href: '/permissions',
+        name: '권한설정',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: false,
+        isWrite: '',
+      },
     ],
   },
   {
