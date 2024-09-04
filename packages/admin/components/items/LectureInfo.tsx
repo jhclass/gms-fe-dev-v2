@@ -119,12 +119,23 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
   const completion = useRecoilValue(completionStatus)
   const employment = useRecoilValue(employmentStatus)
   const [isFinish, setIsFinish] = useState(false)
+  const [employmentStudent, setEmploymentStudent] = useState(null)
   const [courseDropout, setCourseDropout] = useState(null)
   const [incomplete, setIncomplete] = useState(null)
   const [graduates, setGraduates] = useState(null)
 
   useEffect(() => {
     if (lectureData && students) {
+      const today = new Date()
+      const endDate = new Date(parseInt(lectureData.lecturePeriodEnd))
+      const studentFilter = students.filter(
+        student =>
+          student.courseComplete === completion.inTraining &&
+          student.employment !== employment.unemployed,
+      )
+
+      setEmploymentStudent(studentFilter)
+
       setCourseDropout(
         countFilteredStudents(
           students,
@@ -138,8 +149,6 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
         ),
       )
 
-      const today = new Date()
-      const endDate = new Date(parseInt(lectureData.lecturePeriodEnd))
       if (today > endDate) {
         setIsFinish(true)
         setIncomplete(
@@ -320,12 +329,16 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
                 <div>
                   <FilterLabel>조기취업 가입</FilterLabel>
                   <LineBox>
-                    {countFilteredStudents(
-                      students,
-                      student =>
-                        student.courseComplete === completion.notCompleted &&
-                        student.employment === employment.employed,
-                    )}
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '조기취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'Y',
+                        )
+                      : 0}
                   </LineBox>
                 </div>
               </AreaBox>
@@ -333,12 +346,16 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
                 <div>
                   <FilterLabel>조기취업 미가입</FilterLabel>
                   <LineBox>
-                    {countFilteredStudents(
-                      students,
-                      student =>
-                        student.courseComplete === completion.notCompleted &&
-                        student.employment === employment.employed,
-                    )}
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '조기취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'N',
+                        )
+                      : 0}
                   </LineBox>
                 </div>
               </AreaBox>
@@ -372,12 +389,16 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
                 <div>
                   <FilterLabel>수료취업 가입</FilterLabel>
                   <LineBox>
-                    {countFilteredStudents(
-                      students,
-                      student =>
-                        student.courseComplete === completion.completed &&
-                        student.employment === employment.employed,
-                    )}
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '수료취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'Y',
+                        )
+                      : 0}
                   </LineBox>
                 </div>
               </AreaBox>
@@ -385,12 +406,16 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
                 <div>
                   <FilterLabel>수료취업 미가입</FilterLabel>
                   <LineBox>
-                    {countFilteredStudents(
-                      students,
-                      student =>
-                        student.courseComplete === completion.completed &&
-                        student.employment === employment.employed,
-                    )}
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '수료취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'N',
+                        )
+                      : 0}
                   </LineBox>
                 </div>
               </AreaBox>
@@ -419,8 +444,16 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
               <AreaBox>
                 <div>
                   <FilterLabel>재직증명확보예정</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].proofOfImployment ===
+                            'Y',
+                        )
+                      : 0}
+                  </LineBox>
                 </div>
               </AreaBox>
             </FlexBox>

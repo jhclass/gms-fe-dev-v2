@@ -282,11 +282,11 @@ export default function StudentsWrite() {
         )
 
         if (success.data.editStudentPayment.ok) {
-          if (state !== assignment.assignment) {
+          if (state === assignment.assignment) {
             await classCancelMutation({
               variables: {
                 classCancellationId: parseInt(studentPaymentData.id),
-                courseComplete: '미참여',
+                courseComplete: completion.inTraining,
                 lastModifiedTime: new Date(),
               },
               onCompleted: async () => {
@@ -297,10 +297,19 @@ export default function StudentsWrite() {
               },
             })
           } else {
-            const success2 = await searchAndUpdateStudentPayment()
-            if (success2) {
-              alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
-            }
+            await classCancelMutation({
+              variables: {
+                classCancellationId: parseInt(studentPaymentData.id),
+                courseComplete: completion.notAttended,
+                lastModifiedTime: new Date(),
+              },
+              onCompleted: async () => {
+                const success2 = await searchAndUpdateStudentPayment()
+                if (success2) {
+                  alert(`${studentData?.name}학생을 "${state}"처리 하였습니다.`)
+                }
+              },
+            })
           }
         }
         return success

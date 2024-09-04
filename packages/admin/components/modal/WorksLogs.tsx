@@ -27,7 +27,11 @@ import useMmeQuery from '@/utils/mMe'
 import { useReactToPrint } from 'react-to-print'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
+import {
+  assignmentState,
+  completionStatus,
+  gradeState,
+} from '@/lib/recoilAtoms'
 
 const Title = styled.h2`
   position: relative;
@@ -264,6 +268,8 @@ export default function WorksLogsModal({
   teachers,
 }) {
   const grade = useRecoilValue(gradeState)
+  const assignment = useRecoilValue(assignmentState)
+  const completion = useRecoilValue(completionStatus)
   const { useMme } = useMmeQuery()
   const mId = useMme('id')
   const mGrade = useMme('mGrade')
@@ -364,8 +370,8 @@ export default function WorksLogsModal({
 
     return data.filter(
       student =>
-        student.studentPayment.lectureAssignment !== '수강철회' &&
-        student.studentPayment.courseComplete !== '중도포기',
+        student.studentPayment.lectureAssignment !== assignment.withdrawal &&
+        student.studentPayment.courseComplete !== completion.dropout,
     ).length
   }
   const getSortedStudentNames = data => {
@@ -376,8 +382,8 @@ export default function WorksLogsModal({
     return data
       .filter(
         student =>
-          student.studentPayment.lectureAssignment !== '수강철회' &&
-          student.studentPayment.courseComplete !== '중도포기',
+          student.studentPayment.lectureAssignment !== assignment.withdrawal &&
+          student.studentPayment.courseComplete !== completion.dropout,
       )
       .map(attendance => attendance.student.name)
       .sort()

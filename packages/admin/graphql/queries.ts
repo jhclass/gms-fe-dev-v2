@@ -574,6 +574,7 @@ export const SEE_LECTURES_QUERY = gql`
             employment
             courseComplete
             EmploymentStatus {
+              imploymentInsurance
               proofOfImployment
               completionType
               employmentType

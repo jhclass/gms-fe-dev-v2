@@ -2,6 +2,8 @@ import { Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import ListInfo from '@/components/common/ListInfo'
+import { useRecoilValue } from 'recoil'
+import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
 
 const DetailDiv = styled.div`
   width: 100%;
@@ -46,13 +48,14 @@ const FilterLabel = styled.label`
 `
 
 export default function EmploymentMemoItem({ item }) {
+  const completion = useRecoilValue(completionStatus)
   const [dropOutType, setDropOutType] = useState('중도포기')
   const [studentName, setStudentName] = useState('')
   const [dropOutDate, setDropOutDate] = useState('-')
   const [dropOutReason, setDropOutReason] = useState('')
 
   useEffect(() => {
-    if (item.courseComplete === '중도포기') {
+    if (item.courseComplete === completion.dropout) {
       setDropOutType(item.courseComplete)
     }
     if (item.student.name) {

@@ -88,42 +88,53 @@ export default function LectureReportList({ lecture, students }) {
 
   useEffect(() => {
     if (lecture && students) {
+      const today = new Date()
+      const endDate = new Date(parseInt(lecture.lecturePeriodEnd))
+      const earlyEmploymentStudent = students.filter(
+        student =>
+          student.courseComplete === completion.inTraining &&
+          student.employment !== employment.unemployed,
+      )
+
       setApprovedPersonnel(lecture.ApprovedNum)
       setConfirmedPersonnel(lecture.confirmedNum)
       setEnrollmentRate(
         calculatePercentage(lecture.confirmedNum, lecture.ApprovedNum),
       )
+
       setCourseDropout(
         countFilteredStudents(
           students,
           student => student.courseComplete === completion.dropout,
         ),
       )
-      setEarlyEmployment(
-        countFilteredStudents(
-          students,
-          student =>
-            student.courseComplete === completion.notCompleted &&
-            student.employment === employment.employed,
-        ),
-      )
-      setNotEarlyEmployed(
-        countFilteredStudents(
-          students,
-          student =>
-            student.courseComplete === completion.notCompleted &&
-            student.employment === employment.employed,
-        ),
-      )
-      setGraduates(
-        countFilteredStudents(
-          students,
-          student => student.courseComplete === completion.completed,
-        ),
-      )
 
-      const today = new Date()
-      const endDate = new Date(parseInt(lecture.lecturePeriodEnd))
+      if (earlyEmploymentStudent.length > 0) {
+        setEarlyEmployment(
+          countFilteredStudents(
+            earlyEmploymentStudent,
+            student =>
+              student.EmploymentStatus[0].completionType === '조기취업' &&
+              student.EmploymentStatus[0].imploymentInsurance === 'Y',
+          ),
+        )
+        setNotEarlyEmployed(
+          countFilteredStudents(
+            earlyEmploymentStudent,
+            student =>
+              student.EmploymentStatus[0].completionType === '조기취업' &&
+              student.EmploymentStatus[0].imploymentInsurance === 'N',
+          ),
+        )
+
+        setExpectedEmploymentProof(
+          countFilteredStudents(
+            earlyEmploymentStudent,
+            student => student.EmploymentStatus[0].proofOfImployment === 'Y',
+          ),
+        )
+      }
+
       if (today > endDate) {
         setIncomplete(
           countFilteredStudents(
@@ -131,11 +142,16 @@ export default function LectureReportList({ lecture, students }) {
             student => student.courseComplete === completion.notCompleted,
           ),
         )
+        setGraduates(
+          countFilteredStudents(
+            students,
+            student => student.courseComplete === completion.completed,
+          ),
+        )
       } else {
         setIncomplete(0)
+        setGraduates(0)
       }
-
-      // setExpectedEmploymentProof()
     }
   }, [lecture, students])
 

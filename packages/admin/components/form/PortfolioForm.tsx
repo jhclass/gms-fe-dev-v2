@@ -39,13 +39,7 @@ const AreaBox = styled.div`
   width: 100%;
   position: relative;
 `
-const AreaSmallBox = styled.div`
-  display: flex;
-  gap: 1rem;
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`
+
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -58,7 +52,17 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
+const CheckText = styled.p`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: normal;
+  color: ${({ theme }) => theme.colors.black};
+  display: block;
 
+  span {
+    font-weight: 700;
+  }
+`
 const FilesBox = styled.div`
   margin-top: 0.5rem;
   display: flex;
@@ -116,7 +120,6 @@ const FilesDelBtn = styled.button`
   color: ${({ theme }) => theme.colors.gray};
 `
 const UrlBox = styled.div`
-  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -340,9 +343,10 @@ export default function PortfolioForm({
                     field.onChange(e)
                   }}
                 >
-                  <FilterLabel>
-                    땡땡땡학생을 우수학생으로 선정하시겠습니까?
-                  </FilterLabel>
+                  <CheckText>
+                    <span>{studentName}</span>학생을 우수학생으로
+                    선정하시겠습니까?
+                  </CheckText>
                 </Checkbox>
               )}
             />

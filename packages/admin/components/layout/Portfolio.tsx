@@ -68,14 +68,13 @@ export default function Portfolio({ students, subjectId }) {
   const [studentName, setStudentName] = useState(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const completion = useRecoilValue(completionStatus)
-  const { useMme } = useMmeQuery()
-  const mId = useMme('mUserId')
   const naturalCompare = (a, b) => {
     return a.localeCompare(b, undefined, {
       numeric: true,
       sensitivity: 'base',
     })
   }
+
   const sortStudents = students.sort((a, b) => {
     return naturalCompare(a.student.name, b.student.name)
   })
@@ -94,19 +93,6 @@ export default function Portfolio({ students, subjectId }) {
             <h4>포트폴리오</h4>
           </AreaTitle>
           <FlexChipBox>
-            <button>
-              <Chip
-                endContent={
-                  <p className="text-[1rem] text-primary">
-                    <i className="xi-check-circle" />
-                  </p>
-                }
-                variant="bordered"
-                className={'hover:border-primary leading-none'}
-              >
-                학생이름
-              </Chip>
-            </button>
             {sortStudents &&
               sortStudents
                 .filter(
@@ -119,9 +105,17 @@ export default function Portfolio({ students, subjectId }) {
                   >
                     <Chip
                       endContent={
-                        <p className="text-[1rem] text-gray">
-                          <i className="xi-close-circle" />
-                        </p>
+                        <>
+                          {item.StudentPortfolio.length > 0 ? (
+                            <p className="text-[1rem] text-primary">
+                              <i className="xi-check-circle" />
+                            </p>
+                          ) : (
+                            <p className="text-[1rem] text-gray">
+                              <i className="xi-close-circle" />
+                            </p>
+                          )}
+                        </>
                       }
                       variant="bordered"
                       className={'hover:border-primary leading-none'}

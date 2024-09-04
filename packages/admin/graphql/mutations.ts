@@ -1717,9 +1717,10 @@ export const SEARCH_LECTURES_MUTATION = gql`
               id
             }
             EmploymentStatus {
-              proofOfImployment
               completionType
               employmentType
+              proofOfImployment
+              imploymentInsurance
             }
             attendance {
               attendanceDate
@@ -1855,9 +1856,10 @@ export const SEARCH_LECTURES_FILTER_MUTATION = gql`
             employment
             courseComplete
             EmploymentStatus {
-              proofOfImployment
               completionType
               employmentType
+              proofOfImployment
+              imploymentInsurance
             }
           }
         }

@@ -302,7 +302,7 @@ export default function Attendance({ lectureData, students }) {
     if (action.type === 'ADD_ALL') {
       selectedIds = selectedIds.filter(id => {
         const item = data.nodes.find(node => node.id === id)
-        return item && item.courseComplete !== '중도포기'
+        return item && item.courseComplete !== completion.dropout
       })
     }
 
