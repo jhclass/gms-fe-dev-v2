@@ -213,8 +213,6 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
     return filteredStudents.length
   }
 
-  console.log(lectureData)
-
   return (
     lectureData && (
       <>

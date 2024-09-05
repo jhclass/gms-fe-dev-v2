@@ -2643,21 +2643,21 @@ export const CREATE_PORTFOLIO_MUTATION = gql`
   }
 `
 export const EDIT_PORTFOLIO_MUTATION = gql`
-  mutation Mutation(
+  mutation EditStudentPortfolio(
     $editStudentPortfolioId: Int!
     $lastModifiedTime: String!
-    $url: [String]
-    $details: String
-    $filePath: [Upload]
     $isBest: String
+    $filePath: [Upload]
+    $details: String
+    $url: [String]
   ) {
     editStudentPortfolio(
       id: $editStudentPortfolioId
       lastModifiedTime: $lastModifiedTime
-      url: $url
-      details: $details
-      filePath: $filePath
       isBest: $isBest
+      filePath: $filePath
+      details: $details
+      url: $url
     ) {
       ok
       message
@@ -2665,6 +2665,24 @@ export const EDIT_PORTFOLIO_MUTATION = gql`
     }
   }
 `
+export const DELETE_PORTFOLIO_MUTATION = gql`
+  mutation DeleteFileNameSp(
+    $deleteFileNameSpId: Int!
+    $fileUrl: String!
+    $folderName: String!
+  ) {
+    deleteFileNameSp(
+      id: $deleteFileNameSpId
+      fileUrl: $fileUrl
+      folderName: $folderName
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+
 export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
   mutation Mutation(
     $page: Int

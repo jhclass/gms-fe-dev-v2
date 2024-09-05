@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Chip } from '@nextui-org/react'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
 import Portfolio from '@/components/layout/Portfolio'
+import PortfolioStudentList from './PortfolioStudentList'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -61,12 +62,12 @@ const FlexChipBox = styled.div`
   flex-wrap: wrap;
 `
 
-export default function PortfolioTab({ students, subjectId }) {
+export default function PortfolioTab({ lectureId, subjectId, students }) {
   const [isCreate, setIsCreate] = useState(false)
   const [paymentId, setPaymentId] = useState(null)
   const [studentName, setStudentName] = useState(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const completion = useRecoilValue(completionStatus)
+
   const naturalCompare = (a, b) => {
     return a.localeCompare(b, undefined, {
       numeric: true,
@@ -78,63 +79,44 @@ export default function PortfolioTab({ students, subjectId }) {
     return naturalCompare(a.student.name, b.student.name)
   })
 
-  const clickPortFolio = (id, name) => {
-    setPaymentId(id)
-    setStudentName(name)
-    setIsCreateOpen(true)
-  }
-
   return (
     <>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>포트폴리오</h4>
-          </AreaTitle>
-          <FlexChipBox>
-            {sortStudents &&
-              sortStudents
-                .filter(
-                  student => student.courseComplete !== completion.dropout,
-                )
-                .map((item, index) => (
-                  <button
-                    key={index}
-                    onClick={() => clickPortFolio(item.id, item.student.name)}
-                  >
-                    <Chip
-                      endContent={
-                        <>
-                          {item.StudentPortfolio.length > 0 ? (
-                            <p className="text-[1rem] text-primary">
-                              <i className="xi-check-circle" />
-                            </p>
-                          ) : (
-                            <p className="text-[1rem] text-gray">
-                              <i className="xi-close-circle" />
-                            </p>
-                          )}
-                        </>
-                      }
-                      variant="bordered"
-                      className={'hover:border-primary leading-none'}
-                    >
-                      {item.student.name}
-                    </Chip>
-                  </button>
-                ))}
-          </FlexChipBox>
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PortfolioStudentList
+              lectureId={lectureId}
+              sortStudents={sortStudents}
+              setPaymentId={setPaymentId}
+              setStudentName={setStudentName}
+              setIsCreateOpen={setIsCreateOpen}
+            />
+          </Suspense>
         </DetailDiv>
       </DetailBox>
       {isCreateOpen && (
         <DetailBox>
           <DetailDiv>
-            <Portfolio
-              paymentId={paymentId}
-              subjectId={subjectId}
-              setIsCreate={setIsCreate}
-              studentName={studentName}
-            />
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <Portfolio
+                paymentId={paymentId}
+                subjectId={subjectId}
+                setIsCreate={setIsCreate}
+                studentName={studentName}
+              />
+            </Suspense>
           </DetailDiv>
         </DetailBox>
       )}

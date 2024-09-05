@@ -133,7 +133,11 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
           <RegularEvaluation lectureId={lectureId} subjectId={subjectId} />
         </Tab>
         <Tab key="portfolio" title="포트폴리오">
-          <PortfolioTab students={students} subjectId={subjectId} />
+          <PortfolioTab
+            students={students}
+            lectureId={lectureId}
+            subjectId={subjectId}
+          />
         </Tab>
       </Tabs>
     </>

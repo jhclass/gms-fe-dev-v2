@@ -898,17 +898,19 @@ export const SEARCH_SMS_QUERY = gql`
 `
 // 학적부
 export const SEARCH_SM_QUERY = gql`
-  query Query(
+  query SearchSM(
     $modelType: String!
-    $lectureId: Int
     $studentPaymentId: Int
+    $lectureId: Int
+    $subjectId: Int
     $limit: Int
     $page: Int
   ) {
     searchSM(
       modelType: $modelType
-      lectureId: $lectureId
       studentPaymentId: $studentPaymentId
+      lectureId: $lectureId
+      subjectId: $subjectId
       limit: $limit
       page: $page
     ) {
@@ -917,6 +919,21 @@ export const SEARCH_SM_QUERY = gql`
       message
       error
       data {
+        ... on Career {
+          id
+          lectureId
+          studentId
+          stName
+          careerDetails
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+          lastModifiedTime
+        }
         ... on EduInfomation {
           id
           lectureId
@@ -929,19 +946,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          lastModifiedByUserId
-          lastModifiedByName
-          lastModifiedTime
-        }
-        ... on Career {
-          id
-          lectureId
-          studentId
-          stName
-          careerDetails
-          subjectId
-          studentPaymentId
-          createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -958,6 +964,25 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+          lastModifiedTime
+        }
+        ... on StudentConsultation {
+          id
+          lectureId
+          studentId
+          stName
+          typeOfConsultation
+          dateOfConsultation
+          detailsOfConsultation
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -975,6 +1000,8 @@ export const SEARCH_SM_QUERY = gql`
           opinion
           subjectId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -996,6 +1023,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -1020,6 +1049,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -1036,21 +1067,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          lastModifiedByUserId
-          lastModifiedByName
-          lastModifiedTime
-        }
-        ... on StudentConsultation {
-          id
-          lectureId
-          studentId
-          stName
-          typeOfConsultation
-          dateOfConsultation
-          detailsOfConsultation
-          subjectId
-          studentPaymentId
-          createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -1072,6 +1090,25 @@ export const SEARCH_SM_QUERY = gql`
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
+        }
+      }
+    }
+  }
+`
+export const SEARCH_PORTFLIO_STUDDENTS_QUERY = gql`
+  query SearchSM($modelType: String!, $lectureId: Int) {
+    searchSM(modelType: $modelType, lectureId: $lectureId) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        ... on StudentPortfolio {
+          stName
+          lectureId
+          id
+          studentPaymentId
+          studentId
         }
       }
     }

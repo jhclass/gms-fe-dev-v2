@@ -1,23 +1,12 @@
 import { styled } from 'styled-components'
-import {
-  Button,
-  Checkbox,
-  Input,
-  Link,
-  Radio,
-  RadioGroup,
-  Textarea,
-} from '@nextui-org/react'
+import { Button, Checkbox, Input, Link, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
-import {
-  EDIT_EMPLOYMENT_MUTATION,
-  EDIT_PORTFOLIO_MUTATION,
-  EDIT_STUDENT_EMPLOYMENT_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_PORTFOLIO_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useRef, useState } from 'react'
 import PortfolioList from '../layout/PortfolioList'
+import { SEARCH_SM_QUERY } from '@/graphql/queries'
 
 const DetailForm = styled.form`
   display: flex;
@@ -36,6 +25,15 @@ const FlexBox = styled.div`
     flex-direction: column;
     gap: 1rem;
   }
+`
+
+const FlexColBox = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  flex: 1;
+  flex-direction: column;
 `
 
 const AreaBox = styled.div`
@@ -74,27 +72,7 @@ const FilesBox = styled.div`
   align-items: flex-start;
   flex-wrap: wrap;
 `
-const FilesBtn = styled.button`
-  position: relative;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  width: 5rem;
-  height: 5rem;
-  background-color: ${({ theme }) => theme.colors.lightPrimary};
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  font-size: 3rem;
-  text-align: center;
-  color: #fff;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* @media (max-width: 768px) {
-    width: 100%;
-  } */
-`
+
 const FilesItemBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -162,13 +140,18 @@ const BtnBox = styled.div`
 
 export default function PortfolioEditForm({ item, refetch, studentName }) {
   const { userLogs } = useUserLogsMutation()
-  const [editPortfolio] = useMutation(EDIT_PORTFOLIO_MUTATION)
-  const [editStudentEmployment] = useMutation(EDIT_STUDENT_EMPLOYMENT_MUTATION)
+  const [editPortfolio] = useMutation(EDIT_PORTFOLIO_MUTATION, {
+    context: {
+      headers: {
+        'x-apollo-operation-name': 'filePath',
+        // 'apollo-require-preflight': 'true',
+      },
+    },
+  })
   const [avatarImg, setAvatartImg] = useState([])
   const [validFiles, setValidFiles] = useState([])
   const [portfolioFiles, setPortfolioFiles] = useState([])
   const [urlList, setUrlList] = useState([])
-  const [portfolioUrls, setPortfolioUrls] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [best, setBest] = useState(false)
   const fileInputRef = useRef(null)
@@ -177,6 +160,7 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
     handleSubmit,
     reset,
     setError,
+    setValue,
     clearErrors,
     control,
     formState: { isDirty, dirtyFields, errors },
@@ -188,12 +172,12 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
       details: '',
     },
   })
-
+  console.log(item)
   useEffect(() => {
     if (item) {
       reset({
         isBest: item.isBest || 'N',
-        filePath: item.filePath || [],
+        filePath: [],
         url: item.url || [],
         details: item.details || '',
       })
@@ -207,10 +191,22 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
       }
 
       if (item.url) {
-        setPortfolioUrls(item.url)
+        setUrlList(item.url)
       }
     }
   }, [item])
+
+  useEffect(() => {
+    if (validFiles.length > 0) {
+      setValue('filePath', validFiles, { shouldDirty: true })
+    } else {
+      setValue('filePath', [], { shouldDirty: true })
+    }
+  }, [validFiles])
+
+  useEffect(() => {
+    setValue('url', urlList, { shouldDirty: true })
+  }, [urlList])
 
   const onSubmit = async data => {
     if (isDirty) {
@@ -220,9 +216,9 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
           const result = await editPortfolio({
             variables: {
               editStudentPortfolioId: item.id,
-              url: null,
-              details: null,
-              filePath: null,
+              url: urlList,
+              details: data.details,
+              filePath: validFiles.length > 0 ? validFiles : null,
               isBest: data.isBest ? 'Y' : 'N',
               lastModifiedTime: new Date(),
             },
@@ -230,34 +226,23 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
 
           const dirtyFieldsArray = [...Object.keys(dirtyFields)]
           userLogs(
-            `${item.stName} 취업 현황 수정`,
+            `${item.stName} 포트폴리오 수정`,
             `ok: ${
-              result.data.editEmploymentStatus.ok
+              result.data.editStudentPortfolio.ok
             } / ${dirtyFieldsArray.join(', ')}`,
           )
 
-          if (!result.data.editEmploymentStatus.ok) {
-            throw new Error('취업 현황 수정 실패')
-          }
-
-          const result2 = await editStudentEmployment({
-            variables: {
-              editStudentPaymentId: item.studentPaymentId,
-              subjectId: item.subjectId,
-              employment:
-                data.employmentType === '' ? '취업' : data.employmentType,
-            },
-          })
-
-          if (!result2.data.editStudentPayment.ok) {
-            throw new Error('취업 현황 수정 후 payment 업데이트 실패')
+          if (!result.data.editStudentPortfolio.ok) {
+            throw new Error('포트폴리오 수정 실패')
           }
 
           refetch()
+          setValidFiles([])
+          setAvatartImg([])
           alert('수정되었습니다.')
         } catch (error) {
-          console.error('취업 현황 수정 중 에러 발생:', error)
-          alert('취업 현황 수정 처리 중 오류가 발생했습니다.')
+          console.error('포트폴리오 수정 중 에러 발생:', error)
+          alert('포트폴리오 수정 처리 중 오류가 발생했습니다.')
         }
       }
     } else {
@@ -266,7 +251,6 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
   }
 
   const handleCheckboxChange = value => {
-    // setValue('isWeekend', value[0])
     setBest(value)
   }
 
@@ -305,7 +289,6 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
 
         // 기존 validFiles와 새로운 validFiles를 합칩니다.
         setValidFiles(prevValidFiles => [...prevValidFiles, ...newValidFiles])
-
         newValidFiles.forEach(file => {
           const reader = new FileReader()
           reader.onloadend = () => {
@@ -342,15 +325,17 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
     }
   }
   const handleUrlClick = () => {
-    if (isValidURL(inputValue)) {
-      setUrlList([...urlList, inputValue])
-      setInputValue('')
-      clearErrors('url')
-    } else {
-      setError('url', {
-        type: 'manual',
-        message: '올바른 URL 형식이 아닙니다.',
-      })
+    if (inputValue !== '') {
+      if (isValidURL(inputValue)) {
+        setUrlList([...urlList, inputValue])
+        setInputValue('')
+        clearErrors('url')
+      } else {
+        setError('url', {
+          type: 'manual',
+          message: '올바른 URL 형식이 아닙니다.',
+        })
+      }
     }
   }
   const handleRemoveURL = (index: number) => {
@@ -393,45 +378,53 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
             />
           </AreaBox>
         </FlexBox>
-        <FlexBox>
-          <div>
-            <FilterLabel>
-              포트폴리오 <span>*</span>
-            </FilterLabel>
-            <FilesBox>
-              {avatarImg?.map((img, index) => (
-                <FilesItemBox key={index}>
-                  <FilesItem
-                    style={{
-                      backgroundImage: `url('${img}')`,
-                    }}
-                  />
-                  <FilesDelBtn
-                    type="button"
-                    onClick={() => handleRemoveFile(index)}
-                  >
-                    <i className="xi-close-circle" />
-                  </FilesDelBtn>
-                </FilesItemBox>
-              ))}
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-                multiple
-              />
-              <FilesBtn type="button" onClick={handleButtonClick}>
-                <i className="xi-plus" />
-              </FilesBtn>
-            </FilesBox>
-            {errors.filePath && (
-              <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.filePath.message)}
-              </p>
-            )}
-          </div>
-        </FlexBox>
+        <FlexColBox>
+          <FilterLabel>
+            포트폴리오 <span>*</span>
+          </FilterLabel>
+          <PortfolioList
+            portfolioFiles={portfolioFiles}
+            portfolioId={item.id}
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+            multiple
+          />
+          <Button
+            variant="bordered"
+            className="w-full text-lightPrimary border-lightPrimary text-[1.5rem] mt-[0.5rem]"
+            type="button"
+            onClick={handleButtonClick}
+          >
+            <i className="xi-plus" />
+          </Button>
+
+          <FilesBox>
+            {avatarImg?.map((img, index) => (
+              <FilesItemBox key={index}>
+                <FilesItem
+                  style={{
+                    backgroundImage: `url('${img}')`,
+                  }}
+                />
+                <FilesDelBtn
+                  type="button"
+                  onClick={() => handleRemoveFile(index)}
+                >
+                  <i className="xi-close-circle" />
+                </FilesDelBtn>
+              </FilesItemBox>
+            ))}
+          </FilesBox>
+          {errors.filePath && (
+            <p className="px-2 pt-2 text-xs text-red">
+              {String(errors.filePath.message)}
+            </p>
+          )}
+        </FlexColBox>
         <FlexBox>
           <AreaBox>
             <FilterLabel>포트폴리오 URL</FilterLabel>
@@ -461,7 +454,8 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
               <Button
                 type="button"
                 color="primary"
-                className="bg-lightPrimary text-[1.5rem]"
+                variant="bordered"
+                className="text-lightPrimary border-lightPrimary text-[1.5rem]"
                 onClick={handleUrlClick}
               >
                 <i className="xi-plus" />
@@ -514,7 +508,6 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
             </Button>
           </BtnBox>
         </FlexBox>
-        <PortfolioList portfolioFiles={portfolioFiles} />
       </DetailForm>
     </>
   )

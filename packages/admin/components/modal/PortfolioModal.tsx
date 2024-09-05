@@ -17,7 +17,7 @@ const PortfoiloFigure = styled.figure`
     object-fit: cover;
   }
 `
-export default function PortfolioModal({ isOpen, onClose }) {
+export default function PortfolioModal({ isOpen, onClose, item }) {
   return (
     <>
       <Modal size={'3xl'} isOpen={isOpen} onClose={onClose}>
@@ -30,7 +30,7 @@ export default function PortfolioModal({ isOpen, onClose }) {
               <ModalBody>
                 <ScrollShadow className="scrollbar min-h-[50vh] max-h-[70vh]">
                   <PortfoiloFigure>
-                    <img src="https://via.placeholder.com/200x400.png" />
+                    <img src={item} />
                   </PortfoiloFigure>
                 </ScrollShadow>
               </ModalBody>

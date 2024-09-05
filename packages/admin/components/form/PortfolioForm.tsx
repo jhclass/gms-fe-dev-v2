@@ -2,11 +2,18 @@ import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Button, Checkbox, Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { CREATE_PORTFOLIO_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_PORTFOLIO_MUTATION,
+  SEARCH_LECTURES_MUTATION,
+} from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRef, useState } from 'react'
 import Link from 'next/link'
+import {
+  SEARCH_PORTFLIO_STUDDENTS_QUERY,
+  SEARCH_SM_QUERY,
+} from '@/graphql/queries'
 
 const DetailForm = styled.form`
   display: flex;
@@ -199,7 +206,7 @@ export default function PortfolioForm({
         url: urlList,
         details: data.details,
       },
-      // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
+      refetchQueries: [SEARCH_SM_QUERY, SEARCH_PORTFLIO_STUDDENTS_QUERY],
       onCompleted: result => {
         userLogs(
           `${studentName} 포트폴리오 추가`,
