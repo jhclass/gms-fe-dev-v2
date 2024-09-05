@@ -2,9 +2,13 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input, Textarea, useDisclosure } from '@nextui-org/react'
-import { useMutation } from '@apollo/client'
-import { CREATE_ADVICE_TYPE_MUTATION } from '@/graphql/mutations'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import {
+  CREATE_ADVICE_TYPE_MUTATION,
+  EDIT_PERMISSIONMS_GRANTED_MUTATION,
+} from '@/graphql/mutations'
+import {
+  SEARCH_PERMISSIONS_GRANTED_QUERY,
   SEE_ADVICE_TYPE_ORDER_QUERY,
   SEE_ADVICE_TYPE_QUERY,
 } from '@/graphql/queries'
@@ -17,6 +21,7 @@ import ManagerMultiSelectID from '../common/ManagerMultiSelectID'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import ManagersModal from '../modal/ManagersModal'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -133,9 +138,11 @@ const FilterLabel = styled.div`
   }
 `
 
-export default function PermissionCate({ isActive, permissionName }) {
+export default function PermissionCate({ isActive, permission }) {
   const { userLogs } = useUserLogsMutation()
-  const [createAdvice] = useMutation(CREATE_ADVICE_TYPE_MUTATION)
+  const [editPermissionGranted] = useMutation(
+    EDIT_PERMISSIONMS_GRANTED_MUTATION,
+  )
   const [totalCount, setTotalCount] = useState(0)
   const [managers, setManagers] = useState([])
   const [managersName, setManagersName] = useState([])
@@ -153,50 +160,43 @@ export default function PermissionCate({ isActive, permissionName }) {
     },
   })
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     console.log(data)
-    // try {
-    //   const result = await createAdvice({
-    //     variables: {
-    //       type: data.type,
-    //       indexNum: totalCount + 1,
-    //       category: category,
-    //     },
-    //     refetchQueries: [
-    //       {
-    //         query: SEE_ADVICE_TYPE_QUERY,
-    //         variables: {
-    //           page: 1,
-    //           limit: 50,
-    //           category: category,
-    //         },
-    //       },
-    //       {
-    //         query: SEE_ADVICE_TYPE_ORDER_QUERY,
-    //         variables: {
-    //           page: 1,
-    //           limit: 30,
-    //           category: category,
-    //         },
-    //       },
-    //     ],
-    //   })
-    //   userLogs(
-    //     `${data.type} ${category} 등록`,
-    //     `ok: ${result.data.createAdviceType.ok}`,
-    //   )
-    //   if (!result.data.createAdviceType.ok) {
-    //     if (result.data.createAdviceType.message === '중복되는 분야 입니다.') {
-    //       alert(`'${data.type}'은 중복되는 ${category}입니다.`)
-    //     }
-    //     throw new Error(`${category} 등록 실패`)
-    //   }
+    console.log(managers)
+    if (isDirty) {
+      const isModify = confirm('권한을 부여하시겠습니까?')
+      if (isModify) {
+        try {
+          const managersID = managers.map(manager => manager.id)
+          console.log(managersID)
+          const result = await editPermissionGranted({
+            variables: {
+              editPermissionsGrantedId: permission.id,
+              permissionName: permission.permissionName,
+              topic: permission.topic,
+              manageUserIds: managersID,
+              lastModifiedTime: new Date(),
+            },
+            refetchQueries: [SEARCH_PERMISSIONS_GRANTED_QUERY],
+          })
+          userLogs(
+            `${permission.permissionName} 권한 수정`,
+            `ok: ${result.data.editPermissionGranted.ok} , managers: ${managers}`,
+          )
+          if (!result.data.createAdviceType.ok) {
+            throw new Error(`${permission.permissionName} 권한 수정 실패`)
+          }
 
-    //   alert(`${category} 분야가 등록되었습니다.`)
-    //   reset()
-    // } catch (error) {
-    //   console.error(`${category} 등록 중 에러 발생:`, error)
-    // }
+          alert(`${permission.permissionName} 권한이 수정되었습니다.`)
+          reset()
+        } catch (error) {
+          console.error(
+            `${permission.permissionName} 권한 수정 중 에러 발생:`,
+            error,
+          )
+        }
+      }
+    }
   }
 
   return (
@@ -227,7 +227,7 @@ export default function PermissionCate({ isActive, permissionName }) {
                           value={String(managersName)}
                           label={
                             <FilterLabel>
-                              {permissionName} <span>*</span>
+                              {permission.permissionName} <span>*</span>
                             </FilterLabel>
                           }
                           labelPlacement="outside-left"
@@ -275,15 +275,7 @@ export default function PermissionCate({ isActive, permissionName }) {
               </ItemBox>
             </FilterForm>
           </BoxBtn>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <CreatePermissionChip topic={null} permissionName={null} />
-          </Suspense>
+          <CreatePermissionChip topic={null} permissionName={null} />
         </BoxArea>
       </FilterBox>
     </>

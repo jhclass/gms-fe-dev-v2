@@ -2748,3 +2748,24 @@ export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
     }
   }
 `
+export const EDIT_PERMISSIONMS_GRANTED_MUTATION = gql`
+  mutation EditPermissionsGranted(
+    $manageUserIds: [Int]
+    $topic: String!
+    $permissionName: String!
+    $editPermissionsGrantedId: Int!
+    $lastModifiedTime: String!
+  ) {
+    editPermissionsGranted(
+      manageUserIds: $manageUserIds
+      topic: $topic
+      permissionName: $permissionName
+      id: $editPermissionsGrantedId
+      lastModifiedTime: $lastModifiedTime
+    ) {
+      error
+      message
+      ok
+    }
+  }
+`

@@ -91,16 +91,16 @@ export const MME_QUERY = gql`
 `
 export const SEARCH_PERMISSIONS_GRANTED_QUERY = gql`
   query SearchPermissionGranted(
-    $manageUserId: Int
-    $topic: String
     $permissionName: String
-    $searchPermissionGrantedId: Int
+    $manageUserId: Int
+    $searchPermissionsGrantedId: Int
+    $topic: String
   ) {
-    searchPermissionGranted(
-      manageUserId: $manageUserId
-      topic: $topic
+    searchPermissionsGranted(
       permissionName: $permissionName
-      id: $searchPermissionGrantedId
+      manageUserId: $manageUserId
+      id: $searchPermissionsGrantedId
+      topic: $topic
     ) {
       totalCount
       ok

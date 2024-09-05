@@ -3,6 +3,7 @@ import Layout from '@/pages/setting/permissions/layout'
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import PermissionTabs from '@/components/items/PermissionTabs'
+import { Suspense } from 'react'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -34,7 +35,15 @@ export default function SettingPermissions() {
           rightArea={false}
         />
         <ConBox>
-          <PermissionTabs />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabs />
+          </Suspense>
         </ConBox>
       </MainWrap>
     </>

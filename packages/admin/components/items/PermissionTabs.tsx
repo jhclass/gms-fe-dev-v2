@@ -6,6 +6,9 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRouter } from 'next/router'
 import PermissionCate from '@/components/form/PermissionCate'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -24,10 +27,24 @@ const NotiText = styled.p`
   font-size: 0.875rem;
 `
 
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
+}
+
 export default function PermissionTabs() {
   const router = useRouter()
   const { typeTab } = router.query
   const [selected, setSelected] = useState('category')
+
+  const { error, data, refetch } =
+    useSuspenseQuery<SearchPermissionsGrantedQeury>(
+      SEARCH_PERMISSIONS_GRANTED_QUERY,
+      {
+        variables: {
+          topic: '카테고리',
+        },
+      },
+    )
 
   useEffect(() => {
     if (typeTab) {
@@ -36,116 +53,30 @@ export default function PermissionTabs() {
   }, [typeTab])
 
   return (
-    <>
-      <Tabs
-        variant="underlined"
-        aria-label="Options"
-        color="primary"
-        classNames={{
-          tabList: 'flex-wrap',
-          tab: 'w-auto',
-        }}
-        selectedKey={selected}
-        onSelectionChange={e => setSelected(String(e))}
-      >
-        <Tab key="category" title="카테고리">
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'상담관리'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'과정관리'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'수강생관리'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'강의관리'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'회계관리'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate
-              isActive={true}
-              permissionName={'통계 > 영업성과'}
-            />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'인사관리'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate isActive={true} permissionName={'메시지'} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionCate
-              isActive={true}
-              permissionName={'환경설정 > 분야관리'}
-            />
-          </Suspense>
-        </Tab>
-      </Tabs>
-    </>
+    data && (
+      <>
+        <Tabs
+          variant="underlined"
+          aria-label="Options"
+          color="primary"
+          classNames={{
+            tabList: 'flex-wrap',
+            tab: 'w-auto',
+          }}
+          selectedKey={selected}
+          onSelectionChange={e => setSelected(String(e))}
+        >
+          <Tab key="category" title="카테고리">
+            {data.searchPermissionsGranted.data.map((permission, index) => (
+              <PermissionCate
+                key={index}
+                isActive={true}
+                permission={permission}
+              />
+            ))}
+          </Tab>
+        </Tabs>
+      </>
+    )
   )
 }
