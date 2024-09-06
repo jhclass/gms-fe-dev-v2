@@ -35,6 +35,7 @@ import {
   completionStatus,
 } from '@/lib/recoilAtoms'
 import Link from 'next/link'
+import WorksLogsBox from '../modal/WorksLogsBox'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -870,7 +871,7 @@ export default function Attendance({ lectureData, students }) {
           />
         </PagerWrap>
         {isOpen && (
-          <WorksLogs
+          <WorksLogsBox
             isOpen={isOpen}
             onClose={onClose}
             teachers={teachers}

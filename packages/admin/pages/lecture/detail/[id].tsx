@@ -96,6 +96,8 @@ const TimeBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
+  position: relative;
+  z-index: 11;
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -516,9 +518,6 @@ export default function LectureWrite() {
                         >
                           <SelectItem key={'신촌'} value={'신촌'}>
                             {'신촌'}
-                          </SelectItem>
-                          <SelectItem key={'홍대'} value={'홍대'}>
-                            {'홍대'}
                           </SelectItem>
                         </Select>
                       )}

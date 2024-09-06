@@ -2749,23 +2749,25 @@ export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
   }
 `
 export const EDIT_PERMISSIONMS_GRANTED_MUTATION = gql`
-  mutation EditPermissionsGranted(
-    $manageUserIds: [Int]
-    $topic: String!
-    $permissionName: String!
+  mutation Mutation(
     $editPermissionsGrantedId: Int!
+    $permissionName: String!
+    $topic: String!
     $lastModifiedTime: String!
+    $manageUserIdsToConnect: [Int]
+    $manageUserIdsToDisconnect: [Int]
   ) {
     editPermissionsGranted(
-      manageUserIds: $manageUserIds
-      topic: $topic
-      permissionName: $permissionName
       id: $editPermissionsGrantedId
+      permissionName: $permissionName
+      topic: $topic
       lastModifiedTime: $lastModifiedTime
+      manageUserIdsToConnect: $manageUserIdsToConnect
+      manageUserIdsToDisconnect: $manageUserIdsToDisconnect
     ) {
-      error
-      message
       ok
+      message
+      error
     }
   }
 `

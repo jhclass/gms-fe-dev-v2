@@ -265,6 +265,8 @@ export default function WorksLogsModal({
   onClose,
   lectureId,
   workLogeDate,
+  workLogData,
+  attendanceData,
   teachers,
 }) {
   const grade = useRecoilValue(gradeState)
@@ -276,12 +278,8 @@ export default function WorksLogsModal({
   const mPart = useMme('mPart') || []
   const mUsername = useMme('mUsername')
   const { userLogs } = useUserLogsMutation()
-  const [seeAttendance] = useLazyQuery(SEE_ATTENDANCE_QUERY)
-  const [searchWorkLog] = useLazyQuery(SEARCH_WORKLOGS_QUERY)
   const [signWorkLog] = useLazyQuery(SIGN_WORKLOGS_QUERY)
   const [editWrokLogs] = useMutation(EDIT_WORKLOGS_MUTATION)
-  const [workLogData, setWorkLogData] = useState(null)
-  const [attendanceData, setAttendanceData] = useState(null)
   const [attendanceTotals, setAttendanceTotals] = useState(null)
   const [signOne, setSignOne] = useState(null)
   const [signTwo, setSignTwo] = useState(null)
@@ -328,41 +326,6 @@ export default function WorksLogsModal({
     },
   })
 
-  const fetchWorkLogData = async (date, id) => {
-    const { data } = await searchWorkLog({
-      variables: {
-        workLogsDate: date,
-        lecturesId: id,
-      },
-    })
-    return data?.searchWorkLogs?.data[0] || []
-  }
-  const fetchWorkLog = async (date, id) => {
-    try {
-      const data = await fetchWorkLogData(date, id)
-      setWorkLogData(data)
-    } catch (error) {
-      console.error('작업 로그 데이터를 가져오는 중 오류 발생:', error)
-    }
-  }
-  const fetchAttendanceForDate = async (date, id) => {
-    const { data } = await seeAttendance({
-      variables: {
-        attendanceDate: date,
-        lecturesId: id,
-      },
-    })
-    return data?.seeAttendance || []
-  }
-
-  const fetchAttendance = async (date, id) => {
-    try {
-      const data = await fetchAttendanceForDate(date, id)
-      setAttendanceData(data)
-    } catch (error) {
-      console.error('작업 로그 데이터를 가져오는 중 오류 발생:', error)
-    }
-  }
   const getStudentTotal = data => {
     if (!data && data.length === 0) {
       return 0
@@ -391,13 +354,8 @@ export default function WorksLogsModal({
   }
 
   useEffect(() => {
-    if (isOpen && lectureId && workLogeDate) {
-      fetchWorkLog(workLogeDate, lectureId)
-      fetchAttendance(workLogeDate, lectureId)
-    } else {
-      reset() // 팝업이 열릴 때 reset 호출
-    }
-  }, [workLogeDate, lectureId, isOpen])
+    reset()
+  }, [isOpen])
 
   useEffect(() => {
     reset({
@@ -423,6 +381,7 @@ export default function WorksLogsModal({
       check1con: workLogData?.checkContext[0] || '',
       check2con: workLogData?.checkContext[1] || '',
     })
+
     if (workLogData && attendanceData) {
       if (workLogData.attendanceCount.length > 0) {
         setAttendanceTotals(workLogData.attendanceCount)
@@ -499,19 +458,10 @@ export default function WorksLogsModal({
             : workLogData.outingSt,
         etc: workLogData.etc === null ? [] : workLogData.etc,
       })
-      if (workLogData.checkList.legnth > 0) {
-        setIsChecked1(workLogData.checkList[0])
-      }
-      if (workLogData.checkList.legnth > 0) {
-        setIsChecked2(workLogData.checkList[1])
-      }
+      setIsChecked1(workLogData.checkList[0])
+      setIsChecked2(workLogData.checkList[1])
     }
   }, [workLogData, attendanceData])
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   const formatDate = (data, time) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -575,99 +525,104 @@ export default function WorksLogsModal({
 
   const onSubmit = data => {
     if (isDirty) {
-      const isWrite = workLogData?.paymentOne
-        ? confirm(
-            `강의ID:${lectureId}의 ${workLogeDate} 일지를 수정하시겠습니까?`,
-          )
-        : confirm(
-            `강의ID:${lectureId}의 ${workLogeDate} 일지를 등록하시겠습니까?`,
-          )
-      if (isWrite) {
-        editWrokLogs({
-          variables: {
-            editWorkLogsId: workLogData.id,
-            trainingInfoOne: data.trainingInfoOne
-              ? data.trainingInfoOne
-              : workLogData.trainingInfoOne,
-            trainingInfoTwo: data.trainingInfoTwo
-              ? data.trainingInfoTwo
-              : workLogData.trainingInfoTwo,
-            trainingInfoThree: data.trainingInfoThree
-              ? data.trainingInfoThree
-              : workLogData.trainingInfoThree,
-            trainingInfoFour: data.trainingInfoFour
-              ? data.trainingInfoFour
-              : workLogData.trainingInfoFour,
-            trainingInfoFive: data.trainingInfoFive
-              ? data.trainingInfoFive
-              : workLogData.trainingInfoFive,
-            trainingInfoSix: data.trainingInfoSix
-              ? data.trainingInfoSix
-              : workLogData.trainingInfoSix,
-            trainingInfoSeven: data.trainingInfoSeven
-              ? data.trainingInfoSeven
-              : workLogData.trainingInfoSeven,
-            trainingInfoEight: data.trainingInfoEight
-              ? data.trainingInfoEight
-              : workLogData.trainingInfoEight,
-            trainingTimeOneday: data.trainingTimeOneday
-              ? data.trainingTimeOneday
-              : workLogData.trainingTimeOneday,
-            trainingTimeTotal: data.trainingTimeTotal
-              ? data.trainingTimeTotal
-              : workLogData.trainingTimeTotal,
-            instruction: data.instruction
-              ? data.instruction
-              : workLogData.instruction,
-            absentSt: data.absentSt ? data.absentSt : workLogData.absentSt,
-            tardySt: data.tardySt ? data.tardySt : workLogData.tardySt,
-            leaveEarlySt: data.leaveEarlySt
-              ? data.leaveEarlySt
-              : workLogData.leaveEarlySt,
-            outingSt: data.outingSt ? data.outingSt : workLogData.outingSt,
-            etc: data.etc ? data.etc : workLogData.etc,
-            attendanceCount: data.attendanceCount
-              ? data.attendanceCount
-              : workLogData.attendanceCount,
-            checkList:
-              data.check1 || data.check2
-                ? [data.check1, data.check2]
-                : workLogData.checkList,
-            checkContext:
-              data.check1con || data.check2con
-                ? [data.check1con, data.check2con]
-                : workLogData.checkList,
-            lastModifiedTime: new Date(),
-          },
-          onCompleted: result => {
-            if (workLogData?.paymentOne) {
-              const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-              userLogs(
-                `${workLogeDate} 일지 수정`,
-                `ok: ${result.editWorkLogs.ok} / ${dirtyFieldsArray.join(
-                  ', ',
-                )}`,
-              )
-            } else {
-              userLogs(
-                `${workLogeDate} 일지 등록`,
-                `ok: ${result.editWorkLogs.ok}`,
-              )
-            }
-
-            if (result.editWorkLogs.ok) {
+      if (sign) {
+        const isWrite = workLogData?.paymentOne
+          ? confirm(
+              `강의ID:${lectureId}의 ${workLogeDate} 일지를 수정하시겠습니까?`,
+            )
+          : confirm(
+              `강의ID:${lectureId}의 ${workLogeDate} 일지를 등록하시겠습니까?`,
+            )
+        if (isWrite) {
+          editWrokLogs({
+            variables: {
+              editWorkLogsId: workLogData.id,
+              trainingInfoOne: data.trainingInfoOne
+                ? data.trainingInfoOne
+                : workLogData.trainingInfoOne,
+              trainingInfoTwo: data.trainingInfoTwo
+                ? data.trainingInfoTwo
+                : workLogData.trainingInfoTwo,
+              trainingInfoThree: data.trainingInfoThree
+                ? data.trainingInfoThree
+                : workLogData.trainingInfoThree,
+              trainingInfoFour: data.trainingInfoFour
+                ? data.trainingInfoFour
+                : workLogData.trainingInfoFour,
+              trainingInfoFive: data.trainingInfoFive
+                ? data.trainingInfoFive
+                : workLogData.trainingInfoFive,
+              trainingInfoSix: data.trainingInfoSix
+                ? data.trainingInfoSix
+                : workLogData.trainingInfoSix,
+              trainingInfoSeven: data.trainingInfoSeven
+                ? data.trainingInfoSeven
+                : workLogData.trainingInfoSeven,
+              trainingInfoEight: data.trainingInfoEight
+                ? data.trainingInfoEight
+                : workLogData.trainingInfoEight,
+              trainingTimeOneday: data.trainingTimeOneday
+                ? data.trainingTimeOneday
+                : workLogData.trainingTimeOneday,
+              trainingTimeTotal: data.trainingTimeTotal
+                ? data.trainingTimeTotal
+                : workLogData.trainingTimeTotal,
+              instruction: data.instruction
+                ? data.instruction
+                : workLogData.instruction,
+              absentSt: data.absentSt ? data.absentSt : workLogData.absentSt,
+              tardySt: data.tardySt ? data.tardySt : workLogData.tardySt,
+              leaveEarlySt: data.leaveEarlySt
+                ? data.leaveEarlySt
+                : workLogData.leaveEarlySt,
+              outingSt: data.outingSt ? data.outingSt : workLogData.outingSt,
+              etc: data.etc ? data.etc : workLogData.etc,
+              attendanceCount: data.attendanceCount
+                ? data.attendanceCount
+                : workLogData.attendanceCount,
+              checkList:
+                data.check1 || data.check2
+                  ? [data.check1, data.check2]
+                  : workLogData.checkList,
+              checkContext:
+                data.check1con || data.check2con
+                  ? [data.check1con, data.check2con]
+                  : workLogData.checkList,
+              lastModifiedTime: new Date(),
+            },
+            refetchQueries: [SEARCH_WORKLOGS_QUERY],
+            onCompleted: result => {
               if (workLogData?.paymentOne) {
-                alert(`${workLogeDate} 일지가 수정되었습니다.`)
+                const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+                userLogs(
+                  `${workLogeDate} 일지 수정`,
+                  `ok: ${result.editWorkLogs.ok} / ${dirtyFieldsArray.join(
+                    ', ',
+                  )}`,
+                )
               } else {
-                alert(`${workLogeDate} 일지가 등록되었습니다.`)
+                userLogs(
+                  `${workLogeDate} 일지 등록`,
+                  `ok: ${result.editWorkLogs.ok}`,
+                )
               }
-              setSign(false)
-              onClose()
-            } else {
-              console.log(result.editWorkLogs.message)
-            }
-          },
-        })
+
+              if (result.editWorkLogs.ok) {
+                if (workLogData?.paymentOne) {
+                  alert(`${workLogeDate} 일지가 수정되었습니다.`)
+                } else {
+                  alert(`${workLogeDate} 일지가 등록되었습니다.`)
+                }
+                setSign(false)
+                onClose()
+              } else {
+                console.log(result.editWorkLogs.message)
+              }
+            },
+          })
+        }
+      } else {
+        alert('서명을 해주세요.')
       }
     } else {
       alert('변경된 내용이 없습니다.')
@@ -701,472 +656,469 @@ export default function WorksLogsModal({
       }
     `,
   })
-  const formValues = watch()
   const handleClose = () => {
-    reset() // 폼을 초기화
+    reset()
     onClose() // 원래 onClose 함수 호출
   }
-
   return (
-    <>
-      <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
-        <ModalContent>
-          {onClose => (
-            <>
-              <div ref={componentRef}>
-                <ModalHeader className="flex flex-col gap-1">
-                  <Title>
-                    업무일지
-                    <SubText>
-                      <span>*</span>서명 후 저장, 수정 가능합니다.
-                    </SubText>
-                  </Title>
-                  <TopInfo>
-                    <UpdateTime>
-                      <UpdateCon>
-                        <span>최근 업데이트 : </span>
-                        {workLogData?.lastModifiedByName ||
-                        workLogData?.lastModifiedByUserId ? (
-                          <>
-                            {workLogData?.lastModifiedByName &&
-                              workLogData?.lastModifiedByName}
-                            (
-                            {workLogData?.lastModifiedByUserId &&
-                              workLogData?.lastModifiedByUserId}
-                            )
-                          </>
-                        ) : null}
-                      </UpdateCon>
+    <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
+      <ModalContent>
+        {onClose => (
+          <>
+            <div ref={componentRef}>
+              <ModalHeader className="flex flex-col gap-1">
+                <Title>
+                  업무일지
+                  <SubText>
+                    <span>*</span>서명 후 저장, 수정 가능합니다.
+                  </SubText>
+                </Title>
+                <TopInfo>
+                  <UpdateTime>
+                    <UpdateCon>
+                      <span>최근 업데이트 : </span>
                       {workLogData?.lastModifiedByName ||
                       workLogData?.lastModifiedByUserId ? (
-                        <span>-</span>
+                        <>
+                          {workLogData?.lastModifiedByName &&
+                            workLogData?.lastModifiedByName}
+                          (
+                          {workLogData?.lastModifiedByUserId &&
+                            workLogData?.lastModifiedByUserId}
+                          )
+                        </>
                       ) : null}
-                      <UpdateCon>
-                        {workLogData?.lastModifiedTime
-                          ? formatDate(workLogData?.lastModifiedTime, true)
-                          : formatDate(workLogData?.createdAt, true)}
-                      </UpdateCon>
-                    </UpdateTime>
-                  </TopInfo>
-                </ModalHeader>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <ModalBody>
-                    <DatailBody className="scrollbar_g">
-                      <ScrollShadow
-                        orientation="vertical"
-                        className="scrollbar"
-                      >
-                        <DetailDiv>
-                          <FlexBox className="reverse">
-                            <FlexColBox>
-                              <AreaBox>
-                                <div>
-                                  <FilterLabel>훈련기간</FilterLabel>
-                                  <LineBox>
-                                    {formatDate(
-                                      workLogData?.lectures.lecturePeriodStart,
-                                      false,
-                                    ) +
-                                      ' ~ ' +
-                                      formatDate(
-                                        workLogData?.lectures.lecturePeriodEnd,
-                                        false,
-                                      )}
-                                  </LineBox>
-                                </div>
-                              </AreaBox>
-                              <AreaBox>
-                                <div>
-                                  <FilterLabel>훈련일자</FilterLabel>
-                                  <LineBox>
-                                    {workLogeDate}{' '}
-                                    {getWorksLogsDate(workLogeDate)}
-                                    요일 (
-                                    {workLogData?.lectures.lectureDetails.indexOf(
-                                      workLogeDate,
-                                    ) + 1}
-                                    일/
-                                    {
-                                      workLogData?.lectures.lectureDetails
-                                        .length
-                                    }
-                                    일)
-                                  </LineBox>
-                                </div>
-                              </AreaBox>
-                            </FlexColBox>
-                            <FlexAreaBox>
-                              <AreaBox>
-                                <div>
-                                  <FilterLabel>강사</FilterLabel>
-                                  <StempBox>
-                                    {sign &&
-                                    (signOne || workLogData?.paymentOne) ? (
-                                      <img
-                                        src={signOne || workLogData?.paymentOne}
-                                        alt="강사 사인"
-                                      />
-                                    ) : (
-                                      workLogData?.paymentOne && (
-                                        <img
-                                          src={workLogData?.paymentOne}
-                                          alt="강사 사인"
-                                        />
-                                      )
-                                    )}
-                                  </StempBox>
-                                  {mGrade === grade.dev ||
-                                  teachers.includes(mId) ? (
-                                    <BtnBox>
-                                      <Button
-                                        isDisabled={sign}
-                                        size="sm"
-                                        color="primary"
-                                        className="bg-accent"
-                                        onClick={() => clickSign('강사')}
-                                      >
-                                        서명
-                                      </Button>
-                                    </BtnBox>
-                                  ) : null}
-                                </div>
-                              </AreaBox>
-                              <AreaBox>
-                                <div>
-                                  <FilterLabel>교무팀</FilterLabel>
-                                  <StempBox>
-                                    {sign &&
-                                    (signTwo || workLogData?.paymentTwo) ? (
-                                      <img
-                                        src={signTwo || workLogData?.paymentTwo}
-                                        alt="강사 사인"
-                                      />
-                                    ) : (
-                                      workLogData?.paymentTwo && (
-                                        <img
-                                          src={workLogData?.paymentTwo}
-                                          alt="강사 사인"
-                                        />
-                                      )
-                                    )}
-                                  </StempBox>
-                                  {mGrade === grade.dev ||
-                                  mPart.includes('교무팀') ? (
-                                    <BtnBox>
-                                      <Button
-                                        isDisabled={sign}
-                                        size="sm"
-                                        color="primary"
-                                        className="bg-accent"
-                                        onClick={() => clickSign('교무팀')}
-                                      >
-                                        서명
-                                      </Button>
-                                    </BtnBox>
-                                  ) : null}
-                                </div>
-                              </AreaBox>
-                              <AreaBox>
-                                <div>
-                                  <FilterLabel>관리자</FilterLabel>
-                                  <StempBox>
-                                    {sign &&
-                                    (signThree || workLogData?.paymentThree) ? (
-                                      <img
-                                        src={
-                                          signThree || workLogData?.paymentThree
-                                        }
-                                        alt="강사 사인"
-                                      />
-                                    ) : (
-                                      workLogData?.paymentThree && (
-                                        <img
-                                          src={workLogData?.paymentThree}
-                                          alt="강사 사인"
-                                        />
-                                      )
-                                    )}
-                                  </StempBox>
-                                  {mGrade <= grade.subMaster ? (
-                                    <BtnBox>
-                                      <Button
-                                        isDisabled={sign}
-                                        size="sm"
-                                        color="primary"
-                                        className="bg-accent"
-                                        onClick={() => clickSign('원장')}
-                                      >
-                                        서명
-                                      </Button>
-                                    </BtnBox>
-                                  ) : null}
-                                </div>
-                              </AreaBox>
-                            </FlexAreaBox>
-                          </FlexBox>
-                          <FlexBox>
+                    </UpdateCon>
+                    {workLogData?.lastModifiedByName ||
+                    workLogData?.lastModifiedByUserId ? (
+                      <span>-</span>
+                    ) : null}
+                    <UpdateCon>
+                      {workLogData?.lastModifiedTime
+                        ? formatDate(workLogData?.lastModifiedTime, true)
+                        : formatDate(workLogData?.createdAt, true)}
+                    </UpdateCon>
+                  </UpdateTime>
+                </TopInfo>
+              </ModalHeader>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <ModalBody>
+                  <DatailBody className="scrollbar_g">
+                    <ScrollShadow orientation="vertical" className="scrollbar">
+                      <DetailDiv>
+                        <FlexBox className="reverse">
+                          <FlexColBox>
                             <AreaBox>
                               <div>
-                                <Textarea
-                                  label="훈련과정명"
-                                  isDisabled={true}
-                                  isReadOnly={true}
-                                  labelPlacement="outside"
-                                  minRows={1}
-                                  variant="underlined"
-                                  size="md"
-                                  radius="sm"
-                                  classNames={{
-                                    base: 'opacity-1',
-                                  }}
-                                ></Textarea>
+                                <FilterLabel>훈련기간</FilterLabel>
+                                <LineBox>
+                                  {formatDate(
+                                    workLogData?.lectures.lecturePeriodStart,
+                                    false,
+                                  ) +
+                                    ' ~ ' +
+                                    formatDate(
+                                      workLogData?.lectures.lecturePeriodEnd,
+                                      false,
+                                    )}
+                                </LineBox>
                               </div>
                             </AreaBox>
-                          </FlexBox>
-                          {attendanceTotals && (
-                            <FlexBoxNum>
-                              <FlexAreaBox>
-                                <div className="text-secondary">
-                                  <FilterLabel className="color">
-                                    재적
-                                  </FilterLabel>
-                                  <LineBox>
-                                    <b>{attendanceTotals[0]}</b>명
-                                  </LineBox>
-                                </div>
-                                <div className="text-primary">
-                                  <FilterLabel className="color">
-                                    출석
-                                  </FilterLabel>
-                                  <LineBox>
-                                    <b>{attendanceTotals[1]}</b>명
-                                  </LineBox>
-                                </div>
-                                <div className="text-accent">
-                                  <FilterLabel className="color">
-                                    결석
-                                  </FilterLabel>
-                                  <LineBox>
-                                    <b>{attendanceTotals[2]}</b>명
-                                  </LineBox>
-                                </div>
-                              </FlexAreaBox>
-                              <FlexAreaBox>
-                                <div>
-                                  <FilterLabel>지각</FilterLabel>
-                                  <LineBox>
-                                    <b>{attendanceTotals[3]}</b>명
-                                  </LineBox>
-                                </div>
-                                <div>
-                                  <FilterLabel>조퇴</FilterLabel>
-                                  <LineBox>
-                                    <b>{attendanceTotals[4]}</b>명
-                                  </LineBox>
-                                </div>
-                                <div>
-                                  <FilterLabel>외출</FilterLabel>
-                                  <LineBox>
-                                    <b>{attendanceTotals[5]}</b>명
-                                  </LineBox>
-                                </div>
-                              </FlexAreaBox>
-                            </FlexBoxNum>
-                          )}
-                        </DetailDiv>
-                        <DetailDiv className="scroll">
-                          <ScrollShadow
-                            orientation="vertical"
-                            className="scrollbar"
-                          >
-                            {trainingData && (
-                              <AreaSection>
-                                <AreaTitle>
-                                  <h4>훈련사항</h4>
-                                </AreaTitle>
-                                <WorksSchedule
-                                  setValue={setValue}
-                                  trainingData={trainingData}
-                                  setTrainingData={setTrainingData}
-                                />
-                              </AreaSection>
-                            )}
-                            {trainingTimes && (
-                              <AreaSection>
-                                <AreaTitle>
-                                  <h4>훈련시간</h4>
-                                </AreaTitle>
-                                <WorksTime
-                                  setValue={setValue}
-                                  trainingTimes={trainingTimes}
-                                  setTrainingTimes={setTrainingTimes}
-                                  setError={setError}
-                                  clearErrors={clearErrors}
-                                />
-                                {errors.trainingTimeTotal && (
-                                  <p className="px-2 pt-2 text-xs text-red">
-                                    {String(errors.trainingTimeTotal.message)}
-                                  </p>
-                                )}
-                                {errors.trainingTimeOneday && (
-                                  <p className="px-2 pt-2 text-xs text-red">
-                                    {String(errors.trainingTimeOneday.message)}
-                                  </p>
-                                )}
-                              </AreaSection>
-                            )}
-                            {attendanceState && (
-                              <AreaSection>
-                                <AreaTitle>
-                                  <h4>출결사항</h4>
-                                </AreaTitle>
-                                <WorksRemark
-                                  setValue={setValue}
-                                  attendanceState={attendanceState}
-                                  setAttendanceState={setAttendanceState}
-                                />
-                              </AreaSection>
-                            )}
+                            <AreaBox>
+                              <div>
+                                <FilterLabel>훈련일자</FilterLabel>
+                                <LineBox>
+                                  {workLogeDate}{' '}
+                                  {getWorksLogsDate(workLogeDate)}
+                                  요일 (
+                                  {workLogData?.lectures.lectureDetails.indexOf(
+                                    workLogeDate,
+                                  ) + 1}
+                                  일/
+                                  {workLogData?.lectures.lectureDetails.length}
+                                  일)
+                                </LineBox>
+                              </div>
+                            </AreaBox>
+                          </FlexColBox>
+                          <FlexAreaBox>
+                            <AreaBox>
+                              <div>
+                                <FilterLabel>강사</FilterLabel>
+                                <StempBox>
+                                  {sign &&
+                                  (signOne || workLogData?.paymentOne) ? (
+                                    <img
+                                      src={signOne || workLogData?.paymentOne}
+                                      alt="강사 사인"
+                                    />
+                                  ) : (
+                                    workLogData?.paymentOne && (
+                                      <img
+                                        src={workLogData?.paymentOne}
+                                        alt="강사 사인"
+                                      />
+                                    )
+                                  )}
+                                </StempBox>
+                                {mGrade === grade.dev ||
+                                teachers.includes(mId) ? (
+                                  <BtnBox>
+                                    <Button
+                                      isDisabled={sign}
+                                      size="sm"
+                                      color="primary"
+                                      className="bg-accent"
+                                      onClick={() => clickSign('강사')}
+                                    >
+                                      서명
+                                    </Button>
+                                  </BtnBox>
+                                ) : null}
+                              </div>
+                            </AreaBox>
+                            <AreaBox>
+                              <div>
+                                <FilterLabel>교무팀</FilterLabel>
+                                <StempBox>
+                                  {sign &&
+                                  (signTwo || workLogData?.paymentTwo) ? (
+                                    <img
+                                      src={signTwo || workLogData?.paymentTwo}
+                                      alt="강사 사인"
+                                    />
+                                  ) : (
+                                    workLogData?.paymentTwo && (
+                                      <img
+                                        src={workLogData?.paymentTwo}
+                                        alt="강사 사인"
+                                      />
+                                    )
+                                  )}
+                                </StempBox>
+                                {mGrade === grade.dev ||
+                                mPart.includes('교무팀') ? (
+                                  <BtnBox>
+                                    <Button
+                                      isDisabled={sign}
+                                      size="sm"
+                                      color="primary"
+                                      className="bg-accent"
+                                      onClick={() => clickSign('팀장')}
+                                    >
+                                      서명
+                                    </Button>
+                                  </BtnBox>
+                                ) : null}
+                              </div>
+                            </AreaBox>
+                            <AreaBox>
+                              <div>
+                                <FilterLabel>관리자</FilterLabel>
+                                <StempBox>
+                                  {sign &&
+                                  (signThree || workLogData?.paymentThree) ? (
+                                    <img
+                                      src={
+                                        signThree || workLogData?.paymentThree
+                                      }
+                                      alt="강사 사인"
+                                    />
+                                  ) : (
+                                    workLogData?.paymentThree && (
+                                      <img
+                                        src={workLogData?.paymentThree}
+                                        alt="강사 사인"
+                                      />
+                                    )
+                                  )}
+                                </StempBox>
+                                {mGrade <= grade.subMaster ? (
+                                  <BtnBox>
+                                    <Button
+                                      isDisabled={sign}
+                                      size="sm"
+                                      color="primary"
+                                      className="bg-accent"
+                                      onClick={() => clickSign('원장')}
+                                    >
+                                      서명
+                                    </Button>
+                                  </BtnBox>
+                                ) : null}
+                              </div>
+                            </AreaBox>
+                          </FlexAreaBox>
+                        </FlexBox>
+                        <FlexBox>
+                          <AreaBox>
+                            <div>
+                              <Textarea
+                                label="훈련과정명"
+                                isDisabled={true}
+                                isReadOnly={true}
+                                labelPlacement="outside"
+                                minRows={1}
+                                variant="underlined"
+                                size="md"
+                                radius="sm"
+                                classNames={{
+                                  base: 'opacity-1',
+                                }}
+                              ></Textarea>
+                            </div>
+                          </AreaBox>
+                        </FlexBox>
+                        {attendanceTotals && (
+                          <FlexBoxNum>
+                            <FlexAreaBox>
+                              <div className="text-secondary">
+                                <FilterLabel className="color">
+                                  재적
+                                </FilterLabel>
+                                <LineBox>
+                                  <b>{attendanceTotals[0]}</b>명
+                                </LineBox>
+                              </div>
+                              <div className="text-primary">
+                                <FilterLabel className="color">
+                                  출석
+                                </FilterLabel>
+                                <LineBox>
+                                  <b>{attendanceTotals[1]}</b>명
+                                </LineBox>
+                              </div>
+                              <div className="text-accent">
+                                <FilterLabel className="color">
+                                  결석
+                                </FilterLabel>
+                                <LineBox>
+                                  <b>{attendanceTotals[2]}</b>명
+                                </LineBox>
+                              </div>
+                            </FlexAreaBox>
+                            <FlexAreaBox>
+                              <div>
+                                <FilterLabel>지각</FilterLabel>
+                                <LineBox>
+                                  <b>{attendanceTotals[3]}</b>명
+                                </LineBox>
+                              </div>
+                              <div>
+                                <FilterLabel>조퇴</FilterLabel>
+                                <LineBox>
+                                  <b>{attendanceTotals[4]}</b>명
+                                </LineBox>
+                              </div>
+                              <div>
+                                <FilterLabel>외출</FilterLabel>
+                                <LineBox>
+                                  <b>{attendanceTotals[5]}</b>명
+                                </LineBox>
+                              </div>
+                            </FlexAreaBox>
+                          </FlexBoxNum>
+                        )}
+                      </DetailDiv>
+                      <DetailDiv className="scroll">
+                        <ScrollShadow
+                          orientation="vertical"
+                          className="scrollbar"
+                        >
+                          {trainingData && (
                             <AreaSection>
-                              <Controller
-                                control={control}
-                                name="check1"
-                                render={({ field }) => (
-                                  <RadioGroup
-                                    label={
-                                      <CheckLabel>
-                                        오늘 지각, 외출, 조퇴 시간의 합이 총
-                                        수업 시간의 절반을 넘은 학생이 있습니까?
-                                        <br />
-                                        "예"를 체크한 경우 출석부를 결석으로
-                                        변경해 주시고, 하단 특이사항에 자세한
-                                        내용을 남겨주세요.
-                                      </CheckLabel>
-                                    }
-                                    orientation="horizontal"
-                                    value={isChecked1}
-                                    onValueChange={setIsChecked1}
-                                    classNames={{
-                                      base: 'pl-[1rem]',
-                                    }}
-                                  >
-                                    <Radio key={'Y'} value={'Y'}>
-                                      예
-                                    </Radio>
-                                    <Radio key={'N'} value={'N'}>
-                                      아니오
-                                    </Radio>
-                                  </RadioGroup>
-                                )}
+                              <AreaTitle>
+                                <h4>훈련사항</h4>
+                              </AreaTitle>
+                              <WorksSchedule
+                                setValue={setValue}
+                                trainingData={trainingData}
+                                setTrainingData={setTrainingData}
                               />
-                              {isChecked1 === 'Y' && (
-                                <>
-                                  <AreaTitle>
-                                    <h4>특이사항</h4>
-                                  </AreaTitle>
-                                  <Textarea
-                                    label=""
-                                    placeholder="ex) 홍길동 학생이 지각 후 조퇴를 하였는데 수업참여시간이 절반이 되지 않아 결석으로 처리함."
-                                    className="w-full"
-                                    variant="bordered"
-                                    minRows={5}
-                                    onChange={e => {
-                                      register('check1con').onChange(e)
-                                    }}
-                                    {...register('check1con', {
-                                      required: {
-                                        value: true,
-                                        message:
-                                          '특이사항을 자세히 입력해주세요.',
-                                      },
-                                      validate: {
-                                        minLength: value => {
-                                          if (value.trim().length < 11) {
-                                            return '특이사항을 최소 10자 이상 입력해주세요.'
-                                          }
-                                          return true
-                                        },
-                                      },
-                                    })}
-                                  />
-                                  {errors.check1con && (
-                                    <p className="px-2 pt-2 text-xs text-red">
-                                      {String(errors.check1con.message)}
-                                    </p>
-                                  )}
-                                </>
+                            </AreaSection>
+                          )}
+                          {trainingTimes && (
+                            <AreaSection>
+                              <AreaTitle>
+                                <h4>훈련시간</h4>
+                              </AreaTitle>
+                              <WorksTime
+                                setValue={setValue}
+                                trainingTimes={trainingTimes}
+                                setTrainingTimes={setTrainingTimes}
+                                setError={setError}
+                                clearErrors={clearErrors}
+                              />
+                              {errors.trainingTimeTotal && (
+                                <p className="px-2 pt-2 text-xs text-red">
+                                  {String(errors.trainingTimeTotal.message)}
+                                </p>
+                              )}
+                              {errors.trainingTimeOneday && (
+                                <p className="px-2 pt-2 text-xs text-red">
+                                  {String(errors.trainingTimeOneday.message)}
+                                </p>
                               )}
                             </AreaSection>
-                            <AreaSection className="last">
-                              <Controller
-                                control={control}
-                                name="check2"
-                                render={({ field }) => (
-                                  <RadioGroup
-                                    label={
-                                      <CheckLabel>
-                                        수업을 듣지 못했거나, 부진한 학생이 있을
-                                        경우 조치를 취하셨습니까?
-                                        <br />
-                                        "예"를 체크한 경우 하단 조치사항을
-                                        학생이름과 내용을 자세히 작성해주세요.
-                                      </CheckLabel>
-                                    }
-                                    orientation="horizontal"
-                                    value={isChecked2}
-                                    onValueChange={setIsChecked2}
-                                    classNames={{
-                                      base: 'pl-[1rem]',
-                                    }}
-                                  >
-                                    <Radio key={'Y'} value={'Y'}>
-                                      예
-                                    </Radio>
-                                    <Radio key={'N'} value={'N'}>
-                                      아니오
-                                    </Radio>
-                                  </RadioGroup>
-                                )}
+                          )}
+                          {attendanceState && (
+                            <AreaSection>
+                              <AreaTitle>
+                                <h4>출결사항</h4>
+                              </AreaTitle>
+                              <WorksRemark
+                                setValue={setValue}
+                                attendanceState={attendanceState}
+                                setAttendanceState={setAttendanceState}
                               />
-                              {isChecked2 === 'Y' && (
-                                <>
-                                  <AreaTitle>
-                                    <h4>조치사항</h4>
-                                  </AreaTitle>
-                                  <Textarea
-                                    label=""
-                                    placeholder="ex) 홍길동 학생이 조퇴로 수업을 듣지못한 부분은 수업자료를 공유해주고, 동영상 강의로 대체함"
-                                    className="w-full"
-                                    variant="bordered"
-                                    minRows={5}
-                                    onChange={e => {
-                                      register('check2con').onChange(e)
-                                    }}
-                                    {...register('check2con', {
-                                      required: {
-                                        value: true,
-                                        message:
-                                          '조치사항을 자세히 입력해주세요.',
-                                      },
-                                      validate: {
-                                        minLength: value => {
-                                          if (value.trim().length < 11) {
-                                            return '조치사항을 최소 10자 이상 입력해주세요.'
-                                          }
-                                          return true
-                                        },
-                                      },
-                                    })}
-                                  />
-                                  {errors.check2con && (
-                                    <p className="px-2 pt-2 text-xs text-red">
-                                      {String(errors.check2con.message)}
-                                    </p>
-                                  )}
-                                </>
-                              )}
                             </AreaSection>
-                            {/* <AreaSection className="last">
+                          )}
+                          <AreaSection>
+                            <Controller
+                              control={control}
+                              name="check1"
+                              render={({ field }) => (
+                                <RadioGroup
+                                  label={
+                                    <CheckLabel>
+                                      오늘 지각, 외출, 조퇴 시간의 합이 총 수업
+                                      시간의 절반을 넘은 학생이 있습니까?
+                                      <br />
+                                      "예"를 체크한 경우 출석부를 결석으로
+                                      변경해 주시고, 하단 특이사항에 자세한
+                                      내용을 남겨주세요.
+                                    </CheckLabel>
+                                  }
+                                  orientation="horizontal"
+                                  value={isChecked1}
+                                  onValueChange={e => {
+                                    setIsChecked1(e)
+                                    field.onChange(e)
+                                  }}
+                                  classNames={{
+                                    base: 'pl-[1rem]',
+                                  }}
+                                >
+                                  <Radio key={'Y'} value={'Y'}>
+                                    예
+                                  </Radio>
+                                  <Radio key={'N'} value={'N'}>
+                                    아니오
+                                  </Radio>
+                                </RadioGroup>
+                              )}
+                            />
+                            {isChecked1 === 'Y' && (
+                              <>
+                                <AreaTitle>
+                                  <h4>특이사항</h4>
+                                </AreaTitle>
+                                <Textarea
+                                  label=""
+                                  placeholder="ex) 홍길동 학생이 지각 후 조퇴를 하였는데 수업참여시간이 절반이 되지 않아 결석으로 처리함."
+                                  className="w-full"
+                                  variant="bordered"
+                                  minRows={5}
+                                  onChange={e => {
+                                    register('check1con').onChange(e)
+                                  }}
+                                  {...register('check1con', {
+                                    required: {
+                                      value: true,
+                                      message:
+                                        '특이사항을 자세히 입력해주세요.',
+                                    },
+                                    validate: {
+                                      minLength: value => {
+                                        if (value.trim().length < 11) {
+                                          return '특이사항을 최소 10자 이상 입력해주세요.'
+                                        }
+                                        return true
+                                      },
+                                    },
+                                  })}
+                                />
+                                {errors.check1con && (
+                                  <p className="px-2 pt-2 text-xs text-red">
+                                    {String(errors.check1con.message)}
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </AreaSection>
+                          <AreaSection className="last">
+                            <Controller
+                              control={control}
+                              name="check2"
+                              render={({ field }) => (
+                                <RadioGroup
+                                  label={
+                                    <CheckLabel>
+                                      수업을 듣지 못했거나, 부진한 학생이 있을
+                                      경우 조치를 취하셨습니까?
+                                      <br />
+                                      "예"를 체크한 경우 하단 조치사항을
+                                      학생이름과 내용을 자세히 작성해주세요.
+                                    </CheckLabel>
+                                  }
+                                  orientation="horizontal"
+                                  value={isChecked2}
+                                  onValueChange={e => {
+                                    setIsChecked2(e)
+                                    field.onChange(e)
+                                  }}
+                                  classNames={{
+                                    base: 'pl-[1rem]',
+                                  }}
+                                >
+                                  <Radio key={'Y'} value={'Y'}>
+                                    예
+                                  </Radio>
+                                  <Radio key={'N'} value={'N'}>
+                                    아니오
+                                  </Radio>
+                                </RadioGroup>
+                              )}
+                            />
+                            {isChecked2 === 'Y' && (
+                              <>
+                                <AreaTitle>
+                                  <h4>조치사항</h4>
+                                </AreaTitle>
+                                <Textarea
+                                  label=""
+                                  placeholder="ex) 홍길동 학생이 조퇴로 수업을 듣지못한 부분은 수업자료를 공유해주고, 동영상 강의로 대체함"
+                                  className="w-full"
+                                  variant="bordered"
+                                  minRows={5}
+                                  onChange={e => {
+                                    register('check2con').onChange(e)
+                                  }}
+                                  {...register('check2con', {
+                                    required: {
+                                      value: true,
+                                      message:
+                                        '조치사항을 자세히 입력해주세요.',
+                                    },
+                                    validate: {
+                                      minLength: value => {
+                                        if (value.trim().length < 11) {
+                                          return '조치사항을 최소 10자 이상 입력해주세요.'
+                                        }
+                                        return true
+                                      },
+                                    },
+                                  })}
+                                />
+                                {errors.check2con && (
+                                  <p className="px-2 pt-2 text-xs text-red">
+                                    {String(errors.check2con.message)}
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </AreaSection>
+                          {/* <AreaSection className="last">
                               <AreaTitle>
                                 <h4>지시사항</h4>
                               </AreaTitle>
@@ -1188,43 +1140,37 @@ export default function WorksLogsModal({
                                 </p>
                               )}
                             </AreaSection> */}
-                          </ScrollShadow>
-                        </DetailDiv>
-                      </ScrollShadow>
-                    </DatailBody>
-                  </ModalBody>
-                  <ModalFooter className="workLogFooter">
-                    <Button
-                      size="sm"
-                      variant="bordered"
-                      className="text-accent border-accent"
-                      onPress={onClose}
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      size="sm"
-                      color="primary"
-                      variant="bordered"
-                      onClick={handlePrint}
-                    >
-                      인쇄
-                    </Button>
-                    <Button
-                      isDisabled={!sign}
-                      size="sm"
-                      color="primary"
-                      type="submit"
-                    >
-                      {workLogData?.paymentOne ? '일지 수정' : '일지 등록'}
-                    </Button>
-                  </ModalFooter>
-                </form>
-              </div>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
+                        </ScrollShadow>
+                      </DetailDiv>
+                    </ScrollShadow>
+                  </DatailBody>
+                </ModalBody>
+                <ModalFooter className="workLogFooter">
+                  <Button
+                    size="sm"
+                    variant="bordered"
+                    className="text-accent border-accent"
+                    onPress={onClose}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    size="sm"
+                    color="primary"
+                    variant="bordered"
+                    onClick={handlePrint}
+                  >
+                    인쇄
+                  </Button>
+                  <Button size="sm" color="primary" type="submit">
+                    {workLogData?.paymentOne ? '일지 수정' : '일지 등록'}
+                  </Button>
+                </ModalFooter>
+              </form>
+            </div>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   )
 }

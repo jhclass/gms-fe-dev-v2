@@ -67,13 +67,15 @@ export default function PermissionTabs() {
           onSelectionChange={e => setSelected(String(e))}
         >
           <Tab key="category" title="카테고리">
-            {data.searchPermissionsGranted.data.map((permission, index) => (
-              <PermissionCate
-                key={index}
-                isActive={true}
-                permission={permission}
-              />
-            ))}
+            <div className="flex flex-wrap w-full gap-[1rem]">
+              {data.searchPermissionsGranted.data.map((permission, index) => (
+                <PermissionCate
+                  key={index}
+                  isActive={true}
+                  permission={permission}
+                />
+              ))}
+            </div>
           </Tab>
         </Tabs>
       </>

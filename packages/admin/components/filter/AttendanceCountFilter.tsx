@@ -51,6 +51,8 @@ const BtnBox = styled.div`
 `
 const DatePickerBox = styled.div`
   width: 100%;
+  position: relative;
+  z-index: 11;
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;

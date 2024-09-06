@@ -3,10 +3,6 @@ import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ko from 'date-fns/locale/ko'
-registerLocale('ko', ko)
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
 import {
@@ -68,44 +64,6 @@ const AreaTitle = styled.div`
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
-`
-const AreaSmallBox = styled.div`
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`
-const DatePickerBox = styled.div`
-  width: 100%;
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
-`
-const SelectBox = styled.select`
-  padding: 0 0.2rem;
-  font-size: 0.825rem;
-  height: 100%;
-
-  option {
-    font-size: 0.825rem;
-  }
-`
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
 `
 const FilterLabel = styled.p`
   font-weight: 500;

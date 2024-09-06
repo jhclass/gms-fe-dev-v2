@@ -90,16 +90,16 @@ export const MME_QUERY = gql`
   }
 `
 export const SEARCH_PERMISSIONS_GRANTED_QUERY = gql`
-  query SearchPermissionGranted(
-    $permissionName: String
+  query SearchPermissionsGranted(
     $manageUserId: Int
     $searchPermissionsGrantedId: Int
+    $permissionName: String
     $topic: String
   ) {
     searchPermissionsGranted(
-      permissionName: $permissionName
       manageUserId: $manageUserId
       id: $searchPermissionsGrantedId
+      permissionName: $permissionName
       topic: $topic
     ) {
       totalCount
@@ -107,24 +107,26 @@ export const SEARCH_PERMISSIONS_GRANTED_QUERY = gql`
       message
       error
       data {
+        id
+        permissionName
         topic
+        ManageUser {
+          id
+          resign
+          mUsername
+          mUserId
+          mRank
+          mPhoneNum
+          mPart
+          mGrade
+        }
         smsPermitted
         readOnly
-        permissionName
-        lastModifiedTime
-        id
-        createdAt
-        branchId
         allPermitted
-        ManageUser {
-          mGrade
-          mUserId
-          mUsername
-          resign
-          mRank
-          mPart
-          id
-        }
+        createdAt
+        updatedAt
+        branchId
+        lastModifiedTime
       }
     }
   }
@@ -825,10 +827,10 @@ export const SIGN_WORKLOGS_QUERY = gql`
       gradeType: $gradeType
       lastModifiedTime: $lastModifiedTime
     ) {
+      stampUrl
+      ok
       message
       error
-      ok
-      stampUrl
     }
   }
 `
