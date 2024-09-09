@@ -319,7 +319,6 @@ export default function Attendance({ lectureData, students }) {
     })
     setSelectedStudent(selectedAaaData)
     setClickSms(true)
-    // console.log(action, selectedAaaData)
   }
 
   const handleSelectChange = (value, itemIndex, dayIndex) => {
@@ -651,12 +650,19 @@ export default function Attendance({ lectureData, students }) {
                                 className="w-full"
                                 classNames={{
                                   value: 'text-black opacity-1 text-center',
+                                  trigger: `${
+                                    index % 2 === 1 && 'border-white'
+                                  }`,
                                 }}
                                 isDisabled={true}
                                 variant="bordered"
-                                selectedKeys={selectedValues[dayIndex][index]}
-                                onSelectionChange={e => {
-                                  handleSelectChange(e, index, dayIndex)
+                                selectedKeys={[selectedValues[dayIndex][index]]}
+                                onChange={e => {
+                                  handleSelectChange(
+                                    e.target.value,
+                                    index,
+                                    dayIndex,
+                                  )
                                 }}
                               >
                                 <SelectItem
@@ -711,15 +717,22 @@ export default function Attendance({ lectureData, students }) {
                                 className="w-full"
                                 classNames={{
                                   value: 'text-black opacity-1 text-center',
+                                  trigger: `${
+                                    index % 2 === 1 && 'border-white'
+                                  }`,
                                 }}
                                 isDisabled={
                                   dayIndex !== todayIndex &&
                                   attendanceAllData[dayIndex]?.length === 0
                                 }
                                 variant="bordered"
-                                selectedKeys={selectedValues[dayIndex][index]}
-                                onSelectionChange={e => {
-                                  handleSelectChange(e, index, dayIndex)
+                                selectedKeys={[selectedValues[dayIndex][index]]}
+                                onChange={e => {
+                                  handleSelectChange(
+                                    e.target.value,
+                                    index,
+                                    dayIndex,
+                                  )
                                 }}
                               >
                                 <SelectItem key={'-'} value={'-'}>

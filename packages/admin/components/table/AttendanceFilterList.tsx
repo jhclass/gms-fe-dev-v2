@@ -11,6 +11,7 @@ import {
 import {
   CellSelect,
   HeaderCellSelect,
+  SelectClickTypes,
   useRowSelect,
 } from '@table-library/react-table-library/select'
 import { useTheme as tableLibraryTheme } from '@table-library/react-table-library/theme'
@@ -31,8 +32,13 @@ import {
 import { SEE_ATTENDANCE_ALL_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useRecoilValue } from 'recoil'
-import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import {
+  assignmentState,
+  attendanceSelectedStudentState,
+  attendanceSMSState,
+  completionStatus,
+} from '@/lib/recoilAtoms'
 import WorksLogsBox from '@/components/modal/WorksLogsBox'
 
 const PagerWrap = styled.div`
@@ -109,6 +115,11 @@ export default function Attendance({
   const [seeAttendance, { refetch: seeAttendanceRefetch }] = useLazyQuery(
     SEE_ATTENDANCE_ALL_QUERY,
   )
+
+  const [selectedStudent, setSelectedStudent] = useRecoilState(
+    attendanceSelectedStudentState,
+  )
+  const [clickSms, setClickSms] = useRecoilState(attendanceSMSState)
 
   useEffect(() => {
     const storedScrollPosition = window.localStorage.getItem('scrollPosition')
@@ -226,12 +237,21 @@ export default function Attendance({
   }, [todayIndex])
 
   const onSelectChange = (action, state) => {
+    let selectedIds = state.ids ? state.ids : []
+
     if (action.type === 'ADD_ALL') {
-      state.ids = state.ids.filter(id => {
+      selectedIds = selectedIds.filter(id => {
         const item = data.nodes.find(node => node.id === id)
         return item && item.courseComplete !== completion.dropout
       })
     }
+
+    const selectedAaaData = selectedIds.map(id => {
+      const student = data.nodes.find(node => node.id === id)
+      return student ? student.student : null
+    })
+    setSelectedStudent(selectedAaaData)
+    setClickSms(true)
   }
 
   const handleSelectChange = (value, itemIndex, dayIndex) => {
@@ -240,9 +260,15 @@ export default function Attendance({
     setSelectedValues(updatedValues)
   }
 
-  const select = useRowSelect(data, {
-    onChange: onSelectChange,
-  })
+  const select = useRowSelect(
+    data,
+    {
+      onChange: onSelectChange,
+    },
+    {
+      clickType: SelectClickTypes.ButtonClick,
+    },
+  )
 
   const handlePageChange = newPage => {
     setPage(newPage)
@@ -463,6 +489,7 @@ export default function Attendance({
       variables: {
         editAttendanceId: attendanceId,
         attendanceState: state,
+        lastModifiedTime: new Date(),
       },
       onCompleted: resData => {
         userLogs(
@@ -552,12 +579,19 @@ export default function Attendance({
                                 className="w-full"
                                 classNames={{
                                   value: 'text-black opacity-1 text-center',
+                                  trigger: `${
+                                    index % 2 === 1 && 'border-white'
+                                  }`,
                                 }}
                                 isDisabled={true}
                                 variant="bordered"
-                                selectedKeys={selectedValues[dayIndex][index]}
-                                onSelectionChange={e => {
-                                  handleSelectChange(e, index, dayIndex)
+                                selectedKeys={[selectedValues[dayIndex][index]]}
+                                onChange={e => {
+                                  handleSelectChange(
+                                    e.target.value,
+                                    index,
+                                    dayIndex,
+                                  )
                                 }}
                               >
                                 <SelectItem
@@ -612,15 +646,22 @@ export default function Attendance({
                                 className="w-full"
                                 classNames={{
                                   value: 'text-black opacity-1 text-center',
+                                  trigger: `${
+                                    index % 2 === 1 && 'border-white'
+                                  }`,
                                 }}
                                 isDisabled={
                                   dayIndex !== todayIndex &&
                                   attendanceAllData[dayIndex]?.length === 0
                                 }
                                 variant="bordered"
-                                selectedKeys={selectedValues[dayIndex][index]}
-                                onSelectionChange={e => {
-                                  handleSelectChange(e, index, dayIndex)
+                                selectedKeys={[selectedValues[dayIndex][index]]}
+                                onChange={e => {
+                                  handleSelectChange(
+                                    e.target.value,
+                                    index,
+                                    dayIndex,
+                                  )
                                 }}
                               >
                                 <SelectItem key={'-'} value={'-'}>
@@ -792,7 +833,7 @@ export default function Attendance({
               variant="bordered"
               color="primary"
               className="w-full"
-              // onClick={() => clickCancelReq(item)}
+              onClick={() => router.push('/message/sms')}
             >
               SMS발송
             </Button>
