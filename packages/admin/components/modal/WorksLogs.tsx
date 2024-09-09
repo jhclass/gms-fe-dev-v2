@@ -760,8 +760,7 @@ export default function WorksLogsModal({
                                     )
                                   )}
                                 </StempBox>
-                                {mGrade === grade.dev ||
-                                teachers.includes(mId) ? (
+                                {mGrade <= grade.teacher && (
                                   <BtnBox>
                                     <Button
                                       isDisabled={sign}
@@ -773,7 +772,7 @@ export default function WorksLogsModal({
                                       서명
                                     </Button>
                                   </BtnBox>
-                                ) : null}
+                                )}
                               </div>
                             </AreaBox>
                             <AreaBox>
@@ -795,8 +794,7 @@ export default function WorksLogsModal({
                                     )
                                   )}
                                 </StempBox>
-                                {mGrade === grade.dev ||
-                                mPart.includes('교무팀') ? (
+                                {mGrade <= grade.general && (
                                   <BtnBox>
                                     <Button
                                       isDisabled={sign}
@@ -808,7 +806,7 @@ export default function WorksLogsModal({
                                       서명
                                     </Button>
                                   </BtnBox>
-                                ) : null}
+                                )}
                               </div>
                             </AreaBox>
                             <AreaBox>
@@ -832,7 +830,7 @@ export default function WorksLogsModal({
                                     )
                                   )}
                                 </StempBox>
-                                {mGrade <= grade.subMaster ? (
+                                {mGrade <= grade.subMaster && (
                                   <BtnBox>
                                     <Button
                                       isDisabled={sign}
@@ -844,7 +842,7 @@ export default function WorksLogsModal({
                                       서명
                                     </Button>
                                   </BtnBox>
-                                ) : null}
+                                )}
                               </div>
                             </AreaBox>
                           </FlexAreaBox>
