@@ -168,7 +168,6 @@ export default function EmploymentListFilter({ studentFilter }) {
         perPage: currentLimit,
       },
       onCompleted: resData => {
-        console.log(resData)
         if (resData.searchAcademyRecord.ok) {
           const { result, totalCount } = resData.searchAcademyRecord || {}
           setResultData({ result, totalCount })
