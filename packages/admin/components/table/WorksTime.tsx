@@ -170,7 +170,9 @@ export default function WorksTime({
                       type="text"
                       placeholder=" "
                       onChange={e => handleInput(e, 0)}
-                      defaultValue={trainingTimes[0]}
+                      defaultValue={
+                        trainingTimes[0] === '' ? 0 : trainingTimes[0]
+                      }
                       className="w-full"
                       classNames={{
                         inputWrapper: 'border-default-300',
@@ -186,7 +188,9 @@ export default function WorksTime({
                       type="text"
                       placeholder=" "
                       onChange={e => handleInput(e, 1)}
-                      defaultValue={trainingTimes[1]}
+                      defaultValue={
+                        trainingTimes[1] === '' ? 0 : trainingTimes[1]
+                      }
                       className="w-full"
                       classNames={{
                         inputWrapper: 'border-default-300',
@@ -202,7 +206,9 @@ export default function WorksTime({
                       type="text"
                       placeholder=" "
                       onChange={e => handleInput(e, 2)}
-                      defaultValue={trainingTimes[2]}
+                      defaultValue={
+                        trainingTimes[2] === '' ? 0 : trainingTimes[2]
+                      }
                       className="w-full"
                       classNames={{
                         inputWrapper: 'border-default-300',
@@ -218,7 +224,9 @@ export default function WorksTime({
                       type="text"
                       placeholder=" "
                       onChange={e => handleInput(e, 3)}
-                      defaultValue={trainingTimes[3]}
+                      defaultValue={
+                        trainingTimes[3] === '' ? 0 : trainingTimes[3]
+                      }
                       className="w-full"
                       classNames={{
                         inputWrapper: 'border-default-300',
@@ -235,7 +243,7 @@ export default function WorksTime({
                       type="text"
                       placeholder=" "
                       // defaultValue={trainingTimes[4]}
-                      value={trainingTimes[4]}
+                      value={trainingTimes[4] === '' ? 0 : trainingTimes[4]}
                       className="w-full"
                       classNames={{
                         inputWrapper: 'border-default-300',
@@ -271,7 +279,9 @@ export default function WorksTime({
                       placeholder=" "
                       readOnly={true}
                       // defaultValue={trainingTimesTotal[0]}
-                      value={trainingTimesTotal[0]}
+                      value={
+                        trainingTimesTotal[0] === '' ? 0 : trainingTimesTotal[0]
+                      }
                       className="w-full"
                     />
                   </Tnum>
@@ -285,7 +295,9 @@ export default function WorksTime({
                       placeholder=" "
                       readOnly={true}
                       // defaultValue={trainingTimesTotal[1]}
-                      value={trainingTimesTotal[1]}
+                      value={
+                        trainingTimesTotal[1] === '' ? 0 : trainingTimesTotal[1]
+                      }
                       className="w-full"
                     />
                   </Tnum>
@@ -299,7 +311,9 @@ export default function WorksTime({
                       placeholder=" "
                       readOnly={true}
                       // defaultValue={trainingTimesTotal[2]}
-                      value={trainingTimesTotal[2]}
+                      value={
+                        trainingTimesTotal[2] === '' ? 0 : trainingTimesTotal[2]
+                      }
                       className="w-full"
                     />
                   </Tnum>
@@ -313,7 +327,9 @@ export default function WorksTime({
                       placeholder=" "
                       readOnly={true}
                       // defaultValue={trainingTimesTotal[3]}
-                      value={trainingTimesTotal[3]}
+                      value={
+                        trainingTimesTotal[3] === '' ? 0 : trainingTimesTotal[3]
+                      }
                       className="w-full"
                     />
                   </Tnum>
@@ -327,7 +343,9 @@ export default function WorksTime({
                       placeholder=" "
                       readOnly={true}
                       // defaultValue={trainingTimesTotal[4]}
-                      value={trainingTimesTotal[4]}
+                      value={
+                        trainingTimesTotal[4] === '' ? 0 : trainingTimesTotal[4]
+                      }
                       className="w-full"
                     />
                   </Tnum>

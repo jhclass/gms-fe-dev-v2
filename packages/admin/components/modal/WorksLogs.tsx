@@ -459,8 +459,10 @@ export default function WorksLogsModal({
             : workLogData.outingSt,
         etc: workLogData.etc === null ? [] : workLogData.etc,
       })
-      setIsChecked1(workLogData.checkList[0])
-      setIsChecked2(workLogData.checkList[1])
+      if (workLogData.checkList.length > 0) {
+        setIsChecked1(workLogData.checkList[0])
+        setIsChecked2(workLogData.checkList[1])
+      }
     }
   }, [workLogData, attendanceData])
   const formatDate = (data, time) => {
