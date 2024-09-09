@@ -48,7 +48,7 @@ export default function FormTopInfo({ noti, item }) {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
-  console.log(item)
+
   return (
     <TopInfo>
       <Noti>
