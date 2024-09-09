@@ -1,19 +1,19 @@
 import { styled } from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Textarea,
-} from '@nextui-org/react'
+import { Button, Checkbox, Input, Textarea } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import { CREATE_PORTFOLIO_MUTATION } from '@/graphql/mutations'
+import {
+  CREATE_PORTFOLIO_MUTATION,
+  SEARCH_LECTURES_MUTATION,
+} from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRef, useState } from 'react'
-import PortfolioList from '@/components/layout/PortfolioList'
 import Link from 'next/link'
+import {
+  SEARCH_PORTFLIO_STUDDENTS_QUERY,
+  SEARCH_SM_QUERY,
+} from '@/graphql/queries'
 
 const DetailForm = styled.form`
   display: flex;
@@ -39,13 +39,7 @@ const AreaBox = styled.div`
   width: 100%;
   position: relative;
 `
-const AreaSmallBox = styled.div`
-  display: flex;
-  gap: 1rem;
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`
+
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -58,7 +52,17 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
+const CheckText = styled.p`
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: normal;
+  color: ${({ theme }) => theme.colors.black};
+  display: block;
 
+  span {
+    font-weight: 700;
+  }
+`
 const FilesBox = styled.div`
   margin-top: 0.5rem;
   display: flex;
@@ -116,7 +120,6 @@ const FilesDelBtn = styled.button`
   color: ${({ theme }) => theme.colors.gray};
 `
 const UrlBox = styled.div`
-  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -173,7 +176,6 @@ export default function PortfolioForm({
   const [urlList, setUrlList] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [best, setBest] = useState(false)
-
   const fileInputRef = useRef(null)
   const {
     register,
@@ -204,7 +206,7 @@ export default function PortfolioForm({
         url: urlList,
         details: data.details,
       },
-      // refetchQueries: [SEE_REGULAREVALUATION_SET_QUERY],
+      refetchQueries: [SEARCH_SM_QUERY, SEARCH_PORTFLIO_STUDDENTS_QUERY],
       onCompleted: result => {
         userLogs(
           `${studentName} 포트폴리오 추가`,
@@ -225,7 +227,6 @@ export default function PortfolioForm({
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    clearErrors('manual')
     const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
     const files = event.target.files
 
@@ -240,13 +241,13 @@ export default function PortfolioForm({
 
       Array.from(files).forEach(file => {
         if (!validImageTypes.includes(file.type)) {
-          setError('portfolio', {
+          setError('filePath', {
             type: 'manual',
             message:
               '이미지 파일만 업로드 가능합니다. ( jpg, jpeg, png, gif, webp )',
           })
         } else if (file.size > MAX_FILE_SIZE) {
-          setError('portfolio', {
+          setError('filePath', {
             type: 'manual',
             message: '파일이 너무 큽니다. 10MB 이하만 가능합니다.',
           })
@@ -256,7 +257,7 @@ export default function PortfolioForm({
       })
 
       if (newValidFiles.length > 0) {
-        clearErrors('portfolio')
+        clearErrors('filePath')
 
         // 기존 validFiles와 새로운 validFiles를 합칩니다.
         setValidFiles(prevValidFiles => [...prevValidFiles, ...newValidFiles])
@@ -297,7 +298,6 @@ export default function PortfolioForm({
     }
   }
   const handleUrlClick = () => {
-    clearErrors('manual')
     if (isValidURL(inputValue)) {
       setUrlList([...urlList, inputValue])
       setInputValue('')
@@ -340,9 +340,10 @@ export default function PortfolioForm({
                     field.onChange(e)
                   }}
                 >
-                  <FilterLabel>
-                    땡땡땡학생을 우수학생으로 선정하시겠습니까?
-                  </FilterLabel>
+                  <CheckText>
+                    <span>{studentName}</span>학생을 우수학생으로
+                    선정하시겠습니까?
+                  </CheckText>
                 </Checkbox>
               )}
             />
@@ -380,9 +381,9 @@ export default function PortfolioForm({
                 <i className="xi-plus" />
               </FilesBtn>
             </FilesBox>
-            {errors.portfolio && (
+            {errors.filePath && (
               <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.portfolio.message)}
+                {String(errors.filePath.message)}
               </p>
             )}
           </div>
@@ -442,23 +443,18 @@ export default function PortfolioForm({
               variant="bordered"
               minRows={5}
               onChange={e => {
-                register('evaluationDetails').onChange(e)
+                register('details').onChange(e)
               }}
-              {...register('evaluationDetails', {
+              {...register('details', {
                 required: {
                   value: true,
                   message: '한줄 평가를 입력해주세요.',
                 },
               })}
             />
-            {errors.evaluationDetails && (
+            {errors.details && (
               <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.evaluationDetails.message)}
-              </p>
-            )}
-            {errors.manual && (
-              <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.manual.message)}
+                {String(errors.details.message)}
               </p>
             )}
           </AreaBox>
@@ -474,7 +470,6 @@ export default function PortfolioForm({
             </Button>
           </BtnBox>
         </FlexBox>
-        <PortfolioList />
       </DetailForm>
     </>
   )

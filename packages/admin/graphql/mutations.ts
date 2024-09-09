@@ -1716,6 +1716,12 @@ export const SEARCH_LECTURES_MUTATION = gql`
             StudentPortfolio {
               id
             }
+            EmploymentStatus {
+              completionType
+              employmentType
+              proofOfImployment
+              imploymentInsurance
+            }
             attendance {
               attendanceDate
               attendanceDateTime
@@ -1843,6 +1849,20 @@ export const SEARCH_LECTURES_FILTER_MUTATION = gql`
         }
         roomNum
         subjectId
+        subject {
+          StudentPayment {
+            id
+            lectureAssignment
+            employment
+            courseComplete
+            EmploymentStatus {
+              completionType
+              employmentType
+              proofOfImployment
+              imploymentInsurance
+            }
+          }
+        }
         lecturePeriodStart
         lecturePeriodEnd
         lectureDetails
@@ -1923,14 +1943,19 @@ export const CREATE_ATTENDANCE_MUTATION = gql`
 `
 
 export const EDIT_ATTENDANCE_MUTATION = gql`
-  mutation EditAttendance(
+  mutation Mutation(
     $editAttendanceId: [Int]!
     $attendanceState: [String]!
+    $lastModifiedTime: String!
   ) {
-    editAttendance(id: $editAttendanceId, attendanceState: $attendanceState) {
-      ok
-      message
+    editAttendance(
+      id: $editAttendanceId
+      attendanceState: $attendanceState
+      lastModifiedTime: $lastModifiedTime
+    ) {
       error
+      message
+      ok
     }
   }
 `
@@ -2035,30 +2060,6 @@ export const DELETE_MESSAGE_STORAGE_MUTATION = gql`
       error
       message
       ok
-    }
-  }
-`
-
-// 강의
-export const CALA_LECTURES_MUTATION = gql`
-  mutation Mutation($calcLecturesId: Int!) {
-    calcLectures(id: $calcLecturesId) {
-      ok
-      message
-      error
-      approvedPersonnel
-      confirmedPersonnel
-      courseDropout
-      incomplete
-      earlyEmployment
-      notEarlyEmployed
-      trainingPersonnel
-      graduates
-      employedUponCompletion
-      notEmployedUponCompletion
-      dropoutRate
-      graduationRate
-      expectedEmploymentProof
     }
   }
 `
@@ -2646,6 +2647,47 @@ export const CREATE_PORTFOLIO_MUTATION = gql`
     }
   }
 `
+export const EDIT_PORTFOLIO_MUTATION = gql`
+  mutation EditStudentPortfolio(
+    $editStudentPortfolioId: Int!
+    $lastModifiedTime: String!
+    $isBest: String
+    $filePath: [Upload]
+    $details: String
+    $url: [String]
+  ) {
+    editStudentPortfolio(
+      id: $editStudentPortfolioId
+      lastModifiedTime: $lastModifiedTime
+      isBest: $isBest
+      filePath: $filePath
+      details: $details
+      url: $url
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+export const DELETE_PORTFOLIO_MUTATION = gql`
+  mutation DeleteFileNameSp(
+    $deleteFileNameSpId: Int!
+    $fileUrl: String!
+    $folderName: String!
+  ) {
+    deleteFileNameSp(
+      id: $deleteFileNameSpId
+      fileUrl: $fileUrl
+      folderName: $folderName
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`
+
 export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
   mutation Mutation(
     $page: Int
@@ -2708,6 +2750,29 @@ export const SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION = gql`
         lectureAssignment
         subDiv
       }
+    }
+  }
+`
+export const EDIT_PERMISSIONMS_GRANTED_MUTATION = gql`
+  mutation Mutation(
+    $editPermissionsGrantedId: Int!
+    $permissionName: String!
+    $topic: String!
+    $lastModifiedTime: String!
+    $manageUserIdsToConnect: [Int]
+    $manageUserIdsToDisconnect: [Int]
+  ) {
+    editPermissionsGranted(
+      id: $editPermissionsGrantedId
+      permissionName: $permissionName
+      topic: $topic
+      lastModifiedTime: $lastModifiedTime
+      manageUserIdsToConnect: $manageUserIdsToConnect
+      manageUserIdsToDisconnect: $manageUserIdsToDisconnect
+    ) {
+      ok
+      message
+      error
     }
   }
 `

@@ -20,11 +20,10 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 8%;
-  padding: 0.5rem;
+  width: 9%;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.08}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tlong = styled.div`
   display: table-cell;
@@ -41,49 +40,72 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-export default function ConsolutItem({ lecture }) {
+export default function LectureReportItem(props) {
   return (
-    <>
-      <TableRow>
-        <ClickBox>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tlong>
-            <EllipsisBox>-</EllipsisBox>
-          </Tlong>
-          <Tlong>
-            <EllipsisBox>-</EllipsisBox>
-          </Tlong>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tnum>
-            <EllipsisBox>-</EllipsisBox>
-          </Tnum>
-          <Tlong>
-            <EllipsisBox>-</EllipsisBox>
-          </Tlong>
-          <Tlong>
-            <EllipsisBox>-</EllipsisBox>
-          </Tlong>
-        </ClickBox>
-      </TableRow>
-    </>
+    props && (
+      <>
+        <TableRow>
+          <ClickBox>
+            <Tnum>
+              <EllipsisBox>
+                {props.approvedPersonnel ? props.approvedPersonnel : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.confirmedPersonnel ? props.confirmedPersonnel : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.enrollmentRate ? `${props.enrollmentRate}%` : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.courseDropout ? props.courseDropout : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.incomplete ? props.incomplete : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.dropoutRate ? `${props.dropoutRate}%` : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tlong>
+              <EllipsisBox>
+                {props.earlyEmployment ? props.earlyEmployment : '-'}
+              </EllipsisBox>
+            </Tlong>
+            <Tlong>
+              <EllipsisBox>
+                {props.notEarlyEmployed ? props.notEarlyEmployed : '-'}
+              </EllipsisBox>
+            </Tlong>
+            <Tnum>
+              <EllipsisBox>
+                {props.graduates ? props.graduates : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.graduationRate ? `${props.graduationRate}%` : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tlong>
+              <EllipsisBox>
+                {props.expectedEmploymentProof
+                  ? props.expectedEmploymentProof
+                  : '-'}
+              </EllipsisBox>
+            </Tlong>
+          </ClickBox>
+        </TableRow>
+      </>
+    )
   )
 }

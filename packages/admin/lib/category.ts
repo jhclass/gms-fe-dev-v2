@@ -214,7 +214,7 @@ const category: Category[] = [
       },
       {
         href: '/employment',
-        name: '취업 현황',
+        name: '학적부 목록',
         exposure: true,
         isBreadcrumb: true,
         isFilter: true,
@@ -222,7 +222,7 @@ const category: Category[] = [
       },
       {
         href: '/employmentDetail',
-        name: '학적부',
+        name: '학적부 상세',
         exposure: false,
         isBreadcrumb: true,
         isFilter: false,
@@ -452,6 +452,14 @@ const category: Category[] = [
         exposure: true,
         isBreadcrumb: true,
         isFilter: true,
+        isWrite: '',
+      },
+      {
+        href: '/permissions',
+        name: '권한설정',
+        exposure: true,
+        isBreadcrumb: true,
+        isFilter: false,
         isWrite: '',
       },
     ],

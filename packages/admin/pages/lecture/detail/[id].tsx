@@ -96,6 +96,8 @@ const TimeBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
+  position: relative;
+  z-index: 11;
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -517,9 +519,6 @@ export default function LectureWrite() {
                           <SelectItem key={'신촌'} value={'신촌'}>
                             {'신촌'}
                           </SelectItem>
-                          <SelectItem key={'홍대'} value={'홍대'}>
-                            {'홍대'}
-                          </SelectItem>
                         </Select>
                       )}
                     />
@@ -665,26 +664,20 @@ export default function LectureWrite() {
                         },
                       }}
                       render={({ field }) => (
-                        <Controller
-                          control={control}
-                          name="teachersId"
-                          render={({ field, fieldState }) => (
-                            <TeacherMultiSelectID
-                              selectedKey={teacher}
-                              field={field}
-                              label={
-                                <FilterLabel>
-                                  강사명<span>*</span>{' '}
-                                  <span className="multi">(중복가능)</span>
-                                </FilterLabel>
-                              }
-                              handleChange={setTeacher}
-                              optionDefault={{
-                                mUsername: '강사명 없음',
-                                id: '강사명 없음',
-                              }}
-                            />
-                          )}
+                        <TeacherMultiSelectID
+                          selectedKey={teacher}
+                          field={field}
+                          label={
+                            <FilterLabel>
+                              강사명<span>*</span>{' '}
+                              <span className="multi">(중복가능)</span>
+                            </FilterLabel>
+                          }
+                          handleChange={setTeacher}
+                          optionDefault={{
+                            mUsername: '강사명 없음',
+                            id: '강사명 없음',
+                          }}
                         />
                       )}
                     />

@@ -588,7 +588,7 @@ export type Mutation = {
   createMasterManagerAccount: CommonResponse;
   createMessageStorage?: Maybe<CommonResponse>;
   createPaymentDetail?: Maybe<CommonResponse>;
-  createPermissionGranted: CommonResponse;
+  createPermissionsGranted: CommonResponse;
   createPreInspection: CommonResponse;
   createRegularEvaluationSet: CommonResponse;
   createReplyComment: CreateReplyCommentResult;
@@ -618,7 +618,7 @@ export type Mutation = {
   deleteManageUser?: Maybe<CommonResponse>;
   deleteMessage: MutationResponse;
   deleteMessageStorage?: Maybe<CommonResponse>;
-  deletePermissionGranted: CommonResponse;
+  deletePermissionsGranted: CommonResponse;
   deletePhoto: DeletePhotoResult;
   deletePreInspection?: Maybe<CommonResponse>;
   deleteRegularEvaluationSet: CommonResponse;
@@ -647,7 +647,7 @@ export type Mutation = {
   editLectures?: Maybe<CommonResponse>;
   editManageUser?: Maybe<CommonResponse>;
   editPaymentDetail?: Maybe<CommonResponse>;
-  editPermissionGranted: CommonResponse;
+  editPermissionsGranted: CommonResponse;
   editPhoto: EditPhotoResult;
   editPreInspection: CommonResponse;
   editProfile?: Maybe<EditProfileResult>;
@@ -952,9 +952,9 @@ export type MutationCreatePaymentDetailArgs = {
 };
 
 
-export type MutationCreatePermissionGrantedArgs = {
+export type MutationCreatePermissionsGrantedArgs = {
   allPermitted?: InputMaybe<Scalars['String']['input']>;
-  manageUserIds: Array<InputMaybe<Scalars['Int']['input']>>;
+  manageUserIds?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   permissionName: Scalars['String']['input'];
   readOnly?: InputMaybe<Scalars['String']['input']>;
   smsPermitted?: InputMaybe<Scalars['String']['input']>;
@@ -1192,7 +1192,7 @@ export type MutationDeleteMessageStorageArgs = {
 };
 
 
-export type MutationDeletePermissionGrantedArgs = {
+export type MutationDeletePermissionsGrantedArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1454,11 +1454,11 @@ export type MutationEditPaymentDetailArgs = {
 };
 
 
-export type MutationEditPermissionGrantedArgs = {
+export type MutationEditPermissionsGrantedArgs = {
   allPermitted?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
   lastModifiedTime: Scalars['String']['input'];
-  manageUserIds: Array<InputMaybe<Scalars['Int']['input']>>;
+  manageUserIds?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   permissionName: Scalars['String']['input'];
   readOnly?: InputMaybe<Scalars['String']['input']>;
   smsPermitted?: InputMaybe<Scalars['String']['input']>;
@@ -1987,7 +1987,7 @@ export type PaymentDetailResult = {
 export type PermissionsGranted = {
   __typename?: 'PermissionsGranted';
   Branch?: Maybe<Branch>;
-  ManageUser: Array<Maybe<ManageUser>>;
+  ManageUser?: Maybe<Array<Maybe<ManageUser>>>;
   allPermitted?: Maybe<Scalars['String']['output']>;
   branchId?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['String']['output'];
@@ -2066,7 +2066,7 @@ export type Query = {
   searchApiKey: ResultSearchApikey;
   searchAttendance?: Maybe<SearchAttendanceResult>;
   searchManageUser?: Maybe<SearchManageUserResult>;
-  searchPermissionGranted: ResultSearchPermissionGranted;
+  searchPermissionsGranted: ResultSearchPermissionsGranted;
   searchPhotos?: Maybe<Array<Maybe<Photo>>>;
   searchSM?: Maybe<ResultSearchSm>;
   searchSms: ResultSearchSms;
@@ -2178,7 +2178,7 @@ export type QuerySearchManageUserArgs = {
 };
 
 
-export type QuerySearchPermissionGrantedArgs = {
+export type QuerySearchPermissionsGrantedArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   manageUserId?: InputMaybe<Scalars['Int']['input']>;
   permissionName?: InputMaybe<Scalars['String']['input']>;
@@ -2460,8 +2460,8 @@ export type ResultSearchApikey = {
   ok: Scalars['Boolean']['output'];
 };
 
-export type ResultSearchPermissionGranted = {
-  __typename?: 'ResultSearchPermissionGranted';
+export type ResultSearchPermissionsGranted = {
+  __typename?: 'ResultSearchPermissionsGranted';
   data?: Maybe<Array<Maybe<PermissionsGranted>>>;
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;

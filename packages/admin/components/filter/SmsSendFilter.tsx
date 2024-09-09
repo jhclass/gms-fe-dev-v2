@@ -43,25 +43,6 @@ const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
 `
-const DatePickerBox = styled.div`
-  width: 100%;
-  .react-datepicker-wrapper {
-    display: inline;
-    width: 100%;
-  }
-  .react-datepicker__input-container {
-    display: inline;
-  }
-  .react-datepicker__close-icon {
-    height: 2.5rem;
-    top: auto;
-    bottom: 0;
-  }
-  .react-datepicker__triangle {
-    left: 1.5rem !important;
-    transform: translate(0, 0) !important;
-  }
-`
 
 export default function SmsSendFilter({
   filterSearch,

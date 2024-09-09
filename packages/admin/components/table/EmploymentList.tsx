@@ -5,6 +5,8 @@ import { styled } from 'styled-components'
 import { StudentPaymentResult } from '@/src/generated/graphql'
 import EmploymentItem from '@/components/table/EmploymentItem'
 import { SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION } from '@/graphql/mutations'
+import { useRecoilValue } from 'recoil'
+import { assignmentState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -149,6 +151,7 @@ type seeStudentPaymentQuery = {
 export default function EmploymentList() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
+  const assignment = useRecoilValue(assignmentState)
   const [searchEmploymentStudentPayment] = useMutation(
     SEARCH_EMPLOYMENT_STUDENTPAYMENT_MUTATION,
   )
@@ -157,7 +160,7 @@ export default function EmploymentList() {
   useEffect(() => {
     searchEmploymentStudentPayment({
       variables: {
-        lectureAssignment: '배정',
+        lectureAssignment: assignment.assignment,
         page: currentPage,
         perPage: currentLimit,
       },

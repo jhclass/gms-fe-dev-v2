@@ -89,6 +89,48 @@ export const MME_QUERY = gql`
     }
   }
 `
+export const SEARCH_PERMISSIONS_GRANTED_QUERY = gql`
+  query SearchPermissionsGranted(
+    $manageUserId: Int
+    $searchPermissionsGrantedId: Int
+    $permissionName: String
+    $topic: String
+  ) {
+    searchPermissionsGranted(
+      manageUserId: $manageUserId
+      id: $searchPermissionsGrantedId
+      permissionName: $permissionName
+      topic: $topic
+    ) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        id
+        permissionName
+        topic
+        ManageUser {
+          id
+          resign
+          mUsername
+          mUserId
+          mRank
+          mPhoneNum
+          mPart
+          mGrade
+        }
+        smsPermitted
+        readOnly
+        allPermitted
+        createdAt
+        updatedAt
+        branchId
+        lastModifiedTime
+      }
+    }
+  }
+`
 export const SEE_ALARMS_TOTAL_QUERY = gql`
   query SeeAlarms {
     seeAlarms {
@@ -568,6 +610,18 @@ export const SEE_LECTURES_QUERY = gql`
           subjectCode
           subDiv
           round
+          StudentPayment {
+            id
+            lectureAssignment
+            employment
+            courseComplete
+            EmploymentStatus {
+              imploymentInsurance
+              proofOfImployment
+              completionType
+              employmentType
+            }
+          }
         }
         subDiv
         sessionNum
@@ -763,20 +817,12 @@ export const SEARCH_WORKLOGS_QUERY = gql`
   }
 `
 export const SIGN_WORKLOGS_QUERY = gql`
-  query Query(
-    $signWorkLogsId: Int!
-    $gradeType: String!
-    $lastModifiedTime: String
-  ) {
-    signWorkLogs(
-      id: $signWorkLogsId
-      gradeType: $gradeType
-      lastModifiedTime: $lastModifiedTime
-    ) {
+  query SignWorkLogs($signWorkLogsId: Int!, $lastModifiedTime: String) {
+    signWorkLogs(id: $signWorkLogsId, lastModifiedTime: $lastModifiedTime) {
+      stampUrl
+      ok
       message
       error
-      ok
-      stampUrl
     }
   }
 `
@@ -846,17 +892,19 @@ export const SEARCH_SMS_QUERY = gql`
 `
 // 학적부
 export const SEARCH_SM_QUERY = gql`
-  query Query(
+  query SearchSM(
     $modelType: String!
-    $lectureId: Int
     $studentPaymentId: Int
+    $lectureId: Int
+    $subjectId: Int
     $limit: Int
     $page: Int
   ) {
     searchSM(
       modelType: $modelType
-      lectureId: $lectureId
       studentPaymentId: $studentPaymentId
+      lectureId: $lectureId
+      subjectId: $subjectId
       limit: $limit
       page: $page
     ) {
@@ -865,6 +913,21 @@ export const SEARCH_SM_QUERY = gql`
       message
       error
       data {
+        ... on Career {
+          id
+          lectureId
+          studentId
+          stName
+          careerDetails
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+          lastModifiedTime
+        }
         ... on EduInfomation {
           id
           lectureId
@@ -877,19 +940,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
-          lastModifiedByUserId
-          lastModifiedByName
-          lastModifiedTime
-        }
-        ... on Career {
-          id
-          lectureId
-          studentId
-          stName
-          careerDetails
-          subjectId
-          studentPaymentId
-          createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -906,6 +958,25 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
+          lastModifiedByUserId
+          lastModifiedByName
+          lastModifiedTime
+        }
+        ... on StudentConsultation {
+          id
+          lectureId
+          studentId
+          stName
+          typeOfConsultation
+          dateOfConsultation
+          detailsOfConsultation
+          subjectId
+          studentPaymentId
+          createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -923,6 +994,8 @@ export const SEARCH_SM_QUERY = gql`
           opinion
           subjectId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -944,6 +1017,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -968,6 +1043,8 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
@@ -984,24 +1061,48 @@ export const SEARCH_SM_QUERY = gql`
           subjectId
           studentPaymentId
           createdAt
+          updatedAt
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
         }
-        ... on StudentConsultation {
+        ... on StudentPortfolio {
           id
           lectureId
           studentId
           stName
-          typeOfConsultation
-          dateOfConsultation
-          detailsOfConsultation
-          subjectId
-          studentPaymentId
+          isBest
+          filePath
+          details
+          url
           createdAt
+          updatedAt
+          studentPaymentId
+          subjectId
+          branchId
           lastModifiedByUserId
           lastModifiedByName
           lastModifiedTime
+        }
+      }
+    }
+  }
+`
+export const SEARCH_PORTFLIO_STUDDENTS_QUERY = gql`
+  query SearchSM($modelType: String!, $lectureId: Int) {
+    searchSM(modelType: $modelType, lectureId: $lectureId) {
+      totalCount
+      ok
+      message
+      error
+      data {
+        ... on StudentPortfolio {
+          stName
+          lectureId
+          id
+          studentPaymentId
+          studentId
         }
       }
     }

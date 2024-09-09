@@ -1,8 +1,8 @@
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { useRecoilState } from 'recoil'
-import { consultPageState } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { assignmentState, consultPageState } from '@/lib/recoilAtoms'
 import {
   ManageUser,
   StudentState,
@@ -168,6 +168,7 @@ const Nolist = styled.div`
 export default function NonassignedList() {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
+  const assignment = useRecoilValue(assignmentState)
   const [searchStudentNonassigned] = useMutation(
     SEARCH_STUDENT_NONASSIGNED_MUTATION,
   )
@@ -176,7 +177,7 @@ export default function NonassignedList() {
   useEffect(() => {
     searchStudentNonassigned({
       variables: {
-        lectureAssignment: '미배정',
+        lectureAssignment: assignment.unassigned,
         page: currentPage,
         perPage: currentLimit,
       },
@@ -230,7 +231,7 @@ export default function NonassignedList() {
                   />
                 ))}
               {resultData.totalCount === 0 && (
-                <Nolist>미배정 수강생이 없습니다.</Nolist>
+                <Nolist>{assignment.unassigned} 수강생이 없습니다.</Nolist>
               )}
             </TableWrap>
           </ScrollShadow>

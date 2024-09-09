@@ -35,6 +35,7 @@ import {
   completionStatus,
 } from '@/lib/recoilAtoms'
 import Link from 'next/link'
+import WorksLogsBox from '../modal/WorksLogsBox'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -302,7 +303,7 @@ export default function Attendance({ lectureData, students }) {
     if (action.type === 'ADD_ALL') {
       selectedIds = selectedIds.filter(id => {
         const item = data.nodes.find(node => node.id === id)
-        return item && item.courseComplete !== '중도포기'
+        return item && item.courseComplete !== completion.dropout
       })
     }
 
@@ -549,6 +550,7 @@ export default function Attendance({ lectureData, students }) {
       variables: {
         editAttendanceId: attendanceId,
         attendanceState: state,
+        lastModifiedTime: new Date(),
       },
       onCompleted: resData => {
         userLogs(
@@ -870,7 +872,7 @@ export default function Attendance({ lectureData, students }) {
           />
         </PagerWrap>
         {isOpen && (
-          <WorksLogs
+          <WorksLogsBox
             isOpen={isOpen}
             onClose={onClose}
             teachers={teachers}

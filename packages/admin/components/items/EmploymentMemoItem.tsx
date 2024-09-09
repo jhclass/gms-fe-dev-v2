@@ -84,6 +84,8 @@ const BtnBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
+  position: relative;
+  z-index: 11;
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -91,6 +93,7 @@ const DatePickerBox = styled.div`
   .react-datepicker__input-container {
     display: inline;
   }
+
   .react-datepicker__close-icon {
     height: 2.5rem;
     top: auto;
@@ -99,6 +102,17 @@ const DatePickerBox = styled.div`
   .react-datepicker__triangle {
     left: 1.5rem !important;
     transform: translate(0, 0) !important;
+  }
+
+  @media (max-width: 768px) {
+    .react-datepicker {
+      display: flex;
+    }
+
+    .react-datepicker__time-container,
+    .react-datepicker__time-box {
+      width: 65px !important;
+    }
   }
 `
 

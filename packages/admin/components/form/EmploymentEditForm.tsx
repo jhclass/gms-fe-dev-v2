@@ -4,7 +4,6 @@ import { useMutation } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
 import {
   EDIT_EMPLOYMENT_MUTATION,
-  EDIT_HOPE_FOR_EMPLOYMENT_MUTATION,
   EDIT_STUDENT_EMPLOYMENT_MUTATION,
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
@@ -64,6 +63,8 @@ const BtnBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
+  position: relative;
+  z-index: 11;
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;

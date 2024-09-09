@@ -1,5 +1,8 @@
 import { styled } from 'styled-components'
 import { Textarea } from '@nextui-org/react'
+import { useRecoilValue } from 'recoil'
+import { completionStatus, employmentStatus } from '@/lib/recoilAtoms'
+import { useEffect, useState } from 'react'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -113,6 +116,55 @@ const LineBox = styled.div`
 `
 
 export default function PaymentInfo({ lectureData, students, attendance }) {
+  const completion = useRecoilValue(completionStatus)
+  const employment = useRecoilValue(employmentStatus)
+  const [isFinish, setIsFinish] = useState(false)
+  const [employmentStudent, setEmploymentStudent] = useState(null)
+  const [courseDropout, setCourseDropout] = useState(null)
+  const [incomplete, setIncomplete] = useState(null)
+  const [graduates, setGraduates] = useState(null)
+
+  useEffect(() => {
+    if (lectureData && students) {
+      const today = new Date()
+      const endDate = new Date(parseInt(lectureData.lecturePeriodEnd))
+      const studentFilter = students.filter(
+        student =>
+          student.courseComplete === completion.inTraining &&
+          student.employment !== employment.unemployed,
+      )
+
+      setEmploymentStudent(studentFilter)
+
+      setCourseDropout(
+        countFilteredStudents(
+          students,
+          student => student.courseComplete === completion.dropout,
+        ),
+      )
+      setGraduates(
+        countFilteredStudents(
+          students,
+          student => student.courseComplete === completion.completed,
+        ),
+      )
+
+      if (today > endDate) {
+        setIsFinish(true)
+        setIncomplete(
+          countFilteredStudents(
+            students,
+            student => student.courseComplete === completion.notCompleted,
+          ),
+        )
+      } else {
+        setIncomplete(0)
+      }
+
+      // setExpectedEmploymentProof()
+    }
+  }, [lectureData, students])
+
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -146,6 +198,19 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
 
   const formatUsernames = data => {
     return data.map(item => item.mUsername).join(', ')
+  }
+
+  const calculatePercentage = (part, total) => {
+    if (total === 0) {
+      return 0
+    }
+    let percentage = (part / total) * 100
+    return parseFloat(percentage.toFixed(2))
+  }
+
+  const countFilteredStudents = (students, filterCondition) => {
+    const filteredStudents = students.filter(filterCondition)
+    return filteredStudents.length
   }
 
   return (
@@ -239,44 +304,68 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
                 <div>
                   <FilterLabel>수강포기</FilterLabel>
                   <LineBox>
-                    {
-                      students.filter(
-                        student => student.courseComplete === '중도포기',
-                      ).length
-                    }
+                    {countFilteredStudents(
+                      students,
+                      student => student.courseComplete === completion.dropout,
+                    )}
                   </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>미수료</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {countFilteredStudents(
+                      students,
+                      student =>
+                        student.courseComplete === completion.notCompleted,
+                    )}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>조기취업 가입</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '조기취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'Y',
+                        )
+                      : 0}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>조기취업 미가입</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '조기취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'N',
+                        )
+                      : 0}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>훈련 인원</FilterLabel>
                   <LineBox>
-                    {
-                      students.filter(
-                        student => student.courseComplete !== '중도포기',
-                      ).length
-                    }
+                    {countFilteredStudents(
+                      students,
+                      student =>
+                        student.courseComplete === completion.inTraining,
+                    )}
                   </LineBox>
                 </div>
               </AreaBox>
@@ -284,44 +373,85 @@ export default function PaymentInfo({ lectureData, students, attendance }) {
             <FlexBox>
               <AreaBox>
                 <div>
-                  <FilterLabel>수료 인원</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <FilterLabel>수료인원</FilterLabel>
+                  <LineBox>
+                    {countFilteredStudents(
+                      students,
+                      student =>
+                        student.courseComplete === completion.completed,
+                    )}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>수료취업 가입</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '수료취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'Y',
+                        )
+                      : 0}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>수료취업 미가입</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].completionType ===
+                              '수료취업' &&
+                            student.EmploymentStatus[0].imploymentInsurance ===
+                              'N',
+                        )
+                      : 0}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>중도탈락율</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {`${calculatePercentage(
+                      courseDropout + incomplete,
+                      lectureData.confirmedNum,
+                    )}%`}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>수료율</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {`${calculatePercentage(
+                      graduates,
+                      lectureData.confirmedNum,
+                    )}%`}
+                  </LineBox>
                 </div>
               </AreaBox>
               <AreaBox>
                 <div>
                   <FilterLabel>재직증명확보예정</FilterLabel>
-                  {/* <LineBox>{studentSubjectData?.subjectCode}</LineBox> */}
-                  <LineBox>0</LineBox>
+                  <LineBox>
+                    {employmentStudent && employmentStudent.length > 0
+                      ? countFilteredStudents(
+                          employmentStudent,
+                          student =>
+                            student.EmploymentStatus[0].proofOfImployment ===
+                            'Y',
+                        )
+                      : 0}
+                  </LineBox>
                 </div>
               </AreaBox>
             </FlexBox>
