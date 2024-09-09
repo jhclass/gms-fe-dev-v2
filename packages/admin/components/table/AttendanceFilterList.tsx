@@ -15,7 +15,13 @@ import {
 } from '@table-library/react-table-library/select'
 import { useTheme as tableLibraryTheme } from '@table-library/react-table-library/theme'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Pagination, useDisclosure } from '@nextui-org/react'
+import {
+  Button,
+  Pagination,
+  Select,
+  SelectItem,
+  useDisclosure,
+} from '@nextui-org/react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import {
   CREATE_ATTENDANCE_MUTATION,
@@ -538,72 +544,104 @@ export default function Attendance({
                         {attendanceAllData.map((dayValue, dayIndex) => (
                           <Cell key={dayIndex}>
                             {item.courseComplete === completion.dropout ? (
-                              <TestSelect
-                                style={{
-                                  width: '100%',
-                                  border: 'none',
-                                  fontSize: '1rem',
-                                  padding: 0,
-                                  margin: 0,
+                              <Select
+                                size="sm"
+                                labelPlacement="outside"
+                                label={<span className="hidden">출석표</span>}
+                                placeholder={' '}
+                                className="w-full"
+                                classNames={{
+                                  value: 'text-black opacity-1 text-center',
                                 }}
-                                disabled={true}
-                                value={selectedValues[dayIndex][index]}
-                                onChange={event => {
-                                  handleSelectChange(
-                                    event.target.value,
-                                    index,
-                                    dayIndex,
-                                  )
+                                isDisabled={true}
+                                variant="bordered"
+                                selectedKeys={selectedValues[dayIndex][index]}
+                                onSelectionChange={e => {
+                                  handleSelectChange(e, index, dayIndex)
                                 }}
                               >
-                                <option disabled value="출석">
+                                <SelectItem
+                                  isReadOnly
+                                  key={'출석'}
+                                  value={'출석'}
+                                >
                                   출석
-                                </option>
-                                <option disabled value="지각">
+                                </SelectItem>
+                                <SelectItem
+                                  isReadOnly
+                                  key={'지각'}
+                                  value={'지각'}
+                                >
                                   지각
-                                </option>
-                                <option disabled value="조퇴">
+                                </SelectItem>
+                                <SelectItem
+                                  isReadOnly
+                                  key={'조퇴'}
+                                  value={'조퇴'}
+                                >
                                   조퇴
-                                </option>
-                                <option disabled value="결석">
+                                </SelectItem>
+                                <SelectItem
+                                  isReadOnly
+                                  key={'결석'}
+                                  value={'결석'}
+                                >
                                   결석
-                                </option>
-                                <option disabled value="외출">
+                                </SelectItem>
+                                <SelectItem
+                                  isReadOnly
+                                  key={'외출'}
+                                  value={'외출'}
+                                >
                                   외출
-                                </option>
-                                <option disabled value="중도탈락">
+                                </SelectItem>
+                                <SelectItem
+                                  isReadOnly
+                                  key={'중도탈락'}
+                                  value={'중도탈락'}
+                                >
                                   중도탈락
-                                </option>
-                              </TestSelect>
+                                </SelectItem>
+                              </Select>
                             ) : (
-                              <TestSelect
-                                style={{
-                                  width: '100%',
-                                  border: 'none',
-                                  fontSize: '1rem',
-                                  padding: 0,
-                                  margin: 0,
+                              <Select
+                                size="sm"
+                                labelPlacement="outside"
+                                label={<span className="hidden">출석표</span>}
+                                placeholder={' '}
+                                className="w-full"
+                                classNames={{
+                                  value: 'text-black opacity-1 text-center',
                                 }}
-                                disabled={
+                                isDisabled={
                                   dayIndex !== todayIndex &&
                                   attendanceAllData[dayIndex]?.length === 0
                                 }
-                                value={selectedValues[dayIndex][index]}
-                                onChange={event => {
-                                  handleSelectChange(
-                                    event.target.value,
-                                    index,
-                                    dayIndex,
-                                  )
+                                variant="bordered"
+                                selectedKeys={selectedValues[dayIndex][index]}
+                                onSelectionChange={e => {
+                                  handleSelectChange(e, index, dayIndex)
                                 }}
                               >
-                                <option value="-">-</option>
-                                <option value="출석">출석</option>
-                                <option value="지각">지각</option>
-                                <option value="조퇴">조퇴</option>
-                                <option value="결석">결석</option>
-                                <option value="외출">외출</option>
-                              </TestSelect>
+                                <SelectItem key={'-'} value={'-'}>
+                                  -
+                                </SelectItem>
+                                <SelectItem key={'출석'} value={'출석'}>
+                                  출석
+                                </SelectItem>
+                                <SelectItem key={'지각'} value={'지각'}>
+                                  지각
+                                </SelectItem>
+                                <SelectItem key={'조퇴'} value={'조퇴'}>
+                                  조퇴
+                                </SelectItem>
+                                <SelectItem key={'결석'} value={'결석'}>
+                                  결석
+                                </SelectItem>
+                                <SelectItem key={'외출'} value={'외출'}>
+                                  외출
+                                </SelectItem>
+                              </Select>
                             )}
                           </Cell>
                         ))}
@@ -744,7 +782,7 @@ export default function Attendance({
               size="md"
               variant="solid"
               className="w-full text-black bg-[#FEE500]"
-              // onClick={() => setIsOpen(!isOpen)}
+              onClick={() => alert('준비중입니다. SMS발송을 이용해주세요.')}
             >
               <i className="xi-kakaotalk text-[1.5rem]" />
               카카오톡발송

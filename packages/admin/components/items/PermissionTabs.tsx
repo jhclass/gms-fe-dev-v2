@@ -1,39 +1,26 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import PermissionCate from '@/components/form/PermissionCate'
-import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
+import PermissionTabItem from '@/components/items/PermissionTabItem'
 
-const PermissionBox = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1em;
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
-
-type SearchPermissionsGrantedQeury = {
-  searchPermissionsGranted: ResultSearchPermissionsGranted
-}
 
 export default function PermissionTabs() {
   const router = useRouter()
   const { typeTab } = router.query
-  const [selected, setSelected] = useState('category')
-
-  const { error, data, refetch } =
-    useSuspenseQuery<SearchPermissionsGrantedQeury>(
-      SEARCH_PERMISSIONS_GRANTED_QUERY,
-      {
-        variables: {
-          topic: '카테고리',
-        },
-      },
-    )
+  const [selected, setSelected] = useState('consult')
 
   useEffect(() => {
     if (typeTab) {
@@ -42,32 +29,85 @@ export default function PermissionTabs() {
   }, [typeTab])
 
   return (
-    data && (
-      <>
-        <Tabs
-          variant="underlined"
-          aria-label="Options"
-          color="primary"
-          classNames={{
-            tabList: 'flex-wrap',
-            tab: 'w-auto',
-          }}
-          selectedKey={selected}
-          onSelectionChange={e => setSelected(String(e))}
-        >
-          <Tab key="category" title="카테고리">
-            <PermissionBox>
-              {data.searchPermissionsGranted.data.map((permission, index) => (
-                <PermissionCate
-                  key={index}
-                  isActive={true}
-                  permission={permission}
-                />
-              ))}
-            </PermissionBox>
-          </Tab>
-        </Tabs>
-      </>
-    )
+    <>
+      <Tabs
+        variant="underlined"
+        aria-label="Options"
+        color="primary"
+        classNames={{
+          tabList: 'flex-wrap',
+          tab: 'w-auto',
+        }}
+        selectedKey={selected}
+        onSelectionChange={e => setSelected(String(e))}
+      >
+        <Tab key="consult" title="상담관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'상담관리'} />
+          </Suspense>
+        </Tab>
+        <Tab key="subjects" title="과정관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'과정관리'} />
+          </Suspense>
+        </Tab>
+        <Tab key="students" title="수강생관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'수강생관리'} />
+          </Suspense>
+        </Tab>
+        <Tab key="lecture" title="강의관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'강의관리'} />
+          </Suspense>
+        </Tab>
+        <Tab key="accounting" title="회계관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'회계관리'} />
+          </Suspense>
+        </Tab>
+        <Tab key="hr" title="인사관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'인사관리'} />
+          </Suspense>
+        </Tab>
+      </Tabs>
+    </>
   )
 }

@@ -10,18 +10,6 @@ const ConBox = styled.div`
   z-index: 0;
   position: relative;
 `
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: none;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
 
 export default function SettingPermissions() {
   return (
@@ -35,15 +23,7 @@ export default function SettingPermissions() {
           rightArea={false}
         />
         <ConBox>
-          <Suspense
-            fallback={
-              <LodingDiv>
-                <i className="xi-spinner-2" />
-              </LodingDiv>
-            }
-          >
-            <PermissionTabs />
-          </Suspense>
+          <PermissionTabs />
         </ConBox>
       </MainWrap>
     </>

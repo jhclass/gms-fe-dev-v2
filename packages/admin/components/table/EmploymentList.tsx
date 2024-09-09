@@ -50,6 +50,16 @@ const ClickBox = styled.div`
   display: flex;
   width: 100%;
 `
+const Tflag = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 1%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.01}px;
+`
 const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
@@ -64,11 +74,11 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 26%;
+  width: 25%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.26}px;
+  min-width: ${1200 * 0.25}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -186,6 +196,7 @@ export default function EmploymentList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
+                  <Tflag></Tflag>
                   <Tnum>No</Tnum>
                   <TlecturName>강의이름</TlecturName>
                   <Tnum>회차</Tnum>
