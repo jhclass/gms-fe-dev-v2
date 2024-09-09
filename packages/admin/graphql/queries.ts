@@ -1203,6 +1203,7 @@ export const SEARCH_STUDENT_RECORD_QUERY = gql`
         lastModifiedTime
         lastModifiedByUserId
         lastModifiedByName
+        createdAt
         supportType
         subDiv
         student {
@@ -1230,6 +1231,7 @@ export const SEARCH_STUDENT_RECORD_QUERY = gql`
             sessionNum
             roomNum
             subDiv
+            createdAt
             temporaryName
             subject {
               subjectCode
