@@ -1943,14 +1943,19 @@ export const CREATE_ATTENDANCE_MUTATION = gql`
 `
 
 export const EDIT_ATTENDANCE_MUTATION = gql`
-  mutation EditAttendance(
+  mutation Mutation(
     $editAttendanceId: [Int]!
     $attendanceState: [String]!
+    $lastModifiedTime: String!
   ) {
-    editAttendance(id: $editAttendanceId, attendanceState: $attendanceState) {
-      ok
-      message
+    editAttendance(
+      id: $editAttendanceId
+      attendanceState: $attendanceState
+      lastModifiedTime: $lastModifiedTime
+    ) {
       error
+      message
+      ok
     }
   }
 `

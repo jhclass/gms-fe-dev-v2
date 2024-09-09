@@ -1,30 +1,19 @@
 import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import { Suspense, useEffect, useState } from 'react'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PermissionCate from '@/components/form/PermissionCate'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: none;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-const NotiText = styled.p`
-  text-align: center;
-  font-size: 0.875rem;
+const PermissionBox = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1em;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 `
 
 type SearchPermissionsGrantedQeury = {
@@ -67,7 +56,7 @@ export default function PermissionTabs() {
           onSelectionChange={e => setSelected(String(e))}
         >
           <Tab key="category" title="카테고리">
-            <div className="flex flex-wrap w-full gap-[1rem]">
+            <PermissionBox>
               {data.searchPermissionsGranted.data.map((permission, index) => (
                 <PermissionCate
                   key={index}
@@ -75,7 +64,7 @@ export default function PermissionTabs() {
                   permission={permission}
                 />
               ))}
-            </div>
+            </PermissionBox>
           </Tab>
         </Tabs>
       </>

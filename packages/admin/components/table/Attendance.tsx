@@ -550,6 +550,7 @@ export default function Attendance({ lectureData, students }) {
       variables: {
         editAttendanceId: attendanceId,
         attendanceState: state,
+        lastModifiedTime: new Date(),
       },
       onCompleted: resData => {
         userLogs(

@@ -817,16 +817,8 @@ export const SEARCH_WORKLOGS_QUERY = gql`
   }
 `
 export const SIGN_WORKLOGS_QUERY = gql`
-  query Query(
-    $signWorkLogsId: Int!
-    $gradeType: String!
-    $lastModifiedTime: String
-  ) {
-    signWorkLogs(
-      id: $signWorkLogsId
-      gradeType: $gradeType
-      lastModifiedTime: $lastModifiedTime
-    ) {
+  query SignWorkLogs($signWorkLogsId: Int!, $lastModifiedTime: String) {
+    signWorkLogs(id: $signWorkLogsId, lastModifiedTime: $lastModifiedTime) {
       stampUrl
       ok
       message

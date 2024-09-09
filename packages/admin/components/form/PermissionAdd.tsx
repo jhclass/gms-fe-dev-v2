@@ -29,7 +29,7 @@ const LodingDiv = styled.div`
 
 const FlexBox = styled.div`
   display: flex;
-  width: 50%;
+  flex: 1;
   gap: 0.5rem;
 
   @media (max-width: 768px) {
@@ -41,7 +41,7 @@ const FlexBox = styled.div`
 const ItemBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
 
   @media (max-width: 768px) {
@@ -193,12 +193,7 @@ export default function PermissionAdd({ permission }) {
           )}
         </InputBox>
         <FlexBox>
-          <Button
-            type="submit"
-            color="primary"
-            size="md"
-            className="w-full lg:w-[50%]"
-          >
+          <Button type="submit" color="primary" size="md" className="w-full">
             추가
           </Button>
         </FlexBox>

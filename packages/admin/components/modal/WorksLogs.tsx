@@ -496,7 +496,6 @@ export default function WorksLogsModal({
       const { data } = await signWorkLog({
         variables: {
           signWorkLogsId: workLogData.id,
-          gradeType: type,
           lastModifiedTime: new Date(),
         },
       })
@@ -504,7 +503,7 @@ export default function WorksLogsModal({
         const stampUrl = data.signWorkLogs.stampUrl
         if (type === '강사') {
           setSignOne(stampUrl)
-        } else if (type === '팀장') {
+        } else if (type === '담당자') {
           setSignTwo(stampUrl)
         } else {
           setSignThree(stampUrl)
@@ -779,19 +778,19 @@ export default function WorksLogsModal({
                             </AreaBox>
                             <AreaBox>
                               <div>
-                                <FilterLabel>교무팀</FilterLabel>
+                                <FilterLabel>담당자</FilterLabel>
                                 <StempBox>
                                   {sign &&
                                   (signTwo || workLogData?.paymentTwo) ? (
                                     <img
                                       src={signTwo || workLogData?.paymentTwo}
-                                      alt="강사 사인"
+                                      alt="담당자 사인"
                                     />
                                   ) : (
                                     workLogData?.paymentTwo && (
                                       <img
                                         src={workLogData?.paymentTwo}
-                                        alt="강사 사인"
+                                        alt="담당자 사인"
                                       />
                                     )
                                   )}
@@ -804,7 +803,7 @@ export default function WorksLogsModal({
                                       size="sm"
                                       color="primary"
                                       className="bg-accent"
-                                      onClick={() => clickSign('팀장')}
+                                      onClick={() => clickSign('담당자')}
                                     >
                                       서명
                                     </Button>
@@ -822,13 +821,13 @@ export default function WorksLogsModal({
                                       src={
                                         signThree || workLogData?.paymentThree
                                       }
-                                      alt="강사 사인"
+                                      alt="관리자 사인"
                                     />
                                   ) : (
                                     workLogData?.paymentThree && (
                                       <img
                                         src={workLogData?.paymentThree}
-                                        alt="강사 사인"
+                                        alt="관리자 사인"
                                       />
                                     )
                                   )}
@@ -840,7 +839,7 @@ export default function WorksLogsModal({
                                       size="sm"
                                       color="primary"
                                       className="bg-accent"
-                                      onClick={() => clickSign('원장')}
+                                      onClick={() => clickSign('관리자')}
                                     >
                                       서명
                                     </Button>
