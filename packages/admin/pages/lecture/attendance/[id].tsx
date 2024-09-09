@@ -211,8 +211,7 @@ export default function StudentsWrite() {
                     {sortStudents
                       .filter(
                         student =>
-                          student.courseComplete !== completion.dropout &&
-                          student.subDiv === '국가기간',
+                          student.courseComplete !== completion.dropout,
                       )
                       .map((item, index) => (
                         <Link
