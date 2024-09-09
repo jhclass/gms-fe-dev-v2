@@ -67,6 +67,16 @@ const ClickBox = styled.div`
   width: 100%;
   align-items: center;
 `
+const Tflag = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 1%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.01}px;
+`
 const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
@@ -101,11 +111,11 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 22%;
+  width: 21%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.22}px;
+  min-width: ${1200 * 0.21}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -220,6 +230,7 @@ export default function LectureList() {
             <Theader>
               <TheaderBox>
                 <ClickBox>
+                  <Tflag></Tflag>
                   <Tnum>No</Tnum>
                   <Troom>강의실</Troom>
                   <TsubDiv>수강구분</TsubDiv>

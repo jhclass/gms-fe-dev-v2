@@ -163,9 +163,9 @@ const isDisplayFlag = (date: string, payment: number): string => {
   const differenceInDays = Math.floor(
     (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
   )
-  if (differenceInDays >= 0 && differenceInDays < 3) {
+  if (differenceInDays === 0) {
     return theme.colors.primary
-  } else if (differenceInDays >= 3 && payment === 0) {
+  } else if (differenceInDays >= 0 && payment === 0) {
     return theme.colors.accent
   } else {
     return 'transparent'

@@ -235,7 +235,6 @@ const UserId = styled.p`
   margin-bottom: 0.1rem;
   font-weight: 600;
 `
-
 const UserName = styled.p`
   font-size: 0.75rem;
   line-height: 1rem;
@@ -279,16 +278,6 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
     height: 100%;
     padding: 0.4rem 1rem;
   }
-`
-const LodingDiv = styled.div`
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0.3rem;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `
 
 export default function Header() {

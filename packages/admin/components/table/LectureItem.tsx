@@ -2,10 +2,11 @@ import { styled } from 'styled-components'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import { Button } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LectureReportList from '@/components/table/LectureReportList'
 import { useRouter } from 'next/router'
 import useMmeQuery from '@/utils/mMe'
+import { animate } from 'framer-motion'
 
 const TableItem = styled.div`
   position: relative;
@@ -49,6 +50,16 @@ const ClickBox = styled.div`
     align-items: center;
   }
 `
+const Tflag = styled.div`
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  width: 1%;
+  padding: 1rem;
+  font-size: inherit;
+  color: inherit;
+  min-width: ${1200 * 0.01}px;
+`
 const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
@@ -83,11 +94,11 @@ const TlecturName = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 22%;
+  width: 21%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.22}px;
+  min-width: ${1200 * 0.21}px;
 `
 const Tperiod = styled.div`
   display: table-cell;
@@ -174,12 +185,19 @@ export default function ConsolutItem(props) {
   const lecture = props.tableData
   const [students, setStudents] = useState(null)
   const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
+  const arrowRef = useRef(null)
 
   useEffect(() => {
     if (lecture) {
       setStudents(lecture.subject.StudentPayment)
     }
   }, [lecture])
+
+  useEffect(() => {
+    if (arrowRef.current) {
+      animate(arrowRef.current, { rotate: isOpen ? 180 : 0 }, { duration: 0.2 })
+    }
+  }, [isOpen])
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
@@ -214,6 +232,9 @@ export default function ConsolutItem(props) {
         <TableRow>
           <ClickBox onClick={() => setIsOpen(!isOpen)}>
             <div>
+              <Tflag>
+                <i ref={arrowRef} className="text-zinc-500 xi-angle-down-min" />
+              </Tflag>
               <Tnum>
                 <EllipsisBox>
                   {(props.currentPage - 1) * conLimit + (conIndex + 1)}
