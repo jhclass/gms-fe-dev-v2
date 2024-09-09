@@ -18,8 +18,6 @@ registerLocale('ko', ko)
 const _ = require('lodash')
 
 const DatePickerBox = styled.div`
-  position: relative;
-  z-index: 11;
   .react-datepicker {
     width: 100%;
   }

@@ -227,6 +227,7 @@ export default function AbsentList() {
                       orientation="horizontal"
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
+                      classNames={{ wrapper: 'z-0' }}
                       defaultValue={'훈련교사'}
                     >
                       <Radio key={'훈련교사'} value={'훈련교사'}>
@@ -318,6 +319,7 @@ export default function AbsentList() {
                       orientation="horizontal"
                       size={'sm'}
                       className="gap-[0.5rem] items-center"
+                      classNames={{ wrapper: 'z-0' }}
                       defaultValue={'교무팀장'}
                     >
                       <Radio key={'훈련교사'} value={'훈련교사'}>

@@ -13,10 +13,10 @@ export default function StudentsLayout({ children }) {
   if (isCheckingLogin) {
     return null
   }
-  if (mGrade === grade.dev) {
-    return <main>{children}</main>
-  } else {
-    return <MainWrap>페이지 준비중입니다.</MainWrap>
-  }
-  // return <main>{children}</main>
+  // if (mGrade === grade.dev) {
+  //   return <main>{children}</main>
+  // } else {
+  //   return <MainWrap>페이지 준비중입니다.</MainWrap>
+  // }
+  return <main>{children}</main>
 }

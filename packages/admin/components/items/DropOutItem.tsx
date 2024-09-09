@@ -100,6 +100,7 @@ export default function EmploymentMemoItem({ item }) {
             label={<FilterLabel>중도탈락 구분</FilterLabel>}
             orientation="horizontal"
             className="gap-[0.65rem]"
+            classNames={{ wrapper: 'z-0' }}
             value={dropOutType}
             isReadOnly={true}
           >

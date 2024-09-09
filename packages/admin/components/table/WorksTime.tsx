@@ -77,34 +77,57 @@ export default function WorksTime({
   setValue,
   trainingTimes,
   setTrainingTimes,
-  setError,
-  clearErrors,
+  trainingTimesTotal,
+  setTrainingTimesTotal,
 }) {
-  const periods = ['일계', '누계']
-  const keys = ['trainingTimeOneday', 'trainingTimeTotal']
-  const handleInput = (e, key, index) => {
+  const handleInput = (e, index) => {
+    const value =
+      e.target.value !== '' && !isNaN(e.target.value)
+        ? parseInt(e.target.value)
+        : ''
+
     setTrainingTimes(prevState => {
-      const newTrainingTimes = {
-        ...prevState,
-        [key]: [...prevState[key]],
-      }
-      const value =
-        e.target.value !== '' && !isNaN(e.target.value)
-          ? parseInt(e.target.value)
-          : ''
+      const newTrainingTimes = Array.isArray(prevState) ? [...prevState] : []
+
       if (value !== '') {
-        newTrainingTimes[key][index] = parseInt(e.target.value)
-        clearErrors(key)
+        newTrainingTimes[index] = value
       } else {
-        setError(key, {
-          type: 'manual',
-          message: '숫자를 입력해주세요.',
-        })
+        newTrainingTimes[index] = 0
       }
-      setValue(key, newTrainingTimes[key], { shouldDirty: true })
+
+      newTrainingTimes[4] = newTrainingTimes
+        .slice(0, 4)
+        .reduce((sum, num) => sum + (num || 0), 0)
+
+      setValue('trainingTimeOneday', newTrainingTimes, {
+        shouldDirty: true,
+      })
+
       return newTrainingTimes
     })
+
+    setTrainingTimesTotal(trainingTimesTotal => {
+      const newTotal = Array.isArray(trainingTimesTotal)
+        ? [...trainingTimesTotal]
+        : []
+
+      if (value !== '') {
+        newTotal[index] = value
+      } else {
+        newTotal[index] = 0
+      }
+
+      newTotal[4] = newTotal
+        .slice(0, 4)
+        .reduce((sum, num) => sum + (num || 0), 0)
+
+      setValue('trainingTimeTotal', newTotal, {
+        shouldDirty: true,
+      })
+      return newTotal
+    })
   }
+
   return (
     <>
       <TableArea>
@@ -122,116 +145,195 @@ export default function WorksTime({
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            {keys.map((item, index) => (
-              <TableItem key={index}>
-                <TableRow>
-                  <ClickBox>
-                    <Tnum>
-                      <Input
-                        isReadOnly={true}
-                        labelPlacement="outside"
-                        variant="flat"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        value={periods[index]}
-                        className="w-full"
-                      />
-                    </Tnum>
-                    <Tnum>
-                      <Input
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        placeholder=" "
-                        onChange={e => handleInput(e, item, 0)}
-                        defaultValue={trainingTimes[item][0]}
-                        className="w-full"
-                        classNames={{
-                          inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
-                          }  `,
-                        }}
-                      />
-                    </Tnum>
-                    <Tnum>
-                      <Input
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        placeholder=" "
-                        onChange={e => handleInput(e, item, 1)}
-                        defaultValue={trainingTimes[item][1]}
-                        className="w-full"
-                        classNames={{
-                          inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
-                          }  `,
-                        }}
-                      />
-                    </Tnum>
-                    <Tnum>
-                      <Input
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        placeholder=" "
-                        onChange={e => handleInput(e, item, 2)}
-                        defaultValue={trainingTimes[item][2]}
-                        className="w-full"
-                        classNames={{
-                          inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
-                          }  `,
-                        }}
-                      />
-                    </Tnum>
-                    <Tnum>
-                      <Input
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        placeholder=" "
-                        onChange={e => handleInput(e, item, 3)}
-                        defaultValue={trainingTimes[item][3]}
-                        className="w-full"
-                        classNames={{
-                          inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
-                          }  `,
-                        }}
-                      />
-                    </Tnum>
-                    <Tnum>
-                      <Input
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm"
-                        type="text"
-                        placeholder=" "
-                        onChange={e => handleInput(e, item, 4)}
-                        defaultValue={trainingTimes[item][4]}
-                        className="w-full"
-                        classNames={{
-                          inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
-                          }  `,
-                        }}
-                      />
-                    </Tnum>
-                  </ClickBox>
-                </TableRow>
-              </TableItem>
-            ))}
+
+            <TableItem>
+              <TableRow>
+                <ClickBox>
+                  <Tnum>
+                    <Input
+                      isReadOnly={true}
+                      labelPlacement="outside"
+                      variant="flat"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      value={'일계'}
+                      className="w-full"
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      onChange={e => handleInput(e, 0)}
+                      defaultValue={trainingTimes[0]}
+                      className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-default-300',
+                      }}
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      onChange={e => handleInput(e, 1)}
+                      defaultValue={trainingTimes[1]}
+                      className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-default-300',
+                      }}
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      onChange={e => handleInput(e, 2)}
+                      defaultValue={trainingTimes[2]}
+                      className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-default-300',
+                      }}
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      onChange={e => handleInput(e, 3)}
+                      defaultValue={trainingTimes[3]}
+                      className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-default-300',
+                      }}
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      isReadOnly={true}
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      // defaultValue={trainingTimes[4]}
+                      value={trainingTimes[4]}
+                      className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-default-300',
+                      }}
+                    />
+                  </Tnum>
+                </ClickBox>
+              </TableRow>
+            </TableItem>
+
+            <TableItem>
+              <TableRow>
+                <ClickBox>
+                  <Tnum>
+                    <Input
+                      isReadOnly={true}
+                      labelPlacement="outside"
+                      variant="flat"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      value={'누계'}
+                      className="w-full"
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      readOnly={true}
+                      // defaultValue={trainingTimesTotal[0]}
+                      value={trainingTimesTotal[0]}
+                      className="w-full"
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      readOnly={true}
+                      // defaultValue={trainingTimesTotal[1]}
+                      value={trainingTimesTotal[1]}
+                      className="w-full"
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      readOnly={true}
+                      // defaultValue={trainingTimesTotal[2]}
+                      value={trainingTimesTotal[2]}
+                      className="w-full"
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      readOnly={true}
+                      // defaultValue={trainingTimesTotal[3]}
+                      value={trainingTimesTotal[3]}
+                      className="w-full"
+                    />
+                  </Tnum>
+                  <Tnum>
+                    <Input
+                      labelPlacement="outside"
+                      variant="bordered"
+                      radius="sm"
+                      size="sm"
+                      type="text"
+                      placeholder=" "
+                      readOnly={true}
+                      // defaultValue={trainingTimesTotal[4]}
+                      value={trainingTimesTotal[4]}
+                      className="w-full"
+                    />
+                  </Tnum>
+                </ClickBox>
+              </TableRow>
+            </TableItem>
           </TableWrap>
         </ScrollShadow>
       </TableArea>

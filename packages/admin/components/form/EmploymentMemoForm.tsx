@@ -66,8 +66,7 @@ const BtnBox = styled.div`
 `
 const DatePickerBox = styled.div`
   width: 100%;
-  position: relative;
-  z-index: 11;
+
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -175,6 +174,7 @@ export default function EmploymentMemoForm({
                     }
                     orientation="horizontal"
                     className="gap-[0.65rem]"
+                    classNames={{ wrapper: 'z-0' }}
                     value={memoType}
                     onValueChange={value => {
                       field.onChange(value)

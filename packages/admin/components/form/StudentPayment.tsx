@@ -123,8 +123,7 @@ const FlexCon = styled.div`
 `
 const DatePickerBox = styled.div`
   width: 100%;
-  position: relative;
-  z-index: 11;
+
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -721,6 +720,7 @@ export default function StudentPaymentForm({
                             label={<FilterLabel>교육상황보고여부</FilterLabel>}
                             orientation="horizontal"
                             className="gap-[0.65rem]"
+                            classNames={{ wrapper: 'z-0' }}
                             defaultValue={
                               studentPaymentData?.situationReport === null
                                 ? '비동의'

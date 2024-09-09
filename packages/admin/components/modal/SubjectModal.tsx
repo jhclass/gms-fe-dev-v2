@@ -283,7 +283,7 @@ export default function SubjectModal({
                       value={String(subjectSelected) || ''}
                       onValueChange={handleSbjChange}
                       classNames={{
-                        wrapper: 'gap-0',
+                        wrapper: 'gap-0 z-0',
                       }}
                     >
                       <Theader>
