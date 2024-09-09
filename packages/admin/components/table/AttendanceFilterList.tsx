@@ -16,7 +16,6 @@ import {
 import { useTheme as tableLibraryTheme } from '@table-library/react-table-library/theme'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Pagination, useDisclosure } from '@nextui-org/react'
-import WorksLogs from '@/components/modal/WorksLogs'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import {
   CREATE_ATTENDANCE_MUTATION,
@@ -28,6 +27,7 @@ import { useRouter } from 'next/router'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
+import WorksLogsBox from '@/components/modal/WorksLogsBox'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -773,7 +773,7 @@ export default function Attendance({
           />
         </PagerWrap>
         {isOpen && (
-          <WorksLogs
+          <WorksLogsBox
             isOpen={isOpen}
             onClose={onClose}
             teachers={teachers}
