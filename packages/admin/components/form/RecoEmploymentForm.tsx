@@ -78,8 +78,6 @@ const BtnBox = styled.div`
 `
 const DatePickerBox = styled.div`
   width: 100%;
-  position: relative;
-  z-index: 11;
 
   .react-datepicker-wrapper {
     display: inline;
@@ -480,6 +478,7 @@ export default function RecoEmploymentForm({
                     }
                     orientation="horizontal"
                     className="gap-[0.65rem]"
+                    classNames={{ wrapper: 'z-0' }}
                     value={isEmployment}
                     onValueChange={value => {
                       field.onChange(value)
@@ -523,6 +522,7 @@ export default function RecoEmploymentForm({
                     }
                     orientation="horizontal"
                     className="gap-[0.65rem]"
+                    classNames={{ wrapper: 'z-0' }}
                     value={isCertificate}
                     onValueChange={value => {
                       field.onChange(value)

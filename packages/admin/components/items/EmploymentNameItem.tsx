@@ -156,6 +156,7 @@ export default function EmploymentNameItem({ item }) {
               label={<FilterLabel>구분</FilterLabel>}
               orientation="horizontal"
               className="gap-[0.65rem]"
+              classNames={{ wrapper: 'z-0' }}
               value={employmentType}
               isReadOnly={true}
             >
@@ -260,6 +261,7 @@ export default function EmploymentNameItem({ item }) {
               label={<FilterLabel>고용보험</FilterLabel>}
               orientation="horizontal"
               className="gap-[0.65rem]"
+              classNames={{ wrapper: 'z-0' }}
               value={imploymentInsurance}
               isReadOnly={true}
             >
@@ -276,6 +278,7 @@ export default function EmploymentNameItem({ item }) {
               label={<FilterLabel>재직증명</FilterLabel>}
               orientation="horizontal"
               className="gap-[0.65rem]"
+              classNames={{ wrapper: 'z-0' }}
               value={proofOfImployment}
               isReadOnly={true}
             >
@@ -292,6 +295,7 @@ export default function EmploymentNameItem({ item }) {
               label={<FilterLabel>관련분야</FilterLabel>}
               orientation="horizontal"
               className="gap-[0.65rem]"
+              classNames={{ wrapper: 'z-0' }}
               value={relatedFields}
               isReadOnly={true}
             >
@@ -311,6 +315,7 @@ export default function EmploymentNameItem({ item }) {
               label={<FilterLabel>취업형태</FilterLabel>}
               orientation="horizontal"
               className="gap-[0.65rem]"
+              classNames={{ wrapper: 'z-0' }}
               value={completionType}
               isReadOnly={true}
             >

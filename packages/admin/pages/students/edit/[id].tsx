@@ -85,8 +85,7 @@ const AreaSmallBox = styled.div`
 `
 const DatePickerBox = styled.div`
   width: 100%;
-  position: relative;
-  z-index: 11;
+
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -488,6 +487,7 @@ export default function StudentsEditInfo() {
                               }
                               orientation="horizontal"
                               className="gap-[0.65rem]"
+                              classNames={{ wrapper: 'z-0' }}
                               defaultValue={studentData?.smsAgreement}
                               onValueChange={value => {
                                 field.onChange(value)

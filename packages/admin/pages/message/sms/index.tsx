@@ -411,6 +411,7 @@ export default function message() {
                   onValueChange={setSaveType}
                   orientation="horizontal"
                   className="gap-[0.65rem]"
+                  classNames={{ wrapper: 'z-0' }}
                 >
                   <Radio key={'개인'} value={'개인'}>
                     <FilterLabel>개인</FilterLabel>
@@ -528,6 +529,7 @@ export default function message() {
                   onValueChange={setSendType}
                   orientation="horizontal"
                   className="gap-[0.65rem]"
+                  classNames={{ wrapper: 'z-0' }}
                 >
                   <Radio key={'즉시전송'} value={'즉시전송'}>
                     <FilterLabel>즉시전송</FilterLabel>

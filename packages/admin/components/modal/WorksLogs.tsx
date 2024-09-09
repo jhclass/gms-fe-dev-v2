@@ -286,6 +286,7 @@ export default function WorksLogsModal({
   const [signThree, setSignThree] = useState(null)
   const [trainingData, setTrainingData] = useState(null)
   const [trainingTimes, setTrainingTimes] = useState(null)
+  const [trainingTimesTotal, setTrainingTimesTotal] = useState(null)
   const [attendanceState, setAttendanceState] = useState(null)
   const [isChecked1, setIsChecked1] = useState('N')
   const [isChecked2, setIsChecked2] = useState('N')
@@ -429,16 +430,16 @@ export default function WorksLogsModal({
             ? ['8교시', mUsername, '', '', '']
             : workLogData.trainingInfoEight,
       })
-      setTrainingTimes({
-        trainingTimeOneday:
-          workLogData.trainingTimeOneday.length === 0
-            ? ['', '', '', '', '']
-            : workLogData.trainingTimeOneday,
-        trainingTimeTotal:
-          workLogData.trainingTimeTotal.length === 0
-            ? ['', '', '', '', '']
-            : workLogData.trainingTimeTotal,
-      })
+      setTrainingTimes(
+        workLogData.trainingTimeOneday.length === 0
+          ? ['', '', '', '', '']
+          : workLogData.trainingTimeOneday,
+      )
+      setTrainingTimesTotal(
+        workLogData.trainingTimeTotal.length === 0
+          ? ['', '', '', '', '']
+          : workLogData.trainingTimeTotal,
+      )
       setAttendanceState({
         absentSt:
           workLogData.absentSt === null
@@ -613,7 +614,12 @@ export default function WorksLogsModal({
                   alert(`${workLogeDate} 일지가 등록되었습니다.`)
                 }
                 setSign(false)
-                onClose()
+                handleClose()
+                window.localStorage.setItem(
+                  'scrollPosition',
+                  window.scrollY.toString(),
+                )
+                window.location.reload()
               } else {
                 console.log(result.editWorkLogs.message)
               }
@@ -943,8 +949,8 @@ export default function WorksLogsModal({
                                 setValue={setValue}
                                 trainingTimes={trainingTimes}
                                 setTrainingTimes={setTrainingTimes}
-                                setError={setError}
-                                clearErrors={clearErrors}
+                                trainingTimesTotal={trainingTimesTotal}
+                                setTrainingTimesTotal={setTrainingTimesTotal}
                               />
                               {errors.trainingTimeTotal && (
                                 <p className="px-2 pt-2 text-xs text-red">
@@ -994,6 +1000,7 @@ export default function WorksLogsModal({
                                   }}
                                   classNames={{
                                     base: 'pl-[1rem]',
+                                    wrapper: 'z-0',
                                   }}
                                 >
                                   <Radio key={'Y'} value={'Y'}>
@@ -1066,6 +1073,7 @@ export default function WorksLogsModal({
                                   }}
                                   classNames={{
                                     base: 'pl-[1rem]',
+                                    wrapper: 'z-0',
                                   }}
                                 >
                                   <Radio key={'Y'} value={'Y'}>

@@ -77,8 +77,7 @@ const BtnBox = styled.div`
 
 const DatePickerBox = styled.div`
   width: 100%;
-  position: relative;
-  z-index: 11;
+
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -190,6 +189,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
+                      classNames={{ wrapper: 'z-0' }}
                       defaultValue={'취업'}
                       value={employmentType}
                       onValueChange={value => {
@@ -468,6 +468,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
+                      classNames={{ wrapper: 'z-0' }}
                       value={imploymentInsurance}
                       onValueChange={value => {
                         field.onChange(value)
@@ -509,6 +510,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
+                      classNames={{ wrapper: 'z-0' }}
                       value={proofOfImployment}
                       onValueChange={value => {
                         field.onChange(value)
@@ -550,6 +552,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
+                      classNames={{ wrapper: 'z-0' }}
                       value={relatedFields}
                       onValueChange={value => {
                         field.onChange(value)
@@ -594,6 +597,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       }
                       orientation="horizontal"
                       className="gap-1"
+                      classNames={{ wrapper: 'z-0' }}
                       value={completionType}
                       onValueChange={value => {
                         field.onChange(value)

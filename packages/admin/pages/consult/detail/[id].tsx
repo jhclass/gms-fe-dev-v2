@@ -107,8 +107,7 @@ const AreaBox = styled.div`
 `
 const DatePickerBox = styled.div`
   width: 100%;
-  position: relative;
-  z-index: 11;
+
   .react-datepicker-wrapper {
     display: inline;
     width: 100%;
@@ -872,6 +871,7 @@ export default function ConsultDetail() {
                         label={<FilterLabel>진행상태</FilterLabel>}
                         orientation="horizontal"
                         className="gap-1"
+                        classNames={{ wrapper: 'z-0' }}
                         defaultValue={String(studentState?.progress)}
                         onValueChange={value => {
                           field.onChange(parseInt(value))

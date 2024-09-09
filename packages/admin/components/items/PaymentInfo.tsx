@@ -206,6 +206,7 @@ export default function PaymentInfo({
                 }
                 orientation="horizontal"
                 className="gap-[0.65rem]"
+                classNames={{ wrapper: 'z-0' }}
               >
                 <Radio key={'동의'} value={'동의'}>
                   동의
