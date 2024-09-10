@@ -27,7 +27,7 @@ import {
 } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import Layout from '@/pages/subjects/layout'
+import Layout from '@/pages/lecture/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
@@ -170,7 +170,7 @@ const AddLink = styled.p`
   z-index: 5;
 `
 
-export default function LectureWrite() {
+export default function LectureDetail() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const grade = useRecoilValue(gradeState)
@@ -1361,4 +1361,4 @@ export default function LectureWrite() {
     )
   )
 }
-LectureWrite.getLayout = page => <Layout>{page}</Layout>
+LectureDetail.getLayout = page => <Layout>{page}</Layout>

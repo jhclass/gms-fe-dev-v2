@@ -5,7 +5,7 @@ import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Button, Chip, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import Layout from '@/pages/students/layout'
+import Layout from '@/pages/lecture/layout'
 import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
 import LectureInfo from '@/components/items/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
@@ -107,7 +107,7 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-export default function StudentsWrite() {
+export default function AttendancePage() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
@@ -340,4 +340,4 @@ export default function StudentsWrite() {
     </>
   )
 }
-StudentsWrite.getLayout = page => <Layout>{page}</Layout>
+AttendancePage.getLayout = page => <Layout>{page}</Layout>
