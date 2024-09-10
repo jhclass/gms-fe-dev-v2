@@ -111,7 +111,7 @@ const DimBtn = styled.button`
   }
 `
 
-export default function Header() {
+export default function Nav() {
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [navScrollPosition, setNavScrollPosition] = useRecoilState(
     navScrollPositionState,

@@ -11,6 +11,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { Tooltip, useDisclosure } from '@nextui-org/react'
 import RequestMessage from '@/components/modal/RequestMessage'
 import HeaderNoti from '@/components/common/HeaderNoti'
+import { LogUserOut } from '@/lib/apolloClient'
 
 const HeaderSec = styled(motion.header)<{
   $navOpen: boolean
@@ -355,16 +356,9 @@ export default function Header() {
     }
   }
 
-  const LogUserOut = () => {
+  const LogUserOutClick = () => {
     userLogs(`로그아웃`)
-    localStorage.removeItem('token')
-    localStorage.removeItem('refreshToken')
-    sessionStorage.removeItem('newStudent')
-    sessionStorage.removeItem('newStudentState')
-    sessionStorage.removeItem('newConsult')
-    sessionStorage.removeItem('todayStudentTotal')
-    sessionStorage.removeItem('newAccounting')
-    sessionStorage.removeItem('today')
+    LogUserOut()
     router.push('/login')
   }
 
@@ -495,7 +489,7 @@ export default function Header() {
                   </button>
                 </li>
                 <li>
-                  <button onClick={LogUserOut}>로그아웃</button>
+                  <button onClick={LogUserOutClick}>로그아웃</button>
                 </li>
               </ul>
             </DropUser>

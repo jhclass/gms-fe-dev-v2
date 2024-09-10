@@ -1,4 +1,4 @@
-import Layout from '@/components/wrappers/MainWrap'
+import MainWrap from '@/components/wrappers/MainWrap'
 import styled from 'styled-components'
 import NewConsultMonthNum from '@/components/dashboard/NewConsultMonthNum'
 import NewConsultNum from '@/components/dashboard/NewConsultNum'
@@ -13,6 +13,11 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
+import useMmeQuery from '@/utils/mMe'
+import { useRouter } from 'next/router'
+import Layout from './layout'
 
 const HomeArea = styled.div`
   max-width: 1400px;
@@ -109,7 +114,7 @@ export default function Home() {
 
   return (
     <>
-      <Layout>
+      <MainWrap>
         <HomeArea>
           <div>
             <NewConsultNum />
@@ -127,7 +132,8 @@ export default function Home() {
             <ReceiptDiv />
           </div>
         </HomeArea>
-      </Layout>
+      </MainWrap>
     </>
   )
 }
+Home.getLayout = page => <Layout>{page}</Layout>

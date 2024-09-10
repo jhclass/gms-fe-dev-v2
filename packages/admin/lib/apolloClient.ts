@@ -10,6 +10,7 @@ import {
 } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import { getNewToken } from './getNewToken'
+
 // console.log(process.env.NEXT_PUBLIC_GRAPHQL_URI, '환경변수')
 const TOKEN = 'token'
 const REFRESH_TOKEN = 'refreshToken'
@@ -141,4 +142,15 @@ export const LogUserIn = (token: string, refreshToken: string) => {
   localStorage.setItem(TOKEN, token)
   localStorage.setItem(REFRESH_TOKEN, refreshToken)
   isLoggedInVar(true)
+}
+export const LogUserOut = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('refreshToken')
+  sessionStorage.removeItem('newStudent')
+  sessionStorage.removeItem('newStudentState')
+  sessionStorage.removeItem('newConsult')
+  sessionStorage.removeItem('todayStudentTotal')
+  sessionStorage.removeItem('newAccounting')
+  sessionStorage.removeItem('today')
+  apolloClient.clearStore()
 }
