@@ -142,7 +142,7 @@ export default function WorksTime({
                       className="w-full"
                       classNames={{
                         inputWrapper: `${
-                          index % 2 === 0 ? '' : 'border-default-300'
+                          index % 2 === 0 ? '' : 'border-white'
                         }  `,
                       }}
                     />

@@ -283,6 +283,9 @@ export default function WorksTime({
                         trainingTimesTotal[0] === '' ? 0 : trainingTimesTotal[0]
                       }
                       className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-white',
+                      }}
                     />
                   </Tnum>
                   <Tnum>
@@ -299,6 +302,9 @@ export default function WorksTime({
                         trainingTimesTotal[1] === '' ? 0 : trainingTimesTotal[1]
                       }
                       className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-white',
+                      }}
                     />
                   </Tnum>
                   <Tnum>
@@ -315,6 +321,9 @@ export default function WorksTime({
                         trainingTimesTotal[2] === '' ? 0 : trainingTimesTotal[2]
                       }
                       className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-white',
+                      }}
                     />
                   </Tnum>
                   <Tnum>
@@ -331,6 +340,9 @@ export default function WorksTime({
                         trainingTimesTotal[3] === '' ? 0 : trainingTimesTotal[3]
                       }
                       className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-white',
+                      }}
                     />
                   </Tnum>
                   <Tnum>
@@ -347,6 +359,9 @@ export default function WorksTime({
                         trainingTimesTotal[4] === '' ? 0 : trainingTimesTotal[4]
                       }
                       className="w-full"
+                      classNames={{
+                        inputWrapper: 'border-white',
+                      }}
                     />
                   </Tnum>
                 </ClickBox>

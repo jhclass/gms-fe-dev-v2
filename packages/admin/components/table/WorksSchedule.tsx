@@ -180,7 +180,7 @@ export default function AbsentList({
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
+                            index % 2 === 0 ? '' : 'border-white'
                           }  `,
                         }}
                       />
@@ -199,7 +199,7 @@ export default function AbsentList({
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
+                            index % 2 === 0 ? '' : 'border-white'
                           }  `,
                         }}
                       />
@@ -218,7 +218,7 @@ export default function AbsentList({
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
+                            index % 2 === 0 ? '' : 'border-white'
                           }  `,
                         }}
                       />
@@ -240,7 +240,7 @@ export default function AbsentList({
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
-                            index % 2 === 0 ? '' : 'border-default-300'
+                            index % 2 === 0 ? '' : 'border-white'
                           }  `,
                         }}
                       />
