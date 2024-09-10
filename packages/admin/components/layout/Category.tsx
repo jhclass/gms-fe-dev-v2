@@ -193,7 +193,6 @@ export default function Category() {
                 href={category.href}
                 iconSrc={category.iconSrc}
                 name={category.name}
-                cateGrade={category.grade}
                 isActive={active === category.href}
                 onClick={() => {
                   handleCategoryClick(category.id, category.resetItems)
@@ -214,7 +213,6 @@ export default function Category() {
                 href={category.href}
                 iconSrc={category.iconSrc}
                 name={category.name}
-                cateGrade={category.grade}
                 isActive={active === category.href}
                 onClick={() => {
                   handleCategoryClick(category.id, category.resetItems)

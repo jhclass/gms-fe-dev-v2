@@ -1,7 +1,7 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import Layout from '@/pages/hr/layout'
+import Layout from '@/pages/hr/teacher/layout'
 import { Suspense, useState } from 'react'
 import TeacherList from '@/components/table/TeacherList'
 import TeacherFilter from '@/components/filter/TeacherFilter'

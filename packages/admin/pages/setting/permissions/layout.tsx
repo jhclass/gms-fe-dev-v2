@@ -4,7 +4,7 @@ import useMmeQuery from '@/utils/mMe'
 import { useAuthRedirect } from '@/utils/useAuthRedirect'
 import { useRecoilValue } from 'recoil'
 
-export default function LectureLayout({ children }) {
+export default function PermissionsLayout({ children }) {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -13,11 +13,10 @@ export default function LectureLayout({ children }) {
   if (isCheckingLogin) {
     return null
   }
-  // if (mGrade <= grade.subMaster) {
-  if (mGrade <= grade.dev) {
+
+  if (mGrade <= grade.subMaster) {
     return <main>{children}</main>
   } else {
     return <MainWrap>접근 권한이 없습니다.</MainWrap>
   }
-  // return <main>{children}</main>
 }

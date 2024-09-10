@@ -133,7 +133,6 @@ export default function CategoryItem<CategoryItemProps>({
   isActive,
   onClick,
   children,
-  cateGrade = null,
 }) {
   const router = useRouter()
   const theme = useTheme()
@@ -214,23 +213,9 @@ export default function CategoryItem<CategoryItemProps>({
 
   const subCate = children?.filter(category => category.exposure) || []
 
-  const clickCate = (e, grade, link, name) => {
+  const clickCate = (e, link) => {
     e.preventDefault()
-
-    if (grade) {
-      if (mGrade <= 1 || mPart.includes(grade)) {
-        router.push(link, undefined, { shallow: true, scroll: false })
-      } else {
-        alert('🚧 접근 권한이 없습니다. 🚧')
-      }
-    } else {
-      // if (name === '상담관리') {
-      //   window.location.href = link
-      // } else {
-      //   router.push(link, undefined, { shallow: true, scroll: false })
-      // }
-      router.push(link, undefined, { shallow: true, scroll: false })
-    }
+    router.push(link, undefined, { shallow: true, scroll: false })
   }
 
   const isActiveF = (parentHref, childHref, currentPath) => {
@@ -250,7 +235,7 @@ export default function CategoryItem<CategoryItemProps>({
         }}
       >
         {!children || subCate.length === 0 ? (
-          <Link href={'#'} onClick={e => clickCate(e, cateGrade, href, name)}>
+          <Link href={'#'} onClick={e => clickCate(e, href)}>
             <CateLink $navOpen={navOpen}>
               <Tooltip
                 content={name}
@@ -259,7 +244,7 @@ export default function CategoryItem<CategoryItemProps>({
               >
                 <CateIcon
                   onClick={e => {
-                    clickCate(e, cateGrade, href, name)
+                    clickCate(e, href)
                   }}
                 >
                   <i className={iconSrc} />
@@ -315,7 +300,7 @@ export default function CategoryItem<CategoryItemProps>({
               >
                 <CateIcon
                   onClick={e => {
-                    clickCate(e, cateGrade, href, name)
+                    clickCate(e, href)
                   }}
                 >
                   <i className={iconSrc} />
@@ -333,10 +318,7 @@ export default function CategoryItem<CategoryItemProps>({
                 </CateIcon>
               </Tooltip>
               <CateTitle $navOpen={navOpen}>
-                <Link
-                  href={'#'}
-                  onClick={e => clickCate(e, cateGrade, href, name)}
-                >
+                <Link href={'#'} onClick={e => clickCate(e, href)}>
                   {name}
                 </Link>
               </CateTitle>
@@ -356,9 +338,7 @@ export default function CategoryItem<CategoryItemProps>({
                   >
                     <Link
                       href={'#'}
-                      onClick={e =>
-                        clickCate(e, item.grade, href + item.href, name)
-                      }
+                      onClick={e => clickCate(e, href + item.href)}
                     >
                       {item.name}
                     </Link>
