@@ -15,9 +15,14 @@ import AttendanceFilterList from '@/components/table/AttendanceFilterList'
 import AttendanceCountFilter from '@/components/filter/AttendanceCountFilter'
 import AbsentFilterList from '@/components/table/AbsentFilterList'
 import { useRecoilValue } from 'recoil'
-import { assignmentState, completionStatus } from '@/lib/recoilAtoms'
+import {
+  assignmentState,
+  completionStatus,
+  gradeState,
+} from '@/lib/recoilAtoms'
 import AttendanceTabs from '@/components/items/AttendanceTabs'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import useMmeQuery from '@/utils/mMe'
 
 const ConArea = styled.div`
   width: 100%;
@@ -110,6 +115,10 @@ const Nolist = styled.div`
 export default function AttendancePage() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mId = useMme('id')
+  const mGrade = useMme('mGrade')
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)
@@ -119,6 +128,7 @@ export default function AttendancePage() {
   const [filterAttandanceActive, setFilterAttandanceActive] = useState(true)
   const [filterAttandanceSearch, setFilterAttandanceSearch] = useState()
   const [filterAttandanceData, setFilterAttandanceData] = useState(true)
+  const [isRead, setIsRead] = useState(false)
   const [filterAttandanceCountActive, setFilterAttandanceCountActive] =
     useState(true)
   const [filterAttandanceCountSearch, setFilterAttandanceCountSearch] =
@@ -151,6 +161,14 @@ export default function AttendancePage() {
               return naturalCompare(a.student.name, b.student.name)
             })
             setSortStudents(sortOrder)
+
+            const theachers = data[0].teachers.map(teacher => teacher.id)
+            if (mGrade <= grade.general || theachers.includes(mId)) {
+              setIsRead(true)
+            } else {
+              alert('접근권한이 없습니다.')
+              router.back()
+            }
           }
         },
       })
@@ -166,177 +184,185 @@ export default function AttendancePage() {
 
   return (
     <>
-      <MainWrap>
-        <ConArea>
-          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
-          <DetailBox>
-            <FormTopInfo item={lectureData} noti={true} />
-            <DetailDiv>
-              <AreaTitle>
-                <h4>기본 정보</h4>
-                <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  color="primary"
-                  className="text-white"
-                  onClick={() => {
-                    {
-                      router.push(`/lecture/detail/${lectureData?.id}`)
-                    }
-                  }}
-                >
-                  수정
-                </Button>
-              </AreaTitle>
-              <LectureInfo
-                lectureData={lectureData}
-                students={students}
-                attendance={true}
-              />
-            </DetailDiv>
-          </DetailBox>
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitle>
-                <h4>학적부</h4>
-              </AreaTitle>
-              <Noti>
-                <span>&#10071;</span>
-                교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지 않습니다.
-              </Noti>
-              <FlexChipBox>
-                {sortStudents?.length > 0 ? (
-                  <>
-                    {sortStudents
-                      .filter(
-                        student =>
-                          student.courseComplete !== completion.dropout,
-                      )
-                      .map((item, index) => (
-                        <Link
-                          href={`/lecture/employmentDetail/${item.id}`}
-                          key={index}
-                        >
-                          <Chip color="primary">{item.student.name}</Chip>
-                        </Link>
-                      ))}
-                  </>
-                ) : (
-                  <Nolist>교육훈련대상 수강생이 없습니다.</Nolist>
-                )}
-              </FlexChipBox>
-            </DetailDiv>
-          </DetailBox>
-
-          {lectureData?.timetableAttached && (
-            <FlexBox>
-              <Link
-                href={lectureData?.timetableAttached || '#'}
-                onClick={handleClick}
-              >
-                <Chip variant="bordered" color="primary">
-                  &#128205; 훈련시간표 다운로드
-                </Chip>
-              </Link>
-            </FlexBox>
-          )}
-
-          <DetailBox>
-            <DetailDiv>
-              <AreaTitleFilter>
-                <h4>출석부</h4>
-                {students?.length > 0 && (
-                  <AttendanceFilter
-                    isActive={filterAttandanceActive}
-                    lectureData={lectureData}
-                    filterAttandanceSearch={filterAttandanceSearch}
-                    setFilterAttandanceData={setFilterAttandanceData}
-                    setFilterAttandanceSearch={setFilterAttandanceSearch}
-                  />
-                )}
-              </AreaTitleFilter>
-              {students?.length > 0 ? (
-                <>
-                  {filterAttandanceSearch ? (
-                    <AttendanceFilterList
-                      lectureData={lectureData}
-                      students={students}
-                      filterAttandanceData={filterAttandanceData}
-                    />
+      {isRead && (
+        <MainWrap>
+          <ConArea>
+            <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
+            <DetailBox>
+              <FormTopInfo item={lectureData} noti={true} />
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>기본 정보</h4>
+                  <Button
+                    size="sm"
+                    radius="sm"
+                    variant="solid"
+                    color="primary"
+                    className="text-white"
+                    onClick={() => {
+                      {
+                        router.push(`/lecture/detail/${lectureData?.id}`)
+                      }
+                    }}
+                  >
+                    수정
+                  </Button>
+                </AreaTitle>
+                <LectureInfo
+                  lectureData={lectureData}
+                  students={students}
+                  attendance={true}
+                />
+              </DetailDiv>
+            </DetailBox>
+            <DetailBox>
+              <DetailDiv>
+                <AreaTitle>
+                  <h4>학적부</h4>
+                </AreaTitle>
+                <Noti>
+                  <span>&#10071;</span>
+                  교육훈련대상 수강생이 아닌 경우 학적부 명단에 나타나지
+                  않습니다.
+                </Noti>
+                <FlexChipBox>
+                  {sortStudents?.length > 0 ? (
+                    <>
+                      {sortStudents
+                        .filter(
+                          student =>
+                            student.courseComplete !== completion.dropout,
+                        )
+                        .map((item, index) => (
+                          <Link
+                            href={`/lecture/employmentDetail/${item.id}`}
+                            key={index}
+                          >
+                            <Chip color="primary">{item.student.name}</Chip>
+                          </Link>
+                        ))}
+                    </>
                   ) : (
-                    <Attendance lectureData={lectureData} students={students} />
+                    <Nolist>교육훈련대상 수강생이 없습니다.</Nolist>
                   )}
-                </>
-              ) : (
-                <Nolist>수강생이 없습니다.</Nolist>
-              )}
-            </DetailDiv>
-          </DetailBox>
-          {sortStudents && (
+                </FlexChipBox>
+              </DetailDiv>
+            </DetailBox>
+
+            {lectureData?.timetableAttached && (
+              <FlexBox>
+                <Link
+                  href={lectureData?.timetableAttached || '#'}
+                  onClick={handleClick}
+                >
+                  <Chip variant="bordered" color="primary">
+                    &#128205; 훈련시간표 다운로드
+                  </Chip>
+                </Link>
+              </FlexBox>
+            )}
+
             <DetailBox>
               <DetailDiv>
                 <AreaTitleFilter>
-                  <h4>출결현황</h4>
+                  <h4>출석부</h4>
                   {students?.length > 0 && (
-                    <AttendanceCountFilter
+                    <AttendanceFilter
                       isActive={filterAttandanceActive}
                       lectureData={lectureData}
-                      filterAttandanceCountSearch={filterAttandanceCountSearch}
-                      setFilterAttandanceCountData={
-                        setFilterAttandanceCountData
-                      }
-                      setFilterAttandanceCountSearch={
-                        setFilterAttandanceCountSearch
-                      }
+                      filterAttandanceSearch={filterAttandanceSearch}
+                      setFilterAttandanceData={setFilterAttandanceData}
+                      setFilterAttandanceSearch={setFilterAttandanceSearch}
                     />
                   )}
                 </AreaTitleFilter>
                 {students?.length > 0 ? (
                   <>
-                    {filterAttandanceCountSearch ? (
-                      <AbsentFilterList
-                        lectureId={lectureData?.id}
-                        filterAttandanceCountData={filterAttandanceCountData}
-                        sortStudents={sortStudents}
+                    {filterAttandanceSearch ? (
+                      <AttendanceFilterList
+                        lectureData={lectureData}
+                        students={students}
+                        filterAttandanceData={filterAttandanceData}
                       />
                     ) : (
-                      <AbsentList
-                        lectureId={lectureData?.id}
-                        lectureDates={lectureData?.lectureDetails}
-                        sortStudents={sortStudents}
+                      <Attendance
+                        lectureData={lectureData}
+                        students={students}
                       />
                     )}
                   </>
                 ) : (
-                  <Nolist>출결사항이 없습니다.</Nolist>
+                  <Nolist>수강생이 없습니다.</Nolist>
                 )}
               </DetailDiv>
             </DetailBox>
-          )}
-          <AttendanceTabs
-            lectureId={lectureData?.id}
-            subjectId={lectureData?.subjectId}
-            students={students}
-          />
-          <DetailBox>
-            <BtnBox>
-              <Button
-                size="md"
-                radius="md"
-                variant="bordered"
-                color="primary"
-                className="lg:w-[50%] w-full"
-                onClick={() => {
-                  router.back()
-                }}
-              >
-                이전으로
-              </Button>
-            </BtnBox>
-          </DetailBox>
-        </ConArea>
-      </MainWrap>
+            {sortStudents && (
+              <DetailBox>
+                <DetailDiv>
+                  <AreaTitleFilter>
+                    <h4>출결현황</h4>
+                    {students?.length > 0 && (
+                      <AttendanceCountFilter
+                        isActive={filterAttandanceActive}
+                        lectureData={lectureData}
+                        filterAttandanceCountSearch={
+                          filterAttandanceCountSearch
+                        }
+                        setFilterAttandanceCountData={
+                          setFilterAttandanceCountData
+                        }
+                        setFilterAttandanceCountSearch={
+                          setFilterAttandanceCountSearch
+                        }
+                      />
+                    )}
+                  </AreaTitleFilter>
+                  {students?.length > 0 ? (
+                    <>
+                      {filterAttandanceCountSearch ? (
+                        <AbsentFilterList
+                          lectureId={lectureData?.id}
+                          filterAttandanceCountData={filterAttandanceCountData}
+                          sortStudents={sortStudents}
+                        />
+                      ) : (
+                        <AbsentList
+                          lectureId={lectureData?.id}
+                          lectureDates={lectureData?.lectureDetails}
+                          sortStudents={sortStudents}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <Nolist>출결사항이 없습니다.</Nolist>
+                  )}
+                </DetailDiv>
+              </DetailBox>
+            )}
+            <AttendanceTabs
+              lectureId={lectureData?.id}
+              subjectId={lectureData?.subjectId}
+              students={students}
+            />
+            <DetailBox>
+              <BtnBox>
+                <Button
+                  size="md"
+                  radius="md"
+                  variant="bordered"
+                  color="primary"
+                  className="lg:w-[50%] w-full"
+                  onClick={() => {
+                    router.back()
+                  }}
+                >
+                  이전으로
+                </Button>
+              </BtnBox>
+            </DetailBox>
+          </ConArea>
+        </MainWrap>
+      )}
     </>
   )
 }
