@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import {
   activeCategoryState,
   consultFilterActiveState,
@@ -8,6 +8,7 @@ import {
   consultLimitState,
   consultPageState,
   consultSearchState,
+  gradeState,
   parformanceFilterActiveState,
   parformanceFilterState,
   parformanceSearchState,
@@ -46,13 +47,17 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
+import useMmeQuery from '@/utils/mMe'
 
 const CateWrap = styled(motion.ul)``
 
 export default function Category() {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+
   const [activeCategory, setActiveCategory] =
     useRecoilState(activeCategoryState)
-
   const resetConsultPage = useResetRecoilState(consultPageState)
   const resetConsultLimit = useResetRecoilState(consultLimitState)
   const resetConsultFilterActive = useResetRecoilState(consultFilterActiveState)
@@ -178,24 +183,47 @@ export default function Category() {
 
   return (
     <>
-      <CateWrap>
-        {categories
-          .filter(category => category.exposure)
-          .map((category, index) => (
-            <CategoryItem
-              key={index}
-              href={category.href}
-              iconSrc={category.iconSrc}
-              name={category.name}
-              cateGrade={category.grade}
-              isActive={active === category.href}
-              onClick={() => {
-                handleCategoryClick(category.id, category.resetItems)
-              }}
-              children={category.children}
-            />
-          ))}
-      </CateWrap>
+      {mGrade === grade.teacher ? (
+        <CateWrap>
+          {categories
+            .filter(category => category.exposure && category.teacher)
+            .map((category, index) => (
+              <CategoryItem
+                key={index}
+                href={category.href}
+                iconSrc={category.iconSrc}
+                name={category.name}
+                cateGrade={category.grade}
+                isActive={active === category.href}
+                onClick={() => {
+                  handleCategoryClick(category.id, category.resetItems)
+                }}
+                children={category.children.filter(
+                  category => category.exposure && category.teacher,
+                )}
+              />
+            ))}
+        </CateWrap>
+      ) : (
+        <CateWrap>
+          {categories
+            .filter(category => category.exposure)
+            .map((category, index) => (
+              <CategoryItem
+                key={index}
+                href={category.href}
+                iconSrc={category.iconSrc}
+                name={category.name}
+                cateGrade={category.grade}
+                isActive={active === category.href}
+                onClick={() => {
+                  handleCategoryClick(category.id, category.resetItems)
+                }}
+                children={category.children}
+              />
+            ))}
+        </CateWrap>
+      )}
     </>
   )
 }

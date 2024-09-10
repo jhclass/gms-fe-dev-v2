@@ -10,6 +10,7 @@ interface Category {
   isFilter?: boolean
   isWrite?: string
   grade?: string
+  teacher?: boolean
 }
 
 interface Children {
@@ -20,6 +21,7 @@ interface Children {
   isFilter: boolean
   isWrite: string
   grade?: string
+  teacher?: boolean
 }
 
 const category: Category[] = [
@@ -32,6 +34,7 @@ const category: Category[] = [
     isBreadcrumb: false,
     isFilter: false,
     isWrite: '',
+    teacher: true,
     children: [],
   },
   {
@@ -187,6 +190,7 @@ const category: Category[] = [
     exposure: true,
     isBreadcrumb: true,
     isFilter: true,
+    teacher: true,
     children: [
       {
         href: '/',
@@ -195,6 +199,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '/lecture/write',
+        teacher: true,
       },
       {
         href: '/detail',
@@ -203,6 +208,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: false,
         isWrite: '',
+        teacher: true,
       },
       {
         href: '/attendance',
@@ -211,6 +217,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: false,
         isWrite: '',
+        teacher: true,
       },
       {
         href: '/employment',
@@ -219,6 +226,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
+        teacher: false,
       },
       {
         href: '/employmentDetail',
@@ -227,6 +235,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: false,
         isWrite: '',
+        teacher: false,
       },
       {
         href: '/write',
@@ -235,6 +244,7 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: false,
         isWrite: '',
+        teacher: false,
       },
     ],
   },

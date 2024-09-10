@@ -53,7 +53,7 @@ const TitleBox = styled.div`
   display: flex;
   align-items: center;
 `
-const Title1 = styled.span`
+const Title1 = styled.p`
   font-size: 1.875rem;
   letter-spacing: -0.025em;
   font-weight: 700;
@@ -64,12 +64,17 @@ const Title1 = styled.span`
     font-size: 1.5rem;
   }
 `
-const Title2 = styled.span`
+const Title2 = styled.p`
   font-weight: normal;
   font-size: 1.5rem;
   padding-left: 0.25rem;
   @media (max-width: 768px) {
     font-size: 1.2rem;
+  }
+
+  span {
+    font-size: 1rem;
+    padding-left: 0.5rem;
   }
 `
 const BoxRt = styled.div`
@@ -160,7 +165,10 @@ export default function Breadcrumb(props) {
                 <Title2>
                   <i className="xi-angle-right-thin" />
                 </Title2>
-                <Title2>{subCate?.name}</Title2>
+                <Title2>
+                  {subCate?.name}
+                  <span>{props.addTitle}</span>
+                </Title2>
               </TitleBox>
             )}
           </CateTitle>

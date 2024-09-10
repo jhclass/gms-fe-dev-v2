@@ -1,11 +1,17 @@
 import { motion } from 'framer-motion'
-import { useRecoilState } from 'recoil'
-import { isScreenState, navOpenState, navSubCateState } from '@/lib/recoilAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import {
+  gradeState,
+  isScreenState,
+  navOpenState,
+  navSubCateState,
+} from '@/lib/recoilAtoms'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import categories from '@/lib/category'
 import { ScrollShadow } from '@nextui-org/react'
+import useMmeQuery from '@/utils/mMe'
 
 const CateWrap = styled.div<{ $navOpen: boolean }>`
   width: 100%;
@@ -80,6 +86,9 @@ const MenuItem = styled.div<{ $isActive: boolean }>`
 
 export default function SubCategory() {
   const router = useRouter()
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
   const currentPath = router.pathname
   const [currentCategory, setCurrentCategory] = useState(null)
   const [isScreen, setIsScreen] = useRecoilState(isScreenState)
@@ -152,36 +161,86 @@ export default function SubCategory() {
 
   return (
     <>
-      {currentCategory &&
-        currentCategory.children.filter(child => child.exposure).length > 0 && (
-          <CateWrap $navOpen={navOpen}>
-            <CateBox>
-              <ScrollShadow
-                orientation="horizontal"
-                className="h-full scrollbar scrollbar_s"
-              >
-                <MenuBox>
-                  {currentCategory.children
-                    .filter(child => child.exposure)
-                    .map((child, index) => (
-                      <MenuItem
-                        key={index}
-                        $isActive={isActive(
-                          currentCategory.href,
-                          child.href,
-                          currentPath,
-                        )}
-                      >
-                        <a href={getFullHref(currentCategory.href, child.href)}>
-                          {child.name}
-                        </a>
-                      </MenuItem>
-                    ))}
-                </MenuBox>
-              </ScrollShadow>
-            </CateBox>
-          </CateWrap>
-        )}
+      {mGrade === grade.teacher ? (
+        <>
+          {currentCategory &&
+            currentCategory.children.filter(
+              child => child.exposure && child.teacher,
+            ).length > 1 && (
+              <CateWrap $navOpen={navOpen}>
+                <CateBox>
+                  <ScrollShadow
+                    orientation="horizontal"
+                    className="h-full scrollbar scrollbar_s"
+                  >
+                    <MenuBox>
+                      {currentCategory.children
+                        .filter(child => child.exposure && child.teacher)
+                        .map((child, index) => (
+                          <MenuItem
+                            key={index}
+                            $isActive={isActive(
+                              currentCategory.href,
+                              child.href,
+                              currentPath,
+                            )}
+                          >
+                            <a
+                              href={getFullHref(
+                                currentCategory.href,
+                                child.href,
+                              )}
+                            >
+                              {child.name}
+                            </a>
+                          </MenuItem>
+                        ))}
+                    </MenuBox>
+                  </ScrollShadow>
+                </CateBox>
+              </CateWrap>
+            )}
+        </>
+      ) : (
+        <>
+          {currentCategory &&
+            currentCategory.children.filter(child => child.exposure).length >
+              1 && (
+              <CateWrap $navOpen={navOpen}>
+                <CateBox>
+                  <ScrollShadow
+                    orientation="horizontal"
+                    className="h-full scrollbar scrollbar_s"
+                  >
+                    <MenuBox>
+                      {currentCategory.children
+                        .filter(child => child.exposure)
+                        .map((child, index) => (
+                          <MenuItem
+                            key={index}
+                            $isActive={isActive(
+                              currentCategory.href,
+                              child.href,
+                              currentPath,
+                            )}
+                          >
+                            <a
+                              href={getFullHref(
+                                currentCategory.href,
+                                child.href,
+                              )}
+                            >
+                              {child.name}
+                            </a>
+                          </MenuItem>
+                        ))}
+                    </MenuBox>
+                  </ScrollShadow>
+                </CateBox>
+              </CateWrap>
+            )}
+        </>
+      )}
     </>
   )
 }
