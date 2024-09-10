@@ -9,7 +9,6 @@ interface Category {
   isBreadcrumb?: boolean
   isFilter?: boolean
   isWrite?: string
-  grade?: string
   teacher?: boolean
 }
 
@@ -20,7 +19,6 @@ interface Children {
   isBreadcrumb: boolean
   isFilter: boolean
   isWrite: string
-  grade?: string
   teacher?: boolean
 }
 
@@ -252,7 +250,6 @@ const category: Category[] = [
     href: '/accounting',
     iconSrc: 'xi-money',
     name: '회계관리',
-    grade: '회계팀',
     exposure: true,
     resetItems: [
       'resetPaymentPage',
@@ -281,7 +278,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
-        grade: '회계팀',
       },
       {
         href: '/outstanding',
@@ -290,7 +286,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
-        grade: '회계팀',
       },
       {
         href: '/request',
@@ -299,7 +294,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
-        grade: '회계팀',
       },
       {
         href: '/refund',
@@ -308,7 +302,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
-        grade: '회계팀',
       },
       {
         href: '/sales',
@@ -317,7 +310,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: false,
         isWrite: '',
-        grade: '회계팀',
       },
     ],
   },
@@ -325,7 +317,6 @@ const category: Category[] = [
     href: '/statistics',
     iconSrc: 'xi-chart-line',
     name: '통계',
-    grade: '영업팀',
     exposure: true,
     resetItems: [
       'resetParformanceFilterActiveState',
@@ -344,7 +335,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
-        grade: '영업팀',
       },
       {
         href: '/recruitment',
@@ -353,7 +343,6 @@ const category: Category[] = [
         isBreadcrumb: true,
         isFilter: true,
         isWrite: '',
-        grade: '교무팀',
       },
     ],
   },

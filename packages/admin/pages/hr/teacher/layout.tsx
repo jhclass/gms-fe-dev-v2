@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
-export default function StatisticsLayout({ children }) {
+export default function TeacherLayout({ children }) {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -15,7 +15,7 @@ export default function StatisticsLayout({ children }) {
   const [permissionManagers, setPermissionManagers] = useState([])
   const { error, data, refetch } = useQuery(SEARCH_PERMISSIONS_GRANTED_QUERY, {
     variables: {
-      permissionName: '영업성과접근',
+      permissionName: '강사관리접근',
     },
     onCompleted: result => {
       if (result.searchPermissionsGranted.ok) {
@@ -27,7 +27,6 @@ export default function StatisticsLayout({ children }) {
       }
     },
   })
-
   const isCheckingLogin = useAuthRedirect()
 
   if (isCheckingLogin) {
