@@ -91,7 +91,7 @@ export default function WideSliderMo() {
               </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <div className="flex justify-center">
               <Link href="/event/summerVacation">
                 <video playsInline autoPlay loop muted>
@@ -103,7 +103,7 @@ export default function WideSliderMo() {
                 </video>
               </Link>
             </div>
-          </SwiperSlide>
+          </SwiperSlide> */}
           <SwiperSlide>
             <div className="flex justify-center">
               <Link href="/event/kdtJava">
