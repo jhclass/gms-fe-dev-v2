@@ -89,7 +89,7 @@ export default function Home() {
               alt="교육과정조회"
             />
           </Link>
-          <Link
+          {/* <Link
             href="/event/summerVacation"
             className="flex items-center justify-center w-[29.4444vw] h-full"
           >
@@ -97,7 +97,7 @@ export default function Home() {
               src="https://highclass-image.s3.amazonaws.com/academy/hc_design/2024/btn/mo/moQuick02.webp"
               alt="방학특강수강료조회"
             />
-          </Link>
+          </Link> */}
         </MoQuick>
       </MainBtn>
 

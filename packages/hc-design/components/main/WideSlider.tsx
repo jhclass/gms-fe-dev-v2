@@ -65,7 +65,7 @@ export default function MainSilder() {
               </div>
             </Link>
           </SwiperSlide>
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <Link href="/event/summerVacation">
               <div className="relative flex justify-center">
                 <video playsInline autoPlay loop muted>
@@ -77,7 +77,7 @@ export default function MainSilder() {
                 </video>
               </div>
             </Link>
-          </SwiperSlide>
+          </SwiperSlide> */}
           <SwiperSlide>
             <Link href="/event/kdtJava">
               <div className="relative flex justify-center">
