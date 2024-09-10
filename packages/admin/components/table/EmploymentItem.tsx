@@ -158,6 +158,7 @@ const Tdiv = styled.div<{ $isOpen: boolean }>`
   color: inherit;
   min-width: ${1200 * 0.09}px;
   border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
+  background: ${({ theme }) => theme.colors.lightYellow};
 `
 
 const EllipsisBox = styled.p`

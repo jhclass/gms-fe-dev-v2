@@ -11,5 +11,6 @@ export const lightTheme = {
     red: '#ff0000',
     lightPrimary: '#d9e3fa',
     mainBG: '#d6e4f1',
+    lightYellow: '#fffff9',
   },
 }
