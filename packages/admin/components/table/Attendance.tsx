@@ -23,7 +23,6 @@ import {
   SelectItem,
   useDisclosure,
 } from '@nextui-org/react'
-import WorksLogs from '@/components/modal/WorksLogs'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import {
   CREATE_ATTENDANCE_MUTATION,
@@ -47,9 +46,6 @@ const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
-`
-const TestSelect = styled.select`
-  text-align: center;
 `
 
 const BtnCell = styled.div`
@@ -98,6 +94,7 @@ export default function Attendance({ lectureData, students }) {
   const [todayIndex, setTodayIndex] = useState(null)
   const [attendanceAllData, setAttendanceAllData] = useState([])
   const [teachers, setTeachers] = useState(null)
+  const [isEdit, setIsEdit] = useState(null)
   const tableRef = useRef(null)
   const [data, setData] = useState({ nodes: [] })
   const [selectedValues, setSelectedValues] = useState([])
@@ -268,7 +265,7 @@ export default function Attendance({ lectureData, students }) {
     if (week) {
       const dataIndex = week.indexOf(today)
       setTodayIndex(dataIndex)
-
+      setIsEdit(new Array(week.length).fill(false))
       fetchAllAttendance()
     }
   }, [week, today])
@@ -323,8 +320,16 @@ export default function Attendance({ lectureData, students }) {
 
   const handleSelectChange = (value, itemIndex, dayIndex) => {
     const updatedValues = [...selectedValues]
-    updatedValues[dayIndex][itemIndex] = value
-    setSelectedValues(updatedValues)
+    const updatedIsEdit = [...isEdit]
+
+    if (selectedValues[dayIndex][itemIndex] === value) {
+      updatedIsEdit[dayIndex] = false
+    } else {
+      updatedValues[dayIndex][itemIndex] = value
+      setSelectedValues(updatedValues)
+      updatedIsEdit[dayIndex] = true
+    }
+    setIsEdit(updatedIsEdit)
   }
 
   const select = useRowSelect(
@@ -645,7 +650,7 @@ export default function Attendance({ lectureData, students }) {
                               <Select
                                 size="sm"
                                 labelPlacement="outside"
-                                label={<span className="hidden">출석표</span>}
+                                label={<span className="hidden">출석부</span>}
                                 placeholder={' '}
                                 className="w-full"
                                 classNames={{
@@ -712,7 +717,7 @@ export default function Attendance({ lectureData, students }) {
                               <Select
                                 size="sm"
                                 labelPlacement="outside"
-                                label={<span className="hidden">출석표</span>}
+                                label={<span className="hidden">출석부</span>}
                                 placeholder={' '}
                                 className="w-full"
                                 classNames={{
@@ -722,7 +727,7 @@ export default function Attendance({ lectureData, students }) {
                                   }`,
                                 }}
                                 isDisabled={
-                                  dayIndex !== todayIndex &&
+                                  dayIndex > todayIndex &&
                                   attendanceAllData[dayIndex]?.length === 0
                                 }
                                 variant="bordered"
@@ -795,7 +800,9 @@ export default function Attendance({ lectureData, students }) {
                                     0 ? (
                                     <Button
                                       isDisabled={
-                                        index > todayIndex ? true : false
+                                        index > todayIndex || !isEdit[index]
+                                          ? true
+                                          : false
                                       }
                                       size="sm"
                                       radius="sm"
@@ -839,7 +846,9 @@ export default function Attendance({ lectureData, students }) {
                                   ) : (
                                     <Button
                                       isDisabled={
-                                        index > todayIndex ? true : false
+                                        index > todayIndex || !isEdit[index]
+                                          ? true
+                                          : false
                                       }
                                       size="sm"
                                       radius="sm"
