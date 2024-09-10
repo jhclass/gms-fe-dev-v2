@@ -10,7 +10,10 @@ import {
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLazyQuery } from '@apollo/client'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEE_MANAGEUSER_QUERY,
+} from '@/graphql/queries'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import SearchManagerItem from '@/components/items/SearchManagerItem'
@@ -126,33 +129,31 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
   const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
-  const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
-    SEARCH_MANAGEUSER_QUERY,
-  )
+  const [seeManager, { refetch, loading, error, data }] =
+    useLazyQuery(SEE_MANAGEUSER_QUERY)
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
   const { register, handleSubmit, getValues } = useForm()
   const searchName = getValues('mUsername')
 
   useEffect(() => {
-    searchManager({
+    seeManager({
       variables: {
-        mGrade: grade.general,
         resign: 'N',
         page: currentPage,
         limit: currentLimit,
       },
       onCompleted: result => {
-        if (result.searchManageUser.ok) {
-          setManagerData(result?.searchManageUser.data)
-          setManagerTotal(result?.searchManageUser.totalCount)
+        if (result.seeManageUser.ok) {
+          setManagerData(result?.seeManageUser.data)
+          setManagerTotal(result?.seeManageUser.totalCount)
         }
       },
     })
   }, [currentPage])
 
   const onSubmit = data => {
-    searchManager({
+    seeManager({
       variables: {
         mUsername: data.mUsername,
         resign: 'N',
@@ -160,9 +161,9 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
         limit: currentLimit,
       },
       onCompleted: result => {
-        if (result.searchManageUser.ok) {
-          setManagerData(result?.searchManageUser.data)
-          setManagerTotal(result?.searchManageUser.totalCount)
+        if (result.seeManageUser.ok) {
+          setManagerData(result?.seeManageUser.data)
+          setManagerTotal(result?.seeManageUser.totalCount)
         }
       },
     })
