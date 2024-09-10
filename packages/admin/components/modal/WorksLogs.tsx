@@ -432,12 +432,12 @@ export default function WorksLogsModal({
       })
       setTrainingTimes(
         workLogData.trainingTimeOneday.length === 0
-          ? ['', '', '', '', '']
+          ? [0, 0, 0, 0, 0]
           : workLogData.trainingTimeOneday,
       )
       setTrainingTimesTotal(
         workLogData.trainingTimeTotal.length === 0
-          ? ['', '', '', '', '']
+          ? [0, 0, 0, 0, 0]
           : workLogData.trainingTimeTotal,
       )
       setAttendanceState({
