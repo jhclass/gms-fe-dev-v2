@@ -268,7 +268,6 @@ export const SEE_MANAGEUSER_QUERY = gql`
         mPhoneNumFriend
         mPhoneNumCompany
         mPhoneNum
-        mPassword
         mPart
         mJoiningDate
         mGrade

@@ -157,9 +157,10 @@ export default function PaymentFilterTable({ studentFilter }) {
       ...studentFilter,
       period: studentFilter.period || [lastSixMonths, today],
     }
+
     searchPaymentFilterMutation({
       variables: {
-        ...studentFilter,
+        ...adjustedStudentFilter,
         page: currentPage,
         perPage: currentLimit,
       },

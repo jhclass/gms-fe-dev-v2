@@ -205,7 +205,7 @@ export default function PaymentDetailFilterTable({ studentFilter }) {
 
     searchPaymentFilterMutation({
       variables: {
-        ...studentFilter,
+        ...adjustedStudentFilter,
         page: currentPage,
         perPage: currentLimit,
         sortOf: 'paymentDate',

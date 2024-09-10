@@ -45,9 +45,9 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import ConsolutRepeated from '@/components/items/ConsolutRepeated'
 import Layout from '@/pages/consult/layout'
-import ManagerSelect from '@/components/common/ManagerSelect'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -831,7 +831,7 @@ export default function ConsultDetail() {
                           </LodingDiv>
                         }
                       >
-                        <ManagerSelect
+                        <PermissionManagerSelect
                           selectedKey={manager}
                           field={field}
                           label={'담당자'}
@@ -841,9 +841,8 @@ export default function ConsultDetail() {
                             mUsername: '담당자 지정필요',
                             mUserId: '담당자 지정필요',
                           }}
-                          filter={{
-                            mPart: '영업팀',
-                          }}
+                          parmissionName={'상담관리접근'}
+                          isId={false}
                         />
                       </Suspense>
                     )}

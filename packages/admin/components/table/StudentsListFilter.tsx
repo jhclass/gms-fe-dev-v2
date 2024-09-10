@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 import StudentItem from '@/components/table/StudentItem'
-import { useRecoilState } from 'recoil'
 import { subMonths } from 'date-fns'
-import { studentPageState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;

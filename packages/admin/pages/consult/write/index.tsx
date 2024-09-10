@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -36,9 +36,9 @@ import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/consult/layout'
-import ManagerSelect from '@/components/common/ManagerSelect'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
+import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -602,7 +602,7 @@ export default function ConsultWirte() {
                         </LodingDiv>
                       }
                     >
-                      <ManagerSelect
+                      <PermissionManagerSelect
                         selectedKey={manager}
                         field={field}
                         label={'담당자'}
@@ -611,9 +611,8 @@ export default function ConsultWirte() {
                           mUsername: '담당자 지정필요',
                           mUserId: '담당자 지정필요',
                         }}
-                        filter={{
-                          mPart: '영업팀',
-                        }}
+                        parmissionName={'상담관리접근'}
+                        isId={false}
                       />
                     </Suspense>
                   )}

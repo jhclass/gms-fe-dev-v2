@@ -172,7 +172,7 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
       details: '',
     },
   })
-  console.log(item)
+
   useEffect(() => {
     if (item) {
       reset({
