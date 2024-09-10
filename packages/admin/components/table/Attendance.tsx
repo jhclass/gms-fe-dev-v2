@@ -23,7 +23,6 @@ import {
   SelectItem,
   useDisclosure,
 } from '@nextui-org/react'
-import WorksLogs from '@/components/modal/WorksLogs'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import {
   CREATE_ATTENDANCE_MUTATION,
@@ -47,9 +46,6 @@ const PagerWrap = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
-`
-const TestSelect = styled.select`
-  text-align: center;
 `
 
 const BtnCell = styled.div`
