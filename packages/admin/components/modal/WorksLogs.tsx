@@ -18,11 +18,7 @@ import { Controller, useForm } from 'react-hook-form'
 import WorksSchedule from '@/components/table/WorksSchedule'
 import WorksTime from '@/components/table/WorksTime'
 import WorksRemark from '@/components/table/WorksRemark'
-import {
-  SEARCH_WORKLOGS_QUERY,
-  SEE_ATTENDANCE_QUERY,
-  SIGN_WORKLOGS_QUERY,
-} from '@/graphql/queries'
+import { SEARCH_WORKLOGS_QUERY, SIGN_WORKLOGS_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import { useReactToPrint } from 'react-to-print'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -267,7 +263,10 @@ export default function WorksLogsModal({
   workLogeDate,
   workLogData,
   attendanceData,
-  teachers,
+  timeTotal,
+  setWorkLogData,
+  setTimeTotal,
+  setAttendanceData,
 }) {
   const grade = useRecoilValue(gradeState)
   const assignment = useRecoilValue(assignmentState)
@@ -383,7 +382,7 @@ export default function WorksLogsModal({
       check2con: workLogData?.checkContext[1] || '',
     })
 
-    if (workLogData && attendanceData) {
+    if (workLogData && attendanceData && timeTotal) {
       if (workLogData.attendanceCount.length > 0) {
         setAttendanceTotals(workLogData.attendanceCount)
       } else {
@@ -435,9 +434,12 @@ export default function WorksLogsModal({
           ? [0, 0, 0, 0, 0]
           : workLogData.trainingTimeOneday,
       )
+
       setTrainingTimesTotal(
         workLogData.trainingTimeTotal.length === 0
-          ? [0, 0, 0, 0, 0]
+          ? timeTotal.length === 0
+            ? [0, 0, 0, 0, 0]
+            : timeTotal
           : workLogData.trainingTimeTotal,
       )
       setAttendanceState({
@@ -464,7 +466,7 @@ export default function WorksLogsModal({
         setIsChecked2(workLogData.checkList[1])
       }
     }
-  }, [workLogData, attendanceData])
+  }, [workLogData, attendanceData, timeTotal])
   const formatDate = (data, time) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -665,7 +667,10 @@ export default function WorksLogsModal({
   })
   const handleClose = () => {
     reset()
-    onClose() // 원래 onClose 함수 호출
+    setWorkLogData(null)
+    setTimeTotal(null)
+    setAttendanceData(null)
+    onClose()
   }
   return (
     <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
@@ -949,6 +954,7 @@ export default function WorksLogsModal({
                               </AreaTitle>
                               <WorksTime
                                 setValue={setValue}
+                                timeTotal={timeTotal}
                                 trainingTimes={trainingTimes}
                                 setTrainingTimes={setTrainingTimes}
                                 trainingTimesTotal={trainingTimesTotal}

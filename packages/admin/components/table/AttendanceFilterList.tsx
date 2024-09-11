@@ -870,6 +870,7 @@ export default function Attendance({
             lectureId={lectureData.id}
             workLogeDate={selectWrokLogDate}
             key={selectWrokLogDate}
+            dates={lectureData.lectureDetails}
           />
         )}
       </>

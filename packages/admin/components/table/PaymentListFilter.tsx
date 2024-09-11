@@ -153,14 +153,9 @@ export default function PaymentFilterTable({ studentFilter }) {
   const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      period: studentFilter.period || [lastSixMonths, today],
-    }
-
     searchPaymentFilterMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
       },

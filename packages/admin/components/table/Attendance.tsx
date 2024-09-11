@@ -40,7 +40,7 @@ import {
   completionStatus,
 } from '@/lib/recoilAtoms'
 import Link from 'next/link'
-import WorksLogsBox from '../modal/WorksLogsBox'
+import WorksLogsBox from '@/components/modal/WorksLogsBox'
 
 const PagerWrap = styled.div`
   display: flex;
@@ -939,6 +939,7 @@ export default function Attendance({ lectureData, students }) {
             lectureId={lectureData.id}
             workLogeDate={selectWrokLogDate}
             key={selectWrokLogDate}
+            dates={lectureData.lectureDetails}
           />
         )}
       </>

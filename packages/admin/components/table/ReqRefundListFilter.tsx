@@ -255,16 +255,11 @@ export default function ReqRefundFilterTable({ studentFilter }) {
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
-  const adjustedStudentFilter = {
-    ...studentFilter,
-    reqRefundDate: studentFilter.reqRefundDate || [lastSixMonths, today],
-  }
+
   useEffect(() => {
     searchPaymentDetailFilterMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         reqRefund: true,
         refundApproval: false,
         sortOf: 'reqRefundDate',
@@ -313,7 +308,7 @@ export default function ReqRefundFilterTable({ studentFilter }) {
                 if (result.editStudentPayment.ok) {
                   searchPaymentDetailFilterMutation({
                     variables: {
-                      ...adjustedStudentFilter,
+                      ...studentFilter,
                       reqRefund: true,
                       refundApproval: false,
                       sortOf: 'reqRefundDate',
@@ -355,7 +350,7 @@ export default function ReqRefundFilterTable({ studentFilter }) {
           if (result.reqRefund.ok) {
             searchPaymentDetailFilterMutation({
               variables: {
-                ...adjustedStudentFilter,
+                ...studentFilter,
                 reqRefund: true,
                 refundApproval: false,
                 sortOf: 'reqRefundDate',

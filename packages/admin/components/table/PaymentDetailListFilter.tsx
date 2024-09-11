@@ -194,18 +194,11 @@ export default function PaymentDetailFilterTable({ studentFilter }) {
     SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      paymentDate: studentFilter.paymentDate || [lastSixMonths, today],
-    }
-
     searchPaymentFilterMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
         sortOf: 'paymentDate',

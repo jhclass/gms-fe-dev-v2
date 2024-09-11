@@ -815,6 +815,19 @@ export const SEARCH_WORKLOGS_QUERY = gql`
     }
   }
 `
+export const SEARCH_TIME_TOTAL_QUERY = gql`
+  query Query($workLogsDate: String, $lecturesId: Int) {
+    searchWorkLogs(workLogsDate: $workLogsDate, lecturesId: $lecturesId) {
+      data {
+        trainingTimeOneday
+        trainingTimeTotal
+      }
+      ok
+      message
+      error
+    }
+  }
+`
 export const SIGN_WORKLOGS_QUERY = gql`
   query SignWorkLogs($signWorkLogsId: Int!, $lastModifiedTime: String) {
     signWorkLogs(id: $signWorkLogsId, lastModifiedTime: $lastModifiedTime) {

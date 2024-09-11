@@ -42,9 +42,7 @@ export default function PermissionManagerSelect({
 
   useEffect(() => {
     refetch({
-      variables: {
-        permissionName: parmissionName,
-      },
+      permissionName: parmissionName,
     })
   }, [router])
 

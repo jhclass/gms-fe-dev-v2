@@ -191,17 +191,11 @@ export default function StudentsFilterTable({ studentFilter }) {
     SEARCH_STUDENT_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      createdAt: studentFilter.createdAt || [lastSixMonths, today],
-    }
     searchStudentFilterMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
       },

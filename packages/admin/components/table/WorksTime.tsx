@@ -75,6 +75,7 @@ const TableRow = styled.div`
 
 export default function WorksTime({
   setValue,
+  timeTotal,
   trainingTimes,
   setTrainingTimes,
   trainingTimesTotal,
@@ -112,9 +113,9 @@ export default function WorksTime({
         : []
 
       if (value !== '') {
-        newTotal[index] = value
+        newTotal[index] = (timeTotal[index] ? timeTotal[index] : 0) + value
       } else {
-        newTotal[index] = 0
+        newTotal[index] = (timeTotal[index] ? timeTotal[index] : 0) + 0
       }
 
       newTotal[4] = newTotal
