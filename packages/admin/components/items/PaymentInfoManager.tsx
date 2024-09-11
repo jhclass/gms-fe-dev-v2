@@ -28,9 +28,7 @@ export default function PaymentInfoManager({ studentPaymentData }) {
     SEARCH_PERMISSIONS_GRANTED_QUERY,
     {
       variables: {
-        variables: {
-          permissionName: '상담관리접근',
-        },
+        permissionName: '상담관리접근',
       },
     },
   )
@@ -38,9 +36,7 @@ export default function PaymentInfoManager({ studentPaymentData }) {
 
   useEffect(() => {
     refetch({
-      variables: {
-        permissionName: '상담관리접근',
-      },
+      permissionName: '상담관리접근',
     })
   }, [route])
 

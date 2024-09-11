@@ -49,18 +49,39 @@ export default function Lecture() {
 
   return (
     <>
-      <MainWrap>
-        {mGrade === grade.teacher ? (
-          <>
-            <Breadcrumb
-              onFilterToggle={null}
-              isActive={false}
-              isFilter={false}
-              isWrite={false}
-              rightArea={false}
-              addTitle={'(강사전용)'}
-            />
-            <ConBox>
+      {mGrade >= 0 && (
+        <MainWrap>
+          {mGrade === grade.teacher ? (
+            <>
+              <Breadcrumb
+                onFilterToggle={null}
+                isActive={false}
+                isFilter={false}
+                isWrite={false}
+                rightArea={false}
+                addTitle={'(강사전용)'}
+              />
+              <ConBox>
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <LectureTeacherList lectureFilter={lectureFilter} />
+                </Suspense>
+              </ConBox>
+            </>
+          ) : (
+            <>
+              <Breadcrumb
+                onFilterToggle={setFilterActive}
+                isActive={filterActive}
+                isFilter={true}
+                isWrite={true}
+                rightArea={true}
+              />
               <Suspense
                 fallback={
                   <LodingDiv>
@@ -68,59 +89,40 @@ export default function Lecture() {
                   </LodingDiv>
                 }
               >
-                <LectureTeacherList lectureFilter={lectureFilter} />
+                <LectureFilter
+                  isActive={filterActive}
+                  lectureFilter={lectureFilter}
+                  onFilterSearch={setFilterSearch}
+                  setLectureFilter={setLectureFilter}
+                />
               </Suspense>
-            </ConBox>
-          </>
-        ) : (
-          <>
-            <Breadcrumb
-              onFilterToggle={setFilterActive}
-              isActive={filterActive}
-              isFilter={true}
-              isWrite={true}
-              rightArea={true}
-            />
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <LectureFilter
-                isActive={filterActive}
-                lectureFilter={lectureFilter}
-                onFilterSearch={setFilterSearch}
-                setLectureFilter={setLectureFilter}
-              />
-            </Suspense>
-            <ConBox>
-              {filterSearch ? (
-                <Suspense
-                  fallback={
-                    <LodingDiv>
-                      <i className="xi-spinner-2" />
-                    </LodingDiv>
-                  }
-                >
-                  <LectureFilterList lectureFilter={lectureFilter} />
-                </Suspense>
-              ) : (
-                <Suspense
-                  fallback={
-                    <LodingDiv>
-                      <i className="xi-spinner-2" />
-                    </LodingDiv>
-                  }
-                >
-                  <LectureList />
-                </Suspense>
-              )}
-            </ConBox>
-          </>
-        )}
-      </MainWrap>
+              <ConBox>
+                {filterSearch ? (
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <LectureFilterList lectureFilter={lectureFilter} />
+                  </Suspense>
+                ) : (
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <LectureList />
+                  </Suspense>
+                )}
+              </ConBox>
+            </>
+          )}
+        </MainWrap>
+      )}
     </>
   )
 }

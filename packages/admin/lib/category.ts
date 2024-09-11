@@ -32,7 +32,6 @@ const category: Category[] = [
     isBreadcrumb: false,
     isFilter: false,
     isWrite: '',
-    teacher: true,
     children: [],
   },
   {

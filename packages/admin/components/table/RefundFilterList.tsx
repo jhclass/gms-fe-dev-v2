@@ -251,20 +251,11 @@ export default function RefundFilterTable({ studentFilter }) {
     SEARCH_PAYMENT_DETAIL_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      refundApprovalDate: studentFilter.refundApprovalDate || [
-        lastSixMonths,
-        today,
-      ],
-    }
     searchPaymentDetailFilterMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         reqRefund: true,
         refundApproval: true,
         sortOf: 'refundApprovalDate',

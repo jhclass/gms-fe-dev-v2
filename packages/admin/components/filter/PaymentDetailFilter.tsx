@@ -251,10 +251,6 @@ export default function PaymentFilter({
         animate={isActive ? 'visible' : 'hidden'}
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
-          <Noti>
-            <span>*</span>결제 일시를 선택하지 않을 경우 최근 6개월로
-            검색됩니다.
-          </Noti>
           <BoxTop>
             <ItemBox>
               <DatePickerBox>

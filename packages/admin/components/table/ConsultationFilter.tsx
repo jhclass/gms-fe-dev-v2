@@ -185,17 +185,11 @@ export default function ConsolutationFilterTable({ studentFilter }) {
   )
   const favoData = seeFavoData?.seeFavorite || []
   const favoTotal = favoData?.length || 0
-  const today = new Date()
-  const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
-    const adjustedStudentFilter = {
-      ...studentFilter,
-      createdAt: studentFilter.createdAt || [lastSixMonths, today],
-    }
     searchStudentStateMutation({
       variables: {
-        ...adjustedStudentFilter,
+        ...studentFilter,
         page: currentPage,
         perPage: currentLimit,
       },
