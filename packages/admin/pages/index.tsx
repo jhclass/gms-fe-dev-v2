@@ -13,7 +13,7 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import Layout from './layout'
+import Layout from '@/pages/layout'
 
 const HomeArea = styled.div`
   max-width: 1400px;
