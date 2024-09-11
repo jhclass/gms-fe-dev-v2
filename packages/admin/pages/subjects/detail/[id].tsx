@@ -9,15 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Button,
-  Input,
-  Link,
-  Select,
-  SelectItem,
-  Switch,
-  Textarea,
-} from '@nextui-org/react'
+import { Button, Input, Link, Switch, Textarea } from '@nextui-org/react'
 import { gradeState, subStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'

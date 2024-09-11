@@ -19,6 +19,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   Button,
   Pagination,
+  ScrollShadow,
   Select,
   SelectItem,
   useDisclosure,
@@ -383,6 +384,7 @@ export default function Attendance({ lectureData, students }) {
         text-align:center;
         font-size: 0.875rem;
         color: ${themeColor.colors.gray};
+        max-height:1200px;
 
         @media (max-width: 768px) {
         --data-table-library_grid-template-columns:${gridTemplateColumnsMo};
@@ -390,10 +392,8 @@ export default function Attendance({ lectureData, students }) {
       `,
       BaseCell: `
         padding: 1rem;
-        // min-width: 70px;
 
         &:nth-of-type(${todayIndex >= 0 ? 5 + todayIndex : -1}) {
-          // background:rgba(0, 125, 233, 0.15);
           border-left: 0.2rem solid ${themeColor.colors.secondary};
           border-right: 0.2rem solid ${themeColor.colors.secondary};
         }
@@ -447,16 +447,20 @@ export default function Attendance({ lectureData, students }) {
         font-weight: 600;
         color:#111;
         border-bottom: 1px solid ${themeColor.colors.lightGray};
+        
+        &:nth-of-type(1) {
+          z-index: 3 !important;
+        }
+          
+        &:nth-of-type(${todayIndex >= 0 && 5 + todayIndex}) {
+          border-radius: 0.5rem 0.5rem  0 0;
+          border-top: 0.2rem solid ${themeColor.colors.secondary};
+        }
 
-          &:nth-of-type(${todayIndex >= 0 && 5 + todayIndex}) {
-            border-radius: 0.5rem 0.5rem  0 0;
-            border-top: 0.2rem solid ${themeColor.colors.secondary};
-          }
-
-          span {
-            display: inline-block;
-            vertical-align:middle;
-          }
+        span {
+          display: inline-block;
+          vertical-align:middle;
+        }
       `,
       Row: `
         background:#fff;
@@ -897,28 +901,27 @@ export default function Attendance({ lectureData, students }) {
               </>
             )}
           </Table>
-
-          <BtnBox>
-            <Button
-              size="md"
-              variant="solid"
-              className="w-full text-black bg-[#FEE500]"
-              onClick={() => alert('준비중입니다. SMS발송을 이용해주세요.')}
-            >
-              <i className="xi-kakaotalk text-[1.5rem]" />
-              카카오톡발송
-            </Button>
-            <Button
-              size="md"
-              variant="bordered"
-              color="primary"
-              className="w-full"
-              onClick={() => router.push('/message/sms')}
-            >
-              SMS발송
-            </Button>
-          </BtnBox>
         </div>
+        <BtnBox>
+          <Button
+            size="md"
+            variant="solid"
+            className="w-full text-black bg-[#FEE500]"
+            onClick={() => alert('준비중입니다. SMS발송을 이용해주세요.')}
+          >
+            <i className="xi-kakaotalk text-[1.5rem]" />
+            카카오톡발송
+          </Button>
+          <Button
+            size="md"
+            variant="bordered"
+            color="primary"
+            className="w-full"
+            onClick={() => router.push('/message/sms')}
+          >
+            SMS발송
+          </Button>
+        </BtnBox>
         <PagerWrap>
           <Pagination
             variant="light"

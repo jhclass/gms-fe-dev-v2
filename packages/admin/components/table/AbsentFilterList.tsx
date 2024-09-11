@@ -27,6 +27,12 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
+const Tbody = styled.div`
+  max-height: 1100px;
+  min-width: 1200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+`
 
 const ClickBox = styled.div`
   display: flex;
@@ -94,19 +100,23 @@ export default function AbsentList({
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <AbsentItem
-                lectureId={lectureId}
-                lectureDates={filterAttandanceCountData}
-                sortStudents={sortStudents}
-              />
-            </Suspense>
+            <Tbody className="scrollbar">
+              <ScrollShadow orientation="vertical">
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <AbsentItem
+                    lectureId={lectureId}
+                    lectureDates={filterAttandanceCountData}
+                    sortStudents={sortStudents}
+                  />
+                </Suspense>
+              </ScrollShadow>
+            </Tbody>
           </TableWrap>
         </ScrollShadow>
       </TableArea>

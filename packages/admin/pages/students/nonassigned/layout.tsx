@@ -13,24 +13,27 @@ export default function NonassignedLayout({ children }) {
   const mGrade = useMme('mGrade')
   const mId = useMme('id')
   const [permissionManagers, setPermissionManagers] = useState([])
-  const { error, data, refetch } = useQuery(SEARCH_PERMISSIONS_GRANTED_QUERY, {
-    variables: {
-      permissionName: '미배정목록접근',
+  const { error, data, loading, refetch } = useQuery(
+    SEARCH_PERMISSIONS_GRANTED_QUERY,
+    {
+      variables: {
+        permissionName: '미배정목록접근',
+      },
+      onCompleted: result => {
+        if (result.searchPermissionsGranted.ok) {
+          setPermissionManagers(
+            result.searchPermissionsGranted.data[0].ManageUser.map(
+              manager => manager.id,
+            ),
+          )
+        }
+      },
     },
-    onCompleted: result => {
-      if (result.searchPermissionsGranted.ok) {
-        setPermissionManagers(
-          result.searchPermissionsGranted.data[0].ManageUser.map(
-            manager => manager.id,
-          ),
-        )
-      }
-    },
-  })
+  )
 
   const isCheckingLogin = useAuthRedirect()
 
-  if (isCheckingLogin) {
+  if (loading || isCheckingLogin) {
     return null
   }
 

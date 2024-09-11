@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import { Button } from '@nextui-org/react'
@@ -36,6 +36,10 @@ const TableRow = styled.div`
   width: 100%;
   grid-template-columns: 0.5rem 2% auto; */
 `
+const Tflag = styled.div`
+  width: 0.5rem;
+  min-width: 7px;
+`
 
 const ClickBox = styled.div`
   width: 100%;
@@ -50,7 +54,7 @@ const ClickBox = styled.div`
     align-items: center;
   }
 `
-const Tflag = styled.div`
+const TIcon = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -177,6 +181,7 @@ const EllipsisBox = styled.p`
 
 export default function ConsolutItem(props) {
   const grade = useRecoilValue(gradeState)
+  const theme = useTheme()
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -187,6 +192,21 @@ export default function ConsolutItem(props) {
   const [students, setStudents] = useState(null)
   const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
   const arrowRef = useRef(null)
+
+  const isDisplayFlag = (date: string): string => {
+    const currentDate = new Date()
+    const differenceInDays = Math.floor(
+      (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+    )
+
+    if (differenceInDays >= 0) {
+      return theme.colors.accent
+    } else {
+      return 'transparent'
+    }
+  }
+
+  const flagString = isDisplayFlag(lecture.lecturePeriodEnd)
 
   useEffect(() => {
     if (lecture) {
@@ -231,11 +251,16 @@ export default function ConsolutItem(props) {
     <>
       <TableItem>
         <TableRow>
+          <Tflag
+            style={{
+              background: flagString,
+            }}
+          ></Tflag>
           <ClickBox onClick={() => setIsOpen(!isOpen)}>
             <div>
-              <Tflag>
+              <TIcon>
                 <i ref={arrowRef} className="text-zinc-500 xi-angle-down-min" />
-              </Tflag>
+              </TIcon>
               <Tnum>
                 <EllipsisBox>
                   {(props.currentPage - 1) * conLimit + (conIndex + 1)}
