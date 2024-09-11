@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { consultPageState, subStatusState } from '@/lib/recoilAtoms'
+import { useResetRecoilState } from 'recoil'
+import { consultPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input } from '@nextui-org/react'
 import { Suspense, useState } from 'react'
@@ -139,7 +139,6 @@ export default function ConsultFilter({
 }) {
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
-  const subStatus = useRecoilValue(subStatusState)
   const [receipt, setReceipt] = useState('-')
   const [sub, setSub] = useState('-')
   const [manager, setManager] = useState('-')

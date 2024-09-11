@@ -10,7 +10,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { Button, Input, Link, Switch, Textarea } from '@nextui-org/react'
-import { gradeState, subStatusState } from '@/lib/recoilAtoms'
+import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_SUBJECT_MUTATION } from '@/graphql/mutations'
@@ -156,7 +156,6 @@ export default function SubjectWrite() {
   const mPart = useMme('mPart') || []
   const [createSubject] = useMutation(CREATE_SUBJECT_MUTATION)
   const { userLogs } = useUserLogsMutation()
-  const subStatus = useRecoilValue(subStatusState)
   const { register, control, handleSubmit, formState } = useForm()
   const { errors } = formState
   const [expStartDate, setExpStartDate] = useState(null)

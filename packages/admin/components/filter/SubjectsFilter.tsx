@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { subStatusState, subjectPageState } from '@/lib/recoilAtoms'
+import { useResetRecoilState } from 'recoil'
+import { subjectPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { registerLocale } from 'react-datepicker'
@@ -95,7 +95,6 @@ export default function SubjectsFilter({
   setSubjectFilter,
   subjectFilter,
 }) {
-  const subStatus = useRecoilValue(subStatusState)
   const router = useRouter()
   const subjectPage = useResetRecoilState(subjectPageState)
   const [sub, setSub] = useState('-')

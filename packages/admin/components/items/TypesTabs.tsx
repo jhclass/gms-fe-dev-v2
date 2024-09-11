@@ -78,6 +78,29 @@ export default function TypesTabs() {
               </Card>
             )}
           </Tab>
+          <Tab key="receipt" title="접수구분">
+            {mGrade <= grade.subMaster || mPart.includes('영업팀') ? (
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <CreateAdviceType isActive={true} category={'접수구분'} />
+              </Suspense>
+            ) : (
+              <Card radius="sm">
+                <CardBody>
+                  <NotiText>
+                    수강구분 설정 권한이 없습니다.
+                    <br />
+                    <b>Master</b> 또는 영업팀에 요청하세요.
+                  </NotiText>
+                </CardBody>
+              </Card>
+            )}
+          </Tab>
           <Tab key="subDiv" title="수강구분">
             {mGrade <= grade.subMaster || mPart.includes('영업팀') ? (
               <Suspense

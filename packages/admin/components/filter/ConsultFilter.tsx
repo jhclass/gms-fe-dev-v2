@@ -1,21 +1,10 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
-import {
-  consultPageState,
-  progressStatusState,
-  receiptStatusState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { consultPageState, progressStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import ChipCheckbox from '@/components/common/ChipCheckbox'
-import {
-  Button,
-  CheckboxGroup,
-  Input,
-  Select,
-  SelectItem,
-} from '@nextui-org/react'
+import { Button, CheckboxGroup, Input } from '@nextui-org/react'
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import DatePicker, { registerLocale } from 'react-datepicker'
@@ -160,8 +149,6 @@ export default function ConsultFilter({
   const router = useRouter()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
   const consultPage = useResetRecoilState(consultPageState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
-  const subStatus = useRecoilValue(subStatusState)
   const progressStatus = useRecoilValue(progressStatusState)
   const [receipt, setReceipt] = useState('-')
   const [sub, setSub] = useState('-')
@@ -364,33 +351,16 @@ export default function ConsultFilter({
                 name="receiptDiv"
                 defaultValue={'-'}
                 render={({ field }) => (
-                  <Select
-                    labelPlacement="outside"
-                    label={<FilterLabel>접수구분</FilterLabel>}
-                    placeholder=" "
-                    className="w-full"
-                    defaultValue={'-'}
-                    variant="bordered"
-                    selectedKeys={[receipt]}
-                    onChange={value => {
-                      if (value.target.value !== '') {
-                        field.onChange(value)
-                        handleReceiptChange(value)
-                      }
+                  <AdviceSelect
+                    selectedKey={receipt}
+                    field={field}
+                    label={'접수구분'}
+                    handleChange={handleReceiptChange}
+                    optionDefault={{
+                      type: '-',
                     }}
-                  >
-                    {Object.entries(receiptStatus).map(([key, item]) =>
-                      key === '0' ? (
-                        <SelectItem value={'-'} key={'-'}>
-                          -
-                        </SelectItem>
-                      ) : (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ),
-                    )}
-                  </Select>
+                    category={'접수구분'}
+                  />
                 )}
               />
             </ItemBox>

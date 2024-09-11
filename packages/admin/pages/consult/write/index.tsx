@@ -15,17 +15,10 @@ import {
   Link,
   Radio,
   RadioGroup,
-  Select,
-  SelectItem,
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import {
-  progressStatusState,
-  subStatusState,
-  receiptStatusState,
-  gradeState,
-} from '@/lib/recoilAtoms'
+import { progressStatusState, gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
@@ -39,6 +32,7 @@ import Layout from '@/pages/consult/layout'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
 import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
+import AdviceSelect from '@/components/common/AdviceSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -174,8 +168,6 @@ export default function ConsultWirte() {
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
-  const subStatus = useRecoilValue(subStatusState)
   const { register, control, setValue, handleSubmit, formState } = useForm()
   const { errors } = formState
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -251,17 +243,10 @@ export default function ConsultWirte() {
     setManager(e.target.value)
   }
 
-  const handleClickAdviceType = () => {
+  const handleAddTypeClick = type => {
     router.push({
       pathname: '/setting/types',
-      query: { typeTab: 'adviceType' },
-    })
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
+      query: { typeTab: type },
     })
   }
 
@@ -499,7 +484,7 @@ export default function ConsultWirte() {
                       size="sm"
                       underline="hover"
                       href="#"
-                      onClick={handleClickAdviceType}
+                      onClick={() => handleAddTypeClick('adviceType')}
                     >
                       상담분야 추가
                     </Link>
@@ -523,72 +508,78 @@ export default function ConsultWirte() {
                 />
               </AreaBox>
               <FlexBox>
-                <Controller
-                  control={control}
-                  name="receiptDiv"
-                  render={({ field }) => (
-                    <Select
-                      labelPlacement="outside"
-                      label={<FilterLabel>접수구분</FilterLabel>}
-                      placeholder=" "
-                      className="w-full"
-                      variant="bordered"
-                      selectedKeys={[receipt]}
-                      onChange={value => {
-                        if (value.target.value !== '') {
-                          field.onChange(value)
-                          handleReceiptChange(value)
-                        }
-                      }}
-                    >
-                      {Object.entries(receiptStatus).map(([key, item]) =>
-                        key === '0' ? (
-                          <SelectItem value={'-'} key={'-'}>
-                            -
-                          </SelectItem>
-                        ) : (
-                          <SelectItem key={item} value={item}>
-                            {item}
-                          </SelectItem>
-                        ),
-                      )}
-                    </Select>
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name="subDiv"
-                  render={({ field, fieldState }) => (
-                    <Suspense
-                      fallback={
-                        <LodingDiv>
-                          <i className="xi-spinner-2" />
-                        </LodingDiv>
-                      }
-                    >
-                      <SubDivSelect
-                        selectedKey={sub}
-                        field={field}
-                        label={<FilterLabel>수강구분</FilterLabel>}
-                        handleChange={handleSubChange}
-                        isHyphen={false}
-                        optionDefault={{ type: '-' }}
+                <AreaBox>
+                  <Controller
+                    control={control}
+                    name="receiptDiv"
+                    render={({ field }) => (
+                      <Controller
+                        control={control}
+                        name="receiptDiv"
+                        render={({ field }) => (
+                          <AdviceSelect
+                            selectedKey={receipt}
+                            field={field}
+                            label={'접수구분'}
+                            handleChange={handleReceiptChange}
+                            optionDefault={{
+                              type: '-',
+                            }}
+                            category={'접수구분'}
+                          />
+                        )}
                       />
-                    </Suspense>
+                    )}
+                  />
+                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
+                    <AddLink>
+                      <Link
+                        size="sm"
+                        underline="hover"
+                        href="#"
+                        onClick={() => handleAddTypeClick('receipt')}
+                      >
+                        접수구분 추가
+                      </Link>
+                    </AddLink>
                   )}
-                />
-                {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                  <AddLink>
-                    <Link
-                      size="sm"
-                      underline="hover"
-                      href="#"
-                      onClick={handleClick}
-                    >
-                      수강구분 추가
-                    </Link>
-                  </AddLink>
-                )}
+                </AreaBox>
+                <AreaBox>
+                  <Controller
+                    control={control}
+                    name="subDiv"
+                    render={({ field, fieldState }) => (
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
+                        }
+                      >
+                        <SubDivSelect
+                          selectedKey={sub}
+                          field={field}
+                          label={<FilterLabel>수강구분</FilterLabel>}
+                          handleChange={handleSubChange}
+                          isHyphen={false}
+                          optionDefault={{ type: '-' }}
+                        />
+                      </Suspense>
+                    )}
+                  />
+                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
+                    <AddLink>
+                      <Link
+                        size="sm"
+                        underline="hover"
+                        href="#"
+                        onClick={() => handleAddTypeClick('subDiv')}
+                      >
+                        수강구분 추가
+                      </Link>
+                    </AddLink>
+                  )}
+                </AreaBox>
               </FlexBox>
               <FlexBox>
                 <Controller

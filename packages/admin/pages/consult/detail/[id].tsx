@@ -16,17 +16,10 @@ import {
   Link,
   Radio,
   RadioGroup,
-  Select,
-  SelectItem,
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import {
-  progressStatusState,
-  subStatusState,
-  receiptStatusState,
-  gradeState,
-} from '@/lib/recoilAtoms'
+import { progressStatusState, gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
@@ -48,6 +41,7 @@ import Layout from '@/pages/consult/layout'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
+import AdviceSelect from '@/components/common/AdviceSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -205,8 +199,6 @@ export default function ConsultDetail() {
   const [searchStudentStateMutation] = useMutation(SEARCH_STUDENTSTATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
-  const receiptStatus = useRecoilValue(receiptStatusState)
-  const subStatus = useRecoilValue(subStatusState)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: sbjIsOpen,
@@ -460,17 +452,10 @@ export default function ConsultDetail() {
     setManager(e.target.value)
   }
 
-  const handleClickAdviceType = () => {
+  const handleAddTypeClick = type => {
     router.push({
       pathname: '/setting/types',
-      query: { typeTab: 'adviceType' },
-    })
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
+      query: { typeTab: type },
     })
   }
 
@@ -714,7 +699,7 @@ export default function ConsultDetail() {
                         size="sm"
                         underline="hover"
                         href="#"
-                        onClick={handleClickAdviceType}
+                        onClick={() => handleAddTypeClick('adviceType')}
                       >
                         상담분야 추가
                       </Link>
@@ -745,35 +730,32 @@ export default function ConsultDetail() {
                       name="receiptDiv"
                       defaultValue={studentState?.receiptDiv}
                       render={({ field }) => (
-                        <Select
-                          labelPlacement="outside"
-                          label={<FilterLabel>접수구분</FilterLabel>}
-                          placeholder=" "
-                          className="w-full"
+                        <AdviceSelect
                           defaultValue={studentState?.receiptDiv}
-                          variant="bordered"
-                          selectedKeys={[receipt]}
-                          onChange={value => {
-                            if (value.target.value !== '') {
-                              field.onChange(value)
-                              handleReceiptChange(value)
-                            }
+                          selectedKey={receipt}
+                          field={field}
+                          label={'접수구분'}
+                          handleChange={handleReceiptChange}
+                          optionDefault={{
+                            type: '-',
                           }}
-                        >
-                          {Object.entries(receiptStatus).map(([key, item]) =>
-                            key === '0' ? (
-                              <SelectItem value={'-'} key={'-'}>
-                                -
-                              </SelectItem>
-                            ) : (
-                              <SelectItem key={item} value={item}>
-                                {item}
-                              </SelectItem>
-                            ),
-                          )}
-                        </Select>
+                          category={'접수구분'}
+                        />
                       )}
                     />
+                    {(mGrade <= grade.subMaster ||
+                      mPart.includes('영업팀')) && (
+                      <AddLink>
+                        <Link
+                          size="sm"
+                          underline="hover"
+                          href="#"
+                          onClick={() => handleAddTypeClick('receipt')}
+                        >
+                          접수구분 추가
+                        </Link>
+                      </AddLink>
+                    )}
                   </AreaBox>
                   <AreaBox>
                     <Controller
@@ -810,7 +792,7 @@ export default function ConsultDetail() {
                           size="sm"
                           underline="hover"
                           href="#"
-                          onClick={handleClick}
+                          onClick={() => handleAddTypeClick('subDiv')}
                         >
                           수강구분 추가
                         </Link>

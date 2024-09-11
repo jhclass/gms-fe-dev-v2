@@ -29,11 +29,7 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
-import {
-  additionalAmountState,
-  gradeState,
-  subStatusState,
-} from '@/lib/recoilAtoms'
+import { additionalAmountState, gradeState } from '@/lib/recoilAtoms'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
 import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
@@ -239,7 +235,6 @@ export default function StudentPaymentForm({
       isWeekend: studentPaymentData?.isWeekend,
     },
   })
-  const subStatus = useRecoilValue(subStatusState)
   const additionalState = useRecoilValue(additionalAmountState)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)

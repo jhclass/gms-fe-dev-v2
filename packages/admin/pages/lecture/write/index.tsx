@@ -20,7 +20,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { gradeState, subStatusState } from '@/lib/recoilAtoms'
+import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_LECTURES_MUTATION } from '@/graphql/mutations'
@@ -187,8 +187,6 @@ export default function LectureWrite() {
     },
   })
   const [subjectState, setSubjectState] = useState(null)
-  const [subjectRoundItem, setSubjectRoundItem] = useState([])
-  const subStatus = useRecoilValue(subStatusState)
   const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState([])
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)

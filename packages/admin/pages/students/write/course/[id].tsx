@@ -34,7 +34,6 @@ import {
   completionStatus,
   employmentStatus,
   gradeState,
-  subStatusState,
 } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
@@ -259,7 +258,6 @@ export default function StudentsWriteCourse() {
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
-  const subStatus = useRecoilValue(subStatusState)
   const additionalState = useRecoilValue(additionalAmountState)
   const { unassigned } = useRecoilValue(assignmentState)
   const { notAttended } = useRecoilValue(completionStatus)
@@ -358,6 +356,7 @@ export default function StudentsWriteCourse() {
           employment: unemployed,
         },
         onCompleted: result => {
+          // console.log(result)
           if (result.createStudentPayment.ok) {
             userLogs(`${studentData.name} 수강신청`)
             alert('등록되었습니다.')

@@ -206,45 +206,6 @@ export const additionalAmountState = atom({
   },
 })
 
-export const classRoomState = atom({
-  key: 'classRoom',
-  default: {
-    0: '강의실 없음',
-    201: '201호',
-    202: '202호',
-    203: '203호',
-    204: '204호',
-  },
-})
-
-export const receiptStatusState = atom({
-  key: 'receiptStatus',
-  default: {
-    0: '없음',
-    1: '온라인',
-    2: '전화',
-    3: '내사',
-    4: 'HRD',
-    5: '카카오톡',
-    6: '플레이스',
-    7: 'EMS',
-    8: '추천',
-  },
-})
-
-export const subStatusState = atom({
-  key: 'subStatus',
-  default: {
-    0: '없음',
-    1: '일반',
-    2: '근로자',
-    3: '실업자',
-    4: 'KDT',
-    5: '국가기간',
-    6: '과정평가형',
-  },
-})
-
 // export const ReceiptState = atom({
 //   key: 'Receipt',
 //   default: {
