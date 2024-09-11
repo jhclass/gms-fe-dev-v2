@@ -1,9 +1,8 @@
 import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SearchManageUserResult } from '@/src/generated/graphql'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+
 type ConsultItemProps = {
   tableData: {
     adviceTypes: any
@@ -88,8 +87,8 @@ const FlatBox = styled.div`
   font-weight: bold;
 `
 
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
 }
 
 export default function PerformanceTotal({
@@ -101,25 +100,19 @@ export default function PerformanceTotal({
   totalRefundAmount,
   totalRefundCount,
 }) {
-  const route = useRouter()
   const {
     data: managerData,
     error,
     refetch,
-  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
-    variables: {
-      mPart: '영업팀',
-      resign: 'N',
+  } = useSuspenseQuery<SearchPermissionsGrantedQeury>(
+    SEARCH_PERMISSIONS_GRANTED_QUERY,
+    {
+      variables: {
+        permissionName: '영업실적대상자',
+      },
     },
-  })
-  const managerList = managerData?.searchManageUser.data
-
-  // useEffect(() => {
-  //   refetch({
-  //     mPart: '영업팀',
-  //     resign: 'N',
-  //   })
-  // }, [route])
+  )
+  const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
 
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')

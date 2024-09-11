@@ -30,8 +30,8 @@ import {
 import Layout from '@/pages/students/layout'
 import PaymentInfo from '@/components/items/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ManagerSelectID from '@/components/common/ManagerSelectID'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -602,7 +602,7 @@ export default function StudentsWritePayment() {
                               </LodingDiv>
                             }
                           >
-                            <ManagerSelectID
+                            <PermissionManagerSelect
                               selectedKey={receiver}
                               field={field}
                               label={'영업 담당자'}
@@ -612,9 +612,8 @@ export default function StudentsWritePayment() {
                                 id: '담당자 지정필요',
                                 mUsername: '담당자 지정필요',
                               }}
-                              filter={{
-                                mPart: '영업팀',
-                              }}
+                              parmissionName={'상담관리접근'}
+                              isId={true}
                             />
                           </Suspense>
                         )}

@@ -261,7 +261,6 @@ export default function ReqRefundFilterTable({ studentFilter }) {
     ...studentFilter,
     reqRefundDate: studentFilter.reqRefundDate || [lastSixMonths, today],
   }
-
   useEffect(() => {
     searchPaymentDetailFilterMutation({
       variables: {

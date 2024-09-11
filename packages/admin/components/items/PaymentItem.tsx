@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import { styled, useTheme } from 'styled-components'
 import Layout from '@/pages/students/layout'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 import {
   assignmentState,
   completionStatus,
@@ -68,11 +68,6 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
-const BtnBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-`
 const FlatBox = styled.div`
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -82,8 +77,8 @@ const FlatBox = styled.div`
   border-radius: 0.5rem;
   font-size: 0.875rem;
 `
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
 }
 export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const router = useRouter()
@@ -91,16 +86,16 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)
   const employment = useRecoilValue(employmentStatus)
-  const { data: managerData, error } = useSuspenseQuery<searchManageUserQuery>(
-    SEARCH_MANAGEUSER_QUERY,
-    {
-      variables: {
-        mPart: '영업팀',
-        resign: 'N',
+  const { data: managerData, error } =
+    useSuspenseQuery<SearchPermissionsGrantedQeury>(
+      SEARCH_PERMISSIONS_GRANTED_QUERY,
+      {
+        variables: {
+          permissionName: '상담관리접근',
+        },
       },
-    },
-  )
-  const managerList = managerData?.searchManageUser.data
+    )
+  const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
 
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
@@ -110,13 +105,6 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
       `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
       `${date.getDate().toString().padStart(2, '0')} `
     return formatted
-  }
-
-  const feeFormet = fee => {
-    const result = fee
-      .toString()
-      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    return result
   }
 
   const clickItem = item => {

@@ -23,9 +23,9 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import ManagerSelect from '@/components/common/ManagerSelect'
 import AdviceSelect from '@/components/common/AdviceSelect'
 import SubDivSelect from '@/components/common/SubDivSelect'
+import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -437,7 +437,7 @@ export default function ConsultFilter({
                       </LodingDiv>
                     }
                   >
-                    <ManagerSelect
+                    <PermissionManagerSelect
                       selectedKey={manager}
                       field={field}
                       label={'담당자'}
@@ -446,9 +446,8 @@ export default function ConsultFilter({
                         mUsername: '-',
                         mUserId: '-',
                       }}
-                      filter={{
-                        mPart: '영업팀',
-                      }}
+                      parmissionName={'상담관리접근'}
+                      isId={false}
                     />
                   </Suspense>
                 )}

@@ -8,10 +8,16 @@ import ko from 'date-fns/locale/ko'
 import { subDays, getYear, addMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEARCH_PERMISSIONS_GRANTED_QUERY,
+} from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import {
+  ResultSearchPermissionsGranted,
+  SearchManageUserResult,
+} from '@/src/generated/graphql'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -125,8 +131,8 @@ const FilterVariants = {
     },
   },
 }
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
 }
 export default function PerformanceFilter({
   isActive,
@@ -141,13 +147,15 @@ export default function PerformanceFilter({
     data: managerData,
     error,
     refetch,
-  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
-    variables: {
-      mPart: '영업팀',
-      resign: 'N',
+  } = useSuspenseQuery<SearchPermissionsGrantedQeury>(
+    SEARCH_PERMISSIONS_GRANTED_QUERY,
+    {
+      variables: {
+        permissionName: '영업실적대상자',
+      },
     },
-  })
-  const managerList = managerData?.searchManageUser.data
+  )
+  const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
   const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
   const [manager, setManager] = useState(new Set([]))
@@ -167,10 +175,6 @@ export default function PerformanceFilter({
       processingManagerId: '',
     },
   })
-
-  // useEffect(() => {
-  //   refetch({ mPart: '영업팀', resign: 'N' })
-  // }, [router])
 
   useEffect(() => {
     if (performanceFilter === null || clickReset) {
@@ -349,7 +353,7 @@ export default function PerformanceFilter({
                 rules={{
                   required: {
                     value: true,
-                    message: '사원을 1명이상 선택해주세요',
+                    message: '영업실적대상자를 1명이상 선택해주세요',
                   },
                 }}
                 name="processingManagerId"
@@ -359,7 +363,7 @@ export default function PerformanceFilter({
                     labelPlacement="outside"
                     label={
                       <FilterLabel>
-                        사원명<span>*</span>
+                        영업실적대상자<span>*</span>
                       </FilterLabel>
                     }
                     placeholder=" "

@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
@@ -14,8 +14,8 @@ const LineBox = styled.div`
   font-size: 0.875rem;
 `
 
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
 }
 
 export default function PaymentInfoManager({ studentPaymentData }) {
@@ -24,18 +24,23 @@ export default function PaymentInfoManager({ studentPaymentData }) {
     data: managerData,
     error,
     refetch,
-  } = useSuspenseQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY, {
-    variables: {
-      mPart: '영업팀',
-      resign: 'N',
+  } = useSuspenseQuery<SearchPermissionsGrantedQeury>(
+    SEARCH_PERMISSIONS_GRANTED_QUERY,
+    {
+      variables: {
+        variables: {
+          permissionName: '상담관리접근',
+        },
+      },
     },
-  })
-  const managerList = managerData?.searchManageUser.data
+  )
+  const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
 
   useEffect(() => {
     refetch({
-      mPart: '영업팀',
-      resign: 'N',
+      variables: {
+        permissionName: '상담관리접근',
+      },
     })
   }, [route])
 

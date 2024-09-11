@@ -34,9 +34,9 @@ import {
   gradeState,
   subStatusState,
 } from '@/lib/recoilAtoms'
-import ManagerSelectID from '@/components/common/ManagerSelectID'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
+import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -1202,7 +1202,7 @@ export default function StudentPaymentForm({
                           </LodingDiv>
                         }
                       >
-                        <ManagerSelectID
+                        <PermissionManagerSelect
                           selectedKey={subjectManager}
                           field={field}
                           label={
@@ -1216,9 +1216,8 @@ export default function StudentPaymentForm({
                             id: '담당자 지정필요',
                             mUsername: '담당자 지정필요',
                           }}
-                          filter={{
-                            mPart: '영업팀',
-                          }}
+                          parmissionName={'상담관리접근'}
+                          isId={true}
                         />
                       </Suspense>
                     )}

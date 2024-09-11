@@ -1,26 +1,25 @@
 import PerformanceList from '@/components/table/PerformanceList'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 
-type searchManageUserQuery = {
-  searchManageUser: SearchManageUserResult
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
 }
 
 export default function StatisticsList({ performanceFilter, filterSearch }) {
   const router = useRouter()
-  const { data, error } = useSuspenseQuery<searchManageUserQuery>(
-    SEARCH_MANAGEUSER_QUERY,
+  const { data, error } = useSuspenseQuery<SearchPermissionsGrantedQeury>(
+    SEARCH_PERMISSIONS_GRANTED_QUERY,
     {
       variables: {
-        mPart: '영업팀',
-        resign: 'N',
+        permissionName: '영업실적대상자',
       },
     },
   )
-  const managerList = data?.searchManageUser.data
+  const managerList = data?.searchPermissionsGranted.data[0].ManageUser
   const [ids, setIds] = useState(null)
   const [dateRange, setDateRange] = useState(null)
 

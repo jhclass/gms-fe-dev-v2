@@ -4,7 +4,7 @@ import { useResetRecoilState } from 'recoil'
 import { paymentPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -13,7 +13,6 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import { subMonths, subDays } from 'date-fns'
-import { useRouter } from 'next/router'
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -119,9 +118,7 @@ export default function PaymentFilter({
   isActive,
   onFilterSearch,
   setStudentFilter,
-  studentFilter,
 }) {
-  const router = useRouter()
   const paymentPage = useResetRecoilState(paymentPageState)
   const [paymentDateRange, setPaymentDateRange] = useState([null, null])
   const [startPaymentDate, endPaymentDate] = paymentDateRange
@@ -138,31 +135,9 @@ export default function PaymentFilter({
   } = useForm({
     defaultValues: {
       studentName: '',
-      createdPeriod: undefined,
+      period: undefined,
     },
   })
-
-  useEffect(() => {
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.studentName === null
-    ) {
-      setName('')
-    } else {
-      setName(studentFilter?.studentName)
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.createdPeriod === null
-    ) {
-      setPaymentDateRange([null, null])
-    } else {
-      setPaymentDateRange([
-        studentFilter?.createdPeriod[0],
-        studentFilter?.createdPeriod[1],
-      ])
-    }
-  }, [router, studentFilter])
 
   const onSubmit = data => {
     if (isDirty) {
@@ -179,14 +154,13 @@ export default function PaymentFilter({
         }
       }
       const paymentDate = validateDateRange(
-        data.createdPeriod,
-        '최근 업데이트일의 마지막날을 선택해주세요.',
+        data.period,
+        '수강신청일의 마지막날을 선택해주세요.',
       )
       if (paymentDate) {
         const filter = {
           studentName: data.studentName === '' ? null : data.studentName,
-          createdPeriod:
-            data.createdPeriod === undefined ? null : data.createdPeriod,
+          period: data.period === undefined ? null : data.period,
         }
         setStudentFilter(filter)
         onFilterSearch(true)
@@ -198,7 +172,7 @@ export default function PaymentFilter({
     setPaymentDateRange([start, end])
     const setStart = new Date(start.setHours(0, 0, 0, 0))
     const setEnd = new Date(end.setHours(23, 59, 59, 999))
-    setValue('createdPeriod', [setStart, setEnd], { shouldDirty: true })
+    setValue('period', [setStart, setEnd], { shouldDirty: true })
   }
 
   const handleYesterdayClick = () => {
@@ -251,7 +225,7 @@ export default function PaymentFilter({
               <DatePickerBox>
                 <Controller
                   control={control}
-                  name="createdPeriod"
+                  name="period"
                   render={({ field }) => (
                     <DatePicker
                       renderCustomHeader={({
@@ -305,7 +279,7 @@ export default function PaymentFilter({
                           }}
                           isReadOnly={true}
                           startContent={<i className="xi-calendar" />}
-                          {...register('createdPeriod')}
+                          {...register('period')}
                         />
                       }
                     />

@@ -42,10 +42,10 @@ import {
   SEARCH_STUDENT_BASIC_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ManagerSelectID from '@/components/common/ManagerSelectID'
 import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -1066,7 +1066,7 @@ export default function StudentsWriteCourse() {
                             </LodingDiv>
                           }
                         >
-                          <ManagerSelectID
+                          <PermissionManagerSelect
                             selectedKey={subjectManager}
                             field={field}
                             label={
@@ -1079,9 +1079,8 @@ export default function StudentsWriteCourse() {
                               id: '담당자 지정필요',
                               mUsername: '담당자 지정필요',
                             }}
-                            filter={{
-                              mPart: '영업팀',
-                            }}
+                            parmissionName={'상담관리접근'}
+                            isId={true}
                           />
                         </Suspense>
                       )}
