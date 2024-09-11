@@ -13,10 +13,6 @@ import {
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
 } from '@/graphql/mutations'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
-import { useRouter } from 'next/router'
 import Layout from './layout'
 
 const HomeArea = styled.div`
@@ -28,10 +24,29 @@ const HomeArea = styled.div`
 
   @media screen and (max-width: 1140px) {
     grid-template-columns: repeat(2, minmax(320px, 1fr));
-    grid-auto-rows: 0.5rem;
+    grid-template-areas:
+      'dash1 dash2'
+      'dash3 dash4 '
+      'dash5 dash4 '
+      'dash5 dash6';
     div {
       @media screen and (max-width: 1140px) {
         grid-row-end: span 5;
+      }
+      &:nth-child(1) {
+        grid-area: dash1;
+      }
+      &:nth-child(2) {
+        grid-area: dash2;
+      }
+      &:nth-child(3) {
+        grid-area: dash3;
+      }
+      &:nth-child(4) {
+        grid-area: dash4;
+      }
+      &:nth-child(5) {
+        grid-area: dash5;
       }
     }
   }

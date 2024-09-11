@@ -118,6 +118,17 @@ export default function PermissionTabs() {
             <PermissionTabItem topicName={'통계'} />
           </Suspense>
         </Tab>
+        <Tab key="adviceType" title="분야관리">
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <PermissionTabItem topicName={'분야관리'} />
+          </Suspense>
+        </Tab>
       </Tabs>
     </>
   )
