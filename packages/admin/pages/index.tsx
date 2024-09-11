@@ -29,10 +29,12 @@ const HomeArea = styled.div`
       'dash3 dash4 '
       'dash5 dash4 '
       'dash5 dash6';
+
     div {
-      @media screen and (max-width: 1140px) {
-        grid-row-end: span 5;
-      }
+      grid-row-end: span 5;
+    }
+
+    > div {
       &:nth-child(1) {
         grid-area: dash1;
       }
@@ -52,10 +54,27 @@ const HomeArea = styled.div`
   }
   @media screen and (max-width: 720px) {
     grid-template-columns: repeat(1, minmax(100%, 1fr));
-    grid-auto-rows: unset;
+    grid-template-areas: unset;
+
     div {
-      @media screen and (max-width: 1140px) {
-        grid-row-end: unset;
+      grid-row-end: unset;
+    }
+
+    > div {
+      &:nth-child(1) {
+        grid-area: unset;
+      }
+      &:nth-child(2) {
+        grid-area: unset;
+      }
+      &:nth-child(3) {
+        grid-area: unset;
+      }
+      &:nth-child(4) {
+        grid-area: unset;
+      }
+      &:nth-child(5) {
+        grid-area: unset;
       }
     }
   }
