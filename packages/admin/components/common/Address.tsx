@@ -1,8 +1,6 @@
 import { Button, Input } from '@nextui-org/react'
-import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
-import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { styled } from 'styled-components'
 
 const AddrBox = styled.div`
@@ -132,7 +130,6 @@ export default function Address({
             <Input
               type="text"
               id="sample4_postcode"
-              // defaultValue={defaultPostcode}
               label={<FilterLabel>주소</FilterLabel>}
               placeholder="우편번호"
               labelPlacement="outside"
@@ -163,7 +160,6 @@ export default function Address({
               labelPlacement="outside"
               variant="flat"
               radius="md"
-              // defaultValue={defaultAddress}
               value={roadAddress || ''}
               className="w-full"
               readOnly
@@ -174,9 +170,7 @@ export default function Address({
           <AreaBox>
             <Input
               type="text"
-              // defaultValue={defaultAddress}
               value={detailAddress || ''}
-              // onChange={e => setValue(e.target.value)}
               id="sample4_detailAddress"
               placeholder="상세주소"
               labelPlacement="outside"

@@ -19,9 +19,10 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/subjects/layout'
-import TeacherSelect from '@/components/common/TeacherSelect'
-import SubDivSelect from '@/components/common/SubDivSelect'
+import TeacherSelect from '@/components/common/select/TeacherSelect'
 import useMmeQuery from '@/utils/mMe'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -264,11 +265,7 @@ export default function SubjectWrite() {
             }
           />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-            </TopInfo>
+            <FormTopInfo item={null} noti={true} time={false} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox>
@@ -388,17 +385,15 @@ export default function SubjectWrite() {
                           </LodingDiv>
                         }
                       >
-                        <SubDivSelect
+                        <AdviceSelect
                           selectedKey={sub}
                           field={field}
-                          label={
-                            <FilterLabel>
-                              수강구분<span>*</span>
-                            </FilterLabel>
-                          }
+                          label={'수강구분'}
                           handleChange={handleSubChange}
-                          isHyphen={false}
-                          optionDefault={{ type: '-' }}
+                          optionDefault={{
+                            type: '-',
+                          }}
+                          category={'수강구분'}
                         />
                       </Suspense>
                     )}

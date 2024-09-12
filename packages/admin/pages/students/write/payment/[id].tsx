@@ -28,10 +28,10 @@ import {
 } from '@/graphql/mutations'
 import { useRecoilValue } from 'recoil'
 import { bankNameState, cardNameState } from '@/lib/recoilAtoms'
-import PaymentInfo from '@/components/items/PaymentInfo'
+import PaymentInfo from '@/components/layout/infoCard/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import FormTopInfo from '@/components/common/FormTopInfo'
-import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
+import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -427,7 +427,7 @@ export default function StudentsWritePayment() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <FormTopInfo item={studentData} noti={true} />
+            <FormTopInfo item={studentData} noti={true} time={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>기본정보</h4>

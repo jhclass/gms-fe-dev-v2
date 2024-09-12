@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
 import DropOutMemoForm from '@/components/form/DropOutMemoForm'
-import DropOutMemoList from '@/components/form/DropOutMemoList'
+import DropOutMemoList from '@/components/list/DropOutMemoList'
 import useMmeQuery from '@/utils/mMe'
+import TabFormTopInfo from '@/components/common/TabFormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -64,12 +65,7 @@ export default function DropOutMemo({ lectureId, subjectId, students }) {
     <>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>중도탈락 사전점검</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'중도탈락 사전점검'} noti={true} />
           <DropOutMemoForm
             setIsCreate={setIsCreate}
             subjectId={subjectId}
@@ -79,12 +75,7 @@ export default function DropOutMemo({ lectureId, subjectId, students }) {
       </DetailBox>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>중도탈락 사전점검 리스트</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'중도탈락 사전점검 리스트'} noti={true} />
           <Suspense
             fallback={
               <LodingDiv>

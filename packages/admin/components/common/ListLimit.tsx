@@ -28,37 +28,7 @@ const LimitBox = styled.div`
   }
 `
 
-// const LimitBox = styled.div`
-//   position: relative;
-//   color: ${({ theme }) => theme.colors.gray};
-//   display: flex;
-//   gap: 0.5rem;
-//   padding: 0.3rem 0.3rem;
-//   border-radius: 0.5rem;
-
-//   &:after {
-//     content: '';
-//     width: 1px;
-//     height: 50%;
-//     background: ${({ theme }) => theme.colors.gray};
-//     position: absolute;
-//     left: -0.75rem;
-//     top: 50%;
-//     transform: translateY(-50%);
-//   }
-
-//   @media screen and (max-width: 768px) {
-//     &:after {
-//       display: none;
-//     }
-//   }
-// `
-
-const Lable = styled.p`
-  color: ${({ theme }) => theme.colors.gray};
-`
-
-export default function ListLimitSelect({ currentLimit, setCurrentLimit }) {
+export default function ListLimit({ currentLimit, setCurrentLimit }) {
   const [value, setValue] = useState('10')
 
   useEffect(() => {

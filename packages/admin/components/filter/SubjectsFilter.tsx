@@ -10,7 +10,7 @@ import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import SubDivSelect from '@/components/common/SubDivSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -193,14 +193,15 @@ export default function SubjectsFilter({
                       </LodingDiv>
                     }
                   >
-                    <SubDivSelect
+                    <AdviceSelect
                       selectedKey={sub}
                       field={field}
-                      defaultValue={'-'}
-                      label={<FilterLabel>수강구분</FilterLabel>}
+                      label={'수강구분'}
                       handleChange={handleSubChange}
-                      optionDefault={{ type: '-' }}
-                      isHyphen={true}
+                      optionDefault={{
+                        type: '-',
+                      }}
+                      category={'수강구분'}
                     />
                   </Suspense>
                 )}

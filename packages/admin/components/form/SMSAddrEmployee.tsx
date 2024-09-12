@@ -9,7 +9,7 @@ import {
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import SMSAddrItem2 from '@/components/items/SMSAddrItem2'
+import SMSAddrEmployeeItem from '@/components/items/SMSAddrEmployeeItem'
 import { useLazyQuery } from '@apollo/client'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 
@@ -232,7 +232,7 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
                   <TableItem key={index}>
                     <TableRow>
                       <Checkbox key={manager.id} value={manager}></Checkbox>
-                      <SMSAddrItem2 manager={manager} />
+                      <SMSAddrEmployeeItem manager={manager} />
                     </TableRow>
                   </TableItem>
                 ))}

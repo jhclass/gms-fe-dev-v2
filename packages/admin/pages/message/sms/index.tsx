@@ -3,7 +3,7 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled, useTheme } from 'styled-components'
 import Layout from '@/pages/message/layout'
 import { Suspense, useEffect, useState } from 'react'
-import SMSTabs from '@/components/items/SMSTabs'
+import SMSTabs from '@/components/layout/tab/SMSTabs'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
@@ -31,7 +31,7 @@ import {
 import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_MESSAGE_STORAGE_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
-import AdviceSelect from '@/components/common/AdviceSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 import { useRecoilValue } from 'recoil'
 import {
   attendanceSelectedStudentState,

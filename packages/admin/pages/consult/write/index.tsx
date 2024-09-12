@@ -29,10 +29,10 @@ import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/consult/layout'
-import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
-import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
-import AdviceSelect from '@/components/common/AdviceSelect'
+import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -56,22 +56,7 @@ const DetailBox = styled.div`
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
+
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -256,11 +241,7 @@ export default function ConsultWirte() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-            </TopInfo>
+            <FormTopInfo item={null} noti={true} time={false} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox>
@@ -556,13 +537,15 @@ export default function ConsultWirte() {
                           </LodingDiv>
                         }
                       >
-                        <SubDivSelect
+                        <AdviceSelect
                           selectedKey={sub}
                           field={field}
-                          label={<FilterLabel>수강구분</FilterLabel>}
+                          label={'수강구분'}
                           handleChange={handleSubChange}
-                          isHyphen={false}
-                          optionDefault={{ type: '-' }}
+                          optionDefault={{
+                            type: '-',
+                          }}
+                          category={'수강구분'}
                         />
                       </Suspense>
                     )}

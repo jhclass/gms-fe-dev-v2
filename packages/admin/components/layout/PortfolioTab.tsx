@@ -1,10 +1,7 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
-import { Chip } from '@nextui-org/react'
-import { useRecoilValue } from 'recoil'
-import { completionStatus } from '@/lib/recoilAtoms'
 import Portfolio from '@/components/layout/Portfolio'
-import PortfolioStudentList from './PortfolioStudentList'
+import PortfolioStudentList from '@/components/list/PortfolioStudentList'
 
 const DetailBox = styled.div`
   background: #fff;

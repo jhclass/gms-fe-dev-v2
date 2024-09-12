@@ -17,10 +17,11 @@ import Layout from '@/pages/hr/layout'
 import { CREATE_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Address from '@/components/common/Address'
-import AdviceMultiSelect from '@/components/common/AdviceMultiSelect'
+import AdviceMultiSelect from '@/components/common/select/AdviceMultiSelect'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -250,11 +251,7 @@ export default function ManagerWrite() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <TopInfo>
-              <Noti>
-                <span>*</span> 는 필수입력입니다.
-              </Noti>
-            </TopInfo>
+            <FormTopInfo item={null} noti={true} time={false} />
             <form onSubmit={handleSubmit(onSubmit)}>
               <DetailDiv>
                 <FlexBox>

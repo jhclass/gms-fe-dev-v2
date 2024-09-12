@@ -12,11 +12,11 @@ import {
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
-import { Suspense, useEffect, useState } from 'react'
-import ManagerSelectID from '@/components/common/ManagerSelectID'
+import { Suspense, useState } from 'react'
 import { toast } from 'react-toastify'
 import ReqToast from '@/components/common/ReqToast'
 import SeeRequestMessage from '@/components/modal/SeeRequestMessage'
+import ManagerSelect from '@/components/common/select/ManagerSelect'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -150,7 +150,7 @@ export default function RequestMessage({
                                   </LodingDiv>
                                 }
                               >
-                                <ManagerSelectID
+                                <ManagerSelect
                                   selectedKey={manager}
                                   field={field}
                                   label={'To.'}
@@ -162,6 +162,7 @@ export default function RequestMessage({
                                   filter={{
                                     mGrade: null,
                                   }}
+                                  isId={true}
                                 />
                               </Suspense>
                             )}

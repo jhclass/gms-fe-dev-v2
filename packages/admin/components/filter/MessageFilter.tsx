@@ -10,7 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import ManagerSelect from '@/components/common/ManagerSelect'
+import ManagerSelect from '@/components/common/select/ManagerSelect'
 
 registerLocale('ko', ko)
 const _ = require('lodash')
@@ -354,6 +354,7 @@ export default function ConsultFilter({
                         mUserId: '-',
                       }}
                       filter={{}}
+                      isId={false}
                     />
                   </Suspense>
                 )}

@@ -7,7 +7,7 @@ import { Button, Chip, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/lecture/layout'
 import { SEARCH_LECTURES_MUTATION } from '@/graphql/mutations'
-import LectureInfo from '@/components/items/LectureInfo'
+import LectureInfo from '@/components/layout/infoCard/LectureInfo'
 import AbsentList from '@/components/table/AbsentList'
 import Attendance from '@/components/table/Attendance'
 import AttendanceFilter from '@/components/filter/AttendanceFilter'
@@ -20,7 +20,7 @@ import {
   completionStatus,
   gradeState,
 } from '@/lib/recoilAtoms'
-import AttendanceTabs from '@/components/items/AttendanceTabs'
+import AttendanceTabs from '@/components/layout/tab/AttendanceTabs'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import useMmeQuery from '@/utils/mMe'
 
@@ -189,7 +189,7 @@ export default function AttendancePage() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={lectureData} noti={true} />
+              <FormTopInfo item={lectureData} noti={true} time={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>

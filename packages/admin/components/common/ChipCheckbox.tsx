@@ -25,7 +25,7 @@ const checkbox = tv({
   },
 })
 
-export default function CustomCheckbox(props) {
+export default function ChipCheckbox(props) {
   const {
     children,
     isSelected,

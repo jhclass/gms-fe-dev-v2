@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
 import EducationalHistoryForm from '@/components/form/EducationalHistoryForm'
-import EducationalHistoryList from '@/components/form/EducationalHistoryList'
+import EducationalHistoryList from '@/components/list/EducationalHistoryList'
+import TabFormTopInfo from '@/components/common/TabFormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -60,12 +61,7 @@ export default function EducationalHistory({ paymentId, subjectId, mId }) {
     <>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>학력 사항 작성</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'학력 사항 작성'} noti={true} />
           <EducationalHistoryForm
             setIsCreate={setIsCreate}
             paymentId={paymentId}
@@ -75,12 +71,7 @@ export default function EducationalHistory({ paymentId, subjectId, mId }) {
       </DetailBox>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>학력 사항 리스트</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'학력 사항 리스트'} noti={true} />
           <Suspense
             fallback={
               <LodingDiv>

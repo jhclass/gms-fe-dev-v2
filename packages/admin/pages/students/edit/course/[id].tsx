@@ -9,7 +9,7 @@ import {
   SEARCH_PAYMENT_MUTATION,
   SEARCH_SUBJECT_MUTATION,
 } from '@/graphql/mutations'
-import StudentPayment from '@/components/form/StudentPayment'
+import StudentPaymentEditForm from '@/components/form/StudentPaymentEditForm'
 import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
@@ -160,7 +160,7 @@ export default function StudentsWriteCourse() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <FormTopInfo item={studentData} noti={true} />
+            <FormTopInfo item={studentData} noti={true} time={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>기본정보</h4>
@@ -219,7 +219,7 @@ export default function StudentsWriteCourse() {
               </LodingDiv>
             }
           >
-            <StudentPayment
+            <StudentPaymentEditForm
               studentData={studentData}
               studentSubjectData={studentSubjectData}
               studentPaymentData={studentPaymentData}

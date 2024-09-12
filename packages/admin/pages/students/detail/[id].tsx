@@ -10,10 +10,10 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
-import CreateStudentMemo from '@/components/form/CreateStudentMemo'
-import StudentMemo from '@/components/form/StudentMemo'
-import StudentPaymentItem from '@/components/items/PaymentItem'
-import StudentInfo from '@/components/items/StudentInfo'
+import StudentMemoForm from '@/components/form/StudentMemoForm'
+import StudentMemoEditForm from '@/components/form/StudentMemoEditForm'
+import StudentPaymentItem from '@/components/items/StudentPaymentItem'
+import StudentInfo from '@/components/layout/infoCard/StudentInfo'
 import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
@@ -200,7 +200,7 @@ export default function StudentsWrite() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={studentData} noti={true} />
+              <FormTopInfo item={studentData} noti={true} time={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본정보</h4>
@@ -321,7 +321,7 @@ export default function StudentsWrite() {
 
             <DetailBox>
               <DetailDiv>
-                <CreateStudentMemo
+                <StudentMemoForm
                   setMemoList={setMemoList}
                   studentId={studentData?.id}
                 />
@@ -329,7 +329,7 @@ export default function StudentsWrite() {
                   <MemoList>
                     {memoList?.map((item, index) => (
                       <MemoItem key={index}>
-                        <StudentMemo
+                        <StudentMemoEditForm
                           item={item}
                           setMemoList={setMemoList}
                           studentId={studentData?.id}

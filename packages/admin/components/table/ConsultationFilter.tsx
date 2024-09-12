@@ -7,9 +7,8 @@ import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import { consultFilterLimitState, consultPageState } from '@/lib/recoilAtoms'
 import { useRecoilState } from 'recoil'
-import { subMonths } from 'date-fns'
 import { ManageUser, StudentState } from '@/src/generated/graphql'
-import TableTop from '@/components/common/TableTop'
+import TableTopInfo from '@/components/common/TableTopInfo'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -215,7 +214,7 @@ export default function ConsolutationFilterTable({ studentFilter }) {
 
   return (
     <>
-      <TableTop
+      <TableTopInfo
         totalCount={searchResult?.totalCount}
         currentLimit={currentLimit}
         setCurrentLimit={setCurrentLimit}

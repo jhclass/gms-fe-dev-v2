@@ -662,6 +662,10 @@ export default function WorksLogsModal({
         .scrollbar {
           mask-image:none !important;
         }
+
+        .signBtn {
+          display: none !important;
+        }
       }
     `,
   })
@@ -672,6 +676,9 @@ export default function WorksLogsModal({
     setAttendanceData(null)
     onClose()
   }
+
+  console.log(workLogData)
+
   return (
     <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
       <ModalContent>
@@ -779,7 +786,7 @@ export default function WorksLogsModal({
                                       isDisabled={sign}
                                       size="sm"
                                       color="primary"
-                                      className="bg-accent"
+                                      className="bg-accent signBtn"
                                       onClick={() => clickSign('강사')}
                                     >
                                       서명
@@ -813,7 +820,7 @@ export default function WorksLogsModal({
                                       isDisabled={sign}
                                       size="sm"
                                       color="primary"
-                                      className="bg-accent"
+                                      className="bg-accent signBtn"
                                       onClick={() => clickSign('담당자')}
                                     >
                                       서명
@@ -849,7 +856,7 @@ export default function WorksLogsModal({
                                       isDisabled={sign}
                                       size="sm"
                                       color="primary"
-                                      className="bg-accent"
+                                      className="bg-accent signBtn"
                                       onClick={() => clickSign('관리자')}
                                     >
                                       서명
@@ -868,6 +875,9 @@ export default function WorksLogsModal({
                                 isDisabled={true}
                                 isReadOnly={true}
                                 labelPlacement="outside"
+                                defaultValue={
+                                  workLogData?.lectures?.temporaryName
+                                }
                                 minRows={1}
                                 variant="underlined"
                                 size="md"
@@ -875,7 +885,7 @@ export default function WorksLogsModal({
                                 classNames={{
                                   base: 'opacity-1',
                                 }}
-                              ></Textarea>
+                              />
                             </div>
                           </AreaBox>
                         </FlexBox>

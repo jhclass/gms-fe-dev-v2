@@ -1,9 +1,4 @@
 import { styled } from 'styled-components'
-import { useSuspenseQuery } from '@apollo/client'
-import { SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
-import { ResultSeeAlarms } from '@/src/generated/graphql'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { alarmsTotalState } from '@/lib/recoilAtoms'
 
@@ -32,9 +27,6 @@ const NotiNum = styled.span`
     font-size: 0.7rem;
   }
 `
-type seeAlarmsQuery = {
-  seeAlarms: ResultSeeAlarms
-}
 
 export default function AlarmsTotal() {
   const [alarmsTotal, setAlarmsTotal] = useRecoilState(alarmsTotalState)

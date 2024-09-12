@@ -20,6 +20,7 @@ import {
   UPDATE_STUDENT_BASIC_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import FormTopInfo from '@/components/common/FormTopInfo'
 
 const ConArea = styled.div`
   width: 100%;
@@ -230,11 +231,7 @@ export default function StudentsEditInfo() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <TopInfo>
-                <Noti>
-                  <span>*</span> 는 필수입력입니다.
-                </Noti>
-              </TopInfo>
+              <FormTopInfo item={null} noti={true} time={false} />
               <form onSubmit={handleSubmit(onSubmit)}>
                 <DetailDiv>
                   <FlexBox>

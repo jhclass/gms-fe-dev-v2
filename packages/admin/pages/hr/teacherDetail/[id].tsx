@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import Layout from '@/pages/hr/teacher/layout'
-import TeacherForm from '@/components/form/TeacherForm'
+import TeacherEditForm from '@/components/form/TeacherEditForm'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -30,7 +30,7 @@ export default function TeacherDetail() {
           </LodingDiv>
         }
       >
-        <TeacherForm managerId={managerId} />
+        <TeacherEditForm managerId={managerId} />
       </Suspense>
     </>
   )

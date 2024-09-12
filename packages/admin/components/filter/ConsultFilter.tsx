@@ -12,9 +12,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
-import AdviceSelect from '@/components/common/AdviceSelect'
-import SubDivSelect from '@/components/common/SubDivSelect'
-import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
+import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -377,14 +376,15 @@ export default function ConsultFilter({
                       </LodingDiv>
                     }
                   >
-                    <SubDivSelect
+                    <AdviceSelect
                       selectedKey={sub}
                       field={field}
-                      defaultValue={'-'}
-                      label={<FilterLabel>수강구분</FilterLabel>}
+                      label={'수강구분'}
                       handleChange={handleSubChange}
-                      optionDefault={{ type: '-' }}
-                      isHyphen={true}
+                      optionDefault={{
+                        type: '-',
+                      }}
+                      category={'수강구분'}
                     />
                   </Suspense>
                 )}

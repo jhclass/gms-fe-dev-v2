@@ -30,18 +30,17 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { SEE_STUDENT_STATE_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import ConsolutMemo from '@/components/form/ConsolutMemo'
-import CreateMemo from '@/components/form/CreateMemo'
+import ConsolutMemoForm from '@/components/form/ConsolutMemoForm'
 import useMmeQuery from '@/utils/mMe'
 import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import ConsolutRepeated from '@/components/items/ConsolutRepeated'
+import ConsultDuplicate from '@/components/items/ConsultDuplicate'
 import Layout from '@/pages/consult/layout'
-import SubDivSelect from '@/components/common/SubDivSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
-import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
-import AdviceSelect from '@/components/common/AdviceSelect'
+import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
+import ConsolutMemoEditForm from '@/components/form/ConsolutMemoEditForm'
 
 const ConArea = styled.div`
   width: 100%;
@@ -466,7 +465,7 @@ export default function ConsultDetail() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={studentState} noti={true} />
+              <FormTopInfo item={studentState} noti={true} time={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>
@@ -770,17 +769,15 @@ export default function ConsultDetail() {
                             </LodingDiv>
                           }
                         >
-                          <SubDivSelect
+                          <AdviceSelect
                             selectedKey={sub}
                             field={field}
-                            label={
-                              <LabelFlex>
-                                <FilterLabel>수강구분</FilterLabel>
-                              </LabelFlex>
-                            }
+                            label={'수강구분'}
                             handleChange={handleSubChange}
-                            isHyphen={false}
-                            optionDefault={{ type: '-' }}
+                            optionDefault={{
+                              type: '-',
+                            }}
+                            category={'수강구분'}
                           />
                         </Suspense>
                       )}
@@ -1049,7 +1046,7 @@ export default function ConsultDetail() {
                   {consultation
                     .filter(item => item.id !== studentState.id)
                     .map((item, index) => (
-                      <ConsolutRepeated
+                      <ConsultDuplicate
                         key={index}
                         index={index + 1}
                         listData={item}
@@ -1060,7 +1057,7 @@ export default function ConsultDetail() {
             )}
 
             <DetailBox>
-              <CreateMemo
+              <ConsolutMemoForm
                 setMemoList={setMemoList}
                 studentId={studentState?.id}
               />
@@ -1068,11 +1065,11 @@ export default function ConsultDetail() {
                 <MemoList>
                   {memoList?.map((item, index) => (
                     <MemoItem key={index}>
-                      <ConsolutMemo
+                      <ConsolutMemoEditForm
                         item={item}
                         setMemoList={setMemoList}
                         studentId={studentState?.id}
-                      ></ConsolutMemo>
+                      ></ConsolutMemoEditForm>
                     </MemoItem>
                   ))}
                 </MemoList>

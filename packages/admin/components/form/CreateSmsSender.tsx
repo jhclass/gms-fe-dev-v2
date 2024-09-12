@@ -9,7 +9,7 @@ import {
   SEE_ADVICE_TYPE_QUERY,
 } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import CreateAdviceTypeChip from '@/components/form/CreateAdviceTypeChip'
+import AdviceTypeList from '@/components/list/AdviceTypeList'
 import { Suspense, useState } from 'react'
 import TypeIndex from '@/components/modal/TypeIndex'
 import NotiModal from '@/components/modal/NotiModal'
@@ -309,7 +309,7 @@ export default function CreateSmsSender({ isActive, category }) {
               </LodingDiv>
             }
           >
-            <CreateAdviceTypeChip
+            <AdviceTypeList
               category={category}
               setTotalCount={setTotalCount}
               typeIsOpne={typeIsOpne}

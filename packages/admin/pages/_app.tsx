@@ -1,7 +1,7 @@
 import '@/styles/global.css'
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
-import { RecoilRoot, RecoilEnv, useRecoilState } from 'recoil'
+import { RecoilRoot, RecoilEnv } from 'recoil'
 import Head from 'next/head'
 import { GlobalStyle } from '@/styles/GlobalStyle'
 import { ApolloProvider } from '@apollo/client'
@@ -12,10 +12,10 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components'
 import { lightTheme } from '@/styles/theme'
-import { navOpenState } from '@/lib/recoilAtoms'
-import ErrorBoundary from '@/components/common/ErrorBoundary'
+import ErrorBoundary from '@/components/wrappers/ErrorBoundary'
 // import { __DEV__ } from '@apollo/client/utilities/globals'
 // import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
+
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }

@@ -17,7 +17,7 @@ import {
   StudentState,
   StudentStateResponse,
 } from '@/src/generated/graphql'
-import TableTop from '@/components/common/TableTop'
+import TableTopInfo from '@/components/common/TableTopInfo'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -272,7 +272,7 @@ export default function ConsolutationTable() {
 
   return (
     <>
-      <TableTop
+      <TableTopInfo
         totalCount={studentsData?.totalCount}
         currentLimit={currentLimit}
         setCurrentLimit={setCurrentLimit}

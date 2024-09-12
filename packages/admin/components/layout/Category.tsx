@@ -42,7 +42,7 @@ import {
   subjectPageState,
   subjectSearchState,
 } from '@/lib/recoilAtoms'
-import CategoryItem from '@/components/layout/CategoryItem'
+import CategoryItem from '@/components/items/CategoryItem'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'

@@ -24,11 +24,11 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import SubjectRoundItem from '@/components/items/SubjectRoundItem'
+import SubjectCodeDuplicate from '@/components/items/SubjectCodeDuplicate'
 import Layout from '@/pages/subjects/layout'
-import TeacherSelect from '@/components/common/TeacherSelect'
-import SubDivSelect from '@/components/common/SubDivSelect'
+import TeacherSelect from '@/components/common/select/TeacherSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -499,7 +499,7 @@ export default function SubjectDetail() {
               }
             />
             <DetailBox>
-              <FormTopInfo item={subjectState} noti={true} />
+              <FormTopInfo item={subjectState} noti={true} time={false} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>
@@ -644,18 +644,15 @@ export default function SubjectDetail() {
                             </LodingDiv>
                           }
                         >
-                          <SubDivSelect
+                          <AdviceSelect
                             selectedKey={sub}
                             field={field}
-                            defaultValue={subjectState?.subDiv}
-                            label={
-                              <FilterLabel>
-                                수강구분<span>*</span>
-                              </FilterLabel>
-                            }
+                            label={'수강구분'}
                             handleChange={handleSubChange}
-                            isHyphen={false}
-                            optionDefault={{ type: '-' }}
+                            optionDefault={{
+                              type: '-',
+                            }}
+                            category={'수강구분'}
                           />
                         </Suspense>
                       )}
@@ -1077,7 +1074,7 @@ export default function SubjectDetail() {
                   {subjectRoundItem
                     .filter(item => item.id !== subjectState.id)
                     .map((item, index) => (
-                      <SubjectRoundItem key={index} listData={item} />
+                      <SubjectCodeDuplicate key={index} listData={item} />
                     ))}
                 </ColFlexBox>
               </DetailBox>
