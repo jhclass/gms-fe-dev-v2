@@ -1,28 +1,14 @@
-import { Button, Chip } from '@nextui-org/react'
-import { useMutation, useSuspenseQuery } from '@apollo/client'
-import {
-  CHANGE_ORDER_AT_MUTATION,
-  EDIT_ADVICE_TYPE_MUTATION,
-  EDIT_PERMISSIONMS_GRANTED_MUTATION,
-} from '@/graphql/mutations'
+import { Chip } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
+import { EDIT_PERMISSIONMS_GRANTED_MUTATION } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import { styled } from 'styled-components'
-import {
-  SEARCH_PERMISSIONS_GRANTED_QUERY,
-  SEE_ADVICE_TYPE_ORDER_QUERY,
-  SEE_ADVICE_TYPE_QUERY,
-} from '@/graphql/queries'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 
 const ChipBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-`
-const MoreBtn = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.offWhite};
-  display: flex;
 `
 
 export default function PermissionEditForm({ permission }) {

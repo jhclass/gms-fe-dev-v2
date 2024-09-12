@@ -63,19 +63,6 @@ const FilterLabel = styled.div`
   color: ${({ theme }) => theme.colors.black};
   padding-bottom: 0.1rem;
   display: block;
-
-  span {
-    color: red;
-
-    &.multi {
-      font-size: 0.8rem;
-      color: ${({ theme }) => theme.colors.gray};
-    }
-  }
-
-  &.file {
-    padding-bottom: 0.5rem;
-  }
 `
 
 export default function PermissionAddForm({ permission }) {
@@ -155,11 +142,7 @@ export default function PermissionAddForm({ permission }) {
                 <Textarea
                   readOnly
                   value={String(managersName)}
-                  label={
-                    <FilterLabel>
-                      {permission.permissionName} <span>*</span>
-                    </FilterLabel>
-                  }
+                  label={<FilterLabel>{permission.permissionName}</FilterLabel>}
                   labelPlacement="outside-left"
                   className="max-w-full"
                   variant="bordered"

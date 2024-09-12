@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import category from '@/lib/category'
+import TypeBtn from './TypeBtn'
 
 const BreadcrumbBox = styled.div`
   display: flex;
@@ -86,6 +87,18 @@ const FilterBtn = styled(motion.button)`
 const ActiveIcon = styled(motion.i)`
   padding: 0.5rem;
   color: #fff;
+`
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export default function Breadcrumb(props) {
@@ -195,6 +208,20 @@ export default function Breadcrumb(props) {
                 >
                   등록
                 </Button>
+              )}
+              {props.typeBtn && (
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <TypeBtn
+                    typeLink={props.typeBtn.typeLink}
+                    permissionName={props.typeBtn.permissionName}
+                  />
+                </Suspense>
               )}
               {props.addRender !== '' && <>{props.addRender}</>}
             </BoxRt>

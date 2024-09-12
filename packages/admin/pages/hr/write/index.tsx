@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Link } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -22,6 +22,7 @@ import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -122,16 +123,6 @@ const LodingDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 export default function ManagerWrite() {
@@ -581,19 +572,19 @@ export default function ManagerWrite() {
                         </Suspense>
                       )}
                     />
-                    {(loginMGrade <= grade.subMaster ||
-                      loginMPart?.includes('인사팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          부서 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'mPartType'}
+                        typeName={'부서'}
+                        permissionName={'부서명'}
+                      />
+                    </Suspense>
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPart.message)}

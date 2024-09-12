@@ -12,7 +12,6 @@ import {
   Checkbox,
   CheckboxGroup,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Select,
@@ -29,11 +28,11 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
-import { additionalAmountState, gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
+import { additionalAmountState } from '@/lib/recoilAtoms'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
-import FormTopInfo from '../common/FormTopInfo'
+import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components/common/TypeLink'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -160,17 +159,6 @@ const BtnBox = styled.div`
   align-items: center;
 `
 
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
-
 const extractNumber = inputString => {
   const regex = /(\d+(\.\d+)?)([^\d]+)/
   const match = inputString.match(regex)
@@ -194,10 +182,6 @@ export default function StudentPaymentEditForm({
   studentPaymentData,
 }) {
   const router = useRouter()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const { userLogs } = useUserLogsMutation()
@@ -590,13 +574,6 @@ export default function StudentPaymentEditForm({
     }
   }
 
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
-    })
-  }
-
   return (
     <>
       {studentPaymentData !== null && studentSubjectData !== null && (
@@ -817,18 +794,19 @@ export default function StudentPaymentEditForm({
                       </Suspense>
                     )}
                   />
-                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={handleClick}
-                      >
-                        수강구분 추가
-                      </Link>
-                    </AddLink>
-                  )}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <TypeLink
+                      typeLink={'subDiv'}
+                      typeName={'수강구분'}
+                      permissionName={'수강구분'}
+                    />
+                  </Suspense>
                 </AreaBox>
                 <AreaBox>
                   <Input

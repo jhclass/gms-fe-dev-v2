@@ -14,7 +14,6 @@ import {
   Button,
   Chip,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Textarea,
@@ -37,6 +36,7 @@ import {
   attendanceSelectedStudentState,
   attendanceSMSState,
 } from '@/lib/recoilAtoms'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -152,17 +152,6 @@ const LodingDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 export default function message() {
@@ -352,13 +341,6 @@ export default function message() {
     setSender(e.target.value)
   }
 
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'smsSender' },
-    })
-  }
-
   return (
     <>
       <MainWrap>
@@ -504,16 +486,19 @@ export default function message() {
                     </Suspense>
                   )}
                 />
-                <AddLink>
-                  <Link
-                    size="sm"
-                    underline="hover"
-                    href="#"
-                    onClick={handleClick}
-                  >
-                    전화번호추가
-                  </Link>
-                </AddLink>
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <TypeLink
+                    typeLink={'smsSender'}
+                    typeName={'전화번호'}
+                    permissionName={'발신인증번호'}
+                  />
+                </Suspense>
               </FlexBox>
               {errors.senderNum && (
                 <p className="px-2 pt-2 text-xs text-red">

@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button, Link } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { EDIT_STUDENT_INFOMATION_MUTATION } from '@/graphql/mutations'
 import StudentInfo from '@/components/layout/infoCard/StudentInfo'
@@ -9,7 +9,7 @@ import Address from '@/components/common/Address'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
-import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components//common/TypeLink'
 
 const FormBox = styled.form`
   display: flex;
@@ -75,17 +75,6 @@ const LodingDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 export default function RecordInfoForm({ paymentData, fetchData }) {
@@ -197,13 +186,6 @@ export default function RecordInfoForm({ paymentData, fetchData }) {
     setSelectValue(e.target.value)
   }
 
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'supportType' },
-    })
-  }
-
   return (
     <>
       <StudentInfo
@@ -260,11 +242,19 @@ export default function RecordInfoForm({ paymentData, fetchData }) {
                 </Suspense>
               )}
             />
-            <AddLink>
-              <Link size="sm" underline="hover" href="#" onClick={handleClick}>
-                훈련생유형추가
-              </Link>
-            </AddLink>
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <TypeLink
+                typeLink={'supportType'}
+                typeName={'훈련생유형'}
+                permissionName={'훈련생유형'}
+              />
+            </Suspense>
             {errors.supportType && (
               <p className="px-2 pt-2 text-xs text-red">
                 {String(errors.supportType.message)}

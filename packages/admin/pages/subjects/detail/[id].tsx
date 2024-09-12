@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Link, Switch, Textarea } from '@nextui-org/react'
+import { Button, Input, Switch, Textarea } from '@nextui-org/react'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
@@ -29,6 +29,7 @@ import Layout from '@/pages/subjects/layout'
 import TeacherSelect from '@/components/common/select/TeacherSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -159,23 +160,11 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
-
 export default function SubjectDetail() {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const subjectId = typeof router.query.id === 'string' ? router.query.id : null
   const subjectsPage = router.query.page
   const subjectsLimit = router.query.limit
@@ -471,12 +460,6 @@ export default function SubjectDetail() {
   const handleTeacherChange = e => {
     setTeacher(e.target.value)
   }
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
-    })
-  }
 
   return (
     <>
@@ -662,19 +645,19 @@ export default function SubjectDetail() {
                         {String(errors.subDiv.message)}
                       </p>
                     )}
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('영업팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          수강구분 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'subDiv'}
+                        typeName={'수강구분'}
+                        permissionName={'수강구분'}
+                      />
+                    </Suspense>
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>

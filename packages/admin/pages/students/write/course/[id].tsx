@@ -14,7 +14,6 @@ import {
   Checkbox,
   CheckboxGroup,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Select,
@@ -45,6 +44,7 @@ import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -149,15 +149,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-const SelectBox = styled.select`
-  padding: 0 0.2rem;
-  font-size: 0.825rem;
-  height: 100%;
-
-  option {
-    font-size: 0.825rem;
-  }
-`
 const RadioBox = styled.div`
   display: flex;
   width: 100%;
@@ -194,17 +185,6 @@ const LineBox = styled.div`
   height: 40px;
   line-height: 40px;
   font-size: 0.875rem;
-`
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 export default function StudentsWriteCourse() {
@@ -480,12 +460,6 @@ export default function StudentsWriteCourse() {
       setValue('unCollectedAmount', subjectSelectedData?.fee)
     }
   }
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
-    })
-  }
 
   return (
     <>
@@ -741,19 +715,19 @@ export default function StudentsWriteCourse() {
                         </Suspense>
                       )}
                     />
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('영업팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          수강구분 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'subDiv'}
+                        typeName={'수강구분'}
+                        permissionName={'수강구분'}
+                      />
+                    </Suspense>
                   </AreaBox>
                   <AreaBox>
                     <Input

@@ -12,7 +12,6 @@ const _ = require('lodash')
 import {
   Button,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Select,
@@ -34,22 +33,11 @@ import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
-`
-const SwitchDiv = styled.div`
-  display: flex;
-  align-items: center;
-  background: #fff;
-  padding: 0.5rem 0 0.5rem 0.5rem;
-  border-radius: 0.75rem;
-`
-const SwitchText = styled.span`
-  width: max-content;
-  padding-right: 0.5rem;
-  font-size: 0.8rem;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -159,16 +147,6 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
 
 export default function LectureWrite() {
   const router = useRouter()
@@ -191,9 +169,7 @@ export default function LectureWrite() {
   const [teacher, setTeacher] = useState([])
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
-  const [datesSelected, setDatesSelected] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [lectureStart, setLectureStart] = useState(null)
   const [lectureStartTime, setLectureStartTime] = useState(null)
   const [lectureEndTime, setLectureEndTime] = useState(null)
   const [lectureStartDate, setLectureStartDate] = useState(null)
@@ -254,10 +230,6 @@ export default function LectureWrite() {
     setSub(e.target.value)
   }
 
-  // const handleRoomChange = e => {
-  //   setRoom(e.target.value)
-  // }
-
   const handleTypeChange = value => {
     setIsReport(value)
   }
@@ -283,13 +255,6 @@ export default function LectureWrite() {
   }
   const handleButtonClick = e => {
     fileInputRef.current.click()
-  }
-
-  const renderMonthContent = (shortMonth, longMonth, day) => {
-    const fullYear = new Date(day).getFullYear()
-    const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`
-
-    return <span title={tooltipText}>{shortMonth + 1}</span>
   }
 
   const onSubmit = async data => {
@@ -336,13 +301,6 @@ export default function LectureWrite() {
       console.error('강의 등록 중 에러 발생:', error)
       alert('강의 등록 처리 중 오류가 발생했습니다.')
     }
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
-    })
   }
 
   return (
@@ -433,78 +391,20 @@ export default function LectureWrite() {
                       {String(errors.subDiv.message)}
                     </p>
                   )}
-                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={handleClick}
-                      >
-                        수강구분 추가
-                      </Link>
-                    </AddLink>
-                  )}
-                </AreaBox>
-                {/* <AreaBox>
-                  <DatePickerBox>
-                    <Controller
-                      control={control}
-                      name="expiresDateStart"
-                      rules={{
-                        required: {
-                          value: true,
-                          message: '강의배정 년월을 선택해주세요.',
-                        },
-                      }}
-                      render={({ field }) => (
-                        <DatePicker
-                          renderMonthContent={renderMonthContent}
-                          showMonthYearPicker
-                          locale="ko"
-                          showYearDropdown
-                          selected={
-                            lectureStart === null
-                              ? null
-                              : new Date(lectureStart)
-                          }
-                          placeholderText="날짜를 선택해주세요."
-                          isClearable
-                          onChange={date => {
-                            field.onChange(date)
-                            setLectureStart(date)
-                          }}
-                          dateFormat="yyyy/MM"
-                          onChangeRaw={e => e.preventDefault()}
-                          onFocus={e => e.target.blur()}
-                          customInput={
-                            <Input
-                              label={
-                                <FilterLabel>
-                                  강의배정 년월<span>*</span>
-                                </FilterLabel>
-                              }
-                              labelPlacement="outside"
-                              variant="bordered"
-                              type="text"
-                              id="date"
-                              classNames={{
-                                input: 'caret-transparent',
-                              }}
-                              isReadOnly={true}
-                              startContent={<i className="xi-calendar" />}
-                            />
-                          }
-                        />
-                      )}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <TypeLink
+                      typeLink={'subDiv'}
+                      typeName={'수강구분'}
+                      permissionName={'수강구분'}
                     />
-                  </DatePickerBox>
-                  {errors.expiresDateStart && (
-                    <p className="px-2 pt-2 text-xs text-red">
-                      {String(errors.expiresDateStart.message)}
-                    </p>
-                  )}
-                </AreaBox> */}
+                  </Suspense>
+                </AreaBox>
               </FlexBox>
               <FlexBox>
                 <AreaBox>
@@ -1214,27 +1114,6 @@ export default function LectureWrite() {
                       {String(errors.timetableAttached.message)}
                     </p>
                   )}
-                  {/* <TimeBox>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      style={{ display: 'none' }}
-                      onChange={handleFileChange}
-                    />
-                    <Button color={'primary'} onClick={handleButtonClick}>
-                      파일 선택
-                    </Button>
-                    <Input
-                      readOnly={true}
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label=""
-                      value={fileName}
-                    />
-                  </TimeBox> */}
                 </AreaBox>
               </FlexBox>
               <BtnBox>

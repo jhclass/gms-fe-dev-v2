@@ -82,30 +82,11 @@ export default function Subjects() {
             isFilter={true}
             isWrite={true}
             rightArea={true}
-            addRender={
-              (mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                <>
-                  {
-                    <Button
-                      size="sm"
-                      radius="sm"
-                      variant="solid"
-                      color="primary"
-                      className="text-white ml-[0.5rem]"
-                      onClick={handleClick}
-                    >
-                      <ActiveIcon
-                        variants={IconVariants}
-                        initial="initial"
-                        animate={createActive ? 'active' : 'initial'}
-                        className="xi-check-min"
-                      />
-                      분야 관리
-                    </Button>
-                  }
-                </>
-              )
-            }
+            typeBtn={{
+              typeLink: 'subDiv',
+              permissionName: '수강구분',
+            }}
+            addRender={''}
           />
           <SubjectsFilter
             isActive={filterActive}

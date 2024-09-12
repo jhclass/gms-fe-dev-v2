@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Link, Switch, Textarea } from '@nextui-org/react'
+import { Button, Input, Switch, Textarea } from '@nextui-org/react'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
@@ -23,6 +23,7 @@ import TeacherSelect from '@/components/common/select/TeacherSelect'
 import useMmeQuery from '@/utils/mMe'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -46,22 +47,6 @@ const DetailBox = styled.div`
   border-radius: 0.5rem;
   padding: 1.5rem;
 `
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
 const DetailForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -70,7 +55,6 @@ const DetailForm = styled.form`
     gap: 1rem;
   }
 `
-
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -137,17 +121,6 @@ const LodingDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 export default function SubjectWrite() {
@@ -226,13 +199,6 @@ export default function SubjectWrite() {
   }
   const handleTeacherChange = e => {
     setTeacher(e.target.value)
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
-    })
   }
 
   useEffect(() => {
@@ -403,18 +369,19 @@ export default function SubjectWrite() {
                       {String(errors.subDiv.message)}
                     </p>
                   )}
-                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={handleClick}
-                      >
-                        수강구분 추가
-                      </Link>
-                    </AddLink>
-                  )}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <TypeLink
+                      typeLink={'subDiv'}
+                      typeName={'수강구분'}
+                      permissionName={'수강구분'}
+                    />
+                  </Suspense>
                 </AreaBox>
               </FlexBox>
               <FlexBox>
