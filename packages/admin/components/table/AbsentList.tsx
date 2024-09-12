@@ -28,6 +28,10 @@ const TheaderBox = styled.div`
   display: flex;
 `
 
+const Tbody = styled.div`
+  max-height: 1100px;
+`
+
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -90,19 +94,21 @@ export default function AbsentList({ lectureId, lectureDates, sortStudents }) {
                 </ClickBox>
               </TheaderBox>
             </Theader>
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <AbsentItem
-                lectureId={lectureId}
-                lectureDates={lectureDates}
-                sortStudents={sortStudents}
-              />
-            </Suspense>
+            <Tbody>
+              <Suspense
+                fallback={
+                  <LodingDiv>
+                    <i className="xi-spinner-2" />
+                  </LodingDiv>
+                }
+              >
+                <AbsentItem
+                  lectureId={lectureId}
+                  lectureDates={lectureDates}
+                  sortStudents={sortStudents}
+                />
+              </Suspense>
+            </Tbody>
           </TableWrap>
         </ScrollShadow>
       </TableArea>

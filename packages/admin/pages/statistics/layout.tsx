@@ -4,7 +4,7 @@ import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import { useAuthRedirect } from '@/utils/useAuthRedirect'
 import { useQuery } from '@apollo/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
 export default function StatisticsLayout({ children }) {
@@ -12,25 +12,29 @@ export default function StatisticsLayout({ children }) {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mId = useMme('id')
+  const [viewer, setViewer] = useState(false)
   const [permissionManagers, setPermissionManagers] = useState([])
-  const { error, data, refetch } = useQuery(SEARCH_PERMISSIONS_GRANTED_QUERY, {
-    variables: {
-      permissionName: '영업성과접근',
+  const { error, data, refetch, loading } = useQuery(
+    SEARCH_PERMISSIONS_GRANTED_QUERY,
+    {
+      variables: {
+        permissionName: '영업성과접근',
+      },
+      onCompleted: result => {
+        if (result.searchPermissionsGranted.ok) {
+          setPermissionManagers(
+            result.searchPermissionsGranted.data[0].ManageUser.map(
+              manager => manager.id,
+            ),
+          )
+        }
+      },
     },
-    onCompleted: result => {
-      if (result.searchPermissionsGranted.ok) {
-        setPermissionManagers(
-          result.searchPermissionsGranted.data[0].ManageUser.map(
-            manager => manager.id,
-          ),
-        )
-      }
-    },
-  })
+  )
 
   const isCheckingLogin = useAuthRedirect()
 
-  if (isCheckingLogin) {
+  if (loading || isCheckingLogin) {
     return null
   }
 

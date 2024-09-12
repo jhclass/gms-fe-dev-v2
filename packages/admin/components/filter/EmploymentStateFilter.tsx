@@ -2,9 +2,9 @@ import { Button, Input } from '@nextui-org/react'
 import { Suspense, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { styled } from 'styled-components'
-import SubDivSelect from '@/components/common/SubDivSelect'
-import TeacherSelect from '@/components/common/TeacherSelect'
+import TeacherSelect from '@/components/common/select/TeacherSelect'
 import { motion } from 'framer-motion'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -217,14 +217,15 @@ export default function StudentsFilter({
                     </LodingDiv>
                   }
                 >
-                  <SubDivSelect
+                  <AdviceSelect
                     selectedKey={sub}
                     field={field}
-                    defaultValue={'-'}
-                    label={<FilterLabel>수강구분</FilterLabel>}
+                    label={'수강구분'}
                     handleChange={handleSubChange}
-                    optionDefault={{ type: '-' }}
-                    isHyphen={true}
+                    optionDefault={{
+                      type: '-',
+                    }}
+                    category={'수강구분'}
                   />
                 </Suspense>
               )}

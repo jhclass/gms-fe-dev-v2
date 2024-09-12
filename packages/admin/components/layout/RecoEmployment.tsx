@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
 import RecoEmploymentForm from '@/components/form/RecoEmploymentForm'
-import RecoEmploymentList from '@/components/form/RecoEmploymentList'
+import RecoEmploymentList from '@/components/list/RecoEmploymentList'
+import TabFormTopInfo from '@/components/common/TabFormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -60,12 +61,7 @@ export default function RecoEmployment({ paymentId, subjectId, mId }) {
     <>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>취업 추천 작성</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'취업 추천 작성'} noti={true} />
           <RecoEmploymentForm
             setIsCreate={setIsCreate}
             paymentId={paymentId}
@@ -75,12 +71,7 @@ export default function RecoEmployment({ paymentId, subjectId, mId }) {
       </DetailBox>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>취업 추천 리스트</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'취업 추천 리스트'} noti={true} />
           <Suspense
             fallback={
               <LodingDiv>

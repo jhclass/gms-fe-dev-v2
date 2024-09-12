@@ -8,35 +8,13 @@ import ko from 'date-fns/locale/ko'
 import { subDays, getYear, addMonths } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useEffect, useState } from 'react'
-import {
-  SEARCH_MANAGEUSER_QUERY,
-  SEARCH_PERMISSIONS_GRANTED_QUERY,
-} from '@/graphql/queries'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import {
-  ResultSearchPermissionsGranted,
-  SearchManageUserResult,
-} from '@/src/generated/graphql'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import FormTopInfo from '@/components/common/FormTopInfo'
 registerLocale('ko', ko)
 const _ = require('lodash')
-
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  @media (max-width: 768px) {
-    align-items: flex-end;
-    flex-direction: column-reverse;
-  }
-`
-const Noti = styled.p`
-  span {
-    color: red;
-  }
-`
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -250,11 +228,7 @@ export default function PerformanceFilter({
         initial="hidden"
         animate={isActive ? 'visible' : 'hidden'}
       >
-        <TopInfo>
-          <Noti>
-            <span>*</span> 는 필수입력입니다.
-          </Noti>
-        </TopInfo>
+        <FormTopInfo item={null} noti={true} time={false} />
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
             <ItemBox>

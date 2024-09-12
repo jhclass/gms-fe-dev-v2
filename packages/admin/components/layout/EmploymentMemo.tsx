@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import { Suspense, useState } from 'react'
-import EmploymentMemoList from '@/components/form/EmploymentMemoList'
+import EmploymentMemoList from '@/components/list/EmploymentMemoList'
 import EmploymentMemoForm from '@/components/form/EmploymentMemoForm'
+import TabFormTopInfo from '@/components/common/TabFormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -60,12 +61,7 @@ export default function CareerHistory({ paymentId, subjectId, mId }) {
     <>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>상담작성</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'상담 작성'} noti={true} />
           <EmploymentMemoForm
             setIsCreate={setIsCreate}
             paymentId={paymentId}
@@ -75,12 +71,7 @@ export default function CareerHistory({ paymentId, subjectId, mId }) {
       </DetailBox>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>상담리스트</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'상담 리스트'} noti={true} />
           <Suspense
             fallback={
               <LodingDiv>

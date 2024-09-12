@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import Layout from '@/pages/member/layout'
 import { Suspense } from 'react'
-import MemberProfile from '@/components/form/MemberProfile'
+import MemberProfileForm from '@/components/form/MemberProfileForm'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -25,7 +25,7 @@ export default function Profile() {
           </LodingDiv>
         }
       >
-        <MemberProfile />
+        <MemberProfileForm />
       </Suspense>
     </>
   )

@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import Layout from '@/pages/hr/layout'
-import MemberForm from '@/components/form/MemberForm'
+import MemberEditForm from '@/components/form/MemberEditForm'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -30,7 +30,7 @@ export default function ManagerDetail() {
           </LodingDiv>
         }
       >
-        <MemberForm managerId={managerId} />
+        <MemberEditForm managerId={managerId} />
       </Suspense>
     </>
   )

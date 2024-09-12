@@ -6,13 +6,6 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_HOPE_FOR_EMPLOYMENT_MUTATION } from '@/graphql/mutations'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
-import FormTopInfo from '@/components/common/FormTopInfo'
-
-const DetailBox = styled.div`
-  background: #fff;
-  border-radius: 0.5rem;
-  /* padding: 1.5rem; */
-`
 
 const DetailDiv = styled.div`
   display: flex;
@@ -52,7 +45,6 @@ const BtnBox = styled.div`
 `
 
 export default function WishEditForm({ item, refetch }) {
-  const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [editHope] = useMutation(EDIT_HOPE_FOR_EMPLOYMENT_MUTATION)
   const {
@@ -140,212 +132,207 @@ export default function WishEditForm({ item, refetch }) {
   }
 
   return (
-    <>
-      <DetailBox>
-        <FormTopInfo item={item} noti={true} />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DetailDiv>
-            <FlexBox>
-              <AreaBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder="근무지역"
-                  variant={'bordered'}
-                  radius="md"
-                  type="text"
-                  label={
-                    <FilterLabel>
-                      근무지역 <span>*</span>
-                    </FilterLabel>
-                  }
-                  className="w-full"
-                  onChange={e => {
-                    register('workingArea').onChange(e)
-                  }}
-                  {...register('workingArea', {
-                    required: {
-                      value: true,
-                      message: '근무지역을 입력해주세요.',
-                    },
-                  })}
-                />
-                {errors.workingArea && (
-                  <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.workingArea.message)}
-                  </p>
-                )}
-              </AreaBox>
-              <AreaBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder="희망분야"
-                  variant={'bordered'}
-                  radius="md"
-                  type="text"
-                  label={
-                    <FilterLabel>
-                      희망분야<span>*</span>
-                    </FilterLabel>
-                  }
-                  className="w-full"
-                  onChange={e => {
-                    register('fieldOfHope').onChange(e)
-                  }}
-                  {...register('fieldOfHope', {
-                    required: {
-                      value: true,
-                      message: '희망분야를 입력해주세요.',
-                    },
-                  })}
-                />
-                {errors.fieldOfHope && (
-                  <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.fieldOfHope.message)}
-                  </p>
-                )}
-              </AreaBox>
-            </FlexBox>
-            <FlexBox>
-              <AreaBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder="희망보수"
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label={
-                    <FilterLabel>
-                      희망보수 <span>*</span>
-                    </FilterLabel>
-                  }
-                  className="w-full"
-                  onChange={e => {
-                    register('hopefulReward').onChange(e)
-                  }}
-                  {...register('hopefulReward', {
-                    required: {
-                      value: true,
-                      message: '희망보수를 입력해주세요.',
-                    },
-                    pattern: {
-                      value: /^[0-9]+$/,
-                      message: '숫자만 사용가능합니다.',
-                    },
-                  })}
-                />
-                {errors.hopefulReward && (
-                  <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.hopefulReward.message)}
-                  </p>
-                )}
-              </AreaBox>
-              <AreaBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder=" "
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label={
-                    <FilterLabel>
-                      근무형태 <span>*</span>
-                    </FilterLabel>
-                  }
-                  className="w-full"
-                  onChange={e => {
-                    register('workType').onChange(e)
-                  }}
-                  {...register('workType', {
-                    required: {
-                      value: true,
-                      message: '근무형태를 입력해주세요.',
-                    },
-                  })}
-                />
-                {errors.workType && (
-                  <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.workType.message)}
-                  </p>
-                )}
-              </AreaBox>
-              <AreaBox>
-                <Input
-                  labelPlacement="outside"
-                  placeholder=" "
-                  variant="bordered"
-                  radius="md"
-                  type="text"
-                  label={
-                    <FilterLabel>
-                      근무시간 <span>*</span>
-                    </FilterLabel>
-                  }
-                  className="w-full"
-                  onChange={e => {
-                    register('workingHours').onChange(e)
-                  }}
-                  {...register('workingHours', {
-                    required: {
-                      value: true,
-                      message: '근무시간을 입력해주세요.',
-                    },
-                    pattern: {
-                      value: /^[0-9]+$/,
-                      message: '숫자만 사용가능합니다.',
-                    },
-                  })}
-                />
-                {errors.workingHours && (
-                  <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.workingHours.message)}
-                  </p>
-                )}
-              </AreaBox>
-            </FlexBox>
-            <FlexBox>
-              <AreaBox>
-                <Textarea
-                  label={
-                    <FilterLabel>
-                      교육수료 후 취업에 대한 의견 <span>*</span>
-                    </FilterLabel>
-                  }
-                  labelPlacement="outside"
-                  className="max-w-full"
-                  variant="bordered"
-                  minRows={5}
-                  onChange={e => {
-                    register('opinion').onChange(e)
-                  }}
-                  {...register('opinion', {
-                    required: {
-                      value: true,
-                      message: '교육수료 후 취업에 대한 의견을 입력해주세요.',
-                    },
-                  })}
-                />
-                {errors.opinion && (
-                  <p className="px-2 pt-2 text-xs text-red">
-                    {String(errors.opinion.message)}
-                  </p>
-                )}
-              </AreaBox>
-            </FlexBox>
-            <BtnBox>
-              <Button
-                type="submit"
-                size="md"
-                radius="md"
-                variant="solid"
-                color="primary"
-                className="w-full text-white lg:w-[50%]"
-              >
-                수정
-              </Button>
-            </BtnBox>
-          </DetailDiv>
-        </form>
-      </DetailBox>
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <DetailDiv>
+        <FlexBox>
+          <AreaBox>
+            <Input
+              labelPlacement="outside"
+              placeholder="근무지역"
+              variant={'bordered'}
+              radius="md"
+              type="text"
+              label={
+                <FilterLabel>
+                  근무지역 <span>*</span>
+                </FilterLabel>
+              }
+              className="w-full"
+              onChange={e => {
+                register('workingArea').onChange(e)
+              }}
+              {...register('workingArea', {
+                required: {
+                  value: true,
+                  message: '근무지역을 입력해주세요.',
+                },
+              })}
+            />
+            {errors.workingArea && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.workingArea.message)}
+              </p>
+            )}
+          </AreaBox>
+          <AreaBox>
+            <Input
+              labelPlacement="outside"
+              placeholder="희망분야"
+              variant={'bordered'}
+              radius="md"
+              type="text"
+              label={
+                <FilterLabel>
+                  희망분야<span>*</span>
+                </FilterLabel>
+              }
+              className="w-full"
+              onChange={e => {
+                register('fieldOfHope').onChange(e)
+              }}
+              {...register('fieldOfHope', {
+                required: {
+                  value: true,
+                  message: '희망분야를 입력해주세요.',
+                },
+              })}
+            />
+            {errors.fieldOfHope && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.fieldOfHope.message)}
+              </p>
+            )}
+          </AreaBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaBox>
+            <Input
+              labelPlacement="outside"
+              placeholder="희망보수"
+              variant="bordered"
+              radius="md"
+              type="text"
+              label={
+                <FilterLabel>
+                  희망보수 <span>*</span>
+                </FilterLabel>
+              }
+              className="w-full"
+              onChange={e => {
+                register('hopefulReward').onChange(e)
+              }}
+              {...register('hopefulReward', {
+                required: {
+                  value: true,
+                  message: '희망보수를 입력해주세요.',
+                },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: '숫자만 사용가능합니다.',
+                },
+              })}
+            />
+            {errors.hopefulReward && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.hopefulReward.message)}
+              </p>
+            )}
+          </AreaBox>
+          <AreaBox>
+            <Input
+              labelPlacement="outside"
+              placeholder=" "
+              variant="bordered"
+              radius="md"
+              type="text"
+              label={
+                <FilterLabel>
+                  근무형태 <span>*</span>
+                </FilterLabel>
+              }
+              className="w-full"
+              onChange={e => {
+                register('workType').onChange(e)
+              }}
+              {...register('workType', {
+                required: {
+                  value: true,
+                  message: '근무형태를 입력해주세요.',
+                },
+              })}
+            />
+            {errors.workType && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.workType.message)}
+              </p>
+            )}
+          </AreaBox>
+          <AreaBox>
+            <Input
+              labelPlacement="outside"
+              placeholder=" "
+              variant="bordered"
+              radius="md"
+              type="text"
+              label={
+                <FilterLabel>
+                  근무시간 <span>*</span>
+                </FilterLabel>
+              }
+              className="w-full"
+              onChange={e => {
+                register('workingHours').onChange(e)
+              }}
+              {...register('workingHours', {
+                required: {
+                  value: true,
+                  message: '근무시간을 입력해주세요.',
+                },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: '숫자만 사용가능합니다.',
+                },
+              })}
+            />
+            {errors.workingHours && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.workingHours.message)}
+              </p>
+            )}
+          </AreaBox>
+        </FlexBox>
+        <FlexBox>
+          <AreaBox>
+            <Textarea
+              label={
+                <FilterLabel>
+                  교육수료 후 취업에 대한 의견 <span>*</span>
+                </FilterLabel>
+              }
+              labelPlacement="outside"
+              className="max-w-full"
+              variant="bordered"
+              minRows={5}
+              onChange={e => {
+                register('opinion').onChange(e)
+              }}
+              {...register('opinion', {
+                required: {
+                  value: true,
+                  message: '교육수료 후 취업에 대한 의견을 입력해주세요.',
+                },
+              })}
+            />
+            {errors.opinion && (
+              <p className="px-2 pt-2 text-xs text-red">
+                {String(errors.opinion.message)}
+              </p>
+            )}
+          </AreaBox>
+        </FlexBox>
+        <BtnBox>
+          <Button
+            type="submit"
+            size="md"
+            radius="md"
+            variant="solid"
+            color="primary"
+            className="w-full text-white lg:w-[50%]"
+          >
+            수정
+          </Button>
+        </BtnBox>
+      </DetailDiv>
+    </form>
   )
 }

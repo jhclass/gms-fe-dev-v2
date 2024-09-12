@@ -246,8 +246,8 @@ export const CREATE_STAMP_QUERY = gql`
 `
 
 export const SEE_MANAGEUSER_QUERY = gql`
-  query Query($limit: Int, $page: Int) {
-    seeManageUser(limit: $limit, page: $page) {
+  query Query($limit: Int, $page: Int, $resign: String) {
+    seeManageUser(limit: $limit, page: $page, resign: $resign) {
       totalCount
       ok
       message

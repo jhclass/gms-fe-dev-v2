@@ -9,7 +9,7 @@ import {
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import SMSAddrItem1 from '@/components/items/SMSAddrItem1'
+import SMSAddrStudentItem from '@/components/items/SMSAddrStudentItem'
 import { useMutation } from '@apollo/client'
 import { SEARCH_STUDENT_FILTER_MUTATION } from '@/graphql/mutations'
 
@@ -220,7 +220,7 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
                   <TableItem key={index}>
                     <TableRow>
                       <Checkbox key={student.id} value={student}></Checkbox>
-                      <SMSAddrItem1 student={student} />
+                      <SMSAddrStudentItem student={student} />
                     </TableRow>
                   </TableItem>
                 ))}

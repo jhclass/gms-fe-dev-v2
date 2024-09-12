@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import {
   Button,
-  CheckboxGroup,
   Input,
   Modal,
   ModalBody,
@@ -13,19 +12,10 @@ import {
 import { useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
-import {
-  DEV_EDIT_MANAGE_USER_MUTATION,
-  EDIT_MANAGE_USER_MUTATION,
-} from '@/graphql/mutations'
+import { EDIT_MANAGE_USER_MUTATION } from '@/graphql/mutations'
 import { useEffect } from 'react'
 import { MME_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 
-const DetailBox = styled.div`
-  margin-top: 2rem;
-  background: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-`
 const TopInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -79,7 +69,7 @@ const FilterLabel = styled.p`
   }
 `
 
-export default function LectureDates({ isOpen, onClose, managerData }) {
+export default function ChangePassword({ isOpen, onClose, managerData }) {
   const { userLogs } = useUserLogsMutation()
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
   const {

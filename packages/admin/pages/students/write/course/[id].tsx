@@ -34,7 +34,6 @@ import {
   completionStatus,
   employmentStatus,
   gradeState,
-  subStatusState,
 } from '@/lib/recoilAtoms'
 import SubjectModal from '@/components/modal/SubjectModal'
 import {
@@ -42,10 +41,10 @@ import {
   SEARCH_STUDENT_BASIC_MUTATION,
 } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
-import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
+import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -259,7 +258,6 @@ export default function StudentsWriteCourse() {
     onOpen: sbjOpen,
     onClose: sbjClose,
   } = useDisclosure()
-  const subStatus = useRecoilValue(subStatusState)
   const additionalState = useRecoilValue(additionalAmountState)
   const { unassigned } = useRecoilValue(assignmentState)
   const { notAttended } = useRecoilValue(completionStatus)
@@ -495,7 +493,9 @@ export default function StudentsWriteCourse() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            {studentData && <FormTopInfo item={studentData} noti={true} />}
+            {studentData && (
+              <FormTopInfo item={studentData} noti={true} time={true} />
+            )}
             <DetailDiv>
               <AreaTitle>
                 <h4>기본정보</h4>
@@ -728,13 +728,15 @@ export default function StudentsWriteCourse() {
                             </LodingDiv>
                           }
                         >
-                          <SubDivSelect
+                          <AdviceSelect
                             selectedKey={sub}
                             field={field}
-                            label={<FilterLabel>수강구분</FilterLabel>}
+                            label={'수강구분'}
                             handleChange={handleSubChange}
-                            isHyphen={false}
-                            optionDefault={{ type: '-' }}
+                            optionDefault={{
+                              type: '-',
+                            }}
+                            category={'수강구분'}
                           />
                         </Suspense>
                       )}

@@ -22,8 +22,8 @@ import {
   UPDATE_STUDENT_COURSE_MUTATION,
 } from '@/graphql/mutations'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
-import PaymentInfo from '@/components/items/PaymentInfo'
-import StudentInfo from '@/components/items/StudentInfo'
+import PaymentInfo from '@/components/layout/infoCard/PaymentInfo'
+import StudentInfo from '@/components/layout/infoCard/StudentInfo'
 import DropOutInput from '@/components/modal/DropOutInput'
 import FormTopInfo from '@/components/common/FormTopInfo'
 
@@ -417,7 +417,7 @@ export default function StudentsWrite() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={studentData} noti={true} />
+              <FormTopInfo item={studentData} noti={true} time={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본정보</h4>
@@ -432,7 +432,11 @@ export default function StudentsWrite() {
             {studentPaymentData !== undefined && (
               <>
                 <DetailBox>
-                  <FormTopInfo item={studentPaymentData} noti={true} />
+                  <FormTopInfo
+                    item={studentPaymentData}
+                    noti={true}
+                    time={true}
+                  />
                   <DetailDiv>
                     <AreaTitle>
                       <h4>수강 정보</h4>

@@ -10,8 +10,8 @@ import { MME_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
 import { Tooltip, useDisclosure } from '@nextui-org/react'
 import RequestMessage from '@/components/modal/RequestMessage'
-import HeaderNoti from '@/components/common/HeaderNoti'
 import { LogUserOut } from '@/lib/apolloClient'
+import HeaderNoti from '@/components/layout/HeaderNoti'
 
 const HeaderSec = styled(motion.header)<{
   $navOpen: boolean

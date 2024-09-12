@@ -1,7 +1,5 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { studentPageState, subStatusState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input } from '@nextui-org/react'
 import { Suspense, useState } from 'react'
@@ -11,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRouter } from 'next/router'
-import SubDivSelect from '@/components/common/SubDivSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -211,14 +209,15 @@ export default function NonassignedFilter({
                       </LodingDiv>
                     }
                   >
-                    <SubDivSelect
+                    <AdviceSelect
                       selectedKey={sub}
                       field={field}
-                      defaultValue={'-'}
-                      label={<FilterLabel>수강구분</FilterLabel>}
+                      label={'수강구분'}
                       handleChange={handleSubChange}
-                      isHyphen={true}
-                      optionDefault={{ type: '-' }}
+                      optionDefault={{
+                        type: '-',
+                      }}
+                      category={'수강구분'}
                     />
                   </Suspense>
                 )}

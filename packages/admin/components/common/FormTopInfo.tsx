@@ -35,7 +35,7 @@ const UpdateCon = styled.p`
     align-items: flex-end;
   }
 `
-export default function FormTopInfo({ noti, item }) {
+export default function FormTopInfo({ noti, item, time }) {
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -59,23 +59,27 @@ export default function FormTopInfo({ noti, item }) {
         )}
       </Noti>
       <UpdateTime>
-        <UpdateCon>
-          <span>최근 업데이트 : </span>
-          {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-            <>
-              {item?.lastModifiedByName && item?.lastModifiedByName}(
-              {item?.lastModifiedByUserId && item?.lastModifiedByUserId})
-            </>
-          ) : null}
-        </UpdateCon>
-        {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-          <span>-</span>
-        ) : null}
-        <UpdateCon>
-          {item?.lastModifiedTime
-            ? formatDate(item?.lastModifiedTime)
-            : formatDate(item?.createdAt)}
-        </UpdateCon>
+        {time && (
+          <>
+            <UpdateCon>
+              <span>최근 업데이트 : </span>
+              {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
+                <>
+                  {item?.lastModifiedByName && item?.lastModifiedByName}(
+                  {item?.lastModifiedByUserId && item?.lastModifiedByUserId})
+                </>
+              ) : null}
+            </UpdateCon>
+            {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
+              <span>-</span>
+            ) : null}
+            <UpdateCon>
+              {item?.lastModifiedTime
+                ? formatDate(item?.lastModifiedTime)
+                : formatDate(item?.createdAt)}
+            </UpdateCon>
+          </>
+        )}
       </UpdateTime>
     </TopInfo>
   )

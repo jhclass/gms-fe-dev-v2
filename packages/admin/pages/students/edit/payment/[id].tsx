@@ -28,10 +28,10 @@ import {
   UPDATE_STUDENT_RECEIVED_MUTATION,
 } from '@/graphql/mutations'
 import Layout from '@/pages/students/layout'
-import PaymentInfo from '@/components/items/PaymentInfo'
+import PaymentInfo from '@/components/layout/infoCard/PaymentInfo'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import FormTopInfo from '@/components/common/FormTopInfo'
-import PermissionManagerSelect from '@/components/common/PermissionManagerSelect'
+import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -467,7 +467,11 @@ export default function StudentsWritePayment() {
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
             {studentPaymentData?.student && (
-              <FormTopInfo item={studentPaymentData?.student} noti={true} />
+              <FormTopInfo
+                item={studentPaymentData?.student}
+                noti={true}
+                time={true}
+              />
             )}
             <DetailDiv>
               <AreaTitle>
@@ -504,7 +508,7 @@ export default function StudentsWritePayment() {
             </DetailDiv>
           </DetailBox>
           <DetailBox>
-            <FormTopInfo item={studentPaymentData} noti={true} />
+            <FormTopInfo item={studentPaymentData} noti={true} time={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>수강 정보</h4>
@@ -518,7 +522,7 @@ export default function StudentsWritePayment() {
           {paymentDetailData !== null && (
             <form onSubmit={handleSubmit(onPaymentDetailSubmit)}>
               <DetailBox>
-                <FormTopInfo item={paymentDetailData} noti={true} />
+                <FormTopInfo item={paymentDetailData} noti={true} time={true} />
                 <DetailDiv>
                   <AreaTitle>
                     <h4>결제 정보</h4>

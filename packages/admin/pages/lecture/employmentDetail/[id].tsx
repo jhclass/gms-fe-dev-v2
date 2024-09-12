@@ -6,9 +6,9 @@ import { useRouter } from 'next/router'
 import { Button } from '@nextui-org/react'
 import { useLazyQuery } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import LectureInfo from '@/components/items/LectureInfo'
-import EmploymentTabs from '@/components/items/EmploymentTabs'
-import EmploymentInfoForm from '@/components/form/EmploymentInfoForm'
+import LectureInfo from '@/components/layout/infoCard/LectureInfo'
+import EmploymentTabs from '@/components/layout/tab/EmploymentTabs'
+import RecordInfoForm from '@/components/form/RecordInfoForm'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import { SEARCH_STUDENT_RECORD_QUERY } from '@/graphql/queries'
 
@@ -103,7 +103,11 @@ export default function EmploymentDetail() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={subjectData?.lectures} noti={false} />
+              <FormTopInfo
+                item={subjectData?.lectures}
+                noti={false}
+                time={true}
+              />
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>
@@ -132,11 +136,12 @@ export default function EmploymentDetail() {
               </DetailDiv>
             </DetailBox>
             <DetailBox>
+              <FormTopInfo item={paymentData} noti={true} time={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>학생정보</h4>
                 </AreaTitle>
-                <EmploymentInfoForm
+                <RecordInfoForm
                   paymentData={paymentData}
                   fetchData={fetchData}
                 />

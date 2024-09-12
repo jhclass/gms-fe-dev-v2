@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import PermissionCate from '@/components/form/PermissionCate'
+import PermissionCate from '@/components/layout/PermissionCate'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'

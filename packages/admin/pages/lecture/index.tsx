@@ -45,7 +45,7 @@ export default function Lecture() {
       }
       setLectureFilter(filter)
     }
-  }, [mId])
+  }, [mId, mGrade])
 
   return (
     <>

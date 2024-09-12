@@ -5,8 +5,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { EDIT_PORTFOLIO_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useRef, useState } from 'react'
-import PortfolioList from '../layout/PortfolioList'
-import { SEARCH_SM_QUERY } from '@/graphql/queries'
+import PortfolioList from '@/components/layout/PortfolioList'
 
 const DetailForm = styled.form`
   display: flex;

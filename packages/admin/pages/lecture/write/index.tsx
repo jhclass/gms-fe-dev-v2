@@ -20,7 +20,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { gradeState, subStatusState } from '@/lib/recoilAtoms'
+import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_LECTURES_MUTATION } from '@/graphql/mutations'
@@ -29,11 +29,11 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/subjects/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
-import TeacherMultiSelectID from '@/components/common/TeacherMultiSelectID'
+import TeacherMultiSelectID from '@/components/common/select/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
-import SubDivSelect from '@/components/common/SubDivSelect'
 import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -187,8 +187,6 @@ export default function LectureWrite() {
     },
   })
   const [subjectState, setSubjectState] = useState(null)
-  const [subjectRoundItem, setSubjectRoundItem] = useState([])
-  const subStatus = useRecoilValue(subStatusState)
   const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState([])
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
@@ -353,7 +351,7 @@ export default function LectureWrite() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <FormTopInfo item={subjectState} noti={true} />
+            <FormTopInfo item={subjectState} noti={true} time={false} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox style={{ minWidth: '20%' }}>
@@ -417,17 +415,15 @@ export default function LectureWrite() {
                           </LodingDiv>
                         }
                       >
-                        <SubDivSelect
+                        <AdviceSelect
                           selectedKey={sub}
                           field={field}
-                          label={
-                            <FilterLabel>
-                              수강구분<span>*</span>
-                            </FilterLabel>
-                          }
+                          label={'수강구분'}
                           handleChange={handleSubChange}
-                          isHyphen={false}
-                          optionDefault={{ type: '-' }}
+                          optionDefault={{
+                            type: '-',
+                          }}
+                          category={'수강구분'}
                         />
                       </Suspense>
                     )}

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { subStatusState, subjectPageState } from '@/lib/recoilAtoms'
+import { useResetRecoilState } from 'recoil'
+import { subjectPageState } from '@/lib/recoilAtoms'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { registerLocale } from 'react-datepicker'
@@ -10,7 +10,7 @@ import ko from 'date-fns/locale/ko'
 registerLocale('ko', ko)
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import SubDivSelect from '@/components/common/SubDivSelect'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const FilterBox = styled(motion.div)`
   z-index: 2;
@@ -95,7 +95,6 @@ export default function SubjectsFilter({
   setSubjectFilter,
   subjectFilter,
 }) {
-  const subStatus = useRecoilValue(subStatusState)
   const router = useRouter()
   const subjectPage = useResetRecoilState(subjectPageState)
   const [sub, setSub] = useState('-')
@@ -194,14 +193,15 @@ export default function SubjectsFilter({
                       </LodingDiv>
                     }
                   >
-                    <SubDivSelect
+                    <AdviceSelect
                       selectedKey={sub}
                       field={field}
-                      defaultValue={'-'}
-                      label={<FilterLabel>수강구분</FilterLabel>}
+                      label={'수강구분'}
                       handleChange={handleSubChange}
-                      optionDefault={{ type: '-' }}
-                      isHyphen={true}
+                      optionDefault={{
+                        type: '-',
+                      }}
+                      category={'수강구분'}
                     />
                   </Suspense>
                 )}

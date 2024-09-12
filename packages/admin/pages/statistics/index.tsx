@@ -1,12 +1,11 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import { motion } from 'framer-motion'
 import Layout from '@/pages/statistics/layout'
 import PerformanceFilter from '@/components/filter/PerformanceFilter'
 import { Suspense, useState } from 'react'
 import { Button } from '@nextui-org/react'
-import StatisticsList from '@/components/items/StatisticsList'
+import StatisticsList from '@/components/list/StatisticsList'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -30,20 +29,6 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-const ActiveIcon = styled(motion.i)`
-  color: #fff;
-`
-
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
 
 export default function Statistics() {
   const [filterActive, setFilterActive] = useState(true)

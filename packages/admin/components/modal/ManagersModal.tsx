@@ -10,7 +10,7 @@ import {
   ScrollShadow,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import SearchEmployee from '@/components/form/SearchEmployee'
+import SearchEmployee from '@/components/table/SearchEmployee'
 
 const ChipBox = styled.div`
   display: flex;

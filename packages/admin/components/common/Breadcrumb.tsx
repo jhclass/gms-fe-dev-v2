@@ -5,13 +5,6 @@ import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import category from '@/lib/category'
 
-type propsTypes = {
-  rightArea: boolean
-  isActive?: string
-  onFilterToggle?: React.Dispatch<React.SetStateAction<number>>
-  addRender?: React.ReactNode
-}
-
 const BreadcrumbBox = styled.div`
   display: flex;
   justify-content: space-between;

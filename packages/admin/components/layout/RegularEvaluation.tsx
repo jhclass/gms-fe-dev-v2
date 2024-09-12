@@ -2,7 +2,8 @@ import styled from 'styled-components'
 import { Suspense, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import ReaularEvaluationForm from '@/components/form/ReaularEvaluationForm'
-import ReaularEvaluationList from '@/components/form/ReaularEvaluationList'
+import ReaularEvaluationList from '@/components/list/ReaularEvaluationList'
+import TabFormTopInfo from '@/components/common/TabFormTopInfo'
 
 const DetailBox = styled.div`
   background: #fff;
@@ -63,12 +64,7 @@ export default function RegularEvaluation({ lectureId, subjectId }) {
     <>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>정기평가 내용설정</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'정기평가 내용설정'} noti={true} />
           <ReaularEvaluationForm
             setIsCreate={setIsCreate}
             subjectId={subjectId}
@@ -77,12 +73,7 @@ export default function RegularEvaluation({ lectureId, subjectId }) {
       </DetailBox>
       <DetailBox>
         <DetailDiv>
-          <AreaTitle>
-            <h4>정기평가 내용설정 리스트</h4>
-            <Noti>
-              <span>*</span> 는 필수입력입니다.
-            </Noti>
-          </AreaTitle>
+          <TabFormTopInfo title={'정기평가 내용설정 리스트'} noti={true} />
           <Suspense
             fallback={
               <LodingDiv>

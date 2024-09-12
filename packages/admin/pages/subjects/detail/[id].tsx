@@ -9,16 +9,8 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import {
-  Button,
-  Input,
-  Link,
-  Select,
-  SelectItem,
-  Switch,
-  Textarea,
-} from '@nextui-org/react'
-import { gradeState, subStatusState } from '@/lib/recoilAtoms'
+import { Button, Input, Link, Switch, Textarea } from '@nextui-org/react'
+import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import {
@@ -32,11 +24,11 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { SEE_SUBJECT_QUERY } from '@/graphql/queries'
 import useMmeQuery from '@/utils/mMe'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import SubjectRoundItem from '@/components/items/SubjectRoundItem'
+import SubjectCodeDuplicate from '@/components/items/SubjectCodeDuplicate'
 import Layout from '@/pages/subjects/layout'
-import TeacherSelect from '@/components/common/TeacherSelect'
-import SubDivSelect from '@/components/common/SubDivSelect'
+import TeacherSelect from '@/components/common/select/TeacherSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 const ConArea = styled.div`
   width: 100%;
@@ -196,7 +188,6 @@ export default function SubjectDetail() {
   const [subjectState, setSubjectState] = useState(null)
   const [subjectRoundItem, setSubjectRoundItem] = useState([])
   const { userLogs } = useUserLogsMutation()
-  const subStatus = useRecoilValue(subStatusState)
 
   const { register, control, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -508,7 +499,7 @@ export default function SubjectDetail() {
               }
             />
             <DetailBox>
-              <FormTopInfo item={subjectState} noti={true} />
+              <FormTopInfo item={subjectState} noti={true} time={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>
@@ -653,18 +644,15 @@ export default function SubjectDetail() {
                             </LodingDiv>
                           }
                         >
-                          <SubDivSelect
+                          <AdviceSelect
                             selectedKey={sub}
                             field={field}
-                            defaultValue={subjectState?.subDiv}
-                            label={
-                              <FilterLabel>
-                                수강구분<span>*</span>
-                              </FilterLabel>
-                            }
+                            label={'수강구분'}
                             handleChange={handleSubChange}
-                            isHyphen={false}
-                            optionDefault={{ type: '-' }}
+                            optionDefault={{
+                              type: '-',
+                            }}
+                            category={'수강구분'}
                           />
                         </Suspense>
                       )}
@@ -1086,7 +1074,7 @@ export default function SubjectDetail() {
                   {subjectRoundItem
                     .filter(item => item.id !== subjectState.id)
                     .map((item, index) => (
-                      <SubjectRoundItem key={index} listData={item} />
+                      <SubjectCodeDuplicate key={index} listData={item} />
                     ))}
                 </ColFlexBox>
               </DetailBox>

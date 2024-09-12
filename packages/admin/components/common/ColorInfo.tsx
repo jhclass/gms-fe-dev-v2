@@ -1,6 +1,4 @@
-import { Button } from '@nextui-org/react'
 import { styled } from 'styled-components'
-import ListLimit from '@/components/common/ListLimit'
 
 const ColorCipBox = styled.div`
   display: flex;

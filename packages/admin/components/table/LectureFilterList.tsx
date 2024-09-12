@@ -73,12 +73,16 @@ const Theader = styled.div`
 const TheaderBox = styled.div`
   display: flex;
 `
+const Tflag = styled.div`
+  width: 0.5rem;
+  min-width: 7px;
+`
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
 `
-const Tflag = styled.div`
+const TIcon = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
@@ -253,8 +257,9 @@ export default function LectureFilterList({ lectureFilter }) {
           <TableWrap>
             <Theader>
               <TheaderBox>
+                <Tflag></Tflag>
                 <ClickBox>
-                  <Tflag></Tflag>
+                  <TIcon></TIcon>
                   <Tnum>No</Tnum>
                   <Troom>강의실</Troom>
                   <TsubDiv>수강구분</TsubDiv>

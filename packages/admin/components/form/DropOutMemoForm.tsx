@@ -11,10 +11,7 @@ import {
   Textarea,
 } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
-import {
-  CREATE_PRE_INSPECTION_MUTATION,
-  CREATE_STUDENT_CONSULTATION_MUTATION,
-} from '@/graphql/mutations'
+import { CREATE_PRE_INSPECTION_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
@@ -113,11 +110,7 @@ const RadioBox = styled.div`
   align-items: center;
 `
 
-export default function EmploymentMemoForm({
-  setIsCreate,
-  subjectId,
-  students,
-}) {
+export default function DropOutMemoForm({ setIsCreate, subjectId, students }) {
   const { userLogs } = useUserLogsMutation()
   const [createPreInspection] = useMutation(CREATE_PRE_INSPECTION_MUTATION)
   const { register, handleSubmit, reset, control, formState } = useForm()
