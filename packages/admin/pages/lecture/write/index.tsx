@@ -351,7 +351,7 @@ export default function LectureWrite() {
         <ConArea>
           <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
           <DetailBox>
-            <FormTopInfo item={subjectState} noti={true} time={true} />
+            <FormTopInfo item={subjectState} noti={true} time={false} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>
               <FlexBox>
                 <AreaBox style={{ minWidth: '20%' }}>

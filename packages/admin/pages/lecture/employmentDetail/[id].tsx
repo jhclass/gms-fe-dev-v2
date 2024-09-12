@@ -136,6 +136,7 @@ export default function EmploymentDetail() {
               </DetailDiv>
             </DetailBox>
             <DetailBox>
+              <FormTopInfo item={paymentData} noti={true} time={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>학생정보</h4>

@@ -464,6 +464,7 @@ export default function StudentsWritePayment() {
           </DetailBox>
           {studentPaymentData !== null && (
             <DetailBox>
+              <FormTopInfo item={studentPaymentData} noti={true} time={true} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>수강 정보</h4>
@@ -477,6 +478,7 @@ export default function StudentsWritePayment() {
           )}
           <form onSubmit={handleSubmit(onPaymentDetailSubmit)}>
             <DetailBox>
+              <FormTopInfo item={studentPaymentData} noti={true} time={false} />
               <DetailDiv>
                 <AreaTitle>
                   <h4>결제 정보</h4>

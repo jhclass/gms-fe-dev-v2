@@ -33,6 +33,7 @@ import { additionalAmountState, gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
+import FormTopInfo from '../common/FormTopInfo'
 
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -601,6 +602,7 @@ export default function StudentPaymentEditForm({
       {studentPaymentData !== null && studentSubjectData !== null && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <DetailBox>
+            <FormTopInfo item={studentPaymentData} noti={true} time={true} />
             <DetailDiv>
               <AreaTitle>
                 <h4>수강료 정보</h4>

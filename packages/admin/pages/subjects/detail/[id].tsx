@@ -499,7 +499,7 @@ export default function SubjectDetail() {
               }
             />
             <DetailBox>
-              <FormTopInfo item={subjectState} noti={true} time={false} />
+              <FormTopInfo item={subjectState} noti={true} time={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
                 <FlexBox>
                   <AreaBox>

@@ -1,10 +1,10 @@
 import { Suspense, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Button, Link, Select, SelectItem } from '@nextui-org/react'
+import { Button, Link } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import { EDIT_STUDENT_INFOMATION_MUTATION } from '@/graphql/mutations'
-import StudentInfo from '@/components/items/StudentInfo'
+import StudentInfo from '@/components/layout/infoCard/StudentInfo'
 import Address from '@/components/common/Address'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -206,7 +206,6 @@ export default function RecordInfoForm({ paymentData, fetchData }) {
 
   return (
     <>
-      <FormTopInfo item={paymentData} noti={true} time={true} />
       <StudentInfo
         studentData={paymentData.student}
         detailAll={false}

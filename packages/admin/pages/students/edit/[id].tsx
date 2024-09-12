@@ -231,7 +231,7 @@ export default function StudentsEditInfo() {
           <ConArea>
             <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
             <DetailBox>
-              <FormTopInfo item={null} noti={true} time={false} />
+              <FormTopInfo item={studentData} noti={true} time={true} />
               <form onSubmit={handleSubmit(onSubmit)}>
                 <DetailDiv>
                   <FlexBox>
