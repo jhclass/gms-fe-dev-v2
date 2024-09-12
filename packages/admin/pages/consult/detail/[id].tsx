@@ -13,7 +13,6 @@ import {
   Button,
   Chip,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Textarea,
@@ -41,6 +40,7 @@ import FormTopInfo from '@/components/common/FormTopInfo'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import ConsolutMemoEditForm from '@/components/form/ConsolutMemoEditForm'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -172,26 +172,12 @@ const MemoItem = styled.li`
     gap: 0.3rem;
   }
 `
-const LabelFlex = styled.div`
-  position: relative;
-`
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
 
 export default function ConsultDetail() {
   const router = useRouter()
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [updateStudent] = useMutation(UPDATE_STUDENT_STATE_MUTATION)
   const [deleteStudent] = useMutation(DELETE_STUDENT_STATE_MUTATION)
@@ -451,13 +437,6 @@ export default function ConsultDetail() {
     setManager(e.target.value)
   }
 
-  const handleAddTypeClick = type => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: type },
-    })
-  }
-
   return (
     <>
       {studentState !== null && (
@@ -692,18 +671,19 @@ export default function ConsultDetail() {
                       {String(errors.adviceTypes.message)}
                     </p>
                   )}
-                  {mGrade <= grade.subMaster && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={() => handleAddTypeClick('adviceType')}
-                      >
-                        상담분야 추가
-                      </Link>
-                    </AddLink>
-                  )}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <TypeLink
+                      typeLink={'adviceType'}
+                      typeName={'상담분야'}
+                      permissionName={'상담분야'}
+                    />
+                  </Suspense>
                 </AreaBox>
                 <AreaBox>
                   <Textarea
@@ -742,19 +722,19 @@ export default function ConsultDetail() {
                         />
                       )}
                     />
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('영업팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={() => handleAddTypeClick('receipt')}
-                        >
-                          접수구분 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'receipt'}
+                        typeName={'접수구분'}
+                        permissionName={'접수구분'}
+                      />
+                    </Suspense>
                   </AreaBox>
                   <AreaBox>
                     <Controller
@@ -782,19 +762,19 @@ export default function ConsultDetail() {
                         </Suspense>
                       )}
                     />
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('영업팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={() => handleAddTypeClick('subDiv')}
-                        >
-                          수강구분 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'subDiv'}
+                        typeName={'수강구분'}
+                        permissionName={'수강구분'}
+                      />
+                    </Suspense>
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>

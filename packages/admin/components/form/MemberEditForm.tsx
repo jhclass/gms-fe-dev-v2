@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
@@ -21,10 +21,8 @@ import { SearchManageUserResult } from '@/src/generated/graphql'
 import ChangePassword from '@/components/modal/ChangePassword'
 import Address from '@/components/common/Address'
 import AdviceMultiSelect from '@/components/common/select/AdviceMultiSelect'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components/common/TypeLink'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -144,27 +142,11 @@ const FilterLabel = styled.p`
     }
   }
 `
-const InputText = styled.span`
-  display: inline-block;
-  font-size: 0.75rem;
-  width: 2rem;
-`
 const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-`
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 type searchManageUserQuery = {
@@ -174,11 +156,7 @@ type searchManageUserQuery = {
 export default function MemberEditForm({ managerId }) {
   const router = useRouter()
   const theme = useTheme()
-  const grade = useRecoilValue(gradeState)
   const { userLogs } = useUserLogsMutation()
-  const { useMme } = useMmeQuery()
-  const loginMGrade = useMme('mGrade')
-  const loginMPart = useMme('mPart') || []
   const [selectMpart, setSelectMpart] = useState([])
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
@@ -326,13 +304,6 @@ export default function MemberEditForm({ managerId }) {
 
   const clickCreate = () => {
     createTamp({ variables: { manageUserId: managerData.id } })
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'mPartType' },
-    })
   }
 
   return (
@@ -683,19 +654,19 @@ export default function MemberEditForm({ managerId }) {
                         </Suspense>
                       )}
                     />
-                    {(loginMGrade <= grade.subMaster ||
-                      loginMPart?.includes('인사팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          부서 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'mPartType'}
+                        typeName={'부서'}
+                        permissionName={'부서명'}
+                      />
+                    </Suspense>
                     {errors.mPart && (
                       <p className="px-2 pt-2 text-xs text-red">
                         {String(errors.mPart.message)}

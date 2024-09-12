@@ -12,13 +12,12 @@ const _ = require('lodash')
 import {
   Button,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { progressStatusState, gradeState } from '@/lib/recoilAtoms'
+import { progressStatusState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_STUDENT_STATE_MUTATION } from '@/graphql/mutations'
@@ -29,10 +28,10 @@ import AdviceTypeModal from '@/components/modal/AdviceTypeModal'
 import SubjectModal from '@/components/modal/SubjectModal'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import Layout from '@/pages/consult/layout'
-import useMmeQuery from '@/utils/mMe'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -126,16 +125,6 @@ const BtnBox = styled.div`
   justify-content: center;
 `
 
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
 const today = new Date()
 
 const todayStart = new Date(today)
@@ -146,10 +135,6 @@ todayEnd.setHours(23, 59, 59, 999)
 
 export default function ConsultWirte() {
   const router = useRouter()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const [createStudent] = useMutation(CREATE_STUDENT_STATE_MUTATION)
   const { userLogs } = useUserLogsMutation()
   const progressStatus = useRecoilValue(progressStatusState)
@@ -226,13 +211,6 @@ export default function ConsultWirte() {
   }
   const handleManagerChange = e => {
     setManager(e.target.value)
-  }
-
-  const handleAddTypeClick = type => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: type },
-    })
   }
 
   return (
@@ -459,18 +437,19 @@ export default function ConsultWirte() {
                     {String(errors.adviceTypes.message)}
                   </p>
                 )}
-                {mGrade <= grade.subMaster && (
-                  <AddLink>
-                    <Link
-                      size="sm"
-                      underline="hover"
-                      href="#"
-                      onClick={() => handleAddTypeClick('adviceType')}
-                    >
-                      상담분야 추가
-                    </Link>
-                  </AddLink>
-                )}
+                <Suspense
+                  fallback={
+                    <LodingDiv>
+                      <i className="xi-spinner-2" />
+                    </LodingDiv>
+                  }
+                >
+                  <TypeLink
+                    typeLink={'adviceType'}
+                    typeName={'상담분야'}
+                    permissionName={'상담분야'}
+                  />
+                </Suspense>
               </AreaBox>
               <AreaBox>
                 <Textarea
@@ -512,18 +491,19 @@ export default function ConsultWirte() {
                       />
                     )}
                   />
-                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={() => handleAddTypeClick('receipt')}
-                      >
-                        접수구분 추가
-                      </Link>
-                    </AddLink>
-                  )}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <TypeLink
+                      typeLink={'receipt'}
+                      typeName={'접수구분'}
+                      permissionName={'접수구분'}
+                    />
+                  </Suspense>
                 </AreaBox>
                 <AreaBox>
                   <Controller
@@ -550,18 +530,19 @@ export default function ConsultWirte() {
                       </Suspense>
                     )}
                   />
-                  {(mGrade <= grade.subMaster || mPart.includes('영업팀')) && (
-                    <AddLink>
-                      <Link
-                        size="sm"
-                        underline="hover"
-                        href="#"
-                        onClick={() => handleAddTypeClick('subDiv')}
-                      >
-                        수강구분 추가
-                      </Link>
-                    </AddLink>
-                  )}
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
+                    <TypeLink
+                      typeLink={'subDiv'}
+                      typeName={'수강구분'}
+                      permissionName={'수강구분'}
+                    />
+                  </Suspense>
                 </AreaBox>
               </FlexBox>
               <FlexBox>

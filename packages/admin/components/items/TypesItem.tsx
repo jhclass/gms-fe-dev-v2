@@ -1,11 +1,10 @@
-import { Card, CardBody, Link, Tab, Tabs } from '@nextui-org/react'
+import { Card, CardBody } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import { useEffect, useState } from 'react'
 import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import CreateAdviceType from '@/components/form/CreateAdviceType'
-import CreateSmsSender from '@/components/form/CreateSmsSender'
+import AdviceType from '@/components/layout/AdviceType'
 import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 import { useSuspenseQuery } from '@apollo/client'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
@@ -48,13 +47,7 @@ export default function TypesItem({ type }) {
   return (
     <>
       {mGrade <= grade.subMaster || permissionManagers.includes(mId) ? (
-        <>
-          {type === '발신인증번호' ? (
-            <CreateSmsSender isActive={true} category={'발신인증번호'} />
-          ) : (
-            <CreateAdviceType isActive={true} category={type} />
-          )}
-        </>
+        <AdviceType category={type} />
       ) : (
         <Card radius="sm">
           <CardBody>

@@ -9,7 +9,7 @@ import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
-import { Button, Input, Link, Switch, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Switch, useDisclosure } from '@nextui-org/react'
 import { useLazyQuery, useMutation, useSuspenseQuery } from '@apollo/client'
 import useUserLogsMutation from '@/utils/userLogs'
 import Layout from '@/pages/students/layout'
@@ -25,6 +25,7 @@ import AdviceMultiSelect from '@/components/common/select/AdviceMultiSelect'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import Address from '@/components/common/Address'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
@@ -75,16 +76,6 @@ const FlexBox = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-  }
-`
-const AreaTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
   }
 `
 const AvatarBox = styled.div`
@@ -156,27 +147,11 @@ const FilterLabel = styled.p`
     }
   }
 `
-const InputText = styled.span`
-  display: inline-block;
-  font-size: 0.75rem;
-  width: 2rem;
-`
 const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-`
-
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
 `
 
 type searchManageUserQuery = {
@@ -343,13 +318,6 @@ export default function TeacherEditForm({ managerId }) {
 
   const clickCreate = () => {
     createTamp({ variables: { manageUserId: managerData.id } })
-  }
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'teacherType' },
-    })
   }
 
   return (
@@ -642,19 +610,19 @@ export default function TeacherEditForm({ managerId }) {
                         </Suspense>
                       )}
                     />
-                    {(loginMGrade <= grade.subMaster ||
-                      loginMPart?.includes('교무팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          강의분야 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'teacherType'}
+                        typeName={'강의분야'}
+                        permissionName={'강의분야'}
+                      />
+                    </Suspense>
                   </AreaBox>
                   <AreaBox>
                     <DatePickerBox>

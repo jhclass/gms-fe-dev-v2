@@ -33,11 +33,7 @@ export default function PermissionTabItem({ topicName }) {
       <>
         <PermissionBox>
           {data.searchPermissionsGranted.data.map((permission, index) => (
-            <PermissionCate
-              key={index}
-              isActive={true}
-              permission={permission}
-            />
+            <PermissionCate key={index} permission={permission} />
           ))}
         </PermissionBox>
       </>

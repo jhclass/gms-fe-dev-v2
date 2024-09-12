@@ -3,14 +3,6 @@ import styled from 'styled-components'
 import PermissionAddForm from '@/components/form/PermissionAddForm'
 import PermissionEditForm from '@/components/form/PermissionEditForm'
 
-const FormBox = styled.div`
-  width: 100%;
-`
-const FilterBox = styled(motion.div)`
-  z-index: 2;
-  position: relative;
-`
-
 const BoxArea = styled.div`
   display: flex;
   width: 100%;
@@ -51,23 +43,15 @@ const FilterVariants = {
   },
 }
 
-export default function PermissionCate({ isActive, permission }) {
+export default function PermissionCate({ permission }) {
   return (
     <>
-      <FormBox>
-        <FilterBox
-          variants={FilterVariants}
-          initial="hidden"
-          animate={isActive ? 'visible' : 'hidden'}
-        >
-          <BoxArea>
-            <BoxBtn>
-              <PermissionAddForm permission={permission} />
-            </BoxBtn>
-            <PermissionEditForm permission={permission} />
-          </BoxArea>
-        </FilterBox>
-      </FormBox>
+      <BoxArea>
+        <BoxBtn>
+          <PermissionAddForm permission={permission} />
+        </BoxBtn>
+        <PermissionEditForm permission={permission} />
+      </BoxArea>
     </>
   )
 }

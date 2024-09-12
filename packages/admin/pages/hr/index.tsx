@@ -48,6 +48,11 @@ export default function Manager() {
             mGrade <= grade.subMaster || mPart.includes('인사팀') ? true : false
           }
           rightArea={true}
+          typeBtn={{
+            typeLink: 'mPartType',
+            permissionName: '부서명',
+          }}
+          addRender={''}
         />
         <Suspense
           fallback={

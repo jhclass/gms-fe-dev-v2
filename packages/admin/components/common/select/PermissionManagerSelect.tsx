@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 type SearchPermissionsGrantedQeury = {
   searchPermissionsGranted: ResultSearchPermissionsGranted
 }
+
 export default function PermissionManagerSelect({
   defaultValue = null,
   selectedKey,

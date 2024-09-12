@@ -12,7 +12,6 @@ const _ = require('lodash')
 import {
   Button,
   Input,
-  Link,
   Radio,
   RadioGroup,
   Select,
@@ -32,27 +31,13 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/select/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
+import TypeLink from '@/components/common/TypeLink'
 
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
-`
-const SwitchDiv = styled.div`
-  display: flex;
-  align-items: center;
-  background: #fff;
-  padding: 0.5rem 0 0.5rem 0.5rem;
-  border-radius: 0.75rem;
-`
-const SwitchText = styled.span`
-  width: max-content;
-  padding-right: 0.5rem;
-  font-size: 0.8rem;
 `
 const DetailBox = styled.div`
   margin-top: 2rem;
@@ -68,7 +53,6 @@ const DetailForm = styled.form`
     gap: 1rem;
   }
 `
-
 const FlexBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -145,7 +129,6 @@ const BtnBox = styled.div`
   gap: 1rem;
   justify-content: center;
 `
-
 const LodingDiv = styled.div`
   padding: 1.5rem;
   width: 100%;
@@ -159,24 +142,9 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-const AddLink = styled.p`
-  > a {
-    font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
-`
-
 export default function LectureDetail() {
   const router = useRouter()
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
   const [editLectures] = useMutation(EDIT_LECTURES_MUTATION, {
@@ -188,14 +156,12 @@ export default function LectureDetail() {
     },
   })
   const [campusName, setCampusName] = useState('신촌')
-  const [subjectState, setSubjectState] = useState(null)
   const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState([])
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
   const [datesSelected, setDatesSelected] = useState(null)
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const [lectureStart, setLectureStart] = useState(null)
   const [lectureStartTime, setLectureStartTime] = useState(null)
   const [lectureEndTime, setLectureEndTime] = useState(null)
   const [lectureStartDate, setLectureStartDate] = useState(null)
@@ -467,13 +433,6 @@ export default function LectureDetail() {
     }
   }
 
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'subDiv' },
-    })
-  }
-
   return (
     lectureData && (
       <>
@@ -564,19 +523,19 @@ export default function LectureDetail() {
                         {String(errors.subDiv.message)}
                       </p>
                     )}
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('영업팀')) && (
-                      <AddLink>
-                        <Link
-                          size="sm"
-                          underline="hover"
-                          href="#"
-                          onClick={handleClick}
-                        >
-                          수강구분 추가
-                        </Link>
-                      </AddLink>
-                    )}
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'subDiv'}
+                        typeName={'수강구분'}
+                        permissionName={'수강구분'}
+                      />
+                    </Suspense>
                   </AreaBox>
                 </FlexBox>
                 <FlexBox>

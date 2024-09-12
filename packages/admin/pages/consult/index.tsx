@@ -78,30 +78,11 @@ export default function Consult() {
           isFilter={true}
           isWrite={true}
           rightArea={true}
-          addRender={
-            mGrade <= grade.subMaster && (
-              <>
-                {
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    color="primary"
-                    className="text-white ml-[0.5rem]"
-                    onClick={handleClick}
-                  >
-                    <ActiveIcon
-                      variants={IconVariants}
-                      initial="initial"
-                      animate={createActive ? 'active' : 'initial'}
-                      className="xi-check-min"
-                    />
-                    분야 관리
-                  </Button>
-                }
-              </>
-            )
-          }
+          typeBtn={{
+            typeLink: 'adviceType',
+            permissionName: '상담분야',
+          }}
+          addRender={''}
         />
         <Suspense
           fallback={
