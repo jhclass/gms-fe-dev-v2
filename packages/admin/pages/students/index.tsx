@@ -1,8 +1,6 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/students/layout'
-import StudentsTable from '@/components/table/StudentsList'
-import StudentsFilterTable from '@/components/table/StudentsListFilter'
 import { styled } from 'styled-components'
 import StudentsFilter from '@/components/filter/StudentsFilter'
 import { useRecoilState } from 'recoil'
@@ -11,8 +9,9 @@ import {
   studentFilterState,
   studentSearchState,
 } from '@/lib/recoilAtoms'
-import { Suspense, useEffect, useState } from 'react'
-import io from 'socket.io-client'
+import { Suspense } from 'react'
+import StudentsTable from '@/components/table/StudentsTable'
+import StudentsFilterTable from '@/components/table/StudentsFilterTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -31,6 +30,7 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
+
 export default function Students() {
   const [filterActive, setFilterActive] = useRecoilState(
     studentFilterActiveState,
@@ -55,7 +55,6 @@ export default function Students() {
           studentFilter={studentFilter}
         />
         <ConBox>
-          {/* <div>{checkText}</div> */}
           <Suspense
             fallback={
               <LodingDiv>

@@ -3,15 +3,12 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/hr/teacher/layout'
 import { Suspense, useState } from 'react'
-import TeacherList from '@/components/table/TeacherList'
-import TeacherFilter from '@/components/filter/TeacherFilter'
-import TeacherFilterList from '@/components/table/TeacherFilterList'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
-import { Button } from '@nextui-org/react'
-import { motion } from 'framer-motion'
-import { useRouter } from 'next/router'
+import TeachersTable from '@/components/table/TeachersTable'
+import TeachersFilterTable from '@/components/table/TeachersFilterTable'
+import TeachersFilter from '@/components/filter/TeachersFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -30,36 +27,14 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-const ActiveIcon = styled(motion.i)`
-  color: #fff;
-`
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
+
 export default function Teacher() {
-  const router = useRouter()
-  const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mPart = useMme('mPart') || []
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [teacherFilter, setTeacherFilter] = useState()
-  const [createActive, setCreateActive] = useState(false)
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'teacherType' },
-    })
-  }
 
   return (
     mPart && (
@@ -69,11 +44,7 @@ export default function Teacher() {
             onFilterToggle={setFilterActive}
             isActive={filterActive}
             isFilter={true}
-            isWrite={
-              mGrade <= grade.subMaster || mPart.includes('교무팀')
-                ? true
-                : false
-            }
+            isWrite={true}
             rightArea={true}
             typeBtn={{
               typeLink: 'teacherType',
@@ -88,7 +59,7 @@ export default function Teacher() {
               </LodingDiv>
             }
           >
-            <TeacherFilter
+            <TeachersFilter
               isActive={filterActive}
               onFilterSearch={setFilterSearch}
               setTeacherFilter={setTeacherFilter}
@@ -103,7 +74,7 @@ export default function Teacher() {
                   </LodingDiv>
                 }
               >
-                <TeacherFilterList
+                <TeachersFilterTable
                   teacherFilter={teacherFilter}
                   mGrade={mGrade}
                   mPart={mPart}
@@ -117,7 +88,7 @@ export default function Teacher() {
                   </LodingDiv>
                 }
               >
-                <TeacherList mGrade={mGrade} mPart={mPart} />
+                <TeachersTable mGrade={mGrade} mPart={mPart} />
               </Suspense>
             )}
           </ConBox>

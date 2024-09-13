@@ -10,7 +10,7 @@ import {
   ScrollShadow,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import SearchEmployee from '@/components/table/SearchEmployee'
+import SearchEmployeeTable from '@/components/table/SearchEmployeeTable'
 
 const ChipBox = styled.div`
   display: flex;
@@ -38,6 +38,7 @@ export default function ManagersModal({
       setGroupSelected(managers)
     }
   }, [managers])
+
   const clickAdd = () => {
     setManagers(groupSelected)
     setManagersName(groupSelected.map(user => user.mUsername))
@@ -64,7 +65,7 @@ export default function ManagersModal({
                 직원 검색
               </ModalHeader>
               <ModalBody>
-                <SearchEmployee
+                <SearchEmployeeTable
                   groupSelected={groupSelected}
                   setGroupSelected={setGroupSelected}
                 />

@@ -1,5 +1,4 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import ConsultationReject from '@/components/table/ConsultationReject'
 import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
@@ -14,11 +13,11 @@ import useMmeQuery from '@/utils/mMe'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import Layout from '@/pages/consult/layout'
+import ConsultRejectTable from '@/components/table/ConsultRejectTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
 `
-
 const DeleteDiv = styled.div`
   display: flex;
   align-items: center;
@@ -108,7 +107,7 @@ export default function ConsultReject() {
           }
         />
         <ConBox>
-          <ConsultationReject
+          <ConsultRejectTable
             currentLimit={currentLimit}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

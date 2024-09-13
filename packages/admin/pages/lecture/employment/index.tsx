@@ -1,11 +1,11 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import Layout from '@/pages/lecture/layout'
+import Layout from '@/pages/lecture/employment/layout'
 import { Suspense, useState } from 'react'
-import EmploymentStateFilter from '@/components/filter/EmploymentStateFilter'
-import EmploymentListFilter from '@/components/table/EmploymentListFilter'
-import EmploymentList from '@/components/table/EmploymentList'
+import EmploymentTable from '@/components/table/EmploymentTable'
+import EmploymentFilterTable from '@/components/table/EmploymentFilterTable'
+import EmploymentFilter from '@/components/filter/EmploymentFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -24,6 +24,7 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
+
 export default function Employment() {
   const [filterActive, setFilterActive] = useState(false)
   const [filterSearch, setFilterSearch] = useState(false)
@@ -46,7 +47,7 @@ export default function Employment() {
             </LodingDiv>
           }
         >
-          <EmploymentStateFilter
+          <EmploymentFilter
             isActive={filterActive}
             onFilterSearch={setFilterSearch}
             setStudentFilter={setStudentFilter}
@@ -54,9 +55,9 @@ export default function Employment() {
         </Suspense>
         <ConBox>
           {filterSearch ? (
-            <EmploymentListFilter studentFilter={studentFilter} />
+            <EmploymentFilterTable studentFilter={studentFilter} />
           ) : (
-            <EmploymentList />
+            <EmploymentTable />
           )}
         </ConBox>
       </MainWrap>

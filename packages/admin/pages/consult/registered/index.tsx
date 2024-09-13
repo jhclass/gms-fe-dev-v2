@@ -10,15 +10,14 @@ import {
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
-import ConsultationRegistered from '@/components/table/ConsultationRegistered'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import Layout from '@/pages/consult/layout'
+import ConsultRegisteredTable from '@/components/table/ConsultRegisteredTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
 `
-
 const DeleteDiv = styled.div`
   display: flex;
   align-items: center;
@@ -108,7 +107,7 @@ export default function ConsultRegistered() {
           }
         />
         <ConBox>
-          <ConsultationRegistered
+          <ConsultRegisteredTable
             currentLimit={currentLimit}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

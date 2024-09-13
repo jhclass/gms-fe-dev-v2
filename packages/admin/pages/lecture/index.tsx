@@ -3,13 +3,13 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/lecture/layout'
 import { Suspense, useEffect, useState } from 'react'
-import LectureList from '@/components/table/LectureList'
 import LectureFilter from '@/components/filter/LectureFilter'
-import LectureFilterList from '@/components/table/LectureFilterList'
 import useMmeQuery from '@/utils/mMe'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
-import LectureTeacherList from '@/components/table/LectureTeacherList'
+import LectureTable from '@/components/table/LectureTable'
+import LectureFilterTable from '@/components/table/LectureFilterTable'
+import LectureTeacherTable from '@/components/table/LectureTeacherTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -69,7 +69,7 @@ export default function Lecture() {
                     </LodingDiv>
                   }
                 >
-                  <LectureTeacherList lectureFilter={lectureFilter} />
+                  <LectureTeacherTable lectureFilter={lectureFilter} />
                 </Suspense>
               </ConBox>
             </>
@@ -105,7 +105,7 @@ export default function Lecture() {
                       </LodingDiv>
                     }
                   >
-                    <LectureFilterList lectureFilter={lectureFilter} />
+                    <LectureFilterTable lectureFilter={lectureFilter} />
                   </Suspense>
                 ) : (
                   <Suspense
@@ -115,7 +115,7 @@ export default function Lecture() {
                       </LodingDiv>
                     }
                   >
-                    <LectureList />
+                    <LectureTable />
                   </Suspense>
                 )}
               </ConBox>

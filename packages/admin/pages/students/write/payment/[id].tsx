@@ -176,7 +176,6 @@ export default function StudentsWritePayment() {
     clearErrors,
     handleSubmit,
     formState,
-    watch,
   } = useForm()
   const { errors } = formState
   const [studentData, setStudentData] = useState(null)

@@ -9,10 +9,10 @@ import {
   paymentDetailPageState,
   paymentDetailSearchState,
 } from '@/lib/recoilAtoms'
-import PaymentDetailTable from '@/components/table/PaymentDetailList'
-import PaymentDetailFilter from '@/components/filter/PaymentDetailFilter'
 import { Suspense } from 'react'
-import PaymentDetailFilterTable from '@/components/table/PaymentDetailListFilter'
+import AccountingTable from '@/components/table/AccountingTable'
+import AccountingFilterTable from '@/components/table/AccountingFilterTable'
+import AccountingFilter from '@/components/filter/AccountingFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -52,7 +52,7 @@ export default function Accounting() {
           isActive={filterActive}
           rightArea={true}
         />
-        <PaymentDetailFilter
+        <AccountingFilter
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
@@ -67,9 +67,9 @@ export default function Accounting() {
             }
           >
             {filterSearch ? (
-              <PaymentDetailFilterTable studentFilter={studentFilter} />
+              <AccountingFilterTable studentFilter={studentFilter} />
             ) : (
-              <PaymentDetailTable
+              <AccountingTable
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />

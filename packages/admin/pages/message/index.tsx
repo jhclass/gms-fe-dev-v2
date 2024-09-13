@@ -1,12 +1,6 @@
-import MainWrap from '@/components/wrappers/MainWrap'
-import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/message/layout'
-import { Suspense, useEffect, useState } from 'react'
-import LectureList from '@/components/table/LectureList'
-import LectureFilter from '@/components/filter/LectureFilter'
-import MessageList from '@/components/table/MessageList'
-import MessageFilter from '@/components/filter/MessageFilter'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 const ConBox = styled.div`

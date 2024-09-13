@@ -1,22 +1,17 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import ConsultationTable from '@/components/table/Consultation'
-import ConsultationFilter from '@/components/table/ConsultationFilter'
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import ConsultFilter from '@/components/filter/ConsultFilter'
 import { styled } from 'styled-components'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import {
   consultFilterActiveState,
   consultFilterState,
   consultSearchState,
-  gradeState,
 } from '@/lib/recoilAtoms'
-import { useRouter } from 'next/router'
 import Layout from '@/pages/consult/layout'
-import { motion } from 'framer-motion'
-import useMmeQuery from '@/utils/mMe'
-import { Button } from '@nextui-org/react'
+import ConsultationTable from '@/components/table/ConsultationTable'
+import ConsultationFilterTable from '@/components/table/ConsultationFilterTable'
+import ConsultationFilter from '@/components/filter/ConsultationFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -35,39 +30,13 @@ const LodingDiv = styled.div`
   justify-content: center;
   align-items: center;
 `
-const ActiveIcon = styled(motion.i)`
-  color: #fff;
-`
-
-const IconVariants = {
-  initial: {
-    scale: 0,
-    display: 'none',
-  },
-  active: {
-    scale: 1,
-    display: 'inline',
-  },
-}
 
 export default function Consult() {
-  const router = useRouter()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
   const [filterActive, setFilterActive] = useRecoilState(
     consultFilterActiveState,
   )
   const [filterSearch, setFilterSearch] = useRecoilState(consultFilterState)
   const [studentFilter, setStudentFilter] = useRecoilState(consultSearchState)
-  const [createActive, setCreateActive] = useState(false)
-
-  const handleClick = () => {
-    router.push({
-      pathname: '/setting/types',
-      query: { typeTab: 'adviceType' },
-    })
-  }
 
   return (
     <>
@@ -91,7 +60,7 @@ export default function Consult() {
             </LodingDiv>
           }
         >
-          <ConsultFilter
+          <ConsultationFilter
             isActive={filterActive}
             studentFilter={studentFilter}
             onFilterSearch={setFilterSearch}
@@ -107,7 +76,7 @@ export default function Consult() {
                 </LodingDiv>
               }
             >
-              <ConsultationFilter studentFilter={studentFilter} />
+              <ConsultationFilterTable studentFilter={studentFilter} />
             </Suspense>
           ) : (
             <Suspense

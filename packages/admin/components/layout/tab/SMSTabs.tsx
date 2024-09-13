@@ -4,10 +4,10 @@ import { Suspense, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { smsFilterState, smsSearchState } from '@/lib/recoilAtoms'
 import SMSCardList from '@/components/list/SMSCardList'
-import SMSList from '@/components/table/SMSList'
-import SMSFilterList from '@/components/table/SMSFilterList'
 import SmsSendFilter from '@/components/filter/SmsSendFilter'
 import { useRouter } from 'next/router'
+import SmsSendList from '@/components/list/SmsSendList'
+import SmsSendFilterList from '@/components/list/SmsSendFilterList'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -107,7 +107,7 @@ export default function SMSTabs({ setMessageCon, setValue, setByteLength }) {
                 </LodingDiv>
               }
             >
-              <SMSFilterList smsFilter={smsFilter} />
+              <SmsSendFilterList smsFilter={smsFilter} />
             </Suspense>
           ) : (
             <Suspense
@@ -117,7 +117,7 @@ export default function SMSTabs({ setMessageCon, setValue, setByteLength }) {
                 </LodingDiv>
               }
             >
-              <SMSList />
+              <SmsSendList />
             </Suspense>
           )}
         </Tab>

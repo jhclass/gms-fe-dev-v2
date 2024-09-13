@@ -3,12 +3,12 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import Layout from '@/pages/hr/layout'
 import { Suspense, useState } from 'react'
-import ManagerList from '@/components/table/ManagerList'
-import ManagerFilter from '@/components/filter/ManagerFilter'
+import ManagersFilter from '@/components/filter/ManagersFilter'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
-import ManagerFilterList from '@/components/table/ManagerFilterList'
+import ManagersTable from '@/components/table/ManagersTable'
+import ManagersFilterTable from '@/components/table/ManagersFilterTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -61,7 +61,7 @@ export default function Manager() {
             </LodingDiv>
           }
         >
-          <ManagerFilter
+          <ManagersFilter
             isActive={filterActive}
             onFilterSearch={setFilterSearch}
             setManagerFilter={setManagerFilter}
@@ -76,7 +76,7 @@ export default function Manager() {
                 </LodingDiv>
               }
             >
-              <ManagerFilterList
+              <ManagersFilterTable
                 managerFilter={managerFilter}
                 mGrade={mGrade}
                 mPart={mPart}
@@ -90,7 +90,7 @@ export default function Manager() {
                 </LodingDiv>
               }
             >
-              <ManagerList mGrade={mGrade} mPart={mPart} />
+              <ManagersTable mGrade={mGrade} mPart={mPart} />
             </Suspense>
           )}
         </ConBox>
