@@ -28,7 +28,6 @@ const DetailForm = styled.form`
   flex-direction: column;
   gap: 1rem;
 `
-
 const FlexBox = styled.div`
   width: 100%;
   display: flex;
@@ -41,13 +40,11 @@ const FlexBox = styled.div`
     gap: 1rem;
   }
 `
-
 const AreaBox = styled.div`
   flex: 1;
   width: 100%;
   position: relative;
 `
-
 const FilterLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
@@ -60,7 +57,6 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
-
 const BtnBox = styled.div`
   display: flex;
   align-items: center;
@@ -96,11 +92,6 @@ const DatePickerBox = styled.div`
   @media (max-width: 768px) {
     .react-datepicker {
       display: flex;
-    }
-
-    .react-datepicker__time-container,
-    .react-datepicker__time-box {
-      width: 65px !important;
     }
   }
 `

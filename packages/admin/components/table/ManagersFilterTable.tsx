@@ -1,9 +1,15 @@
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEARCH_PERMISSIONS_GRANTED_QUERY,
+} from '@/graphql/queries'
 import ManagersItem from '@/components/items/ManagersItem'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -174,7 +180,12 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-export default function ManagersFilterTable({ managerFilter, mGrade, mPart }) {
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
+}
+
+export default function ManagersFilterTable({ managerFilter, mGrade, mId }) {
+  const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
@@ -183,9 +194,24 @@ export default function ManagersFilterTable({ managerFilter, mGrade, mPart }) {
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
 
+  const { error: permissionError, data: permissionData } =
+    useSuspenseQuery<SearchPermissionsGrantedQeury>(
+      SEARCH_PERMISSIONS_GRANTED_QUERY,
+      {
+        variables: {
+          permissionName: '직원관리',
+        },
+      },
+    )
+  const permissionManagers =
+    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+      manager => manager.id,
+    )
+
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
   useEffect(() => {
     if (managerFilter) {
       searchManager({
@@ -254,8 +280,10 @@ export default function ManagersFilterTable({ managerFilter, mGrade, mPart }) {
                     itemIndex={index}
                     currentPage={currentPage}
                     limit={currentLimit}
-                    mGrade={mGrade}
-                    mPart={mPart}
+                    clickable={
+                      mGrade <= grade.subMaster ||
+                      permissionManagers.includes(mId)
+                    }
                   />
                 ))}
               {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}

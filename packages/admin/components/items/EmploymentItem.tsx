@@ -24,30 +24,20 @@ const TableItem = styled.div`
 
 const TableRow = styled.div`
   position: relative;
-  display: table;
+  display: flex;
   width: 100%;
   min-width: fit-content;
   text-align: center;
   z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem 2% auto; */
 `
 const ClickBox = styled.div`
   width: 100%;
   display: table-cell;
-  /* display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center; */
+
   > div {
     display: flex;
     width: 100%;
     align-items: center;
-  }
-
-  .subDiv {
-    background: ${({ theme }) => theme.colors.offWhite};
   }
 `
 const Tflag = styled.div`
@@ -158,7 +148,6 @@ const Tdiv = styled.div<{ $isOpen: boolean }>`
   border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
   background: ${({ theme }) => theme.colors.lightYellow};
 `
-
 const EllipsisBox = styled.p`
   white-space: nowrap;
   overflow: hidden;

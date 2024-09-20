@@ -9,7 +9,7 @@ import {
   from,
 } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
-import { getNewToken } from './getNewToken'
+import { getNewToken } from '@/lib/getNewToken'
 
 // console.log(process.env.NEXT_PUBLIC_GRAPHQL_URI, '환경변수')
 const TOKEN = 'token'

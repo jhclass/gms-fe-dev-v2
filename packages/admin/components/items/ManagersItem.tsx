@@ -1,6 +1,4 @@
 import { styled, useTheme } from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
 
 const TableItem = styled.div<{ $resign: string }>`
@@ -23,7 +21,6 @@ const TableItem = styled.div<{ $resign: string }>`
         : 'rgba(255, 255, 255, 0.8)'};
   }
 `
-
 const TableRow = styled.div`
   position: relative;
   display: table;
@@ -31,11 +28,7 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem 2% auto; */
 `
-
 const ClickBox = styled.div`
   display: flex;
   width: 100%;
@@ -46,9 +39,6 @@ const AvatarBox = styled.div`
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  /* @media (max-width: 768px) {
-    flex-direction: column;
-  } */
 `
 const AvatarF = styled.div`
   position: relative;
@@ -203,7 +193,6 @@ const Masking = styled.span`
 
 export default function ManagersItem(props) {
   const theme = useTheme()
-  const grade = useRecoilValue(gradeState)
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const managerData = props.tableData
@@ -258,13 +247,7 @@ export default function ManagersItem(props) {
     <>
       <TableItem $resign={managerData.resign}>
         <TableRow>
-          <Link
-            href={
-              props.mGrade <= grade.subMaster || props.mPart.includes('인사팀')
-                ? `/hr/detail/${managerData.id}`
-                : '#'
-            }
-          >
+          <Link href={props.clickable ? `/hr/detail/${managerData.id}` : '#'}>
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>
               <Tavatar>

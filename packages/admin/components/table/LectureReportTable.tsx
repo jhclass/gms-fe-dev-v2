@@ -9,9 +9,7 @@ import {
   employmentStatus,
 } from '@/lib/recoilAtoms'
 
-const TableArea = styled.div`
-  margin-top: 0.5rem;
-`
+const TableArea = styled.div``
 const TableWrap = styled.div`
   width: 100%;
   display: table;
@@ -27,8 +25,8 @@ const Theader = styled.div`
   font-size: 0.875rem;
   font-weight: 700;
   text-align: center;
+  margin-bottom: 0.2rem;
 `
-
 const TheaderBox = styled.div`
   display: flex;
 `

@@ -87,7 +87,7 @@ const FlatBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function StudentPaymentDetailItem({
+export default function PaymentDetailItem({
   detailtData,
   paymentId,
   setStudentPaymentDetailData,
@@ -443,4 +443,4 @@ export default function StudentPaymentDetailItem({
     </>
   )
 }
-StudentPaymentDetailItem.getLayout = page => <Layout>{page}</Layout>
+PaymentDetailItem.getLayout = page => <Layout>{page}</Layout>

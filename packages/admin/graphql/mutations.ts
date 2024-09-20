@@ -81,6 +81,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
     $mUsername: String
     $mPassword: String
     $mRank: String
+    $mGrade: Int
     $mPhoneNum: String
     $mPhoneNumCompany: String
     $mPhoneNumInside: String
@@ -100,6 +101,7 @@ export const EDIT_MANAGE_USER_MUTATION = gql`
       mUsername: $mUsername
       mPassword: $mPassword
       mRank: $mRank
+      mGrade: $mGrade
       mPhoneNum: $mPhoneNum
       mPhoneNumCompany: $mPhoneNumCompany
       mPhoneNumInside: $mPhoneNumInside

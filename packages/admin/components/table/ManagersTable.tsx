@@ -6,8 +6,14 @@ import {
   SEARCH_PERMISSIONS_GRANTED_QUERY,
   SEE_MANAGEUSER_QUERY,
 } from '@/graphql/queries'
-import { SeeManageUserResult } from '@/src/generated/graphql'
+import {
+  ResultSearchPermissionsGranted,
+  SeeManageUserResult,
+} from '@/src/generated/graphql'
 import ManagersItem from '@/components/items/ManagersItem'
+import useMmeQuery from '@/utils/mMe'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -171,8 +177,12 @@ const Nolist = styled.div`
 type seeManageUser = {
   seeManageUser: SeeManageUserResult
 }
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
+}
 
-export default function ManagersTable({ mGrade, mPart }) {
+export default function ManagersTable({ mGrade, mId }) {
+  const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const { error, data, refetch } = useSuspenseQuery<seeManageUser>(
@@ -184,6 +194,20 @@ export default function ManagersTable({ mGrade, mPart }) {
 
   const managerData = data?.seeManageUser?.data
   const totalCount = data?.seeManageUser?.totalCount
+
+  const { error: permissionError, data: permissionData } =
+    useSuspenseQuery<SearchPermissionsGrantedQeury>(
+      SEARCH_PERMISSIONS_GRANTED_QUERY,
+      {
+        variables: {
+          permissionName: '직원관리',
+        },
+      },
+    )
+  const permissionManagers =
+    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+      manager => manager.id,
+    )
 
   useEffect(() => {
     refetch()
@@ -231,8 +255,10 @@ export default function ManagersTable({ mGrade, mPart }) {
                       itemIndex={index}
                       currentPage={currentPage}
                       limit={currentLimit}
-                      mGrade={mGrade}
-                      mPart={mPart}
+                      clickable={
+                        mGrade <= grade.subMaster ||
+                        permissionManagers.includes(mId)
+                      }
                     />
                   ))}
                 </>

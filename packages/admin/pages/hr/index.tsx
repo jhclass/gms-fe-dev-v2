@@ -29,10 +29,9 @@ const LodingDiv = styled.div`
 `
 
 export default function Manager() {
-  const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
+  const mId = useMme('id')
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
   const [managerFilter, setManagerFilter] = useState()
@@ -44,9 +43,7 @@ export default function Manager() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           isFilter={true}
-          isWrite={
-            mGrade <= grade.subMaster || mPart.includes('인사팀') ? true : false
-          }
+          isWrite={true}
           rightArea={true}
           typeBtn={{
             typeLink: 'mPartType',
@@ -79,7 +76,7 @@ export default function Manager() {
               <ManagersFilterTable
                 managerFilter={managerFilter}
                 mGrade={mGrade}
-                mPart={mPart}
+                mId={mId}
               />
             </Suspense>
           ) : (
@@ -90,7 +87,7 @@ export default function Manager() {
                 </LodingDiv>
               }
             >
-              <ManagersTable mGrade={mGrade} mPart={mPart} />
+              <ManagersTable mGrade={mGrade} mId={mId} />
             </Suspense>
           )}
         </ConBox>

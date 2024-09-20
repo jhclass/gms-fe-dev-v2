@@ -1,31 +1,5 @@
 import { styled, useTheme } from 'styled-components'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-
-type ConsultItemProps = {
-  tableData: {
-    adviceTypes: any
-    id: number
-    stName: string
-    phoneNum1: string
-    progress: number
-    subDiv: string
-    stVisit: string
-    createdAt: string
-    receiptDiv: string
-    pic: string
-  }
-  forName?: string
-  itemIndex: number
-  currentPage: number
-  limit?: number
-  favorite?: boolean
-  favoTotal?: number
-  flagNum?: number
-  checkBtn?: boolean
-  checkItem?: number[]
-  setCheckItem?: (newItems: number[]) => void
-}
 
 const TableItem = styled.div`
   position: relative;
@@ -51,9 +25,6 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem auto; */
 `
 const ClickBox = styled.div`
   display: flex;
@@ -147,7 +118,7 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function StudentsItem(props) {
+export default function AccountingItem(props) {
   const router = useRouter()
   const theme = useTheme()
   const conLimit = props.limit || 0

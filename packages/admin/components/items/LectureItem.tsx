@@ -32,22 +32,15 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem 2% auto; */
 `
 const Tflag = styled.div`
   width: 0.5rem;
   min-width: 7px;
 `
-
 const ClickBox = styled.div`
   width: 100%;
   display: table-cell;
-  /* display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center; */
+
   > div {
     display: flex;
     width: 100%;
@@ -172,14 +165,13 @@ const Tdiv = styled.div<{ $isOpen: boolean }>`
   border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
   background: ${({ theme }) => theme.colors.lightYellow};
 `
-
 const EllipsisBox = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-export default function ConsolutItem(props) {
+export default function LectureItem(props) {
   const grade = useRecoilValue(gradeState)
   const theme = useTheme()
   const router = useRouter()

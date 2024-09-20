@@ -116,7 +116,7 @@ const EllipsisBox = styled.p`
   -webkit-box-orient: vertical;
 `
 
-export default function StudentsItem(props) {
+export default function RefundItem(props) {
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const studentPayment = props.tableData

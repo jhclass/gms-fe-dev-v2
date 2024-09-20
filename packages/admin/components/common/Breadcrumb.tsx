@@ -4,7 +4,7 @@ import { styled, useTheme } from 'styled-components'
 import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import category from '@/lib/category'
-import TypeBtn from './TypeBtn'
+import TypeBtn from '@/components/common/TypeBtn'
 
 const BreadcrumbBox = styled.div`
   display: flex;
@@ -21,11 +21,6 @@ const CateTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  /* @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
-  } */
 `
 const BackIcon = styled.figure`
   display: flex;
@@ -83,7 +78,6 @@ const FilterBtn = styled(motion.button)`
   margin-right: 0.5rem;
   font-size: 0.875rem;
 `
-
 const ActiveIcon = styled(motion.i)`
   padding: 0.5rem;
   color: #fff;
