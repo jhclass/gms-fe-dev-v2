@@ -645,7 +645,7 @@ export default function WorksLogsModal({
     pageStyle: `
       @page {
         size: A4;
-        margin: 10mm;
+        margin: 10mm 10mm 5mm;
       }
       @media print {
         body {
@@ -658,17 +658,19 @@ export default function WorksLogsModal({
         .workLogFooter{
           display:none !important;
         }
-
         .scrollbar {
           mask-image:none !important;
         }
-
+        .signBox {
+          height: 8rem !important;
+        }
         .signBtn {
           display: none !important;
         }
       }
     `,
   })
+
   const handleClose = () => {
     reset()
     setWorkLogData(null)
@@ -676,8 +678,6 @@ export default function WorksLogsModal({
     setAttendanceData(null)
     onClose()
   }
-
-  console.log(workLogData)
 
   return (
     <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
@@ -764,7 +764,7 @@ export default function WorksLogsModal({
                             <AreaBox>
                               <div>
                                 <FilterLabel>강사</FilterLabel>
-                                <StempBox>
+                                <StempBox className="signBox">
                                   {sign &&
                                   (signOne || workLogData?.paymentOne) ? (
                                     <img
@@ -798,7 +798,7 @@ export default function WorksLogsModal({
                             <AreaBox>
                               <div>
                                 <FilterLabel>담당자</FilterLabel>
-                                <StempBox>
+                                <StempBox className="signBox">
                                   {sign &&
                                   (signTwo || workLogData?.paymentTwo) ? (
                                     <img
@@ -832,7 +832,7 @@ export default function WorksLogsModal({
                             <AreaBox>
                               <div>
                                 <FilterLabel>관리자</FilterLabel>
-                                <StempBox>
+                                <StempBox className="signBox">
                                   {sign &&
                                   (signThree || workLogData?.paymentThree) ? (
                                     <img
@@ -958,7 +958,7 @@ export default function WorksLogsModal({
                             </AreaSection>
                           )}
                           {trainingTimes && (
-                            <AreaSection>
+                            <AreaSection className="printPage2">
                               <AreaTitle>
                                 <h4>훈련시간</h4>
                               </AreaTitle>

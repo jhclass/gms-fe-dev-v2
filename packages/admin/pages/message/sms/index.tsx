@@ -133,11 +133,6 @@ const DatePickerBox = styled.div`
     .react-datepicker {
       display: flex;
     }
-
-    .react-datepicker__time-container,
-    .react-datepicker__time-box {
-      width: 65px !important;
-    }
   }
 `
 

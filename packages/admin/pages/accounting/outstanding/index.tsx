@@ -2,16 +2,16 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/accounting/layout'
 import { styled } from 'styled-components'
-import PaymentTable from '@/components/table/PaymentList'
-import PaymentFilter from '@/components/filter/PaymentFilter'
 import { useRecoilState } from 'recoil'
 import {
   paymentFilterActiveState,
   paymentFilterState,
   paymentSearchState,
 } from '@/lib/recoilAtoms'
-import PaymentFilterTable from '@/components/table/PaymentListFilter'
 import { Suspense } from 'react'
+import OutstandingTable from '@/components/table/OutstandingTable'
+import OutstandingFilterTable from '@/components/table/OutstandingFilterTable'
+import OutstandingFilter from '@/components/filter/OutstandingFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -46,7 +46,7 @@ export default function Outstanding() {
           isWrite={false}
           rightArea={true}
         />
-        <PaymentFilter
+        <OutstandingFilter
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
@@ -60,9 +60,9 @@ export default function Outstanding() {
             }
           >
             {filterSearch ? (
-              <PaymentFilterTable studentFilter={studentFilter} />
+              <OutstandingFilterTable studentFilter={studentFilter} />
             ) : (
-              <PaymentTable />
+              <OutstandingTable />
             )}
           </Suspense>
         </ConBox>

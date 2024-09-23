@@ -1,12 +1,11 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
-import StudentsFilterTable from '@/components/table/StudentsListFilter'
 import { styled } from 'styled-components'
 import { Suspense, useState } from 'react'
 import Layout from '@/pages/students/nonassigned/layout'
 import NonassignedFilter from '@/components/filter/NonassignedFilter'
-import NonassignedList from '@/components/table/NonassignedList'
-import NonassignedListFilter from '@/components/table/NonassignedListFilter'
+import NonassignedTable from '@/components/table/NonassignedTable'
+import NonassignedFilterTable from '@/components/table/NonassignedFilterTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -44,7 +43,6 @@ export default function Nonassigned() {
           isActive={filterActive}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
-          studentFilter={studentFilter}
         />
         <ConBox>
           <Suspense
@@ -55,9 +53,9 @@ export default function Nonassigned() {
             }
           >
             {filterSearch ? (
-              <NonassignedListFilter studentFilter={studentFilter} />
+              <NonassignedFilterTable studentFilter={studentFilter} />
             ) : (
-              <NonassignedList />
+              <NonassignedTable />
             )}
           </Suspense>
         </ConBox>

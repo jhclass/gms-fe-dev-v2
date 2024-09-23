@@ -3,8 +3,8 @@ import { useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/accounting/layout'
 import { styled } from 'styled-components'
-import SalesListTable from '@/components/table/SalesList'
 import SalesFilter from '@/components/filter/SalesFilter'
+import SalesTable from '@/components/table/SalesTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -32,7 +32,7 @@ export default function Sales() {
           setDays={setDays}
         />
         <ConBox>
-          <SalesListTable salesFilter={salesFilter} days={days} />
+          <SalesTable salesFilter={salesFilter} days={days} />
         </ConBox>
       </MainWrap>
     </>

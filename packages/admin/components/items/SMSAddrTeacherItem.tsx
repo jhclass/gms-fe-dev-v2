@@ -46,7 +46,7 @@ const EllipsisBox = styled.p`
   text-overflow: ellipsis;
 `
 
-export default function SMSAddrItem1(props) {
+export default function SMSAddrTeacherItem(props) {
   const data = props.teacher
 
   return (

@@ -2,7 +2,7 @@ import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import Layout from '@/pages/accounting/layout'
 import { styled } from 'styled-components'
-import ReqRefundTable from '@/components/table/ReqRefundList'
+import ReqRefundTable from '@/components/table/ReqRefundTable'
 import ReqRefundFilter from '@/components/filter/ReqRefundFilter'
 import { useRecoilState } from 'recoil'
 import {
@@ -10,7 +10,7 @@ import {
   reqRefundFilterState,
   reqRefundSearchState,
 } from '@/lib/recoilAtoms'
-import ReqRefundFilterTable from '@/components/table/ReqRefundListFilter'
+import ReqRefundFilterTable from '@/components/table/ReqRefundFilterTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;

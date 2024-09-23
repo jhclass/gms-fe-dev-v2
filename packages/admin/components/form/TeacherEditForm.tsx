@@ -18,9 +18,6 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { CREATE_STAMP_QUERY, SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import ChangePassword from '@/components/modal/ChangePassword'
 import { Controller, useForm } from 'react-hook-form'
-import useMmeQuery from '@/utils/mMe'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
 import AdviceMultiSelect from '@/components/common/select/AdviceMultiSelect'
 import { SearchManageUserResult } from '@/src/generated/graphql'
 import Address from '@/components/common/Address'
@@ -160,10 +157,6 @@ type searchManageUserQuery = {
 
 export default function TeacherEditForm({ managerId }) {
   const theme = useTheme()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const loginMGrade = useMme('mGrade')
-  const loginMPart = useMme('mPart') || []
   const router = useRouter()
   const [adviceType, setAdviceType] = useState([])
   const { userLogs } = useUserLogsMutation()
@@ -714,19 +707,16 @@ export default function TeacherEditForm({ managerId }) {
                   <AreaBox></AreaBox>
                 </FlexBox>
                 <BtnBox>
-                  {loginMGrade <= grade.subMaster ||
-                  loginMPart?.includes('교무팀') ? (
-                    <Button
-                      type="submit"
-                      size="md"
-                      radius="md"
-                      variant="solid"
-                      color="primary"
-                      className="w-full text-white"
-                    >
-                      수정
-                    </Button>
-                  ) : null}
+                  <Button
+                    type="submit"
+                    size="md"
+                    radius="md"
+                    variant="solid"
+                    color="primary"
+                    className="w-full text-white"
+                  >
+                    수정
+                  </Button>
                   <Button
                     variant="bordered"
                     color="primary"

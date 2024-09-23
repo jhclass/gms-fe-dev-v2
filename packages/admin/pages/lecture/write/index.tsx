@@ -25,7 +25,7 @@ import { useMutation } from '@apollo/client'
 import { CREATE_LECTURES_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import Layout from '@/pages/subjects/layout'
+import Layout from '@/pages/lecture/layout'
 import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/select/TeacherMultiSelectID'
@@ -77,13 +77,6 @@ const TimeBox = styled.div`
     line-height: 40px;
   }
 `
-
-const SText = styled.p`
-  font-size: 0.875rem;
-  height: 40px;
-  line-height: 40px;
-`
-
 const DatePickerBox = styled.div`
   width: 100%;
 
@@ -151,10 +144,6 @@ const LodingDiv = styled.div`
 export default function LectureWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const [campusName, setCampusName] = useState('신촌')
   const [createLectures] = useMutation(CREATE_LECTURES_MUTATION, {
     context: {

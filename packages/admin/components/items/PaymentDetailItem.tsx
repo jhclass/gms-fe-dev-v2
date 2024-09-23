@@ -11,6 +11,8 @@ import {
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
 import useMmeQuery from '@/utils/mMe'
+import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
+import PermissionBtn from '@/components/common/PermissionBtn'
 
 const FlexCardBox = styled.div<{ $IsRefund: boolean }>`
   display: flex;
@@ -85,7 +87,7 @@ const FlatBox = styled.div`
   font-size: 0.875rem;
 `
 
-export default function StudentPaymentDetailItem({
+export default function PaymentDetailItem({
   detailtData,
   paymentId,
   setStudentPaymentDetailData,
@@ -263,21 +265,20 @@ export default function StudentPaymentDetailItem({
                       >
                         영수증 인쇄
                       </Button> */}
-                {(mGrade <= grade.subMaster || mPart.includes('회계팀')) && (
-                  <Button
-                    isDisabled={detailtData.reqRefund ? true : false}
-                    size="md"
-                    radius="md"
-                    variant="solid"
-                    color="primary"
-                    className="w-full text-white"
-                    onClick={() =>
+                <SuspenseWrap>
+                  <PermissionBtn
+                    btnName={'결제 변경'}
+                    style={{
+                      size: 'md',
+                      variant: 'solid',
+                      css: 'w-full text-white',
+                    }}
+                    permissionName={'결제관리'}
+                    handleClick={() => {
                       router.push(`/students/edit/payment/${detailtData.id}`)
-                    }
-                  >
-                    결제 변경
-                  </Button>
-                )}
+                    }}
+                  />
+                </SuspenseWrap>
                 {detailtData.reqRefund ? (
                   <>
                     <Button
@@ -399,21 +400,20 @@ export default function StudentPaymentDetailItem({
               >
                 영수증 인쇄
               </Button> */}
-                {(mGrade <= grade.subMaster || mPart.includes('회계팀')) && (
-                  <Button
-                    isDisabled={detailtData.reqRefund ? true : false}
-                    size="md"
-                    radius="md"
-                    variant="solid"
-                    color="primary"
-                    className="w-full text-white"
-                    onClick={() =>
+                <SuspenseWrap>
+                  <PermissionBtn
+                    btnName={'결제 변경'}
+                    style={{
+                      size: 'md',
+                      variant: 'solid',
+                      css: 'w-full text-white',
+                    }}
+                    permissionName={'결제관리'}
+                    handleClick={() => {
                       router.push(`/students/edit/payment/${detailtData.id}`)
-                    }
-                  >
-                    결제 변경
-                  </Button>
-                )}
+                    }}
+                  />
+                </SuspenseWrap>
                 {detailtData.reqRefund ? (
                   <Button
                     isDisabled={detailtData.refundApproval ? true : false}
@@ -443,4 +443,4 @@ export default function StudentPaymentDetailItem({
     </>
   )
 }
-StudentPaymentDetailItem.getLayout = page => <Layout>{page}</Layout>
+PaymentDetailItem.getLayout = page => <Layout>{page}</Layout>

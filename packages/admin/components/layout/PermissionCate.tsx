@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import PermissionAddForm from '@/components/form/PermissionAddForm'
 import PermissionEditForm from '@/components/form/PermissionEditForm'
@@ -18,7 +17,6 @@ const BoxArea = styled.div`
 `
 const BoxBtn = styled.div`
   display: flex;
-  flex: 1;
   gap: 2rem;
   justify-content: space-between;
   @media (max-width: 768px) {
@@ -27,21 +25,6 @@ const BoxBtn = styled.div`
   }
   max-width: 1400px;
 `
-const FilterVariants = {
-  hidden: {
-    scaleY: 0,
-    transformOrigin: 'top',
-    height: 0,
-  },
-  visible: {
-    scaleY: 1,
-    transformOrigin: 'top',
-    height: 'auto',
-    transition: {
-      duration: 0.3,
-    },
-  },
-}
 
 export default function PermissionCate({ permission }) {
   return (

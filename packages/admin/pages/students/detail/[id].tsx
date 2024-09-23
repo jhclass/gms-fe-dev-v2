@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -15,6 +15,8 @@ import StudentMemoEditForm from '@/components/form/StudentMemoEditForm'
 import StudentPaymentItem from '@/components/items/StudentPaymentItem'
 import StudentInfo from '@/components/layout/infoCard/StudentInfo'
 import FormTopInfo from '@/components/common/FormTopInfo'
+import PermissionBtn from '@/components/common/PermissionBtn'
+import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 
 const ConArea = styled.div`
   width: 100%;
@@ -52,64 +54,10 @@ const AreaTitle = styled.div`
     font-weight: 600;
   }
 `
-const AreaBox = styled.div`
-  flex: 1;
-  width: 100%;
-`
-const AreaSmallBox = styled.div`
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`
-
-const RadioBox = styled.div`
-  display: flex;
-  width: 100%;
-`
-const FilterLabel = styled.label`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: ${({ theme }) => theme.colors.black};
-  display: block;
-  padding-bottom: 0.375rem;
-  span {
-    color: red;
-  }
-`
 const BtnBox = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
-`
-
-const BtnBox4 = styled.div<{ $isPayment: boolean }>`
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  @media (max-width: 768px) {
-    ${props => props.$isPayment && 'flex-wrap:wrap;'}
-    button {
-      ${props => props.$isPayment && ' width: calc(50% - 0.5rem);'}
-    }
-  }
-`
-const LineBox = styled.div`
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  border-bottom: 2px solid hsl(240 6% 90%);
-  height: 40px;
-  line-height: 40px;
-  font-size: 0.875rem;
-`
-const FlatBox = styled.div`
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  background: hsl(240 5% 96%);
-  height: 40px;
-  line-height: 40px;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
 `
 const PaymentList = styled.div`
   width: 100%;
@@ -150,22 +98,6 @@ const MemoItem = styled.li`
     gap: 0.3rem;
   }
 `
-
-type studentSubject = {
-  actualAmount: number
-  cardAmount: number
-  cashAmount: number
-  discountAmount: number
-  id: number
-  paymentDate: string
-  processingManagerId: number
-  receiptClassification: string
-  seScore: number
-  studentId: number
-  tuitionFee: number
-  unCollectedAmount: number
-}
-
 export default function StudentsWrite() {
   const grade = useRecoilValue(gradeState)
   const router = useRouter()
@@ -227,23 +159,22 @@ export default function StudentsWrite() {
                 {(studentPaymentData === null ||
                   studentPaymentData?.length === 0) && (
                   <BtnBox>
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('교무팀')) && (
-                      <Button
-                        size="md"
-                        radius="md"
-                        variant="solid"
-                        color="primary"
-                        className="lg:w-[50%] w-full text-white"
-                        onClick={() => {
+                    <SuspenseWrap>
+                      <PermissionBtn
+                        btnName={'수강신청'}
+                        style={{
+                          size: 'md',
+                          variant: 'solid',
+                          css: 'lg:w-[50%] w-full text-white',
+                        }}
+                        permissionName={'수강관리'}
+                        handleClick={() => {
                           router.push(
                             `/students/write/course/${studentData.id}`,
                           )
                         }}
-                      >
-                        수강신청
-                      </Button>
-                    )}
+                      />
+                    </SuspenseWrap>
                     <Button
                       size="md"
                       radius="md"
@@ -265,25 +196,22 @@ export default function StudentsWrite() {
                 <DetailDiv>
                   <AreaTitle>
                     <h4>수강 목록</h4>
-                    {(mGrade <= grade.subMaster ||
-                      mPart.includes('교무팀')) && (
-                      <Button
-                        size="sm"
-                        radius="sm"
-                        variant="solid"
-                        color="primary"
-                        className="text-white bg-accent"
-                        onClick={() => {
-                          {
-                            router.push(
-                              `/students/write/course/${studentData.id}`,
-                            )
-                          }
+                    <SuspenseWrap>
+                      <PermissionBtn
+                        btnName={'과정 추가'}
+                        style={{
+                          size: 'sm',
+                          variant: 'solid',
+                          css: 'text-white bg-accent',
                         }}
-                      >
-                        과정 추가
-                      </Button>
-                    )}
+                        permissionName={'수강관리'}
+                        handleClick={() => {
+                          router.push(
+                            `/students/write/course/${studentData.id}`,
+                          )
+                        }}
+                      />
+                    </SuspenseWrap>
                   </AreaTitle>
                   <FlexBox>
                     <PaymentList>

@@ -8,7 +8,6 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { useRouter } from 'next/router'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 registerLocale('ko', ko)
 const _ = require('lodash')
@@ -41,21 +40,11 @@ const BoxTop = styled.div`
     flex-direction: column;
   }
 `
-const BoxMiddle = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  @media (max-width: 768px) {
-    gap: 1rem;
-    flex-direction: column;
-  }
-`
 const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
 `
-
 const BtnBox = styled.div`
   display: flex;
   gap: 1rem;
@@ -81,16 +70,6 @@ const DatePickerBox = styled.div`
     transform: translate(0, 0) !important;
   }
 `
-
-const FilterLabel = styled.label`
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: ${({ theme }) => theme.colors.black};
-  padding-bottom: 0.1rem;
-  display: block;
-`
-
 const FilterVariants = {
   hidden: {
     scaleY: 0,
@@ -106,7 +85,6 @@ const FilterVariants = {
     },
   },
 }
-
 const LodingDiv = styled.div`
   padding: 1.5rem;
   width: 100%;
@@ -124,9 +102,7 @@ export default function NonassignedFilter({
   isActive,
   onFilterSearch,
   setStudentFilter,
-  studentFilter,
 }) {
-  const router = useRouter()
   const [creatDateRange, setCreatDateRange] = useState([null, null])
   const [startCreatDate, endCreatDate] = creatDateRange
   const [sub, setSub] = useState('-')

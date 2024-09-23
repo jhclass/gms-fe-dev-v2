@@ -107,6 +107,7 @@ const Nolist = styled.div`
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
+
 export default function MessageReqList() {
   const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useRecoilState(consultPageState)
@@ -120,10 +121,6 @@ export default function MessageReqList() {
   )
   const managerData = data?.searchManageUser.data
   const managerTotal = data?.searchManageUser.totalCount
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   useEffect(() => {
     refetch()

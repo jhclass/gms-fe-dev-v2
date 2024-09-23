@@ -3,7 +3,6 @@ import Layout from '@/pages/setting/permissions/layout'
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import PermissionTabs from '@/components/layout/tab/PermissionTabs'
-import { Suspense } from 'react'
 
 const ConBox = styled.div`
   margin: 2rem 0;

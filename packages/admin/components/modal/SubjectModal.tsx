@@ -18,8 +18,8 @@ import { useEffect, useState } from 'react'
 import { SEARCH_SUBJECT_MUTATION } from '@/graphql/mutations'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import SubjectItem from '@/components/table/SubjectItem'
 import { useForm } from 'react-hook-form'
+import SubjectsItem from '@/components/items/SubjectsItem'
 
 const BtnArea = styled.div`
   display: flex;
@@ -306,7 +306,7 @@ export default function SubjectModal({
                                       key={item.id}
                                       value={String(item.id)}
                                     >
-                                      <SubjectItem tableData={item} />
+                                      <SubjectsItem tableData={item} />
                                     </Radio>
                                   </TableRow>
                                 </TableItem>
@@ -319,7 +319,7 @@ export default function SubjectModal({
                               <TableItem key={index}>
                                 <TableRow>
                                   <Radio key={item.id} value={String(item.id)}>
-                                    <SubjectItem tableData={item} />
+                                    <SubjectsItem tableData={item} />
                                   </Radio>
                                 </TableRow>
                               </TableItem>
@@ -355,7 +355,7 @@ export default function SubjectModal({
                                 key={item.id}
                                 value={`[${item.round}회차]${item.subjectName}`}
                               >
-                                <SubjectItem tableData={item} />
+                                <SubjectsItem tableData={item} />
                               </Checkbox>
                             </TableRow>
                           </TableItem>

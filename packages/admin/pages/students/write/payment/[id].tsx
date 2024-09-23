@@ -118,11 +118,6 @@ const DatePickerBox = styled.div`
     .react-datepicker {
       display: flex;
     }
-
-    .react-datepicker__time-container,
-    .react-datepicker__time-box {
-      width: 65px !important;
-    }
   }
 `
 const RadioBox = styled.div`
@@ -176,7 +171,6 @@ export default function StudentsWritePayment() {
     clearErrors,
     handleSubmit,
     formState,
-    watch,
   } = useForm()
   const { errors } = formState
   const [studentData, setStudentData] = useState(null)
