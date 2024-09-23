@@ -37,7 +37,7 @@ export default function ListInfo({ item }) {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
-  console.log(item)
+
   return (
     <UpdateTime>
       <UpdateCon>

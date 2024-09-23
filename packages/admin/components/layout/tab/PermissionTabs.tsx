@@ -34,7 +34,6 @@ export default function PermissionTabs() {
       setSelected(String(typeTab))
     }
   }, [typeTab])
-  console.log(mGrade)
 
   return (
     <>
