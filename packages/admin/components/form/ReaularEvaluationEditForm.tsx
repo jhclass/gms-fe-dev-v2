@@ -195,8 +195,8 @@ export default function ReaularEvaluationEditForm({
         <FlexBox>
           <AreaBox>
             <Input
+              variant={'bordered'}
               labelPlacement="outside"
-              variant="bordered"
               label={
                 <FilterLabel>
                   구분 <span>*</span>
@@ -220,8 +220,8 @@ export default function ReaularEvaluationEditForm({
           </AreaBox>
           <AreaBox>
             <Input
+              variant={'bordered'}
               labelPlacement="outside"
-              variant="bordered"
               label={
                 <FilterLabel>
                   배점 <span>*</span>
@@ -251,6 +251,7 @@ export default function ReaularEvaluationEditForm({
         <FlexBox className="textBox">
           <AreaBox>
             <Textarea
+              variant={'bordered'}
               label={
                 <FilterLabel>
                   평가내용 <span>*</span>
@@ -258,7 +259,6 @@ export default function ReaularEvaluationEditForm({
               }
               labelPlacement="outside"
               className="max-w-full"
-              variant="bordered"
               minRows={5}
               onChange={e => {
                 register('evaluationDetails').onChange(e)
@@ -276,27 +276,26 @@ export default function ReaularEvaluationEditForm({
               </p>
             )}
           </AreaBox>
-          {mId == item.lastModifiedByUserId && (
-            <BtnBox>
-              <Button
-                type="submit"
-                size="md"
-                radius="md"
-                color="primary"
-                className="lg:w-[50%] w-full"
-              >
-                수정
-              </Button>
-              <Button
-                variant="bordered"
-                color="primary"
-                className="w-full text-primary"
-                onClick={() => deleteItem(item.id)}
-              >
-                삭제
-              </Button>
-            </BtnBox>
-          )}
+
+          <BtnBox>
+            <Button
+              type="submit"
+              size="md"
+              radius="md"
+              color="primary"
+              className="lg:w-[50%] w-full"
+            >
+              수정
+            </Button>
+            <Button
+              variant="bordered"
+              color="primary"
+              className="w-full text-primary"
+              onClick={() => deleteItem(item.id)}
+            >
+              삭제
+            </Button>
+          </BtnBox>
         </FlexBox>
         <ListInfo item={item} />
       </DetailForm>

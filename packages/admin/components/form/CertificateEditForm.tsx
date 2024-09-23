@@ -363,27 +363,26 @@ export default function CertificateEditForm({ item, setPage, refetch, mId }) {
               </p>
             )}
           </AreaBox>
-          {mId == item.lastModifiedByUserId && (
-            <BtnBox>
-              <Button
-                type="submit"
-                size="md"
-                radius="md"
-                color="primary"
-                className="lg:w-[50%] w-full"
-              >
-                수정
-              </Button>
-              <Button
-                variant="bordered"
-                color="primary"
-                className="w-full text-primary"
-                onClick={() => deleteItem(item.id)}
-              >
-                삭제
-              </Button>
-            </BtnBox>
-          )}
+
+          <BtnBox>
+            <Button
+              type="submit"
+              size="md"
+              radius="md"
+              color="primary"
+              className="lg:w-[50%] w-full"
+            >
+              수정
+            </Button>
+            <Button
+              variant="bordered"
+              color="primary"
+              className="w-full text-primary"
+              onClick={() => deleteItem(item.id)}
+            >
+              삭제
+            </Button>
+          </BtnBox>
         </FlexBox>
         <ListInfo item={item} />
       </DetailForm>
