@@ -44,9 +44,12 @@ export default function Consult() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={true}
-          isWrite={true}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: true,
+            permissionName: null,
+          }}
           typeBtn={{
             typeLink: 'adviceType',
             permissionName: '상담분야',

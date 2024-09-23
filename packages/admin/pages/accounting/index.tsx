@@ -46,11 +46,14 @@ export default function Accounting() {
     <>
       <MainWrap>
         <Breadcrumb
-          isFilter={true}
-          isWrite={false}
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
         />
         <AccountingFilter
           isActive={filterActive}

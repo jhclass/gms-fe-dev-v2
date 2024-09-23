@@ -37,7 +37,10 @@ export default function Employment() {
           onFilterToggle={setFilterActive}
           isActive={filterActive}
           isFilter={true}
-          isWrite={false}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
           rightArea={true}
         />
         <Suspense

@@ -467,9 +467,12 @@ export default function SubjectDetail() {
         <MainWrap>
           <ConArea>
             <Breadcrumb
-              isFilter={false}
-              isWrite={false}
               rightArea={true}
+              isFilter={false}
+              write={{
+                isWrite: false,
+                permissionName: null,
+              }}
               addRender={
                 <SwitchDiv>
                   <SwitchText>노출여부</SwitchText>

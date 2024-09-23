@@ -43,9 +43,12 @@ export default function Teacher() {
           <Breadcrumb
             onFilterToggle={setFilterActive}
             isActive={filterActive}
-            isFilter={true}
-            isWrite={true}
             rightArea={true}
+            isFilter={true}
+            write={{
+              isWrite: true,
+              permissionName: '강사관리',
+            }}
             typeBtn={{
               typeLink: 'teacherType',
               permissionName: '강의분야',

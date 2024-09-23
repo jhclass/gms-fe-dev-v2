@@ -42,9 +42,12 @@ export default function Statistics() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={false}
-          isWrite={false}
           rightArea={true}
+          isFilter={false}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
           addRender={
             <DeleteDiv>
               {performanceFilter !== null && (

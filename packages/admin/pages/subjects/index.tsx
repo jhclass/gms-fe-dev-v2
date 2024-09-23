@@ -44,9 +44,12 @@ export default function Subjects() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={true}
-          isWrite={true}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: true,
+            permissionName: null,
+          }}
           typeBtn={{
             typeLink: 'subDiv',
             permissionName: '수강구분',

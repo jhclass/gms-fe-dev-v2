@@ -56,9 +56,12 @@ export default function Lecture() {
               <Breadcrumb
                 onFilterToggle={null}
                 isActive={false}
-                isFilter={false}
-                isWrite={false}
                 rightArea={false}
+                isFilter={false}
+                write={{
+                  isWrite: false,
+                  permissionName: null,
+                }}
                 addTitle={'(강사전용)'}
               />
               <ConBox>
@@ -78,9 +81,12 @@ export default function Lecture() {
               <Breadcrumb
                 onFilterToggle={setFilterActive}
                 isActive={filterActive}
-                isFilter={true}
-                isWrite={true}
                 rightArea={true}
+                isFilter={true}
+                write={{
+                  isWrite: true,
+                  permissionName: null,
+                }}
               />
               <Suspense
                 fallback={

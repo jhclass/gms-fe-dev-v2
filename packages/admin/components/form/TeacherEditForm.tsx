@@ -318,9 +318,12 @@ export default function TeacherEditForm({ managerId }) {
       <MainWrap>
         <ConArea>
           <Breadcrumb
-            isFilter={false}
-            isWrite={false}
             rightArea={true}
+            isFilter={false}
+            write={{
+              isWrite: false,
+              permissionName: null,
+            }}
             addRender={
               <Controller
                 control={control}
