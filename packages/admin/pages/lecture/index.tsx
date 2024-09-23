@@ -44,12 +44,14 @@ export default function Lecture() {
         teacherId: parseInt(mId),
       }
       setLectureFilter(filter)
+    } else {
+      setLectureFilter({})
     }
   }, [mId, mGrade])
 
   return (
     <>
-      {mGrade >= 0 && (
+      {lectureFilter && (
         <MainWrap>
           {mGrade === grade.teacher ? (
             <>

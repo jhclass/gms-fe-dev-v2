@@ -1,7 +1,5 @@
 import { styled, useTheme } from 'styled-components'
 import Link from 'next/link'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
 
 const TableItem = styled.div<{ $resign: string }>`
   position: relative;
@@ -220,19 +218,7 @@ export default function TeachersItem(props) {
       <TableItem $resign={managerData.resign}>
         <TableRow>
           <Link
-            href={`/hr/teacherDetail/${managerData.id}`}
-            // href={
-            //   managerData.resign === 'Y'
-            //     ? props.mGrade <= grade.subMaster ||
-            //       props.mPart.includes('인사팀')
-            //       ? `/hr/teacherDetail/${managerData.id}`
-            //       : '#'
-            //     : props.mGrade <= grade.subMaster ||
-            //       props.mPart.includes('인사팀') ||
-            //       props.mPart.includes('교무팀')
-            //     ? `/hr/teacherDetail/${managerData.id}`
-            //     : '#'
-            // }
+            href={props.clickable ? `/hr/teacherDetail/${managerData.id}` : '#'}
           >
             <ClickBox>
               <Tnum>{(props.currentPage - 1) * conLimit + (conIndex + 1)}</Tnum>

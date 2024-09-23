@@ -239,7 +239,8 @@ export default function LectureDates({
                       onChange={handleDateSelect}
                       filterDate={date => !isDayDisabled(date)}
                       selected={startDate}
-                      minDate={startDate > today ? startDate : today}
+                      // minDate={startDate > today ? startDate : today}
+                      minDate={startDate}
                       maxDate={endDate}
                       monthsShown={monthsShown}
                     />

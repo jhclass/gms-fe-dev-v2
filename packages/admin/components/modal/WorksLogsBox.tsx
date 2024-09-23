@@ -76,7 +76,11 @@ export default function WorksLogsModal({
         setTimeTotal([])
       } else {
         const data = await fetchTimeTotalForDate(date, id)
-        setTimeTotal(data.trainingTimeTotal)
+        if (data.length === 0) {
+          setTimeTotal([])
+        } else {
+          setTimeTotal(data.trainingTimeTotal)
+        }
       }
     } catch (error) {
       console.error('작업 로그 데이터를 가져오는 중 오류 발생:', error)
