@@ -282,7 +282,7 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
                       </FilterLabel>
                     }
                     orientation="horizontal"
-                    className="gap-[0.65rem]"
+                    className="gap-[0.65rem] w-full"
                     classNames={{ wrapper: 'z-0' }}
                     value={memoType}
                     onValueChange={value => {
@@ -355,6 +355,8 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
                     onFocus={e => e.target.blur()}
                     customInput={
                       <Input
+                        isReadOnly={true}
+                        variant={'bordered'}
                         ref={field.ref}
                         label={
                           <FilterLabel>
@@ -363,9 +365,7 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
                         }
                         labelPlacement="outside"
                         type="text"
-                        variant="bordered"
                         id="date"
-                        isReadOnly={true}
                         classNames={{
                           input: 'caret-transparent',
                         }}
@@ -376,16 +376,12 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
                 )}
               />
             </DatePickerBox>
-            {errors.dateOfPreInspection && (
-              <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.dateOfPreInspection.message)}
-              </p>
-            )}
           </AreaBox>
         </FlexBox>
         <FlexBox className="textBox">
           <AreaBox>
             <Textarea
+              variant={'bordered'}
               label={
                 <FilterLabel>
                   점검 내용<span>*</span>
@@ -393,7 +389,6 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
               }
               labelPlacement="outside"
               className="max-w-full"
-              variant="bordered"
               minRows={5}
               onChange={e => {
                 register('preInspectionDetails').onChange(e)
@@ -413,6 +408,7 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
           </AreaBox>
           <AreaBox>
             <Textarea
+              variant={'bordered'}
               label={
                 <FilterLabel>
                   조치 사항<span>*</span>
@@ -420,7 +416,6 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
               }
               labelPlacement="outside"
               className="max-w-full"
-              variant="bordered"
               minRows={5}
               onChange={e => {
                 register('actionTaken').onChange(e)
@@ -438,27 +433,26 @@ export default function DropOutMemoEditForm({ item, refetch, setPage, mId }) {
               </p>
             )}
           </AreaBox>
-          {mId == item.lastModifiedByUserId && (
-            <BtnBox>
-              <Button
-                type="submit"
-                size="md"
-                radius="md"
-                color="primary"
-                className="lg:w-[50%] w-full"
-              >
-                수정
-              </Button>
-              <Button
-                variant="bordered"
-                color="primary"
-                className="w-full text-primary"
-                onClick={() => deleteItem(item.id)}
-              >
-                삭제
-              </Button>
-            </BtnBox>
-          )}
+
+          <BtnBox>
+            <Button
+              type="submit"
+              size="md"
+              radius="md"
+              color="primary"
+              className="lg:w-[50%] w-full"
+            >
+              수정
+            </Button>
+            <Button
+              variant="bordered"
+              color="primary"
+              className="w-full text-primary"
+              onClick={() => deleteItem(item.id)}
+            >
+              삭제
+            </Button>
+          </BtnBox>
         </FlexBox>
         <ListInfo item={item} />
       </DetailForm>

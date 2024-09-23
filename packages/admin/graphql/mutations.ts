@@ -1737,6 +1737,8 @@ export const SEARCH_LECTURES_MUTATION = gql`
               lastModifiedTime
             }
             lastModifiedTime
+            lastModifiedByName
+            lastModifiedByUserId
             situationReport
             lectureAssignment
             dateOfDroppingOut

@@ -37,23 +37,26 @@ export default function ListInfo({ item }) {
       `${date.getSeconds().toString().padStart(2, '0')}`
     return formatted
   }
+  console.log(item)
   return (
-    item?.lastModifiedTime && (
-      <UpdateTime>
-        <UpdateCon>
-          <span>마지막 업데이트 : </span>
-          {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-            <>
-              {item?.lastModifiedByName && item?.lastModifiedByName}(
-              {item?.lastModifiedByUserId && item?.lastModifiedByUserId})
-            </>
-          ) : null}
-        </UpdateCon>
+    <UpdateTime>
+      <UpdateCon>
+        <span>최근 업데이트 : </span>
         {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
-          <span className="px-[0.2rem]">-</span>
+          <>
+            {item?.lastModifiedByName && item?.lastModifiedByName}(
+            {item?.lastModifiedByUserId && item?.lastModifiedByUserId})
+          </>
         ) : null}
-        <UpdateCon>{formatDate(item?.lastModifiedTime)}</UpdateCon>
-      </UpdateTime>
-    )
+      </UpdateCon>
+      {item?.lastModifiedByName || item?.lastModifiedByUserId ? (
+        <span className="px-[0.2rem]">-</span>
+      ) : null}
+      <UpdateCon>
+        {item?.lastModifiedTime
+          ? formatDate(item?.lastModifiedTime)
+          : formatDate(item?.createdAt)}
+      </UpdateCon>
+    </UpdateTime>
   )
 }
