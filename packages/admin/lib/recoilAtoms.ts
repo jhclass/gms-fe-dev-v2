@@ -147,7 +147,7 @@ export const progressStatusState = atom({
       color: '#043999',
     },
     70: {
-      name: '확인요망',
+      name: '장기가망',
       color: '#be058e',
     },
     110: {

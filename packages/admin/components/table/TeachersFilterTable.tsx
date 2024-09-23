@@ -1,9 +1,15 @@
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useSuspenseQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEARCH_PERMISSIONS_GRANTED_QUERY,
+} from '@/graphql/queries'
 import TeachersItem from '@/components/items/TeachersItem'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import { useRecoilValue } from 'recoil'
+import { gradeState } from '@/lib/recoilAtoms'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -150,8 +156,12 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
+}
 
-export default function TeachersFilterTable({ teacherFilter, mGrade, mPart }) {
+export default function TeachersFilterTable({ teacherFilter, mGrade, mId }) {
+  const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
@@ -159,6 +169,20 @@ export default function TeachersFilterTable({ teacherFilter, mGrade, mPart }) {
   )
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
+
+  const { error: permissionError, data: permissionData } =
+    useSuspenseQuery<SearchPermissionsGrantedQeury>(
+      SEARCH_PERMISSIONS_GRANTED_QUERY,
+      {
+        variables: {
+          permissionName: '강사관리',
+        },
+      },
+    )
+  const permissionManagers =
+    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+      manager => manager.id,
+    )
 
   useEffect(() => {
     if (teacherFilter) {
@@ -226,8 +250,10 @@ export default function TeachersFilterTable({ teacherFilter, mGrade, mPart }) {
                     itemIndex={index}
                     currentPage={currentPage}
                     limit={currentLimit}
-                    mGrade={mGrade}
-                    mPart={mPart}
+                    clickable={
+                      mGrade <= grade.subMaster ||
+                      permissionManagers.includes(mId)
+                    }
                   />
                 ))}
               {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}

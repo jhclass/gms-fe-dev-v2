@@ -76,9 +76,12 @@ export default function ConsultReject() {
     <>
       <MainWrap>
         <Breadcrumb
-          isFilter={false}
-          isWrite={false}
           rightArea={mGrade <= grade.subMaster ? true : false}
+          isFilter={false}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
           addRender={
             <DeleteDiv>
               {checkItem?.length !== 0 && (

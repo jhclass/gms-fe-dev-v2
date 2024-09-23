@@ -44,9 +44,12 @@ export default function Students() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={true}
-          isWrite={true}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: true,
+            permissionName: null,
+          }}
         />
         <StudentsFilter
           isActive={filterActive}

@@ -29,9 +29,12 @@ export default function Refund() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={true}
-          isWrite={false}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
         />
         <RefundFilter
           isActive={filterActive}

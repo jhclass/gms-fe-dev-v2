@@ -17,9 +17,12 @@ export default function SettingPermissions() {
         <Breadcrumb
           onFilterToggle={false}
           isActive={false}
-          isFilter={false}
-          isWrite={false}
           rightArea={false}
+          isFilter={false}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
         />
         <ConBox>
           <PermissionTabs />

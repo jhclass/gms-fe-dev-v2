@@ -442,7 +442,14 @@ export default function ConsultDetail() {
       {studentState !== null && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
+            <Breadcrumb
+              rightArea={false}
+              isFilter={false}
+              write={{
+                isWrite: false,
+                permissionName: null,
+              }}
+            />
             <DetailBox>
               <FormTopInfo item={studentState} noti={true} time={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>

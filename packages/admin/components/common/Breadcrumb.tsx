@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@nextui-org/react'
 import category from '@/lib/category'
 import TypeBtn from '@/components/common/TypeBtn'
+import PermissionBtn from '@/components/common/PermissionBtn'
 
 const BreadcrumbBox = styled.div`
   display: flex;
@@ -192,16 +193,41 @@ export default function Breadcrumb(props) {
                   Filter
                 </FilterBtn>
               )}
-              {props.isWrite && (
-                <Button
-                  size="sm"
-                  radius="sm"
-                  variant="solid"
-                  className="text-white bg-accent"
-                  onClick={() => router.push(currentCate.isWrite)}
-                >
-                  등록
-                </Button>
+              {props.write.isWrite && (
+                <>
+                  {props.write.permissionName ? (
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <PermissionBtn
+                        btnName={'등록'}
+                        style={{
+                          size: 'sm',
+                          variant: 'solid',
+                          css: 'bg-accent text-white',
+                        }}
+                        permissionName={props.write.permissionName}
+                        handleClick={() => {
+                          router.push(currentCate.isWrite)
+                        }}
+                      />
+                    </Suspense>
+                  ) : (
+                    <Button
+                      size="sm"
+                      radius="sm"
+                      variant="solid"
+                      className="text-white bg-accent"
+                      onClick={() => router.push(currentCate.isWrite)}
+                    >
+                      등록
+                    </Button>
+                  )}
+                </>
               )}
               {props.typeBtn && (
                 <Suspense

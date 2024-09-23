@@ -2,9 +2,17 @@ import { useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
-import { SearchManageUserResult } from '@/src/generated/graphql'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEARCH_PERMISSIONS_GRANTED_QUERY,
+} from '@/graphql/queries'
+import {
+  ResultSearchPermissionsGranted,
+  SearchManageUserResult,
+} from '@/src/generated/graphql'
 import TeachersItem from '@/components/items/TeachersItem'
+import { gradeState } from '@/lib/recoilAtoms'
+import { useRecoilValue } from 'recoil'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -145,17 +153,36 @@ const Nolist = styled.div`
 type searchManageUserQuery = {
   searchManageUser: SearchManageUserResult
 }
-export default function TeachersTable({ mGrade, mPart }) {
+type SearchPermissionsGrantedQeury = {
+  searchPermissionsGranted: ResultSearchPermissionsGranted
+}
+
+export default function TeachersTable({ mGrade, mId }) {
+  const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
   const { error, data, refetch } = useSuspenseQuery<searchManageUserQuery>(
     SEARCH_MANAGEUSER_QUERY,
     {
-      variables: { page: currentPage, limit: currentLimit, mRank: '강사' },
+      variables: { page: currentPage, limit: currentLimit, mGrade: 99 },
     },
   )
   const managerData = data?.searchManageUser.data
   const managerTotal = data?.searchManageUser.totalCount
+
+  const { error: permissionError, data: permissionData } =
+    useSuspenseQuery<SearchPermissionsGrantedQeury>(
+      SEARCH_PERMISSIONS_GRANTED_QUERY,
+      {
+        variables: {
+          permissionName: '강사관리',
+        },
+      },
+    )
+  const permissionManagers =
+    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+      manager => manager.id,
+    )
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -203,8 +230,10 @@ export default function TeachersTable({ mGrade, mPart }) {
                   itemIndex={index}
                   currentPage={currentPage}
                   limit={currentLimit}
-                  mGrade={mGrade}
-                  mPart={mPart}
+                  clickable={
+                    mGrade <= grade.subMaster ||
+                    permissionManagers.includes(mId)
+                  }
                 />
               ))}
             {managerTotal === 0 && <Nolist>등록된 강사가 없습니다.</Nolist>}

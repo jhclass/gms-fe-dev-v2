@@ -32,9 +32,12 @@ export default function Statistics() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={true}
-          isWrite={false}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: false,
+            permissionName: null,
+          }}
         />
         <RecruitmentFilter
           isActive={filterActive}

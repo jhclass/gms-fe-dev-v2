@@ -42,9 +42,12 @@ export default function Manager() {
         <Breadcrumb
           onFilterToggle={setFilterActive}
           isActive={filterActive}
-          isFilter={true}
-          isWrite={true}
           rightArea={true}
+          isFilter={true}
+          write={{
+            isWrite: true,
+            permissionName: '직원관리',
+          }}
           typeBtn={{
             typeLink: 'mPartType',
             permissionName: '부서명',

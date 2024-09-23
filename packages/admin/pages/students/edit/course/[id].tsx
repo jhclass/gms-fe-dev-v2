@@ -158,7 +158,14 @@ export default function StudentsWriteCourse() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb isFilter={false} isWrite={false} rightArea={false} />
+          <Breadcrumb
+            rightArea={false}
+            isFilter={false}
+            write={{
+              isWrite: false,
+              permissionName: null,
+            }}
+          />
           <DetailBox>
             <FormTopInfo item={studentData} noti={true} time={true} />
             <DetailDiv>
