@@ -11,6 +11,8 @@ import EmploymentTabs from '@/components/layout/tab/EmploymentTabs'
 import RecordInfoForm from '@/components/form/RecordInfoForm'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import { SEARCH_STUDENT_RECORD_QUERY } from '@/graphql/queries'
+import PermissionBtn from '@/components/common/PermissionBtn'
+import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 
 const ConArea = styled.div`
   width: 100%;
@@ -111,22 +113,22 @@ export default function EmploymentDetail() {
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    color="primary"
-                    className="text-white"
-                    onClick={() => {
-                      {
+                  <SuspenseWrap>
+                    <PermissionBtn
+                      btnName={'수정'}
+                      style={{
+                        size: 'sm',
+                        variant: 'solid',
+                        css: 'text-white',
+                      }}
+                      permissionName={'강의관리접근'}
+                      handleClick={() => {
                         router.push(
                           `/lecture/detail/${subjectData?.lectures?.id}`,
                         )
-                      }
-                    }}
-                  >
-                    수정
-                  </Button>
+                      }}
+                    />
+                  </SuspenseWrap>
                 </AreaTitle>
                 <LectureInfo
                   lectureData={subjectData?.lectures}

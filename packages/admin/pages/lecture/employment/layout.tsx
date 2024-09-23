@@ -37,11 +37,7 @@ export default function EmploymentLayout({ children }) {
     return null
   }
 
-  if (
-    mGrade === grade.teacher ||
-    mGrade <= grade.subMaster ||
-    permissionManagers.includes(mId)
-  ) {
+  if (mGrade <= grade.subMaster || permissionManagers.includes(mId)) {
     return <main>{children}</main>
   } else {
     return <MainWrap>접근 권한이 없습니다.</MainWrap>

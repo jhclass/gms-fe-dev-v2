@@ -23,6 +23,8 @@ import {
 import AttendanceTabs from '@/components/layout/tab/AttendanceTabs'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import useMmeQuery from '@/utils/mMe'
+import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
+import PermissionBtn from '@/components/common/PermissionBtn'
 
 const ConArea = styled.div`
   width: 100%;
@@ -193,20 +195,20 @@ export default function AttendancePage() {
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>
-                  <Button
-                    size="sm"
-                    radius="sm"
-                    variant="solid"
-                    color="primary"
-                    className="text-white"
-                    onClick={() => {
-                      {
+                  <SuspenseWrap>
+                    <PermissionBtn
+                      btnName={'수정'}
+                      style={{
+                        size: 'sm',
+                        variant: 'solid',
+                        css: 'text-white',
+                      }}
+                      permissionName={'강의관리접근'}
+                      handleClick={() => {
                         router.push(`/lecture/detail/${lectureData?.id}`)
-                      }
-                    }}
-                  >
-                    수정
-                  </Button>
+                      }}
+                    />
+                  </SuspenseWrap>
                 </AreaTitle>
                 <LectureInfo
                   lectureData={lectureData}
