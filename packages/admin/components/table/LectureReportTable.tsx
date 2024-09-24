@@ -175,9 +175,9 @@ export default function LectureReportTable({ lecture, students }) {
                   <Tnum>미수료</Tnum>
                   <Tnum>중도탈락율</Tnum>
                   <Tlong>조기취업 가입</Tlong>
-                  <Tlong>조기취업 미가입</Tlong>
                   <Tnum>수료인원</Tnum>
                   <Tnum>수료율</Tnum>
+                  <Tnum>취업률</Tnum>
                   <Tlong>재직증명 확보예정</Tlong>
                 </ClickBox>
               </TheaderBox>
