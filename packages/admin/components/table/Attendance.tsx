@@ -836,9 +836,11 @@ export default function Attendance({ lectureData, students }) {
                                 <>
                                   {attendanceAllData[index]?.length === 0 ? (
                                     <Button
-                                      isDisabled={selectedValues[
-                                        todayIndex
-                                      ].includes('-')}
+                                      isDisabled={
+                                        !selectedValues[todayIndex].includes(
+                                          '-',
+                                        )
+                                      }
                                       size="sm"
                                       radius="sm"
                                       variant="solid"
