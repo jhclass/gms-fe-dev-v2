@@ -731,8 +731,13 @@ export default function Attendance({ lectureData, students }) {
                                   }`,
                                 }}
                                 isDisabled={
-                                  dayIndex > todayIndex &&
                                   attendanceAllData[dayIndex]?.length === 0
+                                    ? week[dayIndex] === ''
+                                      ? true
+                                      : todayIndex >= 0 && dayIndex > todayIndex
+                                      ? true
+                                      : false
+                                    : false
                                 }
                                 variant="bordered"
                                 selectedKeys={[selectedValues[dayIndex][index]]}
@@ -797,7 +802,7 @@ export default function Attendance({ lectureData, students }) {
                               >
                                 일지
                               </Button>
-                              {index >= todayIndex ? (
+                              {index >= todayIndex && todayIndex >= 0 ? (
                                 <>
                                   {index === todayIndex &&
                                   attendanceAllData[todayIndex]?.length !==
@@ -837,6 +842,7 @@ export default function Attendance({ lectureData, students }) {
                                   {attendanceAllData[index]?.length === 0 ? (
                                     <Button
                                       isDisabled={
+                                        selectedValues[todayIndex] &&
                                         !selectedValues[todayIndex].includes(
                                           '-',
                                         )
