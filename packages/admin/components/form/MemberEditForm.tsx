@@ -312,6 +312,11 @@ export default function MemberEditForm({ managerId }) {
         <ConArea>
           <Breadcrumb
             rightArea={true}
+            isFilter={false}
+            write={{
+              isWrite: false,
+              permissionName: null,
+            }}
             addRender={
               <Controller
                 control={control}
