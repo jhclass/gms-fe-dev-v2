@@ -81,7 +81,7 @@ export default function DatePickerHeader({
             }}
           ></span>
         }
-        className="w-[90%]"
+        className="w-[95%]"
         labelPlacement="outside"
         selectedKeys={[months[getMonth(clickDate)]]}
         variant="underlined"
