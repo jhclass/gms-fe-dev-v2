@@ -10,6 +10,24 @@ const PermissionBox = styled.div`
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 1em;
 `
+const NotiBox = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 0.5rem;
+
+  p {
+    position: relative;
+    padding-left: 0.5rem;
+  }
+
+  span {
+    position: absolute;
+    top: 0.1rem;
+    left: 0;
+    color: red;
+  }
+`
 const BoxArea = styled.div`
   display: flex;
   width: 100%;
@@ -54,6 +72,14 @@ export default function PermissionMasterTabItem({ permissionName }) {
       <>
         <PermissionBox>
           <BoxArea>
+            <NotiBox>
+              <p>
+                <span>*</span> 부운영자권한은 운영자권한과 동일합니다.
+                <br />
+                부운영자권한을 부여받는 경우, 현재 적용할 수 있는 모든 권한을
+                운영자와 동일하게 부여받습니다. &#40;부운영자관리 제외&#41;
+              </p>
+            </NotiBox>
             <BoxBtn>
               <PermissionMasterAddForm
                 permission={data.searchPermissionsGranted.data[0]}
