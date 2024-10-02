@@ -229,14 +229,7 @@ export default function StudentsEditInfo() {
       {studentData !== null && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb
-              rightArea={false}
-              isFilter={false}
-              write={{
-                isWrite: false,
-                permissionName: null,
-              }}
-            />
+            <Breadcrumb rightArea={false} isFilter={false} />
             <DetailBox>
               <FormTopInfo item={studentData} noti={true} time={true} />
               <form onSubmit={handleSubmit(onSubmit)}>

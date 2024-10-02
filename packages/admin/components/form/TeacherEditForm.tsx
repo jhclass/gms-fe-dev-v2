@@ -320,10 +320,6 @@ export default function TeacherEditForm({ managerId }) {
           <Breadcrumb
             rightArea={true}
             isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
             addRender={
               <Controller
                 control={control}

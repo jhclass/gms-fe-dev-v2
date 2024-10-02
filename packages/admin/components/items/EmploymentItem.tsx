@@ -233,7 +233,9 @@ export default function EmploymentItem(props) {
               </Ttimes>
               <Tteacher>
                 <EllipsisBox>
-                  {formatUsernames(student?.subject?.lectures?.teachers)}
+                  {student?.subject?.lectures?.teachers
+                    ? formatUsernames(student?.subject?.lectures?.teachers)
+                    : '-'}
                 </EllipsisBox>
               </Tteacher>
               <Tname>

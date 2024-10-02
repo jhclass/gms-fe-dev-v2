@@ -34,10 +34,6 @@ export default function Statistics() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <RecruitmentFilter
           isActive={filterActive}

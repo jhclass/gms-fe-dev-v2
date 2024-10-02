@@ -224,14 +224,7 @@ export default function MemberProfileForm() {
       <>
         <MainWrap>
           <ConArea>
-            <Breadcrumb
-              isFilter={false}
-              write={{
-                isWrite: false,
-                permissionName: null,
-              }}
-              rightArea={false}
-            />
+            <Breadcrumb isFilter={false} rightArea={false} />
             <DetailBox>
               <FormTopInfo item={mMeData} noti={true} time={true} />
               <DetailForm onSubmit={handleSubmit(onSubmit)}>
@@ -514,7 +507,7 @@ export default function MemberProfileForm() {
                       type="text"
                       label={
                         <FilterLabel>
-                          부서명<span>*</span>
+                          부서<span>*</span>
                         </FilterLabel>
                       }
                       className="w-full"

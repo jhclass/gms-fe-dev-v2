@@ -1,11 +1,12 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import Layout from '@/pages/message/layout'
-import { Suspense, useEffect, useState } from 'react'
-import MessageList from '@/components/table/MessageList'
-import MessageFilter from '@/components/filter/MessageFilter'
-import { useRouter } from 'next/router'
+import Layout from '@/pages/hr/timesheet/layout'
+import { Suspense, useState } from 'react'
+import useMmeQuery from '@/utils/mMe'
+import ManagersTable from '@/components/table/ManagersTable'
+import ManagersFilterTable from '@/components/table/ManagersFilterTable'
+import TimesheetFilter from '@/components/filter/TimesheetFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -25,15 +26,13 @@ const LodingDiv = styled.div`
   align-items: center;
 `
 
-export default function message() {
+export default function Manager() {
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mId = useMme('id')
   const [filterActive, setFilterActive] = useState()
   const [filterSearch, setFilterSearch] = useState()
-  const [studentFilter, setStudentFilter] = useState()
-
-  const router = useRouter()
-  useEffect(() => {
-    router.push('/message/sms')
-  }, [router])
+  const [managerFilter, setManagerFilter] = useState()
 
   return (
     <>
@@ -43,6 +42,7 @@ export default function message() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
+          addRender={''}
         />
         <Suspense
           fallback={
@@ -51,11 +51,10 @@ export default function message() {
             </LodingDiv>
           }
         >
-          <MessageFilter
+          <TimesheetFilter
             isActive={filterActive}
-            // studentFilter={studentFilter}
-            // onFilterSearch={setFilterSearch}
-            // setStudentFilter={setStudentFilter}
+            onFilterSearch={setFilterSearch}
+            setManagerFilter={setManagerFilter}
           />
         </Suspense>
         <ConBox>
@@ -67,7 +66,11 @@ export default function message() {
                 </LodingDiv>
               }
             >
-              {/* <ConsultationFilter studentFilter={studentFilter} /> */}
+              <ManagersFilterTable
+                managerFilter={managerFilter}
+                mGrade={mGrade}
+                mId={mId}
+              />
             </Suspense>
           ) : (
             <Suspense
@@ -77,7 +80,7 @@ export default function message() {
                 </LodingDiv>
               }
             >
-              <MessageList />
+              <ManagersTable mGrade={mGrade} mId={mId} />
             </Suspense>
           )}
         </ConBox>
@@ -85,4 +88,4 @@ export default function message() {
     </>
   )
 }
-message.getLayout = page => <Layout>{page}</Layout>
+Manager.getLayout = page => <Layout>{page}</Layout>

@@ -193,7 +193,7 @@ export default function Breadcrumb(props) {
                   Filter
                 </FilterBtn>
               )}
-              {props.write.isWrite && (
+              {props.write && (
                 <>
                   {props.write.permissionName ? (
                     <Suspense
@@ -212,7 +212,7 @@ export default function Breadcrumb(props) {
                         }}
                         permissionName={props.write.permissionName}
                         handleClick={() => {
-                          router.push(currentCate.isWrite)
+                          router.push(props.write.link)
                         }}
                       />
                     </Suspense>
@@ -222,7 +222,7 @@ export default function Breadcrumb(props) {
                       radius="sm"
                       variant="solid"
                       className="text-white bg-accent"
-                      onClick={() => router.push(currentCate.isWrite)}
+                      onClick={() => router.push(props.write.link)}
                     >
                       등록
                     </Button>

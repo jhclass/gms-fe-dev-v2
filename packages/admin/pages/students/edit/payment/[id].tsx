@@ -459,14 +459,7 @@ export default function StudentsWritePayment() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb
-            rightArea={false}
-            isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
-          />
+          <Breadcrumb rightArea={false} isFilter={false} />
           <DetailBox>
             {studentPaymentData?.student && (
               <FormTopInfo

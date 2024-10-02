@@ -217,14 +217,7 @@ export default function ConsultWirte() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb
-            rightArea={false}
-            isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
-          />
+          <Breadcrumb rightArea={false} isFilter={false} />
           <DetailBox>
             <FormTopInfo item={null} noti={true} time={false} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>

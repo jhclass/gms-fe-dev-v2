@@ -96,7 +96,7 @@ export default function TypesTabs() {
             <TypesItem type={'훈련생유형'} />
           </Suspense>
         </Tab>
-        <Tab key="mPartType" title="부서명">
+        <Tab key="mPartType" title="부서">
           <Suspense
             fallback={
               <LodingDiv>
@@ -104,7 +104,7 @@ export default function TypesTabs() {
               </LodingDiv>
             }
           >
-            <TypesItem type={'부서명'} />
+            <TypesItem type={'부서'} />
           </Suspense>
         </Tab>
         <Tab key="smsSender" title="발신인증번호">

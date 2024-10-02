@@ -189,14 +189,7 @@ export default function AttendancePage() {
       {isRead && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb
-              rightArea={false}
-              isFilter={false}
-              write={{
-                isWrite: false,
-                permissionName: null,
-              }}
-            />
+            <Breadcrumb rightArea={false} isFilter={false} />
             <DetailBox>
               <FormTopInfo item={lectureData} noti={true} time={true} />
               <DetailDiv>
@@ -237,19 +230,34 @@ export default function AttendancePage() {
                 <FlexChipBox>
                   {sortStudents?.length > 0 ? (
                     <>
-                      {sortStudents
-                        .filter(
-                          student =>
-                            student.courseComplete !== completion.dropout,
-                        )
-                        .map((item, index) => (
-                          <Link
-                            href={`/lecture/employmentDetail/${item.id}`}
-                            key={index}
-                          >
-                            <Chip color="primary">{item.student.name}</Chip>
-                          </Link>
-                        ))}
+                      {mGrade === grade.teacher ? (
+                        <>
+                          {sortStudents
+                            .filter(
+                              student =>
+                                student.courseComplete !== completion.dropout,
+                            )
+                            .map((item, index) => (
+                              <Chip color="primary">{item.student.name}</Chip>
+                            ))}
+                        </>
+                      ) : (
+                        <>
+                          {sortStudents
+                            .filter(
+                              student =>
+                                student.courseComplete !== completion.dropout,
+                            )
+                            .map((item, index) => (
+                              <Link
+                                href={`/lecture/employmentDetail/${item.id}`}
+                                key={index}
+                              >
+                                <Chip color="primary">{item.student.name}</Chip>
+                              </Link>
+                            ))}
+                        </>
+                      )}
                     </>
                   ) : (
                     <Nolist>교육훈련대상 수강생이 없습니다.</Nolist>
@@ -292,11 +300,13 @@ export default function AttendancePage() {
                         lectureData={lectureData}
                         students={students}
                         filterAttandanceData={filterAttandanceData}
+                        isTeacher={mGrade === grade.teacher}
                       />
                     ) : (
                       <Attendance
                         lectureData={lectureData}
                         students={students}
+                        isTeacher={mGrade === grade.teacher}
                       />
                     )}
                   </>

@@ -43,8 +43,8 @@ export default function Teacher() {
           rightArea={true}
           isFilter={true}
           write={{
-            isWrite: true,
             permissionName: '강사관리',
+            link: '/hr/teacherWrite',
           }}
           typeBtn={{
             typeLink: 'teacherType',

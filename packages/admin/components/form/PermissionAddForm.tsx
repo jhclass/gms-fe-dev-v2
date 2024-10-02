@@ -104,7 +104,7 @@ export default function PermissionAddForm({ permission }) {
           })
           userLogs(
             `${permission.permissionName} 권한 수정`,
-            `ok: ${result.data.editPermissionsGranted.ok} , managers: ${managers}`,
+            `ok: ${result.data.editPermissionsGranted.ok} , managers: ${managersName}`,
           )
           if (!result.data.editPermissionsGranted.ok) {
             throw new Error(`${permission.permissionName} 권한 수정 실패`)

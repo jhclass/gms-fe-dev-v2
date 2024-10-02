@@ -23,10 +23,6 @@ export default function Sales() {
           isActive={filterActive}
           rightArea={false}
           isFilter={false}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <SalesFilter
           isActive={filterActive}

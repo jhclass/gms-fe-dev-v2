@@ -103,14 +103,7 @@ export default function EmploymentDetail() {
       {paymentData && subjectData && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb
-              rightArea={false}
-              isFilter={false}
-              write={{
-                isWrite: false,
-                permissionName: null,
-              }}
-            />
+            <Breadcrumb rightArea={false} isFilter={false} />
             <DetailBox>
               <FormTopInfo
                 item={subjectData?.lectures}

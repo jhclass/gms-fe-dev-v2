@@ -469,10 +469,6 @@ export default function SubjectDetail() {
             <Breadcrumb
               rightArea={true}
               isFilter={false}
-              write={{
-                isWrite: false,
-                permissionName: null,
-              }}
               addRender={
                 <SwitchDiv>
                   <SwitchText>노출여부</SwitchText>
