@@ -215,7 +215,8 @@ export default function CategoryItem<CategoryItemProps>({
 
   const clickCate = (e, link) => {
     e.preventDefault()
-    router.push(link, undefined, { shallow: true, scroll: false })
+    // router.push(link, undefined, { shallow: true, scroll: false })
+    window.location.href = link
   }
 
   const isActiveF = (parentHref, childHref, currentPath) => {

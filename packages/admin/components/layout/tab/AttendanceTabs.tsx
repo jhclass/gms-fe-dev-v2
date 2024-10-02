@@ -53,7 +53,9 @@ export default function AttendanceTabs({ lectureId, students, subjectId }) {
   const completion = useRecoilValue(completionStatus)
   const [selected, setSelected] = useState('eduInfo')
   const dropOutStudents = students?.filter(
-    student => student.courseComplete === completion.dropout,
+    student =>
+      student.courseComplete === completion.dropout ||
+      student.courseComplete === completion.notCompleted,
   )
 
   useEffect(() => {
