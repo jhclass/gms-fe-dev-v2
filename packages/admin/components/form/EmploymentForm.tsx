@@ -94,7 +94,8 @@ export default function EmploymentForm({ paymentId, subjectId }) {
       variables: {
         studentPaymentId: paymentId,
         subjectId: subjectId,
-        employmentType: data.companyName === '' ? '취업' : data.companyName,
+        employmentType:
+          data.employmentType === '' ? '취업' : data.employmentType,
         dateOfEmployment:
           data.dateOfEmployment === undefined
             ? null
@@ -125,8 +126,8 @@ export default function EmploymentForm({ paymentId, subjectId }) {
             variables: {
               editStudentPaymentId: paymentId,
               subjectId: subjectId,
-              employmentType:
-                data.companyName === '' ? '취업' : data.companyName,
+              employment:
+                data.employmentType === '' ? '취업' : data.employmentType,
             },
             onCompleted: result2 => {
               if (result2.editStudentPayment.ok) {
