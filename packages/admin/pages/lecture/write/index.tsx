@@ -296,14 +296,7 @@ export default function LectureWrite() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb
-            rightArea={false}
-            isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
-          />
+          <Breadcrumb rightArea={false} isFilter={false} />
           <DetailBox>
             <FormTopInfo item={subjectState} noti={true} time={false} />
             <DetailForm onSubmit={handleSubmit(onSubmit)}>

@@ -10,7 +10,10 @@ import {
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLazyQuery } from '@apollo/client'
-import { SEE_MANAGEUSER_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEE_MANAGEUSER_QUERY,
+} from '@/graphql/queries'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import SearchEmployeeItem from '@/components/items/SearchEmployeeItem'
@@ -129,40 +132,43 @@ export default function SearchEmployeeTable({
   const grade = useRecoilValue(gradeState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(5)
-  const [seeManager, { refetch, loading, error, data }] =
-    useLazyQuery(SEE_MANAGEUSER_QUERY)
+  const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
+    SEARCH_MANAGEUSER_QUERY,
+  )
   const [managerData, setManagerData] = useState(null)
   const [managerTotal, setManagerTotal] = useState(0)
   const { register, handleSubmit, getValues } = useForm()
 
   useEffect(() => {
-    seeManager({
+    searchManager({
       variables: {
+        mGrade: 9,
         resign: 'N',
         page: currentPage,
         limit: currentLimit,
       },
       onCompleted: result => {
-        if (result.seeManageUser.ok) {
-          setManagerData(result?.seeManageUser.data)
-          setManagerTotal(result?.seeManageUser.totalCount)
+        if (result.searchManageUser.ok) {
+          setManagerData(result?.searchManageUser.data)
+          setManagerTotal(result?.searchManageUser.totalCount)
         }
       },
     })
   }, [currentPage])
 
   const onSubmit = data => {
-    seeManager({
+    searchManager({
       variables: {
         mUsername: data.mUsername,
+        mGrade: 9,
         resign: 'N',
         page: currentPage,
         limit: currentLimit,
       },
       onCompleted: result => {
-        if (result.seeManageUser.ok) {
-          setManagerData(result?.seeManageUser.data)
-          setManagerTotal(result?.seeManageUser.totalCount)
+        if (result.searchManageUser.ok) {
+          setManagerData(result?.searchManageUser.data)
+          setManagerTotal(result?.searchManageUser.totalCount)
         }
       },
     })
@@ -210,7 +216,7 @@ export default function SearchEmployeeTable({
               <TableRow>
                 <Tcheck></Tcheck>
                 <Tname>이름</Tname>
-                <Tpart>부서명</Tpart>
+                <Tpart>부서</Tpart>
                 <Trank>직위/직책</Trank>
               </TableRow>
             </Theader>

@@ -47,8 +47,8 @@ export default function Students() {
           rightArea={true}
           isFilter={true}
           write={{
-            isWrite: true,
             permissionName: null,
+            link: '/students/write',
           }}
         />
         <StudentsFilter

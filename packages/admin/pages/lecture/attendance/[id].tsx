@@ -189,14 +189,7 @@ export default function AttendancePage() {
       {isRead && (
         <MainWrap>
           <ConArea>
-            <Breadcrumb
-              rightArea={false}
-              isFilter={false}
-              write={{
-                isWrite: false,
-                permissionName: null,
-              }}
-            />
+            <Breadcrumb rightArea={false} isFilter={false} />
             <DetailBox>
               <FormTopInfo item={lectureData} noti={true} time={true} />
               <DetailDiv>

@@ -45,12 +45,12 @@ export default function Manager() {
           rightArea={true}
           isFilter={true}
           write={{
-            isWrite: true,
             permissionName: '직원관리',
+            link: '/hr/write',
           }}
           typeBtn={{
             typeLink: 'mPartType',
-            permissionName: '부서명',
+            permissionName: '부서',
           }}
           addRender={''}
         />

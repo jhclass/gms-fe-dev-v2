@@ -78,10 +78,6 @@ export default function ConsultRegistered() {
         <Breadcrumb
           rightArea={mGrade <= grade.subMaster ? true : false}
           isFilter={false}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
           addRender={
             <DeleteDiv>
               {checkItem?.length !== 0 && (

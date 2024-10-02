@@ -339,14 +339,7 @@ export default function message() {
   return (
     <>
       <MainWrap>
-        <Breadcrumb
-          rightArea={false}
-          isFilter={false}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
-        />
+        <Breadcrumb rightArea={false} isFilter={false} />
         <ConBox>
           <LeftBox onSubmit={handleSubmit(onSubmit)}>
             <Controller

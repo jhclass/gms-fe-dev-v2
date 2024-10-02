@@ -37,10 +37,6 @@ export default function Nonassigned() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <NonassignedFilter
           isActive={filterActive}
