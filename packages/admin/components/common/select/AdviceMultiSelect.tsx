@@ -4,6 +4,17 @@ import { useSuspenseQuery } from '@apollo/client'
 import { Select, SelectItem } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { styled } from 'styled-components'
+
+const Noti = styled.p`
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+  padding-left: 0.3rem;
+  color: red;
+`
 
 type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
@@ -76,6 +87,13 @@ export default function AdviceMultiSelect({
           </SelectItem>
         ))}
       </Select>
+      {adviceList.length === 0 && (
+        <Noti>
+          {category}이(가) 없습니다.
+          <br />
+          {category}을(를) 먼저 등록을 해주세요.
+        </Noti>
+      )}
     </>
   )
 }

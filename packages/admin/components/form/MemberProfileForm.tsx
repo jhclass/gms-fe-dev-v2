@@ -507,7 +507,7 @@ export default function MemberProfileForm() {
                       type="text"
                       label={
                         <FilterLabel>
-                          부서명<span>*</span>
+                          부서<span>*</span>
                         </FilterLabel>
                       }
                       className="w-full"

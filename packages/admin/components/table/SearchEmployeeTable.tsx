@@ -216,7 +216,7 @@ export default function SearchEmployeeTable({
               <TableRow>
                 <Tcheck></Tcheck>
                 <Tname>이름</Tname>
-                <Tpart>부서명</Tpart>
+                <Tpart>부서</Tpart>
                 <Trank>직위/직책</Trank>
               </TableRow>
             </Theader>

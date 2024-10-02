@@ -196,7 +196,7 @@ export default function TimesheetFilter({
                 placeholder=" "
                 type="text"
                 variant="bordered"
-                label="부서명"
+                label="부서"
                 {...register('mPart', {
                   pattern: {
                     value: /^[가-힣a-zA-Z0-9\s]*$/,

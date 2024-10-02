@@ -221,7 +221,7 @@ export default function SMSAddrModal({ groupSelected, setGroupSelected }) {
               <TableRow>
                 <Tcheck></Tcheck>
                 <Tname>이름</Tname>
-                <Tpart>부서명</Tpart>
+                <Tpart>부서</Tpart>
                 <Trank>직위/직책</Trank>
                 <Tphone>휴대폰</Tphone>
               </TableRow>

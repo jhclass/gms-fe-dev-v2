@@ -50,7 +50,7 @@ export default function Manager() {
           }}
           typeBtn={{
             typeLink: 'mPartType',
-            permissionName: '부서명',
+            permissionName: '부서',
           }}
           addRender={''}
         />
