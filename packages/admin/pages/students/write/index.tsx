@@ -200,14 +200,7 @@ export default function StudentsWrite() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb
-            rightArea={false}
-            isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
-          />
+          <Breadcrumb rightArea={false} isFilter={false} />
           <DetailBox>
             <FormTopInfo item={null} noti={true} time={false} />
             <form onSubmit={handleSubmit(onSubmit)}>

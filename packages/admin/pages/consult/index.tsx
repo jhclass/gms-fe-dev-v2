@@ -47,8 +47,8 @@ export default function Consult() {
           rightArea={true}
           isFilter={true}
           write={{
-            isWrite: true,
             permissionName: null,
+            link: '/consult/write',
           }}
           typeBtn={{
             typeLink: 'adviceType',

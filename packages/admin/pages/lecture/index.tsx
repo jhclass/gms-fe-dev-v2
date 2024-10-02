@@ -60,10 +60,6 @@ export default function Lecture() {
                 isActive={false}
                 rightArea={false}
                 isFilter={false}
-                write={{
-                  isWrite: false,
-                  permissionName: null,
-                }}
                 addTitle={'(강사전용)'}
               />
               <ConBox>
@@ -86,8 +82,8 @@ export default function Lecture() {
                 rightArea={true}
                 isFilter={true}
                 write={{
-                  isWrite: true,
                   permissionName: null,
+                  link: '/lecture/write',
                 }}
               />
               <Suspense

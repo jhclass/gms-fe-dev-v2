@@ -19,10 +19,6 @@ export default function SettingPermissions() {
           isActive={false}
           rightArea={false}
           isFilter={false}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <ConBox>
           <PermissionTabs />

@@ -50,10 +50,6 @@ export default function Accounting() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <AccountingFilter
           isActive={filterActive}

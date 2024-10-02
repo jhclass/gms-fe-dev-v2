@@ -44,10 +44,6 @@ export default function Outstanding() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <OutstandingFilter
           isActive={filterActive}

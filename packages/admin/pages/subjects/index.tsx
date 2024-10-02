@@ -47,8 +47,8 @@ export default function Subjects() {
           rightArea={true}
           isFilter={true}
           write={{
-            isWrite: true,
             permissionName: null,
+            link: '/subjects/write',
           }}
           typeBtn={{
             typeLink: 'subDiv',

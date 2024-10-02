@@ -19,10 +19,6 @@ export default function SettingTypes() {
           isActive={false}
           rightArea={false}
           isFilter={false}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <ConBox>
           <TypesTabs />

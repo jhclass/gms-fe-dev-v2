@@ -1,14 +1,12 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import Layout from '@/pages/hr/layout'
+import Layout from '@/pages/hr/timesheet/layout'
 import { Suspense, useState } from 'react'
-import ManagersFilter from '@/components/filter/ManagersFilter'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
 import useMmeQuery from '@/utils/mMe'
 import ManagersTable from '@/components/table/ManagersTable'
 import ManagersFilterTable from '@/components/table/ManagersFilterTable'
+import TimesheetFilter from '@/components/filter/TimesheetFilter'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -44,14 +42,6 @@ export default function Manager() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
-          write={{
-            permissionName: '직원관리',
-            link: '/hr/write',
-          }}
-          typeBtn={{
-            typeLink: 'mPartType',
-            permissionName: '부서명',
-          }}
           addRender={''}
         />
         <Suspense
@@ -61,7 +51,7 @@ export default function Manager() {
             </LodingDiv>
           }
         >
-          <ManagersFilter
+          <TimesheetFilter
             isActive={filterActive}
             onFilterSearch={setFilterSearch}
             setManagerFilter={setManagerFilter}
