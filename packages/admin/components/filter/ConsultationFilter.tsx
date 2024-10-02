@@ -14,6 +14,9 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -144,6 +147,7 @@ export default function ConsultationFilter({
   onFilterSearch,
   studentFilter,
   setStudentFilter,
+  supervisor,
 }) {
   const router = useRouter()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -390,35 +394,38 @@ export default function ConsultationFilter({
                 )}
               />
             </ItemBox>
-            <ItemBox>
-              <Controller
-                control={control}
-                name="pic"
-                defaultValue={'-'}
-                render={({ field }) => (
-                  <Suspense
-                    fallback={
-                      <LodingDiv>
-                        <i className="xi-spinner-2" />
-                      </LodingDiv>
-                    }
-                  >
-                    <PermissionManagerSelect
-                      selectedKey={manager}
-                      field={field}
-                      label={'담당자'}
-                      handleChange={handleManagerChange}
-                      optionDefault={{
-                        mUsername: '-',
-                        mUserId: '-',
-                      }}
-                      parmissionName={'상담관리접근'}
-                      isId={false}
-                    />
-                  </Suspense>
-                )}
-              />
-            </ItemBox>
+            {supervisor ? (
+              <ItemBox>
+                <Controller
+                  control={control}
+                  name="pic"
+                  defaultValue={'-'}
+                  render={({ field }) => (
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <PermissionManagerSelect
+                        selectedKey={manager}
+                        field={field}
+                        label={'담당자'}
+                        handleChange={handleManagerChange}
+                        optionDefault={{
+                          mUsername: '-',
+                          mUserId: '-',
+                        }}
+                        parmissionName={'상담관리접근'}
+                        isId={false}
+                      />
+                    </Suspense>
+                  )}
+                />
+              </ItemBox>
+            ) : null}
+
             <ItemBox>
               <Controller
                 control={control}
