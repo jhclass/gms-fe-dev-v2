@@ -81,11 +81,6 @@ export default function LectureReportItem(props) {
                 {props.earlyEmployment ? props.earlyEmployment : '-'}
               </EllipsisBox>
             </Tlong>
-            <Tlong>
-              <EllipsisBox>
-                {props.notEarlyEmployed ? props.notEarlyEmployed : '-'}
-              </EllipsisBox>
-            </Tlong>
             <Tnum>
               <EllipsisBox>
                 {props.graduates ? props.graduates : '-'}
@@ -94,6 +89,11 @@ export default function LectureReportItem(props) {
             <Tnum>
               <EllipsisBox>
                 {props.graduationRate ? `${props.graduationRate}%` : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.employedRate ? `${props.employedRate}%` : '-'}
               </EllipsisBox>
             </Tnum>
             <Tlong>
