@@ -187,8 +187,10 @@ export default function LectureItem(props) {
 
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
+    const registeredDate = new Date(parseInt(date))
     const differenceInDays = Math.floor(
-      (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+      (currentDate.getTime() - registeredDate.getTime()) /
+        (1000 * 60 * 60 * 24),
     )
 
     if (differenceInDays >= 0) {

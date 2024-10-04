@@ -90,7 +90,7 @@ export default function LectureReportItem(props) {
             </Tnum>
             <Tnum>
               <EllipsisBox>
-                {props.graduationRate ? `${props.graduationRate}%` : '-'}
+                {props.employedRate ? `${props.employedRate}%` : '-'}
               </EllipsisBox>
             </Tnum>
             <Tlong>
