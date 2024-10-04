@@ -163,6 +163,7 @@ export default function RecoEmploymentForm({
       },
       refetchQueries: [SEARCH_SM_QUERY],
       onCompleted: result => {
+        console.log(result)
         userLogs(
           `paymentId: ${paymentId} 취업 추천 등록`,
           `ok: ${result.createEmploymentRecommendation.ok}`,
