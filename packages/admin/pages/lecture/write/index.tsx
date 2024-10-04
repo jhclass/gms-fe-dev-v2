@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -19,8 +19,6 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { gradeState } from '@/lib/recoilAtoms'
-import { useRecoilValue } from 'recoil'
 import { useMutation } from '@apollo/client'
 import { CREATE_LECTURES_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
@@ -30,10 +28,10 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import LectureDates from '@/components/modal/LectureDates'
 import TeacherMultiSelectID from '@/components/common/select/TeacherMultiSelectID'
 import useUserLogsMutation from '@/utils/userLogs'
-import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import TypeLink from '@/components/common/TypeLink'
+import SuspenseBox from '@/components/wrappers/SuspenseWrap'
 
 const ConArea = styled.div`
   width: 100%;
@@ -164,6 +162,7 @@ export default function LectureWrite() {
   const [lectureStartDate, setLectureStartDate] = useState(null)
   const [lectureEndDate, setLectureEndDate] = useState(null)
   const [changeDate, setChangeDate] = useState(false)
+  const [firstDate, setFirstDate] = useState(false)
   const [isReport, setIsReport] = useState('Y')
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 선택하세요.')
@@ -190,26 +189,11 @@ export default function LectureWrite() {
   } = useForm()
   const { errors } = formState
 
-  const formatDate = (data, isTime) => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}:` +
-        `${date.getSeconds().toString().padStart(2, '0')}`
-      return formatted
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
+  useEffect(() => {
+    if (changeDate) {
+      setValue('lectureDetails', [])
     }
-  }
+  }, [changeDate])
 
   const handleCampusNameChange = e => {
     setCampusName(e.target.value)
@@ -248,44 +232,53 @@ export default function LectureWrite() {
 
   const onSubmit = async data => {
     try {
-      const teachersIdArray = data.teachersId
-        .split(',')
-        .filter(Boolean)
-        .map(Number)
-      const result = await createLectures({
-        variables: {
-          campus: data.campus,
-          temporaryName: data.temporaryName,
-          subDiv: data.subDiv,
-          teachersId: teachersIdArray,
-          roomNum: data.roomNum,
-          subjectId: parseInt(subjectSelectedData.id),
-          lecturePeriodStart: data.lecturePeriodStart,
-          lecturePeriodEnd: data.lecturePeriodEnd,
-          lectureDetails: data.lectureDetails,
-          lectureTime: [lectureStartTime, lectureEndTime],
-          eduStatusReport: data.eduStatusReport,
-          approvedNum: parseInt(data.approvedNum),
-          confirmedNum: parseInt(data.confirmedNum),
-          sessionNum: parseInt(data.sessionNum),
-          timetableAttached:
-            data.timetableAttached === '파일을 선택하세요.'
-              ? null
-              : data.timetableAttached,
-        },
-      })
+      if (data.lectureDetails.length > 1 && data.lectureDetails[0].length > 9) {
+        const teachersIdArray = data.teachersId
+          .split(',')
+          .filter(Boolean)
+          .map(Number)
+        const result = await createLectures({
+          variables: {
+            campus: data.campus,
+            temporaryName: data.temporaryName,
+            subDiv: data.subDiv,
+            teachersId: teachersIdArray,
+            roomNum: data.roomNum,
+            subjectId: parseInt(subjectSelectedData.id),
+            lecturePeriodStart: data.lecturePeriodStart,
+            lecturePeriodEnd: data.lecturePeriodEnd,
+            lectureDetails: data.lectureDetails,
+            lectureTime: [lectureStartTime, lectureEndTime],
+            eduStatusReport: data.eduStatusReport,
+            approvedNum: parseInt(data.approvedNum),
+            confirmedNum: parseInt(data.confirmedNum),
+            sessionNum: parseInt(data.sessionNum),
+            timetableAttached:
+              data.timetableAttached === '파일을 선택하세요.'
+                ? null
+                : data.timetableAttached,
+          },
+        })
 
-      userLogs(
-        `${data.temporaryName}강의 등록`,
-        `ok: ${result.data.createLectures.ok}`,
-      )
+        userLogs(
+          `${data.temporaryName}강의 등록`,
+          `ok: ${result.data.createLectures.ok}`,
+        )
 
-      if (!result.data.createLectures.ok) {
-        throw new Error('과정 등록 실패')
+        if (!result.data.createLectures.ok) {
+          throw new Error('과정 등록 실패')
+        }
+
+        alert('등록되었습니다.')
+        router.push('/lecture')
+      } else {
+        resetField('lecturePeriodStart')
+        resetField('lecturePeriodEnd')
+        setValue('lectureDetails', [])
+        setLectureStartDate(null)
+        setLectureEndDate(null)
+        alert('개강일, 종강일, 요일을 다시 선택해주세요.')
       }
-
-      alert('등록되었습니다.')
-      router.push('/lecture')
     } catch (error) {
       console.error('강의 등록 중 에러 발생:', error)
       alert('강의 등록 처리 중 오류가 발생했습니다.')
@@ -475,21 +468,23 @@ export default function LectureWrite() {
                         control={control}
                         name="teachersId"
                         render={({ field, fieldState }) => (
-                          <TeacherMultiSelectID
-                            selectedKey={teacher}
-                            field={field}
-                            label={
-                              <FilterLabel>
-                                강사명<span>*</span>{' '}
-                                <span className="multi">(중복가능)</span>
-                              </FilterLabel>
-                            }
-                            handleChange={setTeacher}
-                            optionDefault={{
-                              mUsername: '강사명 없음',
-                              id: '강사명 없음',
-                            }}
-                          />
+                          <SuspenseBox>
+                            <TeacherMultiSelectID
+                              selectedKey={teacher}
+                              field={field}
+                              label={
+                                <FilterLabel>
+                                  강사명<span>*</span>{' '}
+                                  <span className="multi">(중복가능)</span>
+                                </FilterLabel>
+                              }
+                              handleChange={setTeacher}
+                              optionDefault={{
+                                mUsername: '강사명 없음',
+                                id: '강사명 없음',
+                              }}
+                            />
+                          </SuspenseBox>
                         )}
                       />
                     )}
@@ -533,36 +528,6 @@ export default function LectureWrite() {
                     </p>
                   )}
                 </AreaBox>
-                {/* <AreaBox>
-                  <Controller
-                    control={control}
-                    name="roomNum"
-                    defaultValue={subjectState?.teacherName}
-                    render={({ field }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="강의실"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        defaultValue={subjectState?.teacherName}
-                        selectedKeys={[room]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleRoomChange(value)
-                          }
-                        }}
-                      >
-                        {Object.entries(classRoom).map(([key, item]) => (
-                          <SelectItem key={item} value={key}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
-                </AreaBox> */}
                 <AreaBox>
                   <TimeBox>
                     <DatePickerBox>
@@ -900,11 +865,6 @@ export default function LectureWrite() {
                     </Button>
                     <Input
                       readOnly
-                      defaultValue={null}
-                      // value={
-                      //   datesSelected &&
-                      //   ` 총 수업 일수 ${(<b>{datesSelected?.length}</b>)}일`
-                      // }
                       labelPlacement="outside"
                       className="max-w-full"
                       variant="bordered"
@@ -1144,6 +1104,7 @@ export default function LectureWrite() {
           startDate={lectureStartDate}
           endDate={lectureEndDate}
           changeDate={changeDate}
+          setChangeDate={setChangeDate}
         />
       )}
     </>
