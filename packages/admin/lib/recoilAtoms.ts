@@ -291,6 +291,19 @@ export const consultSearchState = atom({
     adviceType: []
   },
 })
+export const consultManagerSearchState = atom({
+  key: 'consultManagerSearch',
+  default: {} as {
+    receiptDiv: string
+    subDiv: string
+    createdAt: []
+    stVisit: []
+    stName: string
+    progress: number
+    phoneNum1: string
+    adviceType: []
+  },
+})
 export const subjectFilterActiveState = atom<boolean>({
   key: 'subjectFilterActive',
   default: false,

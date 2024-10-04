@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   consultFilterActiveState,
   consultFilterState,
+  consultManagerSearchState,
   consultSearchState,
   gradeState,
 } from '@/lib/recoilAtoms'
@@ -18,11 +19,15 @@ export default function ConsultIndex() {
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
   const mId = useMme('id')
+  const mUsername = useMme('mUsername')
   const [filterActive, setFilterActive] = useRecoilState(
     consultFilterActiveState,
   )
   const [filterSearch, setFilterSearch] = useRecoilState(consultFilterState)
   const [studentFilter, setStudentFilter] = useRecoilState(consultSearchState)
+  const [studentManagerFilter, setStudentManagerFilter] = useRecoilState(
+    consultManagerSearchState,
+  )
 
   return (
     <>
@@ -48,9 +53,12 @@ export default function ConsultIndex() {
             studentFilter={studentFilter}
             setFilterSearch={setFilterSearch}
             setStudentFilter={setStudentFilter}
+            studentManagerFilter={studentManagerFilter}
+            setStudentManagerFilter={setStudentManagerFilter}
             mGrade={mGrade}
             grade={grade}
             mId={mId}
+            mUsername={mUsername}
             filterSearch={filterSearch}
           />
         </SuspenseBox>

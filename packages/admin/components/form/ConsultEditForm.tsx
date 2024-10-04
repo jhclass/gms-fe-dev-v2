@@ -227,14 +227,14 @@ export default function ConsultEditForm({ mGrade, supervisor, studentState }) {
             stName: data.stName.trim(),
             category: studentState.category,
             phoneNum1: data.phoneNum1.trim(),
-            phoneNum2: data.phoneNum2.trim(),
-            phoneNum3: data.phoneNum3.trim(),
+            phoneNum2: data.phoneNum2 === null ? null : data.phoneNum2.trim(),
+            phoneNum3: data.phoneNum3 === null ? null : data.phoneNum3.trim(),
             adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
             subject:
               data.subject === '' ? studentState.subject : subjectSelected,
-            detail: data.detail.trim(),
+            detail: data.detail === null ? null : data.detail.trim(),
             progress: data.progress,
-            stEmail: data.stEmail.trim(),
+            stEmail: data.stEmail === null ? null : data.stEmail.trim(),
             stAddr: studentState.stAddr,
             subDiv: data.subDiv,
             stVisit:

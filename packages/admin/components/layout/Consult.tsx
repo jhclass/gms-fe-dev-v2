@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -17,6 +17,7 @@ import useMmeQuery from '@/utils/mMe'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 import { useSuspenseQuery } from '@apollo/client'
 import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
+import ConsultBranch from './ConsultBranch'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -44,9 +45,12 @@ export default function Consult({
   studentFilter,
   setFilterSearch,
   setStudentFilter,
+  studentManagerFilter,
+  setStudentManagerFilter,
   mGrade,
   grade,
   mId,
+  mUsername,
   filterSearch,
 }) {
   const { error: permissionError, data: permissionData } =
@@ -77,46 +81,22 @@ export default function Consult({
           studentFilter={studentFilter}
           onFilterSearch={setFilterSearch}
           setStudentFilter={setStudentFilter}
+          studentManagerFilter={studentManagerFilter}
+          setStudentManagerFilter={setStudentManagerFilter}
           supervisor={
             mGrade <= grade.subMaster || permissionManagers.includes(mId)
           }
         />
       </Suspense>
-      {mGrade <= grade.subMaster || permissionManagers.includes(mId) ? (
-        <ConBox>
-          {filterSearch ? (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <ConsultationFilterTable studentFilter={studentFilter} />
-            </Suspense>
-          ) : (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <ConsultationTable />
-            </Suspense>
-          )}
-        </ConBox>
-      ) : (
-        <Suspense
-          fallback={
-            <LodingDiv>
-              <i className="xi-spinner-2" />
-            </LodingDiv>
-          }
-        >
-          <ConsultationFilterTable studentFilter={studentFilter} />
-        </Suspense>
-      )}
+      <ConsultBranch
+        studentManagerFilter={studentManagerFilter}
+        studentFilter={studentFilter}
+        filterSearch={filterSearch}
+        mUsername={mUsername}
+        supervisor={
+          mGrade <= grade.subMaster || permissionManagers.includes(mId)
+        }
+      />
     </>
   )
 }
