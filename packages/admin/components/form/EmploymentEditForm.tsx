@@ -389,7 +389,11 @@ export default function EmploymentEditForm({ item, refetch }) {
               variant={'bordered'}
               radius="md"
               type="text"
-              label="사업자번호"
+              label={
+                <FilterLabel>
+                  사업자번호 <span>*</span>
+                </FilterLabel>
+              }
               className="w-full"
               onChange={e => {
                 register('businessNum').onChange(e)
@@ -416,7 +420,11 @@ export default function EmploymentEditForm({ item, refetch }) {
               variant="bordered"
               radius="md"
               type="text"
-              label="담당업무"
+              label={
+                <FilterLabel>
+                  담당업무 <span>*</span>
+                </FilterLabel>
+              }
               className="w-full"
               onChange={e => {
                 register('responsibilities').onChange(e)
@@ -428,9 +436,9 @@ export default function EmploymentEditForm({ item, refetch }) {
                 },
               })}
             />
-            {errors.businessNum && (
+            {errors.responsibilities && (
               <p className="px-2 pt-2 text-xs text-red">
-                {String(errors.businessNum.message)}
+                {String(errors.responsibilities.message)}
               </p>
             )}
           </AreaBox>
@@ -441,13 +449,21 @@ export default function EmploymentEditForm({ item, refetch }) {
               variant="bordered"
               radius="md"
               type="text"
-              label="전화번호"
+              label={
+                <FilterLabel>
+                  전화번호 <span>*</span>
+                </FilterLabel>
+              }
               className="w-full"
               maxLength={12}
               onChange={e => {
                 register('phoneNum').onChange(e)
               }}
               {...register('phoneNum', {
+                required: {
+                  value: true,
+                  message: '전화번호를 입력해주세요.',
+                },
                 pattern: {
                   value: /^[0-9]+$/,
                   message: '숫자만 입력 가능합니다.',
@@ -471,7 +487,11 @@ export default function EmploymentEditForm({ item, refetch }) {
               variant="bordered"
               radius="md"
               type="text"
-              label="소재지"
+              label={
+                <FilterLabel>
+                  소재지 <span>*</span>
+                </FilterLabel>
+              }
               className="w-full"
               onChange={e => {
                 register('location').onChange(e)
@@ -496,7 +516,11 @@ export default function EmploymentEditForm({ item, refetch }) {
               variant="bordered"
               radius="md"
               type="text"
-              label="사업장 규모"
+              label={
+                <FilterLabel>
+                  사업장 규모 <span>*</span>
+                </FilterLabel>
+              }
               className="w-full"
               onChange={e => {
                 register('businessSize').onChange(e)
