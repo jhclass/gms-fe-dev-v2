@@ -1,7 +1,4 @@
 import { styled } from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
-import { Button } from '@nextui-org/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'

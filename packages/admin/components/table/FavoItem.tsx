@@ -170,13 +170,14 @@ const EllipsisBox = styled.p`
 const isDisplayFlag = (date: string, step: number): string => {
   const theme = useTheme()
   const currentDate = new Date()
+  const registeredDate = new Date(parseInt(date))
   const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+    (currentDate.getTime() - registeredDate.getTime()) / (1000 * 60 * 60 * 24),
   )
 
-  if (differenceInDays >= 0 && differenceInDays < 3) {
+  if (differenceInDays === 0) {
     return theme.colors.primary
-  } else if (differenceInDays >= 3 && step === 999) {
+  } else if (differenceInDays > 0 && step === 0) {
     return theme.colors.accent
   } else {
     return 'transparent'

@@ -2359,12 +2359,12 @@ export const CREATE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
     $companyName: String!
     $location: String!
     $phoneNum: String!
-    $dateOfInterview: String!
     $employmentStatus: String!
     $reasonForNonEmployment: String!
     $certificateOfEmploymentStatus: String!
     $subjectId: Int!
     $studentPaymentId: Int!
+    $dateOfInterview: String
   ) {
     createEmploymentRecommendation(
       dateOfRecommendation: $dateOfRecommendation
@@ -2372,12 +2372,12 @@ export const CREATE_EMPLOYMENT_RECOMMENDATION_MUTATION = gql`
       companyName: $companyName
       location: $location
       phoneNum: $phoneNum
-      dateOfInterview: $dateOfInterview
       employmentStatus: $employmentStatus
       reasonForNonEmployment: $reasonForNonEmployment
       certificateOfEmploymentStatus: $certificateOfEmploymentStatus
       subjectId: $subjectId
       studentPaymentId: $studentPaymentId
+      dateOfInterview: $dateOfInterview
     ) {
       error
       message
@@ -2777,6 +2777,13 @@ export const EDIT_PERMISSIONMS_GRANTED_MUTATION = gql`
       ok
       message
       error
+    }
+  }
+`
+export const UPLOAD_PHOTO = gql`
+  mutation UploadPhoto($file: Upload!) {
+    uploadPhoto(file: $file) {
+      file
     }
   }
 `
