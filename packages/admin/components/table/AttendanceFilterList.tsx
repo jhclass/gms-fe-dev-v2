@@ -82,6 +82,7 @@ export default function Attendance({
   lectureData,
   students,
   filterAttandanceData,
+  isTeacher,
 }) {
   const router = useRouter()
   const themeColor = styledComponentsTheme()
@@ -663,8 +664,13 @@ export default function Attendance({
                                   label: 'hidden',
                                 }}
                                 isDisabled={
-                                  dayIndex !== todayIndex &&
                                   attendanceAllData[dayIndex]?.length === 0
+                                    ? week[dayIndex] === ''
+                                      ? true
+                                      : todayIndex >= 0 && dayIndex > todayIndex
+                                      ? true
+                                      : false
+                                    : false
                                 }
                                 variant="bordered"
                                 selectedKeys={[selectedValues[dayIndex][index]]}
@@ -710,150 +716,120 @@ export default function Attendance({
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
                     <Cell pinLeft></Cell>
-                    {periodArrIndex <= page ? (
-                      <>
-                        {week.map((item, index) => (
-                          <Cell key={index}>
-                            <BtnCell>
-                              <Button
-                                isDisabled={
-                                  attendanceAllData[index]?.length === 0
-                                    ? true
-                                    : false
-                                }
-                                size="sm"
-                                radius="sm"
-                                variant="solid"
-                                color="primary"
-                                onClick={() => openWorkLog(item)}
-                              >
-                                일지
-                              </Button>
-                              {index >= todayIndex ? (
-                                <>
-                                  {index === todayIndex &&
-                                  attendanceAllData[todayIndex]?.length !==
-                                    0 ? (
-                                    <Button
-                                      isDisabled={
-                                        index > todayIndex || !isEdit[index]
-                                          ? true
-                                          : false
-                                      }
-                                      size="sm"
-                                      radius="sm"
-                                      variant="solid"
-                                      className="text-white bg-secondary"
-                                      onClick={() => onEdit(index)}
-                                    >
-                                      수정
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      isDisabled={
-                                        index !== todayIndex &&
-                                        attendanceAllData[index]?.length === 0
-                                      }
-                                      size="sm"
-                                      radius="sm"
-                                      variant="solid"
-                                      className="text-white bg-secondary"
-                                      onClick={() => onSubmit(index)}
-                                    >
-                                      저장
-                                    </Button>
-                                  )}
-                                </>
-                              ) : (
-                                <>
-                                  {attendanceAllData[index]?.length === 0 ? (
-                                    <Button
-                                      isDisabled={selectedValues[
-                                        todayIndex
-                                      ].includes('-')}
-                                      size="sm"
-                                      radius="sm"
-                                      variant="solid"
-                                      className="text-white bg-secondary"
-                                      onClick={() => onSubmit(index)}
-                                    >
-                                      저장
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      isDisabled={
-                                        index > todayIndex || !isEdit[index]
-                                          ? true
-                                          : false
-                                      }
-                                      size="sm"
-                                      radius="sm"
-                                      variant="solid"
-                                      className="text-white bg-secondary"
-                                      onClick={() => onEdit(index)}
-                                    >
-                                      수정
-                                    </Button>
-                                  )}
-                                </>
-                              )}
-                            </BtnCell>
-                          </Cell>
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        {week.map((item, index) => (
-                          <Cell key={index}>
-                            <BtnCell>
-                              <Button
-                                size="sm"
-                                radius="sm"
-                                variant="solid"
-                                color="primary"
-                                onClick={() => openWorkLog(item)}
-                              >
-                                일지
-                              </Button>
-                              <Button
-                                size="sm"
-                                radius="sm"
-                                variant="solid"
-                                className="text-white bg-secondary"
-                              >
-                                수정
-                              </Button>
-                            </BtnCell>
-                          </Cell>
-                        ))}
-                      </>
-                    )}
+                    <>
+                      {week.map((item, index) => (
+                        <Cell key={index}>
+                          <BtnCell>
+                            <Button
+                              isDisabled={
+                                attendanceAllData[index]?.length === 0
+                                  ? true
+                                  : false
+                              }
+                              size="sm"
+                              radius="sm"
+                              variant="solid"
+                              color="primary"
+                              onClick={() => openWorkLog(item)}
+                            >
+                              일지
+                            </Button>
+                            {index >= todayIndex && todayIndex >= 0 ? (
+                              <>
+                                {index === todayIndex &&
+                                attendanceAllData[todayIndex]?.length !== 0 ? (
+                                  <Button
+                                    isDisabled={
+                                      index > todayIndex || !isEdit[index]
+                                        ? true
+                                        : false
+                                    }
+                                    size="sm"
+                                    radius="sm"
+                                    variant="solid"
+                                    className="text-white bg-secondary"
+                                    onClick={() => onEdit(index)}
+                                  >
+                                    수정
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    isDisabled={
+                                      index !== todayIndex &&
+                                      attendanceAllData[index]?.length === 0
+                                    }
+                                    size="sm"
+                                    radius="sm"
+                                    variant="solid"
+                                    className="text-white bg-secondary"
+                                    onClick={() => onSubmit(index)}
+                                  >
+                                    저장
+                                  </Button>
+                                )}
+                              </>
+                            ) : (
+                              <>
+                                {attendanceAllData[index]?.length === 0 ? (
+                                  <Button
+                                    isDisabled={
+                                      selectedValues[todayIndex] &&
+                                      selectedValues[todayIndex].includes('-')
+                                    }
+                                    size="sm"
+                                    radius="sm"
+                                    variant="solid"
+                                    className="text-white bg-secondary"
+                                    onClick={() => onSubmit(index)}
+                                  >
+                                    저장
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    isDisabled={!isEdit[index] ? true : false}
+                                    size="sm"
+                                    radius="sm"
+                                    variant="solid"
+                                    className="text-white bg-secondary"
+                                    onClick={() => onEdit(index)}
+                                  >
+                                    수정
+                                  </Button>
+                                )}
+                              </>
+                            )}
+                          </BtnCell>
+                        </Cell>
+                      ))}
+                    </>
                   </Row>
                 </Body>
               </>
             )}
           </Table>
         </div>
-        <BtnBox>
-          <Button
-            size="md"
-            variant="solid"
-            className="w-full text-black bg-[#FEE500]"
-            onClick={() => alert('준비중입니다. SMS발송을 이용해주세요.')}
-          >
-            <i className="xi-kakaotalk text-[1.5rem]" />
-            카카오톡발송
-          </Button>
-          <Button
-            size="md"
-            variant="bordered"
-            color="primary"
-            className="w-full"
-            onClick={() => router.push('/message/sms')}
-          >
-            SMS발송
-          </Button>
-        </BtnBox>
+        {!isTeacher && (
+          <BtnBox>
+            <Button
+              size="md"
+              variant="solid"
+              className="w-full text-black bg-[#FEE500]"
+              onClick={() => alert('준비중입니다. SMS발송을 이용해주세요.')}
+            >
+              <i className="xi-kakaotalk text-[1.5rem]" />
+              카카오톡발송
+            </Button>
+            <Button
+              size="md"
+              variant="bordered"
+              color="primary"
+              className="w-full"
+              onClick={() => router.push('/message/sms')}
+            >
+              SMS발송
+            </Button>
+          </BtnBox>
+        )}
         <PagerWrap>
           <Pagination
             variant="light"

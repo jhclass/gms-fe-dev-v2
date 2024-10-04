@@ -7,6 +7,7 @@ interface Category {
   resetItems?: string[]
   exposure: boolean
   isBreadcrumb?: boolean
+  teacher?: boolean
 }
 
 interface Children {
@@ -14,6 +15,7 @@ interface Children {
   name: string
   exposure: boolean
   isBreadcrumb: boolean
+  teacher?: boolean
 }
 
 const category: Category[] = [
@@ -151,36 +153,42 @@ const category: Category[] = [
     resetItems: [],
     exposure: true,
     isBreadcrumb: true,
+    teacher: true,
     children: [
       {
         href: '/',
         name: '강의 목록',
         exposure: true,
         isBreadcrumb: true,
+        teacher: true,
       },
       {
         href: '/detail',
         name: '강의 상세',
         exposure: false,
         isBreadcrumb: true,
+        teacher: true,
       },
       {
         href: '/attendance',
         name: '출석부',
         exposure: false,
         isBreadcrumb: true,
+        teacher: true,
       },
       {
         href: '/employment',
         name: '학적부 목록',
         exposure: true,
         isBreadcrumb: true,
+        teacher: false,
       },
       {
         href: '/employmentDetail',
         name: '학적부 상세',
         exposure: false,
         isBreadcrumb: true,
+        teacher: false,
       },
       {
         href: '/write',
@@ -320,12 +328,6 @@ const category: Category[] = [
         exposure: false,
         isBreadcrumb: true,
       },
-      {
-        href: '/timesheet',
-        name: '출근 기록',
-        exposure: true,
-        isBreadcrumb: true,
-      },
     ],
   },
   {
@@ -380,22 +382,6 @@ const category: Category[] = [
     href: '/member',
     iconSrc: '',
     name: '프로필',
-    exposure: false,
-    isBreadcrumb: true,
-    children: [],
-  },
-  {
-    href: '/testCate',
-    iconSrc: '',
-    name: '테스트 출석부',
-    exposure: false,
-    isBreadcrumb: true,
-    children: [],
-  },
-  {
-    href: '/testCate/testDates',
-    iconSrc: '',
-    name: '테스트 달력',
     exposure: false,
     isBreadcrumb: true,
     children: [],
