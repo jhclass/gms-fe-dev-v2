@@ -89,6 +89,7 @@ export default function EmploymentEditForm({ item, refetch }) {
     register,
     handleSubmit,
     reset,
+    setValue,
     control,
     formState: { isDirty, dirtyFields, errors },
   } = useForm({
@@ -156,6 +157,13 @@ export default function EmploymentEditForm({ item, refetch }) {
       }
     }
   }, [item])
+
+  useEffect(() => {
+    if (employmentType === '취업') {
+      setValue('imploymentInsurance', 'Y', { shouldDirty: true })
+      setImploymentInsurance('Y')
+    }
+  }, [employmentType])
 
   const onSubmit = async data => {
     if (isDirty) {
@@ -526,6 +534,7 @@ export default function EmploymentEditForm({ item, refetch }) {
                       고용보험 <span>*</span>
                     </FilterLabel>
                   }
+                  isDisabled={employmentType === '취업'}
                   orientation="horizontal"
                   className="gap-1"
                   classNames={{ wrapper: 'z-0' }}

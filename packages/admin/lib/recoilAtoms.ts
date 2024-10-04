@@ -159,16 +159,6 @@ export const progressStatusState = atom({
       color: '#FF5900',
     },
     // 60,110 고정
-    //   color: '#ff8d4a',
-    //   color: '#c9ab00',
-    //   color: '#7dce00',
-    //   color: '#0eacab',
-    //   color: '#0070ad',
-    //   color: '#043999',
-    //   color: '#7240f7',
-    //   color: '#7a0075',
-    //   color: '#be058e',
-    //   color: '#f85294',
   },
 })
 
@@ -205,17 +195,6 @@ export const additionalAmountState = atom({
     frist: 1.5,
   },
 })
-
-// export const ReceiptState = atom({
-//   key: 'Receipt',
-//   default: {
-//     0: '자체영수증',
-//     1: '현금영수증',
-//     2: '이니시스',
-//     3: '계산서',
-//     4: 'LGU+',
-//   },
-// })
 
 export const cardNameState = atom({
   key: 'cardName',

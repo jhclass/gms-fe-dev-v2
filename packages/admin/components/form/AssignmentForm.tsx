@@ -195,8 +195,6 @@ export default function AssignmentForm({
     if (editable) {
       if (studentSubjectData?.lectures === null) {
         alert('강의가 생성된 과정만 변경 가능합니다.')
-      } else if (studentPaymentDetailData?.length === 0) {
-        alert('수강료 결제 후 변경 가능합니다.')
       } else {
         editAssignment(state)
       }

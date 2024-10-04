@@ -1,6 +1,4 @@
 import { styled, useTheme } from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { studentProgressStatusState } from '@/lib/recoilAtoms'
 import Link from 'next/link'
 
 type ConsultItemProps = {
@@ -160,12 +158,13 @@ const EllipsisBox = styled.p`
 const isDisplayFlag = (date: string, payment: number): string => {
   const theme = useTheme()
   const currentDate = new Date()
+  const registeredDate = new Date(parseInt(date))
   const differenceInDays = Math.floor(
-    (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+    (currentDate.getTime() - registeredDate.getTime()) / (1000 * 60 * 60 * 24),
   )
   if (differenceInDays === 0) {
     return theme.colors.primary
-  } else if (differenceInDays >= 0 && payment === 0) {
+  } else if (differenceInDays > 0 && payment === 0) {
     return theme.colors.accent
   } else {
     return 'transparent'
@@ -181,12 +180,6 @@ export default function StudentsItem(props) {
     student.createdAt,
     student.studentPayment.length,
   )
-  // const progressNum = displayPprogress(
-  //   student.lectureAssignment,
-  //   student.courseComplete,
-  //   student.studentPayment[0]?.cancellation,
-  // )
-  const progressStatus = useRecoilValue(studentProgressStatusState)
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate
