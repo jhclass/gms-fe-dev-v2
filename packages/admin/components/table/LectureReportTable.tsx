@@ -66,7 +66,8 @@ export default function LectureReportTable({ lecture, students }) {
   const [incomplete, setIncomplete] = useState(null)
   const [dropoutRate, setDropoutRate] = useState(null)
   const [earlyEmployment, setEarlyEmployment] = useState(null)
-  const [notEarlyEmployed, setNotEarlyEmployed] = useState(null)
+  const [employmentStudents, setEmploymentStudents] = useState(null)
+  const [employedRate, setEmployedRate] = useState(null)
   const [graduates, setGraduates] = useState(null)
   const [graduationRate, setGraduationRate] = useState(null)
   const [expectedEmploymentProof, setExpectedEmploymentProof] = useState(null)
@@ -106,6 +107,10 @@ export default function LectureReportTable({ lecture, students }) {
           student => student.courseComplete === completion.dropout,
         ),
       )
+      setEmploymentStudents(
+        students.filter(student => student.employment !== employment.unemployed)
+          .length,
+      )
 
       if (earlyEmploymentStudent.length > 0) {
         setEarlyEmployment(
@@ -114,14 +119,6 @@ export default function LectureReportTable({ lecture, students }) {
             student =>
               student.EmploymentStatus[0].completionType === '조기취업' &&
               student.EmploymentStatus[0].imploymentInsurance === 'Y',
-          ),
-        )
-        setNotEarlyEmployed(
-          countFilteredStudents(
-            earlyEmploymentStudent,
-            student =>
-              student.EmploymentStatus[0].completionType === '조기취업' &&
-              student.EmploymentStatus[0].imploymentInsurance === 'N',
           ),
         )
 
@@ -158,7 +155,10 @@ export default function LectureReportTable({ lecture, students }) {
       calculatePercentage(courseDropout + incomplete, lecture.confirmedNum),
     )
     setGraduationRate(calculatePercentage(graduates, lecture.confirmedNum))
-  }, [courseDropout, incomplete, graduates])
+    setEmployedRate(
+      calculatePercentage(employmentStudents, lecture.confirmedNum),
+    )
+  }, [courseDropout, incomplete, graduates, employmentStudents])
 
   return (
     <>
@@ -191,7 +191,7 @@ export default function LectureReportTable({ lecture, students }) {
               incomplete={incomplete}
               dropoutRate={dropoutRate}
               earlyEmployment={earlyEmployment}
-              notEarlyEmployed={notEarlyEmployed}
+              employedRate={employedRate}
               graduates={graduates}
               graduationRate={graduationRate}
               expectedEmploymentProof={expectedEmploymentProof}
