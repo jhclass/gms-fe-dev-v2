@@ -44,10 +44,6 @@ export default function Statistics() {
           isActive={filterActive}
           rightArea={true}
           isFilter={false}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
           addRender={
             <DeleteDiv>
               {performanceFilter !== null && (

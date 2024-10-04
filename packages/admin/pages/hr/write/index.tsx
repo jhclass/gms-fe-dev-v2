@@ -240,14 +240,7 @@ export default function ManagerWrite() {
     <>
       <MainWrap>
         <ConArea>
-          <Breadcrumb
-            rightArea={false}
-            isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
-          />
+          <Breadcrumb rightArea={false} isFilter={false} />
           <DetailBox>
             <FormTopInfo item={null} noti={true} time={false} />
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -569,7 +562,7 @@ export default function ManagerWrite() {
                             field={field}
                             label={
                               <FilterLabel>
-                                부서명<span>*</span>{' '}
+                                부서<span>*</span>{' '}
                                 <span className="multi">(중복가능)</span>
                               </FilterLabel>
                             }
@@ -589,7 +582,7 @@ export default function ManagerWrite() {
                       <TypeLink
                         typeLink={'mPartType'}
                         typeName={'부서'}
-                        permissionName={'부서명'}
+                        permissionName={'부서'}
                       />
                     </Suspense>
                     {errors.mPart && (

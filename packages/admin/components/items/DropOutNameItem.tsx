@@ -55,7 +55,10 @@ export default function DropOutNameItem({ item }) {
   const [dropOutReason, setDropOutReason] = useState('')
 
   useEffect(() => {
-    if (item.courseComplete === completion.dropout) {
+    if (
+      item.courseComplete === completion.dropout ||
+      item.courseComplete === completion.notCompleted
+    ) {
       setDropOutType(item.courseComplete)
     }
     if (item.student.name) {
@@ -64,6 +67,7 @@ export default function DropOutNameItem({ item }) {
     if (item.reasonFordroppingOut) {
       setDropOutReason(item.reasonFordroppingOut)
     }
+
     if (item.dateOfDroppingOut) {
       const timestamp = parseInt(item.dateOfDroppingOut)
       setDropOutDate(formatDate(timestamp))

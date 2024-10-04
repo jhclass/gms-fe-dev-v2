@@ -31,10 +31,6 @@ export default function RequestRefund() {
           isActive={filterActive}
           rightArea={true}
           isFilter={true}
-          write={{
-            isWrite: false,
-            permissionName: null,
-          }}
         />
         <ReqRefundFilter
           isActive={filterActive}

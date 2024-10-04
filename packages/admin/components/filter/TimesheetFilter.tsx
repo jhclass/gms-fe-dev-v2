@@ -101,7 +101,7 @@ const FilterVariants = {
   },
 }
 
-export default function ManagerFilter({
+export default function TimesheetFilter({
   isActive,
   onFilterSearch,
   setManagerFilter,

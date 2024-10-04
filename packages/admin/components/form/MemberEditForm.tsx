@@ -313,10 +313,6 @@ export default function MemberEditForm({ managerId }) {
           <Breadcrumb
             rightArea={true}
             isFilter={false}
-            write={{
-              isWrite: false,
-              permissionName: null,
-            }}
             addRender={
               <Controller
                 control={control}
@@ -649,7 +645,7 @@ export default function MemberEditForm({ managerId }) {
                             field={field}
                             label={
                               <FilterLabel>
-                                부서명<span>*</span>{' '}
+                                부서<span>*</span>{' '}
                                 <span className="multi">(중복가능)</span>
                               </FilterLabel>
                             }
@@ -669,7 +665,7 @@ export default function MemberEditForm({ managerId }) {
                       <TypeLink
                         typeLink={'mPartType'}
                         typeName={'부서'}
-                        permissionName={'부서명'}
+                        permissionName={'부서'}
                       />
                     </Suspense>
                     {errors.mPart && (
