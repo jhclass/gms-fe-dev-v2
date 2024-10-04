@@ -45,7 +45,6 @@ import WorksLogsBox from '@/components/modal/WorksLogsBox'
 
 const PagerWrap = styled.div`
   display: flex;
-  margin-top: 1.5rem;
   justify-content: center;
 `
 
@@ -62,7 +61,6 @@ const BtnBox = styled.div`
   margin: 0 auto;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-top: 1.5rem;
 
   @media (max-width: 768px) {
     width: 100%;

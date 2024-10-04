@@ -72,8 +72,8 @@ export default function LectureDates({
   startDate,
   endDate,
   changeDate,
+  setChangeDate,
 }) {
-  const today = new Date('')
   const [disabledDays, setDisabledDays] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
@@ -100,7 +100,7 @@ export default function LectureDates({
     } else {
       setSelectedDates(datesSelected)
     }
-  }, [startDate, endDate, datesSelected])
+  }, [startDate, endDate, datesSelected, changeDate])
 
   const calculateMonthsShown = (startDate, endDate) => {
     const validStartDate =
@@ -201,6 +201,7 @@ export default function LectureDates({
     const sortedDates = selectedDates.sort(
       (a, b) => new Date(a).getTime() - new Date(b).getTime(),
     )
+    setChangeDate(false)
     setValue('lectureDetails', sortedDates, { shouldDirty: true })
     onClose()
   }
