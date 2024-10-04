@@ -232,7 +232,7 @@ export default function ConsultationFilterTable({
             background: theme.colors.primary,
             text: '신규',
           },
-          { background: theme.colors.accent, text: '미처리' },
+          { background: theme.colors.accent, text: '접수대기' },
         ]}
       />
       <TableArea>
