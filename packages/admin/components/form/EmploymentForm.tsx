@@ -7,7 +7,7 @@ import { getYear } from 'date-fns'
 registerLocale('ko', ko)
 const _ = require('lodash')
 import DatePickerHeader from '@/components/common/DatePickerHeader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import useUserLogsMutation from '@/utils/userLogs'
 import { useMutation } from '@apollo/client'
@@ -86,8 +86,16 @@ export default function EmploymentForm({ paymentId, subjectId }) {
   const [relatedFields, setRelatedFields] = useState('동일')
   const [completionType, setCompletionType] = useState('수료취업')
   const years = _.range(2000, getYear(new Date()) + 5, 1)
-  const { register, handleSubmit, reset, control, formState } = useForm()
+  const { register, handleSubmit, setValue, reset, control, formState } =
+    useForm()
   const { errors } = formState
+
+  useEffect(() => {
+    if (employmentType === '취업') {
+      setValue('imploymentInsurance', 'Y', { shouldDirty: true })
+      setImploymentInsurance('Y')
+    }
+  }, [employmentType])
 
   const onSubmit = data => {
     createEmployment({
@@ -437,6 +445,7 @@ export default function EmploymentForm({ paymentId, subjectId }) {
                       고용보험 <span>*</span>
                     </FilterLabel>
                   }
+                  isDisabled={employmentType === '취업'}
                   orientation="horizontal"
                   className="gap-1"
                   classNames={{ wrapper: 'z-0' }}

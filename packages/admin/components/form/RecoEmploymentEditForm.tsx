@@ -493,12 +493,6 @@ export default function RecoEmploymentEditForm({
               <Controller
                 control={control}
                 name="dateOfInterview"
-                rules={{
-                  required: {
-                    value: true,
-                    message: '면접일자를 선택해주세요.',
-                  },
-                }}
                 render={({ field }) => (
                   <DatePicker
                     renderCustomHeader={({
@@ -534,11 +528,7 @@ export default function RecoEmploymentEditForm({
                     customInput={
                       <Input
                         ref={field.ref}
-                        label={
-                          <FilterLabel>
-                            면접 일자 <span>*</span>
-                          </FilterLabel>
-                        }
+                        label={<FilterLabel>면접 일자</FilterLabel>}
                         labelPlacement="outside"
                         type="text"
                         variant="bordered"
