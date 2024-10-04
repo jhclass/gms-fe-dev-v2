@@ -1,6 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
 import dynamic from 'next/dynamic'
-import Layout from '../layout'
 import 'react-quill/dist/quill.snow.css'
 import { useForm } from 'react-hook-form'
 import { Button } from '@nextui-org/react'
@@ -11,6 +10,7 @@ import EditorViewer from '@/components/EditorViewer'
 import Editor from '@/components/Editor'
 import { useMutation } from '@apollo/client'
 import { UPLOAD_PHOTO } from '@/graphql/mutations'
+import Layout from '../layout'
 
 const EditorBox = styled.div`
   img {
