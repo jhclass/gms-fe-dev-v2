@@ -2780,3 +2780,10 @@ export const EDIT_PERMISSIONMS_GRANTED_MUTATION = gql`
     }
   }
 `
+export const UPLOAD_PHOTO = gql`
+  mutation UploadPhoto($file: Upload!) {
+    uploadPhoto(file: $file) {
+      file
+    }
+  }
+`
