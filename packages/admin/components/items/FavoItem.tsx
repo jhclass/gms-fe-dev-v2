@@ -36,8 +36,8 @@ const Tfavorite = styled.div`
   width: 2%;
   font-size: inherit;
   color: inherit;
-  min-width: 30px;
-  padding: 1rem 1rem 1rem 1.5rem;
+  min-width: 54px;
+  padding: 1rem 1rem 1rem 1rem;
   z-index: 1;
 `
 const TfavoriteLabel = styled.label`
@@ -47,10 +47,10 @@ const Tflag = styled.div`
   display: table-cell;
   width: 0.5rem;
   height: 100%;
-  min-width: 7px;
+  min-width: 8px;
 `
 const ClickBox = styled.div`
-  display: flex;
+  display: table;
   width: 100%;
 `
 const Tnum = styled.div`
@@ -162,9 +162,11 @@ const Tprogress = styled.div`
   min-width: ${1200 * 0.08}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 const isDisplayFlag = (date: string, step: number): string => {

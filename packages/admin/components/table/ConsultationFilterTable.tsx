@@ -2,7 +2,6 @@ import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
-
 import { SEARCH_STUDENTSTATE_MUTATION } from '@/graphql/mutations'
 import { MME_QUERY, SEE_FAVORITESTATE_QUERY } from '@/graphql/queries'
 import { consultFilterLimitState, consultPageState } from '@/lib/recoilAtoms'
@@ -40,11 +39,11 @@ const Tfavorite = styled.div`
   display: table-cell;
   font-size: inherit;
   color: inherit;
-  min-width: 30px;
-  padding: 1rem 1rem 1rem 2rem;
+  min-width: 62px;
+  padding: 1rem 1rem 1rem 1.5rem;
 `
 const ClickBox = styled.div`
-  display: flex;
+  display: table;
   width: 100%;
 `
 const Tnum = styled.div`
@@ -225,7 +224,7 @@ export default function ConsultationFilterTable({ studentFilter }) {
             background: theme.colors.primary,
             text: '신규',
           },
-          { background: theme.colors.accent, text: '미처리' },
+          { background: theme.colors.accent, text: '접수대기' },
         ]}
       />
       <TableArea>

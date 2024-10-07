@@ -272,6 +272,7 @@ export default function LectureFilterTable({ lectureFilter }) {
                   key={index}
                   tableData={item}
                   itemIndex={index}
+                  students={item.subject.StudentPayment}
                   currentPage={currentPage}
                   limit={currentLimit}
                 />

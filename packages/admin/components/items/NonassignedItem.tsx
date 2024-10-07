@@ -115,9 +115,11 @@ const TCode = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 export default function NonassignedItem(props) {
