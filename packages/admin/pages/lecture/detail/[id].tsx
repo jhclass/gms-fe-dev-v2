@@ -169,6 +169,7 @@ export default function LectureDetail() {
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 입력해주세요.')
   const [lectureData, setLectureData] = useState(null)
+  const [isDate, setIsDate] = useState(false)
   const [changeDate, setChangeDate] = useState(false)
   const {
     isOpen: sbjIsOpen,
@@ -283,7 +284,10 @@ export default function LectureDetail() {
         setTeacher(date)
       }
 
-      setDatesSelected(lectureData?.lectureDetails)
+      if (lectureData?.lectureDetails.length > 0) {
+        setDatesSelected(lectureData?.lectureDetails)
+        setIsDate(true)
+      }
 
       if (
         lectureData?.timetableAttached === undefined ||
@@ -869,7 +873,10 @@ export default function LectureDetail() {
                                 : null
                               startField.onChange(adjustedDate)
                               setLectureStartDate(adjustedDate)
-                              setChangeDate(true)
+                              setIsDate(true)
+                              if (isDate) {
+                                setChangeDate(true)
+                              }
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -955,7 +962,10 @@ export default function LectureDetail() {
                                 : null
                               endField.onChange(adjustedEndDate)
                               setLectureEndDate(adjustedEndDate)
-                              setChangeDate(true)
+                              setIsDate(true)
+                              if (isDate) {
+                                setChangeDate(true)
+                              }
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -1251,6 +1261,7 @@ export default function LectureDetail() {
           datesSelected={datesSelected}
           startDate={lectureStartDate}
           endDate={lectureEndDate}
+          isDate={isDate}
           changeDate={changeDate}
           setChangeDate={setChangeDate}
         />
