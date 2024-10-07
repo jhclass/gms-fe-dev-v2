@@ -55,7 +55,6 @@ const Tlong = styled.div`
 `
 
 export default function LectureReportTable({ lecture, students }) {
-  const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)
   const employment = useRecoilValue(employmentStatus)
   const [isFinish, setIsFinish] = useState(false)
@@ -65,6 +64,7 @@ export default function LectureReportTable({ lecture, students }) {
   const [courseDropout, setCourseDropout] = useState(null)
   const [incomplete, setIncomplete] = useState(null)
   const [dropoutRate, setDropoutRate] = useState(null)
+  const [earlyEmploymentStudent, setEarlyEmploymentStudent] = useState(null)
   const [earlyEmployment, setEarlyEmployment] = useState(null)
   const [employmentStudents, setEmploymentStudents] = useState(null)
   const [employedRate, setEmployedRate] = useState(null)
@@ -89,18 +89,19 @@ export default function LectureReportTable({ lecture, students }) {
     if (lecture && students) {
       const today = new Date()
       const endDate = new Date(parseInt(lecture.lecturePeriodEnd))
-      const earlyEmploymentStudent = students.filter(
-        student =>
-          student.courseComplete === completion.inTraining &&
-          student.employment !== employment.unemployed,
-      )
 
+      setEarlyEmploymentStudent(
+        students.filter(
+          student =>
+            student.courseComplete === completion.inTraining &&
+            student.employment !== employment.unemployed,
+        ),
+      )
       setApprovedPersonnel(lecture.ApprovedNum)
       setConfirmedPersonnel(lecture.confirmedNum)
       setEnrollmentRate(
         calculatePercentage(lecture.confirmedNum, lecture.ApprovedNum),
       )
-
       setCourseDropout(
         countFilteredStudents(
           students,
@@ -111,24 +112,6 @@ export default function LectureReportTable({ lecture, students }) {
         students.filter(student => student.employment !== employment.unemployed)
           .length,
       )
-
-      if (earlyEmploymentStudent.length > 0) {
-        setEarlyEmployment(
-          countFilteredStudents(
-            earlyEmploymentStudent,
-            student =>
-              student.EmploymentStatus[0].completionType === '조기취업' &&
-              student.EmploymentStatus[0].imploymentInsurance === 'Y',
-          ),
-        )
-
-        setExpectedEmploymentProof(
-          countFilteredStudents(
-            earlyEmploymentStudent,
-            student => student.EmploymentStatus[0].proofOfImployment === 'Y',
-          ),
-        )
-      }
 
       if (today > endDate) {
         setIncomplete(
@@ -149,6 +132,23 @@ export default function LectureReportTable({ lecture, students }) {
       }
     }
   }, [lecture, students])
+
+  useEffect(() => {
+    if (earlyEmploymentStudent) {
+      setEarlyEmployment(
+        countFilteredStudents(
+          earlyEmploymentStudent,
+          student => student.EmploymentStatus[0].completionType === '조기취업',
+        ),
+      )
+      setExpectedEmploymentProof(
+        countFilteredStudents(
+          earlyEmploymentStudent,
+          student => student.EmploymentStatus[0].proofOfImployment === 'Y',
+        ),
+      )
+    }
+  }, [earlyEmploymentStudent])
 
   useEffect(() => {
     setDropoutRate(

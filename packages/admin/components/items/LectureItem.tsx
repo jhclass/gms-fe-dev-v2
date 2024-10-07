@@ -179,11 +179,9 @@ export default function LectureItem(props) {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const lecture = props.tableData
-  const [students, setStudents] = useState(null)
   const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
   const arrowRef = useRef(null)
 
@@ -203,12 +201,6 @@ export default function LectureItem(props) {
   }
 
   const flagString = isDisplayFlag(lecture.lecturePeriodEnd)
-
-  useEffect(() => {
-    if (lecture) {
-      setStudents(lecture.subject.StudentPayment)
-    }
-  }, [lecture])
 
   useEffect(() => {
     if (arrowRef.current) {
@@ -322,7 +314,10 @@ export default function LectureItem(props) {
             </div>
             <div>
               <Tdiv $isOpen={isOpen}>
-                <LectureReportTable lecture={lecture} students={students} />
+                <LectureReportTable
+                  lecture={lecture}
+                  students={props.students}
+                />
               </Tdiv>
             </div>
           </ClickBox>
