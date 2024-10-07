@@ -21,6 +21,7 @@ export default function StatisticsList({ performanceFilter, filterSearch }) {
   )
   const managerList = data?.searchPermissionsGranted.data[0].ManageUser
   const [ids, setIds] = useState(null)
+  const [names, setNames] = useState(null)
   const [dateRange, setDateRange] = useState(null)
 
   useEffect(() => {

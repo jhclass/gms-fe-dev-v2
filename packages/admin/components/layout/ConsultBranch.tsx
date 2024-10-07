@@ -1,13 +1,8 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense } from 'react'
 import { styled } from 'styled-components'
-import Layout from '@/pages/consult/layout'
 import ConsultationTable from '@/components/table/ConsultationTable'
 import ConsultationFilterTable from '@/components/table/ConsultationFilterTable'
-import ConsultationFilter from '@/components/filter/ConsultationFilter'
-import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
-import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
-import ConsultationManagerTable from '../table/ConsultationManagerTable'
+import ConsultationManagerTable from '@/components/table/ConsultationManagerTable'
 
 const ConBox = styled.div`
   margin: 2rem 0;
@@ -34,7 +29,6 @@ export default function ConsultBranch({
   supervisor,
   mUsername,
 }) {
-  console.log(supervisor)
   return (
     <>
       <ConBox>
