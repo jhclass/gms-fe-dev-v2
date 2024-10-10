@@ -166,9 +166,11 @@ const Tdiv = styled.div<{ $isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.lightYellow};
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 export default function LectureItem(props) {
@@ -177,18 +179,18 @@ export default function LectureItem(props) {
   const router = useRouter()
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const conLimit = props.limit || 0
   const conIndex = props.itemIndex
   const lecture = props.tableData
-  const [students, setStudents] = useState(null)
   const [isOpen, setIsOpen] = useState(props.itemIndex === 0 ? true : false)
   const arrowRef = useRef(null)
 
   const isDisplayFlag = (date: string): string => {
     const currentDate = new Date()
+    const registeredDate = new Date(parseInt(date))
     const differenceInDays = Math.floor(
-      (currentDate.getTime() - parseInt(date)) / (1000 * 60 * 60 * 24),
+      (currentDate.getTime() - registeredDate.getTime()) /
+        (1000 * 60 * 60 * 24),
     )
 
     if (differenceInDays >= 0) {
@@ -199,12 +201,6 @@ export default function LectureItem(props) {
   }
 
   const flagString = isDisplayFlag(lecture.lecturePeriodEnd)
-
-  useEffect(() => {
-    if (lecture) {
-      setStudents(lecture.subject.StudentPayment)
-    }
-  }, [lecture])
 
   useEffect(() => {
     if (arrowRef.current) {
@@ -318,7 +314,10 @@ export default function LectureItem(props) {
             </div>
             <div>
               <Tdiv $isOpen={isOpen}>
-                <LectureReportTable lecture={lecture} students={students} />
+                <LectureReportTable
+                  lecture={lecture}
+                  students={props.students}
+                />
               </Tdiv>
             </div>
           </ClickBox>

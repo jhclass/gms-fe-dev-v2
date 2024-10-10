@@ -169,6 +169,7 @@ export default function LectureDetail() {
   const fileInputRef = useRef(null)
   const [fileName, setFileName] = useState('파일을 입력해주세요.')
   const [lectureData, setLectureData] = useState(null)
+  const [isDate, setIsDate] = useState(false)
   const [changeDate, setChangeDate] = useState(false)
   const {
     isOpen: sbjIsOpen,
@@ -238,6 +239,14 @@ export default function LectureDetail() {
   }
 
   useEffect(() => {
+    if (changeDate) {
+      reset({
+        lectureDetails: null,
+      })
+    }
+  }, [changeDate])
+
+  useEffect(() => {
     if (lectureData) {
       if (lectureData.campus) {
         setCampusName(lectureData.campus)
@@ -275,7 +284,10 @@ export default function LectureDetail() {
         setTeacher(date)
       }
 
-      setDatesSelected(lectureData?.lectureDetails)
+      if (lectureData?.lectureDetails.length > 0) {
+        setDatesSelected(lectureData?.lectureDetails)
+        setIsDate(true)
+      }
 
       if (
         lectureData?.timetableAttached === undefined ||
@@ -289,27 +301,6 @@ export default function LectureDetail() {
     }
   }, [lectureData])
 
-  const formatDate = (data, isTime) => {
-    const timestamp = parseInt(data, 10)
-    const date = new Date(timestamp)
-    if (isTime) {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} ` +
-        `${date.getHours().toString().padStart(2, '0')}:` +
-        `${date.getMinutes().toString().padStart(2, '0')}:` +
-        `${date.getSeconds().toString().padStart(2, '0')}`
-      return formatted
-    } else {
-      const formatted =
-        `${date.getFullYear()}-` +
-        `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-        `${date.getDate().toString().padStart(2, '0')} `
-      return formatted
-    }
-  }
-
   const handleCampusNameChange = e => {
     setCampusName(e.target.value)
   }
@@ -317,10 +308,6 @@ export default function LectureDetail() {
   const handleSubChange = e => {
     setSub(e.target.value)
   }
-
-  // const handleRoomChange = e => {
-  //   setRoom(e.target.value)
-  // }
 
   const handleTypeChange = value => {
     setIsReport(value)
@@ -354,74 +341,82 @@ export default function LectureDetail() {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
         try {
-          let teachersIdArray
-          if (dirtyFields.teachersId) {
-            teachersIdArray = data.teachersId
-              .split(',')
-              .filter(Boolean)
-              .map(Number)
-          }
-          const result = await editLectures({
-            variables: {
-              editLecturesId: parseInt(lectureId),
-              campus: data.campus,
-              temporaryName: data.temporaryName,
-              subDiv: data.subDiv,
-              teachersId: dirtyFields.teachersId && teachersIdArray,
-              roomNum: data.roomNum,
-              subjectId:
-                subjectSelectedData !== null
-                  ? parseInt(subjectSelectedData.id)
-                  : lectureData.subjectId,
-              lecturePeriodStart: dirtyFields.lecturePeriodStart
-                ? new Date(data.lecturePeriodStart)
-                : new Date(parseInt(lectureData.lecturePeriodStart)),
-              lecturePeriodEnd: dirtyFields.lecturePeriodEnd
-                ? new Date(data.lecturePeriodEnd)
-                : new Date(parseInt(lectureData.lecturePeriodEnd)),
-              lectureDetails: dirtyFields.lectureDetails
-                ? data.lectureDetails
-                : lectureData.lectureDetails,
-              lectureTime: dirtyFields.lectureTime
-                ? [lectureStartTime, lectureEndTime]
-                : lectureData.lectureTime,
-              eduStatusReport: dirtyFields.eduStatusReport
-                ? data.eduStatusReport
-                : lectureData.eduStatusReport,
-              approvedNum: dirtyFields.approvedNum
-                ? parseInt(data.approvedNum)
-                : lectureData.approvedNum,
-              confirmedNum: dirtyFields.confirmedNum
-                ? parseInt(data.confirmedNum)
-                : lectureData.confirmedNum,
-              sessionNum: dirtyFields.sessionNum
-                ? parseInt(data.sessionNum)
-                : lectureData.sessionNum,
-              timetableAttached:
-                dirtyFields.timetableAttached && data.timetableAttached,
-              lastModifiedTime: new Date(),
-            },
-            // refetchQueries: [
-            //   {
-            //     query: SEE_SUBJECT_QUERY,
-            //     variables: { page: 1, limit: 10 },
-            //   },
-            // ],
-          })
+          if (
+            data.lectureDetails.length > 1 &&
+            data.lectureDetails[0].length > 9
+          ) {
+            let teachersIdArray
+            if (dirtyFields.teachersId) {
+              teachersIdArray = data.teachersId
+                .split(',')
+                .filter(Boolean)
+                .map(Number)
+            }
+            const result = await editLectures({
+              variables: {
+                editLecturesId: parseInt(lectureId),
+                campus: data.campus,
+                temporaryName: data.temporaryName,
+                subDiv: data.subDiv,
+                teachersId: dirtyFields.teachersId && teachersIdArray,
+                roomNum: data.roomNum,
+                subjectId:
+                  subjectSelectedData !== null
+                    ? parseInt(subjectSelectedData.id)
+                    : lectureData.subjectId,
+                lecturePeriodStart: dirtyFields.lecturePeriodStart
+                  ? new Date(data.lecturePeriodStart)
+                  : new Date(parseInt(lectureData.lecturePeriodStart)),
+                lecturePeriodEnd: dirtyFields.lecturePeriodEnd
+                  ? new Date(data.lecturePeriodEnd)
+                  : new Date(parseInt(lectureData.lecturePeriodEnd)),
+                lectureDetails: dirtyFields.lectureDetails
+                  ? data.lectureDetails
+                  : lectureData.lectureDetails,
+                lectureTime: dirtyFields.lectureTime
+                  ? [lectureStartTime, lectureEndTime]
+                  : lectureData.lectureTime,
+                eduStatusReport: dirtyFields.eduStatusReport
+                  ? data.eduStatusReport
+                  : lectureData.eduStatusReport,
+                approvedNum: dirtyFields.approvedNum
+                  ? parseInt(data.approvedNum)
+                  : lectureData.approvedNum,
+                confirmedNum: dirtyFields.confirmedNum
+                  ? parseInt(data.confirmedNum)
+                  : lectureData.confirmedNum,
+                sessionNum: dirtyFields.sessionNum
+                  ? parseInt(data.sessionNum)
+                  : lectureData.sessionNum,
+                timetableAttached:
+                  dirtyFields.timetableAttached && data.timetableAttached,
+                lastModifiedTime: new Date(),
+              },
+            })
 
-          const dirtyFieldsArray = [...Object.keys(dirtyFields)]
-          userLogs(
-            `${lectureId} ${data.temporaryName} 강의 정보 수정`,
-            `ok: ${result.data.editLectures.ok} / ${dirtyFieldsArray.join(
-              ', ',
-            )}`,
-          )
+            const dirtyFieldsArray = [...Object.keys(dirtyFields)]
+            userLogs(
+              `${lectureId} ${data.temporaryName} 강의 정보 수정`,
+              `ok: ${result.data.editLectures.ok} / ${dirtyFieldsArray.join(
+                ', ',
+              )}`,
+            )
 
-          if (!result.data.editLectures.ok) {
-            throw new Error('과정 수정 실패')
+            if (!result.data.editLectures.ok) {
+              throw new Error('과정 수정 실패')
+            }
+            alert('수정되었습니다.')
+            router.push('/lecture')
+          } else {
+            reset({
+              lecturePeriodStart: lectureData?.lecturePeriodStart,
+              lecturePeriodEnd: lectureData?.lecturePeriodEnd,
+              lectureDetails: lectureData?.lectureDetails,
+            })
+            setLectureStartDate(parseInt(lectureData?.lecturePeriodStart))
+            setLectureEndDate(parseInt(lectureData?.lecturePeriodEnd))
+            alert('개강일, 종강일, 요일을 다시 선택해주세요.')
           }
-          alert('수정되었습니다.')
-          router.push('/lecture')
         } catch (error) {
           console.error('강의 수정 중 에러 발생:', error)
           alert('강의 수정 처리 중 오류가 발생했습니다.')
@@ -676,36 +671,6 @@ export default function LectureDetail() {
                       </p>
                     )}
                   </AreaBox>
-                  {/* <AreaBox>
-                  <Controller
-                    control={control}
-                    name="roomNum"
-                    defaultValue={subjectState?.teacherName}
-                    render={({ field }) => (
-                      <Select
-                        labelPlacement="outside"
-                        label="강의실"
-                        placeholder=" "
-                        className="w-full"
-                        variant="bordered"
-                        defaultValue={subjectState?.teacherName}
-                        selectedKeys={[room]}
-                        onChange={value => {
-                          if (value.target.value !== '') {
-                            field.onChange(value)
-                            handleRoomChange(value)
-                          }
-                        }}
-                      >
-                        {Object.entries(classRoom).map(([key, item]) => (
-                          <SelectItem key={item} value={key}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
-                </AreaBox> */}
                   <AreaBox>
                     <TimeBox>
                       <DatePickerBox>
@@ -908,7 +873,10 @@ export default function LectureDetail() {
                                 : null
                               startField.onChange(adjustedDate)
                               setLectureStartDate(adjustedDate)
-                              setChangeDate(true)
+                              setIsDate(true)
+                              if (isDate) {
+                                setChangeDate(true)
+                              }
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -994,7 +962,10 @@ export default function LectureDetail() {
                                 : null
                               endField.onChange(adjustedEndDate)
                               setLectureEndDate(adjustedEndDate)
-                              setChangeDate(true)
+                              setIsDate(true)
+                              if (isDate) {
+                                setChangeDate(true)
+                              }
                             }}
                             dateFormat="yyyy/MM/dd"
                             onChangeRaw={e => e.preventDefault()}
@@ -1249,27 +1220,6 @@ export default function LectureDetail() {
                         {String(errors.timetableAttached.message)}
                       </p>
                     )}
-                    {/* <TimeBox>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      style={{ display: 'none' }}
-                      onChange={handleFileChange}
-                    />
-                    <Button color={'primary'} onClick={handleButtonClick}>
-                      파일 선택
-                    </Button>
-                    <Input
-                      readOnly={true}
-                      labelPlacement="outside"
-                      placeholder=" "
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      label=""
-                      value={fileName}
-                    />
-                  </TimeBox> */}
                   </AreaBox>
                 </FlexBox>
                 <BtnBox>
@@ -1311,7 +1261,9 @@ export default function LectureDetail() {
           datesSelected={datesSelected}
           startDate={lectureStartDate}
           endDate={lectureEndDate}
+          isDate={isDate}
           changeDate={changeDate}
+          setChangeDate={setChangeDate}
         />
       </>
     )

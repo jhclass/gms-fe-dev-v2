@@ -213,17 +213,6 @@ const PagerWrap = styled.div`
   margin-top: 1.5rem;
   justify-content: center;
 `
-const EllipsisBox = styled.p`
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
-const HiddenLabel = styled.label`
-  display: none;
-`
 const Nolist = styled.div`
   display: flex;
   width: 100%;
@@ -232,9 +221,11 @@ const Nolist = styled.div`
   padding: 2rem 0;
   color: ${({ theme }) => theme.colors.gray};
 `
+
 type seeSubjectQuery = {
   seeSubject: SeeSubjectResult
 }
+
 export default function SubjectsTable() {
   const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(subjectPageState)

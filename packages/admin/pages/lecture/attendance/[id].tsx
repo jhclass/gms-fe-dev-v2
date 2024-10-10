@@ -238,7 +238,9 @@ export default function AttendancePage() {
                                 student.courseComplete !== completion.dropout,
                             )
                             .map((item, index) => (
-                              <Chip color="primary">{item.student.name}</Chip>
+                              <Chip key={index} color="primary">
+                                {item.student.name}
+                              </Chip>
                             ))}
                         </>
                       ) : (

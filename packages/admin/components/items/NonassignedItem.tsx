@@ -1,7 +1,4 @@
 import { styled } from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { progressStatusState } from '@/lib/recoilAtoms'
-import { Button } from '@nextui-org/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -118,9 +115,11 @@ const TCode = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 export default function NonassignedItem(props) {

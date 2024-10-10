@@ -157,11 +157,12 @@ const TjoiningDate = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
-
 const Masking = styled.span`
   background: rgba(228, 228, 231, 0.8);
   -webkit-filter: blur(2.5px);

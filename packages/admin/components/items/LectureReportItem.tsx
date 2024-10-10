@@ -7,9 +7,6 @@ const TableRow = styled.div`
   min-width: fit-content;
   text-align: center;
   z-index: 1;
-  /* display: grid;
-  width: 100%;
-  grid-template-columns: 0.5rem 2% auto; */
 `
 const ClickBox = styled.div`
   display: flex;
@@ -35,9 +32,11 @@ const Tlong = styled.div`
   min-width: ${1200 * 0.09}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 export default function LectureReportItem(props) {
@@ -81,11 +80,6 @@ export default function LectureReportItem(props) {
                 {props.earlyEmployment ? props.earlyEmployment : '-'}
               </EllipsisBox>
             </Tlong>
-            <Tlong>
-              <EllipsisBox>
-                {props.notEarlyEmployed ? props.notEarlyEmployed : '-'}
-              </EllipsisBox>
-            </Tlong>
             <Tnum>
               <EllipsisBox>
                 {props.graduates ? props.graduates : '-'}
@@ -94,6 +88,11 @@ export default function LectureReportItem(props) {
             <Tnum>
               <EllipsisBox>
                 {props.graduationRate ? `${props.graduationRate}%` : '-'}
+              </EllipsisBox>
+            </Tnum>
+            <Tnum>
+              <EllipsisBox>
+                {props.employedRate ? `${props.employedRate}%` : '-'}
               </EllipsisBox>
             </Tnum>
             <Tlong>

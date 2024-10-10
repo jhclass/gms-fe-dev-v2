@@ -149,9 +149,11 @@ const Tdiv = styled.div<{ $isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.lightYellow};
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 export default function EmploymentItem(props) {

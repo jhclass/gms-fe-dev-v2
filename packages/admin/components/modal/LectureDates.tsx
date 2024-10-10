@@ -71,9 +71,10 @@ export default function LectureDates({
   datesSelected = null,
   startDate,
   endDate,
+  isDate,
   changeDate,
+  setChangeDate,
 }) {
-  const today = new Date('')
   const [disabledDays, setDisabledDays] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
@@ -92,15 +93,22 @@ export default function LectureDates({
   }
 
   useEffect(() => {
-    setSelectedDates([])
-    selectDateAuto(startDate, endDate)
-    if (changeDate) {
+    if (isDate) {
+      if (changeDate) {
+        setDisabledDays([])
+        setGroupSelected([])
+        setSelectedDates([])
+        selectDateAuto(startDate, endDate)
+      } else {
+        setSelectedDates(datesSelected)
+      }
+    } else {
+      setDisabledDays([])
+      setGroupSelected([])
       setSelectedDates([])
       selectDateAuto(startDate, endDate)
-    } else {
-      setSelectedDates(datesSelected)
     }
-  }, [startDate, endDate, datesSelected])
+  }, [startDate, endDate, datesSelected, isDate])
 
   const calculateMonthsShown = (startDate, endDate) => {
     const validStartDate =
@@ -154,7 +162,15 @@ export default function LectureDates({
 
   // 요일 선택 핸들러
   const toggleDay = day => {
-    setGroupSelected(day)
+    setGroupSelected(prev => {
+      if (prev.includes(day)) {
+        // 배열에 해당 번호가 있으면 제거
+        return prev.filter(n => n !== day)
+      } else {
+        // 배열에 없으면 추가
+        return [...prev, day]
+      }
+    })
     setDisabledDays(prev => {
       const isDayDisabled = prev.includes(day)
       const newDisabledDays = isDayDisabled
@@ -201,6 +217,7 @@ export default function LectureDates({
     const sortedDates = selectedDates.sort(
       (a, b) => new Date(a).getTime() - new Date(b).getTime(),
     )
+    setChangeDate(false)
     setValue('lectureDetails', sortedDates, { shouldDirty: true })
     onClose()
   }
@@ -214,14 +231,14 @@ export default function LectureDates({
               <ModalHeader className="flex flex-col gap-1">
                 기간선택
                 <DayCheck>
-                  {[' 일 ', ' 월 ', ' 화 ', ' 수 ', ' 목 ', ' 금 ', ' 토 '].map(
+                  {['일', '월', '화', '수', '목', '금', '토'].map(
                     (day, index) => (
                       <ChipCheckbox
                         key={index}
-                        value={index}
+                        isSelected={groupSelected.includes(index)}
                         onChange={e => toggleDay(index)}
                       >
-                        {day}
+                        <p>{day}</p>
                       </ChipCheckbox>
                     ),
                   )}

@@ -29,19 +29,19 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 10%;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.1}px;
 `
 const Tname = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 20%;
+  width: 30%;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.2}px;
+  min-width: ${1200 * 0.3}px;
 `
 const Tdate = styled.div`
   display: table-cell;
@@ -53,9 +53,11 @@ const Tdate = styled.div`
   min-width: ${1200 * 0.1}px;
 `
 const EllipsisBox = styled.p`
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `
 
 export default function EmploymentStateItem({ student }) {

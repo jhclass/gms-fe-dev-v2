@@ -51,24 +51,6 @@ const Tfee = styled.div`
   }
 `
 
-const EllipsisBox = styled.p`
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
-
-const ScrollBox = styled.div`
-  /* overflow-x: auto; */
-  width: 360px;
-  white-space: nowrap;
-
-  .scrollbar {
-    padding: 0.5rem;
-  }
-`
 export default function SubjectsItem(props) {
   const subject = props.tableData
   const feeFormet = fee => {

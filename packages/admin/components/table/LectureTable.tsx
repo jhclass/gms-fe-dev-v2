@@ -250,6 +250,7 @@ export default function LectureTable() {
                   key={index}
                   tableData={item}
                   itemIndex={index}
+                  students={item.subject.StudentPayment}
                   currentPage={currentPage}
                   limit={currentLimit}
                 />

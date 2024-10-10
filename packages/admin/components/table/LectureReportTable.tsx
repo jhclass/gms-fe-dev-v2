@@ -55,7 +55,6 @@ const Tlong = styled.div`
 `
 
 export default function LectureReportTable({ lecture, students }) {
-  const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)
   const employment = useRecoilValue(employmentStatus)
   const [isFinish, setIsFinish] = useState(false)
@@ -65,8 +64,10 @@ export default function LectureReportTable({ lecture, students }) {
   const [courseDropout, setCourseDropout] = useState(null)
   const [incomplete, setIncomplete] = useState(null)
   const [dropoutRate, setDropoutRate] = useState(null)
+  const [earlyEmploymentStudent, setEarlyEmploymentStudent] = useState(null)
   const [earlyEmployment, setEarlyEmployment] = useState(null)
-  const [notEarlyEmployed, setNotEarlyEmployed] = useState(null)
+  const [employmentStudents, setEmploymentStudents] = useState(null)
+  const [employedRate, setEmployedRate] = useState(null)
   const [graduates, setGraduates] = useState(null)
   const [graduationRate, setGraduationRate] = useState(null)
   const [expectedEmploymentProof, setExpectedEmploymentProof] = useState(null)
@@ -88,50 +89,29 @@ export default function LectureReportTable({ lecture, students }) {
     if (lecture && students) {
       const today = new Date()
       const endDate = new Date(parseInt(lecture.lecturePeriodEnd))
-      const earlyEmploymentStudent = students.filter(
-        student =>
-          student.courseComplete === completion.inTraining &&
-          student.employment !== employment.unemployed,
-      )
 
+      setEarlyEmploymentStudent(
+        students.filter(
+          student =>
+            student.courseComplete === completion.inTraining &&
+            student.employment !== employment.unemployed,
+        ),
+      )
       setApprovedPersonnel(lecture.ApprovedNum)
       setConfirmedPersonnel(lecture.confirmedNum)
       setEnrollmentRate(
         calculatePercentage(lecture.confirmedNum, lecture.ApprovedNum),
       )
-
       setCourseDropout(
         countFilteredStudents(
           students,
           student => student.courseComplete === completion.dropout,
         ),
       )
-
-      if (earlyEmploymentStudent.length > 0) {
-        setEarlyEmployment(
-          countFilteredStudents(
-            earlyEmploymentStudent,
-            student =>
-              student.EmploymentStatus[0].completionType === '조기취업' &&
-              student.EmploymentStatus[0].imploymentInsurance === 'Y',
-          ),
-        )
-        setNotEarlyEmployed(
-          countFilteredStudents(
-            earlyEmploymentStudent,
-            student =>
-              student.EmploymentStatus[0].completionType === '조기취업' &&
-              student.EmploymentStatus[0].imploymentInsurance === 'N',
-          ),
-        )
-
-        setExpectedEmploymentProof(
-          countFilteredStudents(
-            earlyEmploymentStudent,
-            student => student.EmploymentStatus[0].proofOfImployment === 'Y',
-          ),
-        )
-      }
+      setEmploymentStudents(
+        students.filter(student => student.employment !== employment.unemployed)
+          .length,
+      )
 
       if (today > endDate) {
         setIncomplete(
@@ -154,11 +134,31 @@ export default function LectureReportTable({ lecture, students }) {
   }, [lecture, students])
 
   useEffect(() => {
+    if (earlyEmploymentStudent) {
+      setEarlyEmployment(
+        countFilteredStudents(
+          earlyEmploymentStudent,
+          student => student.EmploymentStatus[0].completionType === '조기취업',
+        ),
+      )
+      setExpectedEmploymentProof(
+        countFilteredStudents(
+          earlyEmploymentStudent,
+          student => student.EmploymentStatus[0].proofOfImployment === 'Y',
+        ),
+      )
+    }
+  }, [earlyEmploymentStudent])
+
+  useEffect(() => {
     setDropoutRate(
       calculatePercentage(courseDropout + incomplete, lecture.confirmedNum),
     )
     setGraduationRate(calculatePercentage(graduates, lecture.confirmedNum))
-  }, [courseDropout, incomplete, graduates])
+    setEmployedRate(
+      calculatePercentage(employmentStudents, lecture.confirmedNum),
+    )
+  }, [courseDropout, incomplete, graduates, employmentStudents])
 
   return (
     <>
@@ -175,9 +175,9 @@ export default function LectureReportTable({ lecture, students }) {
                   <Tnum>미수료</Tnum>
                   <Tnum>중도탈락율</Tnum>
                   <Tlong>조기취업 가입</Tlong>
-                  <Tlong>조기취업 미가입</Tlong>
                   <Tnum>수료인원</Tnum>
                   <Tnum>수료율</Tnum>
+                  <Tnum>취업률</Tnum>
                   <Tlong>재직증명 확보예정</Tlong>
                 </ClickBox>
               </TheaderBox>
@@ -191,7 +191,7 @@ export default function LectureReportTable({ lecture, students }) {
               incomplete={incomplete}
               dropoutRate={dropoutRate}
               earlyEmployment={earlyEmployment}
-              notEarlyEmployed={notEarlyEmployed}
+              employedRate={employedRate}
               graduates={graduates}
               graduationRate={graduationRate}
               expectedEmploymentProof={expectedEmploymentProof}

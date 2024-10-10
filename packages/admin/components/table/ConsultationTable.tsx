@@ -8,7 +8,7 @@ import {
   SEE_FAVORITESTATE_QUERY,
   SEE_STUDENT_STATE_QUERY,
 } from '@/graphql/queries'
-import FavoItem from '@/components/table/FavoItem'
+import FavoItem from '@/components/items/FavoItem'
 import router from 'next/router'
 import { useRecoilState } from 'recoil'
 import { consultLimitState, consultPageState } from '@/lib/recoilAtoms'
@@ -46,12 +46,12 @@ const Tfavorite = styled.div`
   display: table-cell;
   font-size: inherit;
   color: inherit;
-  min-width: 30px;
-  padding: 1rem 1rem 1rem 2rem;
+  min-width: 62px;
+  padding: 1rem 1rem 1rem 1.5rem;
 `
 const ClickBox = styled.div`
-  display: flex;
-  width: calc(100% - 30px);
+  display: table;
+  width: 100%;
 `
 const Tnum = styled.div`
   display: table-cell;
@@ -249,7 +249,7 @@ export default function ConsultationTable() {
             background: theme.colors.primary,
             text: '신규',
           },
-          { background: theme.colors.accent, text: '미처리' },
+          { background: theme.colors.accent, text: '접수대기' },
         ]}
       />
       <TableArea>
