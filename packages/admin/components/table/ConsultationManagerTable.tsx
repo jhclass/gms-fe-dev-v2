@@ -270,7 +270,11 @@ export default function ConsultationFilterTable({
               />
             ))}
             {searchResult?.totalCount === 0 && (
-              <Nolist>검색결과가 없습니다.</Nolist>
+              <Nolist>
+                {filterSearch
+                  ? '검색결과가 없습니다.'
+                  : '배정된 상담이 없습니다.'}
+              </Nolist>
             )}
           </TableWrap>
         </ScrollShadow>
