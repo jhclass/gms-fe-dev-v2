@@ -14,6 +14,9 @@ import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { getYear } from 'date-fns'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
+import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import { useSuspenseQuery } from '@apollo/client'
+import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -142,8 +145,11 @@ const FilterVariants = {
 export default function ConsultationFilter({
   isActive,
   onFilterSearch,
+  studentManagerFilter,
+  setStudentManagerFilter,
   studentFilter,
   setStudentFilter,
+  supervisor,
 }) {
   const router = useRouter()
   const years = _.range(2000, getYear(new Date()) + 5, 1)
@@ -183,84 +189,169 @@ export default function ConsultationFilter({
   })
 
   useEffect(() => {
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.receiptDiv === null
-    ) {
-      setReceipt('-')
+    if (supervisor) {
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.receiptDiv === null
+      ) {
+        setReceipt('-')
+      } else {
+        setReceipt(studentFilter?.receiptDiv)
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.subDiv === null
+      ) {
+        setSub('-')
+      } else {
+        setSub(studentFilter?.subDiv)
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.pic === null
+      ) {
+        setManager('-')
+      } else {
+        setManager(studentFilter?.pic)
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.adviceType === null
+      ) {
+        setAdviceType('-')
+      } else {
+        setAdviceType(studentFilter?.adviceType)
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.createdAt === null
+      ) {
+        setCreatDateRange([null, null])
+      } else {
+        setCreatDateRange([
+          studentFilter?.createdAt[0],
+          studentFilter?.createdAt[1],
+        ])
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.stVisit === null
+      ) {
+        setVisitDateRange([null, null])
+      } else {
+        setVisitDateRange([
+          studentFilter?.stVisit[0],
+          studentFilter?.stVisit[1],
+        ])
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.phoneNum1 === null
+      ) {
+        setPhone('')
+      } else {
+        setPhone(studentFilter?.phoneNum1)
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.stName === null
+      ) {
+        setName('')
+      } else {
+        setName(studentFilter?.stName)
+      }
+      if (
+        Object.keys(studentFilter).length === 0 ||
+        studentFilter?.progress === undefined ||
+        studentFilter?.progress === null
+      ) {
+        setProgressSelected([])
+      } else {
+        const numericKeys = studentFilter?.progress.map(key => String(key))
+        setProgressSelected(numericKeys)
+      }
     } else {
-      setReceipt(studentFilter?.receiptDiv)
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.receiptDiv === null
+      ) {
+        setReceipt('-')
+      } else {
+        setReceipt(studentManagerFilter?.receiptDiv)
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.subDiv === null
+      ) {
+        setSub('-')
+      } else {
+        setSub(studentManagerFilter?.subDiv)
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.adviceType === null
+      ) {
+        setAdviceType('-')
+      } else {
+        setAdviceType(studentManagerFilter?.adviceType)
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.createdAt === null
+      ) {
+        setCreatDateRange([null, null])
+      } else {
+        setCreatDateRange([
+          studentManagerFilter?.createdAt[0],
+          studentManagerFilter?.createdAt[1],
+        ])
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.stVisit === null
+      ) {
+        setVisitDateRange([null, null])
+      } else {
+        setVisitDateRange([
+          studentManagerFilter?.stVisit[0],
+          studentManagerFilter?.stVisit[1],
+        ])
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.phoneNum1 === null
+      ) {
+        setPhone('')
+      } else {
+        setPhone(studentManagerFilter?.phoneNum1)
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.stName === null
+      ) {
+        setName('')
+      } else {
+        setName(studentManagerFilter?.stName)
+      }
+      if (
+        Object.keys(studentManagerFilter).length === 0 ||
+        studentManagerFilter?.progress === undefined ||
+        studentManagerFilter?.progress === null
+      ) {
+        setProgressSelected([])
+      } else {
+        const numericKeys = studentManagerFilter?.progress.map(key =>
+          String(key),
+        )
+        setProgressSelected(numericKeys)
+      }
     }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.subDiv === null
-    ) {
-      setSub('-')
-    } else {
-      setSub(studentFilter?.subDiv)
+  }, [router, supervisor, studentFilter, studentManagerFilter])
+
+  useEffect(() => {
+    if (supervisor) {
     }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.pic === null
-    ) {
-      setManager('-')
-    } else {
-      setManager(studentFilter?.pic)
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.adviceType === null
-    ) {
-      setAdviceType('-')
-    } else {
-      setAdviceType(studentFilter?.adviceType)
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.createdAt === null
-    ) {
-      setCreatDateRange([null, null])
-    } else {
-      setCreatDateRange([
-        studentFilter?.createdAt[0],
-        studentFilter?.createdAt[1],
-      ])
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.stVisit === null
-    ) {
-      setVisitDateRange([null, null])
-    } else {
-      setVisitDateRange([studentFilter?.stVisit[0], studentFilter?.stVisit[1]])
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.phoneNum1 === null
-    ) {
-      setPhone('')
-    } else {
-      setPhone(studentFilter?.phoneNum1)
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.stName === null
-    ) {
-      setName('')
-    } else {
-      setName(studentFilter?.stName)
-    }
-    if (
-      Object.keys(studentFilter).length === 0 ||
-      studentFilter?.progress === undefined ||
-      studentFilter?.progress === null
-    ) {
-      setProgressSelected([])
-    } else {
-      const numericKeys = studentFilter?.progress.map(key => String(key))
-      setProgressSelected(numericKeys)
-    }
-  }, [router, studentFilter])
+  }, [studentFilter, studentManagerFilter])
 
   const handleReceiptChange = e => {
     setReceipt(e.target.value)
@@ -304,21 +395,38 @@ export default function ConsultationFilter({
         '방문예정일의 마지막날을 선택해주세요.',
       )
       if (creatDate && visitDate) {
-        const filter = {
-          receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
-          subDiv: data.subDiv === '-' ? null : data.subDiv,
-          pic: data.pic === '-' ? null : data.pic,
-          createdAt: data.createdAt === undefined ? null : data.createdAt,
-          stVisit: data.stVisit === undefined ? null : data.stVisit,
-          stName: data.stName === '' ? null : data.stName,
-          progress:
-            data.progress === undefined || data.progress.length === 0
-              ? null
-              : data.progress,
-          phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
-          adviceType: data.adviceType === '-' ? null : data.adviceType,
+        if (supervisor) {
+          const filter = {
+            receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
+            subDiv: data.subDiv === '-' ? null : data.subDiv,
+            pic: data.pic === '-' ? null : data.pic,
+            createdAt: data.createdAt === undefined ? null : data.createdAt,
+            stVisit: data.stVisit === undefined ? null : data.stVisit,
+            stName: data.stName === '' ? null : data.stName,
+            progress:
+              data.progress === undefined || data.progress.length === 0
+                ? null
+                : data.progress,
+            phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
+            adviceType: data.adviceType === '-' ? null : data.adviceType,
+          }
+          setStudentFilter(filter)
+        } else {
+          const filter = {
+            receiptDiv: data.receiptDiv === '-' ? null : data.receiptDiv,
+            subDiv: data.subDiv === '-' ? null : data.subDiv,
+            createdAt: data.createdAt === undefined ? null : data.createdAt,
+            stVisit: data.stVisit === undefined ? null : data.stVisit,
+            stName: data.stName === '' ? null : data.stName,
+            progress:
+              data.progress === undefined || data.progress.length === 0
+                ? null
+                : data.progress,
+            phoneNum1: data.phoneNum1 === '' ? null : data.phoneNum1,
+            adviceType: data.adviceType === '-' ? null : data.adviceType,
+          }
+          setStudentManagerFilter(filter)
         }
-        setStudentFilter(filter)
         onFilterSearch(true)
         consultPage()
       }
@@ -390,35 +498,37 @@ export default function ConsultationFilter({
                 )}
               />
             </ItemBox>
-            <ItemBox>
-              <Controller
-                control={control}
-                name="pic"
-                defaultValue={'-'}
-                render={({ field }) => (
-                  <Suspense
-                    fallback={
-                      <LodingDiv>
-                        <i className="xi-spinner-2" />
-                      </LodingDiv>
-                    }
-                  >
-                    <PermissionManagerSelect
-                      selectedKey={manager}
-                      field={field}
-                      label={'담당자'}
-                      handleChange={handleManagerChange}
-                      optionDefault={{
-                        mUsername: '-',
-                        mUserId: '-',
-                      }}
-                      parmissionName={'상담관리접근'}
-                      isId={false}
-                    />
-                  </Suspense>
-                )}
-              />
-            </ItemBox>
+            {supervisor ? (
+              <ItemBox>
+                <Controller
+                  control={control}
+                  name="pic"
+                  defaultValue={'-'}
+                  render={({ field }) => (
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <PermissionManagerSelect
+                        selectedKey={manager}
+                        field={field}
+                        label={'담당자'}
+                        handleChange={handleManagerChange}
+                        optionDefault={{
+                          mUsername: '-',
+                          mUserId: '-',
+                        }}
+                        parmissionName={'상담관리접근'}
+                        isId={false}
+                      />
+                    </Suspense>
+                  )}
+                />
+              </ItemBox>
+            ) : null}
             <ItemBox>
               <Controller
                 control={control}

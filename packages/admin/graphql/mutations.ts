@@ -1573,7 +1573,6 @@ export const SALES_STATISTICS_LIST_MUTATION = gql`
     }
   }
 `
-
 export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
   mutation SearchPaymentDetail(
     $receiverId: Int
@@ -1615,6 +1614,16 @@ export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
           }
         }
       }
+    }
+  }
+`
+export const CONSULTATION_STATISTICS_LIST_MUTATION = gql`
+  mutation Mutation($pic: String, $createdAt: [String]) {
+    searchStudentState(pic: $pic, createdAt: $createdAt) {
+      totalCount
+      ok
+      message
+      error
     }
   }
 `
