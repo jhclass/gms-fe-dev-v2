@@ -182,7 +182,6 @@ export default function HeaderNoti({}) {
           </NotiListBox>
         )}
       </NotiBox>
-      {/* <SeeRequestMessage isOpen={isOpen} onClose={onClose} /> */}
     </>
   )
 }

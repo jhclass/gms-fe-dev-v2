@@ -283,12 +283,10 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 
 export default function Header() {
   const theme = useTheme()
-  const grade = useRecoilValue(gradeState)
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
   const { mUserId = '', mUsername = '', mGrade = '', mAvatar = '' } = mMe || {}
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
@@ -434,14 +432,6 @@ export default function Header() {
             </WebBtn>
           </Tooltip>
           <HeaderNoti />
-          {mGrade === grade.dev && (
-            <ReqBtn onClick={onOpen}>
-              <img
-                src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_help3.webp"
-                alt="알림"
-              />
-            </ReqBtn>
-          )}
           <UserBox ref={userMenuRef} onClick={toggleUserMenu}>
             <UserGrade>
               {mAvatar ? (
@@ -496,12 +486,6 @@ export default function Header() {
           </UserBox>
         </HeaderRt>
       </HeaderSec>
-      <RequestMessage
-        isOpen={isOpen}
-        onClose={onClose}
-        managerId={mUserId}
-        managerName={mUsername}
-      />
     </>
   )
 }
