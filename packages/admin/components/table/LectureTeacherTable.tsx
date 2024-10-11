@@ -198,8 +198,6 @@ export default function LectureTeacherTable({ lectureFilter }) {
     SEARCH_LECTURES_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  const today = new Date()
-  // const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
     searchLecturesFilterMutation({
@@ -216,10 +214,6 @@ export default function LectureTeacherTable({ lectureFilter }) {
       },
     })
   }, [lectureFilter, currentPage])
-
-  const resetList = () => {
-    window.location.href = '/lecture'
-  }
 
   return (
     <>

@@ -99,11 +99,7 @@ const MemoItem = styled.li`
   }
 `
 export default function StudentsWrite() {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
   const [studentData, setStudentData] = useState(null)

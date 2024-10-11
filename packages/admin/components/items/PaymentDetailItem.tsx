@@ -92,12 +92,8 @@ export default function PaymentDetailItem({
   paymentId,
   setStudentPaymentDetailData,
 }) {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
