@@ -617,6 +617,12 @@ export default function SubjectDetail() {
                     <Controller
                       control={control}
                       name="subDiv"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '수강 구분을 선택해주세요.',
+                        },
+                      }}
                       defaultValue={subjectState?.subDiv}
                       render={({ field, fieldState }) => (
                         <Suspense
@@ -629,7 +635,11 @@ export default function SubjectDetail() {
                           <AdviceSelect
                             selectedKey={sub}
                             field={field}
-                            label={'수강구분'}
+                            label={
+                              <FilterLabel>
+                                수강구분 <span>*</span>
+                              </FilterLabel>
+                            }
                             handleChange={handleSubChange}
                             optionDefault={{
                               type: '-',
