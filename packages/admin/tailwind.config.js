@@ -9,11 +9,7 @@ module.exports = {
   ],
   theme: {
     screens: {
-      sm: '360px',
-      md: '640px',
-      lg: '769px',
-      xl: '1024px',
-      xxl: '1440px',
+      md: '769px',
     },
     extend: {
       width: {
@@ -32,60 +28,6 @@ module.exports = {
         lightPrimary: '#d9e3fa',
         mainBG: '#d6e4f1',
         lightYellow: '#fffff9',
-      },
-      fontSize: {
-        // Title
-        t1: [
-          '2.4rem;',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        t2: [
-          '1.6rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        t3: [
-          '1.4rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '20px',
-          },
-        ],
-        // subtitle
-        sub1: [
-          '1.6rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        sub2: [
-          '1.2rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        // paragraph
-        p1: [
-          '24px',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '20px',
-          },
-        ],
-        p2: [
-          '24px',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '20px',
-          },
-        ],
       },
     },
   },

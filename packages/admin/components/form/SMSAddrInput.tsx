@@ -66,7 +66,7 @@ export default function handleCheck({ groupSelected, setGroupSelected }) {
         type="submit"
         variant="bordered"
         color="primary"
-        className="w-full lg:w-auto"
+        className="w-full md:w-auto"
       >
         추가 &#43;
       </Button>

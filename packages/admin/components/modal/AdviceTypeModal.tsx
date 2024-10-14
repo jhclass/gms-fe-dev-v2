@@ -63,7 +63,7 @@ export default function AdviceTypeModal({
               <ModalHeader className="flex flex-col gap-1">
                 상담 분야 선택
               </ModalHeader>
-              <ModalBody className="min-h-[10rem] max-h-[70vh] lg:max-h-[50vh]">
+              <ModalBody className="min-h-[10rem] max-h-[70vh] md:max-h-[50vh]">
                 <ScrollShadow className="overflow-x-hidden scrollbar">
                   <CheckboxGroup
                     orientation="horizontal"

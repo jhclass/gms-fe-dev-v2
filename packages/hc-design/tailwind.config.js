@@ -26,60 +26,6 @@ module.exports = {
         flag2: '#FFC600',
         flag3: '#4f46e5',
       },
-      fontSize: {
-        // Title
-        t1: [
-          '2.4rem;',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        t2: [
-          '1.6rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        t3: [
-          '1.4rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '20px',
-          },
-        ],
-        // subtitle
-        sub1: [
-          '1.6rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        sub2: [
-          '1.2rem',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '1.5',
-          },
-        ],
-        // paragraph
-        p1: [
-          '24px',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '20px',
-          },
-        ],
-        p2: [
-          '24px',
-          {
-            letterSpacing: '-0.01em',
-            lineHeight: '20px',
-          },
-        ],
-      },
     },
   },
   darkMode: 'class',

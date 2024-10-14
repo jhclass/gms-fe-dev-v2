@@ -161,7 +161,7 @@ export default function StudentsWrite() {
                         style={{
                           size: 'md',
                           variant: 'solid',
-                          css: 'lg:w-[50%] w-full text-white',
+                          css: 'md:w-[50%] w-full text-white',
                         }}
                         permissionName={'수강관리'}
                         handleClick={() => {
@@ -176,7 +176,7 @@ export default function StudentsWrite() {
                       radius="md"
                       variant="bordered"
                       color="primary"
-                      className="lg:w-[50%] w-full"
+                      className="md:w-[50%] w-full"
                       onClick={() => {
                         router.back()
                       }}
@@ -232,7 +232,7 @@ export default function StudentsWrite() {
                     radius="md"
                     variant="bordered"
                     color="primary"
-                    className="lg:w-[50%] w-full"
+                    className="md:w-[50%] w-full"
                     onClick={() => {
                       router.back()
                     }}
