@@ -416,7 +416,6 @@ export default function SubjectDetail() {
           },
         ],
       })
-
       userLogs(
         `${subjectState.subjectName} 과목 삭제`,
         `ok: ${result.data.deleteSubject.ok}`,
@@ -430,7 +429,9 @@ export default function SubjectDetail() {
       router.back()
     } catch (error) {
       console.error('과정 삭제 중 에러 발생:', error)
-      alert('과정 삭제 처리 중 오류가 발생했습니다.')
+      alert(
+        '과정 삭제 처리 중 오류가 발생했습니다.\n현재 과정으로 생성된 강의나 수강신청된 학생이 있는지 확인해주세요.',
+      )
     }
   }
 
