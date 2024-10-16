@@ -297,6 +297,7 @@ export default function StudentsWriteCourse() {
       setValue('subDiv', subjectSelectedData?.subDiv)
       setValue('unCollectedAmount', subjectSelectedData?.fee)
       resetField('discount')
+      setIsDiscount(false)
       setWeekendClass([])
       resetField('isWeekend')
     }
