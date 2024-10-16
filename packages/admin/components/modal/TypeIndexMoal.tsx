@@ -172,7 +172,12 @@ export default function TypeIndex({ isOpen, onClose, category }) {
 
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={closeBtn}>
+      <Modal
+        size={'md'}
+        isOpen={isOpen}
+        onClose={closeBtn}
+        placement={'center'}
+      >
         <ModalContent>
           {closeBtn => (
             <>

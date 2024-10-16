@@ -20,7 +20,12 @@ const PortfoiloFigure = styled.figure`
 export default function PortfolioModal({ isOpen, onClose, item }) {
   return (
     <>
-      <Modal size={'3xl'} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={'3xl'}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement={'center'}
+      >
         <ModalContent>
           {onClose => (
             <>

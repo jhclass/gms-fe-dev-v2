@@ -119,6 +119,7 @@ export default function DropOutInput({
         size={'md'}
         isOpen={isOpen}
         onClose={closePopup}
+        placement={'center'}
         classNames={{ base: 'overflow-visible' }}
       >
         <ModalContent>

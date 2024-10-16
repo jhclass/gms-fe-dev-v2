@@ -56,7 +56,12 @@ export default function AdviceTypeModal({
 
   return (
     <>
-      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={'2xl'}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement={'center'}
+      >
         <ModalContent>
           {onClose => (
             <>
