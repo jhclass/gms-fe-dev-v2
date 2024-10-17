@@ -53,6 +53,14 @@ const FilterLabel = styled.label`
     color: red;
   }
 `
+const CheckAreaBox = styled.div`
+  flex: 1;
+  width: 100%;
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`
 const CheckText = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
@@ -356,26 +364,27 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
     <>
       <DetailForm onSubmit={handleSubmit(onSubmit)}>
         <FlexBox>
-          <AreaBox>
+          <CheckAreaBox>
+            <CheckText>
+              <span>{studentName}</span>학생을 우수학생으로 선정하시겠습니까?
+            </CheckText>
             <Controller
               control={control}
               name="isBest"
               render={({ field }) => (
                 <Checkbox
                   isSelected={best}
+                  classNames={{ wrapper: 'mr-[0.3rem]' }}
                   onValueChange={e => {
                     handleCheckboxChange(e)
                     field.onChange(e)
                   }}
                 >
-                  <CheckText>
-                    <span>{studentName}</span>학생을 우수학생으로
-                    선정하시겠습니까?
-                  </CheckText>
+                  <CheckText>선정</CheckText>
                 </Checkbox>
               )}
             />
-          </AreaBox>
+          </CheckAreaBox>
         </FlexBox>
         <FlexColBox>
           <FilterLabel>
