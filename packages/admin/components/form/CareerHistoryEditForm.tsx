@@ -207,7 +207,7 @@ export default function CareerHistoryEditForm({ item, refetch, setPage, mId }) {
               size="md"
               radius="md"
               color="primary"
-              className="lg:w-[50%] w-full"
+              className="md:w-[50%] w-full"
             >
               수정
             </Button>

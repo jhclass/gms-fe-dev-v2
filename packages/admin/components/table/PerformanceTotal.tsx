@@ -1,7 +1,9 @@
 import { styled } from 'styled-components'
-import { useSuspenseQuery } from '@apollo/client'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
+import { CONSULTATION_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
+import { useEffect, useState } from 'react'
 
 type ConsultItemProps = {
   tableData: {
@@ -93,6 +95,8 @@ type SearchPermissionsGrantedQeury = {
 
 export default function PerformanceTotal({
   ranking,
+  managerUsernames,
+  dateRange,
   managerId,
   totalActualAmount,
   totalAmount,
@@ -113,6 +117,23 @@ export default function PerformanceTotal({
     },
   )
   const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
+
+  const [consultationTotal] = useMutation(CONSULTATION_STATISTICS_LIST_MUTATION)
+  const [totalConsultation, setTotalConsultation] = useState(0)
+
+  useEffect(() => {
+    consultationTotal({
+      variables: {
+        createdAt: dateRange,
+        pic: managerUsernames,
+      },
+      onCompleted: result => {
+        if (result.searchStudentState.ok) {
+          setTotalConsultation(result.searchStudentState.totalCount)
+        }
+      },
+    })
+  }, [managerId, dateRange])
 
   const feeFormet = fee => {
     const result = String(fee).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
@@ -135,6 +156,10 @@ export default function PerformanceTotal({
           <FlatBox>
             {managerList?.find(user => user.id === managerId).mUsername}
           </FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>총 DB개수</FilterLabel>
+          <FlatBox>{totalConsultation}</FlatBox>
         </AreaBox>
         <AreaBox>
           <FilterLabel>총 결제건수</FilterLabel>
@@ -162,12 +187,28 @@ export default function PerformanceTotal({
             </Refund>
           </FlatBox>
         </AreaBox>
+      </FlexBox>
+      <FlexBox>
         <AreaBox>
           <FilterLabel>실 결제액</FilterLabel>
           <FlatBox>
             {totalActualAmount === undefined || totalActualAmount === null
               ? '0'
               : feeFormet(totalActualAmount)}
+          </FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>DB당 단가 &#40; 실 결제액 / 총 DB개수 &#41;</FilterLabel>
+          <FlatBox>
+            {feeFormet(Math.round(totalActualAmount / totalConsultation))}
+          </FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>객단가 &#40; 실 결제액 / 총 결제건수 &#41;</FilterLabel>
+          <FlatBox>
+            {totalActualAmount === 0 || totalPaymentCount === 0
+              ? '0'
+              : feeFormet(Math.round(totalActualAmount / totalPaymentCount))}
           </FlatBox>
         </AreaBox>
       </FlexBox>

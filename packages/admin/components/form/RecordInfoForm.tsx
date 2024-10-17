@@ -272,7 +272,7 @@ export default function RecordInfoForm({ paymentData, fetchData }) {
           defaultDetails={paymentData.mAddressDetail}
         />
         <BtnBox>
-          <Button type="submit" color="primary" className="lg:w-[50%] w-full">
+          <Button type="submit" color="primary" className="md:w-[50%] w-full">
             저장
           </Button>
         </BtnBox>

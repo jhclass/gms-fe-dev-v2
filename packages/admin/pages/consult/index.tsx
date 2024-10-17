@@ -1,42 +1,33 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { Suspense } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   consultFilterActiveState,
   consultFilterState,
+  consultManagerSearchState,
   consultSearchState,
+  gradeState,
 } from '@/lib/recoilAtoms'
 import Layout from '@/pages/consult/layout'
-import ConsultationTable from '@/components/table/ConsultationTable'
-import ConsultationFilterTable from '@/components/table/ConsultationFilterTable'
-import ConsultationFilter from '@/components/filter/ConsultationFilter'
+import useMmeQuery from '@/utils/mMe'
+import SuspenseBox from '@/components/wrappers/SuspenseWrap'
+import Consult from '@/components/layout/Consult'
 
-const ConBox = styled.div`
-  margin: 2rem 0;
-  z-index: 0;
-  position: relative;
-`
-const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
-  position: relative;
-  background: none;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-export default function Consult() {
+export default function ConsultIndex() {
+  const grade = useRecoilValue(gradeState)
+  const { useMme } = useMmeQuery()
+  const mGrade = useMme('mGrade')
+  const mId = useMme('id')
+  const mUsername = useMme('mUsername')
   const [filterActive, setFilterActive] = useRecoilState(
     consultFilterActiveState,
   )
   const [filterSearch, setFilterSearch] = useRecoilState(consultFilterState)
   const [studentFilter, setStudentFilter] = useRecoilState(consultSearchState)
+  const [studentManagerFilter, setStudentManagerFilter] = useRecoilState(
+    consultManagerSearchState,
+  )
 
   return (
     <>
@@ -56,45 +47,23 @@ export default function Consult() {
           }}
           addRender={''}
         />
-        <Suspense
-          fallback={
-            <LodingDiv>
-              <i className="xi-spinner-2" />
-            </LodingDiv>
-          }
-        >
-          <ConsultationFilter
-            isActive={filterActive}
+        <SuspenseBox>
+          <Consult
+            filterActive={filterActive}
             studentFilter={studentFilter}
-            onFilterSearch={setFilterSearch}
+            setFilterSearch={setFilterSearch}
             setStudentFilter={setStudentFilter}
+            studentManagerFilter={studentManagerFilter}
+            setStudentManagerFilter={setStudentManagerFilter}
+            mGrade={mGrade}
+            grade={grade}
+            mId={mId}
+            mUsername={mUsername}
+            filterSearch={filterSearch}
           />
-        </Suspense>
-        <ConBox>
-          {filterSearch ? (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <ConsultationFilterTable studentFilter={studentFilter} />
-            </Suspense>
-          ) : (
-            <Suspense
-              fallback={
-                <LodingDiv>
-                  <i className="xi-spinner-2" />
-                </LodingDiv>
-              }
-            >
-              <ConsultationTable />
-            </Suspense>
-          )}
-        </ConBox>
+        </SuspenseBox>
       </MainWrap>
     </>
   )
 }
-Consult.getLayout = page => <Layout>{page}</Layout>
+ConsultIndex.getLayout = page => <Layout>{page}</Layout>

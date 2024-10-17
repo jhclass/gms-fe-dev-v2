@@ -720,7 +720,7 @@ export default function EmploymentEditForm({ item, refetch }) {
             radius="md"
             variant="solid"
             color="primary"
-            className="w-full text-white lg:w-[50%]"
+            className="w-full text-white md:w-[50%]"
           >
             수정
           </Button>

@@ -680,7 +680,12 @@ export default function WorksLogsModal({
   }
 
   return (
-    <Modal size={'2xl'} isOpen={isOpen} onClose={handleClose}>
+    <Modal
+      size={'2xl'}
+      isOpen={isOpen}
+      onClose={handleClose}
+      placement={'center'}
+    >
       <ModalContent>
         {onClose => (
           <>

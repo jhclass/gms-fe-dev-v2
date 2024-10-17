@@ -130,7 +130,7 @@ export default function CareerHistoryForm({
               size="md"
               radius="md"
               color="primary"
-              className="lg:w-[50%] w-full"
+              className="md:w-[50%] w-full"
             >
               추가
             </Button>

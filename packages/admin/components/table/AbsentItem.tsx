@@ -118,7 +118,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
                   getRate(
                     countAttendance(student.student.name, '지각'),
                     lectureDates.length,
-                  ) > 9
+                  ) >= 10
                     ? 'text-accent font-bold'
                     : ''
                 }
@@ -136,7 +136,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
                   getRate(
                     countAttendance(student.student.name, '외출'),
                     lectureDates.length,
-                  ) > 9
+                  ) >= 10
                     ? 'text-accent font-bold'
                     : ''
                 }
@@ -154,7 +154,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
                   getRate(
                     countAttendance(student.student.name, '조퇴'),
                     lectureDates.length,
-                  ) > 9
+                  ) >= 10
                     ? 'text-accent font-bold'
                     : ''
                 }
@@ -172,7 +172,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
                   getRate(
                     countAttendance(student.student.name, '결석'),
                     lectureDates.length,
-                  ) > 9
+                  ) >= 10
                     ? 'text-accent font-bold'
                     : ''
                 }

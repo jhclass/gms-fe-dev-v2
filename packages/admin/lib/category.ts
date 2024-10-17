@@ -276,12 +276,6 @@ const category: Category[] = [
         exposure: true,
         isBreadcrumb: true,
       },
-      {
-        href: '/recruitment',
-        name: '과정 모집',
-        exposure: true,
-        isBreadcrumb: true,
-      },
     ],
   },
   {

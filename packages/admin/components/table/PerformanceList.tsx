@@ -91,7 +91,6 @@ export default function PerformanceList({
           setTotalRefundCount(totalRefundCount)
           setIdList(managerId)
           setSuccMutation(true)
-          // console.log('기본 props mutation 완료')
         }
       },
     })
@@ -136,6 +135,11 @@ export default function PerformanceList({
               >
                 <PerformanceTotal
                   ranking={index}
+                  managerUsernames={
+                    managerList.find(user => item.receiverId === user.id)
+                      .mUsername
+                  }
+                  dateRange={dateRange}
                   managerId={item.receiverId}
                   totalActualAmount={item.totalActualAmount}
                   totalAmount={item.totalAmount}

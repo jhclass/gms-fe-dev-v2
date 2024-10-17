@@ -1,15 +1,14 @@
-import { gradeState, navOpenState, navSubCateState } from '@/lib/recoilAtoms'
+import { navOpenState, navSubCateState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import styled, { useTheme } from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
 import useUserLogsMutation from '@/utils/userLogs'
-import { Tooltip, useDisclosure } from '@nextui-org/react'
-import RequestMessage from '@/components/modal/RequestMessage'
+import { Tooltip } from '@nextui-org/react'
 import { LogUserOut } from '@/lib/apolloClient'
 import HeaderNoti from '@/components/layout/HeaderNoti'
 
@@ -283,12 +282,10 @@ const DropUser = styled(motion.div)<{ $headerUserMenu: boolean }>`
 
 export default function Header() {
   const theme = useTheme()
-  const grade = useRecoilValue(gradeState)
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
   const { mUserId = '', mUsername = '', mGrade = '', mAvatar = '' } = mMe || {}
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
@@ -434,14 +431,6 @@ export default function Header() {
             </WebBtn>
           </Tooltip>
           <HeaderNoti />
-          {mGrade === grade.dev && (
-            <ReqBtn onClick={onOpen}>
-              <img
-                src="https://highclass-image.s3.amazonaws.com/admin/icon/ico_help3.webp"
-                alt="알림"
-              />
-            </ReqBtn>
-          )}
           <UserBox ref={userMenuRef} onClick={toggleUserMenu}>
             <UserGrade>
               {mAvatar ? (
@@ -496,12 +485,6 @@ export default function Header() {
           </UserBox>
         </HeaderRt>
       </HeaderSec>
-      <RequestMessage
-        isOpen={isOpen}
-        onClose={onClose}
-        managerId={mUserId}
-        managerName={mUsername}
-      />
     </>
   )
 }

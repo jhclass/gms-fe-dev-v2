@@ -558,7 +558,11 @@ export default function StudentsWritePayment() {
                           <PermissionManagerSelect
                             selectedKey={receiver}
                             field={field}
-                            label={'영업 담당자'}
+                            label={
+                              <FilterLabel>
+                                영업담당자<span>*</span>
+                              </FilterLabel>
+                            }
                             handleChange={handleSubManagerChange}
                             optionDefault={{
                               id: '담당자 지정필요',

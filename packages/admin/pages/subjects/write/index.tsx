@@ -353,7 +353,11 @@ export default function SubjectWrite() {
                         <AdviceSelect
                           selectedKey={sub}
                           field={field}
-                          label={'수강구분'}
+                          label={
+                            <FilterLabel>
+                              수강구분 <span>*</span>
+                            </FilterLabel>
+                          }
                           handleChange={handleSubChange}
                           optionDefault={{
                             type: '-',

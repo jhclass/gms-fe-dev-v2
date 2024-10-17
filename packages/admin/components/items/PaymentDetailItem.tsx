@@ -92,12 +92,8 @@ export default function PaymentDetailItem({
   paymentId,
   setStudentPaymentDetailData,
 }) {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
   const [reqRefoundMutation] = useMutation(REQ_REFUND_MUTATION)
   const [searchStudentPayment] = useMutation(SEARCH_PAYMENT_MUTATION)
@@ -284,7 +280,7 @@ export default function PaymentDetailItem({
                     <Button
                       size="md"
                       radius="md"
-                      className="w-full lg:max-w-[50%] text-white bg-accent"
+                      className="w-full md:max-w-[50%] text-white bg-accent"
                       onClick={() => clickReqRefund()}
                     >
                       결제 취소요청 철회
@@ -295,7 +291,7 @@ export default function PaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="w-full lg:max-w-[50%] text-accent border-accent"
+                    className="w-full md:max-w-[50%] text-accent border-accent"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청
@@ -419,7 +415,7 @@ export default function PaymentDetailItem({
                     isDisabled={detailtData.refundApproval ? true : false}
                     size="md"
                     radius="md"
-                    className="w-full lg:max-w-[50%] text-white bg-accent"
+                    className="w-full md:max-w-[50%] text-white bg-accent"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소요청 철회
@@ -429,7 +425,7 @@ export default function PaymentDetailItem({
                     size="md"
                     radius="md"
                     variant="bordered"
-                    className="w-full lg:max-w-[50%] text-accent border-accent"
+                    className="w-full md:max-w-[50%] text-accent border-accent"
                     onClick={() => clickReqRefund()}
                   >
                     결제 취소 요청

@@ -160,7 +160,7 @@ export default function EmploymentDetail() {
                   radius="md"
                   variant="bordered"
                   color="primary"
-                  className="lg:w-[50%] w-full"
+                  className="md:w-[50%] w-full"
                   onClick={() => {
                     router.back()
                   }}

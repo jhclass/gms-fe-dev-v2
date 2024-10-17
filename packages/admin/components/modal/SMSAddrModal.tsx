@@ -65,7 +65,7 @@ export default function SMSAddrModal({
 
   return (
     <>
-      <Modal size={'xl'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'xl'} isOpen={isOpen} onClose={onClose} placement={'center'}>
         <ModalContent>
           {sbjClose => (
             <>
