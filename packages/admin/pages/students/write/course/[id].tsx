@@ -190,10 +190,6 @@ const LineBox = styled.div`
 export default function StudentsWriteCourse() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenClick, setIsOpenClick] = useState(false)
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
@@ -301,6 +297,7 @@ export default function StudentsWriteCourse() {
       setValue('subDiv', subjectSelectedData?.subDiv)
       setValue('unCollectedAmount', subjectSelectedData?.fee)
       resetField('discount')
+      setIsDiscount(false)
       setWeekendClass([])
       resetField('isWeekend')
     }

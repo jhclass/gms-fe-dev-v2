@@ -273,7 +273,7 @@ export default function WishForm({ paymentId, subjectId }) {
             radius="md"
             variant="solid"
             color="primary"
-            className="w-full text-white lg:w-[50%]"
+            className="w-full text-white md:w-[50%]"
           >
             저장
           </Button>

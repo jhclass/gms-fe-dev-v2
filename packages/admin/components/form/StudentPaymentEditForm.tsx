@@ -28,7 +28,7 @@ import SubjectModal from '@/components/modal/SubjectModal'
 import { UPDATE_STUDENT_PAYMENT_MUTATION } from '@/graphql/mutations'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
 import { useRecoilValue } from 'recoil'
-import { additionalAmountState } from '@/lib/recoilAtoms'
+import { additionalAmountState, assignmentState } from '@/lib/recoilAtoms'
 import PermissionManagerSelect from '@/components/common/select/PermissionManagerSelect'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import FormTopInfo from '@/components/common/FormTopInfo'
@@ -220,6 +220,7 @@ export default function StudentPaymentEditForm({
       isWeekend: studentPaymentData?.isWeekend,
     },
   })
+  const assignment = useRecoilValue(assignmentState)
   const additionalState = useRecoilValue(additionalAmountState)
   const [subjectSelectedData, setSubjectSelectedData] = useState(null)
   const [subjectSelected, setSubjectSelected] = useState(null)
@@ -340,12 +341,13 @@ export default function StudentPaymentEditForm({
 
   useEffect(() => {
     if (subjectSelectedData !== null) {
-      disCounCalculator(subjectSelectedData?.fee)
       setSub(subjectSelectedData?.subDiv)
       setValue('tuitionFee', subjectSelectedData?.fee)
       setValue('actualAmount', subjectSelectedData?.fee)
       setValue('subDiv', subjectSelectedData?.subDiv)
       setValue('discount', 0)
+      disCounCalculator(subjectSelectedData?.fee)
+      setIsDiscount(false)
       setWeekendClass([])
       resetField('isWeekend')
     }
@@ -622,12 +624,18 @@ export default function StudentPaymentEditForm({
                     labelPlacement="outside"
                     className="max-w-full"
                     variant={
-                      studentPaymentData.lectureAssignment
-                        ? 'faded'
-                        : 'bordered'
+                      studentPaymentData.lectureAssignment ===
+                      assignment.unassigned
+                        ? 'bordered'
+                        : 'faded'
                     }
                     minRows={1}
-                    onClick={() => clickSubject()}
+                    onClick={() =>
+                      studentPaymentData.lectureAssignment ===
+                      assignment.unassigned
+                        ? clickSubject()
+                        : null
+                    }
                     {...register('subject', {
                       required: {
                         value: true,
@@ -841,14 +849,18 @@ export default function StudentPaymentEditForm({
                 <AreaBox>
                   <Input
                     isReadOnly={
-                      studentPaymentData.lectureAssignment ? true : false
+                      studentPaymentData.lectureAssignment ===
+                      assignment.unassigned
+                        ? false
+                        : true
                     }
                     labelPlacement="outside"
                     placeholder="할인"
                     variant={
-                      studentPaymentData.lectureAssignment
-                        ? 'faded'
-                        : 'bordered'
+                      studentPaymentData.lectureAssignment ===
+                      assignment.unassigned
+                        ? 'bordered'
+                        : 'faded'
                     }
                     radius="md"
                     type="number"
@@ -869,9 +881,10 @@ export default function StudentPaymentEditForm({
                         render={({ field, fieldState }) => (
                           <Select
                             isDisabled={
-                              studentPaymentData.lectureAssignment
-                                ? true
-                                : false
+                              studentPaymentData.lectureAssignment ===
+                              assignment.unassigned
+                                ? false
+                                : true
                             }
                             labelPlacement="outside"
                             label={<span style={{ display: 'none' }}></span>}
@@ -911,14 +924,18 @@ export default function StudentPaymentEditForm({
                 <AreaBox>
                   <Input
                     isReadOnly={
-                      studentPaymentData.lectureAssignment ? true : false
+                      studentPaymentData.lectureAssignment ===
+                      assignment.unassigned
+                        ? false
+                        : true
                     }
                     labelPlacement="outside"
                     placeholder="할인된 수강료"
                     variant={
-                      studentPaymentData.lectureAssignment
-                        ? 'faded'
-                        : 'bordered'
+                      studentPaymentData.lectureAssignment ===
+                      assignment.unassigned
+                        ? 'bordered'
+                        : 'faded'
                     }
                     radius="md"
                     type="number"

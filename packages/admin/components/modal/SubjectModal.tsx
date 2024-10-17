@@ -218,7 +218,12 @@ export default function SubjectModal({
 
   return (
     <>
-      <Modal size={'2xl'} isOpen={sbjIsOpen} onClose={sbjClose}>
+      <Modal
+        size={'2xl'}
+        isOpen={sbjIsOpen}
+        onClose={sbjClose}
+        placement={'center'}
+      >
         <ModalContent>
           {sbjClose => (
             <>

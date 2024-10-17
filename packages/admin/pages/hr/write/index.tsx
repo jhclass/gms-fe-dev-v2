@@ -128,9 +128,6 @@ const LodingDiv = styled.div`
 export default function ManagerWrite() {
   const router = useRouter()
   const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const loginMGrade = useMme('mGrade')
-  const loginMPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
   const [selectMpart, setSelectMpart] = useState([])
   const [createManager] = useMutation(CREATE_MANAGE_USER_MUTATION)

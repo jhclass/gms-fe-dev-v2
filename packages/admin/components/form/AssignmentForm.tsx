@@ -76,10 +76,6 @@ export default function AssignmentForm({
   studentPaymentDetailData,
   editable,
 }) {
-  const grade = useRecoilValue(gradeState)
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const { userLogs } = useUserLogsMutation()
   const assignment = useRecoilValue(assignmentState)
   const completion = useRecoilValue(completionStatus)

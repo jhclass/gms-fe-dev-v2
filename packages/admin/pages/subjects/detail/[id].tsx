@@ -416,7 +416,6 @@ export default function SubjectDetail() {
           },
         ],
       })
-
       userLogs(
         `${subjectState.subjectName} 과목 삭제`,
         `ok: ${result.data.deleteSubject.ok}`,
@@ -430,7 +429,9 @@ export default function SubjectDetail() {
       router.back()
     } catch (error) {
       console.error('과정 삭제 중 에러 발생:', error)
-      alert('과정 삭제 처리 중 오류가 발생했습니다.')
+      alert(
+        '과정 삭제 처리 중 오류가 발생했습니다.\n현재 과정으로 생성된 강의나 수강신청된 학생이 있는지 확인해주세요.',
+      )
     }
   }
 
@@ -617,6 +618,12 @@ export default function SubjectDetail() {
                     <Controller
                       control={control}
                       name="subDiv"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '수강 구분을 선택해주세요.',
+                        },
+                      }}
                       defaultValue={subjectState?.subDiv}
                       render={({ field, fieldState }) => (
                         <Suspense
@@ -629,7 +636,11 @@ export default function SubjectDetail() {
                           <AdviceSelect
                             selectedKey={sub}
                             field={field}
-                            label={'수강구분'}
+                            label={
+                              <FilterLabel>
+                                수강구분 <span>*</span>
+                              </FilterLabel>
+                            }
                             handleChange={handleSubChange}
                             optionDefault={{
                               type: '-',

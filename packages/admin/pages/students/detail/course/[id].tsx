@@ -231,7 +231,7 @@ export default function StudentsWrite() {
                       style={{
                         size: 'md',
                         variant: 'solid',
-                        css: 'w-full mx-auto text-white bg-accent lg:w-[50%]',
+                        css: 'w-full mx-auto text-white bg-accent md:w-[50%]',
                       }}
                       permissionName={'결제관리'}
                       handleClick={() => {
@@ -246,7 +246,7 @@ export default function StudentsWrite() {
                   radius="md"
                   variant="bordered"
                   color="primary"
-                  className="lg:w-[50%] w-full"
+                  className="md:w-[50%] w-full"
                   onClick={() => {
                     router.back()
                   }}

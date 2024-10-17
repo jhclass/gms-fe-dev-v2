@@ -197,8 +197,6 @@ export default function LectureFilterTable({ lectureFilter }) {
     SEARCH_LECTURES_FILTER_MUTATION,
   )
   const [searchResult, setSearchResult] = useState(null)
-  const today = new Date()
-  // const lastSixMonths = subMonths(new Date(), 6)
 
   useEffect(() => {
     searchLecturesFilterMutation({

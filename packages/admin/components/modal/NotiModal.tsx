@@ -90,7 +90,7 @@ const ImgFigure = styled.figure`
 export default function NotiModal({ isOpen, onClose }) {
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'md'} isOpen={isOpen} onClose={onClose} placement={'center'}>
         <ModalContent>
           {onClose => (
             <>

@@ -147,7 +147,12 @@ export default function ChangePassword({ isOpen, onClose, managerData }) {
 
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={closePopup}>
+      <Modal
+        size={'md'}
+        isOpen={isOpen}
+        onClose={closePopup}
+        placement={'center'}
+      >
         <ModalContent>
           {closePopup => (
             <>

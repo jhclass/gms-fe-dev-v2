@@ -1,10 +1,26 @@
-import { ScrollShadow } from '@nextui-org/react'
+import { Button, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
-import { useSuspenseQuery } from '@apollo/client'
-import { SEE_ALARMS_QUERY } from '@/graphql/queries'
+import { useMutation, useSuspenseQuery } from '@apollo/client'
+import { SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
 import { ResultSeeAlarms } from '@/src/generated/graphql'
+import useUserLogsMutation from '@/utils/userLogs'
+import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
 
+const FlexBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding: 0.5rem;
+  align-items: center;
+`
+const Noti = styled.p`
+  font-size: 0.8rem;
+
+  span {
+    color: red;
+  }
+`
 const ScrollBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,7 +35,6 @@ const ScrollBox = styled.div`
     }
   }
 `
-
 const NotiItem = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
@@ -103,6 +118,8 @@ export default function AlarmsModal({ isListOpen }) {
   const theme = useTheme()
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit, setCurrentLimit] = useState(30)
+  const { userLogs } = useUserLogsMutation()
+  const [readAlarms] = useMutation(READ_ALARMS_MUTATION)
   const { error, data, fetchMore, refetch } = useSuspenseQuery<seeAlarmsQuery>(
     SEE_ALARMS_QUERY,
     {
@@ -173,6 +190,24 @@ export default function AlarmsModal({ isListOpen }) {
     }
   }
 
+  const clickReadAll = () => {
+    const readAll = confirm('모두 읽음 처리하시겠습니까?')
+    if (readAll) {
+      readAlarms({
+        variables: {
+          all: 'Y',
+        },
+        refetchQueries: [SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY],
+        onCompleted: result => {
+          userLogs('알람 모두 읽음 처리', `ok: ${result.readAlarms.ok}`)
+          if (result.readAlarms.ok) {
+            alert('모두 읽음 처리 하였습니다.')
+          }
+        },
+      })
+    }
+  }
+
   const formatDate = data => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -185,48 +220,56 @@ export default function AlarmsModal({ isListOpen }) {
     return formatted
   }
   return (
-    <ScrollBox>
-      <ScrollShadow
-        onScroll={handleScroll}
-        orientation="vertical"
-        className="scrollbar_g flexList"
-      >
+    <>
+      <FlexBox>
+        <Noti>
+          <span>*</span> 알람은 30일간 보관 후 삭제처리 됩니다.
+        </Noti>
         {alarms?.length > 0 && (
-          <>
-            {alarms?.map((alarm, index) => (
-              <NotiItem key={index}>
-                <ClickBox>
-                  <NotiFlag
-                    style={{ background: theme.colors.primary }}
-                  ></NotiFlag>
-                  <ReqBox>
-                    <ReqTop>
-                      <FromID>{alarm.title}</FromID>
-                      <AlarmsTime>{formatDate(alarm.createdAt)}</AlarmsTime>
-                    </ReqTop>
-                    <ReqText>{alarm.content}</ReqText>
-                  </ReqBox>
-                </ClickBox>
-              </NotiItem>
-            ))}
-            {/* <NotiItem key={index}>
-                      <ClickBox onClick={onOpen}>
-                        <NotiFlag style={{ background: 'blue' }}></NotiFlag>
-                        <ReqBox>
-                          <FromID>{alarm.title}</FromID>
-                          <ReqText>{alarm.content}</ReqText>
-                        </ReqBox>
-                      </ClickBox>
-                      <NotiClose>
-                        <i className="xi-close-circle" />
-                      </NotiClose>
-                    </NotiItem> */}
-          </>
+          <Button
+            size="sm"
+            variant="solid"
+            className="text-white bg-accent"
+            onClick={clickReadAll}
+          >
+            <p className="text-[1rem]">
+              <i className="xi-trash"></i>
+            </p>
+            모두 읽음
+          </Button>
         )}
-        {(alarms?.length === 0 || alarms === null) && (
-          <Nolist>알람이 없습니다.</Nolist>
-        )}
-      </ScrollShadow>
-    </ScrollBox>
+      </FlexBox>
+      <ScrollBox>
+        <ScrollShadow
+          onScroll={handleScroll}
+          orientation="vertical"
+          className="scrollbar_g flexList"
+        >
+          {alarms?.length > 0 && (
+            <>
+              {alarms?.map((alarm, index) => (
+                <NotiItem key={index}>
+                  <ClickBox>
+                    <NotiFlag
+                      style={{ background: theme.colors.primary }}
+                    ></NotiFlag>
+                    <ReqBox>
+                      <ReqTop>
+                        <FromID>{alarm.title}</FromID>
+                        <AlarmsTime>{formatDate(alarm.createdAt)}</AlarmsTime>
+                      </ReqTop>
+                      <ReqText>{alarm.content}</ReqText>
+                    </ReqBox>
+                  </ClickBox>
+                </NotiItem>
+              ))}
+            </>
+          )}
+          {(alarms?.length === 0 || alarms === null) && (
+            <Nolist>알람이 없습니다.</Nolist>
+          )}
+        </ScrollShadow>
+      </ScrollBox>
+    </>
   )
 }

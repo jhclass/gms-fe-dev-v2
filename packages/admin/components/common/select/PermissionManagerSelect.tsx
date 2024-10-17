@@ -11,6 +11,7 @@ type SearchPermissionsGrantedQeury = {
 
 export default function PermissionManagerSelect({
   defaultValue = null,
+  disabled = false,
   selectedKey,
   field,
   label,
@@ -50,12 +51,13 @@ export default function PermissionManagerSelect({
   return (
     <>
       <Select
+        isDisabled={disabled}
         labelPlacement="outside"
         label={label}
         placeholder=" "
         className="w-full"
         defaultValue={defaultValue}
-        variant="bordered"
+        variant={disabled ? 'faded' : 'bordered'}
         selectedKeys={[selectedKey]}
         onChange={value => {
           if (value.target.value !== '') {

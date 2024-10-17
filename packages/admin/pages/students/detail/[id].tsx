@@ -99,11 +99,7 @@ const MemoItem = styled.li`
   }
 `
 export default function StudentsWrite() {
-  const grade = useRecoilValue(gradeState)
   const router = useRouter()
-  const { useMme } = useMmeQuery()
-  const mGrade = useMme('mGrade')
-  const mPart = useMme('mPart') || []
   const studentId = typeof router.query.id === 'string' ? router.query.id : null
   const [searchStudentMutation] = useMutation(SEARCH_STUDENT_MUTATION)
   const [studentData, setStudentData] = useState(null)
@@ -165,7 +161,7 @@ export default function StudentsWrite() {
                         style={{
                           size: 'md',
                           variant: 'solid',
-                          css: 'lg:w-[50%] w-full text-white',
+                          css: 'md:w-[50%] w-full text-white',
                         }}
                         permissionName={'수강관리'}
                         handleClick={() => {
@@ -180,7 +176,7 @@ export default function StudentsWrite() {
                       radius="md"
                       variant="bordered"
                       color="primary"
-                      className="lg:w-[50%] w-full"
+                      className="md:w-[50%] w-full"
                       onClick={() => {
                         router.back()
                       }}
@@ -236,7 +232,7 @@ export default function StudentsWrite() {
                     radius="md"
                     variant="bordered"
                     color="primary"
-                    className="lg:w-[50%] w-full"
+                    className="md:w-[50%] w-full"
                     onClick={() => {
                       router.back()
                     }}

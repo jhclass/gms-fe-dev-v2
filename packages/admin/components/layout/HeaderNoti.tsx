@@ -76,22 +76,6 @@ const DropBox = styled.div`
   height: fit-content;
   padding-bottom: 1rem;
 `
-
-const FlexBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  justify-content: space-between;
-  padding: 0.5rem;
-  align-items: center;
-`
-const Noti = styled.p`
-  font-size: 0.8rem;
-
-  span {
-    color: red;
-  }
-`
-
 const LodingDiv = styled.div`
   width: 2.2rem;
   height: 2.2rem;
@@ -105,8 +89,6 @@ const LodingDiv = styled.div`
 export default function HeaderNoti({}) {
   const [isListOpen, setIsListOpen] = useState(false)
   const notiBoxRef = useRef(null)
-  const { userLogs } = useUserLogsMutation()
-  const [readAlarms] = useMutation(READ_ALARMS_MUTATION)
   const handleClickOutside = event => {
     if (notiBoxRef.current && !notiBoxRef.current.contains(event.target)) {
       setIsListOpen(false)
@@ -125,24 +107,6 @@ export default function HeaderNoti({}) {
     }
   }, [isListOpen])
 
-  const clickReadAll = () => {
-    const readAll = confirm('모두 읽음 처리하시겠습니까?')
-    if (readAll) {
-      readAlarms({
-        variables: {
-          all: 'Y',
-        },
-        refetchQueries: [SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY],
-        onCompleted: result => {
-          userLogs('알람 모두 읽음 처리', `ok: ${result.readAlarms.ok}`)
-          if (result.readAlarms.ok) {
-            alert('모두 읽음 처리 하였습니다.')
-          }
-        },
-      })
-    }
-  }
-
   return (
     <>
       <NotiBox ref={notiBoxRef}>
@@ -153,22 +117,6 @@ export default function HeaderNoti({}) {
         {isListOpen && (
           <NotiListBox>
             <DropBox>
-              <FlexBox>
-                <Noti>
-                  <span>*</span> 알람은 30일간 보관 후 삭제처리 됩니다.
-                </Noti>
-                <Button
-                  size="sm"
-                  variant="solid"
-                  className="text-white bg-accent"
-                  onClick={clickReadAll}
-                >
-                  <p className="text-[1rem]">
-                    <i className="xi-trash"></i>
-                  </p>
-                  모두 읽음
-                </Button>
-              </FlexBox>
               <Suspense
                 fallback={
                   <LodingDiv>
@@ -182,7 +130,6 @@ export default function HeaderNoti({}) {
           </NotiListBox>
         )}
       </NotiBox>
-      {/* <SeeRequestMessage isOpen={isOpen} onClose={onClose} /> */}
     </>
   )
 }

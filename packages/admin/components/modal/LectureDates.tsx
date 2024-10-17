@@ -224,7 +224,7 @@ export default function LectureDates({
 
   return (
     <>
-      <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'md'} isOpen={isOpen} onClose={onClose} placement={'center'}>
         <ModalContent>
           {onClose => (
             <>

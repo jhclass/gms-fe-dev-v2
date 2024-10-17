@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
-export default function HRLayout({ children }) {
+export default function ConsultLayout({ children }) {
   const grade = useRecoilValue(gradeState)
   const { useMme } = useMmeQuery()
   const mGrade = useMme('mGrade')
@@ -17,7 +17,7 @@ export default function HRLayout({ children }) {
     SEARCH_PERMISSIONS_GRANTED_QUERY,
     {
       variables: {
-        permissionName: '출근기록접근',
+        permissionName: '상담관리자',
       },
       onCompleted: result => {
         if (result.searchPermissionsGranted.ok) {
