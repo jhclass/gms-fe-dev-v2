@@ -198,13 +198,13 @@ export default function PerformanceTotal({
           </FlatBox>
         </AreaBox>
         <AreaBox>
-          <FilterLabel>DB당 단가</FilterLabel>
+          <FilterLabel>DB당 단가 &#40; 실 결제액 / 총 DB개수 &#41;</FilterLabel>
           <FlatBox>
             {feeFormet(Math.round(totalActualAmount / totalConsultation))}
           </FlatBox>
         </AreaBox>
         <AreaBox>
-          <FilterLabel>객단가</FilterLabel>
+          <FilterLabel>객단가 &#40; 실 결제액 / 총 결제건수 &#41;</FilterLabel>
           <FlatBox>
             {totalActualAmount === 0 || totalPaymentCount === 0
               ? '0'
