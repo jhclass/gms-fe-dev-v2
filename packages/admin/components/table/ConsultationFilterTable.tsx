@@ -31,7 +31,6 @@ const Theader = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   text-align: center;
 `
-
 const TheaderBox = styled.div`
   display: flex;
 `
@@ -111,11 +110,11 @@ const TcreatedAt = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Tmanager = styled.div`
   display: table-cell;

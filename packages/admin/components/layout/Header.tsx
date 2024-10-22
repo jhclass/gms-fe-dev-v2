@@ -442,7 +442,7 @@ export default function Header() {
               ) : (
                 <UserGrade
                   style={{
-                    backgroundColor: theme.colors.teriary,
+                    backgroundColor: theme.colors.tertiary,
                   }}
                 >
                   {gradeStr(mUserId)}

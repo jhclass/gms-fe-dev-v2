@@ -244,7 +244,7 @@ export default function MemberProfileForm() {
                       style={{
                         backgroundColor:
                           avatarImg === null
-                            ? theme.colors.teriary
+                            ? theme.colors.tertiary
                             : 'transparent',
                         backgroundImage:
                           avatarImg !== null ? `url('${avatarImg}')` : 'none',
