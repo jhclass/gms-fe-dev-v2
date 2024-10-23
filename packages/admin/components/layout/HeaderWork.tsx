@@ -43,6 +43,8 @@ type searchAttendanceRecord = {
 
 export default function HeaderWork({ mUserId, mUsername, todayTimes }) {
   const [isCheck, setIsCheck] = useState(false)
+  const [isRefresh, setIsRefresh] = useState(false)
+  const [managerAttendanceTotal, setManagerAttendanceTotal] = useState(0)
   const { error, data, refetch } = useSuspenseQuery<searchAttendanceRecord>(
     SEARCH_ATTENDANCE_RECORD_TOTAL_QUERY,
     {
@@ -56,17 +58,27 @@ export default function HeaderWork({ mUserId, mUsername, todayTimes }) {
   const [createAttendanceRecord] = useMutation(
     CREATE_ATTENDANCE_RECORD_MUTATION,
   )
+  const totalCount = data?.searchAttendanceRecord?.totalCount
 
   useEffect(() => {
     if (data && data.searchAttendanceRecord.totalCount > 0) {
       setIsCheck(true)
+      if (isRefresh) {
+        alert('이미 출근처리가 되었습니다.')
+        setIsRefresh(false)
+      }
     } else {
       setIsCheck(false)
+      if (isRefresh) {
+        alert('새로고침되었습니다. 다시 시도해 주세요.')
+        setIsRefresh(false)
+      }
     }
-  }, [data])
+  }, [data, isRefresh])
 
   const refreshCheck = () => {
     refetch()
+    setIsRefresh(true)
   }
 
   const workCheck = () => {
