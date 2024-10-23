@@ -82,7 +82,6 @@ const Tavatar = styled.div`
   font-size: inherit;
   min-width: ${1200 * 0.06}px;
 `
-
 const Tid = styled.div`
   position: relative;
   display: table-cell;
@@ -119,21 +118,21 @@ const Trank = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 8%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
+  min-width: ${1200 * 0.08}px;
 `
 const Tphone = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 9%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.1}px;
+  min-width: ${1200 * 0.09}px;
 `
 const Temail = styled.div`
   display: table-cell;
