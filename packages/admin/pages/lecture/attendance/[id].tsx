@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -23,8 +23,16 @@ import {
 import AttendanceTabs from '@/components/layout/tab/AttendanceTabs'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import useMmeQuery from '@/utils/mMe'
-import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 import PermissionBtn from '@/components/common/PermissionBtn'
+
+const LodingDiv = styled.div`
+  position: relative;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 const ConArea = styled.div`
   width: 100%;
@@ -195,7 +203,13 @@ export default function AttendancePage() {
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>
-                  <SuspenseWrap>
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
                     <PermissionBtn
                       btnName={'수정'}
                       style={{
@@ -208,7 +222,7 @@ export default function AttendancePage() {
                         router.push(`/lecture/detail/${lectureData?.id}`)
                       }}
                     />
-                  </SuspenseWrap>
+                  </Suspense>
                 </AreaTitle>
                 <LectureInfo
                   lectureData={lectureData}

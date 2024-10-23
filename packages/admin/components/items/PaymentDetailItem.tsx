@@ -2,15 +2,14 @@ import { Button } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import Layout from '@/pages/students/layout'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { gradeState, navOpenState } from '@/lib/recoilAtoms'
+import { useRecoilState } from 'recoil'
+import { navOpenState } from '@/lib/recoilAtoms'
 import { useMutation } from '@apollo/client'
 import {
   REQ_REFUND_MUTATION,
   SEARCH_PAYMENT_MUTATION,
 } from '@/graphql/mutations'
 import useUserLogsMutation from '@/utils/userLogs'
-import useMmeQuery from '@/utils/mMe'
 import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 import PermissionBtn from '@/components/common/PermissionBtn'
 

@@ -84,11 +84,7 @@ const ActiveIcon = styled(motion.i)`
   color: #fff;
 `
 const LodingDiv = styled.div`
-  padding: 1.5rem;
-  width: 100%;
-  min-width: 20rem;
   position: relative;
-  background: #fff;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
