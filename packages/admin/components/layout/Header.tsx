@@ -2,8 +2,8 @@ import { navOpenState, navSubCateState } from '@/lib/recoilAtoms'
 import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { useRecoilState } from 'recoil'
 import styled, { useTheme } from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { MME_QUERY } from '@/graphql/queries'
@@ -11,6 +11,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { Tooltip } from '@nextui-org/react'
 import { LogUserOut } from '@/lib/apolloClient'
 import HeaderNoti from '@/components/layout/HeaderNoti'
+import HeaderWork from '@/components/layout/HeaderWork'
 
 const HeaderSec = styled(motion.header)<{
   $navOpen: boolean
@@ -40,6 +41,17 @@ const HeaderSec = styled(motion.header)<{
     width: calc(100vw);
   }
 `
+const LodingDiv = styled.div`
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0.3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
 const HeaderLt = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -285,8 +297,9 @@ export default function Header() {
   const { userLogs } = useUserLogsMutation()
   const { loading, error, data, refetch } = useQuery(MME_QUERY)
   const { mMe } = data || {}
-  const { mUserId = '', mUsername = '', mGrade = '', mAvatar = '' } = mMe || {}
+  const { mUserId = '', mUsername = '', mAvatar = '' } = mMe || {}
   const router = useRouter()
+  const [todayTimes, setTodayTimes] = useState([])
   const [headerUserMenu, setHeaderUserMenu] = useState(false)
   const [navOpen, setNavOpen] = useRecoilState(navOpenState)
   const [isSubCate, setIsSubCate] = useRecoilState(navSubCateState)
@@ -360,6 +373,12 @@ export default function Header() {
   }
 
   useEffect(() => {
+    const startOfToday = new Date()
+    startOfToday.setHours(0, 0, 0, 0)
+    const endOfToday = new Date()
+    endOfToday.setHours(23, 59, 59, 999)
+
+    setTodayTimes([startOfToday, endOfToday])
     refetch()
   }, [router])
 
@@ -431,6 +450,19 @@ export default function Header() {
             </WebBtn>
           </Tooltip>
           <HeaderNoti />
+          <Suspense
+            fallback={
+              <LodingDiv>
+                <i className="xi-spinner-2" />
+              </LodingDiv>
+            }
+          >
+            <HeaderWork
+              mUserId={mUserId}
+              mUsername={mUsername}
+              todayTimes={todayTimes}
+            />
+          </Suspense>
           <UserBox ref={userMenuRef} onClick={toggleUserMenu}>
             <UserGrade>
               {mAvatar ? (
