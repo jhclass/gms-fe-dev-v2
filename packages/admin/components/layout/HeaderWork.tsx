@@ -62,17 +62,17 @@ export default function HeaderWork({ mUserId, mUsername, todayTimes }) {
 
   useEffect(() => {
     if (data && data.searchAttendanceRecord.totalCount > 0) {
-      setIsCheck(true)
       if (isRefresh) {
         alert('이미 출근처리가 되었습니다.')
         setIsRefresh(false)
       }
+      setIsCheck(true)
     } else {
-      setIsCheck(false)
       if (isRefresh) {
         alert('새로고침되었습니다. 다시 시도해 주세요.')
         setIsRefresh(false)
       }
+      setIsCheck(false)
     }
   }, [data, isRefresh])
 
