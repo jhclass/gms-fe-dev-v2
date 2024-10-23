@@ -1,11 +1,6 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import { useMutation } from '@apollo/client'
-import { SEE_ALARMS_QUERY, SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
-import { READ_ALARMS_MUTATION } from '@/graphql/mutations'
-import useUserLogsMutation from '@/utils/userLogs'
 import AlarmsModal from '@/components/modal/AlarmsModal'
-import { Button } from '@nextui-org/react'
 import AlarmsTotal from '@/components/items/AlarmsTotal'
 
 const NotiBtn = styled.button`
@@ -33,22 +28,7 @@ const NotiBtn = styled.button`
       right: -0.4rem;
     }
   }
-
-  /* &:before {
-    bottom: -1.5rem;
-    left: 50%;
-    margin-left: -0.5rem;
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-bottom: 0.5rem solid #fff;
-    border-top: 0.5rem solid transparent;
-    border-left: 0.5rem solid transparent;
-    border-right: 0.5rem solid transparent;
-  } */
 `
-
 const NotiBox = styled.div`
   position: relative;
   @media screen and (max-width: 1024px) {

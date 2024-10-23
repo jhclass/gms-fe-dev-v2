@@ -75,6 +75,19 @@ export type Attendance = {
   updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
+export type AttendanceRecord = {
+  __typename?: 'AttendanceRecord';
+  Branch?: Maybe<Branch>;
+  ManageUser: ManageUser;
+  branchId?: Maybe<Scalars['Int']['output']>;
+  clockIn: Scalars['String']['output'];
+  clockOut?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  manageUserId: Scalars['Int']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
 export type AuthEmailResult = {
   __typename?: 'AuthEmailResult';
   code?: Maybe<Scalars['Int']['output']>;
@@ -572,6 +585,7 @@ export type Mutation = {
   createAdviceType?: Maybe<CommonResponse>;
   createApikey: CommonResponse;
   createAttendance?: Maybe<CommonResponse>;
+  createAttendanceRecord: CommonResponse;
   createBoardForWorkRequest: CommonResponse;
   createBranch?: Maybe<CommonResponse>;
   createCareer?: Maybe<CommonResponse>;
@@ -774,6 +788,11 @@ export type MutationCreateAttendanceArgs = {
   lecturesId: Scalars['Int']['input'];
   studentId: Array<InputMaybe<Scalars['Int']['input']>>;
   studentPaymentId: Array<InputMaybe<Scalars['Int']['input']>>;
+};
+
+
+export type MutationCreateAttendanceRecordArgs = {
+  clockIn: Scalars['String']['input'];
 };
 
 
@@ -2073,6 +2092,7 @@ export type Query = {
   searchAcademyRecord: ResultAcademyRecord;
   searchApiKey: ResultSearchApikey;
   searchAttendance?: Maybe<SearchAttendanceResult>;
+  searchAttendanceRecord: ResultSearchAttendanceRecord;
   searchManageUser?: Maybe<SearchManageUserResult>;
   searchPermissionsGranted: ResultSearchPermissionsGranted;
   searchPhotos?: Maybe<Array<Maybe<Photo>>>;
@@ -2168,6 +2188,16 @@ export type QuerySearchAttendanceArgs = {
   lecturesId: Scalars['Int']['input'];
   studentId?: InputMaybe<Scalars['Int']['input']>;
   studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySearchAttendanceRecordArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  mUserId?: InputMaybe<Scalars['String']['input']>;
+  mUsername?: InputMaybe<Scalars['String']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -2466,6 +2496,15 @@ export type ResultSearchApikey = {
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+};
+
+export type ResultSearchAttendanceRecord = {
+  __typename?: 'ResultSearchAttendanceRecord';
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  result?: Maybe<Array<Maybe<AttendanceRecord>>>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type ResultSearchPermissionsGranted = {

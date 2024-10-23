@@ -20,7 +20,6 @@ import Address from '@/components/common/Address'
 import AdviceMultiSelect from '@/components/common/select/AdviceMultiSelect'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import TypeLink from '@/components/common/TypeLink'
 
