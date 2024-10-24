@@ -76,7 +76,8 @@ const MenuBtn = styled(motion.button)<{ $navOpen: boolean }>`
 const Menu = styled(motion.ul)<{ $isOpen: boolean }>`
   display: ${props => (props.$isOpen ? 'flex' : 'none')};
   padding: 1rem;
-  background: ${({ theme }) => theme.colors.lightPrimary};
+  background: ${({ theme }) => theme.colors.mainBG};
+  /* background: #fff; */
   gap: 0.5rem;
   flex-direction: column;
   width: 100%;
@@ -96,7 +97,7 @@ const MewIcon = styled.span<{ $navOpen: boolean }>`
   position: ${props => (props.$navOpen ? 'relative' : 'absolute')};
   right: ${props => (props.$navOpen ? 'auto' : '0.3rem')};
   top: ${props => (props.$navOpen ? 'auto' : '0')};
-  color: ${({ theme }) => theme.colors.red};
+  color: ${({ theme }) => theme.colors.accent};
 `
 
 const CateActive = styled(motion.div)`
@@ -104,6 +105,7 @@ const CateActive = styled(motion.div)`
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.colors.primary};
+  /* background: #11181c; */
   z-index: -1;
   border-radius: 0.375rem;
   width: 100%;
@@ -232,6 +234,7 @@ export default function CategoryItem<CategoryItemProps>({
         onClick={onClick}
         animate={{
           color: isActive ? '#fff' : theme.colors.primary,
+          // color: isActive ? '#fff' : theme.colors.black,
           transition: { duration: 0.3 },
         }}
       >
