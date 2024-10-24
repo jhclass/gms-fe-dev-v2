@@ -18,7 +18,7 @@ const FlexCardBox = styled.div<{ $lectureAssignment: boolean }>`
   gap: 1rem;
   border: ${props =>
     props.$lectureAssignment
-      ? `2px solid ${({ theme }) => theme.colors.teriary};`
+      ? `2px solid ${({ theme }) => theme.colors.tertiary};`
       : '2px solid hsl(240 6% 90%);'};
   padding: 1rem;
   border-radius: 0.5rem;
@@ -170,7 +170,7 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                         : detailtData?.lectureAssignment ===
                           assignment.unassigned
                         ? theme.colors.accent
-                        : theme.colors.teriary,
+                        : theme.colors.tertiary,
                   }}
                 >
                   {detailtData?.lectureAssignment}
@@ -188,7 +188,7 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                         ? theme.colors.secondary
                         : detailtData?.courseComplete === completion.notAttended
                         ? theme.colors.accent
-                        : theme.colors.teriary,
+                        : theme.colors.tertiary,
                   }}
                 >
                   {detailtData?.courseComplete}

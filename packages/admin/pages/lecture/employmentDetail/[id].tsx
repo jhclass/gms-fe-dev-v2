@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -12,8 +12,15 @@ import RecordInfoForm from '@/components/form/RecordInfoForm'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import { SEARCH_STUDENT_RECORD_QUERY } from '@/graphql/queries'
 import PermissionBtn from '@/components/common/PermissionBtn'
-import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 
+const LodingDiv = styled.div`
+  position: relative;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -113,7 +120,13 @@ export default function EmploymentDetail() {
               <DetailDiv>
                 <AreaTitle>
                   <h4>기본 정보</h4>
-                  <SuspenseWrap>
+                  <Suspense
+                    fallback={
+                      <LodingDiv>
+                        <i className="xi-spinner-2" />
+                      </LodingDiv>
+                    }
+                  >
                     <PermissionBtn
                       btnName={'수정'}
                       style={{
@@ -128,7 +141,7 @@ export default function EmploymentDetail() {
                         )
                       }}
                     />
-                  </SuspenseWrap>
+                  </Suspense>
                 </AreaTitle>
                 <LectureInfo
                   lectureData={subjectData?.lectures}

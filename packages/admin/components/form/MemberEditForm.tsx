@@ -349,7 +349,7 @@ export default function MemberEditForm({ managerId }) {
                   ) : (
                     <AvatarF
                       style={{
-                        backgroundColor: theme.colors.teriary,
+                        backgroundColor: theme.colors.tertiary,
                       }}
                     >
                       {gradeStr(managerData?.mUserId)}

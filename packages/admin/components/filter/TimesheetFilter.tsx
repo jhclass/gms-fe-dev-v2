@@ -8,6 +8,9 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ko from 'date-fns/locale/ko'
 import { getYear } from 'date-fns'
 import DatePickerHeader from '@/components/common/DatePickerHeader'
+import { useLazyQuery } from '@apollo/client'
+import { SearchManageUserResult } from '@/src/generated/graphql'
+import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 registerLocale('ko', ko)
 const _ = require('lodash')
 
@@ -101,13 +104,19 @@ const FilterVariants = {
   },
 }
 
+type searchManageUserQuery = {
+  searchManageUser: SearchManageUserResult
+}
+
 export default function TimesheetFilter({
   isActive,
   onFilterSearch,
   setManagerFilter,
 }) {
-  const [joininigDateRange, setJoininigDateRange] = useState([null, null])
-  const [startJoininigDate, endJoininigDate] = joininigDateRange
+  const [searchManager, { error, data, refetch }] =
+    useLazyQuery<searchManageUserQuery>(SEARCH_MANAGEUSER_QUERY)
+  const [workgDateRange, setWorkDateRange] = useState([null, null])
+  const [startWorkDate, endWorkDate] = workgDateRange
   const years = _.range(1970, getYear(new Date()) + 1, 1)
 
   const {
@@ -120,12 +129,12 @@ export default function TimesheetFilter({
   } = useForm({
     defaultValues: {
       mUsername: '',
-      mPart: '',
-      mJoiningDate: undefined,
+      mUserId: '',
+      period: undefined,
     },
   })
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (isDirty) {
       const validateDateRange = (dateRange, message) => {
         if (dateRange !== undefined) {
@@ -139,16 +148,17 @@ export default function TimesheetFilter({
           return true
         }
       }
-      const joiningDate = validateDateRange(
-        data.mJoiningDate,
-        '입사일시의 마지막날을 선택해주세요.',
+
+      const workDate = validateDateRange(
+        data.period,
+        '출근일자의 마지막날을 선택해주세요.',
       )
-      if (joiningDate) {
+
+      if (workDate) {
         const filter = {
-          mUsername: data.mUsername === '' ? null : data.mUsername,
-          mPart: data.mPart === '' ? null : data.mPart,
-          mJoiningDate:
-            data.mJoiningDate === undefined ? null : data.mJoiningDate,
+          mUsername: data.mUsername,
+          mUserId: data.mUserId,
+          period: data.period === undefined ? null : data.period,
         }
         setManagerFilter(filter)
         onFilterSearch(true)
@@ -157,7 +167,7 @@ export default function TimesheetFilter({
   }
 
   const handleReset = () => {
-    setJoininigDateRange([null, null])
+    setWorkDateRange([null, null])
     reset()
   }
 
@@ -170,6 +180,71 @@ export default function TimesheetFilter({
       >
         <FilterForm onSubmit={handleSubmit(onSubmit)}>
           <BoxTop>
+            <ItemBox>
+              <DatePickerBox>
+                <Controller
+                  control={control}
+                  name="period"
+                  render={({ field }) => (
+                    <DatePicker
+                      renderCustomHeader={({
+                        date,
+                        changeYear,
+                        changeMonth,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <DatePickerHeader
+                          rangeYears={years}
+                          clickDate={date}
+                          changeYear={changeYear}
+                          changeMonth={changeMonth}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
+                      selectsRange={true}
+                      locale="ko"
+                      startDate={startWorkDate}
+                      endDate={endWorkDate}
+                      onChange={e => {
+                        setWorkDateRange(e)
+                        let date
+                        if (e[1] !== null) {
+                          date = [
+                            new Date(e[0]?.setHours(0, 0, 0, 0)),
+                            new Date(e[1]?.setHours(23, 59, 59, 999)),
+                          ]
+                        } else {
+                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
+                        }
+
+                        field.onChange(date)
+                      }}
+                      placeholderText="기간을 선택해주세요."
+                      dateFormat="yyyy/MM/dd"
+                      onChangeRaw={e => e.preventDefault()}
+                      onFocus={e => e.target.blur()}
+                      customInput={
+                        <Input
+                          label="출근일자"
+                          labelPlacement="outside"
+                          type="text"
+                          variant="bordered"
+                          id="date"
+                          classNames={{
+                            input: 'caret-transparent',
+                          }}
+                          isReadOnly={true}
+                          startContent={<i className="xi-calendar" />}
+                          {...register('period')}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </DatePickerBox>
+            </ItemBox>
             <ItemBox>
               <Input
                 labelPlacement="outside"
@@ -196,84 +271,19 @@ export default function TimesheetFilter({
                 placeholder=" "
                 type="text"
                 variant="bordered"
-                label="부서"
-                {...register('mPart', {
+                label="아이디"
+                {...register('mUserId', {
                   pattern: {
-                    value: /^[가-힣a-zA-Z0-9\s]*$/,
-                    message: '한글, 영어, 숫자만 사용 가능합니다.',
+                    value: /^[a-zA-Z0-9\s]*$/,
+                    message: '영어, 숫자만 사용 가능합니다.',
                   },
                 })}
               />
-              {errors.mPart && (
+              {errors.mUserId && (
                 <p className="px-2 pt-2 text-xs text-red">
-                  {String(errors.mPart.message)}
+                  {String(errors.mUserId.message)}
                 </p>
               )}
-            </ItemBox>
-            <ItemBox>
-              <DatePickerBox>
-                <Controller
-                  control={control}
-                  name="mJoiningDate"
-                  render={({ field }) => (
-                    <DatePicker
-                      renderCustomHeader={({
-                        date,
-                        changeYear,
-                        changeMonth,
-                        decreaseMonth,
-                        increaseMonth,
-                      }) => (
-                        <DatePickerHeader
-                          rangeYears={years}
-                          clickDate={date}
-                          changeYear={changeYear}
-                          changeMonth={changeMonth}
-                          decreaseMonth={decreaseMonth}
-                          increaseMonth={increaseMonth}
-                        />
-                      )}
-                      selectsRange={true}
-                      locale="ko"
-                      startDate={startJoininigDate}
-                      endDate={endJoininigDate}
-                      onChange={e => {
-                        setJoininigDateRange(e)
-                        let date
-                        if (e[1] !== null) {
-                          date = [
-                            new Date(e[0]?.setHours(0, 0, 0, 0)),
-                            new Date(e[1]?.setHours(23, 59, 59, 999)),
-                          ]
-                        } else {
-                          date = [new Date(e[0]?.setHours(0, 0, 0, 0)), null]
-                        }
-
-                        field.onChange(date)
-                      }}
-                      placeholderText="기간을 선택해주세요."
-                      dateFormat="yyyy/MM/dd"
-                      onChangeRaw={e => e.preventDefault()}
-                      onFocus={e => e.target.blur()}
-                      customInput={
-                        <Input
-                          label="입사일"
-                          labelPlacement="outside"
-                          type="text"
-                          variant="bordered"
-                          id="date"
-                          classNames={{
-                            input: 'caret-transparent',
-                          }}
-                          isReadOnly={true}
-                          startContent={<i className="xi-calendar" />}
-                          {...register('mJoiningDate')}
-                        />
-                      }
-                    />
-                  )}
-                />
-              </DatePickerBox>
             </ItemBox>
           </BoxTop>
           <BtnBox>

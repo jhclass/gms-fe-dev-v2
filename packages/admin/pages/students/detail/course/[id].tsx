@@ -1,5 +1,5 @@
 import MainWrap from '@/components/wrappers/MainWrap'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
@@ -8,16 +8,23 @@ import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
 import { useRecoilValue } from 'recoil'
 import { assignmentState, gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
 import { SEARCH_PAYMENT_MUTATION } from '@/graphql/mutations'
 import StudentPaymentDetailItem from '@/components/items/PaymentDetailItem'
 import PaymentInfo from '@/components/layout/infoCard/PaymentInfo'
 import StudentInfo from '@/components/layout/infoCard/StudentInfo'
 import FormTopInfo from '@/components/common/FormTopInfo'
-import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 import PermissionBtn from '@/components/common/PermissionBtn'
 import AssignmentBtns from '@/components/layout/AssignmentBtns'
+import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 
+const LodingDiv = styled.div`
+  position: relative;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -120,7 +127,13 @@ export default function StudentsWrite() {
                       <div className="flex gap-[0.5rem]">
                         {studentPaymentData?.lectureAssignment ==
                           assignment.assignment && (
-                          <SuspenseWrap>
+                          <Suspense
+                            fallback={
+                              <LodingDiv>
+                                <i className="xi-spinner-2" />
+                              </LodingDiv>
+                            }
+                          >
                             <PermissionBtn
                               btnName={'학적부'}
                               style={{
@@ -135,9 +148,15 @@ export default function StudentsWrite() {
                                 )
                               }}
                             />
-                          </SuspenseWrap>
+                          </Suspense>
                         )}
-                        <SuspenseWrap>
+                        <Suspense
+                          fallback={
+                            <LodingDiv>
+                              <i className="xi-spinner-2" />
+                            </LodingDiv>
+                          }
+                        >
                           <PermissionBtn
                             btnName={'수정'}
                             style={{
@@ -158,7 +177,7 @@ export default function StudentsWrite() {
                               )
                             }}
                           />
-                        </SuspenseWrap>
+                        </Suspense>
                       </div>
                     </AreaTitle>
                     <PaymentInfo
@@ -185,7 +204,13 @@ export default function StudentsWrite() {
                   <DetailDiv>
                     <AreaTitle>
                       <h4>결제 정보</h4>
-                      <SuspenseWrap>
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
+                        }
+                      >
                         <PermissionBtn
                           btnName={'미수금결제'}
                           style={{
@@ -205,7 +230,7 @@ export default function StudentsWrite() {
                             router.push(`/students/write/payment/${paymentId}`)
                           }}
                         />
-                      </SuspenseWrap>
+                      </Suspense>
                     </AreaTitle>
                     {studentPaymentDetailData?.map((item, index) => (
                       <StudentPaymentDetailItem

@@ -2796,3 +2796,12 @@ export const UPLOAD_PHOTO = gql`
     }
   }
 `
+export const CREATE_ATTENDANCE_RECORD_MUTATION = gql`
+  mutation Mutation($clockIn: String!) {
+    createAttendanceRecord(clockIn: $clockIn) {
+      error
+      message
+      ok
+    }
+  }
+`

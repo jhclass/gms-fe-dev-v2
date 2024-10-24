@@ -322,6 +322,12 @@ const category: Category[] = [
         exposure: false,
         isBreadcrumb: true,
       },
+      {
+        href: '/timesheet',
+        name: '출근 기록',
+        exposure: true,
+        isBreadcrumb: true,
+      },
     ],
   },
   {

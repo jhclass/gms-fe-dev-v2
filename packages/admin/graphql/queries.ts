@@ -1333,3 +1333,55 @@ export const SEARCH_ACADEMY_RECORD_QUERY = gql`
     }
   }
 `
+export const SEARCH_ATTENDANCE_RECORD_TOTAL_QUERY = gql`
+  query Query($period: [String], $mUserId: String) {
+    searchAttendanceRecord(period: $period, mUserId: $mUserId) {
+      totalCount
+      error
+      message
+      ok
+      result {
+        clockIn
+        ManageUser {
+          mPart
+          mAvatar
+          mUserId
+          mUsername
+          mRank
+        }
+      }
+    }
+  }
+`
+export const SEARCH_ATTENDANCE_RECORD_ID_QUERY = gql`
+  query Query(
+    $period: [String]
+    $mUserId: String
+    $mUsername: String
+    $page: Int
+    $limit: Int
+  ) {
+    searchAttendanceRecord(
+      period: $period
+      mUserId: $mUserId
+      mUsername: $mUsername
+      page: $page
+      limit: $limit
+    ) {
+      totalCount
+      error
+      message
+      ok
+      result {
+        clockIn
+        ManageUser {
+          mPart
+          mAvatar
+          mUserId
+          mUsername
+          mRank
+        }
+      }
+    }
+  }
+`

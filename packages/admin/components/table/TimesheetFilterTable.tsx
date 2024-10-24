@@ -1,15 +1,9 @@
-import { useLazyQuery, useSuspenseQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { Button, Pagination, ScrollShadow } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  SEARCH_MANAGEUSER_QUERY,
-  SEARCH_PERMISSIONS_GRANTED_QUERY,
-} from '@/graphql/queries'
-import ManagersItem from '@/components/items/ManagersItem'
-import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
+import { SEARCH_ATTENDANCE_RECORD_ID_QUERY } from '@/graphql/queries'
+import TimesheetItem from '@/components/items/TimesheetItem'
 
 const TableArea = styled.div`
   margin-top: 0.5rem;
@@ -32,6 +26,10 @@ const TableWrap = styled.div`
   width: 100%;
   display: table;
   min-width: 1200px;
+
+  @media (max-width: 1024px) {
+    min-width: 800px;
+  }
 `
 const Theader = styled.div`
   width: 100%;
@@ -66,11 +64,16 @@ const Tnum = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 6%;
+  width: 5%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.06}px;
+  min-width: ${1200 * 0.05}px;
+
+  @media (max-width: 1024px) {
+    width: 10%;
+    min-width: ${800 * 0.1}px;
+  }
 `
 const Tavatar = styled.div`
   position: relative;
@@ -81,6 +84,11 @@ const Tavatar = styled.div`
   padding: 1rem;
   font-size: inherit;
   min-width: ${1200 * 0.06}px;
+
+  @media (max-width: 1024px) {
+    width: 11%;
+    min-width: ${800 * 0.11}px;
+  }
 `
 const Tid = styled.div`
   position: relative;
@@ -90,8 +98,14 @@ const Tid = styled.div`
   width: 10%;
   padding: 1rem;
   font-size: inherit;
+  color: ${({ theme }) => theme.colors.secondary};
   min-width: ${1200 * 0.1}px;
   font-weight: 600;
+
+  @media (max-width: 1024px) {
+    width: 15%;
+    min-width: ${800 * 0.15}px;
+  }
 `
 const Tname = styled.div`
   position: relative;
@@ -101,18 +115,29 @@ const Tname = styled.div`
   width: 9%;
   padding: 1rem;
   font-size: inherit;
+  color: ${({ theme }) => theme.colors.primary};
   min-width: ${1200 * 0.09}px;
   font-weight: 600;
+
+  @media (max-width: 1024px) {
+    width: 14%;
+    min-width: ${800 * 0.14}px;
+  }
 `
 const Tpart = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 13%;
+  width: 12%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.13}px;
+  min-width: ${1200 * 0.12}px;
+
+  @media (max-width: 1024px) {
+    width: 17%;
+    min-width: ${800 * 0.17}px;
+  }
 `
 const Trank = styled.div`
   display: table-cell;
@@ -123,47 +148,40 @@ const Trank = styled.div`
   font-size: inherit;
   color: inherit;
   min-width: ${1200 * 0.08}px;
-`
-const Tphone = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 9%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.09}px;
-`
-const Temail = styled.div`
-  display: table-cell;
-  justify-content: center;
-  align-items: center;
-  width: 13%;
-  padding: 1rem;
-  font-size: inherit;
-  color: inherit;
-  min-width: ${1200 * 0.13}px;
+
+  @media (max-width: 1024px) {
+    width: 13%;
+    min-width: ${800 * 0.13}px;
+  }
 `
 const TjoiningDate = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 9%;
+  width: 15%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.09}px;
+  min-width: ${1200 * 0.15}px;
+
+  @media (max-width: 1024px) {
+    width: 20%;
+    min-width: ${800 * 0.2}px;
+  }
 `
-const Tdate = styled.div`
+const EmptyBox = styled.div`
   display: table-cell;
   justify-content: center;
   align-items: center;
-  width: 7%;
+  width: 35%;
   padding: 1rem;
   font-size: inherit;
   color: inherit;
-  min-width: ${1200 * 0.07}px;
-  font-weight: 600;
+  min-width: ${1200 * 0.35}px;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `
 const PagerWrap = styled.div`
   display: flex;
@@ -179,33 +197,13 @@ const Nolist = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-type SearchPermissionsGrantedQeury = {
-  searchPermissionsGranted: ResultSearchPermissionsGranted
-}
-
-export default function ManagersFilterTable({ managerFilter, mGrade, mId }) {
-  const grade = useRecoilValue(gradeState)
+export default function TimesheetFilterTable({ managerFilter }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentLimit] = useState(10)
-  const [searchManager, { refetch, loading, error, data }] = useLazyQuery(
-    SEARCH_MANAGEUSER_QUERY,
-  )
-  const [managerData, setManagerData] = useState(null)
-  const [managerTotal, setManagerTotal] = useState(0)
-
-  const { error: permissionError, data: permissionData } =
-    useSuspenseQuery<SearchPermissionsGrantedQeury>(
-      SEARCH_PERMISSIONS_GRANTED_QUERY,
-      {
-        variables: {
-          permissionName: '직원관리',
-        },
-      },
-    )
-  const permissionManagers =
-    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
-      manager => manager.id,
-    )
+  const [searchManagerAttendance, { refetch, loading, error, data }] =
+    useLazyQuery(SEARCH_ATTENDANCE_RECORD_ID_QUERY)
+  const [managerAttendanceData, setManagerAttendanceData] = useState(null)
+  const [managerAttendanceTotal, setManagerAttendanceTotal] = useState(0)
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -213,23 +211,22 @@ export default function ManagersFilterTable({ managerFilter, mGrade, mId }) {
 
   useEffect(() => {
     if (managerFilter) {
-      searchManager({
+      searchManagerAttendance({
         variables: {
           ...managerFilter,
-          resign: 'N',
           page: currentPage,
           limit: currentLimit,
         },
         onCompleted: result => {
-          setManagerData(result?.searchManageUser.data)
-          setManagerTotal(result?.searchManageUser.totalCount)
+          setManagerAttendanceData(result?.searchAttendanceRecord.result)
+          setManagerAttendanceTotal(result?.searchAttendanceRecord.totalCount)
         },
       })
     }
   }, [managerFilter, currentPage])
 
   const resetList = () => {
-    window.location.href = '/hr'
+    window.location.href = '/hr/timesheet'
   }
 
   if (error) {
@@ -237,12 +234,15 @@ export default function ManagersFilterTable({ managerFilter, mGrade, mId }) {
   }
 
   return (
-    managerData && (
+    managerAttendanceData && (
       <>
         <TTopic>
           <TopBox>
             <Ttotal>
-              총 <span>{managerTotal === null ? 0 : managerTotal}</span>
+              총{' '}
+              <span>
+                {managerAttendanceTotal === null ? 0 : managerAttendanceTotal}
+              </span>
               건이 검색되었습니다.
             </Ttotal>
             <Button size="sm" radius="sm" color="primary" onClick={resetList}>
@@ -260,42 +260,37 @@ export default function ManagersFilterTable({ managerFilter, mGrade, mId }) {
                     <Tavatar></Tavatar>
                     <Tid>아이디</Tid>
                     <Tname>이름</Tname>
+                    <TjoiningDate>출근시간</TjoiningDate>
                     <Tpart>부서</Tpart>
                     <Trank>직책/직위</Trank>
-                    <Tphone>내선번호</Tphone>
-                    <Tphone>연락처</Tphone>
-                    <Temail>이메일</Temail>
-                    <TjoiningDate>입사일</TjoiningDate>
-                    <Tdate>근속일</Tdate>
+                    <EmptyBox></EmptyBox>
                   </ClickBox>
                 </TheaderBox>
               </Theader>
-              {managerData.length > 0 &&
-                managerData?.map((item, index) => (
-                  <ManagersItem
+              {managerAttendanceData.length > 0 &&
+                managerAttendanceData?.map((item, index) => (
+                  <TimesheetItem
                     forName="student"
                     key={index}
                     tableData={item}
                     itemIndex={index}
                     currentPage={currentPage}
                     limit={currentLimit}
-                    clickable={
-                      mGrade <= grade.subMaster ||
-                      permissionManagers.includes(mId)
-                    }
                   />
                 ))}
-              {managerTotal === 0 && <Nolist>등록된 직원이 없습니다.</Nolist>}
+              {managerAttendanceTotal === 0 && (
+                <Nolist>검색된 출근기록이 없습니다.</Nolist>
+              )}
             </TableWrap>
           </ScrollShadow>
-          {managerTotal > 0 && (
+          {managerAttendanceTotal > 0 && (
             <PagerWrap>
               <Pagination
                 variant="light"
                 showControls
                 initialPage={currentPage}
                 page={currentPage}
-                total={Math.ceil(managerTotal / currentLimit)}
+                total={Math.ceil(managerAttendanceTotal / currentLimit)}
                 onChange={newPage => {
                   setCurrentPage(newPage)
                 }}

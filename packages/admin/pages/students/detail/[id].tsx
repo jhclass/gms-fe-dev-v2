@@ -3,12 +3,9 @@ import { Suspense, useEffect, useState } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { Radio, RadioGroup, Button } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import { useMutation } from '@apollo/client'
 import Layout from '@/pages/students/layout'
-import { useRecoilValue } from 'recoil'
-import { gradeState } from '@/lib/recoilAtoms'
-import useMmeQuery from '@/utils/mMe'
 import { SEARCH_STUDENT_MUTATION } from '@/graphql/mutations'
 import StudentMemoForm from '@/components/form/StudentMemoForm'
 import StudentMemoEditForm from '@/components/form/StudentMemoEditForm'
@@ -18,6 +15,14 @@ import FormTopInfo from '@/components/common/FormTopInfo'
 import PermissionBtn from '@/components/common/PermissionBtn'
 import SuspenseWrap from '@/components/wrappers/SuspenseWrap'
 
+const LodingDiv = styled.div`
+  position: relative;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -192,7 +197,13 @@ export default function StudentsWrite() {
                 <DetailDiv>
                   <AreaTitle>
                     <h4>수강 목록</h4>
-                    <SuspenseWrap>
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
                       <PermissionBtn
                         btnName={'과정 추가'}
                         style={{
@@ -207,7 +218,7 @@ export default function StudentsWrite() {
                           )
                         }}
                       />
-                    </SuspenseWrap>
+                    </Suspense>
                   </AreaTitle>
                   <FlexBox>
                     <PaymentList>
