@@ -209,6 +209,14 @@ export default function TimesheetTable({ todayTimes }) {
   const managerAttendanceData = data?.searchAttendanceRecord?.result
   const totalCount = data?.searchAttendanceRecord?.totalCount
 
+  const formatDate = data => {
+    const formatted =
+      `${data.getFullYear()}-` +
+      `${(data.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${data.getDate().toString().padStart(2, '0')}`
+    return formatted
+  }
+
   useEffect(() => {
     refetch()
   }, [])
@@ -221,7 +229,7 @@ export default function TimesheetTable({ todayTimes }) {
     <>
       <TTopic>
         <Ttotal>
-          총 <span>{totalCount}</span>건
+          총 <span>{totalCount}</span>건 &#40;{formatDate(new Date())}&#41;
         </Ttotal>
       </TTopic>
       <TableArea>
