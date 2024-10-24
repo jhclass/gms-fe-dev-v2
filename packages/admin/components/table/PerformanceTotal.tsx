@@ -204,15 +204,11 @@ export default function PerformanceTotal({
           </FlatBox>
         </AreaBox>
         <AreaBox>
-          <FilterLabel>객단가 &#40; 실 결제액 / 실 결제건수 &#41;</FilterLabel>
+          <FilterLabel>객단가 &#40; 실 결제액 / 총 결제건수 &#41;</FilterLabel>
           <FlatBox>
             {totalActualAmount === 0 || totalPaymentCount === 0
               ? '0'
-              : feeFormet(
-                  Math.round(
-                    totalActualAmount / (totalPaymentCount - totalRefundCount),
-                  ),
-                )}
+              : feeFormet(Math.round(totalActualAmount / totalPaymentCount))}
           </FlatBox>
         </AreaBox>
       </FlexBox>
