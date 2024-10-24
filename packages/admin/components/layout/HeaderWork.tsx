@@ -77,8 +77,8 @@ export default function HeaderWork({ mUserId, mUsername, todayTimes }) {
   }, [data, isRefresh])
 
   const refreshCheck = () => {
-    refetch()
     setIsRefresh(true)
+    refetch()
   }
 
   const workCheck = () => {
