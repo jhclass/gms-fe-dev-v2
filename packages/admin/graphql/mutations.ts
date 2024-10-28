@@ -1649,6 +1649,16 @@ export const CONSULTATION_STATISTICS_LIST_MUTATION = gql`
     }
   }
 `
+export const COMP_CONSULTATION_STATISTICS_LIST_MUTATION = gql`
+  mutation Mutation($pic: String, $createdAt: [String], $progress: [Int]) {
+    searchStudentState(pic: $pic, createdAt: $createdAt, progress: $progress) {
+      totalCount
+      ok
+      message
+      error
+    }
+  }
+`
 
 export const GET_HOURLY_SALES_MUTATION = gql`
   mutation Mutation($date: [String]!) {
