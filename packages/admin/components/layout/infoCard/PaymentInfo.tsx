@@ -8,6 +8,8 @@ import {
 } from '@nextui-org/react'
 import { Suspense } from 'react'
 import PaymentInfoManager from '@/components/items/PaymentInfoManager'
+import { useRecoilValue } from 'recoil'
+import { assignmentState } from '@/lib/recoilAtoms'
 
 const LodingDiv = styled.div`
   padding: 1.5rem;
@@ -117,6 +119,7 @@ export default function PaymentInfo({
   studentSubjectData,
   studentPaymentData,
 }) {
+  const assignment = useRecoilValue(assignmentState)
   const formatDate = (data, isTime) => {
     const timestamp = parseInt(data, 10)
     const date = new Date(timestamp)
@@ -136,6 +139,23 @@ export default function PaymentInfo({
         `${date.getDate().toString().padStart(2, '0')} `
       return formatted
     }
+  }
+
+  const formatTime = dateString => {
+    const date = new Date(dateString)
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${hours}:${minutes}`
+  }
+
+  const extractTimeRange = dates => {
+    const startTime = formatTime(dates[0])
+    const endTime = formatTime(dates[1])
+    return `${startTime} - ${endTime}`
+  }
+
+  const formatUsernames = data => {
+    return data.map(item => item.mUsername).join(', ')
   }
 
   const feeFormet = fee => {
@@ -311,6 +331,76 @@ export default function PaymentInfo({
           </div>
         </AreaBox>
       </FlexBox>
+      {studentPaymentData?.lectureAssignment === assignment.assignment && (
+        <>
+          <FlexBox>
+            <AreaSmallBox style={{ minWidth: '20%' }}>
+              <div>
+                <FilterLabel>회차</FilterLabel>
+                <LineBox>
+                  {studentSubjectData?.lectures?.sessionNum}회차
+                </LineBox>
+              </div>
+            </AreaSmallBox>
+            <AreaBox>
+              <div>
+                <Textarea
+                  label="강의명"
+                  isDisabled={true}
+                  isReadOnly={true}
+                  labelPlacement="outside"
+                  defaultValue={studentSubjectData?.lectures?.temporaryName}
+                  minRows={1}
+                  variant="underlined"
+                  size="md"
+                  radius="sm"
+                  classNames={{
+                    base: 'opacity-1',
+                  }}
+                ></Textarea>
+              </div>
+            </AreaBox>
+          </FlexBox>
+          <FlexBox>
+            <AreaBox>
+              <div>
+                <FilterLabel>강의기간</FilterLabel>
+                <LineBox>
+                  {`${formatDate(
+                    studentSubjectData?.lectures?.lecturePeriodStart,
+                    false,
+                  )} - ${formatDate(
+                    studentSubjectData?.lectures?.lecturePeriodEnd,
+                    false,
+                  )}`}
+                </LineBox>
+              </div>
+            </AreaBox>
+            <AreaBox>
+              <div>
+                <FilterLabel>강의시간</FilterLabel>
+                <LineBox>
+                  {extractTimeRange(studentSubjectData?.lectures?.lectureTime)}
+                </LineBox>
+              </div>
+            </AreaBox>
+            <AreaBox>
+              <div>
+                <FilterLabel>강의실</FilterLabel>
+                <LineBox>{studentSubjectData?.lectures?.roomNum}</LineBox>
+              </div>
+            </AreaBox>
+            <AreaBox>
+              <div>
+                <FilterLabel>담당강사</FilterLabel>
+                <LineBox>
+                  {formatUsernames(studentSubjectData?.lectures?.teachers)}
+                </LineBox>
+              </div>
+            </AreaBox>
+          </FlexBox>
+        </>
+      )}
     </>
   )
 }

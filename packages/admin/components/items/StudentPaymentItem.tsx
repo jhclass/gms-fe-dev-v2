@@ -107,6 +107,23 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
     return formatted
   }
 
+  const formatTime = dateString => {
+    const date = new Date(dateString)
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${hours}:${minutes}`
+  }
+
+  const extractTimeRange = dates => {
+    const startTime = formatTime(dates[0])
+    const endTime = formatTime(dates[1])
+    return `${startTime} - ${endTime}`
+  }
+
+  const formatUsernames = data => {
+    return data.map(item => item.mUsername).join(', ')
+  }
+
   const clickItem = item => {
     router.push(`/students/detail/course/${detailtData.id}`)
   }
@@ -114,6 +131,8 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   if (error) {
     console.log(error)
   }
+
+  console.log(detailtData)
 
   return (
     <>
@@ -230,6 +249,75 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
             </div>
           </AreaBox>
         </FlexBox>
+
+        {detailtData?.lectureAssignment === assignment.assignment && (
+          <>
+            <FlexBox>
+              <AreaBoxS>
+                <div>
+                  <FilterLabel>회차</FilterLabel>
+                  <FlatBox>
+                    {detailtData?.subject?.lectures?.sessionNum}회차
+                  </FlatBox>
+                </div>
+              </AreaBoxS>
+              <AreaBox>
+                <div>
+                  <Textarea
+                    label="수강명"
+                    isDisabled={true}
+                    isReadOnly={true}
+                    labelPlacement="outside"
+                    defaultValue={detailtData?.subject?.lectures?.temporaryName}
+                    minRows={1}
+                    variant="flat"
+                    size="md"
+                    radius="sm"
+                    classNames={{
+                      base: 'opacity-1',
+                    }}
+                  ></Textarea>
+                </div>
+              </AreaBox>
+            </FlexBox>
+            <FlexBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>강의기간</FilterLabel>
+                  <FlatBox>{`${formatDate(
+                    detailtData?.subject?.lectures?.lecturePeriodStart,
+                  )} - ${formatDate(
+                    detailtData?.subject?.lectures?.lecturePeriodEnd,
+                  )}`}</FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>강의시간</FilterLabel>
+                  <FlatBox>
+                    {extractTimeRange(
+                      detailtData?.subject?.lectures?.lectureTime,
+                    )}
+                  </FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>강의실</FilterLabel>
+                  <FlatBox>{detailtData?.subject?.lectures?.roomNum}</FlatBox>
+                </div>
+              </AreaBox>
+              <AreaBox>
+                <div>
+                  <FilterLabel>담당강사</FilterLabel>
+                  <FlatBox>
+                    {formatUsernames(detailtData?.subject?.lectures?.teachers)}
+                  </FlatBox>
+                </div>
+              </AreaBox>
+            </FlexBox>
+          </>
+        )}
       </FlexCardBox>
     </>
   )

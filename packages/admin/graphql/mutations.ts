@@ -710,6 +710,17 @@ export const SEARCH_STUDENT_MUTATION = gql`
             subDiv
             subjectCode
             subjectName
+            lectures {
+              lecturePeriodStart
+              lecturePeriodEnd
+              teachers {
+                mUsername
+              }
+              lectureTime
+              roomNum
+              sessionNum
+              temporaryName
+            }
           }
         }
         studentMemo {
@@ -1083,6 +1094,17 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         }
         subDiv
         subject {
+          lectures {
+            roomNum
+            sessionNum
+            teachers {
+              mUsername
+            }
+            temporaryName
+            lectureTime
+            lecturePeriodEnd
+            lecturePeriodStart
+          }
           lastModifiedTime
           fee
           id
