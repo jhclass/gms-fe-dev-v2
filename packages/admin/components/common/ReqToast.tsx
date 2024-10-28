@@ -23,8 +23,6 @@ const ReqText = styled.p`
 `
 
 export default function ReqToast({ messageData }) {
-  // console.log('messageData', messageData)
-
   return (
     <>
       <FromID>{messageData?.alarmTitle}</FromID>

@@ -35,13 +35,6 @@ export default function PerformanceChartCon({
   totalRefundAmount,
   chartHeight,
 }) {
-  // console.log('차트 생성 컨포넌트 시작')
-  // console.log('props managerUsernames : ', managerUsernames)
-  // console.log('props totalAmount : ', totalAmount)
-  // console.log('props totalCount : ', totalCount)
-  // console.log('props totalRefundAmount : ', totalRefundAmount)
-  // console.log('props chartHeight : ', chartHeight)
-
   const theme = useTheme()
   const countValue = Math.max(...totalCount)
   const maxCountValue = countValue <= 10 ? 10 : countValue
@@ -150,8 +143,6 @@ export default function PerformanceChartCon({
       ],
     },
   }
-
-  // console.log('chartData', chartData)
 
   return (
     chartData && (

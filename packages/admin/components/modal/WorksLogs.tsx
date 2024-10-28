@@ -518,8 +518,6 @@ export default function WorksLogsModal({
       } else {
         if (data.signWorkLogs.message === '권한이 없습니다.') {
           alert(data.signWorkLogs.message)
-        } else {
-          console.log(data.signWorkLogs.message)
         }
       }
     } catch (error) {
@@ -624,8 +622,6 @@ export default function WorksLogsModal({
                   window.scrollY.toString(),
                 )
                 window.location.reload()
-              } else {
-                console.log(result.editWorkLogs.message)
               }
             },
           })
