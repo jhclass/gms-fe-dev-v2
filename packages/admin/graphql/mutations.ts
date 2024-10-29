@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 // login
 export const LOGIN_MUTATION = gql`
-  mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
+  mutation Mutation($mUserId: String!, $mPassword: String!) {
     mLogin(mUserId: $mUserId, mPassword: $mPassword) {
       error
       ok
