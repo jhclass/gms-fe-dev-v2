@@ -124,7 +124,7 @@ export default function EditorViewer({ view }) {
           className="editor"
           defaultValue={view}
         />
-        <Button type="submit">저장</Button>
+        <Button type="submit">수정</Button>
       </form>
     </EditorBox>
   )
