@@ -2,8 +2,13 @@ import { styled } from 'styled-components'
 import { useMutation, useSuspenseQuery } from '@apollo/client'
 import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
-import { CONSULTATION_STATISTICS_LIST_MUTATION } from '@/graphql/mutations'
+import {
+  COMP_CONSULTATION_STATISTICS_LIST_MUTATION,
+  CONSULTATION_STATISTICS_LIST_MUTATION,
+} from '@/graphql/mutations'
 import { useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { progressStatusState } from '@/lib/recoilAtoms'
 
 type ConsultItemProps = {
   tableData: {
@@ -104,6 +109,7 @@ export default function PerformanceTotal({
   totalRefundAmount,
   totalRefundCount,
 }) {
+  const progressStatus = useRecoilValue(progressStatusState)
   const {
     data: managerData,
     error,
@@ -119,7 +125,11 @@ export default function PerformanceTotal({
   const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
 
   const [consultationTotal] = useMutation(CONSULTATION_STATISTICS_LIST_MUTATION)
+  const [compConsultationTotal] = useMutation(
+    COMP_CONSULTATION_STATISTICS_LIST_MUTATION,
+  )
   const [totalConsultation, setTotalConsultation] = useState(0)
+  const [totalCompConsultation, setTotalCompConsultation] = useState(0)
 
   useEffect(() => {
     consultationTotal({
@@ -130,6 +140,18 @@ export default function PerformanceTotal({
       onCompleted: result => {
         if (result.searchStudentState.ok) {
           setTotalConsultation(result.searchStudentState.totalCount)
+        }
+      },
+    })
+    compConsultationTotal({
+      variables: {
+        progress: [60],
+        createdAt: dateRange,
+        pic: managerUsernames,
+      },
+      onCompleted: result => {
+        if (result.searchStudentState.ok) {
+          setTotalCompConsultation(result.searchStudentState.totalCount)
         }
       },
     })
@@ -156,10 +178,6 @@ export default function PerformanceTotal({
           <FlatBox>
             {managerList?.find(user => user.id === managerId).mUsername}
           </FlatBox>
-        </AreaBox>
-        <AreaBox>
-          <FilterLabel>총 DB개수</FilterLabel>
-          <FlatBox>{totalConsultation}</FlatBox>
         </AreaBox>
         <AreaBox>
           <FilterLabel>총 결제건수</FilterLabel>
@@ -198,17 +216,28 @@ export default function PerformanceTotal({
           </FlatBox>
         </AreaBox>
         <AreaBox>
-          <FilterLabel>DB당 단가 &#40; 실 결제액 / 총 DB개수 &#41;</FilterLabel>
-          <FlatBox>
-            {feeFormet(Math.round(totalActualAmount / totalConsultation))}
-          </FlatBox>
-        </AreaBox>
-        <AreaBox>
           <FilterLabel>객단가 &#40; 실 결제액 / 총 결제건수 &#41;</FilterLabel>
           <FlatBox>
             {totalActualAmount === 0 || totalPaymentCount === 0
               ? '0'
               : feeFormet(Math.round(totalActualAmount / totalPaymentCount))}
+          </FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>총 DB개수</FilterLabel>
+          <FlatBox>{totalConsultation}</FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>총 등록개수</FilterLabel>
+          <FlatBox>{totalCompConsultation}</FlatBox>
+        </AreaBox>
+        <AreaBox>
+          <FilterLabel>등록률</FilterLabel>
+          <FlatBox>
+            {totalConsultation > 0 && totalCompConsultation > 0
+              ? Math.round((totalCompConsultation / totalConsultation) * 100)
+              : 0}
+            %
           </FlatBox>
         </AreaBox>
       </FlexBox>

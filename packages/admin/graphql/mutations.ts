@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 // login
 export const LOGIN_MUTATION = gql`
-  mutation CreateStudentState($mUserId: String!, $mPassword: String!) {
+  mutation Mutation($mUserId: String!, $mPassword: String!) {
     mLogin(mUserId: $mUserId, mPassword: $mPassword) {
       error
       ok
@@ -710,6 +710,17 @@ export const SEARCH_STUDENT_MUTATION = gql`
             subDiv
             subjectCode
             subjectName
+            lectures {
+              lecturePeriodStart
+              lecturePeriodEnd
+              teachers {
+                mUsername
+              }
+              lectureTime
+              roomNum
+              sessionNum
+              temporaryName
+            }
           }
         }
         studentMemo {
@@ -1083,6 +1094,17 @@ export const SEARCH_PAYMENT_MUTATION = gql`
         }
         subDiv
         subject {
+          lectures {
+            roomNum
+            sessionNum
+            teachers {
+              mUsername
+            }
+            temporaryName
+            lectureTime
+            lecturePeriodEnd
+            lecturePeriodStart
+          }
           lastModifiedTime
           fee
           id
@@ -1620,6 +1642,16 @@ export const SALES_STATISTICS_REFUND_LIST_MUTATION = gql`
 export const CONSULTATION_STATISTICS_LIST_MUTATION = gql`
   mutation Mutation($pic: String, $createdAt: [String]) {
     searchStudentState(pic: $pic, createdAt: $createdAt) {
+      totalCount
+      ok
+      message
+      error
+    }
+  }
+`
+export const COMP_CONSULTATION_STATISTICS_LIST_MUTATION = gql`
+  mutation Mutation($pic: String, $createdAt: [String], $progress: [Int]) {
+    searchStudentState(pic: $pic, createdAt: $createdAt, progress: $progress) {
       totalCount
       ok
       message
