@@ -44,7 +44,7 @@ export default function TypeLink({ typeLink, typeName, permissionName }) {
   useEffect(() => {
     if (data) {
       setPermissionManagers(
-        data.searchPermissionsGranted.data[0].ManageUser.map(
+        data?.searchPermissionsGranted?.data?.[0]?.ManageUser?.map(
           manager => manager.id,
         ),
       )

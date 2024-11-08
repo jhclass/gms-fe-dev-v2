@@ -42,7 +42,7 @@ export default function TypeBtn({ typeLink, permissionName }) {
     )
 
   useEffect(() => {
-    if (data) {
+    if (data?.searchPermissionsGranted?.data?.[0]?.ManageUser) {
       setPermissionManagers(
         data.searchPermissionsGranted.data[0].ManageUser.map(
           manager => manager.id,
@@ -50,7 +50,6 @@ export default function TypeBtn({ typeLink, permissionName }) {
       )
     }
   }, [data])
-
   const handleAddTypeClick = e => {
     e.preventDefault()
     router.push({

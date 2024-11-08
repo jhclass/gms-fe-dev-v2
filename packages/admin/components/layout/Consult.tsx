@@ -63,9 +63,9 @@ export default function Consult({
       },
     )
   const permissionManagers =
-    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+    permissionData.searchPermissionsGranted?.data?.[0]?.ManageUser?.map(
       manager => manager.id,
-    )
+    ) || []
 
   return (
     <>

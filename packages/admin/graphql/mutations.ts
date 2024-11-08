@@ -311,7 +311,11 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
           }
         }
         createdAt
-        currentManager
+        currentManager {
+          id
+          mUserId
+          mUsername
+        }
         detail
         expEnrollDate
         id

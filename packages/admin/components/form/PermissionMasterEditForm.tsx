@@ -78,8 +78,8 @@ export default function PermissionMasterEditForm({ permission }) {
   return (
     <>
       <ChipBox>
-        {permission.ManageUser &&
-          permission.ManageUser.map((item, index) => (
+        {permission?.ManageUser &&
+          permission?.ManageUser.map((item, index) => (
             <Chip
               key={index}
               variant="bordered"

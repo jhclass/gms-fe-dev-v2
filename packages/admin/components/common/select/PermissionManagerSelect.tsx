@@ -35,7 +35,8 @@ export default function PermissionManagerSelect({
   )
   const managerList = [
     optionDefault,
-    ...searchManagerData?.searchPermissionsGranted.data[0].ManageUser,
+    ...(searchManagerData?.searchPermissionsGranted?.data?.[0]?.ManageUser ||
+      []),
   ]
 
   if (searchManagerError) {

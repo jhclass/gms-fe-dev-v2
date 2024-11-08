@@ -195,7 +195,7 @@ export default function ConsolutItem(props) {
   const flagString = isDisplayFlag(student.createdAt, student.progress)
   const [updateFavo, { loading }] = useMutation(UPDATE_FAVORITE_MUTATION)
   const progressStatus = useRecoilValue(progressStatusState)
-  const studentAdvice = student?.adviceTypes.map(item => item.type) || []
+  const studentAdvice = student?.adviceTypes?.map(item => item.type) || []
 
   const favoClick = () => {
     if (!props.favorite && props.favoTotal >= 5) {
@@ -338,10 +338,10 @@ export default function ConsolutItem(props) {
                 <EllipsisBox>{String(studentAdvice)}</EllipsisBox>
               </TadviceType>
               <Tprogress
-                style={{ color: progressStatus[student.progress].color }}
+                style={{ color: progressStatus[student.progress]?.color }}
               >
                 <EllipsisBox>
-                  {progressStatus[student.progress].name}
+                  {progressStatus[student.progress]?.name}
                 </EllipsisBox>
               </Tprogress>
               <TstVisit>

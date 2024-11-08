@@ -178,7 +178,9 @@ export default function PermissionMasterAddForm({ permission }) {
                 <Textarea
                   readOnly
                   value={String(managersName)}
-                  label={<FilterLabel>{permission.permissionName}</FilterLabel>}
+                  label={
+                    <FilterLabel>{permission?.permissionName}</FilterLabel>
+                  }
                   labelPlacement="outside-left"
                   className="max-w-full"
                   variant="bordered"
