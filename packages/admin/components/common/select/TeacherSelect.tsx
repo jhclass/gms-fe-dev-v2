@@ -34,8 +34,8 @@ export default function TeacherSelect({
     },
   })
   const managerList = optionDefault
-    ? [optionDefault, ...searchManagerData?.searchManageUser.data]
-    : searchManagerData?.searchManageUser.data
+    ? [optionDefault, ...(searchManagerData?.searchManageUser.data || [])]
+    : searchManagerData?.searchManageUser.data || []
 
   if (searchManagerError) {
     console.log(searchManagerError)

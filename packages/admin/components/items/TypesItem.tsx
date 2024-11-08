@@ -37,7 +37,7 @@ export default function TypesItem({ type }) {
   useEffect(() => {
     if (data) {
       setPermissionManagers(
-        data.searchPermissionsGranted.data[0].ManageUser.map(
+        data?.searchPermissionsGranted?.data?.[0]?.ManageUser.map(
           manager => manager.id,
         ),
       )
