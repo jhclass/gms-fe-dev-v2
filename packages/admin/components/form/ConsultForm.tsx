@@ -626,7 +626,7 @@ export default function ConsultForm({ supervisor }) {
                   dateFormat="yyyy/MM/dd HH:mm"
                   onChangeRaw={e => e.preventDefault()}
                   onFocus={e => e.target.blur()}
-                  /*portalId="root"  드롭다운을 루트 DOM에 렌더링 */
+                  portalId="root" /* 드롭다운을 루트 DOM에 렌더링 */
                   customInput={
                     <Input
                       label="상담예정일"
