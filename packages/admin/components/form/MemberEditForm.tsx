@@ -181,25 +181,25 @@ export default function MemberEditForm({ managerId }) {
     },
   })
 
-  const managerData = data?.searchManageUser.data[0]
+  const managerData = data?.searchManageUser?.data?.[0]
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION)
   const { register, setValue, control, handleSubmit, formState } = useForm({
     defaultValues: {
-      mUserId: managerData.mUserId,
-      mUsername: managerData.mUsername,
-      mPhoneNumCompany: managerData.mPhoneNumCompany,
-      mPhoneNum: managerData.mPhoneNum,
-      mPhoneNumFriend: managerData.mPhoneNumFriend,
-      mPart: managerData.mPart,
-      mRank: managerData.mRank,
-      mPhoneNumInside: managerData.mPhoneNumInside,
-      mAvatar: managerData.mAvatar,
-      mJoiningDate: managerData.mJoiningDate,
-      mZipCode: managerData.mZipCode,
-      mAddresses: managerData.mAddresses,
-      mAddressDetail: managerData.mAddressDetail,
+      mUserId: managerData?.mUserId,
+      mUsername: managerData?.mUsername,
+      mPhoneNumCompany: managerData?.mPhoneNumCompany,
+      mPhoneNum: managerData?.mPhoneNum,
+      mPhoneNumFriend: managerData?.mPhoneNumFriend,
+      mPart: managerData?.mPart,
+      mRank: managerData?.mRank,
+      mPhoneNumInside: managerData?.mPhoneNumInside,
+      mAvatar: managerData?.mAvatar,
+      mJoiningDate: managerData?.mJoiningDate,
+      mZipCode: managerData?.mZipCode,
+      mAddresses: managerData?.mAddresses,
+      mAddressDetail: managerData?.mAddressDetail,
       resign: managerData?.resign === 'N' ? false : true,
-      email: managerData.email,
+      email: managerData?.email,
     },
   })
   const { errors, dirtyFields, isDirty } = formState
@@ -365,7 +365,7 @@ export default function MemberEditForm({ managerId }) {
                       variant={'faded'}
                       radius="md"
                       type="text"
-                      defaultValue={managerData.mUserId}
+                      defaultValue={managerData?.mUserId}
                       label={
                         <FilterLabel>
                           아이디<span>*</span>
@@ -386,9 +386,9 @@ export default function MemberEditForm({ managerId }) {
                         },
                       })}
                     />
-                    {errors.mUserId && (
+                    {errors?.mUserId && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mUserId.message)}
+                        {String(errors?.mUserId?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -413,7 +413,7 @@ export default function MemberEditForm({ managerId }) {
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      defaultValue={managerData.mUsername}
+                      defaultValue={managerData?.mUsername}
                       label={
                         <FilterLabel>
                           이름<span>*</span>
@@ -436,7 +436,7 @@ export default function MemberEditForm({ managerId }) {
                     />
                     {errors.mUsername && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mUsername.message)}
+                        {String(errors?.mUsername?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -447,7 +447,7 @@ export default function MemberEditForm({ managerId }) {
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      defaultValue={managerData.mPhoneNum}
+                      defaultValue={managerData?.mPhoneNum}
                       label={
                         <FilterLabel>
                           연락처<span>*</span>
@@ -479,7 +479,7 @@ export default function MemberEditForm({ managerId }) {
                     />
                     {errors.mPhoneNum && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mPhoneNum.message)}
+                        {String(errors?.mPhoneNum?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -490,7 +490,7 @@ export default function MemberEditForm({ managerId }) {
                       variant="bordered"
                       radius="md"
                       type="text"
-                      defaultValue={managerData.email}
+                      defaultValue={managerData?.email}
                       label="이메일"
                       className="w-full"
                       onChange={e => {
@@ -506,7 +506,7 @@ export default function MemberEditForm({ managerId }) {
                     />
                     {errors.email && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.email.message)}
+                        {String(errors?.email?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -517,17 +517,17 @@ export default function MemberEditForm({ managerId }) {
                   detailValueName={'mAddressDetail'}
                   setValue={setValue}
                   defaultPostcode={
-                    managerData.mZipCode === null ? '' : managerData.mZipCode
+                    managerData?.mZipCode === null ? '' : managerData?.mZipCode
                   }
                   defaultAddress={
-                    managerData.mAddresses === null
+                    managerData?.mAddresses === null
                       ? ''
-                      : managerData.mAddresses
+                      : managerData?.mAddresses
                   }
                   defaultDetails={
-                    managerData.mAddressDetail === null
+                    managerData?.mAddressDetail === null
                       ? ''
-                      : managerData.mAddressDetail
+                      : managerData?.mAddressDetail
                   }
                 />
                 <FlexBox>
@@ -536,7 +536,7 @@ export default function MemberEditForm({ managerId }) {
                       labelPlacement="outside"
                       placeholder="직통번호"
                       variant={'bordered'}
-                      defaultValue={managerData.mPhoneNumCompany}
+                      defaultValue={managerData?.mPhoneNumCompany}
                       radius="md"
                       type="text"
                       label="직통번호"
@@ -566,7 +566,7 @@ export default function MemberEditForm({ managerId }) {
                       type="text"
                       label="내선번호"
                       className="w-full"
-                      defaultValue={managerData.mPhoneNumInside}
+                      defaultValue={managerData?.mPhoneNumInside}
                       onChange={e => {
                         register('mPhoneNumInside').onChange(e)
                       }}
@@ -593,7 +593,7 @@ export default function MemberEditForm({ managerId }) {
                       label="기타 연락처"
                       className="w-full"
                       maxLength={12}
-                      defaultValue={managerData.mPhoneNumFriend}
+                      defaultValue={managerData?.mPhoneNumFriend}
                       onChange={e => {
                         register('mPhoneNumFriend').onChange(e)
                       }}
@@ -608,9 +608,9 @@ export default function MemberEditForm({ managerId }) {
                         },
                       })}
                     />
-                    {errors.mPhoneNumFriend && (
+                    {errors?.mPhoneNumFriend && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mPhoneNumFriend.message)}
+                        {String(errors?.mPhoneNumFriend?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -626,7 +626,7 @@ export default function MemberEditForm({ managerId }) {
                           message: '부서를 선택해주세요.',
                         },
                       }}
-                      defaultValue={managerData.mPart}
+                      defaultValue={managerData?.mPart}
                       render={({ field }) => (
                         <Suspense
                           fallback={
@@ -637,8 +637,8 @@ export default function MemberEditForm({ managerId }) {
                         >
                           <AdviceMultiSelect
                             placeholder={
-                              managerData.mPart.length > 0
-                                ? String(managerData.mPart)
+                              managerData?.mPart?.length > 0
+                                ? String(managerData?.mPart)
                                 : ' '
                             }
                             selectedKey={selectMpart}
@@ -668,9 +668,9 @@ export default function MemberEditForm({ managerId }) {
                         permissionName={'부서'}
                       />
                     </Suspense>
-                    {errors.mPart && (
+                    {errors?.mPart && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mPart.message)}
+                        {String(errors?.mPart?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -681,7 +681,7 @@ export default function MemberEditForm({ managerId }) {
                       variant={'bordered'}
                       radius="md"
                       type="text"
-                      defaultValue={managerData.mRank}
+                      defaultValue={managerData?.mRank}
                       label={
                         <FilterLabel>
                           직책/직위<span>*</span>
@@ -702,9 +702,9 @@ export default function MemberEditForm({ managerId }) {
                         },
                       })}
                     />
-                    {errors.mRank && (
+                    {errors?.mRank && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mRank.message)}
+                        {String(errors?.mRank?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -777,9 +777,9 @@ export default function MemberEditForm({ managerId }) {
                         )}
                       />
                     </DatePickerBox>
-                    {errors.mJoiningDate && (
+                    {errors?.mJoiningDate && (
                       <p className="px-2 pt-2 text-xs text-red">
-                        {String(errors.mJoiningDate.message)}
+                        {String(errors?.mJoiningDate?.message)}
                       </p>
                     )}
                   </AreaBox>
@@ -792,18 +792,18 @@ export default function MemberEditForm({ managerId }) {
                     <div className="flex items-start gap-3 mt-1">
                       <Button
                         isDisabled={
-                          managerData?.Stamp[0]?.imageUrl ? true : false
+                          managerData?.Stamp?.[0]?.imageUrl ? true : false
                         }
                         color={'primary'}
                         onClick={clickCreate}
                       >
                         도장 생성
                       </Button>
-                      {managerData?.Stamp[0]?.imageUrl && (
+                      {managerData?.Stamp?.[0]?.imageUrl && (
                         <div className="flex items-start gap-3 px-8 border-2 rounded-lg">
                           <img
-                            src={managerData?.Stamp[0]?.imageUrl}
-                            alt={managerData.mUsername + '인'}
+                            src={managerData?.Stamp?.[0]?.imageUrl}
+                            alt={managerData?.mUsername + '인'}
                           />
                         </div>
                       )}
