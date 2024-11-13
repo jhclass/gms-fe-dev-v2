@@ -334,6 +334,7 @@ export type Mutation = {
   createPermissionGranted: CommonResponse;
   createStudentState: CommonResponse;
   createSubject: CommonResponse;
+  createUserActivityLogs: CommonResponse;
   deleteBranch: CommonResponse;
   deleteConsultationMemo: CommonResponse;
   deleteManageUser: CommonResponse;
@@ -478,6 +479,12 @@ export type MutationCreateSubjectArgs = {
   subjectName: Scalars['String']['input'];
   teacherName?: InputMaybe<Scalars['String']['input']>;
   totalTime?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationCreateUserActivityLogsArgs = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  eventName: Scalars['String']['input'];
 };
 
 
@@ -754,6 +761,7 @@ export type Query = {
   seeManageUser: ResultSeeManageUser;
   seeStudentState: StudentStateResponse;
   seeSubject: SeeSubjectResult;
+  seeUserActivityLogs: UserActivityLogsResponse;
 };
 
 
@@ -1147,6 +1155,27 @@ export type UpdateStudentStateResult = {
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
+};
+
+export type UserActivityLogs = {
+  __typename?: 'UserActivityLogs';
+  Branch?: Maybe<Branch>;
+  branchId?: Maybe<Scalars['Int']['output']>;
+  createdAt?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  eventName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['String']['output']>;
+  userId: Scalars['String']['output'];
+};
+
+export type UserActivityLogsResponse = {
+  __typename?: 'UserActivityLogsResponse';
+  data?: Maybe<Array<Maybe<UserActivityLogs>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type WorkLogs = {
