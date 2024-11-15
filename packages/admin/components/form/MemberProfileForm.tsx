@@ -14,7 +14,7 @@ import ChangePassword from '@/components/modal/ChangePassword'
 import { useRef, useState } from 'react'
 import Address from '@/components/common/Address'
 import FormTopInfo from '@/components/common/FormTopInfo'
-
+import axios from 'axios'
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -98,12 +98,12 @@ export default function MemberProfileForm() {
   const theme = useTheme()
   const { error, data, refetch } = useSuspenseQuery<mmeQuery>(MME_QUERY)
   const [editManager] = useMutation(EDIT_MANAGE_USER_MUTATION, {
-    context: {
-      headers: {
-        'x-apollo-operation-name': 'mAvatar',
-        // 'apollo-require-preflight': 'true',
-      },
-    },
+    // context: {
+    //   headers: {
+    //     'x-apollo-operation-name': 'mAvatar',
+    //     // 'apollo-require-preflight': 'true',
+    //   },
+    // },
   })
   const { userLogs } = useUserLogsMutation()
   const mMeData = data?.mMe
@@ -111,7 +111,7 @@ export default function MemberProfileForm() {
   const { register, handleSubmit, setValue, setError, clearErrors, formState } =
     useForm()
   const { errors, isDirty, dirtyFields } = formState
-  const [avatarImg, setAvatartImg] = useState(null)
+  const [avatarImg, setAvatarImg] = useState(null)
   const fileInputRef = useRef(null)
 
   const gradeStr = data => {
@@ -187,23 +187,58 @@ export default function MemberProfileForm() {
     return formatted
   }
 
-  const handleFileChange = event => {
-    const MAX_FILE_SIZE = 10 * 1024 * 1024
+  const handleFileChange = async event => {
+    const MAX_FILE_SIZE = 10 * 1024 * 1024 // 최대 파일 크기 10MB
     const file = event.target.files[0]
+    console.log(file)
     if (file) {
+      // 파일 크기 확인
       if (file.size > MAX_FILE_SIZE) {
         setError('mAvatar', {
           type: 'manual',
-          message: '파일이 너무 큽니다. 10Mb이하만 가능합니다.',
+          message: '파일이 너무 큽니다. 10Mb 이하만 가능합니다.',
         })
-      } else {
-        clearErrors('mAvatar')
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setAvatartImg(reader.result)
-        }
-        reader.readAsDataURL(file)
-        setValue('mAvatar', file, { shouldDirty: true })
+        return
+      }
+
+      clearErrors('mAvatar') // 기존 에러 제거
+
+      // 서버에 업로드 요청
+      try {
+        console.log('Preparing to send axios request') // 확인 로그 추가
+        const token = localStorage.getItem('token')
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('folderName', 'avatars') // 업로드 폴더 이름
+        console.log('FormData before sending:')
+        formData.forEach((value, key) => {
+          console.log(`${key}: ${value}`)
+        })
+        const response = await axios.post(
+          'http://localhost:4000/s3/upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data', // 파일 업로드 헤더
+              token: token, // JWT 토큰 (필요하면 추가)
+            },
+          },
+        )
+
+        const url = response.data // 서버에서 반환된 URL
+        console.log('url이다', url)
+        // URL을 state 및 form에 설정
+        setAvatarImg(url) // 미리보기 이미지 설정
+        setValue('mAvatar', url, { shouldDirty: true }) // URL로 React Hook Form 업데이트
+      } catch (error) {
+        console.error(
+          'Error uploading file:',
+          error.response?.data || error.message,
+        )
+        setError('mAvatar', {
+          type: 'manual',
+          message: '파일 업로드 중 오류가 발생했습니다.',
+        })
       }
     }
   }

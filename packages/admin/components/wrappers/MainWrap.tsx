@@ -17,6 +17,7 @@ import { useQuery } from '@apollo/client'
 import { SEE_ALARMS_TOTAL_QUERY } from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import useMmeQuery from '@/utils/mMe'
+import { io } from 'socket.io-client'
 
 const Wrap = styled(motion.div)<{ $navOpen: boolean }>`
   position: relative;
@@ -108,70 +109,67 @@ export default function MainWrap({ children }) {
   const [messages, setMessages] = useState([])
   const [socket, setSocket] = useState(null)
   const [reconnectInterval, setReconnectInterval] = useState(1000) // 초기 재연결 간격 (1초)
+  const token = localStorage.getItem('token') // sessionStorage에서 토큰 가져오기
+  console.log(token)
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    // console.log('token:', token)
-    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URI}${token}`)
+    const socket = io('http://localhost:4001', {
+      path: '/socket.io', // 서버와 동일한 path
+      transports: ['websocket'], // WebSocket만 사용
+      auth: {
+        token: token, // 인증 토큰
+      },
+    })
 
-    ws.onopen = () => {
-      setStatus('WebSocket connection opened')
-      console.log('WebSocket connection opened')
-      ws.send('클라이언트에서 서버로 메시지 전송')
-    }
+    socket.on('connect', () => {
+      setStatus('Socket.IO connection opened')
+      console.log('Socket.IO connection opened')
+    })
 
-    ws.onmessage = event => {
-      try {
-        const message = JSON.parse(event.data)
-        console.log('Message from server:', message)
+    socket.on('NEW_STUDENTSTATE', message => {
+      console.log('NEW_STUDENTSTATE message received:', message)
+      setMessages(prevMessages => [...prevMessages, message])
 
-        if (message.type === 'NEW_STUDENTSTATE') {
-          setMessages(prevMessages => [...prevMessages, message.data])
-          console.log('NEW_STUDENTSTATE message received:', message.data)
+      if (message.filterTargetIds.includes(mId)) {
+        toast(<ReqToast messageData={message} />, {
+          position: 'bottom-right',
+          autoClose: isMobile ? 5000 : 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          onClick: () => {
+            router.push('/consult')
+          },
+        })
 
-          if (message.data.filterTargetIds.includes(mId)) {
-            toast(<ReqToast messageData={message.data} />, {
-              position: 'bottom-right',
-              autoClose: isMobile ? 5000 : 10000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              onClick: () => {
-                router.push('/consult')
-              },
-            })
-
-            refetch()
-          }
-
-          sessionStorage.setItem('newTodayState', formattedDate)
-          sessionStorage.setItem('newStudentState', 'true')
-        }
-
-        if (message.type === 'NEW_STUDENT') {
-          setMessages(prevMessages => [...prevMessages, message.data])
-          console.log('NEW_STUDENT message received:', message.data)
-          sessionStorage.setItem('newToday', formattedDate)
-          sessionStorage.setItem('newStudent', 'true')
-        }
         refetch()
-      } catch (error) {
-        console.error('Error parsing message:', error)
       }
-    }
-    ws.onclose = () => {
-      setStatus('WebSocket connection closed')
-      console.log('WebSocket connection closed')
-    }
 
-    ws.onerror = error => {
-      setStatus('WebSocket error')
-      console.log('WebSocket error:', error)
-    }
+      sessionStorage.setItem('newTodayState', formattedDate)
+      sessionStorage.setItem('newStudentState', 'true')
+    })
+
+    socket.on('NEW_STUDENT', message => {
+      console.log('NEW_STUDENT message received:', message)
+      setMessages(prevMessages => [...prevMessages, message])
+      sessionStorage.setItem('newToday', formattedDate)
+      sessionStorage.setItem('newStudent', 'true')
+      refetch()
+    })
+
+    socket.on('disconnect', () => {
+      setStatus('Socket.IO connection closed')
+      console.log('Socket.IO connection closed')
+    })
+
+    socket.on('connect_error', error => {
+      setStatus('Socket.IO connection error')
+      console.error('Socket.IO connection error:', error)
+    })
 
     return () => {
-      ws.close()
+      socket.disconnect()
     }
   }, [])
   //socketTest
