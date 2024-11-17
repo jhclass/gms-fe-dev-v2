@@ -177,8 +177,8 @@ export default function StudentsItem(props) {
   const conIndex = props.itemIndex
   const student = props.tableData
   const flagString = isDisplayFlag(
-    student.createdAt,
-    student.studentPayment.length,
+    student?.createdAt,
+    student?.studentPayment?.length,
   )
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
