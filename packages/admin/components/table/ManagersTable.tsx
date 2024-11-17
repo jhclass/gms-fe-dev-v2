@@ -189,6 +189,7 @@ export default function ManagersTable({ mGrade, mId }) {
     SEE_MANAGEUSER_QUERY,
     {
       variables: { page: currentPage, limit: currentLimit },
+      fetchPolicy: 'cache-and-network', // 캐시 + 네트워크 요청
     },
   )
 
@@ -202,6 +203,7 @@ export default function ManagersTable({ mGrade, mId }) {
         variables: {
           permissionName: '직원관리',
         },
+        fetchPolicy: 'cache-and-network', // 캐시 + 네트워크 요청
       },
     )
   const permissionManagers =

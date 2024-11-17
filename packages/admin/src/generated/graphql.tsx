@@ -386,6 +386,7 @@ export type Mutation = {
   deleteStudent: CommonResponse;
   deleteStudentState: CommonResponse;
   deleteSubject: CommonResponse;
+  doubleCheck: CommonResponse;
   editAdviceType: CommonResponse;
   editBranch: CommonResponse;
   editManageUser: CommonResponse;
@@ -583,6 +584,12 @@ export type MutationDeleteStudentStateArgs = {
 
 export type MutationDeleteSubjectArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationDoubleCheckArgs = {
+  name: Scalars['String']['input'];
+  phoneNum1: Scalars['String']['input'];
 };
 
 
@@ -844,7 +851,8 @@ export type Query = {
   seeAdviceType: ResultAdviceType;
   seeAlarms: ResultSeeAlarms;
   seeFavorite: Array<StudentState>;
-  seeManageUser: ResultSeeManageUser;
+  seeManageUser: SeeManageUserResult;
+  seeStudent: SeeStudentResult;
   seeStudentState: StudentStateResponse;
   seeSubject: SeeSubjectResult;
   seeUserActivityLogs: UserActivityLogsResponse;
@@ -925,6 +933,12 @@ export type QuerySeeManageUserArgs = {
 };
 
 
+export type QuerySeeStudentArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySeeStudentStateArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page: Scalars['Int']['input'];
@@ -995,15 +1009,6 @@ export type ResultSeeAlarms = {
   totalCount?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ResultSeeManageUser = {
-  __typename?: 'ResultSeeManageUser';
-  data?: Maybe<Array<Maybe<ManageUser>>>;
-  error?: Maybe<Scalars['String']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  ok: Scalars['Boolean']['output'];
-  totalCount?: Maybe<Scalars['Int']['output']>;
-};
-
 export type SearchManageUserResult = {
   __typename?: 'SearchManageUserResult';
   data?: Maybe<Array<Maybe<ManageUser>>>;
@@ -1028,6 +1033,24 @@ export type SearchSubjectResult = {
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
   result?: Maybe<Array<Maybe<Subject>>>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SeeManageUserResult = {
+  __typename?: 'SeeManageUserResult';
+  data?: Maybe<Array<Maybe<ManageUser>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SeeStudentResult = {
+  __typename?: 'SeeStudentResult';
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
+  student?: Maybe<Array<Maybe<Student>>>;
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 

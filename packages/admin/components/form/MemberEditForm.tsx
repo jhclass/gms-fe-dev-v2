@@ -302,8 +302,24 @@ export default function MemberEditForm({ managerId }) {
     }
   }
 
-  const clickCreate = () => {
-    createTamp({ variables: { manageUserId: managerData.id } })
+  const clickCreate = async () => {
+    try {
+      const result = await createTamp({
+        variables: { manageUserId: managerData.id },
+      })
+
+      if (result.data?.createStamp?.ok) {
+        // 도장 생성 성공 시 데이터 리패치
+        // await refetch()
+        alert('도장이 생성되었습니다.')
+        router.replace(router.asPath) // 현재 페이지를 강제로 다시 로드
+      } else {
+        alert('도장 생성에 실패했습니다.')
+      }
+    } catch (error) {
+      console.error('도장 생성 중 오류 발생:', error)
+      alert('도장 생성 중 오류가 발생했습니다.')
+    }
   }
 
   return (
