@@ -175,8 +175,8 @@ export default function OutstandingItem(props) {
               </Tname>
               <Tmanager>
                 <EllipsisBox>
-                  {payment?.processingManager.mUsername
-                    ? payment?.processingManager.mUsername
+                  {payment?.processingManager?.mUsername
+                    ? payment?.processingManager?.mUsername
                     : '-'}
                 </EllipsisBox>
               </Tmanager>

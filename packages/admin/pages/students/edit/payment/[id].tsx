@@ -201,9 +201,9 @@ export default function StudentsWritePayment() {
       },
       onCompleted: data => {
         if (data.searchPaymentDetail.ok) {
-          setPaymentDetailData(data.searchPaymentDetail.PaymentDetail[0])
+          setPaymentDetailData(data?.searchPaymentDetail?.PaymentDetail?.[0])
           setStudentPaymentData(
-            data.searchPaymentDetail.PaymentDetail[0].studentPayment,
+            data?.searchPaymentDetail?.PaymentDetail?.[0]?.studentPayment,
           )
         }
       },

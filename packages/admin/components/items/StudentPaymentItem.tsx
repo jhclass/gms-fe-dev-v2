@@ -164,7 +164,7 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
                 isDisabled={true}
                 isReadOnly={true}
                 labelPlacement="outside"
-                defaultValue={detailtData?.subject.subjectName}
+                defaultValue={detailtData?.subject?.subjectName}
                 minRows={1}
                 variant="flat"
                 size="md"

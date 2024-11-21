@@ -181,7 +181,7 @@ export default function AccountingItem(props) {
                 </EllipsisBox>
               </Tmanager>
               <Tsubject>
-                <EllipsisBox>{`[${payment?.studentPayment?.subject?.round}회차] ${payment?.studentPayment.subject?.subjectName}`}</EllipsisBox>
+                <EllipsisBox>{`[${payment?.studentPayment?.subject?.round}회차] ${payment?.studentPayment?.subject?.subjectName}`}</EllipsisBox>
               </Tsubject>
               <Tapproval>
                 {payment?.ApprovalNum ? payment?.ApprovalNum : '-'}
