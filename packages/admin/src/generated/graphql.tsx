@@ -401,11 +401,13 @@ export type Mutation = {
   mLogin: ResultLogin;
   readAlarms: CommonResponse;
   refreshToken: ResultRefreshToken;
+  refundApproval: CommonResponse;
+  reqRefund: CommonResponse;
+  searchPaymentDetail: PaymentDetailResult;
   searchStudent: SearchStudentResult;
   searchStudentPayment: SearchStudentPaymentResult;
   searchStudentState: SearchStudentStateResult;
   searchSubject: SearchSubjectResult;
-  seePaymentDetail: PaymentDetailResult;
   staticPushAT: CommonResponse;
   updateConsultationMemo: CommonResponse;
   updateFavorite: UpdateFavoriteResult;
@@ -787,6 +789,38 @@ export type MutationRefreshTokenArgs = {
 };
 
 
+export type MutationRefundApprovalArgs = {
+  id: Scalars['Int']['input'];
+  refundApproval: Scalars['Boolean']['input'];
+  refundApprovalDate: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+};
+
+
+export type MutationReqRefundArgs = {
+  id: Scalars['Int']['input'];
+  reqRefund: Scalars['Boolean']['input'];
+  reqRefundDate: Scalars['String']['input'];
+};
+
+
+export type MutationSearchPaymentDetailArgs = {
+  ApprovalNum?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  paymentDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  receiverId?: InputMaybe<Scalars['Int']['input']>;
+  refundApproval?: InputMaybe<Scalars['Boolean']['input']>;
+  refundApprovalDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  reqRefund?: InputMaybe<Scalars['Boolean']['input']>;
+  reqRefundDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sortOf?: InputMaybe<Scalars['String']['input']>;
+  stName?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationSearchStudentArgs = {
   birthday?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   createdAt?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -799,13 +833,13 @@ export type MutationSearchStudentArgs = {
 
 
 export type MutationSearchStudentPaymentArgs = {
-  createdPeriod?: InputMaybe<Array<Scalars['String']['input']>>;
+  createdPeriod?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   employment?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   lectureAssignment?: InputMaybe<Scalars['String']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  period?: InputMaybe<Array<Scalars['String']['input']>>;
+  period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   studentName?: InputMaybe<Scalars['String']['input']>;
   subDiv?: InputMaybe<Scalars['String']['input']>;
 };
@@ -835,12 +869,6 @@ export type MutationSearchSubjectArgs = {
   subDiv?: InputMaybe<Scalars['String']['input']>;
   subjectCode?: InputMaybe<Scalars['String']['input']>;
   subjectName?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type MutationSeePaymentDetailArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -916,6 +944,7 @@ export type PaymentDetail = {
   branchId?: Maybe<Scalars['Int']['output']>;
   cardCompany?: Maybe<Scalars['String']['output']>;
   cardNum?: Maybe<Scalars['String']['output']>;
+  cashOrCard?: Maybe<Scalars['String']['output']>;
   cashReceipts?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   createdAt: Scalars['String']['output'];
   depositAmount?: Maybe<Scalars['Int']['output']>;
@@ -1002,12 +1031,12 @@ export type Query = {
   sayHello: Scalars['String']['output'];
   searchAttendanceRecord: ResultSearchAttendanceRecord;
   searchManageUser: SearchManageUserResult;
-  searchPaymentDetail: PaymentDetailResult;
   searchPermissionsGranted: ResultSearchPermissionsGranted;
   seeAdviceType: ResultAdviceType;
   seeAlarms: ResultSeeAlarms;
   seeFavorite: Array<StudentState>;
   seeManageUser: SeeManageUserResult;
+  seePaymentDetail: PaymentDetailResult;
   seeStudent: SeeStudentResult;
   seeStudentPayment: StudentPaymentResult;
   seeStudentState: StudentStateResponse;
@@ -1062,23 +1091,6 @@ export type QuerySearchManageUserArgs = {
 };
 
 
-export type QuerySearchPaymentDetailArgs = {
-  ApprovalNum?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-  paymentDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  receiverId?: InputMaybe<Scalars['Int']['input']>;
-  refundApproval?: InputMaybe<Scalars['Boolean']['input']>;
-  refundApprovalDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  reqRefund?: InputMaybe<Scalars['Boolean']['input']>;
-  reqRefundDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  sortOf?: InputMaybe<Scalars['String']['input']>;
-  stName?: InputMaybe<Scalars['String']['input']>;
-};
-
-
 export type QuerySearchPermissionsGrantedArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   manageUserId?: InputMaybe<Scalars['Int']['input']>;
@@ -1104,6 +1116,12 @@ export type QuerySeeManageUserArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   resign?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySeePaymentDetailArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 

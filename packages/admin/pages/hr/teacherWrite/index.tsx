@@ -21,7 +21,7 @@ import Address from '@/components/common/Address'
 import { useRecoilValue } from 'recoil'
 import { gradeState } from '@/lib/recoilAtoms'
 import FormTopInfo from '@/components/common/FormTopInfo'
-
+import TypeLink from '@/components/common/TypeLink'
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -522,6 +522,19 @@ export default function TeacherWrite() {
                         </Suspense>
                       )}
                     />
+                    <Suspense
+                      fallback={
+                        <LodingDiv>
+                          <i className="xi-spinner-2" />
+                        </LodingDiv>
+                      }
+                    >
+                      <TypeLink
+                        typeLink={'teacherType'}
+                        typeName={'강의분야'}
+                        permissionName={'강의분야'}
+                      />
+                    </Suspense>
                   </AreaBox>
                   <AreaBox>
                     <DatePickerBox>
