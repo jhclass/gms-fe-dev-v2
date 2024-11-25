@@ -148,10 +148,9 @@ export default function Login() {
           mLogin: { ok, token, refreshToken, error },
         } = data
 
-        userLogs(`로그인`, `ok: ${ok}`)
-
         if (ok) {
           LogUserIn(token, refreshToken)
+          userLogs(`로그인`, `ok: ${ok}`)
           router.push('/')
         } else {
           setLoginError(error)
@@ -161,7 +160,7 @@ export default function Login() {
   }
 
   const clickAdmin = () => {
-    alert(`ID/PW 찾기는 관리자에게 문의주세요.😀\nkkalim4913@gmail.com`)
+    alert(`ID/PW 찾기는 관리자에게 문의주세요.😀\nbbodaejh@gmail.com`)
   }
 
   const idValue = useWatch({ control, name: 'id' })
