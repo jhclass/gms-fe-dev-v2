@@ -34,6 +34,7 @@ import useUserLogsMutation from '@/utils/userLogs'
 import FormTopInfo from '@/components/common/FormTopInfo'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import TypeLink from '@/components/common/TypeLink'
+import axios from 'axios'
 
 const ConArea = styled.div`
   width: 100%;
@@ -146,14 +147,7 @@ export default function LectureDetail() {
   const lectureId = typeof router.query.id === 'string' ? router.query.id : null
   const { userLogs } = useUserLogsMutation()
   const [searchLectures] = useMutation(SEARCH_LECTURES_MUTATION)
-  const [editLectures] = useMutation(EDIT_LECTURES_MUTATION, {
-    context: {
-      headers: {
-        'x-apollo-operation-name': 'timetableAttached',
-        // 'apollo-require-preflight': 'true',
-      },
-    },
-  })
+  const [editLectures] = useMutation(EDIT_LECTURES_MUTATION)
   const [campusName, setCampusName] = useState('신촌')
   const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState([])
@@ -225,17 +219,10 @@ export default function LectureDetail() {
   }, [lectureId])
 
   const extractFileName = url => {
-    if (url !== null) {
-      const lastSlashIndex = url.lastIndexOf('/')
-      const afterLastSlash = url.substring(lastSlashIndex + 1)
-      const firstHyphenIndex = afterLastSlash.indexOf('-')
-      const secondHyphenIndex = afterLastSlash.indexOf(
-        '-',
-        firstHyphenIndex + 1,
-      )
-      const fileNames = afterLastSlash.substring(secondHyphenIndex + 1)
-      return fileNames
-    }
+    if (!url) return null // null 또는 undefined 체크
+    const afterLastSlash = url.split('/').pop() // 마지막 '/' 이후 부분 추출
+    const parts = afterLastSlash.split('-') // '-' 기준으로 분리
+    return parts.slice(2).join('-') // 두 번째 '-' 이후를 결합
   }
 
   useEffect(() => {
@@ -257,7 +244,6 @@ export default function LectureDetail() {
       if (lectureData.eduStatusReport) {
         setIsReport(lectureData.eduStatusReport)
       }
-
       if (lectureData?.lectureTime) {
         const startTime = new Date(lectureData?.lectureTime[0])
         const endTime = new Date(lectureData?.lectureTime[1])
@@ -313,7 +299,7 @@ export default function LectureDetail() {
     setIsReport(value)
   }
 
-  const handleFileChange = event => {
+  const handleFileChange = async event => {
     const MAX_FILE_SIZE = 10 * 1024 * 1024
     const file = event.target.files[0]
     if (file) {
@@ -340,6 +326,21 @@ export default function LectureDetail() {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
+        // console.log(data.lectureDetails[0].length)
+        // console.log('data.lectureDetails:', data.lectureDetails)
+        // console.log('typeof data.lectureDetails:', typeof data.lectureDetails)
+        // console.log(
+        //   'Array.isArray(data.lectureDetails):',
+        //   Array.isArray(data.lectureDetails),
+        // )
+        // if (Array.isArray(data.lectureDetails)) {
+        //   console.log('첫 번째 요소:', data.lectureDetails[0])
+        //   console.log('첫 번째 요소의 길이:', data.lectureDetails[0].length)
+        // }
+        if (typeof data.lectureDetails === 'string') {
+          data.lectureDetails = data.lectureDetails.split(',')
+        }
+
         try {
           if (
             data.lectureDetails.length > 1 &&
@@ -352,6 +353,58 @@ export default function LectureDetail() {
                 .filter(Boolean)
                 .map(Number)
             }
+
+            //기존파일 삭제
+            let uploadFileUrl = null
+            if (lectureData.timetableAttached !== null) {
+              try {
+                await axios.post(
+                  `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/delete`,
+                  {
+                    url: lectureData.timetableAttached,
+                    folderName: 'timetables',
+                  },
+                  {
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  },
+                )
+                //console.log('삭제완료')
+                uploadFileUrl = null
+              } catch (error) {
+                console.error(`기존 timetables 파일삭제 중 에러발생:${Error}`)
+              }
+            }
+
+            const isFileChanged =
+              dirtyFields.timetableAttached &&
+              data.timetableAttached &&
+              lectureData.timetableAttached !== data.timetableAttached
+            if (isFileChanged) {
+              try {
+                const token = localStorage.getItem('token')
+                const formData = new FormData()
+                formData.append('file', data.timetableAttached)
+                formData.append('folderName', 'timetables')
+                const response = await axios.post(
+                  `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/upload`,
+                  formData,
+                  {
+                    headers: {
+                      'Content-Type': 'mulipart/form-data',
+                      token,
+                    },
+                  },
+                )
+
+                uploadFileUrl = response?.data
+                //console.log(uploadFileUrl)
+              } catch (error) {
+                console.error('파일 등록 실패:', error.message)
+              }
+            }
+
             const result = await editLectures({
               variables: {
                 editLecturesId: parseInt(lectureId),
@@ -389,7 +442,7 @@ export default function LectureDetail() {
                   ? parseInt(data.sessionNum)
                   : lectureData.sessionNum,
                 timetableAttached:
-                  dirtyFields.timetableAttached && data.timetableAttached,
+                  dirtyFields.timetableAttached && uploadFileUrl,
                 lastModifiedTime: new Date(),
               },
             })

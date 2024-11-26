@@ -1711,7 +1711,7 @@ export const CREATE_LECTURES_MUTATION = gql`
     $approvedNum: Int!
     $confirmedNum: Int!
     $sessionNum: Int!
-    $timetableAttached: Upload
+    $timetableAttached: String
   ) {
     createLectures(
       campus: $campus
@@ -1941,7 +1941,7 @@ export const EDIT_LECTURES_MUTATION = gql`
     $approvedNum: Int
     $confirmedNum: Int
     $sessionNum: Int
-    $timetableAttached: Upload
+    $timetableAttached: String
     $lastModifiedTime: String!
   ) {
     editLectures(

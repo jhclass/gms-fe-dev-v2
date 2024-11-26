@@ -32,6 +32,7 @@ import FormTopInfo from '@/components/common/FormTopInfo'
 import AdviceSelect from '@/components/common/select/AdviceSelect'
 import TypeLink from '@/components/common/TypeLink'
 import SuspenseBox from '@/components/wrappers/SuspenseWrap'
+import axios from 'axios'
 
 const ConArea = styled.div`
   width: 100%;
@@ -143,14 +144,7 @@ export default function LectureWrite() {
   const router = useRouter()
   const { userLogs } = useUserLogsMutation()
   const [campusName, setCampusName] = useState('신촌')
-  const [createLectures] = useMutation(CREATE_LECTURES_MUTATION, {
-    context: {
-      headers: {
-        'x-apollo-operation-name': 'timetableAttached',
-        // 'apollo-require-preflight': 'true',
-      },
-    },
-  })
+  const [createLectures] = useMutation(CREATE_LECTURES_MUTATION)
   const [subjectState, setSubjectState] = useState(null)
   const [sub, setSub] = useState('-')
   const [teacher, setTeacher] = useState([])
@@ -233,6 +227,31 @@ export default function LectureWrite() {
   const onSubmit = async data => {
     try {
       if (data.lectureDetails.length > 1 && data.lectureDetails[0].length > 9) {
+        let uploadFileUrl = null
+        if (fileName && fileName !== '파일을 선택하세요.') {
+          try {
+            console.log('Updating file...')
+            const file = data.timetableAttached
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('folderName', 'timetables')
+            console.log('asdf', formData)
+            const token = localStorage.getItem('token')
+            const response = await axios.post(
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/upload`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  token,
+                },
+              },
+            )
+            uploadFileUrl = response.data
+          } catch (error) {
+            console.error(error.message)
+          }
+        }
         const teachersIdArray = data.teachersId
           .split(',')
           .filter(Boolean)
@@ -256,7 +275,7 @@ export default function LectureWrite() {
             timetableAttached:
               data.timetableAttached === '파일을 선택하세요.'
                 ? null
-                : data.timetableAttached,
+                : uploadFileUrl,
           },
         })
 
