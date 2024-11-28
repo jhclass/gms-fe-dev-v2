@@ -115,12 +115,20 @@ export default function StudentPaymentItem({ detailtData, index, studentId }) {
   }
 
   const extractTimeRange = dates => {
+    if (!Array.isArray(dates) || dates.length < 2) {
+      console.error('Invalid dates:', dates) // 로그로 확인
+      return 'Invalid date range' // 혹은 적절한 기본값 반환
+    }
     const startTime = formatTime(dates[0])
     const endTime = formatTime(dates[1])
     return `${startTime} - ${endTime}`
   }
 
   const formatUsernames = data => {
+    if (!Array.isArray(data)) {
+      console.error('Invalid data:', data) // 디버깅을 위한 로그
+      return 'No users' // 적절한 기본값 반환
+    }
     return data.map(item => item.mUsername).join(', ')
   }
 

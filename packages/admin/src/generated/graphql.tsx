@@ -392,6 +392,7 @@ export type Mutation = {
   changeOrderAT: CommonResponse;
   checkingIpRecord: CommonResponse;
   createAdviceType: CommonResponse;
+  createAttendance: CommonResponse;
   createAttendanceRecord: CommonResponse;
   createBranch: CommonResponse;
   createConsultationMemo: CommonResponse;
@@ -406,6 +407,7 @@ export type Mutation = {
   createStudentState: CommonResponse;
   createSubject: CommonResponse;
   createUserActivityLogs: CommonResponse;
+  deleteAttendance: CommonResponse;
   deleteBranch: CommonResponse;
   deleteConsultationMemo: CommonResponse;
   deleteLectures: CommonResponse;
@@ -419,6 +421,7 @@ export type Mutation = {
   deleteSubject: CommonResponse;
   doubleCheck: CommonResponse;
   editAdviceType: CommonResponse;
+  editAttendance: CommonResponse;
   editBranch: CommonResponse;
   editLectures: CommonResponse;
   editManageUser: CommonResponse;
@@ -466,6 +469,15 @@ export type MutationCreateAdviceTypeArgs = {
   indexNum: Scalars['Int']['input'];
   onOff?: InputMaybe<Scalars['String']['input']>;
   type: Scalars['String']['input'];
+};
+
+
+export type MutationCreateAttendanceArgs = {
+  attendanceDate: Scalars['String']['input'];
+  attendanceState: Array<InputMaybe<Scalars['String']['input']>>;
+  lecturesId: Scalars['Int']['input'];
+  studentId: Array<InputMaybe<Scalars['Int']['input']>>;
+  studentPaymentId: Array<InputMaybe<Scalars['Int']['input']>>;
 };
 
 
@@ -665,6 +677,11 @@ export type MutationCreateUserActivityLogsArgs = {
 };
 
 
+export type MutationDeleteAttendanceArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteBranchArgs = {
   id: Scalars['Int']['input'];
 };
@@ -731,6 +748,13 @@ export type MutationEditAdviceTypeArgs = {
   defaultValue?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
   onOff?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditAttendanceArgs = {
+  attendanceState: Array<InputMaybe<Scalars['String']['input']>>;
+  id: Array<InputMaybe<Scalars['Int']['input']>>;
+  lastModifiedTime: Scalars['String']['input'];
 };
 
 
@@ -1158,10 +1182,12 @@ export type Query = {
   mMe: ManageUser;
   sayHello: Scalars['String']['output'];
   searchAttendanceRecord: ResultSearchAttendanceRecord;
+  searchAttendanceResult: SearchAttendanceResult;
   searchManageUser: SearchManageUserResult;
   searchPermissionsGranted: ResultSearchPermissionsGranted;
   seeAdviceType: ResultAdviceType;
   seeAlarms: ResultSeeAlarms;
+  seeAttendance: SeeAttendanceResult;
   seeFavorite: Array<StudentState>;
   seeLectures: SeeLecturesResult;
   seeManageUser: SeeManageUserResult;
@@ -1205,6 +1231,15 @@ export type QuerySearchAttendanceRecordArgs = {
 };
 
 
+export type QuerySearchAttendanceResultArgs = {
+  attendanceDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  lecturesId: Scalars['Int']['input'];
+  studentId?: InputMaybe<Scalars['Int']['input']>;
+  studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySearchManageUserArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1238,6 +1273,12 @@ export type QuerySeeAdviceTypeArgs = {
 export type QuerySeeAlarmsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySeeAttendanceArgs = {
+  attendanceDate: Scalars['String']['input'];
+  lecturesId: Scalars['Int']['input'];
 };
 
 
@@ -1350,6 +1391,15 @@ export type SalesStatisticsResult = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type SearchAttendanceResult = {
+  __typename?: 'SearchAttendanceResult';
+  data?: Maybe<Array<Maybe<Attendance>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type SearchLecturesResult = {
   __typename?: 'SearchLecturesResult';
   data?: Maybe<Array<Maybe<Lectures>>>;
@@ -1402,6 +1452,25 @@ export type SearchSubjectResult = {
   ok: Scalars['Boolean']['output'];
   result?: Maybe<Array<Maybe<Subject>>>;
   totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SeeAttendanceResult = {
+  __typename?: 'SeeAttendanceResult';
+  absentCount?: Maybe<Scalars['Int']['output']>;
+  absentData?: Maybe<Array<Maybe<Attendance>>>;
+  attendanceCount?: Maybe<Scalars['Int']['output']>;
+  attendanceData?: Maybe<Array<Maybe<Attendance>>>;
+  enrollCount?: Maybe<Scalars['Int']['output']>;
+  enrollData?: Maybe<Array<Maybe<Attendance>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  leaveEarlyCount?: Maybe<Scalars['Int']['output']>;
+  leaveEarlyData?: Maybe<Array<Maybe<Attendance>>>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  outingCount?: Maybe<Scalars['Int']['output']>;
+  outingData?: Maybe<Array<Maybe<Attendance>>>;
+  tardyCount?: Maybe<Scalars['Int']['output']>;
+  tardyData?: Maybe<Array<Maybe<Attendance>>>;
 };
 
 export type SeeLecturesResult = {
