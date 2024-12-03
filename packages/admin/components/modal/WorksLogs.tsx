@@ -376,14 +376,14 @@ export default function WorksLogsModal({
       outingSt: workLogData?.outingSt || '',
       etc: workLogData?.etc || '',
       attendanceCount: workLogData?.attendanceCount || '',
-      check1: workLogData?.checkList[0] || '',
-      check2: workLogData?.checkList[1] || '',
-      check1con: workLogData?.checkContext[0] || '',
-      check2con: workLogData?.checkContext[1] || '',
+      check1: workLogData?.checkList?.[0] || '',
+      check2: workLogData?.checkList?.[1] || '',
+      check1con: workLogData?.checkContext?.[0] || '',
+      check2con: workLogData?.checkContext?.[1] || '',
     })
 
     if (workLogData && attendanceData && timeTotal) {
-      if (workLogData.attendanceCount.length > 0) {
+      if (workLogData.attendanceCount?.length > 0) {
         setAttendanceTotals(workLogData.attendanceCount)
       } else {
         setAttendanceTotals([
@@ -397,46 +397,46 @@ export default function WorksLogsModal({
       }
       setTrainingData({
         trainingInfoOne:
-          workLogData.trainingInfoOne.length === 0
+          workLogData.trainingInfoOne?.length === 0
             ? ['1교시', mUsername, '', '', '']
             : workLogData.trainingInfoOne,
         trainingInfoTwo:
-          workLogData.trainingInfoTwo.length === 0
+          workLogData.trainingInfoTwo?.length === 0
             ? ['2교시', mUsername, '', '', '']
             : workLogData.trainingInfoTwo,
         trainingInfoThree:
-          workLogData.trainingInfoThree.length === 0
+          workLogData.trainingInfoThree?.length === 0
             ? ['3교시', mUsername, '', '', '']
             : workLogData.trainingInfoThree,
         trainingInfoFour:
-          workLogData.trainingInfoFour.length === 0
+          workLogData.trainingInfoFour?.length === 0
             ? ['4교시', mUsername, '', '', '']
             : workLogData.trainingInfoFour,
         trainingInfoFive:
-          workLogData.trainingInfoFive.length === 0
+          workLogData.trainingInfoFive?.length === 0
             ? ['5교시', mUsername, '', '', '']
             : workLogData.trainingInfoFive,
         trainingInfoSix:
-          workLogData.trainingInfoSix.length === 0
+          workLogData.trainingInfoSix?.length === 0
             ? ['6교시', mUsername, '', '', '']
             : workLogData.trainingInfoSix,
         trainingInfoSeven:
-          workLogData.trainingInfoSeven.length === 0
+          workLogData.trainingInfoSeven?.length === 0
             ? ['7교시', mUsername, '', '', '']
             : workLogData.trainingInfoSeven,
         trainingInfoEight:
-          workLogData.trainingInfoEight.length === 0
+          workLogData.trainingInfoEight?.length === 0
             ? ['8교시', mUsername, '', '', '']
             : workLogData.trainingInfoEight,
       })
       setTrainingTimes(
-        workLogData.trainingTimeOneday.length === 0
+        workLogData.trainingTimeOneday?.length === 0
           ? [0, 0, 0, 0, 0]
           : workLogData.trainingTimeOneday,
       )
 
       setTrainingTimesTotal(
-        workLogData.trainingTimeTotal.length === 0
+        workLogData.trainingTimeTotal?.length === 0
           ? timeTotal.length === 0
             ? [0, 0, 0, 0, 0]
             : timeTotal
@@ -461,9 +461,9 @@ export default function WorksLogsModal({
             : workLogData.outingSt,
         etc: workLogData.etc === null ? [] : workLogData.etc,
       })
-      if (workLogData.checkList.length > 0) {
-        setIsChecked1(workLogData.checkList[0])
-        setIsChecked2(workLogData.checkList[1])
+      if (workLogData.checkList?.length > 0) {
+        setIsChecked1(workLogData.checkList?.[0])
+        setIsChecked2(workLogData.checkList?.[1])
       }
     }
   }, [workLogData, attendanceData, timeTotal])
@@ -733,12 +733,12 @@ export default function WorksLogsModal({
                                 <FilterLabel>훈련기간</FilterLabel>
                                 <LineBox>
                                   {formatDate(
-                                    workLogData?.lectures.lecturePeriodStart,
+                                    workLogData?.lectures?.lecturePeriodStart,
                                     false,
                                   ) +
                                     ' ~ ' +
                                     formatDate(
-                                      workLogData?.lectures.lecturePeriodEnd,
+                                      workLogData?.lectures?.lecturePeriodEnd,
                                       false,
                                     )}
                                 </LineBox>
@@ -751,11 +751,11 @@ export default function WorksLogsModal({
                                   {workLogeDate}{' '}
                                   {getWorksLogsDate(workLogeDate)}
                                   요일 (
-                                  {workLogData?.lectures.lectureDetails.indexOf(
+                                  {workLogData?.lectures?.lectureDetails.indexOf(
                                     workLogeDate,
                                   ) + 1}
                                   일/
-                                  {workLogData?.lectures.lectureDetails.length}
+                                  {workLogData?.lectures?.lectureDetails.length}
                                   일)
                                 </LineBox>
                               </div>

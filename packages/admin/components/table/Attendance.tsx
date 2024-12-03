@@ -642,7 +642,7 @@ export default function Attendance({ lectureData, students, isTeacher }) {
                         </Cell>
                         <Cell pinLeft>
                           <Link href={`/students/detail/course/${item.id}`}>
-                            {item.student.name}
+                            {item.student?.name}
                           </Link>
                         </Cell>
                         <Cell pinLeft>{item.subDiv}</Cell>

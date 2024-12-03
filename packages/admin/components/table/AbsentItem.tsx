@@ -82,32 +82,32 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
         <TableItem key={index}>
           <TableRow>
             <ClickBox>
-              <Tname>{student.student.name}</Tname>
+              <Tname>{student.student?.name}</Tname>
               <Tnum>
                 <span>{lectureDates.length}</span>일
               </Tnum>
               <Tnum>
                 <span className="attendance">
-                  {countAttendance(student.student.name, '출석')}
+                  {countAttendance(student.student?.name, '출석')}
                 </span>
                 회
               </Tnum>
               <Tnum>
-                <span>{countAttendance(student.student.name, '지각')}</span>회
+                <span>{countAttendance(student.student?.name, '지각')}</span>회
               </Tnum>
               <Tnum>
-                <span>{countAttendance(student.student.name, '외출')}</span>회
+                <span>{countAttendance(student.student?.name, '외출')}</span>회
               </Tnum>
               <Tnum>
-                <span>{countAttendance(student.student.name, '조퇴')}</span>회
+                <span>{countAttendance(student.student?.name, '조퇴')}</span>회
               </Tnum>
               <Tnum>
-                <span>{countAttendance(student.student.name, '결석')}</span>회
+                <span>{countAttendance(student.student?.name, '결석')}</span>회
               </Tnum>
               <Tnum>
                 <span>
                   {getRate(
-                    countAttendance(student.student.name, '출석'),
+                    countAttendance(student.student?.name, '출석'),
                     lectureDates.length,
                   )}
                 </span>
@@ -116,7 +116,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               <Tnum
                 className={
                   getRate(
-                    countAttendance(student.student.name, '지각'),
+                    countAttendance(student.student?.name, '지각'),
                     lectureDates.length,
                   ) >= 10
                     ? 'text-accent font-bold'
@@ -125,7 +125,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               >
                 <span>
                   {getRate(
-                    countAttendance(student.student.name, '지각'),
+                    countAttendance(student.student?.name, '지각'),
                     lectureDates.length,
                   )}
                 </span>
@@ -134,7 +134,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               <Tnum
                 className={
                   getRate(
-                    countAttendance(student.student.name, '외출'),
+                    countAttendance(student.student?.name, '외출'),
                     lectureDates.length,
                   ) >= 10
                     ? 'text-accent font-bold'
@@ -143,7 +143,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               >
                 <span>
                   {getRate(
-                    countAttendance(student.student.name, '외출'),
+                    countAttendance(student.student?.name, '외출'),
                     lectureDates.length,
                   )}
                 </span>
@@ -152,7 +152,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               <Tnum
                 className={
                   getRate(
-                    countAttendance(student.student.name, '조퇴'),
+                    countAttendance(student.student?.name, '조퇴'),
                     lectureDates.length,
                   ) >= 10
                     ? 'text-accent font-bold'
@@ -161,7 +161,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               >
                 <span>
                   {getRate(
-                    countAttendance(student.student.name, '조퇴'),
+                    countAttendance(student.student?.name, '조퇴'),
                     lectureDates.length,
                   )}
                 </span>
@@ -170,7 +170,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               <Tnum
                 className={
                   getRate(
-                    countAttendance(student.student.name, '결석'),
+                    countAttendance(student.student?.name, '결석'),
                     lectureDates.length,
                   ) >= 10
                     ? 'text-accent font-bold'
@@ -179,7 +179,7 @@ export default function AbsentItem({ lectureId, lectureDates, sortStudents }) {
               >
                 <span>
                   {getRate(
-                    countAttendance(student.student.name, '결석'),
+                    countAttendance(student.student?.name, '결석'),
                     lectureDates.length,
                   )}
                 </span>

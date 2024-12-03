@@ -253,7 +253,7 @@ export default function AttendancePage() {
                             )
                             .map((item, index) => (
                               <Chip key={index} color="primary">
-                                {item.student.name}
+                                {item.student?.name}
                               </Chip>
                             ))}
                         </>
@@ -269,7 +269,9 @@ export default function AttendancePage() {
                                 href={`/lecture/employmentDetail/${item.id}`}
                                 key={index}
                               >
-                                <Chip color="primary">{item.student.name}</Chip>
+                                <Chip color="primary">
+                                  {item.student?.name}
+                                </Chip>
                               </Link>
                             ))}
                         </>

@@ -162,7 +162,7 @@ export default function AbsentList({
                         radius="sm"
                         size="sm"
                         type="text"
-                        defaultValue={trainingData[item][0]}
+                        defaultValue={trainingData?.[item]?.[0]}
                         className="w-full"
                       />
                     </Tnum>
@@ -176,7 +176,7 @@ export default function AbsentList({
                         type="text"
                         placeholder=" "
                         onChange={e => handleInput(e, item, 1)}
-                        defaultValue={trainingData[item][1]}
+                        defaultValue={trainingData?.[item]?.[1]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -195,7 +195,7 @@ export default function AbsentList({
                         type="text"
                         placeholder=" "
                         onChange={e => handleInput(e, item, 2)}
-                        defaultValue={trainingData[item][2]}
+                        defaultValue={trainingData?.[item]?.[2]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -214,7 +214,7 @@ export default function AbsentList({
                         type="text"
                         placeholder=" "
                         onChange={e => handleInput(e, item, 3)}
-                        defaultValue={trainingData[item][3]}
+                        defaultValue={trainingData?.[item]?.[3]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${
@@ -236,7 +236,7 @@ export default function AbsentList({
                         type="text"
                         placeholder=" "
                         onChange={e => handleInput(e, item, 4)}
-                        defaultValue={trainingData[item][4]}
+                        defaultValue={trainingData?.[item]?.[4]}
                         className="w-full"
                         classNames={{
                           inputWrapper: `${

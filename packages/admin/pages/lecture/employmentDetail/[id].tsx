@@ -90,6 +90,7 @@ export default function EmploymentDetail() {
         },
         onCompleted: resData => {
           if (resData.searchAcademyRecord.ok) {
+            alert(JSON.stringify(resData.searchAcademyRecord.result[0]))
             setPaymentData(resData.searchAcademyRecord.result[0])
             setSubjectData(resData.searchAcademyRecord.result[0].subject)
           }
