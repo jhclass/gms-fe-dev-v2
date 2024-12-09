@@ -2675,7 +2675,7 @@ export const DELETE_REGULAR_EVALUATION_SET_MUTATION = gql`
 `
 export const CREATE_PORTFOLIO_MUTATION = gql`
   mutation Mutation(
-    $filePath: [Upload]!
+    $filePath: [String]!
     $studentPaymentId: Int!
     $subjectId: Int!
     $details: String
@@ -2701,7 +2701,7 @@ export const EDIT_PORTFOLIO_MUTATION = gql`
     $editStudentPortfolioId: Int!
     $lastModifiedTime: String!
     $isBest: String
-    $filePath: [Upload]
+    $filePath: [String]
     $details: String
     $url: [String]
   ) {

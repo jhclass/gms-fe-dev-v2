@@ -107,6 +107,7 @@ export type Career = {
   stName: Scalars['String']['output'];
   studentId: Scalars['Int']['output'];
   studentPaymentId: Scalars['Int']['output'];
+  subjectId: Scalars['Int']['output'];
   updatedAt: Scalars['String']['output'];
 };
 
@@ -201,6 +202,7 @@ export type EduInfomation = {
   Branch?: Maybe<Branch>;
   StudentPayment?: Maybe<StudentPayment>;
   Subject?: Maybe<Subject>;
+  branchId?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['String']['output'];
   eduName: Scalars['String']['output'];
   eduType: Scalars['String']['output'];
@@ -214,6 +216,7 @@ export type EduInfomation = {
   stName: Scalars['String']['output'];
   studentId: Scalars['Int']['output'];
   studentPaymentId: Scalars['Int']['output'];
+  subjectId: Scalars['Int']['output'];
   updatedAt: Scalars['String']['output'];
 };
 
@@ -222,7 +225,7 @@ export type EmploymentRecommendation = {
   Branch?: Maybe<Branch>;
   StudentPayment?: Maybe<StudentPayment>;
   Subject?: Maybe<Subject>;
-  branchId: Scalars['Int']['output'];
+  branchId?: Maybe<Scalars['Int']['output']>;
   certificateOfEmploymentStatus: Scalars['String']['output'];
   companyName: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
@@ -232,7 +235,7 @@ export type EmploymentRecommendation = {
   id: Scalars['Int']['output'];
   lastModifiedByName: Scalars['String']['output'];
   lastModifiedByUserId: Scalars['String']['output'];
-  lastModifiedTime: Scalars['String']['output'];
+  lastModifiedTime?: Maybe<Scalars['String']['output']>;
   lectureId: Scalars['Int']['output'];
   location: Scalars['String']['output'];
   phoneNum: Scalars['String']['output'];
@@ -263,6 +266,7 @@ export type EmploymentStatus = {
   lastModifiedByName: Scalars['String']['output'];
   lastModifiedByUserId: Scalars['String']['output'];
   lastModifiedTime?: Maybe<Scalars['String']['output']>;
+  lectureId: Scalars['Int']['output'];
   location: Scalars['String']['output'];
   phoneNum: Scalars['String']['output'];
   proofOfImployment: Scalars['String']['output'];
@@ -396,27 +400,47 @@ export type Mutation = {
   createAttendance: CommonResponse;
   createAttendanceRecord: CommonResponse;
   createBranch: CommonResponse;
+  createCareer: CommonResponse;
+  createCertificate: CommonResponse;
   createConsultationMemo: CommonResponse;
+  createEduInfomation: CommonResponse;
+  createEmploymentRecommendation: CommonResponse;
+  createEmploymentStatus: CommonResponse;
+  createHopeForEmployment: CommonResponse;
   createLectures: CommonResponse;
   createManagerAccount: CommonResponse;
   createMasterUser: CommonResponse;
   createPaymentDetail: CommonResponse;
   createPermissionGranted: CommonResponse;
+  createPreInspection: CommonResponse;
+  createRegularEvaluationSet: CommonResponse;
   createStudent: CommonResponse;
+  createStudentConsultation: CommonResponse;
   createStudentMemo: CommonResponse;
   createStudentPayment: CommonResponse;
+  createStudentPortfolio: CommonResponse;
   createStudentState: CommonResponse;
   createSubject: CommonResponse;
   createUserActivityLogs: CommonResponse;
   createWorkLogs: CommonResponse;
   deleteAttendance: CommonResponse;
   deleteBranch: CommonResponse;
+  deleteCareer: CommonResponse;
+  deleteCertificate: CommonResponse;
   deleteConsultationMemo: CommonResponse;
+  deleteEduInfomation: CommonResponse;
+  deleteEmploymentStatus: CommonResponse;
+  deleteFileNameSp: CommonResponse;
+  deleteHopeForEmployment: CommonResponse;
   deleteLectures: CommonResponse;
   deleteManageUser: CommonResponse;
   deletePaymentDetail: CommonResponse;
   deletePermissionsGranted: CommonResponse;
+  deletePreInspection: CommonResponse;
+  deleteRecommendation: CommonResponse;
+  deleteRegularEvaluationSet: CommonResponse;
   deleteStudent: CommonResponse;
+  deleteStudentConsultation: CommonResponse;
   deleteStudentMemo: CommonResponse;
   deleteStudentPayment: CommonResponse;
   deleteStudentState: CommonResponse;
@@ -427,13 +451,23 @@ export type Mutation = {
   editAdviceType: CommonResponse;
   editAttendance: CommonResponse;
   editBranch: CommonResponse;
+  editCareer: CommonResponse;
+  editCertificate: CommonResponse;
+  editEduInfomation: CommonResponse;
+  editEmploymentRecommendation: CommonResponse;
+  editEmploymentStatus: CommonResponse;
+  editHopeEmployment: CommonResponse;
   editLectures: CommonResponse;
   editManageUser: CommonResponse;
   editPaymentDetail: CommonResponse;
   editPermissionsGranted: CommonResponse;
+  editPreInspection: CommonResponse;
+  editRegularEvaluationSet: CommonResponse;
   editStudent: CommonResponse;
+  editStudentConsultation: CommonResponse;
   editStudentMemo: CommonResponse;
   editStudentPayment: CommonResponse;
+  editStudentPortfolio: CommonResponse;
   editWorkLogs: CommonResponse;
   getHourlySalesData: HourlySalesData;
   mLogin: ResultLogin;
@@ -505,9 +539,81 @@ export type MutationCreateBranchArgs = {
 };
 
 
+export type MutationCreateCareerArgs = {
+  careerDetails: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateCertificateArgs = {
+  CAdate: Scalars['String']['input'];
+  CertificateIssuer: Scalars['String']['input'];
+  certificateLevel?: InputMaybe<Scalars['String']['input']>;
+  certificateName: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
 export type MutationCreateConsultationMemoArgs = {
   content: Scalars['String']['input'];
   studentStateId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateEduInfomationArgs = {
+  eduName: Scalars['String']['input'];
+  eduType: Scalars['String']['input'];
+  graduationStatus: Scalars['String']['input'];
+  major?: InputMaybe<Scalars['String']['input']>;
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateEmploymentRecommendationArgs = {
+  certificateOfEmploymentStatus: Scalars['String']['input'];
+  companyName: Scalars['String']['input'];
+  dateOfInterview?: InputMaybe<Scalars['String']['input']>;
+  dateOfRecommendation: Scalars['String']['input'];
+  employmentStatus: Scalars['String']['input'];
+  location: Scalars['String']['input'];
+  phoneNum: Scalars['String']['input'];
+  reasonForNonEmployment: Scalars['String']['input'];
+  recruitmentField: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateEmploymentStatusArgs = {
+  businessNum: Scalars['String']['input'];
+  businessSize: Scalars['String']['input'];
+  companyName: Scalars['String']['input'];
+  completionType: Scalars['String']['input'];
+  dateOfEmployment: Scalars['String']['input'];
+  employmentType: Scalars['String']['input'];
+  imploymentInsurance: Scalars['String']['input'];
+  location: Scalars['String']['input'];
+  phoneNum: Scalars['String']['input'];
+  proofOfImployment: Scalars['String']['input'];
+  relatedFields: Scalars['String']['input'];
+  responsibilities: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateHopeForEmploymentArgs = {
+  fieldOfHope: Scalars['String']['input'];
+  hopefulReward: Scalars['Int']['input'];
+  opinion: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+  workType: Scalars['String']['input'];
+  workingArea: Scalars['String']['input'];
+  workingHours: Scalars['Int']['input'];
 };
 
 
@@ -598,6 +704,24 @@ export type MutationCreatePermissionGrantedArgs = {
 };
 
 
+export type MutationCreatePreInspectionArgs = {
+  actionTaken?: InputMaybe<Scalars['String']['input']>;
+  dateOfPreInspection?: InputMaybe<Scalars['String']['input']>;
+  preInspectionDetails?: InputMaybe<Scalars['String']['input']>;
+  preScreenerType?: InputMaybe<Scalars['String']['input']>;
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateRegularEvaluationSetArgs = {
+  evaluationDetails: Scalars['String']['input'];
+  points: Scalars['Int']['input'];
+  statusType: Scalars['String']['input'];
+  subjectId: Scalars['Int']['input'];
+};
+
+
 export type MutationCreateStudentArgs = {
   birthday?: InputMaybe<Scalars['String']['input']>;
   department?: InputMaybe<Scalars['String']['input']>;
@@ -605,6 +729,15 @@ export type MutationCreateStudentArgs = {
   phoneNum1?: InputMaybe<Scalars['String']['input']>;
   phoneNum2?: InputMaybe<Scalars['String']['input']>;
   smsAgreement?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateStudentConsultationArgs = {
+  dateOfConsultation: Scalars['String']['input'];
+  detailsOfConsultation: Scalars['String']['input'];
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+  typeOfConsultation: Scalars['String']['input'];
 };
 
 
@@ -638,6 +771,16 @@ export type MutationCreateStudentPaymentArgs = {
   supportType?: InputMaybe<Scalars['String']['input']>;
   tuitionFee: Scalars['Int']['input'];
   unCollectedAmount?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationCreateStudentPortfolioArgs = {
+  details?: InputMaybe<Scalars['String']['input']>;
+  filePath: Array<Scalars['String']['input']>;
+  isBest?: InputMaybe<Scalars['String']['input']>;
+  studentPaymentId: Scalars['Int']['input'];
+  subjectId: Scalars['Int']['input'];
+  url?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -707,7 +850,39 @@ export type MutationDeleteBranchArgs = {
 };
 
 
+export type MutationDeleteCareerArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteCertificateArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteConsultationMemoArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteEduInfomationArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteEmploymentStatusArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteFileNameSpArgs = {
+  fileUrl: Scalars['String']['input'];
+  folderName: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteHopeForEmploymentArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -732,7 +907,27 @@ export type MutationDeletePermissionsGrantedArgs = {
 };
 
 
+export type MutationDeletePreInspectionArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteRecommendationArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteRegularEvaluationSetArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteStudentArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteStudentConsultationArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -792,6 +987,78 @@ export type MutationEditAttendanceArgs = {
 export type MutationEditBranchArgs = {
   id: Scalars['Int']['input'];
   newBranchName: Scalars['String']['input'];
+};
+
+
+export type MutationEditCareerArgs = {
+  careerDetails: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+  lastModifiedTime?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditCertificateArgs = {
+  CAdate?: InputMaybe<Scalars['String']['input']>;
+  CertificateIssuer?: InputMaybe<Scalars['String']['input']>;
+  certificateLevel?: InputMaybe<Scalars['String']['input']>;
+  certificateName?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+};
+
+
+export type MutationEditEduInfomationArgs = {
+  eduName?: InputMaybe<Scalars['String']['input']>;
+  eduType?: InputMaybe<Scalars['String']['input']>;
+  graduationStatus?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  major?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditEmploymentRecommendationArgs = {
+  certificateOfEmploymentStatus?: InputMaybe<Scalars['String']['input']>;
+  companyName?: InputMaybe<Scalars['String']['input']>;
+  dateOfInterview?: InputMaybe<Scalars['String']['input']>;
+  dateOfRecommendation?: InputMaybe<Scalars['String']['input']>;
+  employmentStatus?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  location?: InputMaybe<Scalars['String']['input']>;
+  phoneNum?: InputMaybe<Scalars['String']['input']>;
+  reasonForNonEmployment?: InputMaybe<Scalars['String']['input']>;
+  recruitmentField?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditEmploymentStatusArgs = {
+  businessNum: Scalars['String']['input'];
+  businessSize: Scalars['String']['input'];
+  companyName: Scalars['String']['input'];
+  completionType: Scalars['String']['input'];
+  dateOfEmployment: Scalars['String']['input'];
+  employmentType: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+  imploymentInsurance: Scalars['String']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  location: Scalars['String']['input'];
+  phoneNum: Scalars['String']['input'];
+  proofOfImployment: Scalars['String']['input'];
+  relatedFields: Scalars['String']['input'];
+  responsibilities: Scalars['String']['input'];
+};
+
+
+export type MutationEditHopeEmploymentArgs = {
+  fieldOfHope: Scalars['String']['input'];
+  hopefulReward: Scalars['Int']['input'];
+  id: Scalars['Float']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  opinion: Scalars['String']['input'];
+  workType: Scalars['String']['input'];
+  workingArea?: InputMaybe<Scalars['String']['input']>;
+  workingHours: Scalars['Int']['input'];
 };
 
 
@@ -872,6 +1139,25 @@ export type MutationEditPermissionsGrantedArgs = {
 };
 
 
+export type MutationEditPreInspectionArgs = {
+  actionTaken?: InputMaybe<Scalars['String']['input']>;
+  dateOfPreInspection?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  preInspectionDetails?: InputMaybe<Scalars['String']['input']>;
+  preScreenerType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditRegularEvaluationSetArgs = {
+  evaluationDetails: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  points: Scalars['Int']['input'];
+  statusType: Scalars['String']['input'];
+};
+
+
 export type MutationEditStudentArgs = {
   birthday?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
@@ -880,6 +1166,15 @@ export type MutationEditStudentArgs = {
   phoneNum1?: InputMaybe<Scalars['String']['input']>;
   phoneNum2?: InputMaybe<Scalars['String']['input']>;
   smsAgreement?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditStudentConsultationArgs = {
+  dateOfConsultation?: InputMaybe<Scalars['String']['input']>;
+  detailsOfConsultation?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lastModifiedTime: Scalars['String']['input'];
+  typeOfConsultation?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -922,6 +1217,16 @@ export type MutationEditStudentPaymentArgs = {
 };
 
 
+export type MutationEditStudentPortfolioArgs = {
+  details?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  id: Scalars['Int']['input'];
+  isBest?: InputMaybe<Scalars['String']['input']>;
+  lastModifiedTime: Scalars['String']['input'];
+  url?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
 export type MutationEditWorkLogsArgs = {
   absentSt?: InputMaybe<Scalars['String']['input']>;
   attendanceCount?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
@@ -945,7 +1250,7 @@ export type MutationEditWorkLogsArgs = {
   trainingInfoTwo?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   trainingTimeOneday?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   trainingTimeTotal?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
-  workLogsDate: Scalars['String']['input'];
+  workLogsDate?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -1240,10 +1545,11 @@ export type Query = {
   mMe: ManageUser;
   sayHello: Scalars['String']['output'];
   searchAcademyRecord: ResultAcademyRecord;
+  searchAttendance: SearchAttendanceResult;
   searchAttendanceRecord: ResultSearchAttendanceRecord;
-  searchAttendanceResult: SearchAttendanceResult;
   searchManageUser: SearchManageUserResult;
   searchPermissionsGranted: ResultSearchPermissionsGranted;
+  searchSM: ResultSearchSm;
   searchWorkLogs: SearchWorkLogsResult;
   seeAdviceType: ResultAdviceType;
   seeAlarms: ResultSeeAlarms;
@@ -1252,11 +1558,13 @@ export type Query = {
   seeLectures: SeeLecturesResult;
   seeManageUser: SeeManageUserResult;
   seePaymentDetail: PaymentDetailResult;
+  seeRegularEvaluationSet: ResultSeeRegularEvaluationSet;
   seeStudent: SeeStudentResult;
   seeStudentPayment: StudentPaymentResult;
   seeStudentState: StudentStateResponse;
   seeSubject: SeeSubjectResult;
   seeUserActivityLogs: UserActivityLogsResponse;
+  signWorkLogs: SignWorkLogsResult;
 };
 
 
@@ -1293,6 +1601,15 @@ export type QuerySearchAcademyRecordArgs = {
 };
 
 
+export type QuerySearchAttendanceArgs = {
+  attendanceDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  lecturesId: Scalars['Int']['input'];
+  studentId?: InputMaybe<Scalars['Int']['input']>;
+  studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySearchAttendanceRecordArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1300,15 +1617,6 @@ export type QuerySearchAttendanceRecordArgs = {
   mUsername?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-
-export type QuerySearchAttendanceResultArgs = {
-  attendanceDate?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  id?: InputMaybe<Scalars['Int']['input']>;
-  lecturesId: Scalars['Int']['input'];
-  studentId?: InputMaybe<Scalars['Int']['input']>;
-  studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1335,9 +1643,19 @@ export type QuerySearchPermissionsGrantedArgs = {
 };
 
 
+export type QuerySearchSmArgs = {
+  lectureId?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  modelType: Scalars['String']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+  studentPaymentId?: InputMaybe<Scalars['Int']['input']>;
+  subjectId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySearchWorkLogsArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  lecturesId?: InputMaybe<Scalars['Float']['input']>;
+  lecturesId?: InputMaybe<Scalars['Int']['input']>;
   workLogsDate?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1380,6 +1698,14 @@ export type QuerySeePaymentDetailArgs = {
 };
 
 
+export type QuerySeeRegularEvaluationSetArgs = {
+  lectureId?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  subjectId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySeeStudentArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -1401,6 +1727,30 @@ export type QuerySeeStudentStateArgs = {
 export type QuerySeeSubjectArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySignWorkLogsArgs = {
+  id: Scalars['Int']['input'];
+  lastModifiedTime?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RegularEvaluationSet = {
+  __typename?: 'RegularEvaluationSet';
+  Branch?: Maybe<Branch>;
+  Subject?: Maybe<Subject>;
+  branchId?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['String']['output'];
+  evaluationDetails: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  lastModifiedByName: Scalars['String']['output'];
+  lastModifiedByUserId: Scalars['String']['output'];
+  lastModifiedTime?: Maybe<Scalars['String']['output']>;
+  lectureId: Scalars['Int']['output'];
+  points: Scalars['Int']['output'];
+  statusType: Scalars['String']['output'];
+  subjectId: Scalars['Int']['output'];
+  updatedAt: Scalars['String']['output'];
 };
 
 export type ResultAcademyRecord = {
@@ -1462,6 +1812,15 @@ export type ResultSearchPermissionsGranted = {
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
+export type ResultSearchSm = {
+  __typename?: 'ResultSearchSM';
+  data?: Maybe<Array<Maybe<SearchDataUnion>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type ResultSeeAlarms = {
   __typename?: 'ResultSeeAlarms';
   data?: Maybe<Array<Maybe<Alarm>>>;
@@ -1469,6 +1828,15 @@ export type ResultSeeAlarms = {
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
   totalCount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type ResultSeeRegularEvaluationSet = {
+  __typename?: 'ResultSeeRegularEvaluationSet';
+  data?: Maybe<Array<Maybe<RegularEvaluationSet>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type SalesStatisticsResult = {
@@ -1487,6 +1855,8 @@ export type SearchAttendanceResult = {
   ok: Scalars['Boolean']['output'];
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
+
+export type SearchDataUnion = Career | Certificate | EduInfomation | EmploymentRecommendation | EmploymentStatus | HopeForEmployment | PreInspection | StudentConsultation | StudentPortfolio;
 
 export type SearchLecturesResult = {
   __typename?: 'SearchLecturesResult';
@@ -1606,6 +1976,14 @@ export type SeeSubjectResult = {
   totalCount?: Maybe<Scalars['Int']['output']>;
 };
 
+export type SignWorkLogsResult = {
+  __typename?: 'SignWorkLogsResult';
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  stampUrl?: Maybe<Scalars['String']['output']>;
+};
+
 export type Stamp = {
   __typename?: 'Stamp';
   Manager?: Maybe<ManageUser>;
@@ -1642,7 +2020,7 @@ export type StudentConsultation = {
   Branch?: Maybe<Branch>;
   StudentPayment?: Maybe<StudentPayment>;
   Subject?: Maybe<Subject>;
-  branchId: Scalars['Int']['output'];
+  branchId?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['String']['output'];
   dateOfConsultation: Scalars['String']['output'];
   detailsOfConsultation: Scalars['String']['output'];

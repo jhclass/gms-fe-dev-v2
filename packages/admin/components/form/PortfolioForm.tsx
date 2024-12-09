@@ -8,9 +8,10 @@ import useUserLogsMutation from '@/utils/userLogs'
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  SEARCH_PORTFLIO_STUDDENTS_QUERY,
+  SEARCH_PORTFLIO_STUDENTS_QUERY,
   SEARCH_SM_QUERY,
 } from '@/graphql/queries'
+import axios from 'axios'
 
 const DetailForm = styled.form`
   display: flex;
@@ -168,14 +169,7 @@ export default function PortfolioForm({
   studentName,
 }) {
   const { userLogs } = useUserLogsMutation()
-  const [createPortfolio] = useMutation(CREATE_PORTFOLIO_MUTATION, {
-    context: {
-      headers: {
-        'x-apollo-operation-name': 'filePath',
-        // 'apollo-require-preflight': 'true',
-      },
-    },
-  })
+  const [createPortfolio] = useMutation(CREATE_PORTFOLIO_MUTATION)
   const [avatarImg, setAvatartImg] = useState([])
   const [validFiles, setValidFiles] = useState([])
   const [urlList, setUrlList] = useState([])
@@ -194,7 +188,7 @@ export default function PortfolioForm({
   } = useForm()
   const { errors } = formState
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (validFiles.length === 0) {
       setError('portfolio', {
         type: 'manual',
@@ -202,16 +196,43 @@ export default function PortfolioForm({
           '포트폴리오는 적어도 1개 이상, 스크린샷으로 등록하여야 합니다.',
       })
     }
+    const uploadedUrls = []
+    //s3에 전송
+    for (const file of validFiles) {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folderName', 'portfolios')
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) {
+          throw new Error(`token 에러!`)
+        }
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/upload`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'mulipart/form-data',
+              token,
+            },
+          },
+        )
+        uploadedUrls.push(data)
+      } catch (error) {
+        console.error(`파일 업로드 실패: ${error.message}`)
+        throw new Error(`파일 업로드 중 문제가 발생했습니다.`)
+      }
+    }
     createPortfolio({
       variables: {
         subjectId: subjectId,
         studentPaymentId: paymentId,
         isBest: data.isBest ? 'Y' : 'N',
-        filePath: validFiles,
+        filePath: uploadedUrls,
         url: urlList,
         details: data.details,
       },
-      refetchQueries: [SEARCH_SM_QUERY, SEARCH_PORTFLIO_STUDDENTS_QUERY],
+      refetchQueries: [SEARCH_SM_QUERY, SEARCH_PORTFLIO_STUDENTS_QUERY],
       onCompleted: result => {
         userLogs(
           `${studentName} 포트폴리오 추가`,
@@ -233,34 +254,40 @@ export default function PortfolioForm({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+    const validImageTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+    ] // 허용할 이미지 타입 목록
     const files = event.target.files
 
     if (files && files.length > 0) {
       const newValidFiles = []
-      const validImageTypes = [
-        'image/jpeg',
-        'image/png',
-        'image/gif',
-        'image/webp',
-      ] // 허용할 이미지 타입 목록
+      const errors = []
+      const uploadedUrls = [] // 업로드된 파일 경로를 저장
 
       Array.from(files).forEach(file => {
         if (!validImageTypes.includes(file.type)) {
-          setError('filePath', {
-            type: 'manual',
-            message:
-              '이미지 파일만 업로드 가능합니다. ( jpg, jpeg, png, gif, webp )',
-          })
+          errors.push(
+            `${file.name}: 허용되지 않는 파일 형식입니다. (jpg, jpeg, png, gif, webp만 가능)`,
+          )
         } else if (file.size > MAX_FILE_SIZE) {
-          setError('filePath', {
-            type: 'manual',
-            message: '파일이 너무 큽니다. 10MB 이하만 가능합니다.',
-          })
+          errors.push(
+            `${file.name}: 파일 크기가 너무 큽니다. (최대 10MB 이하만 가능)`,
+          )
         } else {
           newValidFiles.push(file)
         }
       })
-
+      if (errors.length > 0) {
+        setError('filePath', {
+          type: 'manual',
+          message: errors.join('\n'),
+        })
+      } else {
+        clearErrors('filePath')
+      }
       if (newValidFiles.length > 0) {
         clearErrors('filePath')
 

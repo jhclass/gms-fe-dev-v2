@@ -6,6 +6,7 @@ import { EDIT_PORTFOLIO_MUTATION } from '@/graphql/mutations'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useRef, useState } from 'react'
 import PortfolioList from '@/components/layout/PortfolioList'
+import axios from 'axios'
 
 const DetailForm = styled.form`
   display: flex;
@@ -147,14 +148,7 @@ const BtnBox = styled.div`
 
 export default function PortfolioEditForm({ item, refetch, studentName }) {
   const { userLogs } = useUserLogsMutation()
-  const [editPortfolio] = useMutation(EDIT_PORTFOLIO_MUTATION, {
-    context: {
-      headers: {
-        'x-apollo-operation-name': 'filePath',
-        // 'apollo-require-preflight': 'true',
-      },
-    },
-  })
+  const [editPortfolio] = useMutation(EDIT_PORTFOLIO_MUTATION)
   const [avatarImg, setAvatartImg] = useState([])
   const [validFiles, setValidFiles] = useState([])
   const [portfolioFiles, setPortfolioFiles] = useState([])
@@ -162,6 +156,7 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
   const [inputValue, setInputValue] = useState('')
   const [best, setBest] = useState(false)
   const fileInputRef = useRef(null)
+  console.log(portfolioFiles)
   const {
     register,
     handleSubmit,
@@ -214,18 +209,57 @@ export default function PortfolioEditForm({ item, refetch, studentName }) {
   useEffect(() => {
     setValue('url', urlList, { shouldDirty: true })
   }, [urlList])
-
+  useEffect(() => {
+    if (portfolioFiles.length > 0) {
+      console.log('Updated portfolioFiles:', portfolioFiles)
+    }
+  }, [portfolioFiles])
   const onSubmit = async data => {
     if (isDirty) {
       const isModify = confirm('변경사항이 있습니다. 수정하시겠습니까?')
       if (isModify) {
         try {
+          //s3
+          const uploadedUrls = []
+          const combineUrls = []
+
+          try {
+            if (validFiles.length > 0) {
+              const token = localStorage.getItem('token')
+              for (const file of validFiles) {
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('folderName', 'portfolios')
+                const { data } = await axios.post(
+                  `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/upload`,
+                  formData,
+                  {
+                    headers: {
+                      'Content-Type': 'multipart/form-data',
+                      token,
+                    },
+                  },
+                )
+                uploadedUrls.push(data)
+              }
+            }
+          } catch (error) {
+            console.log(error.message)
+            throw new Error('파일 업로드 중 에러발생 하였습니다.')
+          }
+          if (uploadedUrls.length > 0) {
+            const updatedFiles = [...portfolioFiles, ...uploadedUrls]
+            setPortfolioFiles(updatedFiles)
+          }
+          const newPortfolio = [...portfolioFiles, ...uploadedUrls]
+          //const combineUrls = [portfolioFiles, ...uploadedUrls]
+          //수정
           const result = await editPortfolio({
             variables: {
               editStudentPortfolioId: item.id,
               url: urlList,
               details: data.details,
-              filePath: validFiles.length > 0 ? validFiles : null,
+              filePath: validFiles.length > 0 ? newPortfolio : null,
               isBest: data.isBest ? 'Y' : 'N',
               lastModifiedTime: new Date(),
             },

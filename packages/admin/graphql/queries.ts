@@ -1101,7 +1101,7 @@ export const SEARCH_SM_QUERY = gql`
     }
   }
 `
-export const SEARCH_PORTFLIO_STUDDENTS_QUERY = gql`
+export const SEARCH_PORTFLIO_STUDENTS_QUERY = gql`
   query SearchSM($modelType: String!, $lectureId: Int) {
     searchSM(modelType: $modelType, lectureId: $lectureId) {
       totalCount

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
 import { completionStatus } from '@/lib/recoilAtoms'
 import { useSuspenseQuery } from '@apollo/client'
-import { SEARCH_PORTFLIO_STUDDENTS_QUERY } from '@/graphql/queries'
+import { SEARCH_PORTFLIO_STUDENTS_QUERY } from '@/graphql/queries'
 import { Chip } from '@nextui-org/react'
 import { ResultSearchSm } from '@/src/generated/graphql'
 import { useEffect, useState } from 'react'
@@ -31,7 +31,7 @@ export default function PortfolioStudentList({
     error,
     data: portfolioData,
     refetch,
-  } = useSuspenseQuery<searchSMQuery>(SEARCH_PORTFLIO_STUDDENTS_QUERY, {
+  } = useSuspenseQuery<searchSMQuery>(SEARCH_PORTFLIO_STUDENTS_QUERY, {
     variables: {
       modelType: 'StudentPortfolio',
       lectureId: lectureId,
