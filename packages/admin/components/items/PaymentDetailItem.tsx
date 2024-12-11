@@ -17,10 +17,14 @@ const FlexCardBox = styled.div<{ $IsRefund: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border: 2px solid hsl(240 6% 90%);
+  border: ${props =>
+    props.$IsRefund
+      ? '2px solid hsl(240 6% 90%);'
+      : '2px solid hsl(240 6% 90%);'};
   padding: 1rem;
   border-radius: 0.5rem;
-  background: ${props => (props.$IsRefund ? 'hsl(240 5% 96%)' : 'transparent')};
+  background: ${props =>
+    props.$IsRefund ? 'HSL(0, 0%, 100%)' : 'transparent'};
 `
 const FlexBox = styled.div`
   display: flex;

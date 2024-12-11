@@ -149,13 +149,13 @@ export default function PaymentInfo({
   }
 
   const extractTimeRange = dates => {
-    const startTime = formatTime(dates[0])
-    const endTime = formatTime(dates[1])
+    const startTime = formatTime(dates?.[0])
+    const endTime = formatTime(dates?.[1])
     return `${startTime} - ${endTime}`
   }
 
   const formatUsernames = data => {
-    return data.map(item => item.mUsername).join(', ')
+    return data?.map(item => item.mUsername).join(', ')
   }
 
   const feeFormet = fee => {

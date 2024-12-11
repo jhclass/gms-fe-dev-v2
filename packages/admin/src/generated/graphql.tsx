@@ -359,6 +359,7 @@ export type ManageUser = {
   Lectures?: Maybe<Array<Lectures>>;
   PaymentDetail?: Maybe<Array<PaymentDetail>>;
   PermissionsGranted?: Maybe<Array<PermissionsGranted>>;
+  Sms?: Maybe<Array<Maybe<Sms>>>;
   Stamp?: Maybe<Array<Stamp>>;
   Student?: Maybe<Array<Student>>;
   StudentMemo?: Maybe<Array<StudentMemo>>;
@@ -391,6 +392,19 @@ export type ManageUser = {
   updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
+export type MessageStorage = {
+  __typename?: 'MessageStorage';
+  Branch?: Maybe<Branch>;
+  branchId?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  manageUser?: Maybe<ManageUser>;
+  manageUserId?: Maybe<Scalars['Int']['output']>;
+  message: Scalars['String']['output'];
+  saveType: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   changeOrderAT: CommonResponse;
@@ -410,6 +424,7 @@ export type Mutation = {
   createLectures: CommonResponse;
   createManagerAccount: CommonResponse;
   createMasterUser: CommonResponse;
+  createMessageStorage: CommonResponse;
   createPaymentDetail: CommonResponse;
   createPermissionGranted: CommonResponse;
   createPreInspection: CommonResponse;
@@ -434,11 +449,13 @@ export type Mutation = {
   deleteHopeForEmployment: CommonResponse;
   deleteLectures: CommonResponse;
   deleteManageUser: CommonResponse;
+  deleteMessageStorage: CommonResponse;
   deletePaymentDetail: CommonResponse;
   deletePermissionsGranted: CommonResponse;
   deletePreInspection: CommonResponse;
   deleteRecommendation: CommonResponse;
   deleteRegularEvaluationSet: CommonResponse;
+  deleteSms: CommonResponse;
   deleteStudent: CommonResponse;
   deleteStudentConsultation: CommonResponse;
   deleteStudentMemo: CommonResponse;
@@ -482,6 +499,7 @@ export type Mutation = {
   searchStudentPayment: SearchStudentPaymentResult;
   searchStudentState: SearchStudentStateResult;
   searchSubject: SearchSubjectResult;
+  sendSms: CommonResponse;
   staticPushAT: CommonResponse;
   updateConsultationMemo: CommonResponse;
   updateFavorite: UpdateFavoriteResult;
@@ -676,6 +694,12 @@ export type MutationCreateMasterUserArgs = {
 };
 
 
+export type MutationCreateMessageStorageArgs = {
+  message: Scalars['String']['input'];
+  saveType: Scalars['String']['input'];
+};
+
+
 export type MutationCreatePaymentDetailArgs = {
   ApprovalNum?: InputMaybe<Scalars['String']['input']>;
   amountPayment?: InputMaybe<Scalars['Int']['input']>;
@@ -776,7 +800,7 @@ export type MutationCreateStudentPaymentArgs = {
 
 export type MutationCreateStudentPortfolioArgs = {
   details?: InputMaybe<Scalars['String']['input']>;
-  filePath: Array<Scalars['String']['input']>;
+  filePath: Array<InputMaybe<Scalars['String']['input']>>;
   isBest?: InputMaybe<Scalars['String']['input']>;
   studentPaymentId: Scalars['Int']['input'];
   subjectId: Scalars['Int']['input'];
@@ -897,6 +921,11 @@ export type MutationDeleteManageUserArgs = {
 };
 
 
+export type MutationDeleteMessageStorageArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeletePaymentDetailArgs = {
   id: Scalars['Int']['input'];
 };
@@ -918,6 +947,11 @@ export type MutationDeleteRecommendationArgs = {
 
 
 export type MutationDeleteRegularEvaluationSetArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteSmsArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1377,6 +1411,15 @@ export type MutationSearchSubjectArgs = {
 };
 
 
+export type MutationSendSmsArgs = {
+  message: Scalars['String']['input'];
+  rDate?: InputMaybe<Scalars['String']['input']>;
+  rTime?: InputMaybe<Scalars['String']['input']>;
+  receiver: Scalars['String']['input'];
+  senderNum?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationStaticPushAtArgs = {
   id: Scalars['Int']['input'];
   onOff?: InputMaybe<Scalars['String']['input']>;
@@ -1550,6 +1593,7 @@ export type Query = {
   searchManageUser: SearchManageUserResult;
   searchPermissionsGranted: ResultSearchPermissionsGranted;
   searchSM: ResultSearchSm;
+  searchSms: ResultSearchSms;
   searchWorkLogs: SearchWorkLogsResult;
   seeAdviceType: ResultAdviceType;
   seeAlarms: ResultSeeAlarms;
@@ -1557,6 +1601,7 @@ export type Query = {
   seeFavorite: Array<StudentState>;
   seeLectures: SeeLecturesResult;
   seeManageUser: SeeManageUserResult;
+  seeMessageStorage: ResultMessageStorage;
   seePaymentDetail: PaymentDetailResult;
   seeRegularEvaluationSet: ResultSeeRegularEvaluationSet;
   seeStudent: SeeStudentResult;
@@ -1653,6 +1698,18 @@ export type QuerySearchSmArgs = {
 };
 
 
+export type QuerySearchSmsArgs = {
+  branchId?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  manageUserId?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  receiver?: InputMaybe<Scalars['String']['input']>;
+  saveType: Scalars['String']['input'];
+};
+
+
 export type QuerySearchWorkLogsArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   lecturesId?: InputMaybe<Scalars['Int']['input']>;
@@ -1689,6 +1746,13 @@ export type QuerySeeManageUserArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   resign?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySeeMessageStorageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  saveType: Scalars['String']['input'];
 };
 
 
@@ -1787,6 +1851,15 @@ export type ResultLogin = {
   token?: Maybe<Scalars['String']['output']>;
 };
 
+export type ResultMessageStorage = {
+  __typename?: 'ResultMessageStorage';
+  data?: Maybe<Array<Maybe<MessageStorage>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type ResultRefreshToken = {
   __typename?: 'ResultRefreshToken';
   error?: Maybe<Scalars['String']['output']>;
@@ -1815,6 +1888,15 @@ export type ResultSearchPermissionsGranted = {
 export type ResultSearchSm = {
   __typename?: 'ResultSearchSM';
   data?: Maybe<Array<Maybe<SearchDataUnion>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ResultSearchSms = {
+  __typename?: 'ResultSearchSms';
+  data?: Maybe<Array<Maybe<Sms>>>;
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
@@ -1982,6 +2064,26 @@ export type SignWorkLogsResult = {
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
   stampUrl?: Maybe<Scalars['String']['output']>;
+};
+
+export type Sms = {
+  __typename?: 'Sms';
+  Branch?: Maybe<Branch>;
+  branchId?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['String']['output'];
+  failureReason?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  lastModifiedTime?: Maybe<Scalars['String']['output']>;
+  manageUser?: Maybe<ManageUser>;
+  manageUserId?: Maybe<Scalars['Int']['output']>;
+  message: Scalars['String']['output'];
+  rDate?: Maybe<Scalars['String']['output']>;
+  rTime?: Maybe<Scalars['String']['output']>;
+  receiver: Scalars['String']['output'];
+  saveType?: Maybe<Scalars['String']['output']>;
+  sender?: Maybe<Scalars['String']['output']>;
+  successType?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['String']['output'];
 };
 
 export type Stamp = {

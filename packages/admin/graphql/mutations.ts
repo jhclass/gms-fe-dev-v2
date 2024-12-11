@@ -1328,6 +1328,20 @@ export const SEARCH_PAYMENT_DETAIL_MUTATION = gql`
             subDiv
             fee
             round
+            lectures {
+              id
+              temporaryName
+              teachers {
+                mUsername
+                id
+              }
+              sessionNum
+              subDiv
+              lecturePeriodStart
+              lecturePeriodEnd
+              lectureTime
+              roomNum
+            }
           }
         }
         studentPaymentId
