@@ -21,34 +21,8 @@ const AccoBox = styled.div`
 `
 
 const CREATE_STUDENT_STATE_MUTATION = gql`
-  mutation CreateStudentState(
-    $stName: String!
-    $phoneNum1: String!
-    $subject: [String]!
-    $agreement: String!
-    $progress: Int!
-    $adviceTypes: [Int]!
-    $campus: String
-    $detail: String
-    $classMethod: [String]
-    $branchId: Int
-    $today: [String]
-    $receiptDiv: String
-  ) {
-    createStudentState(
-      stName: $stName
-      phoneNum1: $phoneNum1
-      subject: $subject
-      agreement: $agreement
-      progress: $progress
-      adviceTypes: $adviceTypes
-      campus: $campus
-      detail: $detail
-      classMethod: $classMethod
-      branchId: $branchId
-      today: $today
-      receiptDiv: $receiptDiv
-    ) {
+  mutation CreateStudentState($input: CreateStudentStateDto!) {
+    createStudentState(input: $input) {
       ok
       error
       message
@@ -104,6 +78,7 @@ export default function Form() {
     },
   })
   const adviceList = adciveData?.seeAdviceType.adviceType || []
+  console.log(adciveData)
   const [groupSelected, setGroupSelected] = useState([])
   const [groupSelectedName, setGroupSelectedName] = useState([])
   const [methodSelect, setMethodSelect] = useState([])
@@ -134,18 +109,20 @@ export default function Form() {
       } else {
         await createStudentState({
           variables: {
-            branchId: 1,
-            stName: data.name,
-            phoneNum1: data.phone,
-            subject: [],
-            agreement: data.privacy ? '동의' : '비동의',
-            progress: 0,
-            adviceTypes: data.groupSelected,
-            campus: '신촌',
-            detail: data.contents,
-            receiptDiv: '온라인',
-            classMethod: data.methodSelect,
-            today: [todayStart, todayEnd],
+            input: {
+              branchId: 1,
+              stName: data.name,
+              phoneNum1: data.phone,
+              subject: [],
+              agreement: data.privacy ? '동의' : '비동의',
+              progress: 0,
+              adviceTypes: data.groupSelected,
+              campus: '신촌',
+              detail: data.contents,
+              receiptDiv: '온라인',
+              classMethod: data.methodSelect,
+              today: [todayStart, todayEnd],
+            },
           },
           onCompleted: result => {
             if (result.createStudentState.ok) {

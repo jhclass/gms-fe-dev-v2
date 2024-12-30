@@ -222,36 +222,38 @@ export default function ConsultEditForm({ mGrade, supervisor, studentState }) {
       if (isModify) {
         updateStudent({
           variables: {
-            updateStudentStateId: studentState.id,
-            campus: studentState.campus,
-            stName: data.stName.trim(),
-            category: studentState.category,
-            phoneNum1: data.phoneNum1.trim(),
-            phoneNum2: data.phoneNum2 === null ? null : data.phoneNum2.trim(),
-            phoneNum3: data.phoneNum3 === null ? null : data.phoneNum3.trim(),
-            adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
-            subject:
-              data.subject === '' ? studentState.subject : subjectSelected,
-            detail: data.detail === null ? null : data.detail.trim(),
-            progress: data.progress,
-            stEmail: data.stEmail === null ? null : data.stEmail.trim(),
-            stAddr: studentState.stAddr,
-            subDiv: data.subDiv,
-            stVisit:
-              data.stVisit === null
-                ? null
-                : typeof data.stVisit === 'string'
-                ? new Date(parseInt(data.stVisit))
-                : new Date(data.stVisit),
-            expEnrollDate:
-              data.expEnrollDate === null
-                ? null
-                : typeof data.expEnrollDate === 'string'
-                ? new Date(parseInt(data.expEnrollDate))
-                : new Date(data.expEnrollDate),
-            pic: data.pic,
-            receiptDiv: data.receiptDiv,
-            lastModifiedTime: new Date(),
+            input: {
+              id: studentState.id,
+              campus: studentState.campus,
+              stName: data.stName.trim(),
+              category: studentState.category,
+              phoneNum1: data.phoneNum1.trim(),
+              phoneNum2: data.phoneNum2 === null ? null : data.phoneNum2.trim(),
+              phoneNum3: data.phoneNum3 === null ? null : data.phoneNum3.trim(),
+              adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
+              subject:
+                data.subject === '' ? studentState.subject : subjectSelected,
+              detail: data.detail === null ? null : data.detail.trim(),
+              progress: data.progress,
+              stEmail: data.stEmail === null ? null : data.stEmail.trim(),
+              stAddr: studentState.stAddr,
+              subDiv: data.subDiv,
+              stVisit:
+                data.stVisit === null
+                  ? null
+                  : typeof data.stVisit === 'string'
+                  ? new Date(parseInt(data.stVisit))
+                  : new Date(data.stVisit),
+              expEnrollDate:
+                data.expEnrollDate === null
+                  ? null
+                  : typeof data.expEnrollDate === 'string'
+                  ? new Date(parseInt(data.expEnrollDate))
+                  : new Date(data.expEnrollDate),
+              pic: data.pic,
+              receiptDiv: data.receiptDiv,
+              lastModifiedTime: new Date(),
+            },
           },
           onCompleted: result => {
             const dirtyFieldsArray = [...Object.keys(dirtyFields)]

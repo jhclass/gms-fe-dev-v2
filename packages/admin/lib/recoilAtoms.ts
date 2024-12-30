@@ -62,6 +62,18 @@ export const loginPasswordFocuseState = atom<boolean>({
   default: false,
 })
 
+export const formFocusState = atom({
+  key: 'formFocusState',
+  default: {
+    companyName: false,
+    ownerName: false,
+    validateNumber: false,
+    email: false,
+    phoneNum: false,
+    filePath: false,
+  },
+})
+
 export const userGraderState = atom<number>({
   key: 'userGraderState',
   default: 99,

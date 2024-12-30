@@ -10,7 +10,7 @@ import { Button, Input } from '@nextui-org/react'
 import { LOGIN_MUTATION } from '@/graphql/mutations'
 import { useEffect, useState } from 'react'
 import useUserLogsMutation from '@/utils/userLogs'
-
+import FormTopInfo from '@/components/common/FormTopInfo'
 type LoginForm = {
   id: string
   password: string
@@ -72,7 +72,13 @@ const InputBox = styled.div`
 const BtnBox = styled.div`
   margin-top: 3rem;
 `
-
+const AlinkWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2.5rem;
+`
 const Alink = styled.p`
   margin-top: 0.7rem;
   font-size: 0.9rem;
@@ -250,11 +256,18 @@ export default function Login() {
               </Button>
             </BtnBox>
           </form>
-          <Alink>
-            <Link href={''} onClick={clickAdmin}>
-              Forget ID or PW ?
-            </Link>
-          </Alink>
+          <AlinkWrap>
+            <Alink>
+              <Link href={'/businessMember'}>
+                &#128073; 사업자 아이디 발급요청
+              </Link>
+            </Alink>{' '}
+            <Alink>
+              <Link href={''} onClick={clickAdmin}>
+                &#128073; 사업자 아이디 또는 비밀번호 분실
+              </Link>
+            </Alink>
+          </AlinkWrap>
         </LoginBox>
       </Container>
     </>

@@ -207,7 +207,7 @@ export default function ManagersTable({ mGrade, mId }) {
       },
     )
   const permissionManagers =
-    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+    permissionData.searchPermissionsGranted.data?.[0]?.ManageUser.map(
       manager => manager.id,
     )
 

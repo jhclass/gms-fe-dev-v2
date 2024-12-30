@@ -144,30 +144,32 @@ export default function ConsultForm({ supervisor }) {
   const onSubmit = data => {
     createStudent({
       variables: {
-        stName: data.stName.trim(),
-        agreement: '동의',
-        adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
-        subject: data.subject === '' ? [] : subjectSelected,
-        campus: '신촌',
-        detail: data.detail === '' ? null : data.detail.trim(),
-        category: null,
-        phoneNum1: data.phoneNum1.trim(),
-        phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
-        phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
-        stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
-        stAddr: null,
-        subDiv: data.subDiv === undefined ? null : data.subDiv,
-        stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
-        expEnrollDate:
-          data.expEnrollDate === undefined
-            ? null
-            : new Date(data.expEnrollDate),
-        perchase: null,
-        birthday: null,
-        progress: data.progress === undefined ? 0 : data.progress,
-        receiptDiv: data.receiptDiv === undefined ? '' : data.receiptDiv,
-        pic: data.pic === undefined ? '담당자 지정필요' : data.pic,
-        today: [todayStart, todayEnd],
+        input: {
+          stName: data.stName.trim(),
+          agreement: '동의',
+          adviceTypes: data.adviceTypes === '' ? [] : adviceTypeSelected,
+          subject: data.subject === '' ? [] : subjectSelected,
+          campus: '신촌',
+          detail: data.detail === '' ? null : data.detail.trim(),
+          category: null,
+          phoneNum1: data.phoneNum1.trim(),
+          phoneNum2: data.phoneNum2 === '' ? null : data.phoneNum2.trim(),
+          phoneNum3: data.phoneNum3 === '' ? null : data.phoneNum3.trim(),
+          stEmail: data.stEmail === '' ? null : data.stEmail.trim(),
+          stAddr: null,
+          subDiv: data.subDiv === undefined ? null : data.subDiv,
+          stVisit: data.stVisit === undefined ? null : new Date(data.stVisit),
+          expEnrollDate:
+            data.expEnrollDate === undefined
+              ? null
+              : new Date(data.expEnrollDate),
+          perchase: null,
+          birthday: null,
+          progress: data.progress === undefined ? 0 : data.progress,
+          receiptDiv: data.receiptDiv === undefined ? '' : data.receiptDiv,
+          pic: data.pic === undefined ? '담당자 지정필요' : data.pic,
+          today: [todayStart, todayEnd],
+        },
       },
       refetchQueries: [
         {

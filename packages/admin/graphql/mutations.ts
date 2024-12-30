@@ -197,54 +197,8 @@ export const UPDATE_FAVORITE_MUTATION = gql`
 
 // studentState
 export const CREATE_STUDENT_STATE_MUTATION = gql`
-  mutation Mutation(
-    $stName: String!
-    $phoneNum1: String!
-    $subject: [String]!
-    $agreement: String!
-    $progress: Int!
-    $adviceTypes: [Int]!
-    $campus: String
-    $detail: String
-    $category: String
-    $phoneNum2: String
-    $phoneNum3: String
-    $stEmail: String
-    $stAddr: String
-    $subDiv: String
-    $stVisit: String
-    $expEnrollDate: String
-    $perchase: Boolean
-    $birthday: String
-    $receiptDiv: String
-    $pic: String
-    $today: [String]
-    $branchId: Int
-  ) {
-    createStudentState(
-      stName: $stName
-      phoneNum1: $phoneNum1
-      subject: $subject
-      agreement: $agreement
-      progress: $progress
-      adviceTypes: $adviceTypes
-      campus: $campus
-      detail: $detail
-      category: $category
-      phoneNum2: $phoneNum2
-      phoneNum3: $phoneNum3
-      stEmail: $stEmail
-      stAddr: $stAddr
-      subDiv: $subDiv
-      stVisit: $stVisit
-      expEnrollDate: $expEnrollDate
-      perchase: $perchase
-      birthday: $birthday
-      receiptDiv: $receiptDiv
-      pic: $pic
-      today: $today
-      branchId: $branchId
-    ) {
+  mutation Mutation($input: CreateStudentStateDto!) {
+    createStudentState(input: $input) {
       error
       message
       ok
@@ -337,52 +291,8 @@ export const SEARCH_STUDENTSTATE_MUTATION = gql`
   }
 `
 export const UPDATE_STUDENT_STATE_MUTATION = gql`
-  mutation UpdateStudentState(
-    $updateStudentStateId: Int!
-    $campus: String
-    $category: String
-    $stName: String
-    $phoneNum1: String
-    $phoneNum2: String
-    $phoneNum3: String
-    $subject: [String]
-    $detail: String
-    $progress: Int
-    $stEmail: String
-    $stAddr: String
-    $subDiv: String
-    $stVisit: String
-    $expEnrollDate: String
-    $perchase: Boolean
-    $birthday: String
-    $pic: String
-    $receiptDiv: String
-    $adviceTypes: [Int]
-    $lastModifiedTime: String
-  ) {
-    updateStudentState(
-      id: $updateStudentStateId
-      campus: $campus
-      category: $category
-      stName: $stName
-      phoneNum1: $phoneNum1
-      phoneNum2: $phoneNum2
-      phoneNum3: $phoneNum3
-      subject: $subject
-      detail: $detail
-      progress: $progress
-      stEmail: $stEmail
-      stAddr: $stAddr
-      subDiv: $subDiv
-      stVisit: $stVisit
-      expEnrollDate: $expEnrollDate
-      perchase: $perchase
-      birthday: $birthday
-      pic: $pic
-      receiptDiv: $receiptDiv
-      adviceTypes: $adviceTypes
-      lastModifiedTime: $lastModifiedTime
-    ) {
+  mutation UpdateStudentState($input: EditStudentStateDto!) {
+    updateStudentState(input: $input) {
       error
       message
       ok
@@ -2852,6 +2762,43 @@ export const CREATE_ATTENDANCE_RECORD_MUTATION = gql`
       error
       message
       ok
+    }
+  }
+`
+
+// 인증번호발송
+export const VALIDATE_NUMBER = gql`
+  mutation ValidateNumber($input: ValidateNumberDto!) {
+    validateNumber(input: $input) {
+      error
+      message
+      ok
+      validateNum
+    }
+  }
+`
+
+//전송
+export const CREATE_BUSINESS_ACCOUNT = gql`
+  mutation CreateBusinessAccountReq(
+    $companyName: String!
+    $phoneNum: String!
+    $validate: String!
+    $email: String!
+    $filePath: [String]!
+    $agree: String!
+  ) {
+    createBusinessAccountReq(
+      companyName: $companyName
+      phoneNum: $phoneNum
+      validate: $validate
+      email: $email
+      filePath: $filePath
+      agree: $agree
+    ) {
+      ok
+      error
+      message
     }
   }
 `

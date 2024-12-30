@@ -18,24 +18,8 @@ import { gql, useMutation } from '@apollo/react-hooks'
 import badwords from '@/lib/badwords.json'
 
 const STUDENT_STATE_MUTATION = gql`
-  mutation CreateStudentState(
-    $stName: String!
-    $agreement: String!
-    $phoneNum1: String!
-    $subject: [String!]
-    $detail: String
-    $receiptDiv: String
-    $campus: String
-  ) {
-    createStudentState(
-      stName: $stName
-      agreement: $agreement
-      phoneNum1: $phoneNum1
-      subject: $subject
-      detail: $detail
-      receiptDiv: $receiptDiv
-      campus: $campus
-    ) {
+  mutation CreateStudentState($input: CreateStudentStateDto!) {
+    createStudentState(input: $input) {
       ok
       error
       message
@@ -82,13 +66,15 @@ export default function Form() {
       } else {
         await studentStateResult({
           variables: {
-            stName: data.name,
-            subject: data.groupSelected,
-            campus: data.campus,
-            agreement: data.privacy ? '동의' : '비동의',
-            phoneNum1: data.phone,
-            detail: data.contents,
-            receiptDiv: data.receiptDiv,
+            input: {
+              stName: data.name,
+              subject: data.groupSelected,
+              campus: data.campus,
+              agreement: data.privacy ? '동의' : '비동의',
+              phoneNum1: data.phone,
+              detail: data.contents,
+              receiptDiv: data.receiptDiv,
+            },
           },
           onCompleted: result => {
             if (result.createStudentState.ok) {
