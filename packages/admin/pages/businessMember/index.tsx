@@ -124,35 +124,12 @@ const Intro = styled.p`
   font-size: 1rem;
   margin-bottom: 1rem;
 `
-const InputVariants = {
-  initial: {
-    top: '1rem',
-    fontSize: '1rem',
-    opacity: '1',
-  },
-  focus: {
-    top: '0.3rem',
-    fontSize: '0.8rem',
-    opacity: '0.5',
-  },
-  hasValue: {
-    top: '0.3rem',
-    fontSize: '0.8rem',
-    opacity: '0.5',
-  },
-}
+
 const RowTitle = styled.h3`
   font-weight: bold;
   margin: 1rem 0;
 `
-const CheckAreaBox = styled.div`
-  flex: 1;
-  width: 100%;
-  position: relative;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-`
+
 const CheckText = styled.p`
   font-weight: 500;
   font-size: 0.875rem;
