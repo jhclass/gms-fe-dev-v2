@@ -203,7 +203,7 @@ export default function ManagersFilterTable({ managerFilter, mGrade, mId }) {
       },
     )
   const permissionManagers =
-    permissionData.searchPermissionsGranted.data[0].ManageUser.map(
+    permissionData.searchPermissionsGranted.data?.[0]?.ManageUser.map(
       manager => manager.id,
     )
 

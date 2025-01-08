@@ -182,6 +182,20 @@ export type CreateStudentStateDto = {
   today?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type CreateWorkBoardDto = {
+  detail: Scalars['String']['input'];
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  lastModifiedTime?: InputMaybe<Scalars['String']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+  toPerson?: InputMaybe<Scalars['String']['input']>;
+  toTeam?: InputMaybe<Scalars['String']['input']>;
+  workStatus?: InputMaybe<Scalars['String']['input']>;
+  writer: Scalars['String']['input'];
+};
+
 export type DashboardAtResult = {
   __typename?: 'DashboardATResult';
   count?: Maybe<Array<Scalars['Int']['output']>>;
@@ -488,6 +502,7 @@ export type Mutation = {
   createStudentState: CommonResponse;
   createSubject: CommonResponse;
   createUserActivityLogs: CommonResponse;
+  createWorkBoard: CommonResponse;
   createWorkLogs: CommonResponse;
   deleteAttendance: CommonResponse;
   deleteBranch: CommonResponse;
@@ -897,6 +912,11 @@ export type MutationCreateSubjectArgs = {
 export type MutationCreateUserActivityLogsArgs = {
   description?: InputMaybe<Scalars['String']['input']>;
   eventName: Scalars['String']['input'];
+};
+
+
+export type MutationCreateWorkBoardArgs = {
+  createWorkBoardDto: CreateWorkBoardDto;
 };
 
 

@@ -386,6 +386,14 @@ const category: Category[] = [
     isBreadcrumb: true,
     children: [],
   },
+  {
+    href: '/board',
+    iconSrc: '',
+    name: '게시판',
+    exposure: false,
+    isBreadcrumb: true,
+    children: [],
+  },
 ]
 
 export default category

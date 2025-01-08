@@ -1,4 +1,6 @@
+import message from '@/pages/message'
 import { gql } from '@apollo/client'
+import { error } from 'console'
 
 // login
 export const LOGIN_MUTATION = gql`
@@ -2799,6 +2801,16 @@ export const CREATE_BUSINESS_ACCOUNT = gql`
       ok
       error
       message
+    }
+  }
+`
+//업무게시판 ( workBoard )
+export const CREATE_WORK_BOARD = gql`
+  mutation CreateWorkBoard($createWorkBoardDto: CreateWorkBoardDto!) {
+    createWorkBoard(createWorkBoardDto: $createWorkBoardDto) {
+      ok
+      message
+      error
     }
   }
 `
