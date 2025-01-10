@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import Layout from '../../layout'
+import Layout from '@/pages/layout'
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import FormTopInfo from '@/components/common/FormTopInfo'
@@ -336,6 +336,10 @@ export default function testEditor() {
   }
   const onSubmit = async data => {
     try {
+      if (!editorContent || editorContent.trim().length === 0) {
+        alert('요청 상세 내용이 입력되지 않았습니다.')
+        return
+      }
       if (data.attachment && data.file !== '파일을 선택하세요.') {
         const token = localStorage.getItem('token')
         const formData = new FormData()
@@ -355,6 +359,7 @@ export default function testEditor() {
         )
         setReturnUrl(response)
       }
+
       await createWorkBoard({
         variables: {
           createWorkBoardDto: {
@@ -375,7 +380,7 @@ export default function testEditor() {
             alert('정상적으로 등록완료 되었습니다.')
           } else {
             alert('등록에 실패하였습니다.')
-            console.log(result?.createWorkBoard?.message)
+            console.log(result?.createWorkBoard?.error)
           }
         },
       })
