@@ -103,6 +103,7 @@ export default function AdviceTypeList({
 
   useEffect(() => {
     if (typeIsOpne) {
+      console.log('변경되었니?')
       setPage(1)
       seeRefetch({
         page: 1,

@@ -141,7 +141,8 @@ export default function Breadcrumb(props) {
       : topCate?.children.find(item => item.href === '/') === undefined
       ? topCate
       : subCate
-
+  console.log(breadcrumb)
+  console.log('b', currentCate)
   return (
     <>
       {currentCate?.isBreadcrumb && (

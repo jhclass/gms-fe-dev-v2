@@ -1612,7 +1612,7 @@ export const GET_HOURLY_SALES_MUTATION = gql`
   }
 `
 export const CHANGE_ORDER_AT_MUTATION = gql`
-  mutation Mutation($ids: [Int], $indexNums: [Int!]) {
+  mutation Mutation($ids: [Int], $indexNums: [Int]) {
     changeOrderAT(ids: $ids, indexNums: $indexNums) {
       error
       message

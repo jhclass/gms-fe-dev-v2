@@ -152,7 +152,7 @@ export default function PermissionMasterAddForm({ permission }) {
           reset()
         } catch (error) {
           console.error(
-            `${permission.permissionName} 권한 수정 중 에러 발생:`,
+            `${permission?.permissionName} 권한 수정 중 에러 발생:`,
             error,
           )
         }

@@ -489,3 +489,25 @@ export const smsSearchState = atom({
     receiver: string
   },
 })
+
+//workboard
+export const workboardFilterActiveState = atom<boolean>({
+  key: 'workboardFilterActive',
+  default: false,
+})
+export const workboardPageState = atom<number>({
+  key: 'workboardPage',
+  default: 1,
+})
+export const workboardFilterState = atom<boolean>({
+  key: 'workboardFilter',
+  default: false,
+})
+export const workboardSearchState = atom({
+  key: 'workboardSearch',
+  default: {} as {
+    subjectName: string
+    subDiv: string
+    exposure: boolean
+  },
+})

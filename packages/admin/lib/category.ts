@@ -16,6 +16,7 @@ interface Children {
   exposure: boolean
   isBreadcrumb: boolean
   teacher?: boolean
+  children?: Children[]
 }
 
 const category: Category[] = [
@@ -387,12 +388,25 @@ const category: Category[] = [
     children: [],
   },
   {
-    href: '/board',
-    iconSrc: '',
-    name: '게시판',
-    exposure: false,
+    href: '/workboard',
+    iconSrc: '*',
+    name: '업무게시판',
+    exposure: true,
     isBreadcrumb: true,
-    children: [],
+    children: [
+      {
+        href: '/',
+        name: '업무 목록',
+        exposure: true,
+        isBreadcrumb: true,
+      },
+      {
+        href: '/write',
+        name: '게시글 작성',
+        exposure: false,
+        isBreadcrumb: true,
+      },
+    ],
   },
 ]
 

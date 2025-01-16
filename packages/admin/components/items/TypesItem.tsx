@@ -46,7 +46,7 @@ export default function TypesItem({ type }) {
 
   return (
     <>
-      {mGrade <= grade.subMaster || permissionManagers.includes(mId) ? (
+      {mGrade <= grade?.subMaster || permissionManagers?.includes(mId) ? (
         <AdviceType category={type} />
       ) : (
         <Card radius="sm">

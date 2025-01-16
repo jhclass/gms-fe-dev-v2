@@ -578,8 +578,8 @@ export type Mutation = {
 
 
 export type MutationChangeOrderAtArgs = {
-  ids?: InputMaybe<Array<Scalars['Int']['input']>>;
-  indexNums: Array<Scalars['Int']['input']>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  indexNums?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
 };
 
 
@@ -1668,6 +1668,7 @@ export type Query = {
   seeStudentState: StudentStateResponse;
   seeSubject: SeeSubjectResult;
   seeUserActivityLogs: UserActivityLogsResponse;
+  seeWorkBoard: ResultSeeWorkBoard;
   signWorkLogs: SignWorkLogsResult;
 };
 
@@ -1853,6 +1854,12 @@ export type QuerySeeSubjectArgs = {
 };
 
 
+export type QuerySeeWorkBoardArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySignWorkLogsArgs = {
   id: Scalars['Int']['input'];
   lastModifiedTime?: InputMaybe<Scalars['String']['input']>;
@@ -1974,6 +1981,15 @@ export type ResultSeeAlarms = {
 export type ResultSeeRegularEvaluationSet = {
   __typename?: 'ResultSeeRegularEvaluationSet';
   data?: Maybe<Array<Maybe<RegularEvaluationSet>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ResultSeeWorkBoard = {
+  __typename?: 'ResultSeeWorkBoard';
+  data?: Maybe<Array<Maybe<WorkBoard>>>;
   error?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
@@ -2409,6 +2425,26 @@ export type UserActivityLogsResponse = {
 
 export type ValidateNumberDto = {
   phoneNum: Scalars['String']['input'];
+};
+
+export type WorkBoard = {
+  __typename?: 'WorkBoard';
+  branch?: Maybe<Branch>;
+  branchId?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['String']['output'];
+  detail: Scalars['String']['output'];
+  endDate?: Maybe<Scalars['String']['output']>;
+  filePath?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  lastModifiedTime?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  startDate?: Maybe<Scalars['String']['output']>;
+  title: Scalars['String']['output'];
+  toPerson?: Maybe<Scalars['String']['output']>;
+  toTeam?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['String']['output'];
+  workStatus?: Maybe<Scalars['String']['output']>;
+  writer: Scalars['String']['output'];
 };
 
 export type WorkLogs = {

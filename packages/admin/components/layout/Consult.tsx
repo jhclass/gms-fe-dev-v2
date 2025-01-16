@@ -84,7 +84,7 @@ export default function Consult({
           studentManagerFilter={studentManagerFilter}
           setStudentManagerFilter={setStudentManagerFilter}
           supervisor={
-            mGrade <= grade.subMaster || permissionManagers.includes(mId)
+            mGrade <= grade?.subMaster || permissionManagers?.includes(mId)
           }
         />
       </Suspense>
@@ -94,7 +94,7 @@ export default function Consult({
         filterSearch={filterSearch}
         mUsername={mUsername}
         supervisor={
-          mGrade <= grade.subMaster || permissionManagers.includes(mId)
+          mGrade <= grade?.subMaster || permissionManagers?.includes(mId)
         }
       />
     </>

@@ -439,7 +439,7 @@ export default function testEditor() {
                     radius="md"
                     type="text"
                     className="w-full"
-                    maxLength={12}
+                    maxLength={100}
                     {...register('title', {
                       validate: value => {
                         return value.trim() !== '' || '글 제목을 입력하세요.'

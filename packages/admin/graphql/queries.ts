@@ -1385,3 +1385,31 @@ export const SEARCH_ATTENDANCE_RECORD_ID_QUERY = gql`
     }
   }
 `
+
+export const SEE_WORK_BOARD_QUERY = gql`
+  query SeeWorkBoard($page: Int, $limit: Int) {
+    seeWorkBoard(page: $page, limit: $limit) {
+      ok
+      message
+      error
+      data {
+        id
+        title
+        writer
+        toTeam
+        toPerson
+        level
+        startDate
+        endDate
+        workStatus
+        detail
+        createdAt
+        updatedAt
+        filePath
+        branchId
+        lastModifiedTime
+      }
+      totalCount
+    }
+  }
+`
