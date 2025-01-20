@@ -60,7 +60,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   name="viewport"
                   content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
                 />
-                <title>HMS</title>
+                <title>SOLUHERO-MS</title>
               </Head>
               <GlobalStyle />
 

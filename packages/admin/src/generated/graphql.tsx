@@ -1653,6 +1653,7 @@ export type Query = {
   searchPermissionsGranted: ResultSearchPermissionsGranted;
   searchSM: ResultSearchSm;
   searchSms: ResultSearchSms;
+  searchWorkBoard: ResultSeeWorkBoard;
   searchWorkLogs: SearchWorkLogsResult;
   seeAdviceType: ResultAdviceType;
   seeAlarms: ResultSeeAlarms;
@@ -1767,6 +1768,11 @@ export type QuerySearchSmsArgs = {
   period?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   receiver?: InputMaybe<Scalars['String']['input']>;
   saveType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySearchWorkBoardArgs = {
+  searchWorkBoardDto: SearchWorkBoardDto;
 };
 
 
@@ -2075,6 +2081,17 @@ export type SearchSubjectResult = {
   ok: Scalars['Boolean']['output'];
   result?: Maybe<Array<Maybe<Subject>>>;
   totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SearchWorkBoardDto = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  toPerson?: InputMaybe<Scalars['String']['input']>;
+  toTeam?: InputMaybe<Scalars['String']['input']>;
+  workPeriod?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  workStatus?: InputMaybe<Scalars['String']['input']>;
+  writer?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SearchWorkLogsResult = {

@@ -133,7 +133,8 @@ export default function PerformanceFilter({
       },
     },
   )
-  const managerList = managerData?.searchPermissionsGranted.data[0].ManageUser
+  const managerList =
+    managerData?.searchPermissionsGranted.data?.[0]?.ManageUser
   const [searchDateRange, setSearchDateRange] = useState([null, null])
   const [startDate, endDate] = searchDateRange
   const [manager, setManager] = useState(new Set([]))
@@ -354,7 +355,7 @@ export default function PerformanceFilter({
                       }
                     }}
                   >
-                    {managerList.map(item => (
+                    {managerList?.map(item => (
                       <SelectItem key={item.id} value={item.mUsername}>
                         {item.mUsername}
                       </SelectItem>

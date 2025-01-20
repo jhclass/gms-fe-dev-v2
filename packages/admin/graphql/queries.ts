@@ -1413,3 +1413,31 @@ export const SEE_WORK_BOARD_QUERY = gql`
     }
   }
 `
+
+export const SEARCH_WORKBOARD_QUERY = gql`
+  query SearchWorkBoard($searchWorkBoardDto: SearchWorkBoardDto!) {
+    searchWorkBoard(searchWorkBoardDto: $searchWorkBoardDto) {
+      ok
+      error
+      message
+      data {
+        id
+        title
+        writer
+        toTeam
+        toPerson
+        level
+        startDate
+        endDate
+        workStatus
+        detail
+        createdAt
+        updatedAt
+        filePath
+        branchId
+        lastModifiedTime
+      }
+      totalCount
+    }
+  }
+`

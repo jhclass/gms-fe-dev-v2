@@ -389,7 +389,7 @@ const category: Category[] = [
   },
   {
     href: '/workboard',
-    iconSrc: '*',
+    iconSrc: 'xi-network-company',
     name: '업무게시판',
     exposure: true,
     isBreadcrumb: true,

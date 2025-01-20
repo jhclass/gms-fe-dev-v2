@@ -212,8 +212,6 @@ export default function WorkboardTable() {
   )
   const workboardTotal = data?.seeWorkBoard.totalCount
   const workboardData = data?.seeWorkBoard.data
-  console.log('workboard', workboardData[0].writer)
-  console.log('total', data?.seeWorkBoard.totalCount)
 
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
@@ -241,7 +239,7 @@ export default function WorkboardTable() {
   }, [router.events])
 
   if (error) {
-    console.log(error)
+    console.log('Check Error out:', error)
   }
 
   return (
@@ -252,13 +250,14 @@ export default function WorkboardTable() {
         </Ttotal>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: theme.colors.primary }}></span> : 노출
+            <span style={{ background: theme.colors.primary }}></span> : 미처리
+            || 재진행요청
           </ColorCip>
           <ColorCip>
             <span
               style={{ background: theme.colors.gray, opacity: '0.8' }}
             ></span>{' '}
-            : 미노출
+            : 작업완료
           </ColorCip>
         </ColorHelp>
       </TTopic>
@@ -285,10 +284,10 @@ export default function WorkboardTable() {
                   onClick={() =>
                     router.push(
                       {
-                        pathname: `/subjects/detail/${item.id}`,
+                        pathname: `/workboard/detail/${item.id}`,
                         query: { page: currentPage, limit: currentLimit },
                       },
-                      `/subjects/detail/${item.id}`,
+                      `/workboard/detail/${item.id}`,
                     )
                   }
                 >
@@ -296,10 +295,15 @@ export default function WorkboardTable() {
                     <Tflag
                       style={{
                         background:
-                          item.workStatus === '미처리'
+                          item.workStatus === '미처리' ||
+                          item.workStatus === '재진행요청'
                             ? theme.colors.primary
                             : theme.colors.gray,
-                        opacity: item.workStatus === '미처리' ? '1' : '0.8',
+                        opacity:
+                          item.workStatus === '미처리' ||
+                          item.workStatus === '미처리'
+                            ? '1'
+                            : '0.8',
                       }}
                     ></Tflag>
 

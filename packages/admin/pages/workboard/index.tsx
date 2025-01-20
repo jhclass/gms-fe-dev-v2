@@ -39,6 +39,7 @@ export default function Workboard() {
   const [workboardFilter, setWorkboardFilter] =
     useRecoilState(workboardSearchState)
   console.log('filterSearchState', filterActive)
+  console.log('workboardfilter', JSON.stringify(workboardFilter))
   return (
     <>
       <MainWrap>
@@ -50,10 +51,6 @@ export default function Workboard() {
           write={{
             permissionName: null,
             link: '/workboard/write',
-          }}
-          typeBtn={{
-            typeLink: 'subDiv',
-            permissionName: '수강구분',
           }}
           addRender={''}
         />

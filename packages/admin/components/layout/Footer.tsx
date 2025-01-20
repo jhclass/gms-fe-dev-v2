@@ -44,8 +44,7 @@ export default function FooterComponent() {
     <>
       <FooterCon>
         <Copyright>
-          <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
-          reserved.
+          <i className="xi-copyright" /> 2023. SOLUHERO Co. All rights reserved.
         </Copyright>
       </FooterCon>
       <WebBtn href={`${process.env.NEXT_PUBLIC_ACADEMY_URI}`} target="_blank">

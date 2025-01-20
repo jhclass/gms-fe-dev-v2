@@ -506,8 +506,9 @@ export const workboardFilterState = atom<boolean>({
 export const workboardSearchState = atom({
   key: 'workboardSearch',
   default: {} as {
-    subjectName: string
-    subDiv: string
-    exposure: boolean
+    toTeam: string
+    toPerson: string
+    workPeriod: []
+    workStatus: string
   },
 })
