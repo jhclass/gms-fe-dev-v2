@@ -7,6 +7,11 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
+  rootDir: './', // ✅ 현재 `admin` 디렉토리를 루트로 설정
+  moduleNameMapper: {
+    '^@/utils/(.*)$': '<rootDir>/utils/$1', // ✅ Jest alias 추가
+    '^@/test-utils$': '<rootDir>/utils/test-utils.tsx',
+  },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
 }

@@ -231,9 +231,6 @@ export default function WorkboardFilterTable({ workboardFilter }) {
   const workboardTotal = data?.searchWorkBoard.totalCount
   const workboardData = data?.searchWorkBoard.data
 
-  console.log('workboard', workboardData[0].writer)
-  console.log('total', workboardTotal)
-
   const getDate = (DataDate: string): string => {
     const LocalDdate = new Date(parseInt(DataDate)).toLocaleDateString()
     return LocalDdate

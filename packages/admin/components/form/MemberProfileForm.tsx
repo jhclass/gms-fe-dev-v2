@@ -226,7 +226,7 @@ export default function MemberProfileForm() {
         )
 
         const url = response.data // 서버에서 반환된 URL
-        console.log('url이다', url)
+        //
         // URL을 state 및 form에 설정
         setAvatarImg(url) // 미리보기 이미지 설정
         setValue('mAvatar', url, { shouldDirty: true }) // URL로 React Hook Form 업데이트

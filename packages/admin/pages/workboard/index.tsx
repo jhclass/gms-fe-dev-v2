@@ -38,8 +38,7 @@ export default function Workboard() {
   const [filterSearch, setFilterSearch] = useRecoilState(workboardFilterState)
   const [workboardFilter, setWorkboardFilter] =
     useRecoilState(workboardSearchState)
-  console.log('filterSearchState', filterActive)
-  console.log('workboardfilter', JSON.stringify(workboardFilter))
+
   return (
     <>
       <MainWrap>

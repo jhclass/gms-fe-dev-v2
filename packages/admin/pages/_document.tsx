@@ -39,9 +39,13 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="UTF-8" />
           <link rel="icon" href="/favicon.ico" />
-          <link
+          {/* <link
             rel="stylesheet"
             href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+          /> */}
+          <link
+            rel="stylesheet"
+            href="//fastly.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
           />
           <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" />
         </Head>
