@@ -43,7 +43,7 @@ export default class MyDocument extends Document {
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="stylesheet"
-            href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+            href="//fastly.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
           />
           <meta
             name="description"

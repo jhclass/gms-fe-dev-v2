@@ -62,7 +62,7 @@ export default function Footer() {
               </li>
             </ul>
             <p className="mt-2 text-sm font-thin text-slate-200">
-              <i className="xi-copyright" /> 2023. H ACADEMY Co. All rights
+              <i className="xi-copyright" /> 2023. SOLUHERO Co. All rights
               reserved.
             </p>
           </div>
