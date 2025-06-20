@@ -28,6 +28,7 @@ import message from '@/pages/message'
 import { MME_QUERY } from '@/graphql/queries'
 import axios from 'axios'
 import { SEARCH_WORKBOARD_QUERY } from '@/graphql/queries'
+import { fileURLToPath } from 'url'
 
 const ConArea = styled.div`
   width: 100%;
@@ -112,6 +113,32 @@ const TimeBox = styled.div`
     line-height: 40px;
   }
 `
+const FileBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+
+  p {
+    height: 40px;
+    line-height: 40px;
+  }
+  span {
+    display: flex;
+
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.875rem;
+    padding: 12px;
+  }
+  a {
+    display: flex;
+
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.875rem;
+    padding: 12px;
+  }
+`
 const EditorBox = styled.div`
   img {
     display: inline-block;
@@ -135,7 +162,7 @@ export default function testEditor() {
   const mMe = useQuery(MME_QUERY)
   const boardDetailInfo = searchWorkBoardData?.searchWorkBoard?.data?.[0]
   //비교
-
+  console.log(searchWorkBoardData)
   return (
     <MainWrap>
       <ConArea>
@@ -321,20 +348,18 @@ export default function testEditor() {
               <FlexBox>
                 <AreaBox>
                   <FilterLabel className="file mb-1">등록 된 파일</FilterLabel>
-                  <TimeBox>
-                    <Input
-                      readOnly
-                      placeholder="파일주소"
-                      variant="faded"
-                      radius="md"
-                      type="text"
-                      value={
-                        boardDetailInfo?.filePath
-                          ? boardDetailInfo?.filePath
-                          : '등록 된 파일 없음'
-                      }
-                    />
-                  </TimeBox>
+                  <FileBox>
+                    {boardDetailInfo?.fileName ? (
+                      <a href={boardDetailInfo?.filePath}>
+                        <i className="xi-file-o"></i>
+                        {boardDetailInfo?.fileName}
+                      </a>
+                    ) : (
+                      <span>
+                        <i className="xi-close"></i> No file
+                      </span>
+                    )}
+                  </FileBox>
                 </AreaBox>
               </FlexBox>
               <BtnBox>

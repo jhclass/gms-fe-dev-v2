@@ -185,6 +185,7 @@ export type CreateStudentStateDto = {
 export type CreateWorkBoardDto = {
   detail: Scalars['String']['input'];
   endDate?: InputMaybe<Scalars['String']['input']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
   filePath?: InputMaybe<Scalars['String']['input']>;
   lastModifiedTime?: InputMaybe<Scalars['String']['input']>;
   level?: InputMaybe<Scalars['String']['input']>;

@@ -1406,6 +1406,7 @@ export const SEE_WORK_BOARD_QUERY = gql`
         createdAt
         updatedAt
         filePath
+        fileName
         branchId
         lastModifiedTime
       }
@@ -1434,6 +1435,7 @@ export const SEARCH_WORKBOARD_QUERY = gql`
         createdAt
         updatedAt
         filePath
+        fileName
         branchId
         lastModifiedTime
       }

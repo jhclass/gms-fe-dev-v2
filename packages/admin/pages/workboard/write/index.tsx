@@ -137,7 +137,7 @@ const TimeBox = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: flex-end;
-
+  margin-top: 8px;
   p {
     height: 40px;
     line-height: 40px;
@@ -348,44 +348,52 @@ export default function testEditor() {
   }
 
   const onSubmit = async (data: FormData) => {
+    let uploadedFilePath = ''
     try {
       if (!editorContent || editorContent.trim().length === 0) {
         alert('요청 상세 내용이 입력되지 않았습니다.')
         return
       }
-      if (data.attachment && data.file !== '파일을 선택하세요.') {
-        const token = localStorage.getItem('token')
-        const formData = new FormData()
 
-        formData.append('file', data.attachment)
-        formData.append('folderName', 'workboard')
+      if (data.attachment) {
+        try {
+          const token = localStorage.getItem('token')
+          const formData = new FormData()
 
-        const { data: response } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/upload`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              token,
+          formData.append('file', data.attachment)
+          formData.append('folderName', 'workboard')
+
+          const { data: response } = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/s3/upload`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                token,
+              },
             },
-          },
-        )
-        setReturnUrl(response)
+          )
+          console.log(response, '파일저장이 잘 되었나?')
+          uploadedFilePath = response
+        } catch (error) {
+          console.log(error, error.message)
+        }
       }
 
       await createWorkBoard({
         variables: {
           createWorkBoardDto: {
-            title: data.title,
-            writer: data.writer,
-            toTeam: data.toTeam,
-            toPerson: data.toPerson,
-            level: data.level,
-            startDate: data.workStartDate,
-            endDate: data.workEndDate,
-            workStatus: data.workStatus,
+            title: data?.title,
+            writer: data?.writer,
+            toTeam: data?.toTeam,
+            toPerson: data?.toPerson,
+            level: data?.level,
+            startDate: data?.workStartDate,
+            endDate: data?.workEndDate,
+            workStatus: data?.workStatus,
             detail: editorContent,
-            filePath: returnUrl,
+            filePath: uploadedFilePath,
+            fileName: data?.attachment?.name,
           },
         },
         onCompleted: result => {
@@ -558,6 +566,7 @@ export default function testEditor() {
                     selectedKeys={[workLevelsKey]}
                     {...register('level')}
                     onChange={e => {
+                      if (e.target.value === '') return
                       setWorkLevelsKey(e.target.value)
                       setValue('level', e.target.value)
                     }}
@@ -721,6 +730,9 @@ export default function testEditor() {
                     selectedKeys={[workStatusSelectedKey]}
                     {...register('workStatus', {})}
                     onChange={e => {
+                      //next UI 때문에 넣어줘야 함.
+                      if (e.target.value === '') return
+
                       setWorkStatusSelectedKey(e.target.value)
                       setValue('workStatus', e.target.value)
                     }}
@@ -730,6 +742,7 @@ export default function testEditor() {
                     <SelectItem key="작업완료">작업완료</SelectItem>
                     <SelectItem key="재진행요청">재진행요청</SelectItem>
                   </Select>
+
                   {errors.workStatus && (
                     <p className="px-2 pt-2 text-xs text-red">
                       {String(errors.workStatus.message)}
