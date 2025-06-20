@@ -287,7 +287,7 @@ export default function WorkboardTable() {
                         pathname: `/workboard/detail/${item.id}`,
                         query: { page: currentPage, limit: currentLimit },
                       },
-                      `/workboard/detail/${item.id}`,
+                      `/workboard/read/${item.id}`,
                     )
                   }
                 >

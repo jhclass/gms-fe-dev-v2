@@ -406,6 +406,18 @@ const category: Category[] = [
         exposure: false,
         isBreadcrumb: true,
       },
+      {
+        href: '/read',
+        name: '게시글 읽기',
+        exposure: false,
+        isBreadcrumb: true,
+      },
+      {
+        href: '/edit',
+        name: '게시글 수정',
+        exposure: false,
+        isBreadcrumb: true,
+      },
     ],
   },
 ]

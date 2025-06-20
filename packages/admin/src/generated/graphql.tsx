@@ -419,20 +419,20 @@ export type Lectures = {
 export type ManageUser = {
   __typename?: 'ManageUser';
   Branch?: Maybe<Branch>;
-  ConsultationMemo?: Maybe<Array<ConsultationMemo>>;
-  Lectures?: Maybe<Array<Lectures>>;
-  PaymentDetail?: Maybe<Array<PaymentDetail>>;
-  PermissionsGranted?: Maybe<Array<PermissionsGranted>>;
+  ConsultationMemo?: Maybe<Array<Maybe<ConsultationMemo>>>;
+  Lectures?: Maybe<Array<Maybe<Lectures>>>;
+  PaymentDetail?: Maybe<Array<Maybe<PaymentDetail>>>;
+  PermissionsGranted?: Maybe<Array<Maybe<PermissionsGranted>>>;
   Sms?: Maybe<Array<Maybe<Sms>>>;
-  Stamp?: Maybe<Array<Stamp>>;
-  Student?: Maybe<Array<Student>>;
-  StudentMemo?: Maybe<Array<StudentMemo>>;
-  StudentPayment?: Maybe<Array<StudentPayment>>;
-  StudentState?: Maybe<Array<StudentState>>;
+  Stamp?: Maybe<Array<Maybe<Stamp>>>;
+  Student?: Maybe<Array<Maybe<Student>>>;
+  StudentMemo?: Maybe<Array<Maybe<StudentMemo>>>;
+  StudentPayment?: Maybe<Array<Maybe<StudentPayment>>>;
+  StudentState?: Maybe<Array<Maybe<StudentState>>>;
   branchId?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
-  favoriteStudentState?: Maybe<Array<Scalars['Int']['output']>>;
+  favoriteStudentState?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
   frequentlyUsed?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   id?: Maybe<Scalars['Int']['output']>;
   lastModifiedBy?: Maybe<Scalars['String']['output']>;
@@ -442,7 +442,7 @@ export type ManageUser = {
   mAvatar?: Maybe<Scalars['String']['output']>;
   mGrade?: Maybe<Scalars['Int']['output']>;
   mJoiningDate?: Maybe<Scalars['String']['output']>;
-  mPart?: Maybe<Array<Scalars['String']['output']>>;
+  mPart?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   mPassword: Scalars['String']['output'];
   mPhoneNum?: Maybe<Scalars['String']['output']>;
   mPhoneNumCompany?: Maybe<Scalars['String']['output']>;
@@ -1850,7 +1850,7 @@ export type QuerySeeStudentPaymentArgs = {
 
 export type QuerySeeStudentStateArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
-  page: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 

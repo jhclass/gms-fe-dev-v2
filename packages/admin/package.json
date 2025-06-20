@@ -20,6 +20,7 @@
     "apollo-upload-client": "^17.0.0",
     "axios": "^1.7.9",
     "babel-plugin-styled-components": "^2.1.4",
+    "dompurify": "^3.2.6",
     "font-awesome": "^4.7.0",
     "framer-motion": "^10.16.4",
     "graphql": "^16.8.1",

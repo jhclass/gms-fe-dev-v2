@@ -334,7 +334,20 @@ export default function testEditor() {
     console.log('inValid', inValid)
     console.log(errors)
   }
-  const onSubmit = async data => {
+  interface FormData {
+    title: string
+    writer: string
+    toTeam: string
+    toPerson: string
+    level: string
+    workStartDate: Date
+    workEndDate: Date
+    workStatus: string
+    attachment?: File
+    file?: string
+  }
+
+  const onSubmit = async (data: FormData) => {
     try {
       if (!editorContent || editorContent.trim().length === 0) {
         alert('요청 상세 내용이 입력되지 않았습니다.')

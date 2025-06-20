@@ -175,7 +175,7 @@ export const UPDATE_FAVORITE_MUTATION = gql`
       favoriteStudentState {
         id
         favoriteStudentState
-        StudentStates {
+        StudentState {
           adviceTypes {
             id
             type

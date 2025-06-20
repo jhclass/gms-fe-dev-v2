@@ -298,10 +298,10 @@ export default function FavoriteItem(props) {
                 <EllipsisBox>{studentAdvice}</EllipsisBox>
               </TadviceType>
               <Tprogress
-                style={{ color: progressStatus[student.progress].color }}
+                style={{ color: progressStatus[student.progress]?.color }}
               >
                 <EllipsisBox>
-                  {progressStatus[student.progress].name}
+                  {progressStatus[student.progress]?.name}
                 </EllipsisBox>
               </Tprogress>
               <TstVisit>
