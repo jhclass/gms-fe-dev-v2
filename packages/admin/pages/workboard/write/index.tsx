@@ -19,7 +19,7 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react'
-import { useMemo, useRef, useState, useEffect } from 'react'
+import { Suspense, useMemo, useRef, useState, useEffect } from 'react'
 import ReactQuill, { ReactQuillProps } from 'react-quill'
 import { styled } from 'styled-components'
 import EditorViewer from '@/components/EditorViewer'
@@ -31,6 +31,7 @@ import message from '@/pages/message'
 import { MME_QUERY } from '@/graphql/queries'
 import { SEARCH_MANAGEUSER_QUERY } from '@/graphql/queries'
 import axios from 'axios'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 const ConArea = styled.div`
   width: 100%;
   max-width: 1400px;
@@ -133,6 +134,18 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 const TimeBox = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -160,14 +173,19 @@ const ViewBox = styled.div`
   }
 `
 
-const PersonNameWrap = styled.div``
-const PersonName = styled.span`
+const PersonNameWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+`
+const PersonName = styled.button`
   display: inline-block;
   padding: 0.2rem;
   background-color: #eee;
+  border: 0;
   border-radius: 0.2rem;
-  margin-right: 0.3rem;
-  margin-top: 0.3rem;
+  cursor: pointer;
   font-size: 0.875rem;
 `
 
@@ -218,6 +236,7 @@ export default function testEditor() {
   const [workLevelsKey, setWorkLevelsKey] = useState('난이도를 선택하세요.')
   const [editorContent, setEditorContent] = useState('')
   const [personName, setPersonName] = useState('')
+  const [toTeamSelectedKey, setToTeamSelectedKey] = useState('')
   const [fileName, setFileName] = useState('파일을 선택하세요.')
   const [toPersonNames, setToPersonNames] = useState(null)
   const [returnUrl, setReturnUrl] = useState<string>('')
@@ -243,27 +262,41 @@ export default function testEditor() {
     },
   )
   useEffect(() => {}, [toPersonNames])
-  //비교
   const toPersonHandleChange = e => {
     const inputValue = e.target.value
     setPersonName(inputValue)
-    const getMpartValue = getValues('toTeam')
-    if (inputValue.trim() !== '' && getMpartValue !== '') {
+    setValue('toPerson', inputValue)
+
+    if (inputValue.trim() !== '') {
       clearErrors('toPerson')
-      //비교
       searchManageUser({
-        variables: { mUsername: inputValue, mPart: getMpartValue },
+        variables: { mUsername: inputValue },
       })
-    } else if (getMpartValue === '') {
-      setToPersonNames(null)
-      setError('toPerson', { message: '에러에러' })
     } else {
+      setToPersonNames(null)
       clearErrors('toPerson')
     }
   }
 
+  const toPersonHandleClick = user => {
+    const selectedName = user?.mUsername || ''
+    setPersonName(selectedName)
+    setValue('toPerson', selectedName)
+    setToPersonNames(null)
+    clearErrors('toPerson')
+  }
   const onEditorStateChange = editorState => {
     setEditorContent(editorState)
+  }
+
+  const toTeamHandleChange = e => {
+    const value = e.target.value
+    setToTeamSelectedKey(value)
+    setValue('toTeam', value)
+    setValue('toPerson', '')
+    setPersonName('')
+    setToPersonNames(null)
+    clearErrors('toPerson')
   }
 
   const uploadEditorImage = async (file: File) => {
@@ -520,20 +553,27 @@ export default function testEditor() {
                   )}
                 </AreaBox>
                 <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="ex) 영업팀"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    className="w-full"
-                    maxLength={12}
-                    {...register('toTeam')}
-                    label={<FilterLabel>전달 부서 또는 팀</FilterLabel>}
-                    onChange={e => {
-                      clearErrors('toPerson')
-                      setValue('toTeam', e.target.value)
-                    }}
+                  <Controller
+                    control={control}
+                    name="toTeam"
+                    render={({ field }) => (
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
+                        }
+                      >
+                        <AdviceSelect
+                          selectedKey={toTeamSelectedKey}
+                          field={field}
+                          label={<FilterLabel>전달 부서 또는 팀</FilterLabel>}
+                          handleChange={toTeamHandleChange}
+                          placeholder="부서 또는 팀을 선택해주세요."
+                          category="부서"
+                        />
+                      </Suspense>
+                    )}
                   />
                   {errors.toTeam && (
                     <p className="px-2 pt-2 text-xs text-red">
@@ -550,6 +590,7 @@ export default function testEditor() {
                     type="text"
                     className="w-full"
                     maxLength={12}
+                    value={personName}
                     {...register('toPerson')}
                     onChange={toPersonHandleChange}
                     label={<FilterLabel>전달 개인 추가</FilterLabel>}
@@ -562,7 +603,11 @@ export default function testEditor() {
                   {toPersonNames && (
                     <PersonNameWrap>
                       {toPersonNames.map((data, index) => (
-                        <PersonName key={index}>
+                        <PersonName
+                          key={index}
+                          type="button"
+                          onClick={() => toPersonHandleClick(data)}
+                        >
                           {data?.mUsername}({data?.mPart})
                         </PersonName>
                       ))}

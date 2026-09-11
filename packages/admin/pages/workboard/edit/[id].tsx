@@ -12,14 +12,18 @@ const _ = require('lodash')
 import { getYear } from 'date-fns'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
-import { useMemo, useRef, useState, useEffect } from 'react'
+import { Suspense, useMemo, useRef, useState, useEffect } from 'react'
 import ReactQuill, { ReactQuillProps } from 'react-quill'
 import { styled } from 'styled-components'
-import { useMutation, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { EDIT_WORK_BOARD } from '@/graphql/mutations'
-import { SEARCH_WORKBOARD_QUERY } from '@/graphql/queries'
+import {
+  SEARCH_MANAGEUSER_QUERY,
+  SEARCH_WORKBOARD_QUERY,
+} from '@/graphql/queries'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import AdviceSelect from '@/components/common/select/AdviceSelect'
 
 registerLocale('ko', ko)
 
@@ -85,6 +89,18 @@ const BtnBox = styled.div`
   justify-content: center;
   align-items: center;
 `
+const LodingDiv = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 const TimeBox = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -97,6 +113,21 @@ const EditorBox = styled.div`
     max-width: 100%;
     height: auto;
   }
+`
+const PersonNameWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+`
+const PersonName = styled.button`
+  display: inline-block;
+  padding: 0.2rem;
+  background-color: #eee;
+  border: 0;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  font-size: 0.875rem;
 `
 const QuillWrapper = styled.div`
   .ql-container {
@@ -141,7 +172,10 @@ export default function WorkboardEdit() {
   const [workLevelsKey, setWorkLevelsKey] = useState('난이도를 선택하세요.')
   const [editorContent, setEditorContent] = useState('')
   const [fileName, setFileName] = useState('파일을 선택하세요.')
+  const [toTeamSelectedKey, setToTeamSelectedKey] = useState('')
   const [currentFilePath, setCurrentFilePath] = useState('')
+  const [personName, setPersonName] = useState('')
+  const [toPersonNames, setToPersonNames] = useState(null)
 
   const {
     register,
@@ -167,6 +201,18 @@ export default function WorkboardEdit() {
   )
   const [editWorkBoard, { loading: editWorkBoardLoading }] =
     useMutation(EDIT_WORK_BOARD)
+  const [searchManageUser] = useLazyQuery(SEARCH_MANAGEUSER_QUERY, {
+    onCompleted: data => {
+      if (data.searchManageUser.totalCount === 0) {
+        setError('toPerson', {
+          message: '일치하는 이름이 없습니다.',
+        })
+      } else {
+        setToPersonNames(data.searchManageUser.data)
+        clearErrors('toPerson')
+      }
+    },
+  })
   const boardDetailInfo = searchWorkBoardData?.searchWorkBoard?.data?.[0]
 
   useEffect(() => {
@@ -190,8 +236,44 @@ export default function WorkboardEdit() {
     setWorkLevelsKey(level)
     setWorkStatusSelectedKey(workStatus)
     setFileName(boardDetailInfo.fileName || '파일을 선택하세요.')
+    setToTeamSelectedKey(boardDetailInfo.toTeam || '')
+    setPersonName(boardDetailInfo.toPerson || '')
     setCurrentFilePath(boardDetailInfo.filePath || '')
   }, [boardDetailInfo, reset])
+
+  const toPersonHandleChange = e => {
+    const inputValue = e.target.value
+    setPersonName(inputValue)
+    setValue('toPerson', inputValue)
+
+    if (inputValue.trim() !== '') {
+      clearErrors('toPerson')
+      searchManageUser({
+        variables: { mUsername: inputValue },
+      })
+    } else {
+      setToPersonNames(null)
+      clearErrors('toPerson')
+    }
+  }
+
+  const toPersonHandleClick = user => {
+    const selectedName = user?.mUsername || ''
+    setPersonName(selectedName)
+    setValue('toPerson', selectedName)
+    setToPersonNames(null)
+    clearErrors('toPerson')
+  }
+
+  const toTeamHandleChange = e => {
+    const value = e.target.value
+    setToTeamSelectedKey(value)
+    setValue('toTeam', value)
+    setValue('toPerson', '')
+    setPersonName('')
+    setToPersonNames(null)
+    clearErrors('toPerson')
+  }
 
   const uploadEditorImage = async (file: File) => {
     const token = localStorage.getItem('token')
@@ -392,16 +474,27 @@ export default function WorkboardEdit() {
                   />
                 </AreaBox>
                 <AreaBox>
-                  <Input
-                    labelPlacement="outside"
-                    placeholder="ex) 영업팀"
-                    variant="bordered"
-                    radius="md"
-                    type="text"
-                    className="w-full"
-                    maxLength={12}
-                    {...register('toTeam')}
-                    label={<FilterLabel>전달 부서 또는 팀</FilterLabel>}
+                  <Controller
+                    control={control}
+                    name="toTeam"
+                    render={({ field }) => (
+                      <Suspense
+                        fallback={
+                          <LodingDiv>
+                            <i className="xi-spinner-2" />
+                          </LodingDiv>
+                        }
+                      >
+                        <AdviceSelect
+                          selectedKey={toTeamSelectedKey}
+                          field={field}
+                          label={<FilterLabel>전달 부서 또는 팀</FilterLabel>}
+                          handleChange={toTeamHandleChange}
+                          placeholder="부서 또는 팀을 선택해주세요."
+                          category="부서"
+                        />
+                      </Suspense>
+                    )}
                   />
                 </AreaBox>
                 <AreaBox>
@@ -413,9 +506,29 @@ export default function WorkboardEdit() {
                     type="text"
                     className="w-full"
                     maxLength={12}
+                    value={personName}
                     {...register('toPerson')}
+                    onChange={toPersonHandleChange}
                     label={<FilterLabel>전달 개인 추가</FilterLabel>}
                   />
+                  {errors.toPerson && (
+                    <p className="px-2 pt-2 text-xs text-red">
+                      {String(errors.toPerson.message)}
+                    </p>
+                  )}
+                  {toPersonNames && (
+                    <PersonNameWrap>
+                      {toPersonNames.map((data, index) => (
+                        <PersonName
+                          key={index}
+                          type="button"
+                          onClick={() => toPersonHandleClick(data)}
+                        >
+                          {data?.mUsername}({data?.mPart})
+                        </PersonName>
+                      ))}
+                    </PersonNameWrap>
+                  )}
                 </AreaBox>
               </FlexBox>
               <FlexBox>

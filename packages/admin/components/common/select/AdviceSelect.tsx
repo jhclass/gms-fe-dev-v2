@@ -9,6 +9,23 @@ type seeAdviceTypeQuery = {
   seeAdviceType: ResultAdviceType
 }
 
+const hasKorean = (value = '') => /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(value)
+
+const sortAdviceList = list => {
+  return [...(list || [])].sort((a, b) => {
+    const aType = a?.type || ''
+    const bType = b?.type || ''
+    const aKorean = hasKorean(aType)
+    const bKorean = hasKorean(bType)
+
+    if (aKorean !== bKorean) {
+      return aKorean ? -1 : 1
+    }
+
+    return aType.localeCompare(bType, aKorean ? 'ko-KR' : 'en-US')
+  })
+}
+
 export default function AdviceSelect({
   defaultValue = null,
   selectedKey,
@@ -33,9 +50,10 @@ export default function AdviceSelect({
     },
   })
 
+  const sortedAdviceList = sortAdviceList(adviceData?.seeAdviceType.adviceType)
   const adviceList = optionDefault
-    ? [optionDefault, ...adviceData?.seeAdviceType.adviceType]
-    : adviceData?.seeAdviceType.adviceType
+    ? [optionDefault, ...sortedAdviceList]
+    : sortedAdviceList
 
   if (adviceError) {
     console.log(adviceError)
@@ -58,7 +76,7 @@ export default function AdviceSelect({
         className="w-full"
         defaultValue={defaultValue}
         variant="bordered"
-        selectedKeys={[selectedKey]}
+        selectedKeys={selectedKey ? [selectedKey] : []}
         onChange={value => {
           if (value.target.value !== '') {
             field.onChange(value)
