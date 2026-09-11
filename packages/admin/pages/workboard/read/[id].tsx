@@ -140,9 +140,17 @@ const FileBox = styled.div`
   }
 `
 const EditorBox = styled.div`
-  img {
-    display: inline-block;
-    width: 50%;
+  .contentArea {
+    min-height: 12rem;
+    line-height: 1.7;
+    word-break: break-word;
+  }
+
+  .contentArea img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.75rem 0;
   }
 `
 
@@ -371,7 +379,9 @@ export default function testEditor() {
                   variant="solid"
                   color="primary"
                   className="w-full text-white"
-                  //onClick={formEventHandler}
+                  onClick={() =>
+                    router.push(`/workboard/edit/${router.query.id}`)
+                  }
                 >
                   수정
                 </Button>

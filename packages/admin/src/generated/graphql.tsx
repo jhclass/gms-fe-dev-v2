@@ -262,6 +262,22 @@ export type EditStudentStateDto = {
   subject?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type EditWorkBoardDto = {
+  detail?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  lastModifiedTime?: InputMaybe<Scalars['String']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  toPerson?: InputMaybe<Scalars['String']['input']>;
+  toTeam?: InputMaybe<Scalars['String']['input']>;
+  workStatus?: InputMaybe<Scalars['String']['input']>;
+  writer?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type EduInfomation = {
   __typename?: 'EduInfomation';
   Branch?: Maybe<Branch>;
@@ -554,6 +570,7 @@ export type Mutation = {
   editStudentMemo: CommonResponse;
   editStudentPayment: CommonResponse;
   editStudentPortfolio: CommonResponse;
+  editWorkBoard: CommonResponse;
   editWorkLogs: CommonResponse;
   getHourlySalesData: HourlySalesData;
   mLogin: ResultLogin;
@@ -1333,6 +1350,11 @@ export type MutationEditStudentPortfolioArgs = {
   isBest?: InputMaybe<Scalars['String']['input']>;
   lastModifiedTime: Scalars['String']['input'];
   url?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type MutationEditWorkBoardArgs = {
+  editWorkBoardDto: EditWorkBoardDto;
 };
 
 
@@ -2452,6 +2474,7 @@ export type WorkBoard = {
   createdAt: Scalars['String']['output'];
   detail: Scalars['String']['output'];
   endDate?: Maybe<Scalars['String']['output']>;
+  fileName?: Maybe<Scalars['String']['output']>;
   filePath?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   lastModifiedTime?: Maybe<Scalars['String']['output']>;

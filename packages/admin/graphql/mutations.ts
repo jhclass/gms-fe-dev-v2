@@ -2814,3 +2814,13 @@ export const CREATE_WORK_BOARD = gql`
     }
   }
 `
+
+export const EDIT_WORK_BOARD = gql`
+  mutation EditWorkBoard($editWorkBoardDto: EditWorkBoardDto!) {
+    editWorkBoard(editWorkBoardDto: $editWorkBoardDto) {
+      ok
+      message
+      error
+    }
+  }
+`

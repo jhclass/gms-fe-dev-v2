@@ -210,6 +210,21 @@ const Nolist = styled.div`
 type searchWorkboardQuery = {
   searchWorkBoard: ResultSeeWorkBoard
 }
+const getWorkStatusColor = (workStatus, theme) => {
+  switch (workStatus) {
+    case '미처리':
+      return theme.colors.statusPending
+    case '재진행요청':
+      return theme.colors.statusRetry
+    case '작업완료':
+      return theme.colors.statusComplete
+    case '진행중':
+      return theme.colors.statusProgress
+    default:
+      return theme.colors.gray
+  }
+}
+
 export default function WorkboardFilterTable({ workboardFilter }) {
   const theme = useTheme()
   const [currentPage, setCurrentPage] = useRecoilState(workboardPageState)
@@ -271,14 +286,16 @@ export default function WorkboardFilterTable({ workboardFilter }) {
         </TopBox>
         <ColorHelp>
           <ColorCip>
-            <span style={{ background: theme.colors.primary }}></span> : 미처리
-            || 재진행요청
+            <span style={{ background: theme.colors.statusPending }}></span> :
+            미처리
           </ColorCip>
           <ColorCip>
-            <span
-              style={{ background: theme.colors.gray, opacity: '0.8' }}
-            ></span>{' '}
-            : 작업완료
+            <span style={{ background: theme.colors.statusRetry }}></span> :
+            재진행요청
+          </ColorCip>
+          <ColorCip>
+            <span style={{ background: theme.colors.statusComplete }}></span> :
+            작업완료
           </ColorCip>
         </ColorHelp>
       </TTopic>
@@ -305,26 +322,17 @@ export default function WorkboardFilterTable({ workboardFilter }) {
                   onClick={() =>
                     router.push(
                       {
-                        pathname: `/workboard/detail/${item.id}`,
+                        pathname: `/workboard/read/${item.id}`,
                         query: { page: currentPage, limit: currentLimit },
                       },
-                      `/workboard/detail/${item.id}`,
+                      `/workboard/read/${item.id}`,
                     )
                   }
                 >
                   <TableRow>
                     <Tflag
                       style={{
-                        background:
-                          item.workStatus === '미처리' ||
-                          item.workStatus === '재진행요청'
-                            ? theme.colors.primary
-                            : theme.colors.gray,
-                        opacity:
-                          item.workStatus === '미처리' ||
-                          item.workStatus === '미처리'
-                            ? '1'
-                            : '0.8',
+                        background: getWorkStatusColor(item.workStatus, theme),
                       }}
                     ></Tflag>
 

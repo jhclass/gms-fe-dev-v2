@@ -12,5 +12,9 @@ export const lightTheme = {
     lightPrimary: '#d9e3fa',
     mainBG: '#dbe5fb',
     lightYellow: '#fffff9',
+    statusPending: '#4e81ef',
+    statusRetry: '#f97316',
+    statusComplete: '#22c55e',
+    statusProgress: '#07bbae',
   },
 }
