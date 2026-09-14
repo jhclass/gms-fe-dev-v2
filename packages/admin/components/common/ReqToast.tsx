@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+﻿import { styled } from 'styled-components'
 
 const FromID = styled.p`
   color: ${({ theme }) => theme.colors.black};
@@ -23,10 +23,12 @@ const ReqText = styled.p`
 `
 
 export default function ReqToast({ messageData }) {
+  const alarmData = messageData?.data ?? messageData
+
   return (
     <>
-      <FromID>{messageData?.alarmTitle}</FromID>
-      <ReqText>{messageData?.alarmContent}</ReqText>
+      <FromID>{alarmData?.alarmTitle}</FromID>
+      <ReqText>{alarmData?.alarmContent}</ReqText>
     </>
   )
 }
