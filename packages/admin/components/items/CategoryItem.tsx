@@ -1,4 +1,4 @@
-import {
+﻿import {
   SEARCH_PAYMENT_FILTER_MUTATION,
   SEARCH_STUDENTSTATE_MUTATION,
   SEARCH_STUDENT_FILTER_MUTATION,
@@ -208,7 +208,6 @@ export default function CategoryItem<CategoryItemProps>({
 
   const handleClick = cate => {
     setIsOpen(prevState => ({
-      ...prevState,
       [cate]: !prevState[cate],
     }))
   }

@@ -1,4 +1,4 @@
-import { atom } from 'recoil'
+﻿import { atom } from 'recoil'
 
 // screen
 export const isScreenState = atom<boolean>({
@@ -29,16 +29,7 @@ export const newStudentState = atom<boolean>({
 
 export const categoryMenuState = atom<{}>({
   key: 'categoryMenuState',
-  default: {
-    상담관리: true,
-    강의관리: true,
-    수강생관리: true,
-    회계관리: true,
-    통계: true,
-    인사관리: true,
-    메시지: true,
-    환경설정: true,
-  },
+  default: {},
 })
 
 export const activeCategoryState = atom<number>({

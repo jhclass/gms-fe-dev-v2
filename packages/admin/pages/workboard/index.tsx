@@ -1,4 +1,4 @@
-import MainWrap from '@/components/wrappers/MainWrap'
+﻿import MainWrap from '@/components/wrappers/MainWrap'
 import { Suspense } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { styled } from 'styled-components'
@@ -9,7 +9,7 @@ import {
   workboardFilterState,
   workboardSearchState,
 } from '@/lib/recoilAtoms'
-import Layout from '@/pages/subjects/layout'
+import Layout from '@/pages/workboard/layout'
 import WorkboardTable from '@/components/table/WorkboardTable'
 import WorkboardFilterTable from '@/components/table/WorkboardFilterTable'
 

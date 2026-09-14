@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   gradeState,
@@ -159,14 +159,19 @@ export default function SubCategory() {
     return parentHref + childHref === currentPath
   }
 
+  const shouldShowSubCategory = childrenLength => {
+    return childrenLength > 1 || currentCategory?.name === '게시판'
+  }
   return (
     <>
       {mGrade === grade.teacher ? (
         <>
           {currentCategory &&
-            currentCategory.children.filter(
-              child => child.exposure && child.teacher,
-            ).length > 1 && (
+            shouldShowSubCategory(
+              currentCategory.children.filter(
+                child => child.exposure && child.teacher,
+              ).length,
+            ) && (
               <CateWrap $navOpen={navOpen}>
                 <CateBox>
                   <ScrollShadow
@@ -204,8 +209,9 @@ export default function SubCategory() {
       ) : (
         <>
           {currentCategory &&
-            currentCategory.children.filter(child => child.exposure).length >
-              1 && (
+            shouldShowSubCategory(
+              currentCategory.children.filter(child => child.exposure).length,
+            ) && (
               <CateWrap $navOpen={navOpen}>
                 <CateBox>
                   <ScrollShadow

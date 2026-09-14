@@ -1,4 +1,4 @@
-import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
+﻿import { SEARCH_PERMISSIONS_GRANTED_QUERY } from '@/graphql/queries'
 import { gradeState } from '@/lib/recoilAtoms'
 import { ResultSearchPermissionsGranted } from '@/src/generated/graphql'
 import useMmeQuery from '@/utils/mMe'
@@ -46,7 +46,7 @@ export default function TypeLink({ typeLink, typeName, permissionName }) {
       setPermissionManagers(
         data?.searchPermissionsGranted?.data?.[0]?.ManageUser?.map(
           manager => manager.id,
-        ),
+        ) ?? [],
       )
     }
   }, [data])
@@ -76,3 +76,4 @@ export default function TypeLink({ typeLink, typeName, permissionName }) {
     </>
   )
 }
+

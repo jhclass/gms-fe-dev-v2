@@ -1,9 +1,10 @@
-import { Tab, Tabs } from '@nextui-org/react'
+﻿import { Tab, Tabs } from '@nextui-org/react'
 import { styled } from 'styled-components'
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PermissionTabItem from '@/components/items/PermissionTabItem'
 import PermissionMasterTabItem from '@/components/items/PermissionMasterTabItem'
+import BoardPermissionTabItem from '@/components/items/BoardPermissionTabItem'
 import useMmeQuery from '@/utils/mMe'
 import { gradeState } from '@/lib/recoilAtoms'
 import { useRecoilValue } from 'recoil'
@@ -137,7 +138,17 @@ export default function PermissionTabs() {
               <PermissionTabItem topicName={'분야관리'} />
             </Suspense>
           </Tab>
-
+          <Tab key="board" title="게시판">
+            <Suspense
+              fallback={
+                <LodingDiv>
+                  <i className="xi-spinner-2" />
+                </LodingDiv>
+              }
+            >
+              <BoardPermissionTabItem />
+            </Suspense>
+          </Tab>
           {mGrade <= grade.master && (
             <Tab key="subMaster" title="부운영자관리">
               <Suspense

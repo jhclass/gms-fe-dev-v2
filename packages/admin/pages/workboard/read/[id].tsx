@@ -1,4 +1,4 @@
-import Layout from '@/pages/layout'
+﻿import Layout from '@/pages/workboard/layout'
 import MainWrap from '@/components/wrappers/MainWrap'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import FormTopInfo from '@/components/common/FormTopInfo'

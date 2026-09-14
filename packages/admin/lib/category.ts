@@ -1,4 +1,4 @@
-interface Category {
+﻿interface Category {
   id?: number
   href: string
   iconSrc?: string
@@ -361,13 +361,13 @@ const category: Category[] = [
   {
     href: '/workboard',
     iconSrc: 'xi-network-company',
-    name: '업무게시판',
+    name: '게시판',
     exposure: true,
     isBreadcrumb: true,
     children: [
       {
         href: '/',
-        name: '업무 목록',
+        name: '업무게시판',
         exposure: true,
         isBreadcrumb: true,
       },
